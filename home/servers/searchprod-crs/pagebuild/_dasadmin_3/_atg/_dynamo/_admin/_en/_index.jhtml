@@ -1,0 +1,265 @@
+<java>
+
+String languages = request.getHeader("ACCEPT-LANGUAGE");
+String result = "en";
+if (languages != null) {
+    for (;;) {
+      String attempt = languages.substring(0,2);
+      // check attempt
+      String path = request.getRealPath("/atg/dynamo/admin/" + attempt);
+      if ( (new java.io.File (path)).isDirectory() ) {
+        // success
+        result = attempt;
+        break;
+      }
+      int index = languages.indexOf(",");
+      if (index == -1)
+        break;
+      languages = languages.substring(index+1);
+    }
+}
+
+request.setParameter( "adminLang", result );
+
+</java>
+
+<nucleus type=import>
+        /atg/dynamo/Configuration
+        /atg/dynamo/droplet/Switch
+</nucleus>
+
+<HTML>
+<HEAD>
+
+<TITLE>Dynamo Administration</TITLE>
+
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+<IMG SRC="images/admin-banner.gif" ALT="Dynamo Administration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a></p><p>
+
+<blockquote>
+<h1>Dynamo Administration</h1>
+
+<p>
+<b>Version <valueof bean="/atg/dynamo/Configuration.version">?</valueof></b>
+</font>
+</p>   
+
+
+<blockquote>
+
+<table border=0 cellpadding=5>
+   <tr valign=top>
+     <droplet name="Switch">
+       <param name="value" value="bean:Configuration.standaloneAssembledEarFile">
+       <oparam name="unset"></oparam>
+       <oparam name="default">
+          <td><a href="/atg/dynamo/admin/en/configure-server.jhtml">Configuration Manager</a></td>
+          <td>Change the configuration properties of your Dynamo installation.</td>
+       </oparam>
+       <oparam name="true">
+          <td>Configuration Manager</td>
+          <td>The Configuration Manager is not available because this ATG platform EAR file was
+          assembled in standalone mode.</td>
+       </oparam>
+     </droplet>
+   </tr>
+   <tr valign=top>
+      <td><a href="/nucleus/">Component Browser</a></td>
+      <td>Browse the hierarchy of components registered with Nucleus.</td>
+   </tr>
+
+   <tr valign=top>
+     <droplet name="Switch">
+       <param name="value" value="bean:Configuration.standaloneAssembledEarFile">
+       <oparam name="unset"></oparam>
+       <oparam name="default">
+         <td><a href="/atg/dynamo/admin/en/start-acc.jhtml">Admin ACC</a></td>
+         <td>Start the ATG Control Center for this Dynamo server.</td>
+       </oparam>
+       <oparam name="true">
+          <td>Admin ACC</td>
+          <td>The Admin ACC is not available because this ATG platform EAR file was
+          assembled in standalone mode.</td>
+       </oparam>
+     </droplet>
+   </tr>
+
+   <tr valign=top>
+     <td><a href="/atg/dynamo/admin/en/change-password.jhtml">Change Password</a></td>
+     <td>Change the passwords for ATG Dynamo administrative users.</td>
+   </tr>
+
+   <tr valign=top>
+      <td><a href="/atg/dynamo/admin/en/jdbcbrowser/">JDBC Browser</a></td>
+      <td>Browse a database through a JDBC connection, examine the
+      metadata of the database, create and drop tables, and execute
+      database queries.</td>
+   </tr>
+
+  <droplet bean="/atg/dynamo/droplet/Switch">
+    <param name="value" value="bean:/atg/dynamo/Configuration.dynamoAppServer">
+    <oparam name="true">
+      <!-- Dynamo App Server -->
+
+      <tr valign=top>
+        <td><a href="/nucleus/atg/dynamo/service/j2ee/J2EEContainer">J2EE Container</a></td>
+        <td>Browse running J2EE applications, stop and reload J2EE applications.</td>
+      </tr>  
+      <tr valign=top>
+        <td><a href="/atg/dynamo/admin/en/performance.jhtml">Performance Summary</a></td>
+        <td>See an overview of performance statistics on the Dynamo server.</td>
+      </tr>
+
+    </oparam>
+    <oparam name="false">
+      <!-- 3rd party App Server -->
+
+      <tr valign=top>
+        <td><a href="/atg/dynamo/admin/en/performance-monitor.jhtml">Performance Monitor</a></td>
+        <td>Monitor of application performance.</td>
+      </tr>
+
+    </oparam>
+  </droplet> 
+
+   <tr valign=top>
+      <td><a href="/atg/dynamo/admin/en/webservice/index.jhtml">
+  Web Service Administration</a>
+      </td>
+      <td>View registered web services, create new web services and
+  administer web service security policies</td>
+   </tr>
+
+   <tr valign=top>
+      <td><a href="/atg/dynamo/admin/en/batchcompiler.jhtml">Batch Compiler</a></td>
+      <td>Precompile your JHTML files to avoid delays the first time the page is served.</td>
+   </tr>
+   <tr valign=top>
+      <td><a href="/atg/dynamo/admin/en/conf-reporter.jhtml">Configuration Reporter</a></td>
+      <td>Display reports about Dynamo component properties and environment.</td>
+   </tr>
+
+  <droplet bean="/atg/dynamo/droplet/Switch">
+    <param name="value" value="bean:/atg/dynamo/Configuration.dynamoAppServer">
+    <oparam name="true">
+      <!-- Dynamo App Server -->
+
+      <tr valign=top>
+       <td><a href="/atg/dynamo/admin/en/show-dynamo-log.jhtml">View Dynamo Logs</a></td>
+       <td>View any of the Dynamo logs.</td>
+      </tr>
+
+    </oparam>
+  </droplet> 
+
+  <droplet bean="/atg/dynamo/droplet/ForEach">
+    <!-- Go through each module and include its admin home page fragment
+         if it is defined.  -->
+    <param name="array" value="bean:/atg/modules/ModuleManager.modules">
+    <oparam name="output">
+      <droplet bean="/atg/dynamo/droplet/Switch">
+        <param name="value" value="param:element.adminHomePageFragmentURL">
+        <oparam name="unset"></oparam>
+        <oparam name="default">
+          <java>
+          request.setParameter("adminHomePageURL",
+            request.getParameter("element.adminHomePagePrefixURL") + 
+            request.getParameter("adminLang") + 
+            request.getParameter("element.adminHomePageFragmentURL") );
+          </java>
+          <droplet src="param:adminHomePageURL"></droplet>
+        </oparam>
+      </droplet>
+    </oparam>
+  </droplet>
+  
+  <!-- Sitemap Administration -->
+  <tr valign=top>
+     <td><a href="/atg/dynamo/admin/en/sitemap/sitemap-admin.jhtml">Sitemap Administration</a></td>
+     <td>Generate Sitemap and Sitemap index information.</td>
+   </tr>
+
+  <!-- Group these links to other important stuff at the bottom of the -->
+  <!-- list since they're not really admin functions. -->
+  <tr valign=top>
+      <td><a href="/atg/dynamo/docs/" target="docs">Dynamo Documentation</a> </td>
+      <td> Read the Dynamo documentation set.</td>
+  </tr>
+
+  <tr valign=top>
+      <td><a href="/atg/dynamo/admin/en/running-products.jhtml" target="running">Running Products</a> </td>
+      <td> View the products currently running.</td>
+  </tr>
+
+  <!-- Dynamo Demos & Tutorials -->
+  <droplet bean="/atg/dynamo/droplet/Switch">
+    <param name="value" value="bean:/atg/dynamo/Configuration.dynamoAppServerStandAloneMode">
+    <oparam name="false">
+
+      <!-- not in DAS stand alone mode therefore show links to -->
+      <!-- demos of Dynamo applications -->
+      <tr valign=top>
+        <td><a href="/atg/dynamo/admin/en/demolink.jhtml" target="tutorial">Dynamo Demos & Tutorials</a></td>
+        <td>Learn how to start building Dynamo applications.</td>
+      </tr>
+
+    </oparam>
+  </droplet>
+
+  </table>
+  
+  <droplet bean="/atg/dynamo/droplet/Switch">
+    <param name="value" value="bean:/atg/dynamo/Configuration.dynamoAppServer">
+    <oparam name="true">
+      <!-- Dynamo App Server -->
+
+      <img src="/atg/dynamo/admin/images/bluedot.gif" width=505 height=1>
+      <p>
+      <form method="get">
+      <nobr>
+
+      <!-- Stop/Start accepting new sessions button -->
+      <droplet name="/atg/dynamo/droplet/Switch">
+  <param name="value" value="bean:/atg/dynamo/Configuration.drpEnabled">
+  <oparam name="true">
+    <droplet name="/atg/dynamo/droplet/Switch">
+      <param name="value" value="property:/atg/dynamo/admin/LoadControl.acceptingNewSessions">
+      <oparam name="true">
+        <input type=submit property="/atg/dynamo/admin/LoadControl.acceptingNewSessions"
+        submitvalue="false" value="Stop accepting new sessions">
+      </oparam>
+      <oparam name="false">
+        <input type=submit property="/atg/dynamo/admin/LoadControl.acceptingNewSessions" submitvalue="true" value="Start accepting new sessions">
+      </oparam>
+    </droplet>
+  </oparam>
+      </droplet>
+
+      <!-- Stop Dynamo Server button -->
+      <input type="button" onClick="window.location='/nucleus/?op=shutdown'" value="Stop Dynamo Server">
+
+      <!-- Restart Dynamo Server button -->
+      <droplet name="/atg/dynamo/droplet/Switch">
+  <param name="value" value="`request.getNucleus().getShellRestart()`">
+  <oparam name="true">
+    <input type="button" onClick="window.location='/nucleus/?op=restart'" value="Restart Dynamo Server">
+  </oparam>
+      </droplet>
+
+      </nobr>
+      </form>   
+
+    </oparam>
+  </droplet>
+
+</blockquote>
+</blockquote>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/index.jhtml#2 $$Change: 651448 $*/</java>

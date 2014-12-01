@@ -1,0 +1,131 @@
+<!-- nav_header_main -->
+<i18n:message  id="i18navLabelCommunity" key="admin-nav-header-link-community"/>
+<i18n:message  id="i18navLabelGear"      key="admin-nav-header-link-gears"/>
+<i18n:message  id="i18navLabelStyle"     key="admin-nav-header-link-styles"/>
+<i18n:message  id="i18navLabelAlert"     key="admin-nav-header-link-alerts"/>
+
+<% 
+  String alertURLStr = null;
+  String communityURLStr = null;
+  String gearURLStr = null;
+  String styleURLStr = null;
+%>
+
+<core:CreateUrl id="alertURL" url="/portal/admin/alert.jsp">
+  <% alertURLStr = alertURL.getNewUrl(); %>
+</core:CreateUrl>
+<core:CreateUrl id="communityURL" url="/portal/admin/community.jsp">
+  <% communityURLStr = communityURL.getNewUrl(); %>
+</core:CreateUrl>
+<core:CreateUrl id="gearURL"      url="/portal/admin/gear.jsp">
+  <% gearURLStr = gearURL.getNewUrl(); %>
+</core:CreateUrl>
+<core:CreateUrl id="styleURL"     url="/portal/admin/style.jsp">
+  <% styleURLStr = styleURL.getNewUrl(); %>
+</core:CreateUrl>
+
+<i18n:message id="root_image_dir" key="banner_image_root_directory"/>
+
+<body bgcolor="#FFFFFF" background="images/background.gif" text="#333333" link="#3366ff" vlink="#3366ff" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<table cellpadding="0" cellspacing="0" border="0" bgcolor="#0090f1" width="100%">
+  <tr>
+   <td align="left" width="95%"><img src='<%= response.encodeUrl(request.getContextPath()+"/"+root_image_dir+"/portaladmin_banner.jpg")%>' alt='<i18n:message key="admin-nav-header-portaladmin-banner"/>'></td>
+   <td width="40" align="right"><img src='<%= response.encodeUrl(request.getContextPath()+"/images/atg_logo.jpg")%>' alt='<i18n:message key="admin-nav-header-atg-logo"/>'></td>
+  </tr>
+  <!--two rows of background image to form border between top navigation and portal admin banner -->
+  <tr>
+    <td  colspan="2" bgcolor="#B7B8B7"><img src='<%=clearGif%>' height="1" width="1" alt=""></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+
+<% 
+  String nonbreakingspacer = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src='"+
+                              response.encodeUrl("images/separator.gif") +
+                             "' width='1' height='11' alt='' border='0'>&nbsp;&nbsp;&nbsp;&nbsp;";
+  String topLevel[][] = {
+     {""},
+     {i18navLabelCommunity ,"1",communityURLStr,"community"},
+     {i18navLabelGear      ,"2",gearURLStr     ,"gears"},
+     {i18navLabelStyle     ,"3",styleURLStr    ,"style"},
+     {i18navLabelAlert     ,"4",alertURLStr       ,"alerts"}
+     };
+
+%>
+  <tr>
+    <td colspan="2" bgcolor="#EAEEF0" width="100%"><table cellpadding="2" border="0" width="100%">
+        <tr>
+          <td NOWRAP><font class="smaller">&nbsp;&nbsp;&nbsp;
+<%
+ StringBuffer outputStrHeader = new StringBuffer();
+ for ( int i = 1 ; i < topLevel.length ; i++ ) {
+  if (! topLevel[i][3].equals(thisNavHighlight) ) {
+    outputStrHeader.append("<a class='portaladmin_nav' target='_top' href='");
+    outputStrHeader.append(topLevel[i][2]);
+    outputStrHeader.append("'>");
+    outputStrHeader.append(topLevel[i][0].trim());
+    outputStrHeader.append("</a>\n");
+  } else {
+    outputStrHeader.append("<a target='_top' style='text-decoration:none;color:#4D4E4F;' href='");
+    outputStrHeader.append(topLevel[i][2]);
+    outputStrHeader.append("'><img src='");
+    outputStrHeader.append(response.encodeUrl("images/selected.gif"));
+    outputStrHeader.append("' alt='' border='0' width='9' height='8'>&nbsp;<b>");
+    outputStrHeader.append(topLevel[i][0].trim());
+    outputStrHeader.append("</b></a>\n");
+  }
+  outputStrHeader.append(nonbreakingspacer);
+ }
+
+ out.print(outputStrHeader.toString());
+%>
+
+
+            </font></td>
+          <td align="right"><font class="smaller">
+
+              <dsp:getvalueof id="firstName" idtype="java.lang.String" bean="Profile.firstName">
+                <core:ExclusiveIf>
+                  <core:IfNotNull value="<%=firstName%>">
+                    <% greetingName= (String) firstName; %>
+                  </core:IfNotNull>
+                  <core:DefaultCase>
+                    <dsp:getvalueof id="login" idtype="java.lang.String" bean="Profile.login">
+                      <% greetingName= (String) login; %>
+                    </dsp:getvalueof>
+                  </core:DefaultCase>
+                </core:ExclusiveIf>
+              </dsp:getvalueof>
+
+              <i18n:message id="i18n_bold"     key="admin-nav-header-bold"/>
+              <i18n:message id="i18n_end_bold" key="admin-nav-header-endbold"/>
+              <i18n:message key="admin-nav-header-logged-comp"> 
+                <i18n:messageArg value="<%= greetingName%>"/>
+                <i18n:messageArg value="<%=i18n_bold%>"/>
+                <i18n:messageArg value="<%=i18n_end_bold%>"/>
+              </i18n:message>
+              &nbsp;&nbsp;
+              <img src='<%=response.encodeUrl("images/separator.gif")%>' width="1" height="11" alt="" border="0">
+              &nbsp;&nbsp;
+              <core:CreateUrl id="logoutURL" url="/portal/admin/logout.jsp">
+                <paf:encodeUrlParam param="successURL"  value="/portal/admin/index.jsp"/>
+                <a class='portaladmin_nav' href='<%= logoutURL.getNewUrl()%>' target='_top'><i18n:message key="admin-nav-header-link-logout"/>&nbsp;<img src="images/logout_arrow.gif" border="0" alt="" width="11" height="7"></a>&nbsp;&nbsp;
+              </core:CreateUrl>
+            </font>
+          </td>
+        </tr>
+      </table></td>
+  </tr>
+
+<!--two rows of background image to form border between top navigation and portal admin banner -->
+  <tr>
+    <td  colspan="2" bgcolor="#B7B8B7"><img src='<%=clearGif%>' height="1" width="1" alt=""></td>
+  </tr>
+  <tr>
+    <td colspan="2" bgcolor="#677886"><img src='<%=clearGif%>' height="1" width="1" alt=""></td>
+  </tr>	
+</table>
+<!-- end nav_header_main -->
+<%-- @version $Id: //app/portal/version/10.0.3/paf/admin.war/nav_header_main.jspf#2 $$Change: 651448 $--%>

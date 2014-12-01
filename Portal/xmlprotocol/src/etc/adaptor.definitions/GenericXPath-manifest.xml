@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<adaptor.manifest>
+	<adaptor.definition class.name="GenericXPathAdaptor" package="atg.portal.gear.xmlprotocol">
+		<description>Generic Sample Demo Adaptor</description>
+		<version>1.0</version>
+	    <comment>This adaptor works with local data in the web application</comment>
+		<provider.config>
+			<supports.multiple.categories>true</supports.multiple.categories>
+			<authentication.type>AUTH_STATELESS</authentication.type>
+		</provider.config>
+		<response.config>
+			<xpath.response.error.msg>//error.message</xpath.response.error.msg>
+			<xpath.authentication.error.msg>//error.message</xpath.authentication.error.msg>
+			<xpath.session.id>/login.response/session.id</xpath.session.id>
+			<xpath.category.names>/categories.response//category.name</xpath.category.names>
+			<xpath.category.ids>/categories.response//category.info/@id</xpath.category.ids>
+			<xpath.bookmarks>/categories.response//category.info/@bookmark</xpath.bookmarks>
+			<xpath.authentication.status>/login.response/@status</xpath.authentication.status>
+			<authentication.status.ok>0</authentication.status.ok>
+		</response.config>
+		<param.config>
+			<user.id>USER_ID</user.id>
+			<password>PASSWORD</password>
+			<categories.begin>CATEGORIES</categories.begin>
+    			<categories.end></categories.end>
+			<num.headlines>NUM_HEADLINES</num.headlines>
+			<bookmarks>BOOKMARKS</bookmarks>
+			<bookmarks.separator>,</bookmarks.separator>
+			<article.id>ARTICLE_ID</article.id>
+			<session.id>SESSION_ID</session.id>
+		</param.config>
+	</adaptor.definition>
+</adaptor.manifest>
+<!-- @version $Id: //app/portal/version/10.0.3/xmlprotocol/etc/adaptor.definitions/GenericXPath-manifest.xml#2 $$Change: 651448 $ -->

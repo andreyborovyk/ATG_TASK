@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE pipeline-registry-configuration
+        PUBLIC "-//Art Technology Group, Inc.//DTD PipelineRegistry//EN"
+        'http://www.atg.com/dtds/pipelineregistry/pipelineregistry_1.0.dtd'>
+
+<pipeline-registry-configuration>
+  <pipeline-manager-registry xml-combine="append-without-matching">
+    <pipeline-manager>
+      <nucleus-path>/atg/reporting/datawarehouse/process/PipelineManager</nucleus-path>
+    </pipeline-manager>
+  </pipeline-manager-registry>
+  <processor-registry xml-combine="append-without-matching">
+    <processor>
+      <nucleus-path>/atg/reporting/datawarehouse/process/AcquireLocksProcessor</nucleus-path>
+      <display-name>AcquireLocksProcessor</display-name>
+      <category>Reporting.DimensionUpdate</category>
+    </processor>
+    <processor>
+      <nucleus-path>/atg/reporting/datawarehouse/process/ChangeTypeProcessor</nucleus-path>
+      <display-name>ChangeTypeProcessor</display-name>
+      <category>Reporting.DimensionUpdate</category>
+    </processor>
+    <processor>
+      <nucleus-path>/atg/reporting/datawarehouse/process/CompareEventAndLastUpdateDatesProcessor</nucleus-path>
+      <display-name>CompareEventAndLastUpdateDatesProcessor</display-name>
+      <category>Reporting.DimensionUpdate</category>
+    </processor>
+    <processor>
+      <nucleus-path>/atg/reporting/datawarehouse/process/ConvertUpdateToInsertProcessor</nucleus-path>
+      <display-name>ConvertUpdateToInsertProcessor</display-name>
+      <category>Reporting.DimensionUpdate</category>
+    </processor>
+    <processor>
+      <nucleus-path>/atg/reporting/datawarehouse/process/DiffProcessor</nucleus-path>
+      <display-name>DiffProcessor</display-name>
+      <category>Reporting.DimensionUpdate</category>
+    </processor>
+    <processor>
+      <nucleus-path>/atg/reporting/datawarehouse/process/InsertDummyItemProcessor</nucleus-path>
+      <display-name>InsertDummyItemProcessor</display-name>
+      <category>Reporting.DimensionUpdate</category>
+    </processor>
+    <processor>
+      <nucleus-path>/atg/reporting/datawarehouse/process/InsertNewItemProcessor</nucleus-path>
+      <display-name>InsertNewItemProcessor</display-name>
+      <category>Reporting.DimensionUpdate</category>
+    </processor>
+    <processor>
+      <nucleus-path>/atg/reporting/datawarehouse/process/ItemConversionProcessor</nucleus-path>
+      <display-name>ItemConversionProcessor</display-name>
+      <category>Reporting.DimensionUpdate</category>
+    </processor>
+    <processor>
+      <nucleus-path>/atg/reporting/datawarehouse/process/ProductionItemLookupProcessor</nucleus-path>
+      <display-name>ProductionItemLookupProcessor</display-name>
+      <category>Reporting.DimensionUpdate</category>
+    </processor>
+    <processor>
+      <nucleus-path>/atg/reporting/datawarehouse/process/UpdateDeletedItemProcessor</nucleus-path>
+      <display-name>UpdateDeletedItemProcessor</display-name>
+      <category>Reporting.DimensionUpdate</category>
+    </processor>
+    <processor>
+      <nucleus-path>/atg/reporting/datawarehouse/process/UpdateItemProcessor</nucleus-path>
+      <display-name>UpdateItemProcessor</display-name>
+      <category>Reporting.DimensionUpdate</category>
+    </processor>
+    <processor>
+      <nucleus-path>/atg/reporting/datawarehouse/process/UpdateItemStartDateProcessor</nucleus-path>
+      <display-name>UpdateItemStartDateProcessor</display-name>
+      <category>Reporting.DimensionUpdate</category>
+    </processor>
+    <processor>
+      <nucleus-path>/atg/reporting/datawarehouse/process/WarehouseItemExistsProcessor</nucleus-path>
+      <display-name>WarehouseItemExistsProcessor</display-name>
+      <category>Reporting.DimensionUpdate</category>
+    </processor>
+    <processor>
+      <nucleus-path>/atg/reporting/datawarehouse/process/WarehouseItemLookupProcessor</nucleus-path>
+      <display-name>WarehouseItemLookupProcessor</display-name>
+      <category>Reporting.DimensionUpdate</category>
+    </processor>
+    <processor>
+      <nucleus-path>/atg/reporting/datawarehouse/process/JimProcessor</nucleus-path>
+      <display-name>JimProcessor</display-name>
+      <category>Reporting.DimensionUpdate</category>
+    </processor>
+    <processor>
+      <nucleus-path>/atg/reporting/datawarehouse/process/DummyDaffyProcessor</nucleus-path>
+      <display-name>DummyDaffyProcessor</display-name>
+      <category>Reporting.DimensionUpdate</category>
+    </processor>
+  </processor-registry>
+</pipeline-registry-configuration>
+<!-- @version $Id: //product/ARF/version/10.0.3/ARF/DW/base/config/atg/registry/pipelineRegistry.xml#2 $$Change: 651448 $-->

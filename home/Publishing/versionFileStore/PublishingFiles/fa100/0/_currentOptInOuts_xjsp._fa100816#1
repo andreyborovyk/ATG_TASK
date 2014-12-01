@@ -1,0 +1,106 @@
+<%@ taglib uri="http://www.atg.com/taglibs/daf/dspjspELTaglib1_0" prefix="dspel" %>
+<%@ taglib prefix="c"       uri="http://java.sun.com/jstl/core" %>
+<dspel:page>
+
+<html>
+<head>
+  <title>Current settings example form page</title>
+</head>
+
+<dspel:importbean bean="/atg/userprofiling/ProfileFormHandler"/>
+<dspel:importbean bean="/atg/userprofiling/ProfileErrorMessageForEach"/>
+<dspel:importbean bean="/atg/dynamo/droplet/Switch"/>
+<dspel:importbean bean="/atg/dynamo/droplet/ForEach"/>
+<dspel:importbean var="profile" bean="/atg/userprofiling/Profile"/>
+<dspel:tomap var="currentUser" value="${profile.dataSource}"/>
+
+<!-- This form should not show what the current profile attributes are so we will
+     disable the ability to extract default values from the profile. -->
+<dspel:setvalue bean="ProfileFormHandler.extractDefaultValuesFromProfile" value="true"/>
+
+<body>
+
+  <a href="optInOutExamplePage.jsp">Back to example home page</a>
+  <br/><br/>
+
+  <dspel:droplet name="Switch">
+    <dspel:param bean="ProfileFormHandler.profile.transient" name="value"/>
+    <dspel:oparam name="true">
+      You are currently not logged in. Please <a href="login.jsp?successURL=currentOptInOuts.jsp">login</a> to change your preferences.
+    </dspel:oparam>
+
+    <dspel:oparam name="default">
+
+      <h2>My Email Preferences</h2>
+
+        <dspel:droplet name="Switch">
+          <dspel:param bean="ProfileFormHandler.formError" name="value"/>
+          <dspel:oparam name="true">
+            <font color="cc0000"><strong><ul>
+              <dspel:droplet name="ProfileErrorMessageForEach">
+                <dspel:param bean="ProfileFormHandler.formExceptions" name="exceptions"/>
+                <dspel:oparam name="output">
+                  <li> <dspel:valueof param="message"/>
+                </dspel:oparam>
+              </dspel:droplet>
+            </ul></strong></font>
+          </dspel:oparam>
+        </dspel:droplet>
+     
+        <b>You have subscribed to the following email lists:</b>
+
+      <dspel:form name="optInForm"  action="currentOptInOuts.jsp" method="post">
+        <dspel:input bean="ProfileFormHandler.updateSuccessURL" type="hidden" value="currentOptInOuts.jsp"/>
+
+        <table width="456" border="0">
+	 <c:forEach var="optInItem" items="${currentUser.emailOptIns}">
+          <tr>
+            <td align="right"><dspel:input bean="ProfileFormHandler.value.emailOptIns" type="checkbox" value="${optInItem}" /></td>
+            <td valign="middle" align="left"><c:out value="${optInItem}"/></td>
+          </tr>
+
+         </c:forEach>
+
+          <tr>
+            <td valign="middle" align="right"></td>
+            <td><dspel:input bean="ProfileFormHandler.update" type="submit" value="Update Opt Ins"/></td>
+          </tr>
+
+        </table>
+
+      </dspel:form>
+      
+
+        <b>You have elected not to receive the following types of communication:</b>
+
+      <dspel:form name="optOutForm" action="currentOptInOuts.jsp" method="post">
+        <dspel:input bean="ProfileFormHandler.updateSuccessURL" type="hidden" value="currentOptInOuts.jsp"/>
+
+        <table width="456" border="0">
+	 <c:forEach var="optInItem" items="${currentUser.emailOptOuts}">
+          <tr>
+            <td align="right"><dspel:input bean="ProfileFormHandler.value.emailOptOuts" type="checkbox" value="${optInItem}" /></td>
+            <td valign="middle" align="left"><c:out value="${optInItem}"/></td>
+          </tr>
+
+         </c:forEach>
+
+          <tr>
+            <td valign="middle" align="right"></td>
+            <td><dspel:input bean="ProfileFormHandler.update" type="submit" value="Update Opt Outs"/></td>
+          </tr>
+
+        </table>
+
+      </dspel:form>
+
+
+    </dspel:oparam>
+  </dspel:droplet>
+
+</body>
+</html>
+
+
+</dspel:page>
+<%-- @version $Id: //application/campaigns/version/10.0/communication/common/src/web-apps/Outreach/optInOut/currentOptInOuts.jsp#1 $$Change: 610294 $--%>

@@ -1,0 +1,222 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="priceLists_ddl">
+<comment><![CDATA[ @version $Id: //product/DCS/version/10.0.3/templates/DCS/sql/priceLists_ddl.xml#2 $$Change: 651448 $]]></comment>
+   <table name="dcs_price_list">
+      <column name="price_list_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="display_name" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="description" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="creation_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <column name="last_mod_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <column name="start_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <column name="end_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <column name="locale" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="base_price_list" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="item_acl" nullable="y">
+         <column-type db="generic" type="long-varchar"/>
+         <column-type db="oracle" type="varchar2" length="1024" scale=""/>
+         <column-type db="db2" type="varchar" length="1024" scale=""/>
+      </column>
+      <primary-key name="dcs_price_list_p">
+         <index-column column="price_list_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dcs_pricbas_prcl_f" referenced-table="dcs_price_list" index-name="dcs_pricelstbase_i">
+         <fkey-column referencing-column="base_price_list" referenced-column="price_list_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcs_complex_price">
+      <column name="complex_price_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <primary-key name="dcs_complex_pric_p">
+         <index-column column="complex_price_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dcs_price">
+      <column name="price_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="price_list" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="product_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sku_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="parent_sku_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="pricing_scheme" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="list_price" nullable="y">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="19" scale="7"/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+      </column>
+      <column name="complex_price" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcs_price_p">
+         <index-column column="price_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dcs_priccomplx_p_f" referenced-table="dcs_complex_price" index-name="dcs_cmplx_prc_idx">
+         <fkey-column referencing-column="complex_price" referenced-column="complex_price_id"/>
+      </foreign-key>
+      <foreign-key name="dcs_pricpric_lst_f" referenced-table="dcs_price_list">
+         <fkey-column referencing-column="price_list" referenced-column="price_list_id"/>
+      </foreign-key>
+      <index name="dcs_price_idx1" table="dcs_price">
+        <index-column seq="1" column="product_id" order="asc" />
+      </index>
+      <index name="dcs_price_idx2" table="dcs_price">
+        <index-column seq="1" column="price_list" order="asc" />
+        <index-column seq="2" column="sku_id" order="asc" />
+      </index>      
+   </table>
+   <table name="dcs_price_levels">
+      <column name="complex_price_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="price_levels" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <primary-key name="dcs_price_levels_p">
+         <index-column column="complex_price_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcs_lvlscomplx_p_f" referenced-table="dcs_complex_price">
+         <fkey-column referencing-column="complex_price_id" referenced-column="complex_price_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcs_price_level">
+      <column name="price_level_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="quantity" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="price" nullable="n">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="19" scale="7"/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+	   </column>
+      <primary-key name="dcs_price_level_p">
+         <index-column column="price_level_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dcs_gen_fol_pl" description="base folder class">
+      <column name="folder_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="type" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="name" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="parent" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="description" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="item_acl" nullable="y">
+         <column-type db="generic" type="long-varchar"/>
+         <column-type db="oracle" type="varchar2" length="1024" scale=""/>
+         <column-type db="db2" type="varchar" length="1024" scale=""/>
+      </column>
+      <primary-key name="dcs_gen_fol_pl_p">
+         <index-column column="folder_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dcs_child_fol_pl" description="child folders">
+      <column name="folder_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="child_folder_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcs_child_fol_pl_p">
+         <index-column column="folder_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcs_chilfoldr_d_f" referenced-table="dcs_gen_fol_pl">
+         <fkey-column referencing-column="folder_id" referenced-column="folder_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcs_plfol_chld" description="price list folder class">
+      <column name="plfol_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="price_list_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcs_plfol_chld_p">
+         <index-column column="plfol_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcs_plfoplfol_d_f" referenced-table="dcs_gen_fol_pl">
+         <fkey-column referencing-column="plfol_id" referenced-column="folder_id"/>
+      </foreign-key>
+   </table>
+</schema>
+<!-- @version $Id: //product/DCS/version/10.0.3/templates/DCS/sql/priceLists_ddl.xml#2 $$Change: 651448 $ -->

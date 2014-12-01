@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+
+<!-- ======================================================================= -->
+<!-- Tag Library Descriptor for the DCSUI tag library.                       -->
+<!-- ======================================================================= -->
+
+<!DOCTYPE taglib
+  PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN"
+  "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
+
+<taglib>
+  <tlib-version>1.0</tlib-version>
+  <jsp-version>1.2</jsp-version>
+  <short-name>dcsui_rt</short-name>
+  <uri>http://www.atg.com/taglibs/dcsui_rt</uri>
+  <display-name>DCSUI Tags (RT version)</display-name>
+  <description>DCSUI RT 1.0 tag library</description>
+
+
+  <!-- ===================================================================== -->
+  <!-- getVolumePriceInfo -->
+  <tag>
+    <name>getVolumePriceInfo</name>
+    <tag-class>atg.dcsui.taglib.GetVolumePriceInfo</tag-class>
+    <body-content>JSP</body-content>
+    <description>Get the price levels and scheme for this price</description>
+
+    <attribute>
+      <name>priceId</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>the id of the price to get the volume price info</description>
+    </attribute>
+
+    <attribute>
+      <name>volumePriceString</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>parse the volume price info from this string</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the attribute that will hold the results</description>
+    </attribute>
+
+  </tag>
+
+
+</taglib>

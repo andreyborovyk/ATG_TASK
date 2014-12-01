@@ -1,0 +1,31 @@
+<%-- getWorkflowType.jspf
+     This file contains code to determine a workflow "type" based on the path name.
+     This is a temporary workaround for not having support for workflow categories
+     at this time.  This type can then be used to determine which portlet should be
+     used to display the detail for a given process
+
+     Params:   Expects a variable called "workflowPath" to contain the full path name
+               of the workflow definition
+     Returns:  This will set a page variable called "workflowType"
+--%>
+
+
+<%
+
+      String path = (String)pageContext.getAttribute("workflowPath");
+      String type="other";
+
+      if (path.toLowerCase().indexOf("content") >= 0 ) {
+        type="content";
+      }
+      else if (path.toLowerCase().indexOf("campaign") >= 0 ) {
+        type="campaign";
+      }
+      else {
+        type="other";
+      }
+       
+    pageContext.setAttribute("workflowType", type);
+
+%>
+<%-- @version $Id: //product/PubPortlet/version/10.0.3/portlets.war/html/ProjectsPortlet/getWorkflowType.jspf#2 $$Change: 651448 $--%>

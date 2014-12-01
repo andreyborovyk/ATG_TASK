@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE scenario
+  SYSTEM
+  "dynamosystemresource:/atg/scenario/definition/sdl.dtd">
+
+<scenario author="admin" creation-time="1028261804509" enabled="true" last-modified-by="admin" modification-time="1029533110377">
+  <segment migrate-from="1028828504180,1028828554192,1029251721910,1029349944106,1029355134038,1029355145024,1029355318714,1029355361315,1029356955377,1029356957811,1029357544424,1029357567678,1029357705706,1029357872086,1029357874088,1029358115385,1029358756898" migrate-users="true">
+    <segment-name>Item Added</segment-name>
+    <!--================================-->
+    <!--== Item added to order  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.commerce.order.ItemAddedToOrder</event-name>
+    </event>
+    <!--================================-->
+    <!--== Remove items from slot RelatedItemsOfCart  -->
+    <!--================================-->
+    <action id="2">
+      <action-name>emptySlot</action-name>
+      <action-param name="slot">
+        <nucleus-property>
+          <nucleus-path>/atg/registry/Slots/RelatedItemsOfCart</nucleus-path>
+        </nucleus-property>
+      </action-param>
+    </action>
+  </segment>
+  <segment migrate-from="1028828504180,1028828554192,1029251721910,1029349944106,1029355134038,1029355145024,1029355318714,1029355361315,1029356955377,1029356957811,1029357544424,1029357567678,1029357705706,1029357872086,1029357874088,1029358115385,1029358756898" migrate-users="true">
+    <segment-name>Item Removed</segment-name>
+    <!--================================-->
+    <!--== Item removed from order  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.commerce.order.ItemRemovedFromOrder</event-name>
+    </event>
+    <!--================================-->
+    <!--== Remove items from slot RelatedItemsOfCart  -->
+    <!--================================-->
+    <action id="2">
+      <action-name>emptySlot</action-name>
+      <action-param name="slot">
+        <nucleus-property>
+          <nucleus-path>/atg/registry/Slots/RelatedItemsOfCart</nucleus-path>
+        </nucleus-property>
+      </action-param>
+    </action>
+  </segment>
+  <segment migrate-from="1028827091419,1028828444905,1028828504180,1028828554192,1029251721910,1029349944106,1029355134038,1029355145024,1029355318714,1029355361315,1029356955377,1029356957811,1029357544424,1029357567678,1029357705706,1029357872086,1029357874088,1029358115385,1029358756898" migrate-users="true">
+    <segment-name>Items Requested by Slot</segment-name>
+    <!--================================-->
+    <!--== Items requested by slot RelatedItemsOfCart  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.dss.SlotItemRequest</event-name>
+      <filter operator="eq">
+        <event-property>
+          <property-name>slotName</property-name>
+        </event-property>
+        <constant>/atg/registry/Slots/RelatedItemsOfCart</constant>
+      </filter>
+    </event>
+    <!--================================-->
+    <!--== Fill Related items to slot RelatedItemsOfCart with property type relatedProducts  -->
+    <!--================================-->
+    <action id="2">
+      <action-name>fillRelatedItemsSlotAction</action-name>
+      <action-param name="slot">
+        <nucleus-property>
+          <nucleus-path>/atg/registry/Slots/RelatedItemsOfCart</nucleus-path>
+        </nucleus-property>
+      </action-param>
+      <action-param name="relatedItemPropertyName">
+        <constant>relatedProducts</constant>
+      </action-param>
+    </action>
+  </segment>
+  <segment migrate-from="1028827091419,1028828444905,1028828504180,1028828554192,1029251721910,1029349944106,1029355134038,1029355145024,1029355318714,1029355361315,1029356955377,1029356957811,1029357544424,1029357567678,1029357705706,1029357872086,1029357874088,1029358115385,1029358756898" migrate-users="true">
+    <segment-name>Order Saved</segment-name>
+    <!--================================-->
+    <!--== Order Saved  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.commerce.order.OrderSaved</event-name>
+    </event>
+    <!--================================-->
+    <!--== Remove items from slot RelatedItemsOfCart  -->
+    <!--================================-->
+    <action id="2">
+      <action-name>emptySlot</action-name>
+      <action-param name="slot">
+        <nucleus-property>
+          <nucleus-path>/atg/registry/Slots/RelatedItemsOfCart</nucleus-path>
+        </nucleus-property>
+      </action-param>
+    </action>
+  </segment>
+  <segment migrate-from="1028828444905,1028828504180,1028828554192,1029251721910,1029349944106,1029355134038,1029355145024,1029355318714,1029355361315,1029356955377,1029356957811,1029357544424,1029357567678,1029357705706,1029357872086,1029357874088,1029358115385,1029358756898" migrate-users="true">
+    <segment-name>Saved Order becomes current order</segment-name>
+    <!--================================-->
+    <!--== Saved order becomes the current order  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.commerce.order.SwitchOrder</event-name>
+    </event>
+    <!--================================-->
+    <!--== Remove items from slot RelatedItemsOfCart  -->
+    <!--================================-->
+    <action id="2">
+      <action-name>emptySlot</action-name>
+      <action-param name="slot">
+        <nucleus-property>
+          <nucleus-path>/atg/registry/Slots/RelatedItemsOfCart</nucleus-path>
+        </nucleus-property>
+      </action-param>
+    </action>
+  </segment>
+</scenario>

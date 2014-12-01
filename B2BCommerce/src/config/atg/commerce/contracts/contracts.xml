@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE gsa-template
+        PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN"
+        "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template>
+  <header>
+    <name>Commerce Contracts</name>
+    <author>DCS Team</author>
+    <version>$Id: //product/B2BCommerce/version/10.0.3/templates/B2BCommerce/config/atg/commerce/contracts/contracts.xml#2 $$Change: 651448 $</version>      
+  </header>
+
+  <item-descriptor name="contract" display-property="displayName" display-name-resource="itemDescriptorContract">
+    <attribute name="resourceBundle" value="atg.b2bcommerce.ContractsTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryDatesPriority" value="20"/>
+    <attribute name="categoryInfoPriority" value="30"/>
+
+    <table name="dbc_contract" id-column-name="contract_id" type="primary">
+
+      <property name="displayName" data-type="string" column-name="display_name" category-resource="categoryBasics" display-name-resource="displayName">
+        <attribute name="propertySortPriority" value="-10"/>
+      </property>
+      <property name="creationDate" data-type="timestamp" column-name="creation_date" category-resource="categoryDates" display-name-resource="creationDate">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="-6"/>
+        <attribute name="useNowForDefault" value="true"/>
+      </property>
+
+      <!-- Is everyone who access a property of the contract responsible -->
+      <!-- for checking these dates? -->
+      <property name="startDate" data-type="timestamp" column-name="start_date" category-resource="categoryDates" display-name-resource="startDate">
+        <attribute name="propertySortPriority" value="-8"/>
+      </property>
+      <property name="endDate" data-type="timestamp" column-name="end_date" category-resource="categoryDates" display-name-resource="endDate">
+        <attribute name="propertySortPriority" value="-7"/>
+      </property>
+
+      <!-- User or organization?  I assume user. -->
+      <property name="creator" item-type="user" column-name="creator_id" repository="/atg/userprofiling/ProfileAdapterRepository" 
+              category-resource="categoryBasics" display-name-resource="creator">
+        <attribute name="propertySortPriority" value="-9"/>
+      </property>
+
+      <!-- Is the negotiator is not necessarily a user of the system -->
+      <property name="negotiatorInfo" item-type="contactInfo" column-name="negotiator_info" repository="/atg/userprofiling/ProfileAdapterRepository" 
+              category-resource="categoryBasics" display-name-resource="negotiatorInfo">
+        <attribute name="propertySortPriority" value="-5"/>
+      </property>
+
+      <property name="catalog" item-type="catalog" column-name="catalog_id" repository="/atg/commerce/catalog/ProductCatalog" 
+              category-resource="categoryBasics" display-name-resource="catalog">
+        <attribute name="propertySortPriority" value="-4"/>
+      </property>
+      <property name="priceList" item-type="priceList" column-name="price_list_id" repository="/atg/commerce/pricing/priceLists/PriceLists" 
+              category-resource="categoryBasics" display-name-resource="priceList">
+        <attribute name="propertySortPriority" value="-3"/>
+      </property>
+
+      <property name="terms" item-type="contract-terms" column-name="term_id" category-resource="categoryBasics" display-name-resource="terms">
+        <attribute name="propertySortPriority" value="-2"/>
+      </property>
+      <property name="comments" data-type="big string" column-name="comments" category-resource="categoryBasics" display-name-resource="comments">
+        <attribute name="propertySortPriority" value="-1"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="contract-terms" display-name-resource="itemDescriptorContractTerms">
+    <attribute name="resourceBundle" value="atg.b2bcommerce.ContractsTemplateResources"/>
+
+    <table name="dbc_contract_term" id-column-name="terms_id" type="primary">
+      <property name="terms" data-type="big string" column-name="terms" category-resource="categoryBasics" display-name-resource="terms">
+        <attribute name="propertySortPriority" value="-10"/>
+      </property>
+
+      <!-- These are payment terms -->
+      <property name="discountPercent" column-name="disc_percent" data-type="double" category-resource="categoryBasics" display-name-resource="discountPercent">
+        <attribute name="propertySortPriority" value="-9"/>
+      </property>
+      <property name="discountDays" column-name="disc_days" data-type="int" category-resource="categoryBasics" display-name-resource="discountDays" >
+        <attribute name="propertySortPriority" value="-8"/>
+      </property>
+      <property name="netDays" column-name="net_days" data-type="int" category-resource="categoryBasics" display-name-resource="netDays" >
+        <attribute name="propertySortPriority" value="-7"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //product/B2BCommerce/version/10.0.3/templates/B2BCommerce/config/atg/commerce/contracts/contracts.xml#2 $$Change: 651448 $ -->

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE gsa-template SYSTEM "dynamosystemresource:/atg/dtds/gsa/gsa_1.0.dtd">
+<gsa-template>
+  <header>
+    <name>CIM Store Related Claimable Changes </name>
+    <author>ATG</author>
+    <version>$Change: 635816 $$DateTime: 2011/02/23 04:31:11 $$Author: rmcvey $</version>
+  </header>
+  <item-descriptor name="PromotionClaimable">
+    <table name="dcspp_coupon" type="multi" id-column-name="coupon_id">
+      <property name="promotions" xml-combine="remove"/>
+      <property name="promotions" column-names="promotion_id" component-data-type="string" data-type="set"/>
+    </table>
+  </item-descriptor>
+</gsa-template>
+<!--
+  $Change: 635816 $$DateTime: 2011/02/23 04:31:11 $$Author: rmcvey $ 
+  $Id: //edu/ILT-Courses/main/COMM/StudentFiles/COM/setup/copy-files/apps/MyStore/Storefront/cim/switchCoreSchema-config/atg/commerce/claimable/claimableRepository.xml#3 $$Change: 533894
+$-->
+<!-- @version $Id: //edu/ILT-Courses/main/COMM/StudentFiles/COM/setup/copy-files/apps/MyStore/Storefront/cim/switchCoreSchema-config/atg/commerce/claimable/claimableRepository.xml#3 $$Change: 635816 $-->

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE gsa-template SYSTEM "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template>
+  <header>
+    <name>FEATURE SQL Content Repository</name>
+    <author>Felix</author>
+    <version></version>
+  </header>
+
+  <!-- FEATURE DESCRIPTOR -->
+
+  <item-descriptor name="feature" content="true"
+    display-name-resource="itemDescriptorFeature"
+    use-id-for-path="true"
+    folder-id-property="parentFolder"
+    content-name-property="name"
+    content-path-property="relativePath"
+    last-modified-property="lastModified"
+    content-length-property="length"
+    content-property="featureContent">
+
+    <!-- Resource Bundle for Internationalization -->
+    <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.FeaturesRepository"/>
+              
+    <table name="dss_qf_ftr" type="primary" id-column-name="id">
+      <property name="language" column-name="language" data-type="string" display-name-resource="languageDisplayName" required="true" description-resource="languageShortDescription" queryable="true">
+        <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.Descriptors"/>
+        <attribute name="uiwritable" value="false"/>
+      </property>
+      <property name="lastModified" data-type="timestamp" column-name="last_modified" display-name-resource="lastModified" description-resource="lastModifiedShortDescription" queryable="true">
+        <attribute name="resourceBundle" value="atg.adapter.html.Descriptors"/>
+        <attribute name="uiwritable" value="false"/>
+      </property>
+      <property name="length" column-name="length" data-type="long" display-name-resource="length" description-resource="lengthShortDescription" queryable="true">
+        <attribute name="resourceBundle" value="atg.adapter.html.Descriptors"/>
+        <attribute name="uiwritable" value="false"/>
+      </property>
+      <property name="title" column-name="title" data-type="string" display-name-resource="title" description-resource="titleShortDescription" queryable="true">
+        <attribute name="resourceBundle" value="atg.adapter.html.Descriptors"/>
+        <attribute name="uiwritable" value="false"/>
+      </property>
+      <property name="headline" column-name="headline" data-type="string" display-name-resource="headline" description-resource="headlineShortDescription" queryable="true">
+        <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.Descriptors"/>
+        <attribute name="uiwritable" value="false"/>
+      </property>
+      <property name="date" column-name="the_date" data-type="timestamp" display-name-resource="date" description-resource="dateShortDescription" queryable="true">
+        <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.Descriptors"/>
+        <attribute name="uiwritable" value="false"/>
+      </property>
+      <property name="parentFolder" column-name="parentFolder" item-type="feature_folder" display-name-resource="parentFolder" description-resource="parentFolderShortDescription">
+        <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.Descriptors"/>
+        <attribute name="uiwritable" value="false"/>
+      </property>
+      <property name="name" column-name="name" data-type="string" display-name-resource="name" description-resource="nameShortDescription" queryable="true">
+        <attribute name="resourceBundle" value="atg.adapter.html.Descriptors"/>
+        <attribute name="uiwritable" value="false"/>
+      </property>
+      <property name="author" column-name="author" data-type="string" display-name-resource="author" description-resource="authorShortDescription" queryable="true">
+        <attribute name="resourceBundle" value="atg.adapter.html.Descriptors"/>
+        <attribute name="uiwritable" value="false"/>
+      </property>
+      <property name="relativePath" column-name="relativePath" data-type="string" hidden="true" display-name-resource="relativePath" description-resource="relativePathShortDescription" queryable="true">
+        <attribute name="resourceBundle" value="atg.adapter.html.Descriptors"/>
+        <attribute name="uiwritable" value="false"/>
+      </property>
+      <property name="smallImageURL" column-name="smallImageURL" data-type="string" display-name-resource="smallImageURL" description-resource="smallImageURLShortDescription" queryable="true">
+        <attribute name="uiwritable" value="false"/></property>
+      <property name="description" column-name="description" data-type="string" display-name-resource="description" description-resource="descriptionShortDescription" queryable="true">
+        <attribute name="resourceBundle" value="atg.adapter.html.Descriptors"/>
+        <attribute name="uiwritable" value="false"/>
+      </property>
+    </table>
+
+    <table name="dss_qf_ftr_cont" type="auxiliary" id-column-name="id">
+      <property name="featureContent" column-name="file_content" data-type="string" display-name-resource="content" description-resource="contentShortDescription" queryable="false">
+        <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.Descriptors"/>
+        <attribute name="uiwritable" value="false"/></property>
+    </table>
+
+    <table name="dss_qf_ftr_trgs" type="multi" id-column-name="id" multi-column-name="seq_num">
+      <property name="targets" column-name="targets" data-type="array" component-data-type="string" display-name-resource="targetsDisplayName" description-resource="targetsShortDescription">
+        <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.Descriptors"/>
+        <attribute name="uiwritable" value="false"/>
+      </property>
+    </table>
+
+    <table name="dss_qf_ftr_keys" type="multi" id-column-name="id" multi-column-name="seq_num">
+      <property name="keywords" column-name="keywords" data-type="array" component-data-type="string" display-name-resource="keywords" description-resource="keywordsShortDescription">
+        <attribute name="resourceBundle" value="atg.adapter.html.Descriptors"/>
+        <attribute name="uiwritable" value="false"/>
+      </property>
+    </table>
+
+  </item-descriptor>
+
+  <!-- FOLDER DESCRIPTOR -->
+
+  <item-descriptor name="feature_folder"
+    display-name-resource="itemDescriptorFeatureFolder"
+    folder="true"
+    use-id-for-path="true"
+    content-name-property="name"
+    folder-id-property="parentFolder">
+    
+    <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.FeaturesRepository"/>
+
+    <table name="dss_qf_ftr_fldr" type="primary" id-column-name="id">
+      <property name="parentFolder" column-name="parentFolder" item-type="feature_folder" display-name-resource="parentFolder" description-resource="parentFolderShortDescription">
+        <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.Descriptors"/>
+      </property>
+      <property name="name" column-name="name" data-type="string" display-name-resource="folderName" description-resource="folderNameShortDescription">
+        <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.Descriptors"/>
+      </property>
+    </table>
+
+  </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //product/DSS/version/10.0.3/release/DSSJ2EEDemo/config/atg/demo/QuincyFunds/repositories/Features/features.xml#2 $$Change: 651448 $ -->

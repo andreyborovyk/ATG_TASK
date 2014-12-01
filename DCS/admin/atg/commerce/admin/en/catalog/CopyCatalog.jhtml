@@ -1,0 +1,52 @@
+<HTML>
+<HEAD>
+<TITLE>Copy Product Catalog</TITLE>
+</HEAD>
+
+<body BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="../images/dcsadminbanner.gif" ALT="Dynamo Commerce Administration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a href="../index.jhtml">Commerce</a>/
+<a href="index.jhtml">ProductCatalog-PriceLists</a>/Copy<p>
+
+<blockquote>
+
+<H2>Copy Product Catalog and Price Lists</H2>
+
+<p>This page is used to copy Product Catalog data and Price Lists data
+from one database to another.
+
+<p><font color=cc0000><STRONG>Warning! </STRONG></font>
+- The Copy function overwrites tables in the destination database.  Do not copy
+tables to your live data site. Only copy tables to your staging database.
+<br>
+
+<form action="CopyWarning.jhtml" method=POST>
+<h3>Source</h3>
+Server name <input rows=1 cols=20 name="sourceServer"><br>
+Username&nbsp;&nbsp;&nbsp;&nbsp;
+<input rows=1 cols=20 name="sourceUser"><br>
+Password&nbsp;&nbsp;&nbsp;&nbsp;
+<input type=password rows=1 cols=20 name="sourcePassword"><br>
+<br>
+<h3>Destination</h3>
+Server name <input rows=1 cols=20 name="destinationServer"><br>
+Username&nbsp;&nbsp;&nbsp;&nbsp;
+<input rows=1 cols=20 name="destinationUser"><br>
+Password&nbsp;&nbsp;&nbsp;&nbsp;
+<input type=password rows=1 cols=20 name="destinationPassword"><br>
+<br>
+<input type=submit name="Submit" value="Copy"><br>
+
+</form>
+
+<br>
+<b>Note:</b> - If you create or delete database tables, please update the configuration file.
+<br>
+</blockquote>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/DCS/admin/atg/commerce/admin/en/catalog/CopyCatalog.jhtml#2 $$Change: 651448 $*/</java>
+

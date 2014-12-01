@@ -1,0 +1,43 @@
+<!-- Title: GiftCertificate  -->
+<importbean bean="/atg/dynamo/droplet/Switch">
+
+<java>/*
+<setvalue param="messageFrom" value="DCS5Team@example.com">
+<setvalue param="messageReplyTo" value="DCS5Team@example.com">
+*/</java>
+<setvalue param="messageSubject" value="A Gift Certificate for you!">
+<setvalue param="mailingName" value="GiftCertificate">
+
+<h3>This is a sample gift certificate email.  You may use any template
+you like, use the configuration for
+<code>/atg/commerce/fulfillment/SoftgoodFulfiller.giftCertificateEmailTemplate</code> to
+change to a different template.</h3><br>
+
+<p>Within this template you have access to the profile of the
+purchaser of the gift certificate, the quantity of gift certificates
+purchased, and the amount of that gift certificate.<br>
+
+<p><valueof param="purchaser.firstName">unknown</valueof> <valueof param="purchaser.lastName">unknown</valueof> 
+has purchased 
+<droplet bean="Switch">
+  <param name="value" value="param:quantity">
+  <oparam name="1">
+    a gift certificate 
+  </oparam>
+  <oparam name="default">
+    <valueof param="quantity"></valueof> gift certificates 
+  </oparam>
+</droplet>
+
+for you in the amount of 
+<valueof param="giftCertificate.amount" currency></valueof> 
+<br>
+
+<p>The claim code that should be used is equivalent to the
+repositoryId of the gift certificate.<br>
+
+<p>Please use claim code <valueof param="giftCertificate.repositoryId"></valueof><br>
+  
+<p> Thank you
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/Fulfillment/html/emails/GiftCertificate.jhtml#2 $$Change: 651448 $*/</java>
+

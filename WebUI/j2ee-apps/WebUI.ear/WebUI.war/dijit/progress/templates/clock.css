@@ -1,0 +1,18 @@
+.pie {
+  display: inline;
+	/* BUg Fixed: 152771 */
+  padding-left: 8px;
+  background-image: url('images/slices.png');
+	overflow: hidden;
+	background-repeat: no-repeat;
+}
+* html .pie{
+  background-image: url('images/slices.gif');
+  padding-left: 8px;
+}
+*+html .pie{
+  padding-left: 8px;
+}
+.pie.complete{
+  display:none !important;
+}

@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tree PUBLIC "-//Art Technology Group, Inc.//DTD Repository
+Ouput Specifier 1.0//EN"
+"http://www.atg.com/dtds/searchadmin/navigation-definition-schema.dtd">
+
+<!--
+  Important!
+  In the same <node> block the order of <virtual> blocks is important.
+  If some <virtual> blocks match request then only first will be selected
+-->
+
+
+<tree>
+
+<area id="projects" title="tree.tab.search.admin">
+  <virtual url="/searchadmin/start.jsp" title="index.title"/>
+  <node url="/searchadmin/browse_all_projects.jsp" title="browse_search_projects.bread.crumbs">
+    <virtual url="/searchadmin/project_copy_popup.jsp?projectId={projectId}" title="copy_project.header" target="popup" />
+    <virtual url="/searchadmin/project_delete_popup.jsp?projectId={projectId}" title="delete_project.header" target="popup" />
+    <virtual url="/searchadmin/new_project.jsp" title="new_search_project.bread.crumbs"/>
+    <node url="/searchadmin/project.jsp?projectId={projectId}"
+          title="project.search_project.bread.crumbs" treeTitle="project.title"
+          nodeFactory="/atg/searchadmin/adminui/navigation/NavigationNodeFactoryProject">
+      <!--General-->
+      <node url="/searchadmin/project_general_settings.jsp?projectId={projectId}"
+            title="project.general_settings.bread.crumbs"/>
+
+      <!--Content for Indexing-->
+      <node url="/searchadmin/project_manage_index.jsp?projectId={projectId}"
+            title="project.content.bread.crumbs">
+        <virtual url="/searchadmin/partition_delete_popup.jsp?projectId={projectId}&amp;partitionId={partitionId}"
+                 title="partition_delete_popup.header" target="popup" />
+        <virtual url="/searchadmin/partition_rename_popup.jsp?projectId={projectId}&amp;partitionId={partitionId}"
+                 title="partition_rename_popup.edit.header" target="popup" />
+        <virtual url="/searchadmin/partition_rename_popup.jsp?projectId={projectId}"
+                 title="partition_rename_popup.add.header" target="popup" />
+        <virtual url="/searchadmin/content_set_delete_popup.jsp?projectId={projectId}&amp;contentSetId={contentSetId}"
+                 title="content_delete.header" target="popup" />
+        <virtual url="/searchadmin/project_index_customization_remove_popup.jsp?projectId={projectId}&amp;customItemId={customItemId}&amp;type={type}"
+                 title="project_index_customizations_remove_popup.title" target="popup" />
+        <virtual title="content_manage.title" nodeFactory="/atg/searchadmin/adminui/navigation/NavigationNodeFactoryContent"
+                 url="/searchadmin/content_manage.jsp?projectId={projectId}&amp;logicalPartitionId={logicalPartitionId}&amp;setId={setId}&amp;action=edit" />
+        <virtual title="project.content.add_content.bread.crumbs"
+                 url="/searchadmin/content_manage.jsp?projectId={projectId}&amp;logicalPartitionId={logicalPartitionId}&amp;setId={setId}&amp;action=copy" />
+        <virtual title="project.content.add_content.bread.crumbs"
+                 url="/searchadmin/content_manage.jsp?projectId={projectId}&amp;logicalPartitionId={logicalPartitionId}&amp;action=add" />
+        <virtual url="/searchadmin/select_sites_popup.jsp?partitionId={partitionId}"
+                 title="select_site_popup.header" target="popup" />
+        <virtual url="/searchadmin/browse_file_system_popup.jsp" title="browse_file_system_popup.header" target="popup" />
+        <virtual
+            url="/searchadmin/project_customizations_other.jsp?projectId={projectId}&amp;customizationType={customizationType}"
+            type="projectCustomizationsSelection" title="customization_type.{customizationType}.bread_crumb"
+            nodeFactory="/atg/searchadmin/adminui/navigation/NavigationNodeFactoryParametrizedTitle" />
+        <virtual url="/searchadmin/project_customizations_term_weight.jsp?projectId={projectId}"
+                 title="customization_type.term_weight.bread_crumb" />
+        <virtual url="/searchadmin/project_customizations_tpo.jsp?projectId={projectId}"
+                 title="customization_type.project_tpo.bread_crumb" />
+        <virtual url="/searchadmin/project_customizations_language.jsp?projectId={projectId}"
+                 title="customization_type.language.bread_crumb">
+          <virtual url="/searchadmin/project_customizations_adapter_popup.jsp?projectId={projectId}&amp;language={language}"
+                   title="project_customizations_adaptor_popup.title" target="popup"
+                   nodeFactory="/atg/searchadmin/adminui/navigation/NavigationNodeFactoryLanguage" />
+        </virtual>
+      </node>
+
+      <!--Indexing-->
+      <node url="/searchadmin/synchronization_indexing.jsp?projectId={projectId}"
+            title="project.synchronization.indexing.bread.crumbs">
+        <tab url="/searchadmin/synchronization_manual.jsp?projectId={projectId}"
+             title="project.synchronization.manual.bread.crumbs" />
+        <tab url="/searchadmin/synchronization_automatic.jsp?projectId={projectId}"
+             title="project.synchronization.automatic.bread.crumbs">
+          <virtual url="/searchadmin/synchronization_add_rule.jsp?projectId={projectId}"
+                   title="project.synchronization.add_rule.bread.crumbs"/>
+          <virtual url="/searchadmin/synchronization_edit_rule.jsp?projectId={projectId}&amp;syncTaskId={syncTaskId}"
+                   title="project.synchronization.edit_rule.bread.crumbs"/>
+          <virtual url="/searchadmin/synchronization_delete_rule_popup.jsp?projectId={projectId}&amp;syncTaskId={syncTaskId}"
+                   title="synchronization_rule_delete.header" target="popup" />
+        </tab>
+        <tab url="/searchadmin/synchronization_status_monitor.jsp?projectId={projectId}"
+             title="project.synchronization.status_monitor.bread.crumbs">
+          <virtual url="/searchadmin/synchronization_cancel_popup.jsp?projectId={projectId}&amp;syncTaskId={syncTaskId}"
+                   title="synchronization_cancel.header" target="popup" />
+        </tab>
+        <tab url="/searchadmin/synchronization_history.jsp?projectId={projectId}"
+             title="project.synchronization.history.bread.crumbs">
+          <virtual url="/searchadmin/synchronization_rollback_index_popup.jsp?projectId={projectId}&amp;syncTaskId={syncTaskId}"
+                   title="synchronization_rollback_index.header" target="popup" />
+          <virtual url="/searchadmin/synchronization_delete_index_popup.jsp?projectId={projectId}&amp;syncTaskId={syncTaskId}"
+                   title="synchronization_delete_index.header" target="popup" />
+          <virtual url="/searchadmin/synchronization_delete_selected_index_popup.jsp?projectId={projectId}&amp;syncTaskIds={syncTaskIds}"
+                   title="synchronization_delete_selected_index.header" target="popup" />
+          <virtual url="/searchadmin/content_summary_view_popup.jsp?projectId={projectId}&amp;syncTaskId={syncTaskId}"
+                   title="content_summary_view.header" target="popup" />
+          <virtual url="/searchadmin/index_verification_overview_popup.jsp?projectId={projectId}&amp;syncTaskId={syncTaskId}&amp;partitionId={partitionId}"
+                   title="content_summary_view.index.review.header" target="popup" />
+        </tab>
+      </node>
+
+      <!--Environments-->
+      <node url="/searchadmin/project_search_envs.jsp?projectId={projectId}"
+            title="project.search_environments.bread.crumbs">
+        <virtual url="/searchadmin/search_env_delete_popup.jsp?projectId={projectId}&amp;environmentId={environmentId}"
+                 title="search_env_delete.header" target="popup" />
+        <virtual url="/searchadmin/project_new_search_env.jsp?layout=full&amp;projectId={projectId}"
+            title="project_search_envs_new_search_env.header.add"/>
+        <virtual url="/searchadmin/search_env_view_by_partition.jsp?environmentId={environmentId}&amp;projectId={projectId}"
+                 title="search_environment.title" nodeFactory="/atg/searchadmin/adminui/navigation/NavigationNodeFactoryEnvironment" />
+        <virtual url="/searchadmin/search_env_view_by_host.jsp?environmentId={environmentId}&amp;projectId={projectId}"
+                 title="search_environment.title" nodeFactory="/atg/searchadmin/adminui/navigation/NavigationNodeFactoryEnvironment" />
+        <virtual url="/searchadmin/search_env_configure_hosts.jsp?environmentId={environmentId}&amp;projectId={projectId}"
+                 title="search_environment.title" nodeFactory="/atg/searchadmin/adminui/navigation/NavigationNodeFactoryEnvironment">
+          <virtual url="/searchadmin/search_host_delete_popup.jsp?projectId={projectId}&amp;environmentId={environmentId}&amp;hostId={hostId}"
+                   title="search_host_delete.header" target="popup" />
+          <virtual url="/searchadmin/search_env_host_machine_config.jsp?projectId={projectId}&amp;environmentId={environmentId}&amp;hostId={hostId}"
+                   title="search_env_host_machine_config.bread.crumbs" nodeFactory="/atg/searchadmin/adminui/navigation/NavigationNodeFactoryHost" />
+        </virtual>
+      </node>
+
+      <!--Index Review-->
+      <node url="" title="project_index_review.bread_crumbs">
+        <tab url="/searchadmin/project_index_summary.jsp?projectId={projectId}" title="project_content_summary.bread_crumbs">
+          <virtual title="project_index_summary.title"
+              url="/searchadmin/index_verification_overview.jsp?projectId={projectId}&amp;partitionId={partitionId}&amp;syncTaskId={syncTakId}"
+              nodeFactory="/atg/searchadmin/adminui/navigation/NavigationNodeFactoryContentSet" />
+        </tab>
+        <tab url="/searchadmin/project_index_audit.jsp?projectId={projectId}" title="project_index_audit.bread_crumbs">
+          <virtual url="/searchadmin/project_index_audit_select.jsp?projectId={projectId}"
+                   title="project_index_audit_select.bread_crumbs" target="popup" />
+        </tab>
+        <tab url="/searchadmin/project_content_inspection.jsp?projectId={projectId}" title="project_content_inspection.bread_crumbs"/>
+        <tab url="/searchadmin/project_ioc_analysis.jsp?projectId={projectId}" title="project_ioc_analysis.bread_crumbs"/>
+      </node>
+
+    </node>
+  </node>
+
+  <node url="/searchadmin/global_objects_search_envs.jsp" title="search_environments.bread.crumbs">
+    <virtual url="/searchadmin/global_new_search_env.jsp?layout=partial"
+             title="project_search_envs_new_search_env.header.new"/>
+    <virtual url="/searchadmin/search_env_delete_popup.jsp?environmentId={environmentId}"
+             title="search_env_delete.header" target="popup" />
+    <virtual url="/searchadmin/search_env_configure_hosts.jsp?environmentId={environmentId}"
+             nodeFactory="/atg/searchadmin/adminui/navigation/NavigationNodeFactoryEnvironment"
+             title="search_environment.title">
+      <virtual url="/searchadmin/search_env_host_machine_config.jsp?environmentId={environmentId}&amp;hostId={hostId}"
+               title="search_env_host_machine_config.bread.crumbs"
+               nodeFactory="/atg/searchadmin/adminui/navigation/NavigationNodeFactoryHost" />
+      <virtual url="/searchadmin/search_environments_host_restrict_popup.jsp?environmentId={environmentId}&amp;projectId={projectId};checkedItems={checkedItems}"
+               title="search_environments_host_restrict_popup.header" target="popup" />
+    </virtual>
+  </node>
+    <node url="/searchadmin/global_settings.jsp" title="project.search_global_settings.bread.crumbs">
+    <virtual url="/searchadmin/global_settings_delete_popup.jsp?index={index}&amp;tableId=targetTable" title="global_settings_delete_popup.header.target" target="popup" />
+    <virtual url="/searchadmin/global_settings_delete_popup.jsp?index={index}&amp;tableId=labelTable" title="global_settings_delete_popup.header.content" target="popup" />
+  </node>
+  <node url="/searchadmin/global_queue.jsp" title="global_queue.bread.crumbs">
+    <virtual url="/searchadmin/global_queue_delete_popup.jsp?queuedTaskId={queuedTaskId}"
+             title="global_queue.delete.bread.crumbs" target="popup" />
+  </node>
+</area>
+
+<area id="workbench" title="tree.tab.search.workbench">
+  <virtual url="/workbench/select_active_project_popup.jsp" title="active_project.title" target="popup" />
+  <virtual url="/workbench/remove_active_project_popup.jsp?projectId={projectId}" title="remove_active_project.title" target="popup" />
+
+  <node url="/workbench/search_workbench.jsp" title="search_workbench.bread.crumbs" />
+
+  <node url="/workbench/topic/global_general.jsp" activeProjectType="topic_set"
+        title="search_workbench.customization_data_type.topic_sets">
+    <virtual url="/workbench/topic/topicset_delete_popup.jsp?topicSetId={topicSetId}" title="topic_delete.topicset.header" target="popup" />
+    <virtual url="/workbench/topic/topic_delete_popup.jsp?topicId={topicId}" title="topic_delete_popup.title" target="popup" />
+    <node url="/workbench/topic/topicset.jsp?topicSetId={topicSetId}" type="topic_set">
+      <virtual url="/workbench/topic/topicset_export.jsp?topicSetId={topicSetId}" title="topicset_export.bread.crumbs.title" />
+    </node>
+    <node url="/workbench/topic/add_new_topics.jsp?parentId={parentId}" title="search_workbench.customization_data_type.add_topics" />
+    <node url="/workbench/topic/topic.jsp?topicId={topicId}" type="topic">
+      <virtual url="/workbench/topic/topic_rule_delete_popup.jsp?id={topicRuleId}" title="topic_rule_delete_popup.title" target="popup" />
+      <virtual url="/workbench/topic/topic_pattern_macros.jsp?topicId={topicId}" title="topic_pattern_macros.bread.crumbs.topic.title">
+        <virtual url="/workbench/macros_delete_popup.jsp?id={macroId}&amp;level=local" title="macros_delete_popup.title" target="popup" />
+      </virtual>
+    </node>
+    <node url="/workbench/topic/topic_content_items.jsp?topicId={topicId}" type="topic"/>
+    <virtual url="/workbench/topic/topicset_new.jsp" title="search_workbench.node.new_topicset"/>
+    <virtual url="/workbench/topic/topicset_import.jsp" title="topicset_import.bread.crumbs.title" />
+    <virtual url="/workbench/topic/global_macros.jsp?macrosType={macrosType}&amp;topicSetId={topicSetId}&amp;topicId={topicId}"
+             title="global_macros.bread.crumbs.title">
+      <virtual url="/workbench/macros_delete_popup.jsp?id={macroId}&amp;level=global"
+               title="macros_delete_popup.title" target="popup" />
+    </virtual>
+  </node>
+
+  <node url="/workbench/dictionary/termdicts_general.jsp" activeProjectType="term_dict"
+        title="search_workbench.customization_data_type.term_dictionaries" >
+    <virtual url="/workbench/dictionary/new_term_dictionary.jsp" title="new_term_dictionary.bread.crumbs.title"/>
+    <virtual url="/workbench/dictionary/term_dict_delete_popup.jsp?dictId={dictId}" title="term_dict_delete_popup.title" target="popup" />
+    <node url="/workbench/dictionary/term_dictionary.jsp?dictId={dictId}" title="term_dictionary.bread.crumbs"
+          nodeFactory="/atg/searchadmin/adminui/navigation/NavigationNodeFactoryTermDictionary">
+      <virtual url="/workbench/dictionary/termdict_export.jsp?dictionaryId={dictId}" title="termdict_export.bread.crumbs.title"/>
+      <virtual url="/workbench/dictionary/term_create.jsp?parentDictId={dictId}" title="new_term.bread.crumbs.title"/>
+      <virtual url="/workbench/dictionary/term_delete_popup.jsp?termId={termId}" title="term_delete_popup.title" target="popup" />
+      <node url="/workbench/dictionary/term_edit.jsp?termId={termId}" type="Term">
+        <virtual url="/workbench/dictionary/term_create.jsp?parentTermId={termId}" title="new_term.bread.crumbs.title"/>
+      </node>
+    </node>
+    <virtual url="/workbench/dictionary/termdict_import.jsp" title="termdict_import.bread.crumbs.title"/>
+
+    <node url="/workbench/dictionary/inspection/introduction.jsp" title="dictionary_inspection.bread_crumb.title">
+      <tab url="/workbench/dictionary/inspection/term_lookup.jsp" title="dictionary_inspection.tab.term_lookup" />
+      <tab url="/workbench/dictionary/inspection/text_processing.jsp" title="dictionary_inspection.tab.text_processing" />
+      <tab url="/workbench/dictionary/inspection/text_analysis.jsp" title="dictionary_inspection.tab.search_text_analysis" />
+      <virtual url="/workbench/dictionary/inspection/term_export_popup.jsp?termName={termName}" title="dictionary_inspection.export_term_popup.title" target="popup" />
+      <node url="/workbench/dictionary/sao/sao_sets_browse.jsp" title="sao_browse.title">
+        <node url="/workbench/dictionary/sao/sao_set_details.jsp?saoSetId={saoSetId}" type="sao_set_default"/>
+        <node url="/workbench/dictionary/sao/sao_set_edit.jsp?saoSetId={saoSetId}" type="sao_edit_set"/>
+        <node url="/workbench/dictionary/sao/sao_set_edit.jsp" title="sao_edit_set.new.title"/>
+      </node>
+    </node>
+  </node>
+
+  <node url="/workbench/tpo/tpo_sets_general.jsp" title="tpo_sets_general.bread.crumbs.title"
+        activeProjectType="tpo_set">
+    <node url="/workbench/tpo/tpo_browse.jsp?level={level}" title="tpo_browse.{level}.bread.crumbs.title"
+          nodeFactory="/atg/searchadmin/adminui/navigation/NavigationNodeFactoryParametrizedTitle">
+      <virtual url="/workbench/tpo/tpo_set_delete_popup.jsp?tpoSetId={tpoSetId}&amp;level={level}" title="tpo_set_delete.title.{level}"
+               target="popup" nodeFactory="/atg/searchadmin/adminui/navigation/NavigationNodeFactoryParametrizedTitle" />
+      <virtual url="/workbench/tpo/tpo_set_import.jsp?level={level}" title="tpo_set.import.bread.crumbs.title" />
+      <node url="/workbench/tpo/tpo_index_edit_set.jsp?tpoSetId={tpoSetId}" type="tpo_edit_set">
+        <virtual url="/workbench/tpo/tpo_set_export.jsp?level=index&amp;tpoSetId={tpoSetId}" title="tpo_set.export.bread.crumbs.title" />
+      </node>
+      <node url="/workbench/tpo/tpo_content_edit_set.jsp?tpoSetId={tpoSetId}" type="tpo_edit_set">
+        <virtual url="/workbench/tpo/tpo_set_export.jsp?level=content&amp;tpoSetId={tpoSetId}" title="tpo_set.export.bread.crumbs.title" />
+      </node>
+      <!-- New TPO pages -->
+      <node url="/workbench/tpo/tpo_index_edit_set.jsp" title="tpo_set.new.bread_crumbs" />
+      <node url="/workbench/tpo/tpo_content_edit_set.jsp" title="tpo_set.new.bread_crumbs" />
+    </node>
+  </node>
+
+  <node url="/workbench/query/querysets_general.jsp"
+        title="search_workbench.node.querysets" activeProjectType="query_sets" type="query_rule_sets">
+    <virtual url="/workbench/query/queryset_new.jsp" title="queryset_general.bread.new.crumbs.title" />
+    <virtual url="/workbench/query/querysets_import.jsp" title="querysets_import.bread.crumbs.title" />
+    <virtual url="/workbench/query/querysets_macros.jsp" title="querysets_macros.bread.crumbs">
+      <virtual url="/workbench/macros_delete_popup.jsp?id={macroId}&amp;level=globalQueryRuleSetMacro" title="macros_delete_popup.title" target="popup" />
+    </virtual>
+    <virtual url="/workbench/query/querysets_delete_popup.jsp?querySetId={querySetId}" title="querysets_delete_popup.title" target="popup" />
+    <node url="/workbench/query/queryset.jsp?querySetId={querySetId}" type="query_set">
+      <virtual url="/workbench/query/querysets_export.jsp?querySetId={querySetId}" title="querysets_export.bread.crumbs.title" />
+      <node url="/workbench/query/add_new_query_rule_groups.jsp?parentId={parentId}" title="add_new_query_rule_groups.bread.crumbs.title" />
+      <virtual url="/workbench/query/query_rule_group_delete_popup.jsp?queryRuleGroupId={queryRuleGroupId}" title="query_rule_group_delete_popup.title" target="popup" />
+      <node url="/workbench/query/query_rule_group.jsp?queryGroupId={queryGroupId}" type="query_set_group">
+        <virtual url="/workbench/query/queryrule_new.jsp?queryGroupId={queryGroupId}" title="queryrule.new.bread.crumbs.title" />
+        <node url="/workbench/query/queryrule.jsp?queryRuleId={queryRuleId}" type="query_rule" />
+        <virtual url="/workbench/query/query_rule_delete_popup.jsp?queryRuleId={queryRuleId}" title="query_rule_delete_popup.title" target="popup" />
+      </node>
+    </node>
+  </node>
+
+  <node url="/workbench/facet/facetsets_general.jsp" title="search_workbench.customization_data_type.facet_config" 
+        activeProjectType="facet_set" type="facetSets">
+    <node url="/workbench/facet/facetsets_general_readonly.jsp" type="facetSetIndexedGeneral">
+      <node url="/workbench/facet/facetset_readonly.jsp?adapterItemId={adapterItemId}" type="facetSetIndexed">
+        <node url="/workbench/facet/facet_readonly.jsp?adapterItemId={adapterItemId}" type="facetIndexed" />
+      </node>
+    </node>
+
+    <virtual url="/workbench/facet/facetset_new.jsp" title="facetset_new.bread_crumb.title" />
+    <virtual url="/workbench/facet/facetset_import.jsp" title="facetsets_import.bread.crumbs.title" />
+    <virtual url="/workbench/facet/facetset_delete_popup.jsp?facetSetId={facetSetId}" title="facetset_delete_popup.title" target="popup" />
+    <node url="/workbench/facet/facetset.jsp?facetSetId={facetSetId}" type="facetSet">
+      <virtual url="/workbench/facet/facetset_export.jsp?facetSetId={facetSetId}" title="facetsets_export.bread.crumbs.title" />
+      <virtual url="/workbench/facet/facet_delete_popup.jsp?facetId={facetId}" title="facet_delete_popup.title" target="popup" />
+      <node url="/workbench/facet/facet.jsp?facetId={facetId}" type="facet" />
+    </node>
+    <!-- TODO: The following node should be replaced to virtual and moved into the appropriate place -->
+    <node url="/workbench/facet/facet_new.jsp?baseFacetId={facetId}" title="facet_add.new.bread_crumb.title" />
+
+    <node url="/workbench/facet/facetset_adaptors.jsp" title="facetset_adaptors.bread.crumbs.title" />
+  </node>
+
+  <node url="/workbench/weight/term_weight_sets.jsp"
+        title="search_workbench.node.term_weights" activeProjectType="term_weight" type="term_weight_sets">
+    <virtual url="/workbench/weight/new_term_weight_set.jsp" title="term_weight.new.title" />
+    <virtual url="/workbench/weight/term_weight_set_import.jsp" title="term_weight_import.bread_crumb.title" />
+    <virtual url="/workbench/weight/term_weight_set_delete_popup.jsp?weightSetId={weightSetId}" title="term_weight_set_delete_popup.title" target="popup" />
+    <node url="/workbench/weight/term_weight_set.jsp?termWeightId={termWeightId}" type="term_weight_set">
+      <virtual url="/workbench/weight/term_weight_set_export.jsp?termWeightId={termWeightId}" title="term_weight_export.bread_crumb.title" />
+    </node>
+  </node>
+</area>
+
+</tree>
+<!-- @version $Id: //application/SearchAdmin/version/10.0.3/admin-ui/src/config/atg/searchadmin/adminui/navigation/NavigationTreeDefinition.xml#1 $$Change: 651360 $-->

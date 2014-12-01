@@ -1,0 +1,49 @@
+<!-- Title: FulfillmentEmail -->
+<importbean bean="/atg/dynamo/droplet/Switch">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/IsNull">
+<importbean bean="/atg/commerce/inventory/InventoryLookup">
+<importbean bean="/atg/commerce/pricing/PriceItem">
+
+<setvalue param="messageSubject" value="Your order has been received.">
+<java>/*
+<setvalue param="messageFrom" value="DCS5Team@example.com">
+<setvalue param="messageReplyTo" value="DCS5Team@example.com">
+*/</java>
+<setvalue param="mailingName" value="OrderShipped">
+
+<setvalue param="order" value="param:message.order">
+<setvalue param="profile" value="param:message.profile">
+
+<p> Dear <valueof param="profile.firstName">Valued Customer</valueof>
+ <valueof param="profile.lastName"></valueof>,
+
+<p>Your order has been received.  Thank you for your business.
+You will be notified when your order ships.
+
+<p>The confirmation number for your order is: 
+<valueof param="order.id">Not defined</valueof>
+
+<p>Please verify the following information.
+
+<hr>
+
+<!-- Itemized order -->
+<br>
+<droplet src="DisplayOrderSummary.jhtml">
+  <param name="order" value="param:order">
+  <param name="displayStockStatus" value="true">
+</droplet>
+
+<!-- Shipping information -->
+<droplet src="DisplayShippingInfo.jhtml">
+  <param name="order" value="param:order">
+</droplet>
+
+<!-- Payment information -->
+<droplet src="DisplayPaymentInfo.jhtml">
+  <param name="order" value="param:order">
+</droplet>
+
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/Fulfillment/html/emails/SubmitOrderReceived.jhtml#2 $$Change: 651448 $*/</java>
+

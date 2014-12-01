@@ -1,0 +1,273 @@
+<java type=import>
+  java.text.*
+  java.util.*
+  java.net.*
+  atg.service.dynamo.*
+  atg.server.drp.*
+  atg.server.tcp.*
+  atg.server.loadmanagement.*
+  atg.server.dictionary.*
+  atg.nucleus.*
+  atg.servlet.pipeline.*
+</java>
+<nucleus type=import>
+  /atg/dynamo/admin/PerformanceInfo
+  /atg/dynamo/servlet/sessiontracking/SessionManager
+  /atg/dynamo/servlet/pipeline/DynamoHandler
+  /atg/dynamo/servlet/pipeline/SessionSaverServlet
+  /atg/dynamo/server/SessionBackupServer
+</nucleus>
+
+<title>Performance Summary</title>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+<IMG SRC="images/performance-sum-banner.gif" ALT="Performance Summary" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/Performance Summary
+
+<h2>Performance Summary</h2>
+
+
+<droplet name="/atg/dynamo/droplet/Switch">
+  <param name="value" value="property:PerformanceInfo.handlingRequests">
+  <oparam name="true">
+    <form method=POST action=performance.jhtml>
+    <table border=1>
+       <tr>
+		    <th align=left>Request Handling Stats</th>
+		    <th width=170>Since Startup</th>
+		    <th width=170>Since Reset</th>
+       </tr>
+
+       <tr>
+		    <td>Elapsed time</td>
+		    <td><valueof property=PerformanceInfo.formattedElapsedTime>error</valueof></td>
+		    <td><valueof property=PerformanceInfo.formattedElapsedTimeSinceReset>error</valueof></td>
+       </tr>
+       <tr>
+		    <td>Requests processed</td>
+		    <td><valueof property="DynamoHandler.handledRequestCount">error</valueof></td>
+		    <td><valueof property="PerformanceInfo.requestsProcessedSinceReset">error</valueof></td>
+       </tr>
+       <tr>
+		    <td>Average requests per minute</td>
+		    <td><valueof property=PerformanceInfo.formattedRpm>error</valueof></td>
+		    <td><valueof property=PerformanceInfo.formattedRpmSinceReset>error</valueof></td>
+       </tr>
+       <tr>
+		    <td>Average latency</td>
+		    <td><java>
+                          PerformanceInfo info = (PerformanceInfo) request.resolveName("/atg/dynamo/admin/PerformanceInfo"); 
+                          out.print(NumberFormat.getInstance().format(info.getLatency()));
+                        </java> milliseconds</td>
+		    <td><java>out.print(NumberFormat.getInstance().format(info.getLatencySinceReset()));</java> milliseconds</td>
+       </tr>
+       <tr>
+		    <td colspan=2></td>
+		    <td>
+		    <IMG SRC="/atg/dynamo/admin/images/clear.gif" vspace=2><br>
+		    <IMG SRC="/atg/dynamo/admin/images/clear.gif" vspace=2>
+		    <input type=submit property=PerformanceInfo.reset value="Reset Stats"><br>
+		    <IMG SRC="/atg/dynamo/admin/images/clear.gif" vspace=2></td>
+       </tr>
+
+    </table>
+    </form>
+  
+  </oparam>
+  <oparam name="false">
+  		<table border=1 width=450>
+	       <tr>
+			    <th align=left>Request Handling Stats</th>
+			 </tr>
+			 <tr>
+			 	 <td>Request handling is not enabled on this server</td>
+			 </tr>
+		 </table>
+	</oparam>
+</droplet>
+  <p>
+<table border=1>
+	<tr>
+		<td colspan=2><b>General Stats</b></td>
+   <tr>
+		<td>Start time</td>
+		<td><valueof property=PerformanceInfo.formattedStartTime>error</valueof></td>
+	</tr>
+   <tr>
+		<td>Available/free memory</td>
+		<td colspan=1><java>
+	 	 VMSystem vm = (VMSystem) request.resolveName("/VMSystem");
+		out.println(NumberFormat.getInstance().format(vm.getFreeMemory()));
+		</java>
+		bytes</td>
+   </tr>
+   <tr>
+		<td>Number of active sessions</td>
+		<td colspan=1><valueof property="SessionManager.residentSessionCount">error</valueof></td>
+   </tr>
+   
+
+
+   <tr><td></td></tr><tr><td></td></tr><tr><td></td></tr>
+   <tr><td colspan=2><b>DRP Server Stats</b> (requests from Sun ONE
+   Web Server, IIS, or Apache)</td></tr>
+
+<droplet name="/atg/dynamo/droplet/Switch">
+  <param name="value" value="property:/atg/dynamo/Configuration.drpEnabled">
+  <oparam name="true">
+    <tr><td>Number of outstanding DRP requests</td>
+
+    <td colspan=1><valueof property="/atg/dynamo/server/DrpServer.activeHandlerCount">error</valueof></td>
+    
+    <java>
+      DrpServer drp = 
+	 (DrpServer) request.resolveName("/atg/dynamo/server/DrpServer");
+      RequestServerHandler[] handlers = drp.getRequestHandlers();
+      int numOld = 0;
+      for (int i = 0; i < handlers.length; i++)
+      {
+	DrpServerConnection con = (DrpServerConnection) handlers[i];
+	if (con.getCurrentRequestTime() > 5 * 1000)  numOld++;
+      }
+      out.print("<tr><td>Number of threads waiting more than 5 seconds</td> ");
+      if (numOld > 0) 
+	out.println("<td colspan=1><font color=#CC0000>" + numOld + "</font></td>");
+      else
+	out.println("<td colspan=1>" + numOld + "</td>");
+    </java>
+    
+  </oparam>
+  <oparam name=false>
+    <tr><td colspan=2>DRP is off.</td></tr>
+  </oparam>
+</droplet>
+
+<tr><td></td></tr><tr><td></td></tr><tr><td></td></tr>
+<tr><td colspan=2><b>Session Backup</b> - for this Dynamo</td></tr>
+<!-- Session failover client info -->
+<droplet name="/atg/dynamo/droplet/Switch">
+  <param name="value" value="property:PerformanceInfo.failoverClient">
+  <oparam name="true">
+    <tr>
+    <td>Number of sessions migrated to this server</td>
+   	 <td><valueof property=SessionSaverServlet.restoredSessionCount>error</valueof></td>
+   </tr>
+   <tr>
+		<td>Session backup server responding</td>
+		<td><valueof property=PerformanceInfo.failoverServerResponding>error</valueof></td></tr>
+  </oparam>
+  <oparam name="false">
+   <tr>
+		<td colspan=2>Sessions on this server are not being backed up.</td>
+   </tr>
+  </oparam>
+</droplet>
+
+<!-- Session failover server info -->
+<droplet name="/atg/dynamo/droplet/Switch">
+  <param name="value" value="property:/atg/dynamo/Configuration.sessionBackupServerEnabled">
+  <oparam name="true">
+    <tr>
+    	<td colspan=2><b>Session Backup</b> - for other Dynamo(s)
+    <tr>
+    	<td>Number of sessions backed up by this server</td>
+    	<td><valueof property=SessionBackupServer.database.numDictionaries>error</valueof></td>
+    <tr>
+		<td>Size of backed up sessions</td>
+   	<td><java>
+      	DictionaryServer backupServer = 
+        (DictionaryServer) request.resolveName("/atg/dynamo/server/SessionBackupServer");
+      	out.println(NumberFormat.getInstance().format(backupServer.getDatabase().getTotalSize()));
+    		</java>
+    		bytes</td>
+   </tr>
+  </oparam>
+  <oparam name="false">
+    <tr>
+    	<td colspan=2><b>Session Backup</b> - for other Dynamo(s)
+    <tr>
+    <tr>
+   	<td colspan=2>This server is not acting as a backup server for other Dynamos.</td>
+    </tr>
+  </oparam>
+</droplet>
+</table>
+<p>
+<table border=1 width=450>
+	<tr>
+		<th colspan=4 align=left>LoadManager Stats</th>
+	</tr>
+	
+<droplet name="/atg/dynamo/droplet/Switch">
+  <param name="value" value="property:/atg/dynamo/Configuration.loadManagerEnabled">
+  <oparam name="true">
+    <tr> <th valign=bottom>Host Name</th> <th>Port</th>
+   	 <th valign=bottom>Accepting Sessions</th>
+   	 <th valign=bottom>Probability</th></tr>
+    <java>
+      LoadManagerImpl lm = (LoadManagerImpl) request.resolveName("/atg/dynamo/server/snmp/LoadManager"); 
+      LoadDistStats ldStats = lm.getLoadDistStats();
+      String [] hostNames = lm.getManagedEntityHostnameList();
+      int [] managedEntityPorts = lm.getManagedEntityPortList();
+      for (int i = 0; i < ldStats.mCount; i++)
+      {
+        String hostName;
+        if (hostNames == null || hostNames.length <= i) 
+          hostName = "0.0.0.0";
+        else
+          hostName = hostNames[i];
+        
+        out.println("<tr>");
+        out.println("<td>" + hostName + "</td>");
+        out.println("<td>" + managedEntityPorts[i] + "</td>");
+        out.println("<td>" + ldStats.mNewSessions.elementAt(i) + "</td>");
+        out.println("<td>" + 
+                    (int) (ldStats.mSessionProbability.elementAt(i) * 100) + 
+                    "%</td>");
+        out.println("</tr>");
+      }
+    </java>
+  </oparam>
+  <oparam name=false>
+    <tr><td colspan=4>LoadManager is off.</td></tr>
+  </oparam>
+</droplet>
+
+</table>
+<p>
+
+<br>
+<b>For more detailed information:</b>  
+<dl>    
+<dt>See the current state of the request handling threads for:
+   <dd><a href="/nucleus/atg/dynamo/server/HttpServer">Internal HTTP Server</a>
+   <dd><a href="/nucleus/atg/dynamo/server/DrpServer">DRP Server</a>
+</dl>
+
+<dl>
+<dt>See the Performance Monitoring data:
+   <dd><a href="performance-monitor.jhtml">Performance Monitor</a>
+</dl>
+
+<dl>
+<dt>See details on:
+   <dd><a href="/nucleus/atg/dynamo/servlet/pipeline/DynamoHandler">Servlet Pipeline</a>
+   <dd><a href="/nucleus/atg/dynamo/servlet/sessiontracking/SessionManager">Session Manager</a>
+   <droplet name="/atg/dynamo/droplet/Switch">
+  <param name="value" value="property:SessionSaverServlet.enabled">
+  <oparam name="true">
+   <dd><a href="/nucleus/atg/dynamo/server/SessionBackupServer">Session Backup Server</a> 
+   <!-- (should only be displayed if this is enabled) -->
+  </oparam>
+  </droplet>
+   <droplet name="/atg/dynamo/droplet/Switch">
+  <param name="value" value="property:/atg/dynamo/Configuration.loadManagerEnabled">
+  <oparam name="true">
+   <dd><a href="/nucleus/atg/dynamo/server/snmp/LoadManager">Load Manager</a> 
+   <!-- (should only be displayed if this is enabled) -->
+  </oparam>
+  </droplet>
+ </dl>   
+</body>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/performance.jhtml#2 $$Change: 651448 $ */</java>
+

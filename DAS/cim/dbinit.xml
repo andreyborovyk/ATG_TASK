@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE database-initializer SYSTEM "http://www.atg.com/dtds/dbinit_1_0.dtd">
+<database-initializer>
+
+
+  <schema id="idSchema">
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/id_generator.sql
+				</create>
+        <drop>
+          sql/uninstall/${database}/drop_id_generator.sql
+				</drop>
+      </path>
+    </sql>
+
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/dms_limbo_ddl.sql
+				</create>
+        <drop>
+          sql/uninstall/${database}/drop_dms_limbo_ddl.sql
+				</drop>
+      </path>
+    </sql>
+
+  </schema>
+
+  <schema id="coreSchema">
+
+
+
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/cluster_name_ddl.sql
+				</create>
+        <drop>
+          sql/uninstall/${database}/drop_cluster_name_ddl.sql
+				</drop>
+      </path>
+    </sql>
+
+
+
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/create_sql_jms_ddl.sql
+				</create>
+        <drop>
+          sql/uninstall/${database}/drop_sql_jms_ddl.sql
+				</drop>
+      </path>
+    </sql>
+
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/create_staff_ddl.sql
+				</create>
+        <drop>
+          sql/uninstall/${database}/drop_staff_ddl.sql
+				</drop>
+      </path>
+    </sql>
+
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/create_gsa_subscribers_ddl.sql
+				</create>
+        <drop>
+          sql/uninstall/${database}/drop_gsa_subscribers_ddl.sql
+				</drop>
+      </path>
+    </sql>
+
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/create_sds.sql
+				</create>
+        <drop>
+          sql/uninstall/${database}/drop_sds.sql
+				</drop>
+      </path>
+    </sql>
+
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/integration_data_ddl.sql
+				</create>
+        <drop>
+          sql/uninstall/${database}/drop_integration_data_ddl.sql
+				</drop>
+      </path>
+    </sql>
+
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/nucleus_security_ddl.sql
+				</create>
+        <drop>
+          sql/uninstall/${database}/drop_nucleus_security_ddl.sql
+				</drop>
+      </path>
+    </sql>
+
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/media_ddl.sql
+				</create>
+        <drop>
+          sql/uninstall/${database}/drop_media.sql
+				</drop>
+      </path>
+    </sql>
+
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/deployment_ddl.sql
+				</create>
+        <drop>
+          sql/uninstall/${database}/drop_deployment_ddl.sql
+				</drop>
+      </path>
+    </sql>
+
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/sitemap_ddl.sql
+				</create>
+        <drop>
+          sql/uninstall/${database}/drop_sitemap_ddl.sql
+				</drop>
+      </path>
+    </sql>
+
+    <!--
+      <sql> <path> <create>
+      sql/db_components/${database}/rl_example_ddl.sql </create> <drop>
+      sql/uninstall/${database}/drop_rl_example_ddl.sql </drop> </path>
+      </sql>
+    -->
+  </schema>
+
+  <schema id="seoSchema">
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/seo_ddl.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_seo_ddl.sql
+        </drop>
+      </path>
+    </sql>
+  </schema>
+
+  <schema id="siteSchema">
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/site_ddl.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_site_ddl.sql
+        </drop>
+      </path>
+    </sql>
+  </schema>
+
+  <server-instance-type id="production">
+
+    <datasource id="switchingA">
+      <schema id="idSchema" />
+      <schema id="seoSchema"/>
+	  <schema id="siteSchema"/>
+    </datasource>
+    <datasource id="switchingB">
+      <schema id="idSchema" />
+      <schema id="seoSchema"/>
+	  <schema id="siteSchema"/>
+    </datasource>
+
+    <datasource id="serviceSwitchingA">
+      <schema id="idSchema" />
+    </datasource>
+    <datasource id="serviceSwitchingB">
+      <schema id="idSchema" />
+    </datasource>
+
+    <datasource id="switchingCore">
+      <schema id="idSchema" />
+      <schema id="coreSchema" />
+    </datasource>
+
+    <datasource id="nonswitchingCore">
+      <schema id="idSchema" />
+      <schema id="coreSchema" />
+      <schema id="seoSchema" />
+      <schema id="siteSchema"/>
+    </datasource>
+  </server-instance-type>
+  
+  <server-instance-type id="staging">
+    <datasource id="stagingnonswitchingCore">
+      <schema id="idSchema" />
+      <schema id="coreSchema" />
+      <schema id="seoSchema" />
+      <schema id="siteSchema"/>
+    </datasource>
+
+    <datasource id="stagingswitchingCore">
+      <schema id="idSchema" />
+      <schema id="coreSchema" />
+    </datasource>
+
+    <datasource id="stagingswitchingA">
+      <schema id="idSchema" />
+      <schema id="seoSchema" />
+	  <schema id="siteSchema"/>
+    </datasource>
+
+    <datasource id="stagingswitchingB">
+      <schema id="idSchema" />
+      <schema id="seoSchema" />
+	  <schema id="siteSchema"/>
+    </datasource>
+
+  </server-instance-type>
+
+  <server-instance-type id="management">
+
+    <datasource id="all">
+      <schema id="idSchema" />
+      <schema id="coreSchema" />
+    </datasource>
+
+  </server-instance-type>
+
+  <server-instance-type id="datawarehouse_loader">
+
+    <datasource id="all">
+      <schema id="idSchema" />
+      <schema id="coreSchema" />
+      <schema id="seoSchema" />
+    </datasource>
+
+  </server-instance-type>
+
+  <server-instance-type id="svcagent">
+
+    <datasource id="svcagent">
+      <schema id="idSchema" />
+      <schema id="coreSchema" />
+    </datasource>
+
+  </server-instance-type>
+
+
+
+</database-initializer>
+  <!--
+    @version $Id: //product/DAS/main/release/DAS/cim/dbinit.xml#19
+    $$Change: 651448 $
+  -->
+<!-- @version $Id: //product/DAS/version/10.0.3/release/DAS/cim/dbinit.xml#2 $$Change: 651448 $-->

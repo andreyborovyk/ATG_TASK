@@ -1,0 +1,247 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+  <script type="text/javascript">
+     var djConfig = { 
+       isDebug: true,
+       parseOnLoad: true
+     };
+   </script>
+
+  <link rel="stylesheet" href="/WebUI/css/cssModules/foundation.css" type="text/css" media="all" />
+  <link rel="stylesheet" href="/WebUI/css/cssFramework.css" type="text/css" media="all" />
+  <!--[if IE]>
+    <link rel="stylesheet" href="/WebUI/css/cssFramework_IE6.css" type="text/css" media="all" />
+  <![endif]-->
+
+  <link type="text/css" href="/dojo-1/dojo/resources/dojo.css" rel="stylesheet" />
+  <link type="text/css" href="/dojo-1/dijit/themes/atg/atg.css" rel="stylesheet" />
+  <link type="text/css" href="/WebUI/dijit/messaging/Messaging.css" rel="stylesheet"/>
+  <!--[if IE 6]>
+  <link type="text/css" href="<c:url context='/WebUI' value='/dijit/messaging/Messaging_IE6.css'/>" rel="stylesheet"/>
+  <![endif]-->
+
+  <script type="text/javascript" src="/dojo-1/dojo/dojo.js.uncompressed.js"></script>
+  <script type="text/javascript" src="/dojo-1/dijit/dijit.js.uncompressed.js"></script>
+  <script type="text/javascript" src="/dojo-1/dojo-fixes.js"></script>
+
+  <script type="text/javascript" charset="utf-8">
+    // Register the messaging widget namespace
+    dojo.registerModulePath("atg.widget.messaging", "/WebUI/dijit/messaging");
+  </script>
+  <script type="text/javascript" src="/WebUI/dijit/messaging/common.js"></script>
+  <script type="text/javascript" src="/WebUI/dijit/messaging/DetailItem.js"></script>
+  <script type="text/javascript" src="/WebUI/dijit/messaging/MessageArea.js"></script>
+  <script type="text/javascript" src="/WebUI/dijit/messaging/MessageBar.js"></script>
+  <script type="text/javascript" src="/WebUI/dijit/messaging/MessageFader.js"></script>
+  <script type="text/javascript" src="/WebUI/dijit/messaging/MessageItem.js"></script>
+  <script type="text/javascript" src="/WebUI/dijit/messaging/MessagePane.js"></script>
+  <script type="text/javascript" src="/WebUI/dijit/messaging/SmallMessageBar.js"></script>
+
+  <script type="text/javascript" charset="utf-8">
+    dojo.require("atg.widget.messaging.MessageBar");
+    dojo.require("atg.widget.messaging.SmallMessageBar");
+    dojo.require("atg.widget.messaging.MessageFader");
+    dojo.require("atg.widget.messaging.MessagePane");
+  </script>
+
+  <style type="text/css" media="screen">
+
+    /* Override message bar background */
+    .atg_messaging_detailPane {
+      background: url(../../images/bg_body.gif) repeat-x left top;
+    }
+
+    .atg_messaging_detailPaneResizebar {
+      background-color: transparent;
+    }
+
+    #messageBar{
+      width: 75%;
+      border: 1px solid #7389A4;
+      background: #F0F0F0;
+      position: relative;
+      height: 25px;
+    }
+
+    #triggers{
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      background: white;
+      border: 2px solid black;
+      padding: 10px;
+      font-size: 1.5em;
+    }
+
+  </style>
+
+<script type="text/javascript" charset="utf-8">
+
+var test1 = { "messages":[
+                { "summary":"Error Summary",
+                  "type":"error",
+                  "datetime": new Date().toString(),
+                  "details":[
+                    { "description":"This is an error message"
+                    }
+                  ]
+                }
+              ]
+            };
+
+var test2 = { "messages":[
+                { "summary":"Warning Summary",
+                  "type":"warning",
+                  "datetime":new Date().toString(),
+                  "details":[
+                    { "description":"This is a warning message in detail"
+                    }
+                  ]
+                }
+              ]
+            };
+
+
+var test3 = { "messages":[
+                { "summary":"Confirmation Summary",
+                  "type":"confirmation",
+                  "datetime":new Date().toString(),
+                  "details":[
+                    { "description":"THis is a confirmation message in detail"
+                    }
+                  ]
+                }
+              ]
+            };
+
+var test6 = { "messages":[
+                { "summary":"Information Summary",
+                  "type":"information",
+                  "datetime":new Date().toString(),
+                  "details":[
+                    { "description":"This is an information message in detail"
+                    }
+                  ]
+                }
+              ]
+            };
+
+var test4 = { "messages":[
+                { "summary":"Confirmation Summary",
+                  "type":"confirmation",
+                  "datetime":new Date().toString(),
+                  "details":[
+                    { "description":"This is a confirmation message in detail part 1"
+                    },
+                    { "description":"This is a confirmation message in detail part 2"
+                    },
+                    { "description":"This is a confirmation message in detail part 3"
+                    },
+                    { "description":"This is a confirmation message in detail part 4"
+                    },
+                    { "description":"This is a confirmation message in detail part 5"
+                    }
+                  ]
+                }
+              ]
+            };
+
+var test5 = { "messages":[
+                { "summary":"Confirmation Summary",
+                  "type":"confirmation",
+                  "datetime":new Date().toString(),
+                  "details":[
+                    { "description":"This is a confirmation message in detail"
+                    }
+                  ]
+                },
+                { "summary":"Warning Summary",
+                  "type":"warning",
+                  "datetime":new Date().toString(),
+                  "details":[
+                    { "description":"This is a warning message in detail"
+                    }
+                  ]
+                },
+                { "summary":"Error Summary",
+                  "type":"error",
+                  "datetime":new Date().toString(),
+                  "details":[
+                    { "description":"This is an error message part 1"
+                    },
+                    { "description":"This is an error message part 2"
+                    }
+                  ]
+                }
+              ]
+            };
+
+
+test = function(message){
+ dijit.byId('smallMessageBar').unpackMessages(message);
+}
+
+</script>
+
+<title>ATG Widget Library - Messaging Widget Test</title>
+</head>
+
+<body class="atg">
+  <div id="triggers">
+    <a href="javascript:test(test1);">Error</a> : 
+    <a href="javascript:test(test2);">Warning</a> :
+    <a href="javascript:test(test3);">Summary</a> :
+    <a href="javascript:test(test6);">Information</a> :
+    <a href="javascript:test(test4);">Multi-Message</a> :
+    <a href="javascript:test(test5);">Mixed-Message</a>
+  </div>
+
+  <div id="messageBar">
+    <div dojoType="atg.widget.messaging.SmallMessageBar"
+         class="atg_navigationHighlight"
+         cssfloat="right"
+         targetDialog="messageDetail"
+         targetFader="messageFader"
+         hideLinkText="userMessaging.hideDetails"
+         showLinkText="userMessaging.showDetails"
+         confirmationMessage="userMessaging.defaultSuccessMessage"
+         errorMessage="userMessaging.defaultFailureMessage"
+         initialText="userMessaging.summary"
+         id="smallMessageBar">
+    </div>
+    Header Bar
+    <div dojoType="atg.widget.messaging.MessageFader"
+         id="messageFader">
+    </div>
+    <div dojoType="atg.widget.messaging.MessagePane"
+         resizeDirection="left"
+         initialMessage="Default Message"
+         style="top:25px;width:350px;height:200px;right:20px;display:none;"
+         id="messageDetail">
+    </div>
+  </div>
+
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  <p style="text-align:center; width: 75%">
+    <select><option>Select Test</option></select>
+    <select><option>Select Test</option></select>
+    <select><option>Select Test</option></select>
+    <select><option>Select Test</option></select>
+
+    <select><option>Select Test</option></select>
+    <select><option>Select Test</option></select>
+  </p>
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+</body>
+</html>

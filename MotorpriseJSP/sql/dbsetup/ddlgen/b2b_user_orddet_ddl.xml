@@ -1,0 +1,185 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="b2b_user_orddet_ddl">
+<comment><![CDATA[ @version $Id: //product/B2BCommerce/version/10.0.3/templates/MotorpriseJSP/sql/b2b_user_orddet_ddl.xml#2 $$Change: 651448 $]]></comment>
+   <table name="b2b_user_info">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="num_orders" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="avg_order_amt" nullable="y">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="19" scale="7"/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+      </column>
+      <column name="use_org_approver" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="use_org_costctr" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="use_org_billaddr" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="use_org_shipaddr" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="use_org_payment" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="use_org_vendors" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="use_org_purchlst" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <primary-key name="b2b_user_info_p">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="b2b_usrnfid_f" referenced-table="dps_user">
+         <fkey-column referencing-column="id" referenced-column="id"/>
+      </foreign-key>
+      <check name="b2b_user_info1_c">
+         <check-expr expression="use_org_approver in (0,1)" db="generic"/>
+      </check>
+      <check name="b2b_user_info2_c">
+         <check-expr expression="use_org_costctr in (0,1)" db="generic"/>
+      </check>
+      <check name="b2b_user_info3_c">
+         <check-expr expression="use_org_billaddr in (0,1)" db="generic"/>
+      </check>
+      <check name="b2b_user_info4_c">
+         <check-expr expression="use_org_shipaddr in (0,1)" db="generic"/>
+      </check>
+      <check name="b2b_user_info5_c">
+         <check-expr expression="use_org_payment in (0,1)" db="generic"/>
+      </check>
+      <check name="b2b_user_info6_c">
+         <check-expr expression="use_org_vendors in (0,1)" db="generic"/>
+      </check>
+      <check name="b2b_user_info7_c">
+         <check-expr expression="use_org_purchlst in (0,1)" db="generic"/>
+      </check>
+   </table>
+   <table name="b2b_org_info">
+      <column name="org_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="logo" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="cc_auth" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="invoice_auth" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="store_crdt_auth" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="gift_crt_auth" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="use_prnt_approver" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="use_prnt_costctr" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="use_prnt_billaddr" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="use_prnt_shipaddr" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="use_prnt_payment" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="use_prnt_vendors" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="use_prnt_purchlst" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <primary-key name="b2b_org_info_p">
+         <index-column column="org_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="b2b_orgnforg_d_f" referenced-table="dps_organization">
+         <fkey-column referencing-column="org_id" referenced-column="org_id"/>
+      </foreign-key>
+      <check name="b2b_org_info1_c">
+         <check-expr expression="cc_auth in (0,1)" db="generic"/>
+      </check>
+      <check name="b2b_org_info2_c">
+         <check-expr expression="invoice_auth in (0,1)" db="generic"/>
+      </check>
+      <check name="b2b_org_info3_c">
+         <check-expr expression="store_crdt_auth in (0,1)" db="generic"/>
+      </check>
+      <check name="b2b_org_info4_c">
+         <check-expr expression="gift_crt_auth in (0,1)" db="generic"/>
+      </check>
+      <check name="b2b_org_info5_c">
+         <check-expr expression="use_prnt_approver in (0,1)" db="generic"/>
+      </check>
+      <check name="b2b_org_info6_c">
+         <check-expr expression="use_prnt_costctr in (0,1)" db="generic"/>
+      </check>
+      <check name="b2b_org_info7_c">
+         <check-expr expression="use_prnt_billaddr in (0,1)" db="generic"/>
+      </check>
+      <check name="b2b_org_info8_c">
+         <check-expr expression="use_prnt_shipaddr in (0,1)" db="generic"/>
+      </check>
+      <check name="b2b_org_info9_c">
+         <check-expr expression="use_prnt_payment in (0,1)" db="generic"/>
+      </check>
+      <check name="b2b_org_infoa_c">
+         <check-expr expression="use_prnt_vendors in (0,1)" db="generic"/>
+      </check>
+      <check name="b2b_org_infob_c">
+         <check-expr expression="use_prnt_purchlst in (0,1)" db="generic"/>
+      </check>
+   </table>
+</schema>
+<!-- @version $Id: //product/B2BCommerce/version/10.0.3/templates/MotorpriseJSP/sql/b2b_user_orddet_ddl.xml#2 $$Change: 651448 $ -->

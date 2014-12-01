@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE publishing-deployment-topology SYSTEM
+          "http://www.atg.com/dtds/publishing_deployment/publishing_deployment_1.0.dtd">
+
+<!-- Define a deployment hierarchy of targets and individual agents        -->
+
+<publishing-deployment-topology>
+
+  <!-- Deployment target required. A target is a collection of agents that -->
+  <!-- receive the same deployment                                         -->
+
+  <target>
+
+    <!-- Simple identifier for this target -->
+    <target-name>
+      local
+    </target-name>
+
+    <!-- Detailed description for this target for UI display purposes.    -->
+    <description>
+     This is a local target
+    </description>
+
+    <!-- If target is used for "one-off" deployment, include              -->
+    <!-- target-deploy-type tag and supply a value of ONE-OFF. A one-off  -->
+    <!-- target cannot be used for workflow deployment                    -->
+    <!-- See the Content Administration Programming Guide for more        -->
+    <!-- information on one-off deployment                                -->
+
+    <target-deploy-type>
+    </target-deploy-type>
+    
+    <!-- Define a deployment agent on this target -->
+    <agent>
+
+      <!-- String identifier for this agent -->
+      <agent-name>
+        local
+      </agent-name>
+
+      <!-- Specify this agent's responsibilties for deploying assets to      -->
+      <!-- the specified destinations through include-asset-destination and  -->
+      <!-- exclude-asset-destination tags, where the specified destination   -->
+      <!-- is a Nucleus component path.                                      -->
+      <!-- Note: Use these tags only if the Nucleus paths on the asset       -->
+      <!-- management and target servers are identical.                      -->
+      <!--                                                                   -->                             
+      <!-- Use include-asset-destination to specify a file data store        -->
+
+      <include-asset-destination>
+        Nucleus path
+      </include-asset-destination>
+      
+      <!-- If a VFS has different Nucleus locations on the asset management  -->
+      <!-- server and and agent instance, use the vfs-mapping tag to map the --> 
+      <!-- VFS source to its destination VFS location, via the source-vfs    -->
+      <!-- and destination-vfs tags, respectively                            -->
+
+      <vfs-mapping>
+        <source-vfs>
+          Nucleus path
+        </source-vfs>
+        <destination-vfs>
+          Nucleus path
+        </destination-vfs>
+      </vfs-mapping>
+      
+      <!-- Each deployment agent must have a transport agent that enables   -->
+      <!-- communication with the server to that agent                      -->
+
+      <transport>
+
+        <!-- Denote the transport type, either RMI or JNDI lookup of the    -->
+        <!-- transport agent. ATG does not provide a JNDI implementation   -->
+        <!-- In order to specify a JNDI transport type, you must also      -->
+        <!-- implement your own JNDI transport mechanism                   -->       
+        <transport-type>
+          RMI
+        </transport-type>
+
+        <!-- If transport type is RMI, then a rmi-uri tag must specify the  -->
+        <!-- the URI of the agent RMI client. If the transport type is      -->
+        <!-- JNDI, a jndi-name tag must specify the transport's JNDI path  -->
+        <rmi-uri>
+          rmi://localhost:8860/atg/epub/AgentTransport
+        </rmi-uri>
+      </transport>
+    </agent>
+
+    <!-- Each repository mapping maps a versioned repository to a non-versioned      --> 
+    <!-- repository, through source-repository and destination-repository tags,      -->
+    <!-- respectively.                                                               -->
+    <!-- For example, given these two repositories:                                  -->
+    <!-- * atg/commerc/catalog/ProductCatalog is the Nucleus path to the versioned   -->
+    <!--   repository on the asset management server                                 -->
+    <!-- * /atg/commerce/catalog/ProductCatalog_staging is the Nucleus path to the   -->
+    <!--   non-versioned repository on the asset management server which             -->
+    <!--   is to be used for deployment data application to staging datasource.      -->    
+    <!-- You specify the mapping between them in <source-repository> and             -->
+    <!-- <destination-repository> tags, nested within a <repository-mapping> tag     -->
+
+    <!--  Multiple repository-mapping tags can be specified for each target          -->
+    <repository-mapping>
+      <source-repository>
+         Nucleus path
+      </source-repository>
+      <destination-repository>
+         Nucleus path
+      </destination-repository>
+    </repository-mapping>
+  </target>
+
+</publishing-deployment-topology>
+<!-- @version $Id: //product/PublishingAgent/version/10.0.3/sample/deploymentTopology.xml#1 $$Change: 651360 $ -->

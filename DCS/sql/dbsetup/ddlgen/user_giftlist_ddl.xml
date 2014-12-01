@@ -1,0 +1,219 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="user_giftlist_ddl">
+<comment><![CDATA[ @version $Id: //product/DCS/version/10.0.3/templates/DCS/sql/user_giftlist_ddl.xml#2 $$Change: 651448 $]]></comment>
+   <table name="dcs_giftlist">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="owner_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="site_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="is_public" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="is_published" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="event_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="64"/>
+      </column>
+      <column name="event_type" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="event_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <column name="comments" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="instructions" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="creation_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <column name="last_modified_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <column name="shipping_addr_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcs_giftlist_p">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+      <check name="dcs_giftlist1_c">
+         <check-expr expression="is_public in (0,1)" db="generic"/>
+      </check>
+      <check name="dcs_giftlist2_c">
+         <check-expr expression="is_published in (0,1)" db="generic"/>
+      </check>
+      <index name="gftlst_shpadid_idx" table="dcs_giftlist">
+         <index-column column="shipping_addr_id" order="asc" seq="1"/>
+      </index>
+      <index name="gft_evnt_name_idx" table="dcs_giftlist">
+         <index-column column="event_name" order="asc" seq="1"/>
+      </index>
+      <index name="gft_evnt_type_idx" table="dcs_giftlist">
+         <index-column column="event_type" order="asc" seq="1"/>
+      </index>
+      <index name="gft_owner_id_idx" table="dcs_giftlist">
+         <index-column column="owner_id" order="asc" seq="1"/>
+      </index>
+      <index name="gft_site_id_idx" table="dcs_giftlist">
+         <index-column column="site_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dcs_giftinst">
+      <column name="giftlist_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="tag" nullable="n">
+         <column-type db="generic" type="varchar" length="42"/>
+      </column>
+      <column name="special_inst" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dcs_giftinst_p">
+         <index-column column="giftlist_id" order="asc" seq="1"/>
+         <index-column column="tag" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcs_giftgiftlst__f" referenced-table="dcs_giftlist">
+         <fkey-column referencing-column="giftlist_id" referenced-column="id"/>
+      </foreign-key>
+      <index name="giftinst_gflid_idx" table="dcs_giftinst">
+         <index-column column="giftlist_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dcs_giftitem">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="catalog_ref_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="product_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="site_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="display_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="quantity_desired" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="quantity_purchased" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <primary-key name="dcs_giftitem_p">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+      <index name="giftitem_cat_idx" table="dcs_giftitem">
+         <index-column column="catalog_ref_id" order="asc" seq="1"/>
+      </index>
+      <index name="giftitem_prod_idx" table="dcs_giftitem">
+         <index-column column="product_id" order="asc" seq="1"/>
+      </index>
+      <index name="giftitem_site_idx" table="dcs_giftitem">
+         <index-column column="site_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dcs_giftlist_item">
+      <column name="giftlist_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="giftitem_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcs_giftlist_ite_p">
+         <index-column column="giftlist_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcs_giftgifttm_d_f" referenced-table="dcs_giftitem" index-name="gftlst_itm_gii_idx">
+         <fkey-column referencing-column="giftitem_id" referenced-column="id"/>
+      </foreign-key>
+      <foreign-key name="dcs_gftlstgftlst_f" referenced-table="dcs_giftlist">
+         <fkey-column referencing-column="giftlist_id" referenced-column="id"/>
+      </foreign-key>
+      <index name="gftlst_itm_gli_idx" table="dcs_giftlist_item">
+         <index-column column="giftlist_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dcs_user_wishlist">
+      <column name="user_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="giftlist_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcs_user_wishlis_p">
+         <index-column column="user_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dcs_usrwgiftlst__f" referenced-table="dcs_giftlist" index-name="usr_wshlst_gli_idx">
+         <fkey-column referencing-column="giftlist_id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="dcs_user_giftlist">
+      <column name="user_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="giftlist_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcs_user_giftlis_p">
+         <index-column column="user_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <index name="usr_gftlst_uid_idx" table="dcs_user_giftlist">
+         <index-column column="user_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dcs_user_otherlist">
+      <column name="user_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="giftlist_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcs_user_otherli_p">
+         <index-column column="user_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcs_usrtgiftlst__f" referenced-table="dcs_giftlist" index-name="usr_otrlst_gli_idx">
+         <fkey-column referencing-column="giftlist_id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+</schema>
+<!-- @version $Id: //product/DCS/version/10.0.3/templates/DCS/sql/user_giftlist_ddl.xml#2 $$Change: 651448 $ -->

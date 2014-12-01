@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE taglib
+	PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN"
+	"http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
+
+<taglib>
+  <tlib-version>1.0</tlib-version>
+  <jsp-version>1.1</jsp-version>
+  <short-name>discussion</short-name>
+  <uri>http://www.atg.com/taglibs/gear/discussion-taglib1_0</uri>
+
+  <description>The tag library containing the Portal Discussion Gear tags</description>
+
+  <!-- getGearForumsTag -->
+  <tag>
+    <name>getGearForums</name>
+    <tag-class>atg.portal.gear.discussion.taglib.GetGearForumsTag</tag-class>
+    <tei-class>atg.portal.gear.discussion.taglib.GetGearForumsTEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Tag used to get list of all forums in the database
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    
+    <attribute>
+      <name>gear</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>user</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>startRange</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>rangeSize</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>sortOrder</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>removed</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+  </tag>
+
+  <!-- getUserForumsTag -->
+  <tag>
+    <name>getUserForums</name>
+    <tag-class>atg.portal.gear.discussion.taglib.GetUserForumsTag</tag-class>
+    <tei-class>atg.portal.gear.discussion.taglib.GetUserForumsTEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Tag used to get list of a user's forums for the current gear
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    
+    <attribute>
+      <name>gear</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>user</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+  </tag>
+
+  <!-- getAllForumsTag -->
+  <tag>
+    <name>getAllForums</name>
+    <tag-class>atg.portal.gear.discussion.taglib.GetAllForumsTag</tag-class>
+    <tei-class>atg.portal.gear.discussion.taglib.GetAllForumsTEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Tag used to get list of all forums in the database
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    
+    <attribute>
+      <name>startRange</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>rangeSize</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+  </tag>
+
+  <!-- getForumTopicsTag -->
+  <tag>
+    <name>getForumTopics</name>
+    <tag-class>atg.portal.gear.discussion.taglib.GetForumTopicsTag</tag-class>
+    <tei-class>atg.portal.gear.discussion.taglib.GetForumTopicsTEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Tag used to get list of all threads for a given forum ID
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    
+    <attribute>
+      <name>forumID</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>sortOrder</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>startRange</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>rangeSize</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    </tag>  
+
+    <!-- getTopicThreadsTag -->
+  <tag>
+    <name>getTopicThreads</name>
+    <tag-class>atg.portal.gear.discussion.taglib.GetTopicThreadsTag</tag-class>
+    <tei-class>atg.portal.gear.discussion.taglib.GetTopicThreadsTEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Tag used to get list of all threads for a given Topic
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    
+    <attribute>
+      <name>forumID</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>topicID</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>sortOrder</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>startRange</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>rangeSize</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+
+    </tag>  
+  
+     <!-- addForumTag -->
+  <tag>
+    <name>addForum</name>
+    <tag-class>atg.portal.gear.discussion.taglib.AddForumTag</tag-class>
+    <tei-class>atg.portal.gear.discussion.taglib.AddForumTEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Tag used to create a new forum and optionally associate it with a
+      community.
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    
+    <attribute>
+      <name>newForum</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>user</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    
+    <attribute>
+      <name>gearId</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>env</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    
+ </tag>  
+    
+  <!-- addGearForumTag -->
+  <tag>
+    <name>addGearForum</name>
+    <tag-class>atg.portal.gear.discussion.taglib.AddGearForumTag</tag-class>
+    <tei-class>atg.portal.gear.discussion.taglib.AddGearForumTEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Tag used to associate a forum with a gear
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    
+    <attribute>
+      <name>forumId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>gearId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    
+    <attribute>
+      <name>env</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+ </tag>  
+    
+  <!-- addUserForumTag -->
+  <tag>
+    <name>addUserForum</name>
+    <tag-class>atg.portal.gear.discussion.taglib.AddUserForumTag</tag-class>
+    <tei-class>atg.portal.gear.discussion.taglib.AddUserForumTEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Tag used to associate a forum with a user's gear instance
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    
+    <attribute>
+      <name>forumId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>gearId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    
+    <attribute>
+      <name>userId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    
+ </tag>  
+
+ <!-- newContentForumTag -->
+  <tag>
+    <name>newContentForum</name>
+    <tag-class>atg.portal.gear.discussion.taglib.NewContentForumTag</tag-class>
+    <tei-class>atg.portal.gear.discussion.taglib.NewContentForumTEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Tag used to create a new forum and update another content item with the ID
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    
+    <attribute>
+      <name>forumName</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>user</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    
+    <attribute>
+      <name>forumType</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    
+    <attribute>
+      <name>gearId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>contentReposPath</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>itemDescriptorName</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>idPropertyName</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>contentId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+ </tag>
+
+  <!-- deleteForumTag -->
+  <tag>
+    <name>deleteForum</name>
+    <tag-class>atg.portal.gear.discussion.taglib.DeleteForumTag</tag-class>
+    <tei-class>atg.portal.gear.discussion.taglib.DeleteForumTEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Tag used to delete a forum (set deleteFlag=1) and remove any gear/forum
+      relationship records
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    
+    <attribute>
+      <name>forumId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    </tag>  
+  
+  <!-- reAddForumTag -->
+  <tag>
+    <name>reAddForum</name>
+    <tag-class>atg.portal.gear.discussion.taglib.ReAddForumTag</tag-class>
+    <tei-class>atg.portal.gear.discussion.taglib.ReAddForumTEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Tag used to un-delete a forum (set deleteFlag=0) 
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    
+    <attribute>
+      <name>forumId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    </tag>  
+  
+  <!-- removeUserForumTag -->
+  <tag>
+    <name>removeUserForum</name>
+    <tag-class>atg.portal.gear.discussion.taglib.RemoveUserForumTag</tag-class>
+    <tei-class>atg.portal.gear.discussion.taglib.RemoveUserForumTEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Tag used to delete a user/gear/forum relationship record
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    
+    <attribute>
+      <name>forumId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>gearId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>userId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    </tag>  
+  
+  <!-- removeGearForumTag -->
+  <tag>
+    <name>removeGearForum</name>
+    <tag-class>atg.portal.gear.discussion.taglib.RemoveGearForumTag</tag-class>
+    <tei-class>atg.portal.gear.discussion.taglib.RemoveGearForumTEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Tag used to delete a gear/forum relationship record
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    
+    <attribute>
+      <name>forumId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>gearId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    </tag>  
+
+  <!-- deletePostTag -->
+  <tag>
+    <name>deletePost</name>
+    <tag-class>atg.portal.gear.discussion.taglib.DeletePostTag</tag-class>
+    <tei-class>atg.portal.gear.discussion.taglib.DeletePostTEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Tag used to delete (set deleteFlag=1) individual posts, can be a topic or response
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    
+    <attribute>
+      <name>messageId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    </tag>  
+</taglib>

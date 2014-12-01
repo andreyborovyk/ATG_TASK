@@ -1,0 +1,59 @@
+<!DOCTYPE schema SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="sitemaps_ddl"
+  description="Tables for the sitemap repository">
+  <comment>
+    @version $Id:
+    //product/DAF/Sitemap/main/templates/DAS/sql/deployment_ddl.xml#26 $
+  </comment>
+
+  <comment>Table for siteindex repository item</comment>
+  
+  <table name="das_siteindex">
+    <!-- Id -->
+    <column name="siteindex_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <!-- Last modified date -->
+    <column name="lastmod">
+      <column-type db="generic" type="datetime"/>
+    </column>
+    <column name="filename" description="siteindex filename">
+      <column-type db="generic" type="varchar" length="100"/>
+    </column>
+    <!-- siteindex xml -->
+    <column name="xml" description="Long XML string that represents siteindex file" i18n="y">
+      <column-type db="generic" type="long-varchar"/>
+      <column-type db="db2" type="clob"/>
+    </column>
+    <!--  Primary key -->
+    <primary-key name="siteindex_pk">
+      <index-column column="siteindex_id" order="asc" seq="1"/>
+    </primary-key>
+  </table>
+ 
+  <comment>Table for sitemap repository item</comment>
+  
+  <table name="das_sitemap">
+    <column name="sitemap_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40" />
+    </column>
+    <!-- Last modified date -->
+    <column name="lastmod">
+      <column-type db="generic" type="datetime" />
+    </column>
+    <column name="filename" description="sitemap filename">
+      <column-type db="generic" type="varchar" length="100"/>
+    </column>
+    <!-- sitemap xml -->
+    <column name="xml" description="Long XML string that represents sitemap file" i18n="y">
+      <column-type db="generic" type="long-varchar"/>
+      <column-type db="db2" type="clob"/>
+    </column>
+    <!--  Primary key -->
+    <primary-key name="sitemap_pk">
+      <index-column column="sitemap_id" order="asc" seq="1"/>
+    </primary-key>
+  </table>
+
+</schema>
+<!-- @version $Id: //product/DAS/version/10.0.3/templates/DAS/sql/sitemap_ddl.xml#2 $$Change: 651448 $-->

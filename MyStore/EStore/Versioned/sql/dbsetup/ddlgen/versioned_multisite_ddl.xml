@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This is a generated file -->
+
+<!DOCTYPE schema SYSTEM "http://road.atg.com/dtds/ddlgen/schema.dtd">
+<schema name="versioned_multisite_ddl" description="Tables for the estore multisite repository">
+  <comment> @version $Id: //edu/ILT-Courses/main/COMM/StudentFiles/COM/setup/copy-files/apps/MyStore/EStore/Versioned/sql/dbsetup/ddlgen/versioned_multisite_ddl.xml#3 $$Change: 635816 $</comment>
+
+  
+	 <table name="crs_site_attribute" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+			</column>
+
+			<!-- Data Columns -->
+
+    <column name="id" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+    <column name="resource_bundle" nullable="y" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+    
+    <column name="prod_threshold" nullable="y" default="" i18n="n" description="">
+      <column-type db="generic" type="integer"/>
+    </column>
+    
+    <column name="page_size" nullable="y" default="" i18n="n" description="">
+      <column-type db="generic" type="integer"/>
+    </column>
+    
+    <column name="css_file" nullable="y" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+
+    <column name="large_site_icon" nullable="y" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+
+    <column name="default_country_code" nullable="y" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="2"/>
+    </column>
+    
+    <column name="emailafriend" nullable="y" default="" i18n="n" description="">
+      <column-type db="generic" type="one-digit"/>
+    </column>
+
+    <column name="backinstock_addr" nullable="y" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="50"/>
+    </column>
+    
+    <column name="newpass_addr" nullable="y" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="50"/>
+    </column>
+    
+    <column name="orderconfirm_addr" nullable="y" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="50"/>
+    </column>
+    
+    <column name="ordershipped_addr" nullable="y" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="50"/>
+    </column>
+    
+    <column name="promo_addr" nullable="y" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="50"/>
+    </column>
+    
+    
+    
+  <primary-key name="crs_site_attr_p">
+      <index-column column="id" seq="1" order="asc"/>
+    
+				 <index-column seq="2" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table>
+
+  
+	 <table name="crs_bill_codes" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+			</column>
+
+			<!-- Data Columns -->
+    
+    <column name="id" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+  	<column name="country_codes" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+    <column name="sequence_num" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="integer"/>
+      <column-type db="oracle" type="integer"/>
+    </column>
+    
+    
+    
+    
+    
+  <primary-key name="crs_bill_codes_p">
+      <index-column column="id" seq="1" order="asc"/>
+      <index-column column="sequence_num" seq="2" order="asc"/>
+    
+				 <index-column seq="3" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table>  
+  
+  
+	 <table name="crs_non_bill_codes" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+			</column>
+
+			<!-- Data Columns -->
+    
+    <column name="id" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+  	<column name="country_codes" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+    <column name="sequence_num" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="integer"/>
+      <column-type db="oracle" type="integer"/>
+    </column>
+    
+    
+    
+    
+    
+  <primary-key name="crs_non_bill_c_p">
+      <index-column column="id" seq="1" order="asc"/>
+      <index-column column="sequence_num" seq="2" order="asc"/>
+    
+				 <index-column seq="3" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table>  
+
+  
+	 <table name="crs_ship_codes" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+			</column>
+
+			<!-- Data Columns -->
+    
+    <column name="id" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+  	<column name="country_codes" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+    <column name="sequence_num" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="integer"/>
+      <column-type db="oracle" type="integer"/>
+    </column>
+    
+    
+    
+     
+       
+  <primary-key name="crs_ship_codes_p">
+      <index-column column="id" seq="1" order="asc"/>
+      <index-column column="sequence_num" seq="2" order="asc"/>
+    
+				 <index-column seq="3" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table>  
+  
+  
+	 <table name="crs_non_ship_codes" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+			</column>
+
+			<!-- Data Columns -->
+    
+    <column name="id" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+  	<column name="country_codes" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+    <column name="sequence_num" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="integer"/>
+      <column-type db="oracle" type="integer"/>
+    </column>
+    
+    
+    
+     
+       
+  <primary-key name="crs_non_ship_c_p">
+      <index-column column="id" seq="1" order="asc"/>
+      <index-column column="sequence_num" seq="2" order="asc"/>
+    
+				 <index-column seq="3" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table> 
+  
+  
+	 <table name="crs_site_languages" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+			</column>
+
+			<!-- Data Columns -->
+    
+    <column name="id" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+    <column name="languages" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+    <column name="sequence_num" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="integer"/>
+      <column-type db="oracle" type="integer"/>
+    </column>
+    
+    
+    
+    
+        
+  <primary-key name="crs_site_lang_p">
+      <index-column column="id" seq="1" order="asc"/>
+      <index-column column="sequence_num" seq="2" order="asc"/>
+    
+				 <index-column seq="3" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table>
+
+</schema>
+<!-- @version $Id: //edu/ILT-Courses/main/COMM/StudentFiles/COM/setup/copy-files/apps/MyStore/EStore/Versioned/sql/dbsetup/ddlgen/versioned_multisite_ddl.xml#3 $$Change: 635816 $-->

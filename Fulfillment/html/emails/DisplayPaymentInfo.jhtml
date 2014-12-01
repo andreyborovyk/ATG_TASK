@@ -1,0 +1,47 @@
+<JAVA>/* A shopping cart-like display of order information  */</JAVA>
+
+<importbean bean="/atg/dynamo/droplet/Switch">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/IsNull">
+
+<droplet bean="IsNull">
+  <param name="value" value="param:order.paymentGroups">
+  <oparam name="true">
+   <p>There are no payment groups in this order.
+  </oparam>
+  <oparam name="false">
+    <droplet bean="ForEach">
+      <param name="array" value="param:order.paymentGroups">
+      <param name="elementName" value="pg">
+      <oparam name="empty">
+	There were no payment groups.<br>
+      </oparam>
+      <oparam name="output">
+	<p><b>Payment information: <valueof param="pg.paymentMethod"></valueof></b><br>
+	    Amount = <valueof param="pg.amount" currency></valueof><br>
+	<droplet bean="Switch">
+	  <param name="value" value="param:pg.paymentMethod">
+	  <oparam name="creditCard">
+	    <i>Pay with <valueof param="pg.creditCardType"></valueof> :</i> #
+	    <valueof param="pg.creditCardNumber" creditcard groupingsize="4">no number</valueof><BR>
+	    Expiration date is <valueof param="pg.expirationMonth"></valueof>/
+	    <valueof param="pg.expirationYear"></valueof><br>
+	    <i>Billing address:</i><br>
+	    <valueof param="pg.billingAddress.firstName"></valueof> 
+	    <valueof param="pg.billingAddress.lastName"></valueof><BR>
+	    <valueof param="pg.billingAddress.address1"></valueof> 
+	    <valueof param="pg.billingAddress.address2"></valueof><BR>
+	    <valueof param="pg.billingAddress.city"></valueof>, 
+	    <valueof param="pg.billingAddress.state"></valueof> 
+	    <valueof param="pg.billingAddress.postalCode"></valueof><BR>
+	  </oparam>
+	  <oparam name="giftCertificate">
+	    <i>Pay with gift certificate <valueof param="pg.giftCertificateNumber"></valueof> :</i><br>
+	  </oparam>
+	</droplet>
+      </oparam>
+    </droplet>    
+  </oparam>
+</droplet>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/Fulfillment/html/emails/DisplayPaymentInfo.jhtml#2 $$Change: 651448 $*/</java>
+

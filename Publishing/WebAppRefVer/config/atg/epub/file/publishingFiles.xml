@@ -1,0 +1,24 @@
+<gsa-template xml-combine="append">
+
+  <!-- *********************************** -->
+  <!--   File Content Item Definition      -->
+  <!-- *********************************** -->
+  <item-descriptor name="fileAsset" xml-combine="append">
+    <table name="epub_file_asset" xml-combine="append">
+      <property name="type" xml-combine="append">
+        <option value="webAppRefJavaServerPage" code="18800"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ********************************************* -->
+  <!--   webAppRefJavaServerPage Item Definition     -->
+  <!-- ********************************************* -->
+  <item-descriptor name="webAppRefJavaServerPage" super-type="javaServerPage"
+      sub-type-value="webAppRefJavaServerPage"
+      content="true" display-name-resource="itemDescriptorWebAppRefJavaServerPage"
+      item-cache-size="1000" query-cache-size="500">
+    <attribute name="resourceBundle" value="atg.epub.file.WebAppRefFileRepositoryResources"/>
+  </item-descriptor>
+</gsa-template>
+<!-- @version $Id: //product/Publishing/version/10.0.3/WebAppRefVer/config/atg/epub/file/publishingFiles.xml#2 $$Change: 651448 $ -->

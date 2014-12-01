@@ -1,0 +1,714 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<gsa-template>
+
+  <item-descriptor name="user">
+    <attribute name="categoryScenariosPriority" value="50"/>
+    <attribute name="categorySlotsPriority" value="60"/>
+
+    <table name="dps_user_scenario" type="multi" id-column-name="id">
+      <property name="scenarioInstances" data-type="set" column-name="ind_scenario_id"
+          component-item-type="individualScenario" cascade="update,delete" expert="true"
+          category-resource="categoryScenarios" display-name-resource="scenarioInstances">
+        <attribute name="resourceBundle" value="atg.scenario.UserProfileTemplateResources"/>
+      </property>
+    </table>
+    <table name="dps_scenario_value" type="multi" id-column-name="id" multi-column-name="tag">
+      <property name="scenarioValues" data-type="map" column-name="scenario_value" 
+          component-data-type="string" expert="true" 
+          category-resource="categoryScenarios" display-name-resource="scenarioValues">
+        <attribute name="resourceBundle" value="atg.scenario.UserProfileTemplateResources"/>
+      </property>
+    </table>
+    <table name="dps_user_slot" type="multi" id-column-name="id">
+      <property name="slotInstances" data-type="set" column-name="profile_slot_id"
+          component-item-type="profileSlot" cascade="update,delete" expert="true"
+          category-resource="categorySlots" display-name-resource="slotInstances">
+        <attribute name="resourceBundle" value="atg.scenario.UserProfileTemplateResources"/>
+      </property>
+    </table>
+    <table name="dps_usr_markers" type="multi" id-column-name="profile_id" multi-column-name="sequence_num">
+      <property name="markers" data-type="list" component-item-type="marker" cascade="delete,update"
+	      category-resource="markerInfo" display-name-resource="profileMarkers"
+          column-name="marker_id" 	>
+		      <attribute name="resourceBundle" value="atg.markers.MarkerTemplateResources"/>
+      </property>
+    </table>
+    <table name="dss_user_bpmarkers" type="multi" id-column-name="profile_id">
+      <property name="businessProcessMarkers" data-type="set" component-item-type="businessProcessMarker" cascade="delete,update"
+	      category-resource="markerInfo" display-name-resource="businessProcessMarkers"
+          column-name="marker_id">
+        <attribute name="resourceBundle" value="atg.markers.bp.BusinessProcessTemplateResources"/>
+        <attribute name="uiwritable" value="false"/>
+      </property>
+    </table>
+
+  </item-descriptor>
+
+  <!-- ==================================================
+  ++   Profile Slot Instance
+  =================================================== -->
+  <item-descriptor name="profileSlot" expert="true" display-name-resource="itemDescriptorProfileSlot">
+    <attribute name="resourceBundle" value="atg.scenario.UserProfileTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryContentsPriority" value="20"/>
+    <attribute name="categoryInfoPriority" value="30"/>
+
+    <table name="dss_profile_slot" type="primary" id-column-name="id">
+      <property name="id" category-resource="categoryInfo" display-name-resource="id">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="slotName" data-type="string" column-name="slot_name" 
+                category-resource="categoryBasics" display-name-resource="slotName">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="offset" data-type="int"  column-name="item_offset"
+                category-resource="categoryBasics" display-name-resource="offset">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="user" item-type="user" column-name="user_id"
+                category-resource="categoryBasics" display-name-resource="profile">
+         <attribute name="propertySortPriority" value="20"/>
+         <!-- 
+          This tells us that we can remove a "user" without removing the
+          slot instances which reference it.  This is necessary because
+          the dps_user_slot table has a reference to the instance id
+          but there's no mapping from this item to that id.  We thus can't
+          remove the instance directly without removing it from the user.
+           -->
+         <attribute name="ownedBy" value="user"/>
+         <!-- 
+          This is a hint to the export/import process to process this on
+          the first pass as though it is required.  this property can't be
+          marked as required because in some cases it gets set to null for
+          transient items 
+          -->
+         <attribute name="notnull" value="true"/>
+      </property>
+    </table>
+
+    <table name="dss_slot_items" type="multi" id-column-name="slot_id" multi-column-name="idx">
+      <property name="slotItems" data-type="list" column-name="item_id" component-data-type="string"
+                category-resource="categoryContents" display-name-resource="slotItems">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+    </table>
+
+    <table name="dss_slot_priority" type="multi" id-column-name="slot_id" multi-column-name="idx">
+      <property name="slotItemPriorities" data-type="list" column-name="priority" component-data-type="int"
+                category-resource="categoryContents" display-name-resource="slotItemPriorities">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ==================================================
+  ++   Individual Scenario Instance
+  =================================================== -->
+  <item-descriptor name="individualScenario" expert="true" query-cache-size="100"
+                   display-name-resource="itemDescriptorIndividualScenario">
+    <attribute name="resourceBundle" value="atg.scenario.UserProfileTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryContextPriority" value="20"/>
+    <attribute name="categoryInfoPriority" value="30"/>
+
+    <table name="dss_ind_scenario" type="primary" id-column-name="id">
+      <property name="id" category-resource="categoryInfo" display-name-resource="id">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="processName" data-type="string" column-name="scenario_name"
+                category-resource="categoryBasics" display-name-resource="scenarioName">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="modificationTime" data-type="long" column-name="modification_time"
+                category-resource="categoryInfo" display-name-resource="modificationTime">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="segmentName" data-type="string" column-name="segment_name"
+                category-resource="categoryBasics" display-name-resource="segmentName">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="creatorId" data-type="string" column-name="creator_id"
+                category-resource="categoryBasics" display-name-resource="creatorId">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="state" data-type="string"
+                category-resource="categoryBasics" display-name-resource="state">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="subject" item-type="user" column-name="user_id"
+                category-resource="categoryBasics" display-name-resource="profile">
+         <attribute name="propertySortPriority" value="30"/>
+         <!-- 
+          This tells us that we can remove a "user" without removing the
+          scenario instances which reference it.  This is necessary because
+          the dps_user_scenario table has a reference to the instance id
+          but there's no mapping from this item to that id.  We thus can't
+          remove the instance directly without removing it from the user.
+           -->
+         <attribute name="ownedBy" value="user"/>
+         <!-- 
+          This is a hint to the export/import process to process this on
+          the first pass as though it is required.  this property can't be
+          marked as required because in some cases it gets set to null for
+          transient items 
+          -->
+         <attribute name="notnull" value="true"/>
+      </property>
+    </table>
+
+    <!-- 
+     A transient property which indicates whether this scenario instance 
+     was spawned off due to a recurring event.  This is used to determine
+     whether a transient user's scenario instance should be copied over 
+     to the persistent user's profile.
+     -->
+    <property name="createdByRecurringEvent" data-type="boolean" default="false"
+              category-resource="categoryBasics" display-name-resource="createdByRecurringEvent">
+      <attribute name="propertySortPriority" value="30"/>
+    </property>
+
+    <table name="dss_scenario_strs" type="multi" id-column-name="id" multi-column-name="tag">
+      <property name="contextStrings" data-type="map" component-data-type="string" column-name="context_str"
+                category-resource="categoryContext" display-name-resource="contextStrings">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+    </table>
+    <table name="dss_scenario_bools" type="multi" id-column-name="id" multi-column-name="tag">
+      <property name="contextBooleans" data-type="map" component-data-type="boolean" column-name="context_bool"
+                category-resource="categoryContext" display-name-resource="contextBooleans">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+    </table>
+    <table name="dss_scenario_longs" type="multi" id-column-name="id" multi-column-name="tag">
+      <property name="contextLongs" data-type="map" component-data-type="long" column-name="context_long"
+                category-resource="categoryContext" display-name-resource="contextLongs">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+    </table>
+    <table name="dss_scenario_dbls" type="multi" id-column-name="id" multi-column-name="tag">
+      <property name="contextDoubles" data-type="map" component-data-type="double" column-name="context_dbl"
+                category-resource="categoryContext" display-name-resource="contextDoubles">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+    </table>
+    <table name="dss_scenario_dates" type="multi" id-column-name="id" multi-column-name="tag">
+      <property name="contextDates" data-type="map" component-data-type="date" column-name="context_date"
+                category-resource="categoryContext" display-name-resource="contextDates">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ==================================================
+  ++   Collective Scenario Instance
+  =================================================== -->
+  <item-descriptor name="collectiveScenario" expert="true" query-cache-size="500"
+                   display-name-resource="itemDescriptorCollectiveScenario">
+    <attribute name="resourceBundle" value="atg.scenario.UserProfileTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="dss_coll_scenario" type="primary" id-column-name="id">
+      <property name="id" category-resource="categoryInfo" display-name-resource="id">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="processName" data-type="string" column-name="scenario_name"
+                category-resource="categoryBasics" display-name-resource="scenarioName">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="modificationTime" data-type="long" column-name="modification_time"
+                category-resource="categoryInfo" display-name-resource="modificationTime">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="segmentName" data-type="string" column-name="segment_name"
+                category-resource="categoryBasics" display-name-resource="segmentName">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="creatorId" data-type="string" column-name="creator_id"
+                category-resource="categoryBasics" display-name-resource="creatorId">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="state" data-type="string"
+                category-resource="categoryBasics" display-name-resource="state">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ==================================================
+  ++   Scenario Info
+  =================================================== -->
+  <item-descriptor name="scenarioInfo" expert="true" display-name-resource="itemDescriptorScenarioInfo">
+    <attribute name="resourceBundle" value="atg.scenario.UserProfileTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="dss_scenario_info" type="primary" id-column-name="id">
+      <property name="id" category-resource="categoryInfo" display-name-resource="id">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="processName" data-type="string" column-name="scenario_name"
+                category-resource="categoryBasics" display-name-resource="scenarioName">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="processStatus" data-type="enumerated" default="disabled" column-name="scenario_status"
+                category-resource="categoryBasics" display-name-resource="scenarioStatus">
+         <attribute name="propertySortPriority" value="20"/>
+         <attribute name="useCodeForValue" value="true"/>
+         <option value="disabled" code="1"/>
+         <option value="running" code="2"/>
+      </property>
+      <property name="modificationTime" data-type="long" column-name="modification_time"
+                category-resource="categoryInfo" display-name-resource="modificationTime">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="creationTime" data-type="long" column-name="creation_time"
+                category-resource="categoryInfo" display-name-resource="creationTime">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="author" data-type="string"
+                category-resource="categoryInfo" display-name-resource="author">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="lastModifiedBy" data-type="string" column-name="last_modified_by"
+                category-resource="categoryInfo" display-name-resource="lastModifiedBy">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="stateMachineVersion" data-type="int" column-name="psm_version"
+                category-resource="categoryBasics" display-name-resource="stateMachineVersion">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="pdl" data-type="binary" column-name="sdl"
+                category-resource="categoryBasics" display-name-resource="sdl">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+    <table name="dss_scen_mig_info" type="multi" id-column-name="scenario_info_id">
+      <property name="migrationInfos" data-type="set" column-name="id"
+                component-item-type="scenarioMigrationInfo" cascade="update,delete"
+                category-resource="categoryBasics" display-name-resource="migrationInfos">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ==================================================
+  ++   Scenario Migration Info
+  =================================================== -->
+  <item-descriptor name="scenarioMigrationInfo" expert="true"
+                   display-name-resource="itemDescriptorScenarioMigrationInfo">
+    <attribute name="resourceBundle" value="atg.scenario.UserProfileTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="dss_scen_mig_info" type="primary" id-column-name="id">
+      <property name="id" category-resource="categoryInfo" display-name-resource="id">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="processName" data-type="string" column-name="scenario_name"
+                category-resource="categoryBasics" display-name-resource="scenarioName">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="modificationTime" data-type="long" column-name="modification_time"
+                category-resource="categoryInfo" display-name-resource="modificationTime">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="stateMachineVersion" data-type="int" column-name="psm_version"
+                category-resource="categoryBasics" display-name-resource="stateMachineVersion">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="pdl" data-type="binary" column-name="sdl"
+                category-resource="categoryBasics" display-name-resource="sdl">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="migrationStatus" data-type="enumerated" default="inProgress" column-name="migration_status"
+                category-resource="categoryBasics" display-name-resource="migrationStatus">
+         <attribute name="propertySortPriority" value="30"/>
+         <attribute name="useCodeForValue" value="true"/>
+         <option value="inProgress" code="1"/>
+         <option value="done" code="2"/>
+      </property>
+      <property name="processInfo" item-type="scenarioInfo" column-name="scenario_info_id" required="true"
+                category-resource="categoryBasics" display-name-resource="scenarioInfo">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+    </table>
+    <table name="dss_mig_info_seg" type="multi" id-column-name="id" multi-column-name="idx">
+      <property name="segmentNames" data-type="list" component-data-type="string" column-name="segment_name"
+                category-resource="categoryBasics" display-name-resource="segmentNames">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ==================================================
+  ++   Scenario Template Info
+  =================================================== -->
+  <item-descriptor name="scenarioTemplateInfo" expert="true" id-space-name="templateInfo" 
+                   display-name-resource="itemDescriptorScenarioTemplateInfo">
+    <attribute name="resourceBundle" value="atg.scenario.UserProfileTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="dss_template_info" type="primary" id-column-name="id">
+      <property name="id" category-resource="categoryInfo" display-name-resource="id">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="templateName" data-type="string" column-name="template_name"
+                category-resource="categoryBasics" display-name-resource="templateName">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="modificationTime" data-type="long" column-name="modification_time"
+                category-resource="categoryInfo" display-name-resource="modificationTime">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="creationTime" data-type="long" column-name="creation_time"
+                category-resource="categoryInfo" display-name-resource="creationTime">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="author" data-type="string"
+                category-resource="categoryInfo" display-name-resource="author">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="lastModifiedBy" data-type="string" column-name="last_modified_by"
+                category-resource="categoryInfo" display-name-resource="lastModifiedBy">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="pdl" data-type="binary" column-name="sdl"
+                category-resource="categoryBasics" display-name-resource="sdl">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ==================================================
+  ++   Collective Scenario Transition
+  =================================================== -->
+  <item-descriptor name="collectiveScenarioTransition" expert="true" id-space-name="collectiveTransition"
+                   display-name-resource="itemDescriptorCollectiveScenarioTransition">
+    <attribute name="resourceBundle" value="atg.scenario.UserProfileTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="10"/>
+
+    <table name="dss_coll_trans" type="primary" id-column-name="id">
+      <property name="id" category-resource="categoryInfo" display-name-resource="id">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="processName" data-type="string" column-name="scenario_name"
+                category-resource="categoryBasics" display-name-resource="scenarioName">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="modificationTime" data-type="long" column-name="modification_time"
+                category-resource="categoryInfo" display-name-resource="modificationTime">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="serverId" data-type="string" column-name="server_id"
+                category-resource="categoryBasics" display-name-resource="serverId">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="messageBean" data-type="binary" column-name="message_bean"
+                category-resource="categoryBasics" display-name-resource="messageBean">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="eventType" data-type="string" column-name="event_type"
+                category-resource="categoryBasics" display-name-resource="eventType">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="segmentName" data-type="string" column-name="segment_name"
+                category-resource="categoryBasics" display-name-resource="segmentName">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="state" data-type="string"
+                category-resource="categoryBasics" display-name-resource="state">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="collectiveInstance" item-type="collectiveScenario" column-name="coll_scenario_id"
+                category-resource="categoryBasics" display-name-resource="collectiveInstance">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="step" data-type="enumerated" default="actions1"
+                category-resource="categoryBasics" display-name-resource="step">
+         <attribute name="propertySortPriority" value="30"/>
+         <attribute name="useCodeForValue" value="true"/>
+         <option value="actions1" code="1"/>
+         <option value="actions2" code="2"/>
+         <option value="nextState1" code="3"/>
+         <option value="nextState2" code="4"/>
+      </property>
+      <property name="count" column-name="current_count" data-type="int" default="0"
+                category-resource="categoryBasics" display-name-resource="count">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="lastQueryId" data-type="string" column-name="last_query_id"
+                category-resource="categoryBasics" display-name-resource="lastQueryId">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ==================================================
+  ++   Individual Scenario Transition
+  =================================================== -->
+  <item-descriptor name="individualScenarioTransition" expert="true" id-space-name="individualTransition"
+                   display-name-resource="itemDescriptorIndividualScenarioTransition">
+    <attribute name="resourceBundle" value="atg.scenario.UserProfileTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="dss_ind_trans" type="primary" id-column-name="id">
+      <property name="id" category-resource="categoryInfo" display-name-resource="id">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="processName" data-type="string" column-name="scenario_name"
+                category-resource="categoryBasics" display-name-resource="scenarioName">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="modificationTime" data-type="long" column-name="modification_time"
+                category-resource="categoryInfo" display-name-resource="modificationTime">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="serverId" data-type="string" column-name="server_id"
+                category-resource="categoryBasics" display-name-resource="serverId">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="messageBean" data-type="binary" column-name="message_bean"
+                category-resource="categoryBasics" display-name-resource="messageBean">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="eventType" data-type="string" column-name="event_type"
+                category-resource="categoryBasics" display-name-resource="eventType">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="segmentName" data-type="string" column-name="segment_name"
+                category-resource="categoryBasics" display-name-resource="segmentName">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="state" data-type="string"
+                category-resource="categoryBasics" display-name-resource="state">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="lastQueryId" data-type="string" column-name="last_query_id"
+                category-resource="categoryBasics" display-name-resource="lastQueryId">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ==================================================
+  ++   Scenario Deletion
+  =================================================== -->
+  <item-descriptor name="scenarioDeletion" expert="true" id-space-name="deletion"
+                   display-name-resource="itemDescriptorScenarioDeletion">
+    <attribute name="resourceBundle" value="atg.scenario.UserProfileTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="dss_deletion" type="primary" id-column-name="id">
+      <property name="id" category-resource="categoryInfo" display-name-resource="id">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="processName" data-type="string" column-name="scenario_name"
+                category-resource="categoryBasics" display-name-resource="scenarioName">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="modificationTime" data-type="long" column-name="modification_time"
+                category-resource="categoryInfo" display-name-resource="modificationTime">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+    <table name="dss_del_seg_name" type="multi" id-column-name="id" multi-column-name="idx">
+      <property name="segmentNames" data-type="list" component-data-type="string" column-name="segment_name"
+                category-resource="categoryBasics" display-name-resource="segmentNames">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ==================================================
+  ++   Scenario Migration
+  =================================================== -->
+  <item-descriptor name="scenarioMigration" expert="true"
+                   display-name-resource="itemDescriptorScenarioMigration">
+    <attribute name="resourceBundle" value="atg.scenario.UserProfileTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="dss_migration" type="primary" id-column-name="id">
+      <property name="id" category-resource="categoryInfo" display-name-resource="id">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="processName" data-type="string" column-name="scenario_name"
+                category-resource="categoryBasics" display-name-resource="scenarioName">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="oldModificationTime" data-type="long" column-name="old_mod_time"
+                category-resource="categoryBasics" display-name-resource="oldModificationTime">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="newModificationTime" data-type="long" column-name="new_mod_time"
+                category-resource="categoryBasics" display-name-resource="newModificationTime">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="migrationInfo" item-type="scenarioMigrationInfo" column-name="migration_info_id"
+                category-resource="categoryBasics" display-name-resource="migrationInfo">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+    </table>
+    <table name="dss_mig_seg_name" type="multi" id-column-name="id" multi-column-name="idx">
+      <property name="segmentNames" data-type="list" component-data-type="string" column-name="segment_name"
+                category-resource="categoryBasics" display-name-resource="segmentNames">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ==================================================
+  ++   Scenario Xref
+  =================================================== -->
+
+  <item-descriptor name="scenarioXref" expert="true" id-space-name="xref" query-cache-size="20"
+                   display-name-resource="itemDescriptorScenarioXref">
+    <attribute name="resourceBundle" value="atg.scenario.UserProfileTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="10"/>
+    
+    <table name="dss_xref" type="primary" id-column-name="id">
+      <property name="id" category-resource="categoryInfo" display-name-resource="id">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="processName" data-type="string" column-name="scenario_name"
+                category-resource="categoryBasics" display-name-resource="scenarioName">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="referenceType" data-type="string" column-name="reference_type"
+                category-resource="categoryBasics" display-name-resource="referenceType">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="referenceTarget" data-type="string" column-name="reference_target"
+                category-resource="categoryBasics" display-name-resource="referenceTarget">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="marker" display-name-resource="itemDescriptorMarker"
+  	sub-type-property="type" display-property="key" version-property="version"
+      item-cache-size="1000" query-cache-size="1000">
+     	<attribute name="resourceBundle" value="atg.markers.MarkerTemplateResources"/>
+   <property name="duplicationMode" data-type="string"
+   	category-resource="markerInfo" display-name-resource="duplicationMode">
+   </property>
+   <table name="dps_markers" type="primary" id-column-name="marker_id">
+	    <property name="id" column-name="marker_id"/>
+      <property name="key" column-name="marker_key" required="true" data-type="string"
+        	category-resource="markerInfo" display-name-resource="key">
+	      <attribute name="propertySortPriority" value="1"/>
+      </property>
+      <property name="value" column-name="marker_value" data-type="string"
+      	category-resource="markerInfo" display-name-resource="value">
+      	<attribute name="propertySortPriority" value="2"/>
+      </property>
+      <property name="data" column-name="marker_data" data-type="string"
+      	category-resource="markerInfo" display-name-resource="data">
+        	<attribute name="propertySortPriority" value="3"/>
+      </property>
+      <property name="creationDate" data-type="timestamp" column-name="creation_date"
+            category-resource="markerInfo" display-name-resource="creationDate">
+		      <attribute name="propertySortPriority" value="4"/>
+        	<attribute name="uiwritable" value="false"/>
+      </property>
+      <property name="version" data-type="int" column-name="version" queryable="false"
+            expert="true" category-resource="markerInfo" display-name-resource="version">
+      	<attribute name="uiwritable" value="false"/>
+      	<attribute name="propertySortPriority" value="5"/>
+      </property>
+      <property name="type" data-type="enumerated" column-name="marker_type" hidden="true"/>
+
+    </table>
+
+
+  </item-descriptor>
+  <!-- 
+  *************************************************************
+  marker type for busniess process markers.
+  *************************************************************
+  -->
+  <item-descriptor name="businessProcessMarker" display-name-resource="itemDescriptorProfileBPMarker"
+  	sub-type-property="type" display-property="key" version-property="version"
+      item-cache-size="1000" query-cache-size="1000">
+     	<attribute name="resourceBundle" value="atg.markers.bp.BusinessProcessTemplateResources"/>
+   <property name="duplicationMode" data-type="string"
+   	category-resource="markerInfo" display-name-resource="duplicationMode">
+   </property>
+   <table name="dss_user_bpmarkers" type="primary" id-column-name="marker_id">
+	    <property name="id" column-name="marker_id"/>
+      <property name="key" column-name="marker_key" required="true" data-type="string"
+        	category-resource="markerInfo" display-name-resource="key">
+	      <attribute name="propertySortPriority" value="1"/>
+      </property>
+      <property name="value" column-name="marker_value" data-type="string"
+      	category-resource="markerInfo" display-name-resource="value">
+      	<attribute name="propertySortPriority" value="2"/>
+      </property>
+      <property name="data" column-name="marker_data" data-type="string"
+      	category-resource="markerInfo" display-name-resource="data">
+        	<attribute name="propertySortPriority" value="3"/>
+      </property>
+      <property name="creationDate" data-type="timestamp" column-name="creation_date"
+            category-resource="markerInfo" display-name-resource="creationDate">
+		      <attribute name="propertySortPriority" value="4"/>
+        	<attribute name="uiwritable" value="false"/>
+      </property>
+      <property name="version" data-type="int" column-name="version" queryable="false"
+            expert="true" category-resource="markerInfo" display-name-resource="version">
+      	<attribute name="uiwritable" value="false"/>
+      	<attribute name="propertySortPriority" value="5"/>
+      </property>
+      <property name="owner" data-type="string" column-name="profile_id"
+        expert="true" category-resource="markerInfo" display-name-resource="parentProfile">
+      </property>
+
+      <property name="type" data-type="enumerated" column-name="marker_type" hidden="true"/>
+
+    </table>
+  </item-descriptor>
+
+  <!-- ==================================================
+  ++   DSS Server ID - This is here to trigger table create for
+  ++   dss_server_id. It's not used by application code directly.
+  =================================================== -->
+
+ <item-descriptor name="dssServerId">
+    <table name="dss_server_id" type="primary" id-column-name="server_id">
+      <property name="serverId" data-type="string" column-name="server_id">
+      </property>
+      <property name="serverType" data-type="int"  column-name="server_type">
+      </property>
+      </table>
+ </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //product/DSS/version/10.0.3/templates/DSS/config/atg/userprofiling/userProfile.xml#2 $$Change: 651448 $ -->

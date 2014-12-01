@@ -1,0 +1,31 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="create_gsa_subscribers_ddl">
+<comment><![CDATA[ @version $Id: //product/DAS/version/10.0.3/templates/DAS/sql/create_gsa_subscribers_ddl.xml#2 $$Change: 651448 $]]></comment>
+   <table name="das_gsa_subscriber" description="event-listener registrations for distributed caching mode in the GSA">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="address" nullable="n">
+         <column-type db="generic" type="varchar" length="50"/>
+      </column>
+      <column name="port" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="repository" nullable="n">
+         <column-type db="generic" type="varchar" length="256"/>
+         <column-type db="mssql" type="varchar" length="256" scale=""/>
+      <column-type db="sybase" type="varchar" length="255"/>
+</column>
+      <column name="itemdescriptor" nullable="n">
+         <column-type db="generic" type="varchar" length="256"/>
+         <column-type db="mssql" type="varchar" length="256" scale=""/>
+      <column-type db="sybase" type="varchar" length="255"/>
+</column>
+      <primary-key name="das_gsa_subscrib_p">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+</schema>
+<!-- @version $Id: //product/DAS/version/10.0.3/templates/DAS/sql/create_gsa_subscribers_ddl.xml#2 $$Change: 651448 $ -->

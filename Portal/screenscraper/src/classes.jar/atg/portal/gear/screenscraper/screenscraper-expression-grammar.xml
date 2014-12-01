@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- ==================================================================== -->
+<!-- Scenario UI grammar extension for the Alert gear.                    -->
+<!-- ==================================================================== -->
+
+<?xcl-stylesheet resource="atg/ui/expreditor/xcl/grammar.xsl"?>
+
+<context>
+
+  <!-- ==================================================================== -->
+  <!-- Custom expression for the SharedModeURLChanged event.                     -->
+  <!-- ==================================================================== -->
+
+  <sequence id="event-message-atg.portal.gear.screenscraper.SharedModeURLChangedMessage">    <attribute name="icon"><icon path="atg/ui/process/images/generic-event.gif"/></attribute>
+    <attribute name="eventType" value="atg.portal.gear.screenscraper.SharedModeURLChangedMessage"/>
+    <attribute name="eventContext" value="request"/>
+
+    <xml-template>
+      <event-name>atg.portal.gear.screenscraper.SharedModeURLChangedMessage</event-name>
+    </xml-template>
+
+    <token><description>Shared URL Changed</description></token>
+    <rule name="portal-event-filter"/>
+  </sequence>
+
+  <sequence id="condition-message-atg.portal.gear.screenscraper.SharedModeURLChangedMessage">
+    <expression-class>atg.ui.process.expression.EventConditionExpression</expression-class>
+    <attribute name="icon"><icon path="atg/ui/process/images/generic-condition.gif"/></attribute>
+    <attribute name="checkedEventName" value="atg.portal.gear.screenscraper.SharedModeURLChangedMessage"/>
+
+    <token><description>ScreenScraper event</description></token>
+    <rule name="portal-condition-filter"/>
+  </sequence>
+
+  <sequence id="event-message-atg.portal.gear.screenscraper.FullModeURLChangedMessage">    <attribute name="icon"><icon path="atg/ui/process/images/generic-event.gif"/></attribute>
+    <attribute name="eventType" value="atg.portal.gear.screenscraper.FullModeURLChangedMessage"/>
+    <attribute name="eventContext" value="request"/>
+
+    <xml-template>
+      <event-name>atg.portal.gear.screenscraper.FullModeURLChangedMessage</event-name>
+    </xml-template>
+
+    <token><description>Full URL Changed</description></token>
+    <rule name="portal-event-filter"/>
+  </sequence>
+
+  <sequence id="condition-message-atg.portal.gear.screenscraper.FullModeURLChangedMessage">
+    <expression-class>atg.ui.process.expression.EventConditionExpression</expression-class>
+    <attribute name="icon"><icon path="atg/ui/process/images/generic-condition.gif"/></attribute>
+    <attribute name="checkedEventName" value="atg.portal.gear.screenscraper.FullModeURLChangedMessage"/>
+
+    <token><description>ScreenScraper event</description></token>
+    <rule name="portal-condition-filter"/>
+  </sequence>
+
+
+</context>
+<!-- @version $Id: //app/portal/version/10.0.3/screenscraper/src/atg/portal/gear/screenscraper/screenscraper-expression-grammar.xml#2 $$Change: 651448 $ -->

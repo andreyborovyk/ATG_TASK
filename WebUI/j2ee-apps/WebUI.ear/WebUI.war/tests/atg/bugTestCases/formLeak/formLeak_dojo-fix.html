@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>Dojo 1.0 Form Leak Fix Test</title>
+	<script type="text/javascript" src="/dojo-1/dojo/dojo.js.uncompressed.js"
+		djConfig="isDebug: true, parseOnLoad: true"></script>
+
+		<script type="text/javascript" src="/WebUI/atg.js"></script>
+
+		
+		<script type="text/javascript" src="/dojo-1/dojo-fixes.js"></script>
+
+<body>
+
+testing using dojo 1.0
+<div id="node"></div>
+
+<script type="text/javascript" charset="utf-8">
+  var node = dojo.byId("node");
+  cont = '<div id="somethingnew"><p><form action="dosomething.html" method="get" accept-charset="utf-8"><p><input type="submit" value="Continue &rarr;"></p></form></p><p><form action="dosomething.html" method="get" accept-charset="utf-8"><p><input type="submit" value="Continue &rarr;"></p></form></p><p><form action="dosomething.html" method="get" accept-charset="utf-8"><p><input type="submit" value="Continue &rarr;"></p></form></p><p><form action="dosomething.html" method="get" accept-charset="utf-8"><p><input type="submit" value="Continue &rarr;"></p></form></p></div>';
+  
+  formManager = atg.formManager
+  
+  for( var x = 0; x <= 10; x++ ) {
+
+      
+      if(dojo.isIE){
+        var replacePattern = new RegExp("(<form([^>])*>)", "gmi");
+        var matchPattern = new RegExp("(<form)([^>])*action=([^>])*>", "gmi");
+        cont = cont.replace(replacePattern, function($0)
+        {
+          if ($0 != "")
+            if ($0.match(matchPattern))
+              return $0.replace(/<FORM/i, "<DIV")
+            else
+              return $0.replace(/<FORM/i, "<DIV action=\"#\"")
+         }).replace(/<\/FORM>/gi, "</DIV>");    
+      }
+      
+      node.innerHTML = cont;
+      if(dojo.isIE){
+        var divTags = node.getElementsByTagName('DIV');
+        console.debug("divTags.length: ", divTags.length);
+        //console.debug("atg.formNodeManager length: ", atg.formManager.formNodes.length)
+        
+        for(var k = 0; k<divTags.length; k++){
+          var thisDiv = divTags[k];
+          if(thisDiv.getAttribute('action')){
+            console.debug("ACTION FOUND");
+            newFormNode = atg.formManager.createForm();
+            atg.formManager.debugFormLength();
+            
+            newFormNode.innerHTML = thisDiv.innerHTML;
+            for (var attrName in  thisDiv.attributes)
+              if (thisDiv.attributes[attrName] &&
+                  thisDiv.attributes[attrName].nodeValue)
+                newFormNode.setAttribute(attrName, thisDiv.attributes[attrName].nodeValue);
+            for (var currentStyle in thisDiv.style){
+              if (currentStyle != "font")
+                  newFormNode.style[currentStyle] = thisDiv.style[currentStyle];
+            }
+            thisDiv.replaceNode(newFormNode);
+            thisDiv.outerHTML = "";
+            thisDiv.removeNode();
+            //k--;
+          }
+        }
+      }
+      dojo._destroyElement(node);
+  }
+  
+</script>
+</body>
+
+</html>

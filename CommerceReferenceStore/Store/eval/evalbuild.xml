@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  -->
+<project name="EvalInstall" default="all" basedir=".">
+  <target name="all" depends="">
+    
+    <concat destfile="${cim.out}.tmp">
+      <fileset file="${cim.appserver}"/>
+      <fileset file="${cim.db}"/>
+      <fileset file="${cim.atgserver}"/>
+      <fileset file="${cim.deploy}"/>
+    </concat>
+    
+      
+    <!-- Populate dynamo home, cim home, and dynamo root -->
+    <filter token="DYNAMO_HOME" value="${dynamo.home}"/>
+    <filter token="CIM_HOME" value="${cim.home}"/>
+    <filter token="DYNAMO_ROOT" value="${dynamo.root}"/>
+
+    <!-- Jboss specific filters -->
+    <filter token="JBOSS_HOME" value="${jboss.home}"/>
+
+    <!-- Weblogic specific filters -->
+    <filter token="WL_HOME" value="${wl.home}"/>
+    <filter token="WL_VERSION" value="${wl.version}"/>
+    <filter token="DOMAIN_PATH" value="${wl.domain}"/>
+    <filter token="BEA_HOME" value="${bea.home}"/>
+
+    <!-- Websphere specific filters -->
+    <filter token="WAS_HOME" value="${was.home}"/>
+    <filter token="WAS_NODE" value="${was.node}"/>
+    
+    <!-- Copy the cim script and populate values -->
+    
+    <copy tofile="${cim.out}" file="${cim.out}.tmp" filtering="true" overwrite="true"/>
+    
+    <delete file="${cim.out}.tmp"/>
+  </target>
+</project>
+<!-- @version $Id: //hosting-blueprint/B2CBlueprint/version/10.0.3/eval/evalbuild.xml#2 $$Change: 651448 $-->

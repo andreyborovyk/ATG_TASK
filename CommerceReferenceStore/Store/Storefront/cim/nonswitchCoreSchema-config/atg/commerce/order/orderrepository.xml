@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE gsa-template SYSTEM "dynamosystemresource:/atg/dtds/gsa/gsa_1.0.dtd">
+<!-- $Change: 651448 $$DateTime: 2011/06/07 13:55:45 $$Author: rbarbier $ 
+ $Id: //hosting-blueprint/B2CBlueprint/version/10.0.3/Storefront/cim/nonswitchCoreSchema-config/atg/commerce/order/orderrepository.xml#2 $$Change: 651448 $  Add item descriptors and properties specific to the B2C commerce  platform -->
+<gsa-template>
+  <header>
+    <name>CIM Store Related Order Changes </name>
+    <author>ATG</author>
+    <version>$Change: 651448 $$DateTime: 2011/06/07 13:55:45 $$Author: rbarbier $</version>
+  </header>
+  
+  <item-descriptor name="itemPriceInfo">
+    <table name="crs_item_price">
+      <property name="taxPriceInfo" cascade=""/>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="pricingAdjustment">
+		
+		<table name="dcspp_price_adjust" type="primary" id-column-name="adjustment_id">
+      <property name="pricingModel" xml-combine="remove">
+      </property>        
+      <property name="pricingModel" data-type="string" column-name="pricing_model" category-resource="categoryBasics" display-name-resource="pricingModel">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+
+    </table>
+  </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //hosting-blueprint/B2CBlueprint/version/10.0.3/Storefront/cim/nonswitchCoreSchema-config/atg/commerce/order/orderrepository.xml#2 $$Change: 651448 $-->

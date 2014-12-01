@@ -1,0 +1,149 @@
+<importbean bean="/atg/dynamo/droplet/Switch">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/ErrorMessageForEach">
+<importbean bean="/atg/commerce/order/purchase/ShippingGroupDroplet">
+<importbean bean="/atg/commerce/order/purchase/ShippingGroupFormHandler">
+<importbean bean="/atg/dynamo/droplet/IsEmpty">
+<importbean bean="/atg/userprofiling/Profile">
+<importbean bean="/atg/commerce/pricing/AvailableShippingMethods">
+<importbean bean="/atg/commerce/pricing/UserPricingModels">
+<importbean bean="/atg/commerce/order/purchase/CreateHardgoodShippingGroupFormHandler">
+<importbean bean="/atg/commerce/order/purchase/CreateElectronicShippingGroupFormHandler">
+
+<setvalue bean="Profile.currentLocation" value="checkout">
+<html>
+<head>
+<title>Shipping Information</title>
+</head>
+
+<body>
+<a href="index.jhtml">Catalog Home</a> - 
+<a href="product_search.jhtml">Product Search</a> - 
+<a href="shoppingcart.jhtml">Shopping Cart</a> - 
+<a href="lists.jhtml">My Lists</a> - 
+<a href="comparison.jhtml">Product Comparison</a> -
+<a href="giftlist_search.jhtml">Gift List Search</a> - 
+<droplet bean="/atg/dynamo/droplet/Switch">
+  <param name="value" value="bean:/atg/userprofiling/Profile.transient">
+  <oparam name="false">
+    <a href="logout.jhtml">Logout</a>
+  </oparam>
+  <oparam name="true">
+    <a href="login.jhtml">Login</a> or <a href="register.jhtml">Register</a>
+  </oparam>
+</droplet>
+<BR>
+<i>location: <valueof bean="Profile.currentLocation"></valueof></i><p>
+
+<java>/* Check for errors */</java>
+<droplet name="Switch">
+  <param name="value" value="bean:ShippingGroupFormHandler.formError">
+  <oparam name="true">
+    <font color=cc0000><STRONG><UL>
+      <droplet name="ErrorMessageForEach">
+        <param name="exceptions" value="bean:ShippingGroupFormHandler.formExceptions">
+        <oparam name="output">
+        <LI> <valueof param="message"></valueof>
+        </oparam>
+      </droplet>
+    </UL></STRONG></font>
+  </oparam>
+</droplet>
+<droplet name="Switch">
+<param name="value" value="bean:CreateHardgoodShippingGroupFormHandler.formError">
+<oparam name="true">
+  <font color=cc0000><STRONG><UL>
+    <droplet name="ErrorMessageForEach">
+      <param name="exceptions" value="bean:CreateHardgoodShippingGroupFormHandler.formExceptions">
+      <oparam name="output">
+	<LI> <valueof param="message"></valueof>
+      </oparam>
+    </droplet>
+    </UL></STRONG></font>
+</oparam>
+</droplet>
+<droplet name="Switch">
+<param name="value" value="bean:CreateElectronicShippingGroupFormHandler.formError">
+<oparam name="true">
+  <font color=cc0000><STRONG><UL>
+    <droplet name="ErrorMessageForEach">
+      <param name="exceptions" value="bean:CreateElectronicShippingGroupFormHandler.formExceptions">
+      <oparam name="output">
+	<LI> <valueof param="message"></valueof>
+      </oparam>
+    </droplet>
+    </UL></STRONG></font>
+</oparam>
+</droplet>
+
+<h3>Shipping Information</h3>
+<droplet bean="ShippingGroupDroplet">
+  <param name="clear" value="param:init">
+  <param name="shippingGroupTypes" value="hardgoodShippingGroup">
+  <param name="initShippingGroups" value="param:init">
+  <param name="initShippingInfos" value="false">
+  <oparam name="output">
+  <!-- begin output -->
+    <droplet bean="ForEach">
+      <param name="array" value="param:shippingGroups">
+      <oparam name="outputStart">
+      <form action="shipping.jhtml" method=post>
+        <input type="hidden" bean="ShippingGroupFormHandler.applyShippingGroupsSuccessURL" value="billing.jhtml?init=true">
+        <input type="hidden" bean="ShippingGroupFormHandler.specifyDefaultShippingGroupSuccessURL" value="complex_shipping.jhtml?init=true">
+        <input type="hidden" bean="ShippingGroupFormHandler.applyDefaultShippingGroup" value="true">
+        <droplet bean="Switch">
+          <param name="value" value="param:size">
+          <oparam name="0">
+            You have not entered any shipping information.
+          </oparam>
+          <oparam name="1">
+            <b>One ShippingGroup</b><BR>
+            <droplet bean="ForEach">
+              <param name="array" value="param:shippingGroups">
+              <oparam name="output">
+                <br><input type=hidden bean="ShippingGroupDroplet.ShippingGroupMapContainer.defaultShippingGroupName" value="param:key">
+                <droplet src="display_address.jhtml"><param name="address" value="param:element.shippingAddress"></droplet>
+                <input type="submit" bean="ShippingGroupFormHandler.applyShippingGroups" value="Ship Entire Order to this Address">  
+              </oparam>
+            </droplet>
+          </oparam>
+          <oparam name="default">
+            <b>One ShippingGroup</b><BR>
+            <droplet bean="ForEach">
+              <param name="array" value="param:shippingGroups">
+              <oparam name="output">
+                <br><input type=radio bean="ShippingGroupDroplet.ShippingGroupMapContainer.defaultShippingGroupName" value="param:key">
+                <valueof param="key"></valueof>
+              </oparam>
+            </droplet>
+            <input type="submit" bean="ShippingGroupFormHandler.applyShippingGroups" value="Ship Entire Order to this Address">  
+            <p><b>Multiple ShippingGroups</b>
+            <p>The entire order begins on the default ShipingGroup. Specific item quantities may then be split onto separate ShippingGroups.
+            <droplet bean="ForEach">
+              <param name="array" value="param:shippingGroups">
+              <oparam name="output">
+                <br><input type=radio bean="ShippingGroupFormHandler.defaultShippingGroupName" value="param:key">
+                <valueof param="key"></valueof>
+              </oparam>
+            </droplet>
+            <input type="submit" bean="ShippingGroupFormHandler.specifyDefaultShippingGroup" value="Make this the default Address">
+          </oparam>
+        </droplet>
+        </form>
+      </oparam>
+    </droplet><!-- end ForEach -->
+  <!-- end output -->
+  </oparam>
+</droplet><!-- end ShippingGroupDroplet -->
+
+<droplet src="hardgood_sg.jhtml"/>
+<!--<droplet src="electronic_sg.jhtml"/>-->
+
+<!-- In order to facilitate the creation of an ElectronicShippingGroup, then 
+electronic_sg.jhtml should be used in place of hardgood_sg.jhtml. This feature
+is used for those orders whose skus all use SoftgoodFulfillers.
+-->
+
+</body>
+</html>
+<java>/* @version $Id: //product/B2BCommerce/version/10.0.3/release/B2BCommerce/html/sample_catalog/shipping.jhtml#2 $$Change: 651448 $*/</java>

@@ -1,0 +1,86 @@
+Checking configuration...
+Platform is win32
+Application Server is JBoss
+if conditional encountered
+Skipping Rule: If If conditional comparison failed for variable: appServer value: WebLogic
+if conditional encountered
+Skipping Rule: If If conditional comparison failed for variable: appServer value: WebSphere
+if conditional encountered
+Skipping Rule: If If conditional comparison failed for variable: appServer value: WebSphere-cluster
+if conditional encountered
+if succeeded
+if conditional encountered
+Skipping Rule: If If conditional comparison failed for variable: appServer value: WebLogic
+if conditional encountered
+Skipping Rule: If If conditional comparison failed for variable: appServer value: WebSphere
+if conditional encountered
+Skipping Rule: If If conditional comparison failed for variable: appServer value: WebSphere-cluster
+if conditional encountered
+if succeeded
+Running configuration rules:
+Product Name: ATG Adaptive Scenario Engine Version: 10.0.3
+Running 'Win32' platform rules
+Rule Report: Wed Oct 19 20:59:21 IST 2011
+<set_env_variable>
+    <new_value>DPS;DSS;</new_value>
+    <target_file>C:\AE10\ATG10.0.3\home\localconfig\environment.bat</target_file>
+    <variable>DYNAMO_LICENSED_MODULES</variable>
+
+<echo>
+  <to_file>C:\AE10\ATG10.0.3\home\localconfig\dasEnv.bat</to_file>
+  <message>
+set ATGJRE=C:\AE10\jdk1.6.0_18\bin\java
+</message>
+  <file_mode>OVERWRITE</file_mode>
+
+<echo>
+  <to_file>C:\AE10\ATG10.0.3\home\localconfig\dasEnv.bat</to_file>
+  <message>
+set JBOSS_HOME=C:\AE10\jboss-5.0.1.GA
+</message>
+  <file_mode>APPEND</file_mode>
+
+<echo>
+  <to_file>C:\AE10\ATG10.0.3\home\localconfig\dasEnv.bat</to_file>
+  <message>
+set JBOSS_VERSION=5.0.1
+</message>
+  <file_mode>APPEND</file_mode>
+
+Rule Report: Wed Oct 19 20:59:21 IST 2011
+<copy>
+    <from_file>C:\AE10\ATG10.0.3\DafEar\JBoss\copy-to-jboss_home-your_server-deploy-dir\atg-mysql-ds.xml</from_file>
+    <to_file>C:\AE10\jboss-5.0.1.GA\server\atg\deploy</to_file>
+
+Rule Report: Wed Oct 19 20:59:21 IST 2011
+<copy>
+    <from_file>C:\AE10\ATG10.0.3\DafEar\JBoss\copy-to-jboss_home-your_server-deploy-dir\atg-apps-mysql-ds.xml</from_file>
+    <to_file>C:\AE10\jboss-5.0.1.GA\server\atg\deploy</to_file>
+
+If
+  <variable>appServer</variable>
+  <value>JBoss</value>
+
+Product Name: ATG Content Administration Version: 10.0.3
+Running 'Win32' platform rules
+Rule Report: Wed Oct 19 20:59:21 IST 2011
+<set_env_variable>
+    <new_value>Publishing.base;</new_value>
+    <target_file>C:\AE10\ATG10.0.3\home\localconfig\environment.bat</target_file>
+    <variable>DYNAMO_LICENSED_MODULES</variable>
+
+Rule Report: Wed Oct 19 20:59:21 IST 2011
+<set_env_variable>
+    <new_value>PubPortlet;</new_value>
+    <target_file>C:\AE10\ATG10.0.3\home\localconfig\environment.bat</target_file>
+    <variable>DYNAMO_CLASSPATH_MODULES</variable>
+
+Product Name: ATG Portal Version: 10.0.3
+Running 'Win32' platform rules
+Rule Report: Wed Oct 19 20:59:21 IST 2011
+<set_env_variable>
+    <new_value>Portal.paf.framework;</new_value>
+    <target_file>C:\AE10\ATG10.0.3\home\localconfig\environment.bat</target_file>
+    <variable>DYNAMO_LICENSED_MODULES</variable>
+
+Done running configuration rules.

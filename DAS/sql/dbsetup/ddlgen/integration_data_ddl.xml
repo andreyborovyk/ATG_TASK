@@ -1,0 +1,29 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="integration_data_ddl" description="DDL for Integration Repository Meta Data">
+   <table name="if_integ_data">
+      <column name="item_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="descriptor" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="64"/>
+      </column>
+      <column name="repository" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="state" nullable="n">
+         <column-type db="generic" type="integer" />
+      </column>
+     <column name="last_import" nullable="y">
+         <column-type db="generic" type="datetime" />
+      </column>
+     <column name="version" nullable="n">
+         <column-type db="generic" type="integer" />
+     </column>
+     <primary-key name="if_int_data_p">
+         <index-column column="item_id" order="asc" seq="1"/>
+         <index-column column="descriptor" order="asc" seq="2"/>
+         <index-column column="repository" order="asc" seq="3"/>
+     </primary-key>
+   </table>
+</schema>
+<!-- @version $Id: //product/DAS/version/10.0.3/templates/DAS/sql/integration_data_ddl.xml#2 $$Change: 651448 $ -->

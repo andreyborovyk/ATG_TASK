@@ -1,0 +1,65 @@
+#!/bin/sh
+
+PROGRAM=`basename $0`
+
+usage() 
+{
+  echo "USAGE: ${PROGRAM} [server-name]"
+}
+
+#
+# Allow us to be in the bin directory when we start
+#
+if [ -r dynamoStackDump ] ; then
+  cd ..
+fi
+
+#
+# If run from the install dir, set DYNAMO_HOME automatically.  Otherwise,
+# pick it up as an environment variable
+#
+if [ -r bin/dynamoStackDump ] ; then
+  DYNAMO_HOME=.
+  export DYNAMO_HOME
+elif [ "$DYNAMO_HOME" = "" ] ; then
+  echo "You must either run this script from the Dynamo installation directory"
+  echo "or you should set the environment variable DYNAMO_HOME to point to this"
+  echo "directory."
+  exit 1
+else
+  cd $DYNAMO_HOME
+  if [ ! -r bin/dynamoStackDump ] ; then
+    echo "Unable to find ${DYNAMO_HOME}/bin/dynamoStackDump - invalid setting of DYNAMO_HOME"
+    exit 1
+  fi
+fi
+
+if [ $# -eq 0 ] ; then
+    SERVERNAME="."
+else SERVERNAME=servers/$1
+fi
+
+. bin/commonVars.sh
+
+DYNAMO_PIDFILE=$DYNAMO_HOME/$SERVERNAME/logs/$DYNAMO_PIDFILE_NAME
+
+if [ ! -f $DYNAMO_PIDFILE ] ; then
+  # couldn't find .pid file; punt
+  echo "Error: couldn't find process-ID file $DYNAMO_PIDFILE"
+  exit 1
+fi
+
+DYNAMO_PID=`cat $DYNAMO_PIDFILE`
+
+if [ "${DYNAMO_PID}x" = "x" ] ; then
+   # invalid .pid file; punt
+   echo "Error: invalid pid file $DYNAMO_PIDFILE"
+   exit 1   	 
+else
+   kill -QUIT $DYNAMO_PID > /dev/null 2>&1
+   echo "QUIT signal sent to the java process: $DYNAMO_PID."		 
+   echo "A stack dump should appear in your dynamo.log file"
+   echo "and on the console."		 
+fi 
+
+

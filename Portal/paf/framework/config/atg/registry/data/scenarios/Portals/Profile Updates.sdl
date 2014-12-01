@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE scenario
+  SYSTEM
+  "dynamosystemresource:/atg/scenario/definition/sdl.dtd">
+
+<scenario author="admin" creation-time="1019044270598" enabled="false" last-modified-by="admin" modification-time="1019052000944">
+  <segment migrate-from="1019044274433" migrate-users="true">
+    <segment-name>Profile Updated</segment-name>
+    <!--================================-->
+    <!--== Profile updated by user  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.dps.ProfileUpdate</event-name>
+    </event>
+    <!--================================-->
+    <!--== Send email /portal/settings/email/ProfileUpdated.jsp  -->
+    <!--================================-->
+    <action id="2">
+      <action-name>sendEmail</action-name>
+      <action-param name="template">
+        <constant>/portal/settings/email/ProfileUpdated.jsp</constant>
+      </action-param>
+    </action>
+  </segment>
+</scenario>

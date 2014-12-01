@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE database-initializer SYSTEM "http://www.atg.com/dtds/dbinit_1_0.dtd">
+<database-initializer>
+  <schema id="core">
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/commerce_refinement_ddl.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_commerce_refinement_ddl.sql
+        </drop>
+      </path>
+    </sql>
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/custom_catalog_refinement_ddl.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_custom_catalog_refinement_ddl.sql
+        </drop>
+      </path>
+    </sql>
+  </schema>
+  <server-instance-type id="production">
+    <datasource id="all">
+      <schema id="core"/>
+    </datasource>  
+  </server-instance-type>
+  <server-instance-type id="staging">
+    <datasource id="all">
+      <schema id="core"/>
+    </datasource>  
+  </server-instance-type>
+</database-initializer>
+<!-- @version $Id: //product/DCS/version/10.0.3/release/DCS/Search/common/cim/dbinit.xml#2 $$Change: 651448 $-->

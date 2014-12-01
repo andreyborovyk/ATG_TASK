@@ -1,0 +1,69 @@
+
+<declareparam name="pricipals"> 
+<declareparam name="title"> 
+<declareparam name="principalsInfo"> 
+
+<P>
+
+<nucleus type=import>
+  /atg/dynamo/droplet/ForEach
+  /atg/webservice/security/NucleusAccessControlFormHandler
+  /atg/dynamo/droplet/Switch
+</nucleus>
+
+<droplet name="Switch">
+  <param name="value" value="param:title">
+  <param name="unset" value="">
+  <oparam name="default">
+   <B><valueof param="title">?</valueof></B> 
+  </oparam>
+</droplet>
+
+<droplet name="Switch">
+  <param name="value" value="param:addURL">
+  <oparam name="unset"></oparam>
+  <oparam name="default">
+    <input type="submit" submitvalue="param:addURL" value="Add" bean="NucleusAccessControlFormHandler.updateACLRedirect" name="NucleusAccessControlFormHandler.updateACLRedirect.`request.getParameter("uniqueID")`">
+  </oparam>
+</droplet>
+
+
+<BR>
+
+
+<setvalue name="rightToPersonaIDToSingleRight" bean="/atg/webservice/security/NucleusAccessControlFormHandler.rightToPersonaIDToSingleRight">
+
+<table>
+<droplet name="ForEach">
+  <param name="array" value="param:principals">
+  <oparam name="empty">
+     <tr><td>&nbsp;&nbsp;</td><td>(none)</td></tr>
+  </oparam>
+  <oparam name="output">
+     <droplet name="Switch">
+       <param name="value" value="param:element.allowedRights.execute">
+       <oparam name="true">
+         <tr valign="center"><td>&nbsp;&nbsp;</td><td>
+         <input type="hidden" bean="NucleusAccessControlFormHandler.personaIDs" value="param:element.persona.name">
+         <valueof param="element.name">???</valueof>
+
+         <droplet name="Switch">
+           <param name="value" value="param:showRemove"/>
+           <oparam name="true">
+             <input type="submit" value="Remove"
+		submitValue="param:element.persona.name" 
+		name="NucleusAccessControlFormHandler.removePersona.`request.getParameter("uniqueID")`.`request.getParameter("index")`"
+                bean="NucleusAccessControlFormHandler.removePersona">
+           </oparam>
+          <param name="default" value=""/>
+        </droplet><%-- end Switch on showRemove --%>
+       </td></tr>
+       </oparam>
+     </droplet>
+   </oparam>
+   </droplet>
+
+  </oparam>
+</droplet>
+</table>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/webservice/list-personae.jhtml#2 $$Change: 651448 $*/</java>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE browse-hierarchy
+  PUBLIC "-//Art Technology Group, Inc.//DTD Asset Manager Browse Hierarchy//EN"
+  'http://www.atg.com/dtds/browse-hierarchy/browse-hierarchy_1.0.dtd'>
+
+<browse-hierarchy xml-combine="append">
+
+  <browse-item id="home" xml-combine="append">
+    <browse-item reference-id="storeLocations"/>
+    <browse-item reference-id="storeText"/>
+  </browse-item>
+
+  <!-- The store locations node -->
+  <browse-item id="storeLocations"
+               label-resource="node.storeLocations.label"
+               is-root="true"
+               icon-resource="node.storeLocations.iconSmall">
+    <list-definition id="allStoreLocations"
+                     retriever="query"
+                     child-type="/atg/store/stores/StoreRepository:store">
+      <retriever-parameter name="query"
+                           value="ALL" />
+    </list-definition>
+  </browse-item> <!-- end media -->
+
+
+  <links
+    id="mediaFolderLinks" xml-combine="append">
+   <list-definition
+        id="mediaFolderChildPromoContentFolders"
+        retriever="property"
+        child-type="/atg/commerce/catalog/MerchandisingProductCatalog:promotionalContent">
+        <retriever-parameter
+          name="propertyName"
+          value="parentFolder"/>
+        <retriever-parameter
+          name="reverseLink"
+          value = "true"  />
+      </list-definition>
+  </links>
+
+  <!-- The store text node -->
+  <browse-item id="storeText"
+               label-resource="node.storeText.label"
+               is-root="true"
+               icon-resource="node.storeText.iconSmall">
+    <list-definition id="allStoreText"
+                     retriever="query"
+                     child-type="/atg/store/stores/StoreRepository:storeText">
+      <retriever-parameter name="query"
+                           value="ALL" />
+    </list-definition>
+  </browse-item> <!-- end media -->
+
+</browse-hierarchy>
+<!-- @version $Id: //hosting-blueprint/B2CBlueprint/version/10.0.3/EStore/Versioned/config/atg/remote/commerce/browse/MerchandisingBrowseHierarchy.xml#1 $$Change: 651360 $-->

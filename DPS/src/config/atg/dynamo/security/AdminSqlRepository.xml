@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE gsa-template
+        PUBLIC "-//Art Technology Group, Inc.//DTD Dynamo Security//EN"
+        "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template>
+  <header>
+    <name>Dynamo Admin Account Repository</name>
+    <author>Jim Frost</author>
+    <version>$Id: //product/DPS/version/10.0.3/templates/DPS/config/userprofiling/atg/dynamo/security/AdminSqlRepository.xml#2 $$Change: 651448 $</version>
+  </header>
+
+  <item-descriptor name="account" default="true">
+    <table name="das_account" type="primary" id-column-name="account_name">
+      <property name="accountName" column-name="account_name" data-type="string"/>
+      <property name="type" column-name="type" data-type="int"/>
+      <property name="firstName" column-name="first_name" data-type="string"/>
+      <property name="lastName" column-name="last_name"  data-type="string"/>
+      <property name="password" column-name="password" data-type="string"/>
+      <property name="description" column-name="description" data-type="string"/>
+   	  <property name="lastPasswordUpdate" column-name="lastpwdupdate" data-type="timestamp">
+	  	<attribute name="useNowForDefault" value="true"/>
+      </property>
+
+    </table>
+    <table name="das_group_assoc" id-column-name="account_name" type="multi" multi-column-name="sequence_num">
+      <property name="groups" column-name="group_name" data-type="array" component-data-type="string"/>
+    </table>
+    
+    <!-- previous passwords -->
+    <table name="das_acct_prevpwd" type="multi" id-column-name="account_name" multi-column-name="seq_num" >
+    	<property name="previousPasswords" column-name="prevpwd" data-type="array" component-data-type="string" />
+    </table>
+
+  </item-descriptor>
+</gsa-template>
+<!-- @version $Id: //product/DPS/version/10.0.3/templates/DPS/config/userprofiling/atg/dynamo/security/AdminSqlRepository.xml#2 $$Change: 651448 $ -->

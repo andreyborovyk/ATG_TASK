@@ -1,0 +1,2770 @@
+<?xml version="1.0"?>
+
+<!-- ======================================================================= -->
+<!-- Tag Library Descriptor for the CAF tag library.                         -->
+<!-- ======================================================================= -->
+
+<!DOCTYPE taglib
+  PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN"
+  "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
+
+<taglib>
+  <tlib-version>1.0</tlib-version>
+  <jsp-version>1.2</jsp-version>
+  <short-name>caf</short-name>
+  <uri>http://www.atg.com/taglibs/caf</uri>
+  <display-name>Common Application Framework Tags</display-name>
+  <description>Common Application Framework 1.0 tag library</description>
+
+
+  <!-- =========================================== -->
+  <!-- getPropertyValue                            -->
+  <!-- =========================================== -->
+  <tag>
+    <name>getPropertyValue</name>
+    <tag-class>atg.caf.taglib.GetPropertyValueTag</tag-class>
+    <tei-class>atg.caf.taglib.GetPropertyValueTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>Gets a named property of a java bean</description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets the name of the scripting variable that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the attribute that will hold the results</description>
+    </attribute>
+
+    <attribute>
+        <name>scope</name>
+        <required>false</required>
+        <rtexprvalue>false</rtexprvalue>
+      <description>Sets the scope that the var should be set in.  Valid values are [page|request|session|application]</description>
+    </attribute>
+
+    <attribute>
+      <name>target</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Target object whose property will be retrieved</description>
+    </attribute>
+
+    <attribute>
+      <name>property</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the property of the 'target' object to access</description>
+    </attribute>
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- getKeySet                                   -->
+  <!-- =========================================== -->
+  <tag>
+    <name>getKeySet</name>
+    <tag-class>atg.caf.taglib.GetKeySetTag</tag-class>
+    <tei-class>atg.caf.taglib.GetKeySetTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>Gets the key set from a given map</description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets the name of the scripting variable that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the attribute that will hold the results</description>
+    </attribute>
+
+    <attribute>
+        <name>map</name>
+        <required>true</required>
+        <rtexprvalue>false</rtexprvalue>
+      <description>Sets the map to get the key set from</description>
+    </attribute>
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- size                                        -->
+  <!-- =========================================== -->
+  <tag>
+    <name>size</name>
+    <tag-class>atg.caf.taglib.SizeTag</tag-class>
+    <tei-class>atg.caf.taglib.SizeTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+	Tag that calculates the size of a given Collection or the length of a given String object.
+	Values are specified by the 'collection' or 'string' attributes respecitvely.  The tag
+	then stores the size or length in a page variable, specified by the 'var' attribute.
+	If a value for 'collection' and 'string' is specified, the size of the collection
+	will be returned.
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets the name of the scripting variable that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the attribute that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>collection</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Specifies the collection of items</description>
+    </attribute>
+
+    <attribute>
+      <name>string</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Specifies the string to get the length of</description>
+    </attribute>
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- tokensToList                                -->
+  <!-- =========================================== -->
+  <tag>
+    <name>tokensToList</name>
+    <tag-class>atg.caf.taglib.TokensToListTag</tag-class>
+    <tei-class>atg.caf.taglib.TokensToListTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      A tag to convert a delimited string of tokens into a list
+      containing the tokens.  Works similarly to the JSTL forTokens
+      tag, except that it returns a list of tokens rather than iterating
+      over the token set.
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets the name of the scripting variable that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the attribute that will hold the results</description>
+    </attribute>
+
+    <attribute>
+        <name>scope</name>
+        <required>false</required>
+        <rtexprvalue>false</rtexprvalue>
+      <description>Sets the scope that the var should be set in.  Valid values are [page|request|session|application]</description>
+    </attribute>
+
+    <attribute>
+      <name>items</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>A string delimited by tokens.</description>
+    </attribute>
+
+    <attribute>
+      <name>delims</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The delimiter string to delimit the string passed into the 'items' attribute.</description>
+    </attribute>
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- search                                      -->
+  <!-- =========================================== -->
+  <tag>
+    <name>search</name>
+    <tag-class>atg.caf.taglib.SearchTag</tag-class>
+    <tei-class>atg.caf.taglib.SearchTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>Performs a search using a SearchService and a SearchContext</description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets the name of the scripting variable that will hold the search results</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets the name of the attribute in the page context that will hold the search results</description>
+    </attribute>
+
+    <attribute>
+      <name>searchService</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the SearchService to use when performing searches</description>
+    </attribute>
+
+    <attribute>
+      <name>searchContext</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the SearchContext used to describe the type of search desired.</description>
+    </attribute>
+
+    <attribute>
+      <name>findSimilar</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>A flag indicating to whether to do a regular search or a search for similar results</description>
+    </attribute>
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- sort                                        -->
+  <!-- =========================================== -->
+  <tag>
+    <name>sort</name>
+    <tag-class>atg.caf.taglib.SortTag</tag-class>
+    <tei-class>atg.caf.taglib.SortTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>Takes a collection of beans and a bean property name and returns the collection as a List sorted in ascending order by the named bean property.</description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets the name of the scripting variable that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the attribute that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>collection</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Specifies the collection of items</description>
+    </attribute>
+
+    <attribute>
+      <name>property</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Specifies the property to sort the collection by</description>
+    </attribute>
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- checkAccessController                       -->
+  <!-- =========================================== -->
+  <tag>
+    <name>checkAccessController</name>
+    <tag-class>atg.caf.taglib.CheckAccessControllerTag</tag-class>
+    <tei-class>atg.caf.taglib.CheckAccessControllerTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>Returns a boolean variable indicating if a given AccessController accepts a given Profile.</description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets the name of the scripting variable that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the variable that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>accessController</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Specifies the instance of atg.userprofiling.AccessController</description>
+    </attribute>
+
+    <attribute>
+      <name>profile</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Specifies the instance of atg.userprofiling.Profile</description>
+    </attribute>
+  </tag>
+
+  <!-- ============================== Calendar Tags ============================== -->
+
+  <!-- =========================================== -->
+  <!-- calendarInstance                            -->
+  <!-- =========================================== -->
+  <tag>
+      <name>calendarInstance</name>
+      <tag-class>atg.web.taglib.ui.calendar.CalendarInstance</tag-class>
+      <body-content>JSP</body-content>
+      <description>Creates a JavaScript object that is used to represent a single instance of a calendar on the client</description>
+
+      <attribute>
+        <name>calendarInstanceId</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+        <description>The id used to identify the calendar instance</description>
+      </attribute>
+
+      <attribute>
+        <name>containerId</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+        <description>The id for the container in which the calendar is displayed</description>
+      </attribute>
+
+      <attribute>
+        <name>anchorId</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+        <description>The id for the anchor object that is used for position of the calendar</description>
+      </attribute>
+
+      <attribute>
+        <name>dateInputId</name>
+        <required>false</required>
+        <rtexprvalue>true</rtexprvalue>
+        <description>The id of the date input object that is used to communicate the date to and from the calendar</description>
+      </attribute>
+
+      <attribute>
+        <name>curtainId</name>
+        <required>false</required>
+        <rtexprvalue>true</rtexprvalue>
+        <description>The id of the date input object that is used to communicate the date to and from the calendar</description>
+      </attribute>
+
+      <attribute>
+        <name>stylesId</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+        <description>The id for the styles JavaScript object, used to provide static style mappings to the calendar</description>
+      </attribute>
+
+      <attribute>
+        <name>i18nId</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+        <description>The id for the i18n JavaScript object, used to provide static internationalization information to the calendar</description>
+      </attribute>
+
+      <attribute>
+        <name>openDate</name>
+        <required>false</required>
+        <rtexprvalue>true</rtexprvalue>
+        <description>The open date String that can be used if a date input object is not specified</description>
+      </attribute>
+
+      <attribute>
+        <name>horizontalOffset</name>
+        <required>false</required>
+        <rtexprvalue>false</rtexprvalue>
+        <description>The horizontal offset in pixels from the anchor object</description>
+      </attribute>
+
+      <attribute>
+        <name>verticalOffset</name>
+        <required>false</required>
+        <rtexprvalue>false</rtexprvalue>
+        <description>The vertical offset in pixels from the anchor object</description>
+      </attribute>
+
+      <attribute>
+        <name>closeAfterSelection</name>
+        <required>false</required>
+        <rtexprvalue>false</rtexprvalue>
+        <description>A boolean that automatically closes the calendar when a date is selected</description>
+      </attribute>
+
+      <attribute>
+        <name>hasToday</name>
+        <required>false</required>
+        <rtexprvalue>false</rtexprvalue>
+        <description>A boolean that displays the today link underneath the current month</description>
+      </attribute>
+
+      <attribute>
+        <name>hasClose</name>
+        <required>false</required>
+        <rtexprvalue>false</rtexprvalue>
+        <description>A boolean that displays the close link underneath the current month</description>
+      </attribute>
+
+      <attribute>
+        <name>displayBelowAnchor</name>
+        <required>false</required>
+        <rtexprvalue>false</rtexprvalue>
+        <description>A boolean that determines whether the calendar is displayed below (default) or above the anchor object</description>
+      </attribute>
+
+      <attribute>
+        <name>displayRightOfAnchor</name>
+        <required>false</required>
+        <rtexprvalue>false</rtexprvalue>
+        <description>A boolean that determines whether the calendar is displayed to the right (default) or to the left of the anchor object</description>
+      </attribute>
+
+      <attribute>
+        <name>autoFlip</name>
+        <required>false</required>
+        <rtexprvalue>false</rtexprvalue>
+        <description>A boolean that will automatically flip the calendar if there is not sufficient space to display it in the requested quadrant</description>
+      </attribute>
+
+      <attribute>
+        <name>clearDateOnError</name>
+        <required>false</required>
+        <rtexprvalue>false</rtexprvalue>
+        <description>A boolean that will clear the entire date input field when a validation error occurs. By default, this value is set to true</description>
+      </attribute>
+
+      <attribute>
+        <name>setDateOnCalendarOpen</name>
+        <required>false</required>
+        <rtexprvalue>false</rtexprvalue>
+        <description>A boolean that will automatically set the opening date of the calendar into the input text box when the calendar is opened</description>
+      </attribute>
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- calendarI18n                                -->
+  <!-- =========================================== -->
+  <tag>
+      <name>calendarI18n</name>
+      <tag-class>atg.web.taglib.ui.calendar.CalendarI18n</tag-class>
+      <body-content>JSP</body-content>
+      <description>Creates a JavaScript object that is used to store the Internationalization data relevant to the formatting and display of dates</description>
+
+      <attribute>
+        <name>calendarI18nId</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+        <description>The id used to identify the calendar i18n object</description>
+      </attribute>
+
+      <attribute>
+        <name>calendarI18nLanguage</name>
+        <required>false</required>
+        <rtexprvalue>true</rtexprvalue>
+        <description>Used to create the locale used for calendar</description>
+      </attribute>
+
+      <attribute>
+        <name>calendarI18nCountry</name>
+        <required>false</required>
+        <rtexprvalue>true</rtexprvalue>
+        <description>Used to create the locale used for calendar</description>
+      </attribute>
+
+      <attribute>
+        <name>calendarI18nVariant</name>
+        <required>false</required>
+        <rtexprvalue>true</rtexprvalue>
+        <description>Used to create the locale used for calendar</description>
+      </attribute>
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- calendarStyles                              -->
+  <!-- =========================================== -->
+  <tag>
+      <name>calendarStyles</name>
+      <tag-class>atg.web.taglib.ui.calendar.CalendarStyles</tag-class>
+      <body-content>JSP</body-content>
+      <description>Creates a JavaScript object that is used to store the Internationalization data relevant to the formatting and display of dates</description>
+
+      <attribute>
+        <name>calendarStylesId</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+        <description>The id used to identify the calendar styles object</description>
+      </attribute>
+  </tag>
+
+  <!-- ============================== UI Tags ============================== -->
+
+  <!-- =========================================== -->
+  <!-- container                                   -->
+  <!-- =========================================== -->
+  <tag>
+    <name>container</name>
+    <tag-class>atg.web.taglib.ui.core.Container</tag-class>
+    <body-content>JSP</body-content>
+    <description> Provides a generic container for a DIV or IFRAME based container that may be targeted and used by any component.</description>
+
+    <attribute>
+      <name>containerId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The id used to identify the container object</description>
+    </attribute>
+
+    <attribute>
+      <name>iframe</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>A boolean to determine whether the container is rendered as a DIV (false - default) or an iFrame (true)</description>
+    </attribute>
+
+    <attribute>
+      <name>src</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The SRC document of the iFrame (if appropriate)</description>
+    </attribute>
+
+    <attribute>
+      <name>visible</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>A boolean to determine whether the container is rendered hidden (default) or visible</description>
+    </attribute>
+
+    <attribute>
+      <name>frameBorder</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>The border of an iFrame is not controlled by style, but by an attribute called frameborder</description>
+    </attribute>
+
+    <attribute>
+      <name>scrolling</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>The scrolling attribute of the iFrame. This String value defaults to 'no' if not specified (no scrolling)</description>
+    </attribute>
+
+    <attribute>
+      <name>css</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The CSS class associated with the tag</description>
+    </attribute>
+
+    <attribute>
+      <name>style</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The Style associated with the tag</description>
+    </attribute>
+
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- curtain                                     -->
+  <!-- =========================================== -->
+  <tag>
+    <name>curtain</name>
+    <tag-class>atg.web.taglib.ui.core.Curtain</tag-class>
+    <body-content>JSP</body-content>
+    <description> Provides a generic container for a DIV or IFRAME based curtain that may be targeted and used by any component.</description>
+
+    <attribute>
+      <name>curtainId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The id used to identify the container object</description>
+    </attribute>
+
+    <attribute>
+      <name>iframe</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>A boolean to determine whether the curtain is rendered as a DIV (default) or an iFrame</description>
+    </attribute>
+
+    <attribute>
+      <name>src</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The SRC document of the iFrame (if appropriate)</description>
+    </attribute>
+
+    <attribute>
+      <name>visible</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>A boolean to determine whether the container is rendered hidden (default) or visible</description>
+    </attribute>
+
+    <attribute>
+      <name>css</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The CSS class associated with the tag</description>
+    </attribute>
+
+    <attribute>
+      <name>style</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The Style associated with the tag</description>
+    </attribute>
+
+  </tag>
+
+  <!-- ============================== Layout Tags ============================== -->
+
+  <!-- =========================================== -->
+  <!-- layoutContainer                             -->
+  <!-- =========================================== -->
+  <tag>
+    <name>layoutContainer</name>
+    <tag-class>atg.web.taglib.ui.layout.LayoutContainer</tag-class>
+    <body-content>JSP</body-content>
+    <description>Generic page layout container tag, in which other layout components may be nested.</description>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The id used to identify the layout container object</description>
+    </attribute>
+
+    <attribute>
+      <name>width</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>The width of the layout container in pixels or percentages</description>
+    </attribute>
+
+    <attribute>
+      <name>height</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>The height of the layout container in pixels or percentages</description>
+    </attribute>
+
+    <attribute>
+      <name>layoutType</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>A String constant value indicating whether the layout is table or div based</description>
+    </attribute>
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- layoutColumn                                -->
+  <!-- =========================================== -->
+  <tag>
+    <name>layoutColumn</name>
+    <tag-class>atg.web.taglib.ui.layout.LayoutColumn</tag-class>
+    <body-content>JSP</body-content>
+    <description>Column-based layout container, allowing objects to be grouped in columns on the page</description>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The id used to identify the layout column object</description>
+    </attribute>
+
+    <attribute>
+      <name>width</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>The width of the layout column in pixels or percentages</description>
+    </attribute>
+
+    <attribute>
+      <name>height</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>The height of the layout column in pixels or percentages</description>
+    </attribute>
+
+    <attribute>
+      <name>packColumn</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>A boolean value (default is true) that will automatically pack the column to ensure that specified object sizes are rendered correctly</description>
+    </attribute>
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- layoutRow                                   -->
+  <!-- =========================================== -->
+  <tag>
+    <name>layoutRow</name>
+    <tag-class>atg.web.taglib.ui.layout.LayoutRow</tag-class>
+    <body-content>JSP</body-content>
+    <description>Row-based layout container, allowing objects to be grouped in rows on the page</description>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The id used to identify the layout row object</description>
+    </attribute>
+
+    <attribute>
+      <name>width</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>The width of the layout row in pixels or percentages</description>
+    </attribute>
+
+    <attribute>
+      <name>height</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>The height of the layout row in pixels or percentages</description>
+    </attribute>
+
+    <attribute>
+      <name>packRow</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>A boolean value (default is true) that will automatically pack the row to ensure that specified object sizes are rendered correctly</description>
+    </attribute>
+  </tag>
+
+  <!-- ============================== Validation Tags ============================== -->
+
+  <!-- =========================================== -->
+  <!-- validation                                  -->
+  <!-- =========================================== -->
+  <tag>
+    <name>validation</name>
+    <tag-class>atg.web.taglib.ui.validation.Validation</tag-class>
+    <body-content>JSP</body-content>
+    <description>The ValidationMap tag allows the various input objects and validation types to be tied together to create a validation instance on a page</description>
+
+    <attribute>
+      <name>validationFunction</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The name of the JavaScript function that will be called by the form handler prior to submission</description>
+    </attribute>
+
+    <attribute>
+      <name>initializeFunction</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>The name of the Javascript initialization function that is called to initialize every validation</description>
+    </attribute>
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- validationMessage                           -->
+  <!-- =========================================== -->
+  <tag>
+    <name>validationMessage</name>
+    <tag-class>atg.web.taglib.ui.validation.ValidationMessage</tag-class>
+    <body-content>JSP</body-content>
+    <description>The ValidationMessage class renders a simple tag that can be used to target validation error messages.</description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The id of the field requiring validation. A generic message area will require no id</description>
+    </attribute>
+
+    <attribute>
+      <name>isHidden</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>A boolean to override the default value of true, meaning that the message area is typically hidden until required</description>
+    </attribute>
+
+    <attribute>
+      <name>css</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The CSS class associated with the tag</description>
+    </attribute>
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- validationTrigger                           -->
+  <!-- =========================================== -->
+  <tag>
+    <name>validationTrigger</name>
+    <tag-class>atg.web.taglib.ui.validation.ValidationTrigger</tag-class>
+    <tei-class>atg.web.taglib.ui.validation.ValidationTrigger$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>The ValidationTrigger class sets up an association between a form submission object and the validation function that must be executed prior to submitting the form. Returns a String.</description>
+
+    <attribute>
+      <name>validationFunction</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The name of the JavaScript function that will be called by the form handler prior to submission</description>
+    </attribute>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets the name of the scripting variable that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the page-context attribute that will hold the results</description>
+    </attribute>
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- validationI18n                              -->
+  <!-- =========================================== -->
+  <tag>
+    <name>validationI18n</name>
+    <tag-class>atg.web.taglib.ui.validation.ValidationI18n</tag-class>
+    <body-content>JSP</body-content>
+    <description>The ValidationI18n class generates a validation i18n JavaScript object containing all of the error messages looked up from the resource bundle</description>
+
+    <attribute>
+      <name>validationI18nObjectName</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Allow the name of the validation JavaScript object to be specified. If no name is provided, the default object name is used</description>
+    </attribute>
+
+    <attribute>
+      <name>resourceBundleName</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>
+        The name of the resource bundle to take internationalized
+        strings from.  This defaults to
+        atg.web.taglib.ui.validation.UserResources if unspecified.
+      </description>
+    </attribute>
+
+    <attribute>
+      <name>locale</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>
+        The locale name to use when generating localized messages.
+        Use this attribute or the 'locale' attribute to specify the locale.  A
+        default value of the current request locale will be used if neither is
+        specified.
+      </description>
+    </attribute>
+
+    <attribute>
+      <name>localeName</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>
+        The locale name to use when generating localized messages.
+        Use this attribute or the 'locale' attribute to specify the locale.  A
+        default value of the current request locale will be used if neither is
+        specified.
+      </description>
+    </attribute>
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- textBoxValidationInput                      -->
+  <!-- =========================================== -->
+  <tag>
+    <name>textBoxValidationInput</name>
+    <tag-class>atg.web.taglib.ui.validation.TextBoxValidationInput</tag-class>
+    <body-content>JSP</body-content>
+    <description>A validation container to control the validator(s) for an instance of an HTML text box</description>
+
+    <attribute>
+      <name>fieldId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The id of the DHTML object to be validated</description>
+    </attribute>
+
+    <attribute>
+      <name>fieldName</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The field name of the DHTML object to be validated</description>
+    </attribute>
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- textAreaValidationInput                     -->
+  <!-- =========================================== -->
+  <tag>
+    <name>textAreaValidationInput</name>
+    <tag-class>atg.web.taglib.ui.validation.TextAreaValidationInput</tag-class>
+    <body-content>JSP</body-content>
+    <description>A validation container to control the validator(s) for an instance of an HTML textarea</description>
+
+    <attribute>
+      <name>fieldId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The id of the DHTML object to be validated</description>
+    </attribute>
+
+    <attribute>
+      <name>fieldName</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The field name of the DHTML object to be validated</description>
+    </attribute>
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- alphaCharValidator                          -->
+  <!-- =========================================== -->
+  <tag>
+    <name>alphaCharValidator</name>
+    <tag-class>atg.web.taglib.ui.validation.AlphaCharValidator</tag-class>
+    <body-content>JSP</body-content>
+    <description>The AlphaCharValidator tag extends BaseValidator and requires a field value be specified using alphabetic characters only.</description>
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- alphaNumericCharValidator                   -->
+  <!-- =========================================== -->
+  <tag>
+    <name>alphaNumericCharValidator</name>
+    <tag-class>atg.web.taglib.ui.validation.AlphaNumericCharValidator</tag-class>
+    <body-content>JSP</body-content>
+    <description>The AlphaNumericCharValidator tag extends BaseValidator and requires a field value be specified using alphanumeric characters only.</description>
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- charLengthValidator                         -->
+  <!-- =========================================== -->
+  <tag>
+    <name>charLengthValidator</name>
+    <tag-class>atg.web.taglib.ui.validation.CharLengthValidator</tag-class>
+    <body-content>JSP</body-content>
+    <description>The CharLengthValidator tag extends BaseValidator and requires a field value's length to be constrained by a minimum and maximum character length.</description>
+
+    <attribute>
+      <name>minLength</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>The minimum numbers of characters required for this field</description>
+    </attribute>
+
+    <attribute>
+      <name>maxLength</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>The maximum numbers of characters allowed for this field</description>
+    </attribute>
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- dateValidator                               -->
+  <!-- =========================================== -->
+  <tag>
+    <name>dateValidator</name>
+    <tag-class>atg.web.taglib.ui.validation.DateValidator</tag-class>
+    <body-content>JSP</body-content>
+    <description>The DateValidator tag extends BaseValidator and requires a field value to be specified using a valid date format</description>
+
+    <attribute>
+      <name>convertDateYearValues</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>An optional attribute to automatically convert two-digit year values to four digit year values at validation time</description>
+    </attribute>
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- emailValidator                              -->
+  <!-- =========================================== -->
+  <tag>
+    <name>emailValidator</name>
+    <tag-class>atg.web.taglib.ui.validation.EmailValidator</tag-class>
+    <body-content>JSP</body-content>
+    <description>The EmailValidator tag extends BaseValidator and requires a field value be specified using a valid e-mail format</description>
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- noSpecialCharValidator                      -->
+  <!-- =========================================== -->
+  <tag>
+    <name>noSpecialCharValidator</name>
+    <tag-class>atg.web.taglib.ui.validation.NoSpecialCharValidator</tag-class>
+    <body-content>JSP</body-content>
+    <description>The NoSpecialCharValidator tag extends BaseValidator and requires a field value be specified using no special characters</description>
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- numericCharValidator                        -->
+  <!-- =========================================== -->
+  <tag>
+    <name>numericCharValidator</name>
+    <tag-class>atg.web.taglib.ui.validation.NumericCharValidator</tag-class>
+    <body-content>JSP</body-content>
+    <description>The NumericCharValidator tag extends BaseValidator and requires a field value be specified using numeric characters only</description>
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- numericRangeValidator                       -->
+  <!-- =========================================== -->
+  <tag>
+    <name>numericRangeValidator</name>
+    <tag-class>atg.web.taglib.ui.validation.NumericRangeValidator</tag-class>
+    <body-content>JSP</body-content>
+    <description>The NumericRangeValidator tag extends BaseValidator and requires a numeric field value to be specified within a minimum and maximum range</description>
+
+    <attribute>
+      <name>minValue</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>The minimum integer value that is allowed for this field</description>
+    </attribute>
+
+    <attribute>
+      <name>maxValue</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>The maximum integer value that is allowed for this field</description>
+    </attribute>
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- requiredFieldValidator                      -->
+  <!-- =========================================== -->
+  <tag>
+    <name>requiredFieldValidator</name>
+    <tag-class>atg.web.taglib.ui.validation.RequiredFieldValidator</tag-class>
+    <body-content>JSP</body-content>
+    <description>The requiredFieldValidator allows the correct JavaScript validator to be executed and tied to the validation input object</description>
+
+    <attribute>
+      <name>allowWhitespace</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Boolean field to allow or prevent whitespace from passing validation</description>
+    </attribute>
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- urlValidator                                -->
+  <!-- =========================================== -->
+  <tag>
+    <name>urlValidator</name>
+    <tag-class>atg.web.taglib.ui.validation.URLValidator</tag-class>
+    <body-content>JSP</body-content>
+    <description>The URLValidator tag extends BaseValidator and requires a field value be specified as a valid URL</description>
+  </tag>
+
+  <!-- ============================== Asset Registry Tags ============================== -->
+
+  <!-- =========================================== -->
+  <!-- getRegistryItems                            -->
+  <!-- =========================================== -->
+  <tag>
+    <name>getRegistryItems</name>
+    <tag-class>atg.caf.taglib.GetRegistryItemsTag</tag-class>
+    <tei-class>atg.caf.taglib.GetRegistryItemsTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>Gets child registry items.</description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets the name of the scripting variable that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the attribute that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>scope</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets the scope in which the results are stored.  Valid values are [page|request|session|application]</description>
+    </attribute>
+
+    <attribute>
+      <name>registry</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the logical name of the registry</description>
+    </attribute>
+
+    <attribute>
+      <name>registryManagerPath</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the Nucleus path of the RegistryManager component</description>
+    </attribute>
+
+    <attribute>
+      <name>parentFolder</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the path of the parent folder</description>
+    </attribute>
+
+    <attribute>
+      <name>openFolder</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the path of the currently open folder</description>
+    </attribute>
+
+    <attribute>
+      <name>filter</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the registry asset filter</description>
+    </attribute>
+
+    <attribute>
+      <name>foldersFirst</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Indicates if folders should be placed at the beginning of the returned list, rather than at the end</description>
+    </attribute>
+
+    <attribute>
+      <name>parentFolderIsId</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Indicates if the parentFolder attribute value is a folder ID, rather than a path</description>
+    </attribute>
+
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- findRegistryFolderPath                      -->
+  <!-- =========================================== -->
+  <tag>
+    <name>findRegistryFolderPath</name>
+    <tag-class>atg.caf.taglib.FindRegistryFolderPathTag</tag-class>
+    <tei-class>atg.caf.taglib.FindRegistryFolderPathTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>Gets the path of the folder containing an item with a given property value.</description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets the name of the scripting variable that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the attribute that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>scope</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets the scope in which the results are stored.  Valid values are [page|request|session|application]</description>
+    </attribute>
+
+    <attribute>
+      <name>registry</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the logical name of the registry</description>
+    </attribute>
+
+    <attribute>
+      <name>registryManagerPath</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the Nucleus path of the RegistryManager component</description>
+    </attribute>
+
+    <attribute>
+      <name>property</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the property to be matched</description>
+    </attribute>
+
+    <attribute>
+      <name>value</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the value of the property to be matched</description>
+    </attribute>
+
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- findRegistryAsset                           -->
+  <!-- =========================================== -->
+  <tag>
+    <name>findRegistryAsset</name>
+    <tag-class>atg.caf.taglib.FindRegistryAssetTag</tag-class>
+    <tei-class>atg.caf.taglib.FindRegistryAssetTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>Gets the asset with a given property value.</description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets the name of the scripting variable that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the attribute that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>scope</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets the scope in which the results are stored.  Valid values are [page|request|session|application]</description>
+    </attribute>
+
+    <attribute>
+      <name>registry</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the logical name of the registry</description>
+    </attribute>
+
+    <attribute>
+      <name>registryManagerPath</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the Nucleus path of the RegistryManager component</description>
+    </attribute>
+
+    <attribute>
+      <name>property</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the property to be matched</description>
+    </attribute>
+
+    <attribute>
+      <name>value</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the value of the property to be matched</description>
+    </attribute>
+
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- getRegistryRootFolder                       -->
+  <!-- =========================================== -->
+  <tag>
+    <name>getRegistryRootFolder</name>
+    <tag-class>atg.caf.taglib.GetRegistryRootFolderTag</tag-class>
+    <tei-class>atg.caf.taglib.GetRegistryRootFolderTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>Gets the root folder of a registry.</description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets the name of the scripting variable that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the attribute that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>scope</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets the scope in which the results are stored.  Valid values are [page|request|session|application]</description>
+    </attribute>
+
+    <attribute>
+      <name>registry</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the logical name of the registry</description>
+    </attribute>
+
+    <attribute>
+      <name>registryManagerPath</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the Nucleus path of the RegistryManager component</description>
+    </attribute>
+
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- assetRegistryTree                           -->
+  <!-- =========================================== -->
+  <tag>
+    <name>assetRegistryTree</name>
+    <tag-class>atg.web.taglib.ui.registry.AssetRegistryTree</tag-class>
+    <body-content>JSP</body-content>
+    <description>The AssetRegistryTree tag encapsulates the creation of an iFrame or Frame object that in-turn calls the registryTree JSP file to allow a hierarchical asset registry tree to be created recursively</description>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The id used to identify the asset registry tree container</description>
+    </attribute>
+
+    <attribute>
+      <name>width</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>The width of the asset registry tree container in pixels or percentages</description>
+    </attribute>
+
+    <attribute>
+      <name>height</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>The height of the asset registry tree container in pixels or percentages</description>
+    </attribute>
+
+    <attribute>
+      <name>css</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>The CSS of the component</description>
+    </attribute>
+
+    <attribute>
+      <name>containerType</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>A String that specifies the container type. The default is an iFrame, but the tag is able to support a Frame too</description>
+    </attribute>
+
+    <attribute>
+      <name>transparent</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>A boolean value that determines whether the iFrame component is rendered transparent</description>
+    </attribute>
+
+    <attribute>
+      <name>frameBorder</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>A boolean value that determines whether the iFrame component is rendered with a surrounding border</description>
+    </attribute>
+
+    <attribute>
+      <name>scrolling</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>A boolean value that determines whether scroll bars may be added to the iFrame</description>
+    </attribute>
+
+    <attribute>
+      <name>src</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>The name and path of the JSP file that will contain the tree recursion code</description>
+    </attribute>
+
+    <attribute>
+      <name>registryName</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The name of the registry to be displayed</description>
+    </attribute>
+
+    <attribute>
+      <name>registryManagerPath</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The Nucleus path of the RegistryManager component to be used for accessing the given registry</description>
+    </attribute>
+
+    <attribute>
+      <name>preSelectProperty</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The name of the asset property whose value should be compared with the given "preSelectValue" when determining whether to pre-select an asset item.</description>
+    </attribute>
+
+    <attribute>
+      <name>preSelectValue</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The value with which an asset's "preSelectProperty" value is compared when determining whether to pre-select an asset item.</description>
+    </attribute>
+
+    <attribute>
+      <name>onAssetSelect</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The name of a JavaScript function in the enclosing page, which should be invoked when an asset is selected</description>
+    </attribute>
+
+    <attribute>
+      <name>onFolderSelect</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The name of a JavaScript function in the enclosing page, which should be invoked when a folder is selected by the user</description>
+    </attribute>
+
+    <attribute>
+      <name>onAssetSelectProperties</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>A list of comma-separated names of asset properties whose values should be stored in an object passed to the "onAssetSelect" function as a parameter</description>
+    </attribute>
+
+    <attribute>
+      <name>onAssetSelectNucleusProperties</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>A list of names of Nucleus component properties whose values should be stored in an object passed to the "onAssetSelect" function as a parameter</description>
+    </attribute>
+
+    <attribute>
+      <name>assetRegistryFilter</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The path of a nucleus component which is a filter for RegistryAssets in the tree.</description>
+    </attribute>
+
+    <attribute>
+      <name>allowFolderSelection</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>A boolean value that, when set to true, allows folders to be selected in addition to items.</description>
+    </attribute>
+
+    <attribute>
+      <name>showRoot</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>A boolean value that determines whether the root folder is displayed.</description>
+    </attribute>
+
+    <attribute>
+      <name>showFoldersOnly</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>A boolean value that determines whether assets are hidden and only folders are displayed.</description>
+    </attribute>
+
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- assetRegistryTreeSrc                        -->
+  <!-- =========================================== -->
+  <tag>
+    <name>assetRegistryTreeSrc</name>
+    <tag-class>atg.web.taglib.ui.registry.AssetRegistryTreeSrc</tag-class>
+    <body-content>JSP</body-content>
+    <description>The AssetRegistryTreeSrc tag returns a fully qualified URL to a registryTree JSP file to allow a hierarchical asset registry tree to be viewed recursively</description>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the page-context attribute that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>src</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>The name and path of the JSP file that will contain the tree recursion code</description>
+    </attribute>
+
+    <attribute>
+      <name>registryName</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The name of the registry to be displayed</description>
+    </attribute>
+
+    <attribute>
+      <name>registryManagerPath</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The Nucleus path of the RegistryManager component to be used for accessing the given registry</description>
+    </attribute>
+
+    <attribute>
+      <name>preSelectProperty</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The name of the asset property whose value should be compared with the given "preSelectValue" when determining whether to pre-select an asset item.</description>
+    </attribute>
+
+    <attribute>
+      <name>preSelectValue</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The value with which an asset's "preSelectProperty" value is compared when determining whether to pre-select an asset item.</description>
+    </attribute>
+
+    <attribute>
+      <name>onAssetSelect</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The name of a JavaScript function in the enclosing page, which should be invoked when an asset is selected</description>
+    </attribute>
+
+    <attribute>
+      <name>onFolderSelect</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The name of a JavaScript function in the enclosing page, which should be invoked when a folder is selected by the user</description>
+    </attribute>
+
+    <attribute>
+      <name>onAssetSelectProperties</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>A list of comma-separated names of asset properties whose values should be stored in an object passed to the "onAssetSelect" function as a parameter</description>
+    </attribute>
+
+    <attribute>
+      <name>onAssetSelectNucleusProperties</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>A list of names of Nucleus component properties whose values should be stored in an object passed to the "onAssetSelect" function as a parameter</description>
+    </attribute>
+
+    <attribute>
+      <name>assetRegistryFilter</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The path of a nucleus component which is a filter for RegistryAssets in the tree.</description>
+    </attribute>
+
+    <attribute>
+      <name>allowFolderSelection</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>A boolean value that, when set to true, allows folders to be selected in addition to items.</description>
+    </attribute>
+
+    <attribute>
+      <name>showRoot</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>A boolean value that determines whether the root folder is displayed.</description>
+    </attribute>
+
+    <attribute>
+      <name>showFoldersOnly</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>A boolean value that determines whether assets are hidden and only folders are displayed.</description>
+    </attribute>
+  </tag>
+
+  <!-- ============================== Reusable Presentation Tags ============================== -->
+
+  <!-- =========================================== -->
+  <!-- displayList                                 -->
+  <!-- =========================================== -->
+  <tag>
+    <name>displayList</name>
+    <tag-class>atg.web.taglib.ui.list.DisplayList</tag-class>
+    <body-content>JSP</body-content>
+    <description>The DisplayList class allows a single column of simple data to be rendered inside a table.</description>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The id of the displayList</description>
+    </attribute>
+
+    <attribute>
+      <name>width</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>The width of the displayList</description>
+    </attribute>
+
+    <attribute>
+      <name>height</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>The height of the displayList</description>
+    </attribute>
+
+    <attribute>
+      <name>css</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The css of the displayList</description>
+    </attribute>
+
+    <attribute>
+      <name>items</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The collection of items to be displayed in the list</description>
+    </attribute>
+
+    <attribute>
+      <name>title</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The title to be displayed above the list</description>
+    </attribute>
+
+    <attribute>
+      <name>property</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The name of the property that will allow the data to be extracted from the item object</description>
+    </attribute>
+
+    <attribute>
+      <name>sortTitle</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>A boolean that determines whether the list may be sorted by clicking on the column title</description>
+    </attribute>
+
+    <attribute>
+      <name>sortKey</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The property that will be used within the data object for sorting purposes</description>
+    </attribute>
+
+    <attribute>
+      <name>sortFunctionName</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The name of the JavaScript function that will be called when the title object is clicked</description>
+    </attribute>
+
+    <attribute>
+      <name>sortReverseToggle</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>A boolean that determines whether subsequent clicks on the column title will toggle between ascending and descending sorting</description>
+    </attribute>
+
+    <attribute>
+      <name>alternateRowShading</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>A boolean that determines whether alternate rows in the list will be assigned different CSS class names, thereby allowing for alternate row shading</description>
+    </attribute>
+  </tag>
+
+
+  <!-- =========================================== -->
+  <!-- table                                       -->
+  <!-- =========================================== -->
+  <tag>
+    <name>table</name>
+    <tag-class>atg.web.taglib.ui.table.Table</tag-class>
+    <body-content>JSP</body-content>
+    <description>The Table class extends from BaseUITagSupport and controls the rendering of the table object</description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The id of the table</description>
+    </attribute>
+
+    <attribute>
+      <name>width</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>The width of the HTML table</description>
+    </attribute>
+
+    <attribute>
+      <name>height</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>The height of the HTML table</description>
+    </attribute>
+
+    <attribute>
+      <name>css</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The CSS class override for the HTML table</description>
+    </attribute>
+
+    <attribute>
+      <name>border</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>The border thickness of the HTML table. The default value is 0</description>
+    </attribute>
+
+    <attribute>
+      <name>cellPadding</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>The cell padding of the HTML table. The default value is 0</description>
+    </attribute>
+
+    <attribute>
+      <name>cellSpacing</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>The cell spacing of the HTML table. The default value is 0</description>
+    </attribute>
+  </tag>
+
+
+  <!-- =========================================== -->
+  <!-- tableHead                                   -->
+  <!-- =========================================== -->
+  <tag>
+    <name>tableHead</name>
+    <tag-class>atg.web.taglib.ui.table.TableHead</tag-class>
+    <body-content>JSP</body-content>
+    <description>The TableHead class controls the rendering of the table header row in which the table header cells will be placed.</description>
+  </tag>
+
+
+  <!-- =========================================== -->
+  <!-- tableBody                                   -->
+  <!-- =========================================== -->
+  <tag>
+    <name>tableBody</name>
+    <tag-class>atg.web.taglib.ui.table.TableBody</tag-class>
+    <tei-class>atg.web.taglib.ui.table.TableBody$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>The TableBody class allows multi-column lists to be rendered in a single table by allowing iteration over the embedded table rows</description>
+
+    <attribute>
+      <name>alternateRowShading</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>A boolean that determines whether alternate rows in the table will be assigned different CSS class names</description>
+    </attribute>
+
+    <attribute>
+      <name>items</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The collection of items to be displayed in the table body</description>
+    </attribute>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the scripting variable that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the attribute that will hold the results</description>
+    </attribute>
+
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- tableHeadCell                               -->
+  <!-- =========================================== -->
+  <tag>
+    <name>tableHeadCell</name>
+    <tag-class>atg.web.taglib.ui.table.TableHeadCell</tag-class>
+    <body-content>JSP</body-content>
+    <description>The TableHeadCell class allows a single cell of data to be rendered inside a table header cell.</description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The id of the table head cell</description>
+    </attribute>
+
+    <attribute>
+      <name>css</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The CSS class of the table head cell</description>
+    </attribute>
+
+    <attribute>
+      <name>title</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The title of the table head cell</description>
+    </attribute>
+
+    <attribute>
+      <name>sortTitle</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>A boolean that determines whether the table may be sorted by clicking on the column title.</description>
+    </attribute>
+
+    <attribute>
+      <name>sortKey</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The property that will be used within the data object for sorting purposes.</description>
+    </attribute>
+
+    <attribute>
+      <name>sortFunctionName</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The name of the JavaScript function that will be called when the title object is clicked.</description>
+    </attribute>
+
+    <attribute>
+      <name>sortReverseToggle</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>A boolean that determines whether subsequent clicks on the column title will toggle between ascending and descending sorting.</description>
+    </attribute>
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- tableRow                                    -->
+  <!-- =========================================== -->
+  <tag>
+    <name>tableRow</name>
+    <tag-class>atg.web.taglib.ui.table.TableRow</tag-class>
+    <body-content>JSP</body-content>
+    <description>The TableRow class controls the rendering of the table body row in which the table cells will be placed.</description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The id of the table row</description>
+    </attribute>
+
+    <attribute>
+      <name>css</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The CSS class override for the HTML table row</description>
+    </attribute>
+
+    <attribute>
+      <name>cssShadingOn</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The CSS class used to override default table row highlight on</description>
+    </attribute>
+
+    <attribute>
+      <name>cssShadingOff</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The CSS class used to override default table row highlight off</description>
+    </attribute>
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- tableCell                                   -->
+  <!-- =========================================== -->
+  <tag>
+    <name>tableCell</name>
+    <tag-class>atg.web.taglib.ui.table.TableCell</tag-class>
+    <body-content>JSP</body-content>
+    <description>The TableCell class allows a single cell of data to be rendered inside a table cell</description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The id of the table</description>
+    </attribute>
+
+    <attribute>
+      <name>width</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>The width of the HTML table</description>
+    </attribute>
+
+    <attribute>
+      <name>height</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>The height of the HTML table</description>
+    </attribute>
+
+    <attribute>
+      <name>css</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The CSS class override for the HTML table</description>
+    </attribute>
+
+    <attribute>
+      <name>cssShadingOn</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The CSS class used to override default table row highlight on</description>
+    </attribute>
+
+    <attribute>
+      <name>cssShadingOff</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The CSS class used to override default table row highlight off</description>
+    </attribute>
+
+    <attribute>
+      <name>property</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The default property that will be used to dynamically look up the data value from the parent bean</description>
+    </attribute>
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- TreeInstance                                -->
+  <!-- =========================================== -->
+  <tag>
+
+    <name>treeInstance</name>
+    <tag-class>atg.web.taglib.ui.tree.TreeInstanceTag</tag-class>
+    <body-content>JSP</body-content>
+    <description></description>
+
+    <attribute>
+      <name>treeId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>A value used to uniquely identify this tree instance</description>
+    </attribute>
+
+
+    <attribute>
+      <name>cssDots</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Set this to true to render dotted lines delineating the structure of the tree.</description>
+     </attribute>
+
+    <attribute>
+      <name>cssDotsDelayed</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>You can set this to "true" or "false".  This attributes when set to true will delay the use of cssDots until after the root tree branches are rendered.</description>
+    </attribute>
+
+    <attribute>
+      <name>checkboxes</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>This boolean tells whether to display checkboxes or not.</description>
+    </attribute>
+
+     <attribute>
+       <name>checkboxBehaviors</name>
+       <required>false</required>
+       <rtexprvalue>true</rtexprvalue>
+       <description>a comma seprated list of check box behaviors. Values can include
+            ( inheritParent inheritAncestor, checkDisable, checkEnable, checkMimic, checkInvert, uncheckDisable, uncheckEnable, uncheckMimic, uncheckInvert )
+       </description>
+     </attribute>
+
+     <attribute>
+       <name>checkboxOnclickFunction</name>
+       <required>false</required>
+       <rtexprvalue>true</rtexprvalue>
+       <description>the external javascript method to call after tree handles checkbox click</description>
+     </attribute>
+
+     <attribute>
+       <name>branchStateActionUrl</name>
+       <required>false</required>
+       <rtexprvalue>true</rtexprvalue>
+       <description>a url for whick will receive notification of node opening and closing, used by sever side for tree persistence</description>
+     </attribute>
+
+     <attribute>
+       <name>resizeWindowFunction</name>
+       <required>false</required>
+       <rtexprvalue>true</rtexprvalue>
+       <description>the external javascript method to call that handles the resizing of the window</description>
+     </attribute>
+
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- TreeBranch                                  -->
+  <!-- =========================================== -->
+  <tag>
+    <name>treeBranch</name>
+    <tag-class>atg.web.taglib.ui.tree.TreeBranchTag</tag-class>
+    <body-content>JSP</body-content>
+    <description>Used with the treeInstance tag and provides initial or top level branches</description>
+
+    <attribute>
+      <name>branchId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>A value used to uniquely identify this tree branch.</description>
+    </attribute>
+
+    <attribute>
+      <name>type</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The data type of the node.  Used in conjunction with branchId to create a unique id. Perhaps also used in conjunction with dropTypes?</description>
+    </attribute>
+
+    <attribute>
+      <name>label</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>What to display for the node.</description>
+    </attribute>
+
+    <attribute>
+      <name>labelClassName</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The stylesheet class for displaying the label.</description>
+    </attribute>
+
+    <attribute>
+      <name>selectable</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Boolean indicating whether the node can be selected.</description>
+    </attribute>
+
+    <attribute>
+      <name>selectActionFunction</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Name of the javascript function to invoke when the node is selected.</description>
+    </attribute>
+
+    <attribute>
+      <name>labelHighlightClassName</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The stylesheet class for displaying the label when the node is selected.</description>
+    </attribute>
+
+    <attribute>
+      <name>hasChildren</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>A boolean that indicates whether the node has child nodes.</description>
+    </attribute>
+
+    <attribute>
+      <name>loadLevel</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>the amout of levels down this branch should load , a background process that is currently disabled</description>
+    </attribute>
+
+    <attribute>
+      <name>loadActionUrl</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The URI that is called when this node is opened. Can optionly contain get parameters </description>
+    </attribute>
+
+    <attribute>
+      <name>first</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Boolean indicating if this is the first child of its parent. Used for dot display.</description>
+    </attribute>
+
+    <attribute>
+      <name>last</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Boolean indicating if this is the last child of its parent. Used for dot display.</description>
+    </attribute>
+
+    <attribute>
+      <name>iconOpened</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The relative URL to an image to display when the node is opened.</description>
+    </attribute>
+
+    <attribute>
+      <name>iconClosed</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The relative URL to an image to display when the node is closed.</description>
+    </attribute>
+
+    <attribute>
+      <name>iconCheck</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The relative URL to an image to display (to the right of the label) when the node is selected.</description>
+    </attribute>
+
+    <attribute>
+      <name>checkboxes</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Boolean indicating whether to display checkboxes for this node.</description>
+    </attribute>
+
+    <attribute>
+      <name>initStateOpen</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>An optional attribute that will trigger the opening of the branch after created.</description>
+    </attribute>
+
+    <attribute>
+      <name>initStateChecked</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>An optional attribute that will have the check box pre-checked.</description>
+    </attribute>
+
+    <attribute>
+      <name>initStateSelected</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>An optional attribute that will have the branch pre-selected.</description>
+    </attribute>
+
+    <attribute>
+      <name>canDrag</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Boolean indicating if this node can be dragged in drag and drop functionality.</description>
+    </attribute>
+
+    <attribute>
+       <name>dragIcon</name>
+       <required>false</required>
+       <rtexprvalue>true</rtexprvalue>
+       <description>The icon to display while dragging this node</description>
+     </attribute>
+
+     <attribute>
+       <name>canDrop</name>
+       <required>false</required>
+       <rtexprvalue>true</rtexprvalue>
+      <description>Boolean indicating if this node can be dragged in drag and drop functionality. How is this different from canDrag?</description>
+     </attribute>
+
+      <attribute>
+        <name>dropTypes</name>
+        <required>false</required>
+        <rtexprvalue>true</rtexprvalue>
+        <description>A comma delimited list of the names of the types </description>
+      </attribute>
+
+    <attribute>
+      <name>loadActionParams</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>name value pairs ( semi-colon seperated). "name=value;name2=value2". This are appended to the loadAction url</description>
+    </attribute>
+
+    <attribute>
+      <name>dynamicProperties</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>name value pairs ( semi-colon seperated). "name=value;name2=value2". This will become properties of the created branch object</description>
+    </attribute>
+
+    </tag>
+
+
+  <!-- =========================================== -->
+  <!-- BranchChildren                              -->
+  <!-- =========================================== -->
+
+  <tag>
+
+    <name>branchChildren</name>
+    <tag-class>atg.web.taglib.ui.tree.BranchChildrenTag</tag-class>
+    <body-content>JSP</body-content>
+    <description> A wrapper file that encapsulates individual BranchChild tags</description>
+
+    <attribute>
+      <name>parentId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>A value used to indentify the parent node</description>
+    </attribute>
+
+    <attribute>
+      <name>treeId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>A value used to indentify the parent tree </description>
+    </attribute>
+
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- BranchChild                                 -->
+  <!-- =========================================== -->
+
+  <tag>
+    <name>branchChild</name>
+    <tag-class>atg.web.taglib.ui.tree.BranchChildTag</tag-class>
+    <body-content>JSP</body-content>
+    <description>Used with the treInstance tag and provides a single nested level branche node, see treeBranchTag for descriptions</description>
+
+    <attribute>
+      <name>branchId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>type</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>label</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>labelClassName</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>selectable</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>selectActionFunction</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>labelHighlightClassName</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>hasChildren</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>loadLevel</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>loadActionUrl</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>first</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>last</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>iconOpened</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>iconClosed</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>iconCheck</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>checkboxes</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>canDrag</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+       <name>dragIcon</name>
+       <required>false</required>
+       <rtexprvalue>true</rtexprvalue>
+     </attribute>
+
+     <attribute>
+       <name>canDrop</name>
+       <required>false</required>
+       <rtexprvalue>true</rtexprvalue>
+     </attribute>
+
+      <attribute>
+        <name>dropTypes</name>
+        <required>false</required>
+        <rtexprvalue>true</rtexprvalue>
+      </attribute>
+
+     <attribute>
+       <name>initStateOpen</name>
+       <required>false</required>
+       <rtexprvalue>true</rtexprvalue>
+       <description>An optional attribute that will trigger the opening of the branch after created.</description>
+      </attribute>
+
+     <attribute>
+      <name>initStateChecked</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>An optional attribute that will have the check box pre-checked.</description>
+     </attribute>
+
+     <attribute>
+      <name>initStateSelected</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>An optional attribute that will have the branch pre-selected.</description>
+     </attribute>
+
+    <attribute>
+      <name>loadActionParams</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>name value pairs ( semi-colon seperated). "name=value;name2=value2". This are appended to the loadAction url</description>
+    </attribute>
+
+    <attribute>
+      <name>dynamicProperties</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>name value pairs ( semi-colon seperated). "name=value;name2=value2". This will become properties of the created branch object</description>
+    </attribute>
+
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- Action                                      -->
+  <!-- =========================================== -->
+  <tag>
+    <name>action</name>
+    <tag-class>atg.web.taglib.ui.partialpagerenderer.Action</tag-class>
+    <display-name>Partial Page Renderer Action Component Tag</display-name>
+    <description>Tag that identifies a server action to invoke for reloading data. The data should be returned in an XML document for processing by output elements.</description>
+
+    <attribute>
+      <name>actionId</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Unique identifier for a partial page renderer action.</description>
+    </attribute>
+
+    <attribute>
+      <name>bean</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The form handler bean.</description>
+    </attribute>
+
+    <attribute>
+      <name>debugElementId</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The valid DOM id of a page element to which to direct the debugging output.</description>
+    </attribute>
+
+    <attribute>
+      <name>debugLevel</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The debug level either "none" (default) or "verbose".</description>
+    </attribute>
+
+    <attribute>
+      <name>errorUrl</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The form handler error URL.</description>
+    </attribute>
+
+    <attribute>
+      <name>handler</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The form handler handle method.</description>
+    </attribute>
+
+    <attribute>
+      <name>method</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The form handler HTTP method.</description>
+    </attribute>
+
+    <attribute>
+      <name>protocol</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The server action format either "struts" or "formhandlers".</description>
+    </attribute>
+
+    <attribute>
+      <name>recordHistory</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Indicates whether the action inserts each transaction in the browser history.</description>
+    </attribute>
+
+    <attribute>
+      <name>redirectToErrorUrl</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>If true, the partial page renderer redirects to the error URL when an error occurs. Otherwise the partial page renderer parses the contents of the error URL without a full page reload.</description>
+    </attribute>
+
+    <attribute>
+      <name>successUrl</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The form handler success URL.</description>
+    </attribute>
+
+    <attribute>
+      <name>synchronizeTransaction</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>If true, transaction is synchronized. The default is asynchronous transactions.</description>
+    </attribute>
+
+    <attribute>
+      <name>url</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Context-relative URL to a server action. The server action should forward to data in an XML format for rendering via XSLT in output elements.</description>
+    </attribute>
+
+    <attribute>
+      <name>useRequestDispatcherForward</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>If true, the forward method on the request dispatcher is used to navigate to the success URL. Otherwise, an HTTP redirect is used, returning HTTP status 302 to the client and forcing the client to make a second request.</description>
+    </attribute>
+
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- Input Element                               -->
+  <!-- =========================================== -->
+  <tag>
+    <name>inputElement</name>
+    <tag-class>atg.web.taglib.ui.partialpagerenderer.InputElement</tag-class>
+    <body-content>empty</body-content>
+    <display-name>Partial Page Renderer Input Element Component Tag</display-name>
+    <description>Tag that identifies an input element on the page for extracting data to post to a partial page renderer action.</description>
+
+    <attribute>
+      <name>accessScript</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>JavaScript evaluated by the partial page renderer to access the value of the input element for reading.</description>
+    </attribute>
+
+    <attribute>
+      <name>isHistoryTitle</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>When history is enabled, indicates whether the value of the current input element contains the title for the history event.</description>
+    </attribute>
+
+    <attribute>
+      <name>isQuery</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Indicates whether the name value pair is assigned to the query string of the partial page renderer action URL.</description>
+    </attribute>
+
+    <attribute>
+      <name>sourceId</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Unique identifier for a partial page renderer input element. This attribute must correspond to a valid HTML element ID supplied by the page author.</description>
+    </attribute>
+
+    <attribute>
+      <name>property</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Name of the HTTP header under which the value of the input element is posted to the server or the property name corresponding to a valid servlet-configured form-bean property.</description>
+    </attribute>
+
+    <attribute>
+      <name>value</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Constant value element.</description>
+    </attribute>
+
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- Error Element                               -->
+  <!-- =========================================== -->
+  <tag>
+    <name>errorElement</name>
+    <tag-class>atg.web.taglib.ui.partialpagerenderer.ErrorElement</tag-class>
+    <body-content>empty</body-content>
+    <display-name>Partial Page Renderer Error Element Component Tag</display-name>
+    <description>Tag that identifies an element on the page to show errors following a partial page renderer action.</description>
+
+    <attribute>
+      <name>elementId</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Unique identifier for an element to show the errors following a partial page renderer action. This attribute must correspond to a valid HTML element ID supplied by the page author.</description>
+    </attribute>
+
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- Hide Element                               -->
+  <!-- =========================================== -->
+  <tag>
+    <name>hideElement</name>
+    <tag-class>atg.web.taglib.ui.partialpagerenderer.HideElement</tag-class>
+    <body-content>empty</body-content>
+    <display-name>Partial Page Renderer Hide Element Component Tag</display-name>
+    <description>Tag that identifies an element on the page to hide during a partial page renderer action.</description>
+
+    <attribute>
+      <name>elementId</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Unique identifier for an element to hide during the partial page renderer action. This attribute must correspond to a valid HTML element ID supplied by the page author.</description>
+    </attribute>
+
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- Show Element                               -->
+  <!-- =========================================== -->
+  <tag>
+    <name>showElement</name>
+    <tag-class>atg.web.taglib.ui.partialpagerenderer.ShowElement</tag-class>
+    <body-content>empty</body-content>
+    <display-name>Partial Page Renderer Show Element Component Tag</display-name>
+    <description>Tag that identifies an element on the page to show during a partial page renderer action, such as a please wait icon.</description>
+
+    <attribute>
+      <name>elementId</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Unique identifier for an element to show during the partial page renderer action. This attribute must correspond to a valid HTML element ID supplied by the page author.</description>
+    </attribute>
+
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- Output JavaScript                           -->
+  <!-- =========================================== -->
+  <tag>
+    <name>outputJavaScript</name>
+    <tag-class>atg.web.taglib.ui.partialpagerenderer.OutputJavaScript</tag-class>
+    <body-content>JSP</body-content>
+    <display-name>Partial Page Renderer Output JavaScript Tag</display-name>
+    <description>Tag that identifies JavaScript on the page for evaluation following a partial page renderer request.</description>
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- Output Status                               -->
+  <!-- =========================================== -->
+  <tag>
+    <name>outputStatus</name>
+    <tag-class>atg.web.taglib.ui.partialpagerenderer.OutputStatus</tag-class>
+    <body-content>JSP</body-content>
+    <display-name>Partial Page Renderer Output Status Tag</display-name>
+    <description>Tag that notifies the client about a condition on the server related to the request, such as an invalid session.</description>
+
+    <attribute>
+      <name>redirectUrl</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Optional URL to which to redirect when the given status condition occurs.</description>
+    </attribute>
+    <attribute>
+      <name>statusKey</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Status key that identifies a condition on the server for the request. Possible values: "sessioninvalid".</description>
+    </attribute>
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- Output XHTML                                -->
+  <!-- =========================================== -->
+  <tag>
+    <name>outputXhtml</name>
+    <tag-class>atg.web.taglib.ui.partialpagerenderer.OutputXhtml</tag-class>
+    <body-content>JSP</body-content>
+    <display-name>Partial Page Renderer Output XHTML Component Tag</display-name>
+    <description>Tag that encloses output XHTML on the page for insertion into an element following a partial page renderer request.</description>
+
+    <attribute>
+      <name>append</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Indicates whether the output should be appended to the existing content of the specified output element, either "true" or "false". Default is false indicating that the contents of the target element are overwritten.</description>
+    </attribute>
+    <attribute>
+      <name>targetId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Unique identifier for a partial page renderer output element. This attribute must correspond to a valid HTML element ID supplied by the page author.</description>
+    </attribute>
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- Output XML                                  -->
+  <!-- =========================================== -->
+  <tag>
+    <name>outputXml</name>
+    <tag-class>atg.web.taglib.ui.partialpagerenderer.OutputXml</tag-class>
+    <body-content>empty</body-content>
+    <display-name>Partial Page Renderer Output XML Component Tag</display-name>
+    <description>Tag that identifies an XSL stylesheet for application to the returned XML following a partial page renderer request.</description>
+
+    <attribute>
+      <name>accessScript</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>JavaScript evaluated by the partial page renderer to access the value of the output element for writing.</description>
+    </attribute>
+
+    <attribute>
+      <name>targetId</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Unique identifier for a partial page renderer target element. This attribute must correspond to a valid HTML element ID supplied by the page author.</description>
+    </attribute>
+
+    <attribute>
+      <name>xsltString</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>XSLT stylesheet string. The XSLT stylesheet is applied to the results of the partial page renderer action, which should consist of a valid XML document.</description>
+    </attribute>
+
+    <attribute>
+      <name>xsltUrl</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Context-relative path to an XSLT stylesheet resource. The XSLT stylesheet is applied to the results of the partial page renderer action, which should consist of a valid XML document.</description>
+    </attribute>
+
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- Transact                                    -->
+  <!-- =========================================== -->
+  <tag>
+    <name>transact</name>
+    <tag-class>atg.web.taglib.ui.partialpagerenderer.Transact</tag-class>
+    <body-content>empty</body-content>
+    <display-name>Partial Page Renderer Invocation Component Tag</display-name>
+    <description>Tag that causes the specified partial page renderer action to reload.</description>
+
+    <attribute>
+      <name>actionId</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Identifier of a partial page renderer action to invoke.</description>
+    </attribute>
+
+    <attribute>
+      <name>synchronize</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Indicates whether the XMLHTTPRequest transaction is synchronized. Default value is false (asynchronous).</description>
+    </attribute>
+  </tag>
+
+  <!-- =========================================== -->
+  <!-- History                                     -->
+  <!-- =========================================== -->
+  <tag>
+    <name>history</name>
+    <tag-class>atg.web.taglib.ui.partialpagerenderer.History</tag-class>
+    <body-content>empty</body-content>
+    <display-name>Partial Page Renderer History Component Tag</display-name>
+    <description>Tag that inserts partial page renderer action history into the browser history.</description>
+  </tag>
+
+</taglib>

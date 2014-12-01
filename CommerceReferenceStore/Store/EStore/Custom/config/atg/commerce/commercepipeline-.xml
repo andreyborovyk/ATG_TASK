@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+ 
+
+<pipelinemanager> 
+
+   <pipelinechain name="processOrder" transaction="TX_REQUIRED" headlink="executeValidateForCheckoutChain">
+   
+        <pipelinelink name="setSalesChannel" transaction="TX_MANDATORY"  xml-combine='replace'>
+          <processor jndi="/atg/commerce/order/processor/SetSalesChannel"/>
+      <!--    <transition returnvalue="1" link="addOrderToRepository"/>-->
+      <transition returnvalue="1" link="sendFulfillmentMessage"/>
+        </pipelinelink>      
+        <!-- 
+         <pipelinelink name="setConfirmationNumber" transaction="TX_MANDATORY">
+            <processor jndi="/com/vam/SetConfirmationNumber"/>
+            <transition returnvalue="1" link="addOrderToRepository"/>
+        </pipelinelink>
+        -->
+         <pipelinelink name="sendFulfillmentMessage" transaction="TX_MANDATORY"  xml-combine='replace'>
+            <processor jndi="/atg/commerce/order/processor/SendFulfillmentMessage"/>
+             <transition returnvalue="1" link="sendCustomMessage"/>
+        </pipelinelink>
+        
+          <pipelinelink name="sendCustomMessage" transaction="TX_MANDATORY">
+            <processor jndi="/com/vam/SendCustomMessage"/>
+             
+        </pipelinelink>
+    </pipelinechain>
+</pipelinemanager>
+ 

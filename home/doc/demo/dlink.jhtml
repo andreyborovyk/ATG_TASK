@@ -1,0 +1,302 @@
+<java type=import>
+  atg.service.modules.Module
+  atg.nucleus.DynamoEnv
+</java><java>
+  /*-----------------------------------------------------------------------------
+    This dlink page checks whether the given demo (determined by the
+    required parameter, demoPath) is fully installed and ready to run
+    before attempting to redirect to the demo and run it.  Typically,
+    a demo requires one or more of the following in order to run:
+      1. The corresponding server (product) must be installed.
+      2. The corresponding demo html files must be installed.
+      3. The demo module(s) must be loaded.
+    
+    In general, all links in the doc tree to a specific demo should go
+    through this page to ensure the demo is operational.  If the demo
+    is not properly installed, this page displays an appropriate
+    message.
+
+    Note that links to DAS demos should be direct, rather than go
+    through this page, because the DAS server is always installed, the
+    DAS demo html files are always installed, and there are no DAS demo
+    modules to load.
+  ------------------------------------------------------------------------------*/
+</java><param name="documentRoot" value="property:/atg/dynamo/Configuration.documentRoot"><java>
+
+  String demoPath = request.getParameter("demoPath");
+
+  if (demoPath == null)
+  {
+</java>
+    <head>
+    <title>demoPath is null</title>
+    </head>
+    <body>
+    <code>dlink.jhtml</code> required parameter, <code>demoPath</code>, is <code>null</code>.
+    </body>
+<java>
+    return;
+  }
+
+  // Set this to true if the demopath already contains the
+  // context path and servlet path.
+  // In general this should be set to true for J2EE demo
+  // applications and false for Dynamo .jhtml demo applications
+  boolean useDemoPathAsIs = false;
+
+  // Component whose existence in nucleus confirms that the
+  // appropriate server module has been loaded.
+  Object serverComponent = null;
+
+  // Component whose existence in nucleus confirms that the
+  // appropriate demo module has been loaded.
+  Object demoComponent = null;
+
+  // Doc root is relative to dynamo home not "." in case we are in another
+  // app server
+  File homeDir;
+  if (DynamoEnv.getProperty("atg.dynamo.home") == null)
+    homeDir = new File(".");
+  else
+    homeDir = new File(DynamoEnv.getProperty("atg.dynamo.home"));
+
+  // Dynamo docroot as configured out of the box (i.e., Serverina)
+  File originalDocroot = new File(homeDir, "doc");
+
+  File originalDemoroot = null;
+    
+
+  // Use the path to determine which demo we're supposed to link to
+  // and set some variables accordingly.
+
+  if (demoPath.equals("/DSSDemo/QuincyFunds/") ||
+      demoPath.equals("/DSSDemo/QuincyFunds/EmailDemo/"))
+  {
+    serverComponent = request.resolveName("/atg/modules/ScenarioServer");
+    demoComponent = request.resolveName("/atg/modules/DSSDemo");
+    originalDemoroot = new File(originalDocroot, "DSSDemo" +
+                                File.separator + "QuincyFunds");
+  }
+  else if (demoPath.equals("/QuincyFunds/") ||
+           demoPath.equals("/QuincyFunds/EmailDemo/"))
+  {
+    serverComponent = request.resolveName("/atg/modules/ScenarioServer");
+    demoComponent = request.resolveName("/atg/modules/DSSJ2EEDemo");
+    // Workaround for BEA not recognizing welcome pages
+    demoPath = demoPath + "index.jsp";	
+    useDemoPathAsIs = true;
+  }
+  else if (demoPath.equals("/PioneerCycling/"))
+  {
+    serverComponent = request.resolveName("/atg/modules/Commerce");
+    demoComponent = request.resolveName("/atg/modules/PioneerCyclingJSP");
+    useDemoPathAsIs = true;
+  }
+  else if (demoPath.equals("/Motorprise/"))
+  {
+    serverComponent = request.resolveName("/atg/modules/Commerce");
+    demoComponent = request.resolveName("/atg/modules/MotorpriseJSP");
+    useDemoPathAsIs = true;
+  }
+  else if (demoPath.equals("/meeting/"))
+  {
+    // This demo is a special case since it's a J2EE application.
+    // The concept of a demoroot is irrelevant here and we fudge the
+    // serverComponent here since DAS is always installed.
+    serverComponent = "none";
+    demoComponent = request.resolveName("/atg/dynamo/service/j2ee/J2EEContainer/DynamoMeetingManager");
+  }
+  
+  else if (demoPath.equals("/portal-demo/channels/geomatrix/cam/"))
+  {
+    if (atg.servlet.ServletUtil.isDynamoJ2EEServer()) {
+    serverComponent =
+      request.resolveName("/atg/dynamo/service/j2ee/J2EEContainer/Portal_Demo");
+    demoComponent = request.resolveName("/atg/dynamo/service/j2ee/J2EEContainer/Portal_Demo");
+    } else {
+      // Fake the server component on 3rd party application servers
+      // PortalRepository should be resolveable if Portals is installed
+      serverComponent = "none";
+      demoComponent = request.resolveName("/atg/portal/framework/PortalRepository");
+      useDemoPathAsIs=true;
+    }
+	
+  }
+
+  else if (demoPath.equals("/portal-demo/wireless/krystal/mykrystal/"))
+  {
+    if (atg.servlet.ServletUtil.isDynamoJ2EEServer()) {
+    serverComponent =
+      request.resolveName("/atg/dynamo/service/j2ee/J2EEContainer/Portal_Demo");
+    demoComponent = request.resolveName("/atg/dynamo/service/j2ee/J2EEContainer/Portal_Demo");
+    } else {
+      // Fake the server component on 3rd party application servers
+      // PortalRepository should be resolveable if Portals is installed
+      serverComponent = "none";
+      demoComponent = request.resolveName("/atg/portal/framework/PortalRepository");
+      useDemoPathAsIs=true;
+    }
+  }
+
+  else if (demoPath.equals("/portal-demo/b2e/roimax/intranet/"))
+  {
+    if (atg.servlet.ServletUtil.isDynamoJ2EEServer()) {	
+    serverComponent =
+      request.resolveName("/atg/dynamo/service/j2ee/J2EEContainer/Portal_Demo");
+    demoComponent = request.resolveName("/atg/dynamo/service/j2ee/J2EEContainer/Portal_Demo");
+     } else {
+      // Fake the server component on 3rd party application servers
+      // PortalRepository should be resolveable if Portals is installed
+      serverComponent = "none";
+      demoComponent = request.resolveName("/atg/portal/framework/PortalRepository");
+      useDemoPathAsIs=true;
+    }
+  }
+  else	
+  {
+</java>
+
+    <body>
+Path not recognized as a demo path: <valueof param="demoPath"></valueof><p>
+    The dlink.jhtml page currently only recognizes the following demo paths:<br>
+    /DSSDemo/QuincyFunds/<br>
+    /DSSDemo/QuincyFunds/EmailDemo/<br>
+    /QuincyFunds/<br>
+    /QuincyFunds/EmailDemo/<br>
+    /PioneerCycling/<br>
+    /Motorprise/<br>
+    /meeting/<br>
+    /portal-demo/channels/geomatrix/cam/<br>
+    /portal-demo/wireless/krystal/mykrystal/<br>
+    /portal-demo/b2e/roimax/intranet/<br>
+    </body>
+<java>
+    return;
+  }
+
+
+  // We expect three conditions to be satisfied in order to run a given demo.
+  // 1. The server being demoed must be loaded.
+  // 2. The corresponding html files must exist under the docroot.
+  // 3. The demo module must be loaded.
+
+
+  if (serverComponent == null)
+  {
+    // The server for which the demo exists is not even loaded.
+</java>
+    <droplet bean="/atg/dynamo/droplet/Switch">
+      <param name="value" value="param:demoPath">
+      <oparam name="/QuincyFunds/">
+        <droplet src="no-dss-server.jhtml"></droplet>
+      </oparam>
+      <oparam name="/QuincyFunds/EmailDemo/">
+        <droplet src="no-dss-server.jhtml"></droplet>
+      </oparam>
+      <oparam name="/DSSDemo/QuincyFunds/">
+        <droplet src="no-dss-server.jhtml"></droplet>
+      </oparam>
+      <oparam name="/DSSDemo/QuincyFunds/EmailDemo/">
+        <droplet src="no-dss-server.jhtml"></droplet>
+      </oparam>
+      <oparam name="/PioneerCycling/">
+        <droplet src="no-dcs-server.jhtml"></droplet>
+      </oparam>
+      <oparam name="/Motorprise/">
+        <droplet src="no-dcs-server.jhtml"></droplet>
+      </oparam>
+      <oparam name="/portal-demo/channels/geomatrix/cam/">
+        <droplet src="no-portal-server.jhtml"></droplet>
+      </oparam>
+      <oparam name="/portal-demo/wireless/krystal/mykrystal/">
+        <droplet src="no-portal-server.jhtml"></droplet>
+      </oparam>
+       <oparam name="/portal-demo/b2e/roimax/intranet/">
+        <droplet src="no-portal-server.jhtml"></droplet>
+      </oparam>
+    </droplet>
+<java>                              
+    return;
+  }
+
+
+  if (originalDemoroot != null && !originalDemoroot.canRead())
+  {
+    // The demo files have not been installed into the doc tree.
+</java>
+    <droplet bean="/atg/dynamo/droplet/Switch">
+      <param name="value" value="param:demoPath">
+      <oparam name="/DSSDemo/QuincyFunds/">
+        <droplet src="no-dssdemo-files.jhtml"></droplet>
+      </oparam>
+      <oparam name="/DSSDemo/QuincyFunds/EmailDemo/">
+        <droplet src="no-dssdemo-files.jhtml"></droplet>
+      </oparam>
+      <oparam name="/PioneerCycling/">
+        <droplet src="no-dcsdemo-files.jhtml"></droplet>
+      </oparam>
+      <oparam name="/Motorprise/">
+        <droplet src="no-b2bdemo-files.jhtml"></droplet>
+      </oparam>
+    </droplet>
+<java>                              
+    return;
+  }
+
+  if (demoComponent == null)
+  {
+    // Demo files have been installed but the demo module is not loaded.
+</java>
+    <droplet bean="/atg/dynamo/droplet/Switch">
+      <param name="value" value="param:demoPath">
+      <oparam name="/DSSDemo/QuincyFunds/">
+        <droplet src="no-dssdemo-module.jhtml"></droplet>
+      </oparam>
+      <oparam name="/DSSDemo/QuincyFunds/EmailDemo/">
+        <droplet src="no-dssdemo-module.jhtml"></droplet>
+      </oparam>
+      <oparam name="/QuincyFunds/">
+        <droplet src="no-dssj2eedemo-module.jhtml"></droplet>
+      </oparam>
+      <oparam name="/QuincyFunds/EmailDemo/">
+        <droplet src="no-dssj2eedemo-module.jhtml"></droplet>
+      </oparam>
+      <oparam name="/PioneerCycling/">
+        <droplet src="no-dcsdemo-module.jhtml"></droplet>
+      </oparam>
+      <oparam name="/Motorprise/">
+        <droplet src="no-b2bdemo-module.jhtml"></droplet>
+      </oparam>
+      <oparam name="/portal-demo/channel/geomatrix/cam/">
+        <droplet src="no-portal-module.jhtml"></droplet>
+      </oparam>
+      <oparam name="/portal-demo/wireless/krystal/mykrystal/">
+        <droplet src="no-portal-module.jhtml"></droplet>
+      </oparam>
+      <oparam name="/portal-demo/b2e/roimax/intranet/">
+        <droplet src="no-portal-module.jhtml"></droplet>
+      </oparam>
+      <oparam name="/meeting/">
+        <droplet src="no-j2eedemo-module.jhtml"></droplet>
+      </oparam>
+    </droplet>
+<java>
+    return;
+  }
+
+  // Everything seems to be in place, so serve up the demo.
+  if (useDemoPathAsIs) {
+    // For iPlanet, we need /NASApp pre-pended. This is how the IWS
+    // knows to send to iPlanet app server.
+    String appServer = DynamoEnv.getProperty("atg.dynamo.appserver");
+    // XXX Should parse request.getContextPath() to get this.
+    if (appServer != null && appServer.equals("ias"))
+      demoPath = "/NASApp" + demoPath; 
+ 
+    response.sendRedirect(demoPath);	
+  } else	
+    response.sendLocalRedirect(ServletUtil.getRequestURIFromPathInfo(request, demoPath), request);
+
+</java>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/home/doc/demo/dlink.jhtml#2 $$Change: 651448 $*/</java>
+

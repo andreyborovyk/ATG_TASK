@@ -1,0 +1,24 @@
+<importbean bean="/atg/userprofiling/ProfileAdminFormHandler">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+
+<declareparam name="propertyDesc" value="atg.beans.DynamicPropertyDescriptor" description="The DynamicPropertyDescriptor of the cell we want to output">
+<declareparam name="propertyValue" value="java.lang.Object" description="Value of the propertyDesc">
+
+<select name="param:propertyDesc.name" size="3" multiple>
+
+   <droplet bean="ForEach">
+      <param name="array" value="param:propertyValue">
+      <oparam name="output">
+      
+        <option value="param:element" selected><valueof param="element">null</valueof>
+
+      </oparam>
+   </droplet>        
+</select><br>
+
+<input name="Add `request.getParameter("propertyDesc.name")`" type="hidden" value="addMultiProperty`request.getParameter("propertyDesc.name")`,addMultiValue`request.getParameter("propertyDesc.name")`">
+<input name="addMultiProperty`request.getParameter("propertyDesc.name")`" type="hidden" value="`request.getParameter("propertyDesc.name")`">
+<input name="addMultiValue`request.getParameter("propertyDesc.name")`"  type="text">
+<input name="addMultiProperty" type="submit" bean="ProfileAdminFormHandler.addMulti" value="Add `request.getParameter("propertyDesc.name")`">
+<java>/* @version $Id: //product/DPS/version/10.0.3/release/DPS/admin/atg/userprofiling/admin/en/profiletableform_valuecellinput-indexed.jhtml#2 $$Change: 651448 $ */</java>
+

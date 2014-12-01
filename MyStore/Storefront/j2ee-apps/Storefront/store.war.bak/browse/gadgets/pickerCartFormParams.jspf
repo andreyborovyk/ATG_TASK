@@ -1,0 +1,11 @@
+<%-- Hidden params --%>
+<dsp:input bean="CartFormHandler.addItemToOrderErrorURL" type="hidden" value="${errorURL}" priority="10"/>
+<dsp:input bean="CartFormHandler.addItemCount" value="1" type="hidden" priority="10"/>
+<dsp:input bean="CartFormHandler.addItemToOrderSuccessURL" type="hidden" value="${originatingRequest.contextPath}/cart/cart.jsp" priority="10"/>
+<dsp:input bean="CartFormHandler.sessionExpirationURL" type="hidden" value="${originatingRequest.contextPath}/global/sessionExpired.jsp" priority="10"/>
+<dsp:input bean="CartFormHandler.items[0].catalogRefId" paramvalue="selectedSku.repositoryId" type="hidden" priority="10"/>
+<dsp:input bean="CartFormHandler.items[0].productId" paramvalue="product.repositoryId" type="hidden" priority="10"/>
+<%-- URLs for the RichCart AJAX response. Renders cart contents as JSON --%>
+<dsp:input bean="CartFormHandler.ajaxAddItemToOrderSuccessUrl" type="hidden" value="${originatingRequest.contextPath}/cart/json/cartContents.jsp" priority="10"/>
+<dsp:input bean="CartFormHandler.ajaxAddItemToOrderErrorUrl" type="hidden" value="${originatingRequest.contextPath}/cart/json/errors.jsp" priority="10"/>
+<%-- @version $Id: //edu/ILT-Courses/main/COMM/StudentFiles/COM/setup/copy-files/apps/MyStore/Storefront/j2ee-apps/Storefront/store.war/browse/gadgets/pickerCartFormParams.jspf#3 $$Change: 635816 $--%>

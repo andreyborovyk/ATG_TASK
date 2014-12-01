@@ -1,0 +1,384 @@
+<!-- BEGIN FILE config_details_tabs.jspf -->
+		<portlet:renderURL var="overviewURL">	
+		  <portlet:param name="atg_admin_menu_group" value="deployment"/>
+		  <portlet:param name="atg_admin_menu_1" value="configuration"/>
+		  <portlet:param name="config_no_tabs" value="true"/>
+	    <portlet:param name="from_menu" value="true"/>
+		</portlet:renderURL>
+<pws:getTargetDef var="testTargetDef" targetId="${TARGET_DEF_ID}"/>
+<c:if test="${empty testTargetDef || empty TARGET_DEF_ID}">
+<c:remove var="targetDef" scope="session"/>
+<c:remove var="goToConfigDetailsTabs" scope="session"/>
+<c:remove var="TARGET_DEF_ID" scope="session"/>
+<%-- if we don't have a targetDef we cannot be here --%>
+<script language="Javascript" type="text/javascript">
+<!--
+  doRedirect('<c:out value="${overviewURL}"/>');
+  -->
+</script>
+
+</c:if>
+<script language="Javascript" type="text/javascript">
+<!--
+
+function showIntroTextDetails(detailsDiv){
+  closeAdminDetails(detailsDiv);
+   var morelesselement = document.getElementById(detailsDiv+"_container");
+   if(morelesselement != null){
+     var morelesstext = morelesselement.innerHTML;
+     if(morelesstext.indexOf("more") > 0){
+       morelesselement.innerHTML = morelesstext.replace(/<fmt:message key="more" bundle="${depBundle}"/>/g, '<fmt:message key="less" bundle="${depBundle}"/>');
+     }
+     else{
+       morelesselement.innerHTML = morelesstext.replace(/<fmt:message key="less" bundle="${depBundle}"/>/g, '<fmt:message key="more" bundle="${depBundle}"/>');
+     }
+   }
+   
+  }
+  function showUndeleteIframe(targetID){
+    var iframe = document.getElementById('undeleteSiteActionIframe');
+    iframe.src=iframe.src + '?undelete_target_id='+targetID;
+    showIframe('undeleteSiteAction');
+    
+    }
+ function showDeleteIframe(targetID){
+    var iframe = document.getElementById('deleteSiteActionIframe');
+    iframe.src=iframe.src + '?delete_target_id='+targetID;
+    showIframe('deleteSiteAction');
+    
+    }    
+ -->
+</script>
+
+		<div id="intro">
+		<h2><span class="pathSub">        <fmt:message key="configuration" bundle="${depBundle}"/> :</span> <c:out value="${targetDef.displayName}"/></h2>
+		<p class="path"><a href="<c:out value='${overviewURL}'/>">&laquo;&nbsp;        <fmt:message key="back-to-dep-config" bundle="${depBundle}"/></a></p>
+    
+  <c:choose>
+    <c:when test='${configTabName eq "details"}'>
+  <c:choose>
+   <c:when test="${targetDef.surrogateFor == null}">
+   <p> <fmt:message key="new-site-config-detail-p1" bundle="${depBundle}"/>
+ <span id="extraText_container" class="containerIconClosed adminDetails"><a href="#" onmousedown="showIntroTextDetails('extraText');"><fmt:message key="more" bundle="${depBundle}"/></a></span>
+ </p>
+  <div id="extraText" class="hierarchyPaneClosed">
+   <p> <fmt:message key="flagging-intro-text" bundle="${depBundle}"/>
+   </p>
+  </div>
+  </c:when>
+   <c:otherwise>
+
+   <p><fmt:message key="config-details-intro-p1" bundle="${depBundle}"/></p>
+    </c:otherwise>
+  </c:choose>
+  
+ </c:when><%-- end details--%>
+ <c:when test='${configTabName eq "agents"}'>
+   <p><fmt:message key="config-agents-intro-p1" bundle="${depBundle}"/>
+ <span id="extraText_container" class="containerIconClosed adminDetails"><a href="#" onmousedown="showIntroTextDetails('extraText');"><fmt:message key="more" bundle="${depBundle}"/></a></span>
+ </p>
+  <div id="extraText" class="hierarchyPaneClosed">
+ 	<table cellpadding="0" border="0" cellspacing="0" width="100%">
+   <tr>
+    <td>
+   <p>
+     <fmt:message key="transport-url" bundle="${depBundle}"/>:
+   </p>
+    </td>
+    <td>
+   <p>
+  <fmt:message key="config-agents-intro-p3" bundle="${depBundle}"/>
+   </p>
+    </td>
+   </tr>
+   <tr>
+   <td>
+   <p>
+     <fmt:message key="available-destinations" bundle="${depBundle}"/>:
+   </p>
+   </td>
+    <td>
+   <p>
+     <fmt:message key="config-agents-intro-p7" bundle="${depBundle}"/>
+   </p>
+    </td>
+   </tr>
+   <tr>
+   <td>
+   <p>
+     <fmt:message key="include-destinations" bundle="${depBundle}"/>:
+   </p>
+   </td>
+    <td>
+   <p>
+     <fmt:message key="config-agents-intro-p6" bundle="${depBundle}"/>
+   </p>
+    </td>
+   </tr>
+
+   </table>
+  </div>   
+ </c:when><%-- end agents --%>
+ <c:when test='${configTabName eq "diff" && targetDef.modified}'>
+  <p>Difference between site and agent configuration made to this site and those which are live.</p>
+</c:when><%-- end agents --%> 
+ <c:otherwise>
+  <c:choose>
+   <c:when test="${targetDef.surrogateFor == null}">
+   <p>This is a new site. You can update this site here before making the changes live. 
+ <span id="extraText_container" class="containerIconClosed adminDetails"><a href="#" onmousedown="showIntroTextDetails('extraText');"><fmt:message key="more" bundle="${depBundle}"/></a></span>
+ </p>
+  <div id="extraText" class="hierarchyPaneClosed">
+  <p> One of the Site Initialization Options to "flag agents only" or "do a full deployment" must be selected. If the new physical site has 
+  already been imported with data from the main versioning branch, it is recommended that the "flag agents only" option be selected to prevent 
+  a full deployment, which can be time consuming.</p>
+  </div>
+  </c:when>
+   <c:otherwise>
+   <p> You can update site name and description using this form. Note that changes made here do not effect the live configuration.</p>
+   </c:otherwise>
+  </c:choose>
+
+ </c:otherwise>
+</c:choose>
+    <!--
+   Describe each tab and information displayed here
+   -->
+                      
+	</p>
+		</div>
+    <portlet:renderURL var="detailsURL">
+     <portlet:param name="atg_admin_menu_group" value="deployment"/>
+     <portlet:param name="atg_admin_menu_1" value="configuration"/>
+     <portlet:param name="goto_config_details_tabs" value="true"/>
+     <portlet:param name="config_tab_name" value="details"/>  
+     <portlet:param name="target_def_id" value='<%=pageContext.findAttribute("TARGET_DEF_ID")+""%>'/>
+    </portlet:renderURL>
+    <portlet:renderURL var="diffURL">
+    <portlet:param name="atg_admin_menu_group" value="deployment"/>
+    <portlet:param name="atg_admin_menu_1" value="configuration"/>
+    <portlet:param name="goto_config_details_tabs" value="true"/>
+    <portlet:param name="config_tab_name" value="diff"/>  
+    <portlet:param name="target_def_id" value='<%=pageContext.findAttribute("TARGET_DEF_ID")+""%>'/>
+   </portlet:renderURL>    
+    <portlet:renderURL var="agentsURL">
+     <portlet:param name="atg_admin_menu_group" value="deployment"/>
+     <portlet:param name="atg_admin_menu_1" value="configuration"/>
+     <portlet:param name="goto_config_details_tabs" value="true"/>
+     <portlet:param name="config_tab_name" value="agents"/>
+     <portlet:param name="target_def_id" value='<%=pageContext.findAttribute("TARGET_DEF_ID")+""%>'/>
+    </portlet:renderURL>
+
+  <c:choose>
+   <c:when test="${!empty targetDef.surrogateFor}">
+     <c:set var="undeleteTargetID" value="${targetDef.surrogateFor.ID}"/>
+   </c:when>
+   <c:otherwise>
+     <c:set var="undeleteTargetID" value="${targetDef.ID}"/>
+   </c:otherwise>
+  </c:choose>
+    <portlet:renderURL var="detailsPrimaryURL">
+     <portlet:param name="atg_admin_menu_group" value="deployment"/>
+     <portlet:param name="atg_admin_menu_1" value="configuration"/>
+     <portlet:param name="goto_config_details_tabs" value="true"/>
+     <portlet:param name="config_tab_name" value="details"/>  
+     <portlet:param name="target_def_id" value='<%=pageContext.findAttribute("undeleteTargetID")+""%>'/>
+    </portlet:renderURL>
+    <portlet:renderURL var="diffPrimaryURL">
+    <portlet:param name="atg_admin_menu_group" value="deployment"/>
+    <portlet:param name="atg_admin_menu_1" value="configuration"/>
+    <portlet:param name="goto_config_details_tabs" value="true"/>
+    <portlet:param name="config_tab_name" value="diff"/>  
+    <portlet:param name="target_def_id" value='<%=pageContext.findAttribute("undeleteTargetID")+""%>'/>
+   </portlet:renderURL>    
+    <portlet:renderURL var="agentsPrimaryURL">
+     <portlet:param name="atg_admin_menu_group" value="deployment"/>
+     <portlet:param name="atg_admin_menu_1" value="configuration"/>
+     <portlet:param name="goto_config_details_tabs" value="true"/>
+     <portlet:param name="config_tab_name" value="agents"/>
+     <portlet:param name="target_def_id" value='<%=pageContext.findAttribute("undeleteTargetID")+""%>'/>
+    </portlet:renderURL>
+
+
+<!-- begin content -->
+	
+		<table cellpadding="0" border="0" cellspacing="0" width="100%">
+		<tr>
+		<td class="contentTabShadow" style="width: 20px;">&nbsp;</td>
+<c:set var="showDiffTab" value="true"/>
+<c:if test="${!targetDef.modified}">
+  <c:set var="showDiffTab" value="false"/>
+</c:if>
+
+<c:set var="howManyTabs" value="4"/>
+<c:choose>
+ <c:when test="${configTabName == 'agents'}">
+
+   <c:set var="whichOneOn" value="3"/>
+   <td class="contentTab"><a href="<c:out value='${detailsURL}'/>" class="tabOff">        <fmt:message key="details" bundle="${depBundle}"/></a></td>
+   <td class="contentTab"><span class="tabOn">Agents</span></td>
+   <c:if test="${showDiffTab}">   
+     <c:set var="howManyTabs" value="5"/>
+     <td class="contentTab"><a href="<c:out value='${diffURL}'/>" class="tabOff"><fmt:message key="diff" bundle="${depBundle}"/></a></td>
+   </c:if>
+   <c:set var="thisPageURL" value="${agentsURL}"/>
+   <c:set var="thisPageURLWithPrimary" value="${agentsPrimaryURL}"/>
+</c:when><%-- end agents--%>
+<c:when test="${configTabName == 'diff' && targetDef.modified}">
+   <c:set var="whichOneOn" value="4"/>
+    <td class="contentTab"><a href="<c:out value='${detailsURL}'/>" class="tabOff">        <fmt:message key="details" bundle="${depBundle}"/></a></td>
+    <td class="contentTab"><a href="<c:out value='${agentsURL}'/>" class="tabOff">        <fmt:message key="agents" bundle="${depBundle}"/></a></td>
+    <c:if test="${showDiffTab}">    
+     <c:set var="howManyTabs" value="5"/>
+     <td class="contentTab"><span class="tabOn"><fmt:message key="diff" bundle="${depBundle}"/></span></td>
+    </c:if> 
+   <c:set var="thisPageURL" value="${diffURL}"/>
+   <c:set var="thisPageURLWithPrimary" value="${diffPrimaryURL}"/>
+</c:when>
+<c:otherwise>
+   <c:set var="whichOneOn" value="2"/>
+   <td class="contentTab"><span class="tabOn"><fmt:message key="details" bundle="${depBundle}"/></span></td>
+   <td class="contentTab"><a href="<c:out value='${agentsURL}'/>" class="tabOff">        <fmt:message key="agents" bundle="${depBundle}"/></a></td>
+   <c:if test="${showDiffTab}">
+    <c:set var="howManyTabs" value="5"/>
+    <td class="contentTab"><a href="<c:out value='${diffURL}'/>" class="tabOff"><fmt:message key="diff" bundle="${depBundle}"/></a></td>
+   </c:if>   
+   <c:set var="thisPageURL" value="${detailsURL}"/>
+   <c:set var="thisPageURLWithPrimary" value="${detailsPrimaryURL}"/>
+</c:otherwise>   
+<%-- end agents--%>        
+</c:choose>
+ <dspel:form method="post" action="${thisPageURLWithPrimary}" formid="deleteTargetForm-${targetDef.ID}" id="deleteTargetForm-${targetDef.ID}" name="deleteTargetForm-${targetDef.ID}">
+	<dspel:input type="hidden" bean="${topologyFormHandlerName}.successURL" value="${thisPageURLWithPrimary}"/>
+	<dspel:input type="hidden" bean="${topologyFormHandlerName}.failureURL" value="${thisPageURLWithPrimary}"/>
+	<dspel:input type="hidden" bean="${topologyFormHandlerName}.targetID" value="${targetDef.ID}"/>
+	<dspel:input type="hidden" bean="${topologyFormHandlerName}.deleteTarget" priority="-10" value="foo"/>
+ </dspel:form>
+ <c:choose>
+  <c:when test="${targetDef.primary}">
+  <c:set var="undeleteTargetID" value="${targetDef.ID}"/>
+  </c:when>
+  <c:otherwise>
+  <c:set var="undeleteTargetID" value="${targetDef.surrogateFor.ID}"/>
+  </c:otherwise>
+ </c:choose>
+ <dspel:form method="post" action="${thisPageURLWithPrimary}" name="undeleteTargetForm-${targetDef.ID}" formid="undeleteTargetForm-${targetDef.ID}" id="undeleteTargetForm-${targetDef.ID}">
+ 	<dspel:input type="hidden" bean="${topologyFormHandlerName}.successURL" value="${thisPageURLWithPrimary}"/>
+	<dspel:input type="hidden" bean="${topologyFormHandlerName}.failureURL" value="${thisPageURLWithPrimary}"/>
+  <dspel:input type="hidden" bean="${topologyFormHandlerName}.targetID" value="${undeleteTargetID}"/>
+  <dspel:input type="hidden" bean="${topologyFormHandlerName}.revertTargetChanges" value="foo" priority="-10"/>
+ </dspel:form>
+
+
+       <td class="contentTabShadow tabNote">
+       <span class="processControl">
+       <c:choose>
+       <c:when test="${targetDef.primary}">
+        <a href="javascript:showIframe('undeleteSiteAction');" title='<fmt:message key="undelete-site" bundle="${depBundle}"/>'><img src="<c:url context="${initParam['atg.bizui.ContextPath']}" value='/images/icon_revertProcess.gif'/>" alt="Undelete Site" width="16" height="16" border="0" /><fmt:message key="undelete" bundle="${depBundle}"/></a>
+       &nbsp;&nbsp;
+        <img src="<c:url context="${initParam['atg.bizui.ContextPath']}" value='/images/icon_revertProcess.gif'/>" alt="Revert Site Changes" width="16" height="16" border="0" /><fmt:message key="revert-changes" bundle="${depBundle}"/>
+       &nbsp;&nbsp;
+        <img src="<c:url context="${initParam['atg.bizui.ContextPath']}" value='/images/icon_deleteProcess_off.gif'/>" alt="Delete Site" width="16" height="16" border="0" /><fmt:message key="delete" bundle="${depBundle}"/>
+       &nbsp;&nbsp;
+       </span> 
+       <span class="processSeperate"><fmt:message key="site-status" bundle="${depBundle}"/>:</span><em> <fmt:message key="deleted" bundle="${depBundle}"/>  </em>
+      </c:when>
+       <c:when test="${targetDef.modified}"> 
+       <img src="<c:url context="${initParam['atg.bizui.ContextPath']}" value='/images/icon_revertProcess.gif'/>" alt="Undelete Site" width="16" height="16" border="0" /><fmt:message key="undelete" bundle="${depBundle}"/>
+       &nbsp;&nbsp;
+       <a href="javascript:showIframe('revertSiteAction');" title='<fmt:message key="revert-site-changes" bundle="${depBundle}"/>'><img src="<c:url context="${initParam['atg.bizui.ContextPath']}" value='/images/icon_revertProcess.gif'/>" alt="Revert Site Changes" width="16" height="16" border="0" /><fmt:message key="revert-changes" bundle="${depBundle}"/></a>
+       &nbsp;&nbsp;
+         <a href="javascript:showIframe('deleteSiteAction');" title='<fmt:message key="delete-site" bundle="${depBundle}"/>'><img src="<c:url context="${initParam['atg.bizui.ContextPath']}" value='/images/icon_deleteProcess.gif'/>" alt="Delete Site" width="16" height="16" border="0" /><fmt:message key="delete" bundle="${depBundle}"/></a>
+       &nbsp;&nbsp;
+        </span> 
+       <span class="processSeperate"><fmt:message key="site-status" bundle="${depBundle}"/>:</span><em> <fmt:message key="modified" bundle="${depBundle}"/>  </em>
+     </c:when>
+       <c:otherwise>
+        <img src="<c:url context="${initParam['atg.bizui.ContextPath']}" value='/images/icon_revertProcess.gif'/>" alt="Undelete Site" width="16" height="16" border="0" /><fmt:message key="undelete" bundle="${depBundle}"/>
+       &nbsp;&nbsp;
+      <img src="<c:url context="${initParam['atg.bizui.ContextPath']}" value='/images/icon_revertProcess.gif'/>" alt="Revert Site Changes" width="16" height="16" border="0" /><fmt:message key="revert-changes" bundle="${depBundle}"/>
+       &nbsp;&nbsp;
+      <a href="javascript:showIframe('deleteSiteAction');" title='<fmt:message key="delete-site" bundle="${depBundle}"/>'><img src="<c:url context="${initParam['atg.bizui.ContextPath']}" value='/images/icon_deleteProcess.gif'/>" alt="Delete Site" width="16" height="16" border="0" /><fmt:message key="delete" bundle="${depBundle}"/></a>
+       &nbsp;&nbsp;
+         </span> 
+       <span class="processSeperate"><fmt:message key="site-status" bundle="${depBundle}"/>:</span><em> 
+       <c:choose>
+        <c:when test="${empty targetDef.surrogateFor}">
+        <fmt:message key="new" bundle="${depBundle}"/>  
+        </c:when>
+        <c:otherwise>
+          <fmt:message key="unmodified" bundle="${depBundle}"/>  
+        </c:otherwise>
+       </c:choose>
+       </em>
+     </c:otherwise>
+       </c:choose>
+       
+       </td>
+		</tr>
+<script language="Javascript" type="text/javascript">
+  <!--
+  registerOnLoad(function() {init('undeleteSiteAction','deleteSiteAction', 'revertSiteAction');})
+   -->
+ </script>
+
+<div id="undeleteSiteAction" class="confirmAction">
+	<dspel:iframe id="undeleteSiteActionIframe" page="./iframes/action_undelete_site.jsp" scrolling="no"/>
+</div>
+
+<div id="revertSiteAction" class="confirmAction">
+	<dspel:iframe id="revertSiteActionIframe" page="./iframes/action_revert_site.jsp" scrolling="no"/>
+</div>
+
+<div id="deleteSiteAction" class="confirmAction">
+	<dspel:iframe id="deleteSiteActionIframe" page="./iframes/action_delete_site.jsp" scrolling="no"/>
+</div>
+
+		<tr>
+
+    <c:forEach begin="1" end="${howManyTabs}" varStatus="st">
+    <c:choose>
+      <c:when test="${st.count == whichOneOn}">
+    		<td class="contentTabOnBorder"></td>
+      </c:when>
+      <c:otherwise>
+    		<td class="contentTabOffBorder"></td>
+      </c:otherwise>
+      </c:choose>
+    </c:forEach>
+		</tr>
+		</table>
+		
+		<table cellpadding="0" cellspacing="0" border="0" width="100%" id="attributeBar">
+		<tr>
+		<td>
+		
+			<div class="attributes">
+			<p>&nbsp;</p>
+			</div>
+	
+			<div class="attributeExtras">
+			<p>&nbsp;</p>
+			</div>			
+
+			
+		</td>
+		</tr>
+		</table>
+
+<c:choose>
+ <c:when test='${configTabName eq "details"}'>
+  <dspel:include page="config_detail.jsp" />
+ </c:when><%-- end details --%>
+ <c:when test='${configTabName eq "agents"}'>
+  <%@ include file="agents_index.jspf" %>
+ </c:when><%-- end agents --%>
+ <c:when test='${configTabName eq "diff" && targetDef.modified}'>
+  <dspel:include page="config_diff.jsp" />
+</c:when><%-- end agents --%> 
+ <c:otherwise>
+  <dspel:include page="config_detail.jsp"/>
+ </c:otherwise>
+</c:choose>
+<!-- END FILE config_details_tabs.jspf -->
+<%-- @version $Id: //product/PubPortlet/version/10.0.3/portlets.war/html/DeploymentPortlet/config/config_details_tabs.jspf#2 $$Change: 651448 $--%>

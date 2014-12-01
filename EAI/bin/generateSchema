@@ -1,0 +1,71 @@
+#!/bin/sh
+
+# This script must be run from the EAI module directory or you must
+# set DYNAMO_HOME correctly and you can run it from anywhere.
+#
+# It sets CLASSPATH, java command line options, and PATH to include the
+# directories for dlls that may need to be loaded.  These environment
+# variables are loaded from dynamoEnv (which you can use to run javac
+# with Dynamo's CLASSPATH).
+#
+
+# remember where to write output files...without this they'd end up in DYNAMO_HOME
+#
+STARTDIR=`pwd`
+
+
+#
+# Allow us to be in the bin directory when we start
+#
+if [ -r generateSchema ] ; then
+  cd ../../home
+fi
+if [ -r bin/generateSchema ] ; then
+  cd ../home
+fi
+
+if [ -r ../EAI/bin/generateSchema ] ; then
+  DYNAMO_HOME=.
+elif [ ${DYNAMO_HOME} = "" ] ; then
+
+  echo You must either run this script from the EAI module directory
+  echo or you should set the variable DYNAMO_HOME
+  exit 1
+
+fi
+
+cd ${DYNAMO_HOME}
+if [ ! -r ../EAI/bin/generateSchema ] ; then
+
+  echo Unable to find ${DYNAMO_HOME}/../EAI/bin/generateSchema - invalid setting of DYNAMO_HOME
+  exit 1
+fi
+
+
+DYNAMO_MODULES="EAI"
+
+MYARGS=""
+
+while [ "x$1" != "x" ]
+do
+case $1 in
+      -m) DYNAMO_MODULES=${DYNAMO_MODULES}:$2
+	  shift
+          ;;
+       *) MYARGS="${MYARGS} $1"
+          ;;
+      esac  
+  shift
+done
+
+#
+# Load in default environment values
+#
+. bin/dynamoEnv.sh
+
+CONFIGPATH=${CONFIGPATH}:localconfig
+
+${JAVA_VM} ${JAVA_ARGS} atg.xml.schema.SchemaGeneratorUtility -configPath ${CONFIGPATH} -startDir ${STARTDIR} -generatorClass atg.xml.schema.XmlSchemaGenerator ${MYARGS}
+
+
+

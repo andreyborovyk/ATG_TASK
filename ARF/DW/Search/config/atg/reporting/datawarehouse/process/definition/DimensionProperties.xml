@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data-warehouse-dimension-loader-definition>
+  <data-warehouse-repository repository="/atg/reporting/datawarehouse/WarehouseRepository">
+
+    <data-warehouse-repository-item item="searchEnvironment" natural-key="environmentId">
+      <production-repository repository="/atg/search/routing/repository/SearchConfigurationRepository"
+                             nickname="SearchConfigurationRepository">
+        <production-repository-item item="searchEnvironment"/>
+      </production-repository>
+      <property-mappings>
+        <warehouse-property name="name">
+          <production-property name="SearchConfigurationRepository.searchEnvironment.envName"/>
+        </warehouse-property>
+        <warehouse-property name="nameEn">
+          <production-property name="SearchConfigurationRepository.searchEnvironment.envName"/>
+        </warehouse-property>
+        <warehouse-property name="searchProject" conversion-component="/atg/reporting/datawarehouse/process/converter/ProjectToProjectItemConverter">
+          <production-property name="SearchConfigurationRepository.searchEnvironment.parentProject" conversion-context-name="searchProject"/>
+        </warehouse-property>
+      </property-mappings>
+    </data-warehouse-repository-item>
+
+    <data-warehouse-repository-item item="searchProject" natural-key="projectId"/>
+
+    <data-warehouse-repository-item item="topic" natural-key="topicId">
+      <production-repository repository="/atg/searchadmin/TopicRepository" nickname="TopicRepository">
+        <production-repository-item item="Topic"/>
+      </production-repository>
+      <property-mappings>
+        <warehouse-property name="name">
+          <production-property name="TopicRepository.Topic.name"/>
+        </warehouse-property>
+        <warehouse-property name="nameEn">
+          <production-property name="TopicRepository.Topic.name"/>
+        </warehouse-property>
+        <warehouse-property name="description">
+          <production-property name="TopicRepository.Topic.description"/>
+        </warehouse-property>
+        <warehouse-property name="descriptionEn">
+          <production-property name="TopicRepository.Topic.description"/>
+        </warehouse-property>
+        <warehouse-property name="parentTopic" null-as-unspecified-item="false">
+          <production-property name="TopicRepository.Topic.parent"/>
+        </warehouse-property>
+        <warehouse-property name="path" conversion-component="/atg/reporting/datawarehouse/process/converter/TopicPathItemConverter">
+          <production-property name="TopicRepository.Topic.id" conversion-context-name="id"/>
+        </warehouse-property>
+      </property-mappings>
+    </data-warehouse-repository-item>
+
+    <data-warehouse-repository-item item="searchConfig" natural-key="searchConfigId">
+      <production-repository repository="/atg/search/repository/RefinementRepository" nickname="RefinementRepository">
+        <production-repository-item item="searchConfig"/>
+      </production-repository>
+      <property-mappings>
+        <warehouse-property name="name">
+          <production-property name="RefinementRepository.searchConfig.displayName"/>
+        </warehouse-property>
+        <warehouse-property name="description">
+          <production-property name="RefinementRepository.searchConfig.description"/>
+        </warehouse-property>
+      </property-mappings>
+    </data-warehouse-repository-item>
+
+    <data-warehouse-repository-item item="searchRule" natural-key="searchRuleId">
+      <production-repository repository="/atg/search/repository/RefinementRepository" nickname="RefinementRepository">
+        <production-repository-item item="searchRule"/>
+      </production-repository>
+      <property-mappings>
+        <warehouse-property name="description">
+          <production-property name="RefinementRepository.searchRule.description"/>
+        </warehouse-property>
+        <warehouse-property name="type" conversion-component="/atg/reporting/datawarehouse/process/converter/SearchRuleTypeItemConverter">
+          <production-property name="RefinementRepository.searchRule"  conversion-context-name="searchRule"/>
+        </warehouse-property>
+      </property-mappings>
+    </data-warehouse-repository-item>
+
+    <data-warehouse-repository-item item="searchRuleType"/>
+
+  </data-warehouse-repository>
+</data-warehouse-dimension-loader-definition>
+<!-- @version $Id: //product/ARF/version/10.0.3/ARF/DW/Search/config/atg/reporting/datawarehouse/process/definition/DimensionProperties.xml#1 $$Change: 651360 $-->

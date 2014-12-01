@@ -1,0 +1,11 @@
+<!-- BEGIN FILE plan_index.jspf -->
+<c:choose>
+  <c:when test="${editDeploymentID != null && param.done_deployment_edit == null}">
+    <dspel:include page="site_plan_edit.jsp" />
+  </c:when>
+  <c:otherwise>
+    <dspel:include page="site_plan.jsp" />
+  </c:otherwise>
+</c:choose>
+<!-- END FILE plan_index.jspf -->
+<%-- @version $Id: //product/PubPortlet/version/10.0.3/portlets.war/html/DeploymentPortlet/site/plan_index.jspf#2 $$Change: 651448 $--%>

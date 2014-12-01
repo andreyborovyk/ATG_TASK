@@ -1,0 +1,76 @@
+<importbean bean="/atg/userprofiling/ProfileAdminFormHandler">
+
+<declareparam name="propertyDesc" value="atg.beans.DynamicPropertyDescriptor" description="The DynamicPropertyDescriptor of the cell we want to output">
+<declareparam name="propertyValue" value="java.lang.Object" description="Value of the propertyDesc">
+
+<input name="_processPropertyName" type="hidden" value="param:propertyDesc.name">
+
+<java type=import>
+atg.beans.*
+</java>
+<java type=import>
+java.beans.*
+</java>
+<java> 
+ 
+ DynamicPropertyDescriptor desc = null;
+ Object value;
+ 
+
+ if((value = request.getObjectParameter("propertyDesc")) != null) {
+  
+    if(value instanceof DynamicPropertyDescriptor) 
+      desc = (DynamicPropertyDescriptor)value;
+ }
+
+ if(desc != null) { 
+    PropertyEditor editor = desc.createPropertyEditor();
+    Class type = desc.getPropertyType();
+    String [] tags = null;
+
+    if(type != null && 
+	(type.isArray() || Collection.class.isAssignableFrom(type))) {
+</java>
+     <droplet src="profiletableform_valuecellinput-indexed.jhtml">
+     </droplet>
+<java>          
+    } else if((editor != null) && ((tags = editor.getTags()) != null)) {
+         request.setParameter("tags",tags);
+         request.setParameter("editor",editor);
+</java>
+         <droplet src="profiletableform_valuecellinput-enum.jhtml">
+	   <param name="propertyTags" value="param:tags">
+           <param name="propertyEditor" value="param:editor">
+         </droplet>
+<java>
+    } else {
+      
+      try { 
+        if(type != null) {
+          
+             if( (Class.forName("java.util.Date")).isAssignableFrom(type) ) {
+</java>
+                   <droplet src="profiletableform_valuecellinput-date.jhtml">
+                   </droplet>
+<java>
+             } else if( (Class.forName("java.lang.Boolean")).isAssignableFrom(type)  ) {
+</java>
+                   <droplet src="profiletableform_valuecellinput-boolean.jhtml">
+                   </droplet>
+<java>
+             } else {
+</java>
+                   <droplet src="profiletableform_valuecellinput-text.jhtml">
+                   </droplet>
+<java>
+             }
+        }
+     } catch (ClassNotFoundException  e) {
+             //if(isLoggingDebug())
+             //   logDebug(e);
+     }
+   }
+ }
+</java>
+<java>/* @version $Id: //product/DPS/version/10.0.3/release/DPS/admin/atg/userprofiling/admin/en/profiletableform_valuecellinput.jhtml#2 $$Change: 651448 $ */</java>
+

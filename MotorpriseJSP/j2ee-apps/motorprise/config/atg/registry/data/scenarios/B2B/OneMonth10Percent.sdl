@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE process SYSTEM "dynamosystemresource:/atg/dtds/pdl/pdl_1.0.dtd">
+<process author="admin" creation-time="996524283709" enabled="false" last-modified-by="admin" modification-time="1045003383952">
+  <segment migrate-subjects="false">
+    <segment-name>Bring back customers</segment-name>
+    <!--================================-->
+    <!--== Order submitted  -->
+    <!--================================-->
+    <event id="1" recurring="true">
+      <event-name>atg.commerce.fulfillment.SubmitOrder</event-name>
+    </event>
+    <fork id="2">
+      <branch id="2.1">
+        <!--================================-->
+        <!--== Wait 30 days  -->
+        <!--================================-->
+        <time id="2.1.1">
+          <time-delay units="days">30</time-delay>
+        </time>
+        <!--================================-->
+        <!--== Give Promotion promotions: 10% off order  -->
+        <!--================================-->
+        <action id="2.1.2">
+          <action-name>promotion</action-name>
+          <action-param name="promotions">
+            <array type="java.lang.String[]">
+              <constant>promo20003</constant>
+            </array>
+          </action-param>
+        </action>
+        <fork id="2.1.3">
+          <branch id="2.1.3.1">
+            <!--================================-->
+            <!--== Locale is en_US  -->
+            <!--================================-->
+            <condition construct="people-element" id="2.1.3.1.1">
+              <filter construct="profile-property-filter" operator="eq">
+                <subject-property>
+                  <property-name>locale</property-name>
+                </subject-property>
+                <constant>en_US</constant>
+              </filter>
+            </condition>
+            <!--================================-->
+            <!--== Send email with path MotorpriseJSP:/en/email/OneMonth.jsp  -->
+            <!--================================-->
+            <action id="2.1.3.1.2">
+              <action-name>sendEmail</action-name>
+              <action-param name="scenarioPathInfo">
+                <constant>MotorpriseJSP:/en/email/OneMonth.jsp</constant>
+              </action-param>
+            </action>
+          </branch>
+          <branch id="2.1.3.2">
+            <!--================================-->
+            <!--== Locale is de_DE  -->
+            <!--================================-->
+            <condition construct="people-element" id="2.1.3.2.1">
+              <filter construct="profile-property-filter" operator="eq">
+                <subject-property>
+                  <property-name>locale</property-name>
+                </subject-property>
+                <constant>de_DE</constant>
+              </filter>
+            </condition>
+            <!--================================-->
+            <!--== Send email with path MotorpriseJSP:/de/email/OneMonth.jsp  -->
+            <!--================================-->
+            <action id="2.1.3.2.2">
+              <action-name>sendEmail</action-name>
+              <action-param name="scenarioPathInfo">
+                <constant>MotorpriseJSP:/de/email/OneMonth.jsp</constant>
+              </action-param>
+            </action>
+          </branch>
+          <branch id="2.1.3.3">
+            <!--================================-->
+            <!--== Locale is ja_JP  -->
+            <!--================================-->
+            <condition construct="people-element" id="2.1.3.3.1">
+              <filter construct="profile-property-filter" operator="eq">
+                <subject-property>
+                  <property-name>locale</property-name>
+                </subject-property>
+                <constant>ja_JP</constant>
+              </filter>
+            </condition>
+            <!--================================-->
+            <!--== Send email with path MotorpriseJSP:/ja/email/OneMonth.jsp  -->
+            <!--================================-->
+            <action id="2.1.3.3.2">
+              <action-name>sendEmail</action-name>
+              <action-param name="scenarioPathInfo">
+                <constant>MotorpriseJSP:/ja/email/OneMonth.jsp</constant>
+              </action-param>
+            </action>
+          </branch>
+        </fork>
+      </branch>
+      <branch id="2.2">
+        <!--================================-->
+        <!--== Order submitted  -->
+        <!--================================-->
+        <event id="2.2.1">
+          <event-name>atg.commerce.fulfillment.SubmitOrder</event-name>
+        </event>
+      </branch>
+    </fork>
+  </segment>
+</process>

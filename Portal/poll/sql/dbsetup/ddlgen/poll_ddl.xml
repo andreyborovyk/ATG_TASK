@@ -1,0 +1,114 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="poll_ddl">
+<comment><![CDATA[ @version $Id: //app/portal/version/10.0.3/poll/sql/poll_ddl.xml#2 $$Change: 651448 $]]></comment>
+   <table name="plg_poll">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="title" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="100"/>
+      </column>
+      <column name="question_text" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="500"/>
+         <column-type db="mssql" type="varchar" length="500" scale=""/>
+      </column>
+      <column name="creation_date" nullable="n">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="version" nullable="n" default="0">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <primary-key name="plg_poll_pk">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="plg_poll_response">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="poll_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="response_text" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="200"/>
+      </column>
+      <column name="short_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="50"/>
+      </column>
+      <column name="bar_color" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="6"/>
+      </column>
+      <column name="sort_order" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="response_count" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="version" nullable="n" default="0">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <primary-key name="plg_poll_rsp_pk">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="plg_poll_rsp_fk" referenced-table="plg_poll" index-name="plg_pollrespix">
+         <fkey-column referencing-column="poll_id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="plg_gear_poll_rel">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="gear_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="poll_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="n" default="0">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <primary-key name="plg_poll_rel_pk">
+         <index-column column="poll_id" order="asc" seq="1"/>
+         <index-column column="gear_id" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="plg_poll_rel_fk" referenced-table="plg_poll">
+         <fkey-column referencing-column="poll_id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="plg_vote_mapper">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="tstamp" nullable="y">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="poll_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="poll_selection" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="gear_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="community_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="user_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="msg_type" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <index name="plg_vtmp_comid" table="plg_vote_mapper">
+         <index-column column="community_id" order="asc" seq="1"/>
+      </index>
+      <index name="plg_vtmp_gearid" table="plg_vote_mapper">
+         <index-column column="gear_id" order="asc" seq="1"/>
+      </index>
+      <index name="plg_vtmp_usrid" table="plg_vote_mapper">
+         <index-column column="user_id" order="asc" seq="1"/>
+      </index>
+   </table>
+</schema>
+<!-- @version $Id: //app/portal/version/10.0.3/poll/sql/poll_ddl.xml#2 $$Change: 651448 $ -->

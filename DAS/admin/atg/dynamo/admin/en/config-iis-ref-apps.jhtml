@@ -1,0 +1,59 @@
+<importbean bean="/atg/dynamo/admin/ISAPIConfigure">
+
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+<title>Install Connection Modules: Enable Access to Dynamo Demos via IIS</title>
+</head>
+
+<body bgcolor="#ffffff" text="#00214a" vlink="#637da6" link="#e87f02">
+
+<IMG SRC="images/config-banner.gif" ALT="Dynamo Configuration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a
+href="configure-server.jhtml">Configure</a>/<a
+href="configure-server.jhtml#CM">Connection_Modules</a>/<a
+href="config-iis-scriptdir.jhtml">script_dir</a>/<a
+href="config-iis-decide.jhtml">install_or_uninstall</a>/<a
+href="config-iis-texthandle.jhtml">text_HTML</a>/<a
+href="config-iis-properties.jhtml">load_manager</a>/ref_apps
+<p>
+
+<blockquote>
+
+<h2>Configure Access to Reference Applications and Demos</h2><p>
+<form action="config-iis-final.jhtml" method=post>
+
+<!-- Allow user to choose whether he wants to enable access to the -->
+<!-- Dynamo reference applications and demos via IIS.              -->
+
+<p>
+Do you want to access the Dynamo reference applications and demos via
+the IIS HTTP server?
+
+<table border=0 cellpadding=6>
+  <tr valign=top>
+    <td>
+      <input type="radio" name="refAppsEnabled"
+	property=ISAPIConfigure.refAppsEnabled value=true>
+    </td>
+    <td>Yes</td>
+  </tr>
+  <tr valign=top>
+    <td>
+      <input type="radio" name="refAppsEnabled"
+	property=ISAPIConfigure.refAppsEnabled value=false>
+    </td>
+    <td>No</td>
+  </tr>
+</table>
+
+<p>
+<input type="submit" value="next">
+
+</form>
+
+</blockquote>
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/config-iis-ref-apps.jhtml#2 $$Change: 651448 $ */</java>

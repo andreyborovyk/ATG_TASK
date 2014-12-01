@@ -1,0 +1,40 @@
+<importbean bean="/atg/userprofiling/Profile">
+<importbean bean="/atg/dynamo/droplet/Switch">
+
+<setvalue bean="Profile.currentLocation" value="catalog_search">
+
+<html>
+<head>
+<title>Product Search</title>
+</head>
+
+<body>
+<a href="index.jhtml">Catalog Home</a> - 
+Product Search - 
+<a href="shoppingcart.jhtml">Shopping Cart</a> - 
+<a href="lists.jhtml">My Lists</a> - 
+<a href="comparison.jhtml">Product Comparison</a> -
+<a href="giftlist_search.jhtml">Gift List Search</a> - 
+<droplet bean="Switch">
+  <param name="value" value="bean:Profile.transient">
+  <oparam name="false">
+    <a href="logout.jhtml">Logout</a>
+  </oparam>
+  <oparam name="true">
+    <a href="login.jhtml">Login</a> or <a href="register.jhtml">Register</a>
+  </oparam>
+</droplet>
+<BR>
+<i>location: <valueof bean="Profile.currentLocation"></valueof></i>
+
+<P>
+<droplet src="search_form.jhtml"></droplet>
+<P>
+<droplet src="product_text_search.jhtml"></droplet>
+<P>
+<droplet src="adv_search_form.jhtml"></droplet>
+
+</body>
+</html>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/B2CCommerce/html/sample_catalog/product_search.jhtml#2 $$Change: 651448 $*/</java>
+

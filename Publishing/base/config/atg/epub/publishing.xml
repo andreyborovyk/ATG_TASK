@@ -1,0 +1,795 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE gsa-template
+        PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN"
+        "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template>
+
+  <header>
+    <name>EPublishing</name>
+    <author>Manny Parasirakis</author>
+    <version>$Id: //product/Publishing/version/10.0.3/pws/config/atg/epub/publishing.xml#2 $$Change: 651448 $</version>
+  </header>
+
+  <item-descriptor name="process" expert="true" default="true" version-property="version" cache-mode="simple"
+        display-property="displayName" display-name-resource="itemDescriptorProcess"
+        item-cache-size="1000" query-cache-size="500">
+  
+    <attribute name="resourceBundle" value="atg.epub.PublishingRepositoryResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryStatusPriority" value="20"/>
+    <attribute name="categoryHistoryPriority" value="30"/>
+    <attribute name="categoryAdvancedPriority" value="40"/>
+    <attribute name="categoryInfoPriority" value="50"/>
+
+    <property name="workflow" property-type="atg.epub.workflow.WorkflowPropertyDescriptor" category-resource="categoryAdvanced" display-name-resource="workflow">
+      <attribute name="propertySortPriority" value="10"/>
+    </property>
+
+    <table name="epub_process" type="primary" id-column-name="process_id">
+      <property name="id" column-name="process_id" data-type="string" expert="true" category-resource="categoryInfo" display-name-resource="processId">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="version" column-name="version" data-type="int" writable="false" expert="true" category-resource="categoryInfo" display-name-resource="version">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="acl" column-name="acl" data-type="big string" expert="true" category-resource="categoryInfo" display-name-resource="acl">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+
+      <property name="displayName" column-name="display_name" data-type="string" queryable="true" category-resource="categoryBasics" display-name-resource="displayName">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="description" column-name="description" data-type="string" queryable="true" category-resource="categoryBasics" display-name-resource="description">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="creator" column-name="creator" item-type="user" category-resource="categoryBasics" display-name-resource="creator"
+              repository="/atg/userprofiling/InternalProfileRepository">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="project" column-name="project" item-type="project" queryable="true" category-resource="categoryBasics" display-name-resource="project">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+
+      <property name="processData" column-name="process_data" item-type="processData" repository="/atg/epub/process/ProcessDataRepository"
+              cascade="update,delete" category-resource="categoryAdvanced" display-name-resource="processData" cache-mode="disabled">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="workflowId" column-name="workflow_id" data-type="string" queryable="true" category-resource="categoryAdvanced" display-name-resource="workflowId">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="activity" column-name="activity" data-type="string" category-resource="categoryAdvanced" display-name-resource="activity">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="siteId" column-name="site_id" data-type="string" category-resource="categoryAdvanced" display-name-resource="siteId">
+        <attribute name="propertySortPriority" value="50"/> 
+      </property>
+
+      <property name="status" column-name="status" data-type="enumerated" category-resource="categoryStatus" display-name-resource="status">
+        <attribute name="propertySortPriority" value="10"/>
+        <attribute name="resourceBundle" value="atg.epub.PublishingRepositoryResources"/>
+        <attribute name="useCodeForValue" value="true"/>
+        <option value="Edit" code="0"/>
+        <option value="Running" code="1"/>
+        <option value="EditRunning" code="2"/>
+        <option value="Deployed" code="3"/>
+        <option value="Completed" code="4"/>
+      </property>
+      <property name="statusDetail" column-name="status_detail" data-type="string" category-resource="categoryStatus" display-name-resource="statusDetail">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+
+      <property name="creationDate" column-name="creation_date" data-type="timestamp" category-resource="categoryInfo" display-name-resource="creationDate">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="completionDate" column-name="completion_date" data-type="timestamp" category-resource="categoryInfo" display-name-resource="completionDate">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+    </table>
+
+    <table name="epub_proc_history" type="multi" id-column-name="process_id" multi-column-name="sequence_num">
+      <property name="history" column-name="history" data-type="list" component-item-type="history" cascade="update,delete" category-resource="categoryHistory" display-name-resource="history">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+    </table>
+      
+    <table name="epub_proc_prv_prj" type="multi" id-column-name="process_id" multi-column-name="sequence_num">
+      <property name="previousProjectIds" column-name="project_id" data-type="list" component-data-type="string" category-resource="categoryAdvanced" display-name-resource="previousProjectIds" expert="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+
+    <table name="epub_ind_workflow" type="multi" id-column-name="process_id">
+      <property name="workflowInstances" column-name="id" data-type="set" component-item-type="individualWorkflow" cascade="update,delete" category-resource="categoryAdvanced" display-name-resource="workflowInstances" expert="true">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+    </table>
+
+    <table name="epub_proc_taskinfo" type="multi" id-column-name="id">
+      <property name="taskInfos" column-name="taskinfo_id" data-type="set" component-item-type="processTaskInfo" cascade="update,delete" category-resource="categoryAdvanced" display-name-resource="taskInfo" expert="true">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+
+
+  <item-descriptor name="project" expert="true" version-property="version" cache-mode="simple"
+        display-property="displayName" display-name-resource="itemDescriptorProject"
+        item-cache-size="1000" query-cache-size="500">
+  
+    <attribute name="resourceBundle" value="atg.epub.PublishingRepositoryResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryStatusPriority" value="20"/>
+    <attribute name="categoryAssetsPriority" value="30"/>
+    <attribute name="categoryDeploymentPriority" value="40"/>
+    <attribute name="categoryHistoryPriority" value="50"/>
+    <attribute name="categoryAdvancedPriority" value="60"/>
+    <attribute name="categoryInfoPriority" value="70"/>
+
+  <!-- the assets property returns all assets except for assets marked as hidden -->
+    <property name="assets" property-type="atg.epub.asset.AssetPropertyDescriptor" category-resource="categoryAssets" display-name-resource="assets" hidden="true">
+      <attribute name="versionManager" value="/atg/epub/version/VersionManagerService"/>
+      <attribute name="propertySortPriority" value="10"/>
+    </property>
+
+  <!-- the checkedInAssets property returns all assets that were checked in for a project -->
+    <property name="checkedInAssets" property-type="atg.epub.asset.CheckedInAssetsPropertyDescriptor" category-resource="categoryAssets" display-name-resource="checkedInAssets" hidden="true">
+      <attribute name="versionManager" value="/atg/epub/version/VersionManagerService"/>
+      <attribute name="propertySortPriority" value="10"/>
+    </property>
+
+    <property name="workflow" property-type="atg.epub.workflow.WorkflowPropertyDescriptor" category-resource="categoryAdvanced" display-name-resource="workflow">
+      <attribute name="propertySortPriority" value="10"/>
+    </property>
+
+    <table name="epub_project" type="primary" id-column-name="project_id">
+      <property name="id" column-name="project_id" data-type="string" expert="true" category-resource="categoryInfo" display-name-resource="projectId">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="version" column-name="version" data-type="int" writable="false" expert="true" category-resource="categoryInfo" display-name-resource="version">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="acl" column-name="acl" data-type="big string" expert="true" category-resource="categoryInfo" display-name-resource="acl">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+
+      <property name="displayName" column-name="display_name" data-type="string" queryable="true" category-resource="categoryBasics" display-name-resource="displayName">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="description" column-name="description" data-type="string" queryable="true" category-resource="categoryBasics" display-name-resource="description">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="creator" column-name="creator" item-type="user" category-resource="categoryBasics" display-name-resource="creator"
+              repository="/atg/userprofiling/InternalProfileRepository">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+
+      <property name="workspace" column-name="workspace" data-type="string" required="true" category-resource="categoryAdvanced" display-name-resource="workspace">
+        <attribute name="propertySortPriority" value="20"/>
+        <attribute name="uiwritable" value="false"/>
+      </property>
+      <property name="workflowId" column-name="workflow_id" data-type="string" queryable="true" category-resource="categoryAdvanced" display-name-resource="workflowId">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+
+      <property name="checkedIn" column-name="checked_in" data-type="boolean" default="false" category-resource="categoryStatus" display-name-resource="checkedIn">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+    
+    <property name="locked" column-name="locked" data-type="boolean" default="false" category-resource="categoryAssets" display-name-resource="locked">
+      <attribute name="propertySortPriority" value="10"/>
+    </property>   
+    
+      <property name="editable" column-name="editable" data-type="boolean" default="true" category-resource="categoryStatus" display-name-resource="editable">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="status" column-name="status" data-type="enumerated" category-resource="categoryStatus" display-name-resource="status">
+        <attribute name="propertySortPriority" value="30"/>
+        <attribute name="resourceBundle" value="atg.epub.PublishingRepositoryResources"/>
+        <attribute name="useCodeForValue" value="true"/>
+        <option value="Active" code="0"/>
+        <option value="Completed" code="1"/>
+        <option value="Suspended" code="2"/>
+        <option value="Error" code="3"/>
+      </property>
+      <property name="statusDetail" column-name="status_detail" data-type="string" category-resource="categoryStatus" display-name-resource="statusDetail">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+
+      <property name="checkinDate" column-name="checkin_date" data-type="timestamp" category-resource="categoryInfo" display-name-resource="checkinDate">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="creationDate" column-name="creation_date" data-type="timestamp" category-resource="categoryInfo" display-name-resource="creationDate">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property name="completionDate" column-name="completion_date" data-type="timestamp" category-resource="categoryInfo" display-name-resource="completionDate">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+    </table>  
+    
+    <table name="epub_pr_tg_status" type="multi" id-column-name="project_id" multi-column-name="target_id">
+      <property name="deploymentStatuses" column-name="status_code" expert="true" data-type="map" component-data-type="enumerated" category-resource="categoryDeployment" display-name-resource="deploymentStatuses">
+        <attribute name="propertySortPriority" value="30"/>
+        <attribute name="uiwritable" value="false"/>      
+        <attribute name="useCodeForValue" value="true"/>        
+          <option resource="approved"  code="1"/>        
+          <option resource="accepted"  code="2"/>
+          <option resource="deployed"  code="3"/>
+          <option resource="hidden"    code="4"/>
+          <option resource="renounced" code="5"/>
+      </property>      
+    </table>          
+
+    <table name="epub_pr_tg_dp_ts" type="multi" id-column-name="project_id" multi-column-name="target_id">
+      <property name="deploymentTimes" column-name="deployment_time" expert="true" data-type="map" component-data-type="timestamp" category-resource="categoryDeployment" display-name-resource="deploymentTimes">
+        <attribute name="propertySortPriority" value="40"/>
+        <attribute name="uiwritable" value="false"/>      
+      </property>      
+    </table>          
+
+    <table name="epub_pr_tg_dp_id" type="multi" id-column-name="project_id" multi-column-name="target_id">
+      <property name="deploymentIds" column-name="deployment_id" expert="true" data-type="map" component-data-type="string" category-resource="categoryDeployment" display-name-resource="deploymentIds">
+        <attribute name="propertySortPriority" value="40"/>
+        <attribute name="uiwritable" value="false"/>      
+      </property>      
+    </table>          
+ 
+    <table name="epub_pr_tg_ap_ts" type="multi" id-column-name="project_id" multi-column-name="target_id">
+      <property name="deploymentApprovalTimes" column-name="approval_time" expert="true" data-type="map" component-data-type="timestamp" category-resource="categoryDeployment" display-name-resource="deploymentApprovalTimes">
+        <attribute name="propertySortPriority" value="50"/>
+        <attribute name="uiwritable" value="false"/>      
+      </property>      
+    </table>          
+
+    <table name="epub_prj_tg_snsht" type="multi" id-column-name="project_id" multi-column-name="target_id">
+      <property name="deploymentSnapshots"  column-name="snapshot_id" expert="true" data-type="map" component-data-type="string" category-resource="categoryDeployment" display-name-resource="deploymentSnapshots">
+        <attribute name="propertySortPriority" value="60"/>
+        <attribute name="uiwritable" value="false"/>      
+      </property>      
+    </table>      
+      
+    <table name="epub_pr_history" type="multi" id-column-name="project_id" multi-column-name="sequence_num">
+      <property name="history" column-name="history" data-type="list" component-item-type="history" cascade="update,delete" category-resource="categoryHistory" display-name-resource="history">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+    </table>     
+
+  </item-descriptor>  
+
+  <item-descriptor name="readOnlyProject" writable="false" expert="true" hidden="true" cache-mode="simple"
+        display-property="displayName" display-name-resource="itemDescriptorReadOnlyProject"
+        item-cache-size="1000" query-cache-size="0">
+  
+    <attribute name="resourceBundle" value="atg.epub.PublishingRepositoryResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryStatusPriority" value="20"/>
+    <attribute name="categoryInfoPriority" value="30"/>
+
+    <table name="epub_project" type="primary" id-column-name="project_id">
+      <property name="id" column-name="project_id" data-type="string" writable="false" expert="true" category-resource="categoryInfo" display-name-resource="projectId">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="displayName" column-name="display_name" data-type="string" writable="false" queryable="true" category-resource="categoryBasics" display-name-resource="displayName">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="editable" column-name="editable" data-type="boolean" writable="false" category-resource="categoryStatus" display-name-resource="editable">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="completionDate" column-name="completion_date" data-type="timestamp" writable="false" category-resource="categoryInfo" display-name-resource="completionDate">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+
+  </item-descriptor>
+
+  <item-descriptor name="processTaskInfo" version-property="version" cache-mode="simple" display-name-resource="itemDescriptorProcessTaskInfo"
+          item-cache-size="5000" query-cache-size="100">
+
+    <attribute name="resourceBundle" value="atg.epub.PublishingRepositoryResources"/>
+
+    <table name="epub_taskinfo" type="primary" id-column-name="taskinfo_id">
+      <property name="id" column-name="taskinfo_id" data-type="string" category-resource="categoryBasics" display-name-resource="taskInfoId">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="version" column-name="version" data-type="int" writable="false" expert="true" category-resource="categoryInfo" display-name-resource="version">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="process" column-name="process_id" item-type="process" category-resource="categoryBasics" display-name-resource="taskInfoProcessId" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="processName" column-name="process_name" data-type="string" category-resource="categoryBasics" display-name-resource="taskInfoProcessName">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="segmentName" column-name="segment_name" data-type="string" category-resource="categoryBasics" display-name-resource="taskInfoSegmentName">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="taskElementId" column-name="task_element_id" data-type="string" category-resource="categoryBasics" display-name-resource="taskInfoTaskElementId">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="acl" column-name="acl" data-type="big string" category-resource="categoryBasics" display-name-resource="taskInfoAcl">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="priority" column-name="priority" data-type="int" category-resource="categoryBasics" display-name-resource="taskInfoPriority">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="ownerName" column-name="owner_name" data-type="string" category-resource="categoryBasics" display-name-resource="taskInfoOwner">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="lastActorName" column-name="last_actor_name" data-type="string" category-resource="categoryBasics" display-name-resource="taskInfoLastActor">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="lastActionDate" column-name="last_action_date" data-type="timestamp" category-resource="categoryInfo" display-name-resource="taskInfoLastActionDate">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="lastOutcomeElementId" column-name="last_outcome_id" data-type="string" category-resource="categoryBasics" display-name-resource="taskInfoLastOutcomeElementId">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+    </table>    
+  </item-descriptor>
+
+
+
+  <item-descriptor name="history" cache-mode="simple" display-property="action" display-name-resource="itemDescriptorHistory"
+          item-cache-size="1000" query-cache-size="100">
+    
+    <attribute name="resourceBundle" value="atg.epub.PublishingRepositoryResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="epub_history" type="primary" id-column-name="history_id">
+      <property name="id" column-name="history_id" data-type="string" expert="true" category-resource="categoryInfo" display-name-resource="historyId">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+
+      <property name="profile" column-name="profile" item-type="user" category-resource="categoryBasics" display-name-resource="profile"
+            repository="/atg/userprofiling/InternalProfileRepository">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="timestamp" column-name="timestamp" data-type="timestamp" category-resource="categoryBasics" display-name-resource="timestamp">
+        <attribute name="useNowForDefault" value="true"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="action" column-name="action" data-type="string" category-resource="categoryBasics" display-name-resource="action">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>    
+      <property name="actionType" column-name="action_type" data-type="string" category-resource="categoryBasics" display-name-resource="actionType">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="description" column-name="description" data-type="string" category-resource="categoryBasics" display-name-resource="description">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+    </table>
+
+    <table name="epub_his_act_parm" type="multi" id-column-name="history_id" multi-column-name="sequence_num">    
+      <property name="actionParams" column-name="action_param" data-type="list" component-data-type="string" category-resource="categoryBasics" display-name-resource="actionParams">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>      
+    </table>      
+  </item-descriptor>  
+
+  <item-descriptor name="pendingDeployment" cache-mode="simple" version-property="version" display-property="id" display-name-resource="itemDescriptorPendingDeployment"
+          item-cache-size="1000" query-cache-size="100">
+    
+    <attribute name="resourceBundle" value="atg.epub.PublishingRepositoryResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+    
+    <table name="epub_deployment" type="primary" id-column-name="deployment_id">
+
+      <property name="id" column-name="deployment_id" data-type="string" expert="true" category-resource="categoryInfo" display-name-resource="deploymentId">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      
+      <property name="version" column-name="version" data-type="int" writable="false" expert="true" category-resource="categoryInfo" display-name-resource="version">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+
+      <property name="targetID" column-name="target_id" data-type="string" category-resource="categoryBasics" display-name-resource="targetId">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      
+      <property name="deployTime" column-name="deploy_time" data-type="timestamp" category-resource="categoryBasics" display-name-resource="deployTime">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      
+      <property name="creationTime" column-name="create_time" data-type="timestamp" category-resource="categoryBasics" display-name-resource="creationTime">
+        <attribute name="useNowForDefault" value="true"/>       
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      
+      <property name="creator" column-name="creator" data-type="string" category-resource="categoryBasics" display-name-resource="creator">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+
+      <property name="URI" column-name="uri" data-type="string" category-resource="categoryBasics" display-name-resource="URI">
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+      
+      <property name="next" column-name="next_dep_id" item-type="pendingDeployment" category-resource="categoryBasics" display-name-resource="nextInLine">
+        <attribute name="propertySortPriority" value="90"/>
+        <attribute name="uiwritable" value="false"/>              
+      </property>      
+
+      <property name="previous" column-name="previous_dep_id" item-type="pendingDeployment" category-resource="categoryBasics" display-name-resource="previousInLine">
+        <attribute name="propertySortPriority" value="100"/>
+        <attribute name="uiwritable" value="false"/>             
+      </property>      
+      
+      <property name="forceFull" column-name="force_full" data-type="boolean" category-resource="categoryStatus" display-name-resource="forceFull">
+        <attribute name="propertySortPriority" value="110"/>
+      </property>
+
+      <property name="type" column-name="dep_type" data-type="enumerated" default="standardDeploy" category-resource="categoryBasics" display-name-resource="deploymentType">
+        <attribute name="propertySortPriority" value="120"/>
+        <attribute name="resourceBundle" value="atg.epub.PublishingRepositoryResources"/>
+        <attribute name="useCodeForValue" value="true"/>
+        <option resource="initializeTarget" code="0"/>
+        <option resource="backDeploy" code="1"/>
+        <option resource="standardDeploy" code="2"/>
+        <option resource="revertDeploy" code="3"/>
+        <option resource="backDeployToInitial" code="4"/>
+        <option resource="oneOffDeploy" code="5"/>
+      </property>
+           
+      <property name="status" column-name="status" data-type="int" default="152" category-resource="categoryBasics" display-name-resource="status">
+        <attribute name="propertySortPriority" value="130"/>
+        <attribute name="uiwritable" value="false"/>
+      </property>
+            
+      <property name="messageCode" column-name="message_code" data-type="string" expert="true" category-resource="categoryBasics" display-name-resource="messageCode">
+        <attribute name="propertySortPriority" value="140"/>
+      </property>
+
+      <property name="strictFileOps" column-name="strict_file_op" data-type="int" category-resource="categoryBasics" display-name-resource="strictFileOps">
+        <attribute name="propertySortPriority" value="150"/>
+      </property>
+      
+      <property name="strictRepoOps" column-name="strict_repo_op" data-type="int" category-resource="categoryBasics" display-name-resource="strictRepoOps">
+        <attribute name="propertySortPriority" value="160"/>
+      </property>
+
+    </table>
+    
+    <table name="epub_deploy_proj" type="multi" id-column-name="deployment_id" multi-column-name="sequence_num">
+      <property name="projectIDs" column-name="project_id" data-type="array" component-data-type="string" category-resource="categoryBasics" display-name-resource="projectIDs">
+        <attribute name="propertySortPriority" value="150"/>
+        <attribute name="uiwritable" value="false"/>        
+      </property>
+    </table>
+        
+    <table name="epub_dep_err_parm" type="multi" id-column-name="deployment_id" multi-column-name="sequence_num">    
+      <property name="errorParams" column-name="error_param" data-type="list" component-data-type="string" category-resource="categoryBasics" display-name-resource="errorParams">
+        <attribute name="propertySortPriority" value="160"/>
+      </property>      
+    </table>    
+                  
+  </item-descriptor>
+
+  <!-- A deployment log item represents the occurrence of a single deployment. -->
+  <item-descriptor name="deploymentLog" display-name-resource="itemDescriptorDeploymentLog"
+                   cache-mode="simple" item-cache-size="1000" query-cache-size="100">
+
+   <attribute name="resourceBundle" value="atg.epub.PublishingRepositoryResources"/>
+
+   <table name="epub_dep_log" type="primary" id-column-name="log_id">
+
+    <!-- id: repository id of this log item -->
+    <property name="id" data-type="string" column-name="log_id" expert="true"
+              category-resource="categoryBasics" display-name-resource="deploymentLogId">
+      <attribute name="resourceBundle" value="atg.epub.PublishingRepositoryResources"/>
+      <attribute name="propertySortPriority" value="10"/>
+    </property>
+
+    <!-- deploymentId: id of the deployment object: a deployment can be retried which -->
+    <!--               results in multiple log entries for the same deployment object -->
+    <property name="deploymentId" data-type="string" column-name="dep_id" expert="true"
+              category-resource="categoryBasics" display-name-resource="deploymentId">
+      <attribute name="resourceBundle" value="atg.epub.PublishingRepositoryResources"/>
+      <attribute name="propertySortPriority" value="20"/>
+    </property>
+
+    <!-- targetName: name of the target of the deployment -->    
+    <property name="targetName" data-type="string" column-name="target_name"
+              category-resource="categoryBasics" display-name-resource="targetName">
+      <attribute name="resourceBundle" value="atg.epub.PublishingRepositoryResources"/>
+      <attribute name="propertySortPriority" value="40"/>
+    </property>
+
+    <!-- logTime: the time this log entry was made -->
+    <property name="logTime" data-type="timestamp" column-name="log_time"
+              category-resource="categoryBasics" display-name-resource="deploymentLogTime">
+      <attribute name="resourceBundle" value="atg.epub.PublishingRepositoryResources"/>
+      <attribute name="propertySortPriority" value="50"/>
+    </property>
+
+    <!-- beginTime: the time the deployment began -->
+    <property name="beginTime" data-type="timestamp" column-name="begin_time"
+              category-resource="categoryBasics" display-name-resource="deploymentBeginTime">
+      <attribute name="resourceBundle" value="atg.epub.PublishingRepositoryResources"/>
+      <attribute name="propertySortPriority" value="55"/>
+    </property>
+
+    <!-- endTime: the time the deployment ended -->
+    <property name="endTime" data-type="timestamp" column-name="end_time"
+              category-resource="categoryBasics" display-name-resource="deploymentEndTime">
+      <attribute name="resourceBundle" value="atg.epub.PublishingRepositoryResources"/>
+      <attribute name="propertySortPriority" value="60"/>
+    </property>
+
+    <!-- creatorId: id of entity who created this deployment -->
+    <property name="actor" column-name="actor_id" item-type="user" category-resource="categoryBasics" display-name-resource="deploymentActor"
+              repository="/atg/userprofiling/InternalProfileRepository">
+      <attribute name="resourceBundle" value="atg.epub.PublishingRepositoryResources"/>
+      <attribute name="propertySortPriority" value="65"/>
+    </property>
+
+    <!-- type: either a FULL or an INCREMENTAL deployment -->
+    <property name="deploymentType" data-type="enumerated" column-name="type"
+              category-resource="categoryBasics" display-name-resource="deploymentType">
+      <attribute name="resourceBundle" value="atg.epub.PublishingRepositoryResources"/>
+      <attribute name="propertySortPriority" value="70"/>
+      <attribute name="useCodeForValue" value="true"/>
+      
+      <option resource="incremental" code="2"/>
+      <option resource="full" code="1"/>
+    </property>   
+    
+    <!-- mode: either an ONLINE or a SWITCH deployment -->
+    <property name="deploymentMode" data-type="enumerated" column-name="dep_mode"
+              category-resource="categoryBasics" display-name-resource="deploymentMode">
+      <attribute name="resourceBundle" value="atg.epub.PublishingRepositoryResources"/>
+      <attribute name="propertySortPriority" value="80"/>
+      <attribute name="useCodeForValue" value="true"/>
+      <option resource="switch" code="11"/>
+      <option resource="online" code="10"/>
+    </property>  
+        
+    <!-- status: indicates the outcome of the deployment. -->
+    <property name="status" data-type="enumerated"
+              category-resource="categoryBasics" display-name-resource="status">
+      <attribute name="resourceBundle" value="atg.epub.PublishingRepositoryResources"/>
+      <attribute name="propertySortPriority" value="90"/>
+      <attribute name="useCodeForValue" value="true"/>
+
+      <option resource="statusError"    code="0"/>
+      <option resource="statusSuccess"  code="1"/>
+      <option resource="statusCancel"   code="2"/>
+    </property>
+
+    <!-- delimitedProjectIDs: ids of the projects: the list of projects that particiated in this -->
+    <!--        deployment, delimited by the delimiter property. -->
+    <property name="delimitedProjectIds" data-type="string" column-name="deli_proj_ids" expert="true"
+              category-resource="categoryBasics" display-name-resource="delimitedProjectIds">
+      <attribute name="resourceBundle" value="atg.epub.PublishingRepositoryResources"/>
+      <attribute name="propertySortPriority" value="100"/>
+    </property>
+
+    <!-- delimiter: ids of the projects: delimitedProjectIDs property is a list of project delimited by -->
+    <!-- the value of this property  -->
+    <property name="delimiter" data-type="string" column-name="delimiter" expert="true"
+              category-resource="categoryBasics" display-name-resource="delimiter">
+      <attribute name="resourceBundle" value="atg.epub.PublishingRepositoryResources"/>
+      <attribute name="propertySortPriority" value="110"/>
+    </property>
+
+    <property name="strictFileOps" column-name="strict_file_op" data-type="int" category-resource="categoryBasics" display-name-resource="strictFileOps">
+      <attribute name="propertySortPriority" value="120"/>
+    </property>
+
+    <property name="strictRepoOps" column-name="strict_repo_op" data-type="int" category-resource="categoryBasics" display-name-resource="strictRepoOps">
+      <attribute name="propertySortPriority" value="130"/>
+    </property>
+
+   </table>   
+  </item-descriptor>
+
+  <item-descriptor name="topologyDef" version-property="version"  display-name-resource="topologyDescriptorTarget" cache-mode="simple"
+          item-cache-size="2" query-cache-size="2">
+    <attribute name="resourceBundle" value="atg.epub.PublishingRepositoryResources"/>
+    <attribute name="uiwritable" value="false"/>
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+    <table name="epub_topology" type="primary" id-column-name="topology_id">
+      <property name="id" column-name="topology_id" data-type="string" expert="true" category-resource="categoryInfo" display-name-resource="topologyId">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      
+      <property name="version" column-name="version" data-type="int" writable="false" expert="true" category-resource="categoryInfo" display-name-resource="version">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>       
+      
+      <property name="primary" column-name="primary_tl" data-type="boolean"  default="false" expert="true" category-resource="categoryInfo" display-name-resource="topologyPrimary">
+        <attribute name="propertySortPriority" value="30"/>        
+      </property>       
+      
+    </table>    
+    
+    <table name="epub_tl_targets" type="multi" id-column-name="topology_id" multi-column-name="sequence_num">       
+      <property name="targets" column-name="target_id" data-type="list" component-item-type="targetDef" category-resource="categoryBasics" display-name-resource="targets">
+         <attribute name="propertySortPriority" value="40"/>
+       </property>    
+    </table>           
+  </item-descriptor>
+
+  <item-descriptor name="targetDef" version-property="version" display-property="displayName" display-name-resource="target" cache-mode="simple"
+        item-cache-size="10" query-cache-size="10">
+    <attribute name="uiwritable" value="false"/>
+    <attribute name="resourceBundle" value="atg.epub.PublishingRepositoryResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+    <table name="epub_target" type="primary" id-column-name="target_id">
+      <property name="id" column-name="target_id" data-type="string" expert="true" category-resource="categoryInfo" display-name-resource="targetId">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      
+      <property name="version" column-name="version" data-type="int" writable="false" expert="true" category-resource="categoryInfo" display-name-resource="version">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+
+      <property name="creationTime" column-name="creation_time" data-type="timestamp" category-resource="categoryBasics" display-name-resource="creationTime">
+        <attribute name="useNowForDefault" value="true"/>       
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+
+      <property name="initialSnapshotName" column-name="snapshot_name" data-type="string" writable="true" expert="true" category-resource="categoryBasics" display-name-resource="targetSnapshot">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      
+      <property name="displayName" column-name="display_name" data-type="string" queryable="true" category-resource="categoryBasics" display-name-resource="displayName">
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+      
+      <property name="description" column-name="description" data-type="string" queryable="true" category-resource="categoryBasics" display-name-resource="description">
+        <attribute name="propertySortPriority" value="90"/>
+      </property>    
+
+      <property name="surrogateFor" column-name="main_target_id" item-type="targetDef" category-resource="categoryBasics" display-name-resource="surrogateForTarget">
+        <attribute name="propertySortPriority" value="100"/>       
+      </property>      
+
+      <property name="halted" column-name="halted" data-type="boolean" default="false" category-resource="categoryBasics" display-name-resource="halted">
+        <attribute name="propertySortPriority" value="110"/>
+      </property>
+
+      <property name="flagAgents" column-name="flag_agents" data-type="boolean" default="false" category-resource="categoryBasics" display-name-resource="flagAgents">
+        <attribute name="propertySortPriority" value="120"/>
+      </property>
+
+      <property name="targetType" column-name="target_type" data-type="enumerated" default="workflow" category-resource="categoryBasics" display-name-resource="targetType">
+        <attribute name="propertySortPriority" value="130"/>
+        <attribute name="uiwritable" value="false"/>      
+        <attribute name="useCodeForValue" value="false"/>     
+        <option value="workflow" code="0"/>
+        <option value="one-off" code="1"/>
+      </property>
+    </table>
+    
+    <table name="epub_tr_agents" type="multi" id-column-name="target_id">       
+      <property name="agents" column-name="agent_id" data-type="set" component-item-type="agentDef" cascade="delete" category-resource="categoryBasics" display-name-resource="agents">
+         <attribute name="propertySortPriority" value="140"/>
+       </property>    
+    </table>       
+    
+    <table name="epub_tr_dest" type="multi" id-column-name="target_id" multi-column-name="target_source">
+      <property name="destinations" column-name="target_destination" data-type="map" component-data-type="string" category-resource="categoryBasics" display-name-resource="targetDestinations">
+        <attribute name="propertySortPriority" value="150"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+    <!--agent item descriptor-->
+  <item-descriptor name="agentDef" version-property="version" display-property="displayName" display-name-resource="itemDescriptorAgent" cache-mode="simple"
+          item-cache-size="100" query-cache-size="100">
+    
+    <attribute name="resourceBundle" value="atg.epub.PublishingRepositoryResources"/>
+    <attribute name="uiwritable" value="false"/>
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>    
+    
+    <table name="epub_agent" type="primary" id-column-name="agent_id">    
+      <property name="id" column-name="agent_id" data-type="string" expert="true" category-resource="categoryInfo" display-name-resource="agentId">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      
+      <property name="version" column-name="version" data-type="int" writable="false" expert="true" category-resource="categoryInfo" display-name-resource="version">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+
+      <property name="creationTime" column-name="creation_time" data-type="timestamp" category-resource="categoryBasics" display-name-resource="creationTime">
+        <attribute name="useNowForDefault" value="true"/>               
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+
+      <property name="displayName" column-name="display_name" data-type="string" queryable="true" category-resource="categoryBasics" display-name-resource="displayName">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+       
+      <property name="description" column-name="description" data-type="string" queryable="true" category-resource="categoryBasics" display-name-resource="description">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+
+      <property name="surrogateFor" column-name="main_agent_id" item-type="agentDef" category-resource="categoryBasics" display-name-resource="surrogateForAgent">
+        <attribute name="propertySortPriority" value="70"/>       
+      </property>      
+
+      <property name="transport" column-name="transport" item-type="transportDef" required="true" cascade="delete" category-resource="categoryBasics" display-name-resource="transport">
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+    </table> 
+    
+    <table name="epub_princ_asset" type="multi" id-column-name="agent_id" >    
+      <property name="principalAssets" column-name="principal_assets" data-type="set" component-data-type="string" category-resource="categoryBasics" display-name-resource="principalAssets">
+        <attribute name="propertySortPriority" value="100"/>
+      </property>      
+     </table>
+    
+    <table name="epub_includ_asset" type="multi" id-column-name="agent_id">    
+      <property name="includeAssetDestinations" column-name="include_assets" data-type="set" component-data-type="string" category-resource="categoryBasics" display-name-resource="includeAssetDestinations">
+        <attribute name="propertySortPriority" value="110"/>
+      </property>          
+     </table>      
+    <table name="epub_exclud_asset" type="multi" id-column-name="agent_id">    
+      <property name="excludeAssetDestinations" column-name="exclude_assets" data-type="set" component-data-type="string" category-resource="categoryBasics" display-name-resource="excludeAssetDestinations">
+        <attribute name="propertySortPriority" value="120"/>
+      </property>          
+     </table>
+    <table name="epub_dest_map" type="multi" id-column-name="agent_id" 
+      multi-column-name="source">    
+      <property name="destinationMap" column-name="destination" data-type="map" component-data-type="string" category-resource="categoryBasics" display-name-resource="destinationMap">
+        <attribute name="propertySortPriority" value="130"/>
+      </property>          
+     </table>
+
+  </item-descriptor>
+
+ <item-descriptor name="transportDef" version-property="version" display-name-resource="itemDescriptorTransport" cache-mode="simple"
+  item-cache-size="10" query-cache-size="10">
+
+   <attribute name="resourceBundle" value="atg.epub.PublishingRepositoryResources"/>
+   <attribute name="uiwritable" value="false"/>
+   <attribute name="categoryBasicsPriority" value="10"/>
+   <attribute name="categoryInfoPriority" value="20"/>
+
+   <table name="epub_agent_trnprt" type="primary" id-column-name="transport_id">      
+     <property name="id" column-name="transport_id" data-type="string" expert="true" category-resource="categoryInfo" display-name-resource="transportId">
+       <attribute name="propertySortPriority" value="10"/>
+     </property>
+      
+     <property name="version" column-name="version" data-type="int" writable="false" expert="true" category-resource="categoryInfo" display-name-resource="version">
+       <attribute name="propertySortPriority" value="20"/>
+     </property>
+    
+      <property name="transportType" column-name="transport_type" data-type="enumerated"  default="RMI" category-resource="categoryBasics" display-name-resource="transportType" queryable="true">
+        <attribute name="propertySortPriority" value="30"/>
+        <attribute name="uiwritable" value="false"/>      
+        <attribute name="useCodeForValue" value="false"/>     
+        <option value="RMI" code="0"/>
+        <option value="JNDI" code="1"/>
+      </property>
+      
+      <property name=" jndiName" column-name="jndi_name" data-type="string" category-resource="categoryBasics" display-name-resource="jndiName" queryable="true">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+   
+      <property name="rmiURI"  column-name="rmi_uri" data-type="string" category-resource="categoryBasics " display-name-resource="RMIURI" queryable="true">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>       
+   
+    </table>
+  </item-descriptor>    
+    
+</gsa-template>
+<!-- @version $Id: //product/Publishing/version/10.0.3/pws/config/atg/epub/publishing.xml#2 $$Change: 651448 $-->

@@ -1,0 +1,120 @@
+<%@page import="java.io.*,java.util.*" %>
+
+<%--
+  renderProperty.jsp
+          gear : Repository View
+     gear mode : content 
+  display mode : full or shared
+ 
+  This page fragment is included by singleItem.jsp and listItem.jsp.
+  It renders the value of a single property of a single repository 
+  item using an appropriate localized format for the type of the 
+  property.  
+
+  The following variables must be set in order for this page to work:
+     itemToDisplay - the RepositoryItem from which we 
+                     get the value to display
+     propToDisplay - the name of the property to display
+     
+  The following property types are supported :
+    string 
+    numeric (int,long,double)
+    date
+    multivalued (map, array, set)
+   
+--%>
+
+
+<%
+  String dateStyle = rpvPage.getDateStyle();
+  String timeStyle = rpvPage.getTimeStyle();	
+%>
+
+<rpv:propertyInfo id="propinf" 
+                  propertyName="<%= propToDisplay %>"
+                  item="<%= itemToDisplay %>">  
+
+  <core:exclusiveIf>    
+
+    <core:ifNull value="<%= propinf.getPropertyDescriptor() %>">
+	&nbsp;
+    </core:ifNull>
+
+    <core:defaultCase>
+      <core:exclusiveIf>    
+        <core:if value="<%= propinf.getPropertyDescriptor().isMultiValued() %>">
+          <core:forEach id="multiValues" values="<%= propinf.getPropertyValue() %>"
+                castClass="java.lang.Object"
+                elementId="oneValue"><!--  No space here!
+
+             --><core:IfGreaterThan int1="<%= multiValues.getCount() %>"
+                                  int2="<%= 1 %>">,            
+              </core:IfGreaterThan>
+
+            <core:exclusiveIf>
+              <core:if value="<%= oneValue instanceof atg.repository.RepositoryItem %>">
+                <core:cast id="repitem" value="<%= oneValue %>" castClass="atg.adapter.gsa.GSAItem"> 
+                  <core:createUrl id="oneItemGearUrl" url="<%= gearEnv.getOriginalRequestURI() %>">
+                    <core:UrlParam param="reppath" value="<%= ((atg.repository.RepositoryImpl)repitem.getRepository()).getAbsoluteName() %>"/>
+                    <core:UrlParam param="itemdesc" value="<%= repitem.getItemDescriptor().getItemDescriptorName() %>"/>
+                    <core:UrlParam param="paf_dm" value="full"/>
+                    <core:UrlParam param="rpvmode" value="oneItem"/>
+                    <core:UrlParam param="itemId" value="<%= repitem.getRepositoryId() %>"/>
+                    <core:UrlParam param="paf_gear_id" value="<%= gearEnv.getGear().getId() %>"/>
+                    <a href="<%= oneItemGearUrl.getNewUrl() %>" class="gear_content"><%= repitem.getItemDisplayName() %></a><!--  No space here.
+               --></core:createUrl><!--
+                --></core:cast><!--
+              --></core:if><!--
+           --><core:ifNot value="<%= oneValue instanceof atg.repository.RepositoryItem %>">
+                <%= oneValue %><!--
+           --></core:ifNot><!--
+         --></core:exclusiveIf><!--
+       --></core:forEach>      
+        </core:if>
+
+        <core:ifNot value="<%= propinf.getPropertyDescriptor().isMultiValued() %>">
+          <core:exclusiveIf>
+
+            <core:if value="<%= propinf.getPropertyValue() instanceof atg.repository.RepositoryItem %>">
+              <core:cast id="repitem" value="<%= propinf.getPropertyValue() %>" castClass="atg.adapter.gsa.GSAItem"> 
+                <core:createUrl id="oneItemGearUrl" url="<%= gearEnv.getOriginalRequestURI() %>">
+                  <core:UrlParam param="reppath" value="<%= ((atg.repository.RepositoryImpl)repitem.getRepository()).getAbsoluteName() %>"/>
+                  <core:UrlParam param="itemdesc" value="<%= repitem.getItemDescriptor().getItemDescriptorName() %>"/>
+                  <core:UrlParam param="paf_dm" value="full"/>
+                  <core:UrlParam param="rpvmode" value="oneItem"/>
+                  <core:UrlParam param="itemId" value="<%= repitem.getRepositoryId() %>"/>
+                  <core:UrlParam param="paf_gear_id" value="<%= gearEnv.getGear().getId() %>"/>
+                  <a href="<%= oneItemGearUrl.getNewUrl() %>"><%= repitem.getItemDisplayName() %></a>
+                </core:createUrl>
+              </core:cast>
+            </core:if>
+
+            <core:if value="<%= propinf.getPropertyValue() instanceof java.util.Date %>">
+	      <core:ifNot value='<%= dateStyle.equals("notShown") %>'>
+                <i18n:formatDate value="<%= (Date)propinf.getPropertyValue()  %>" 
+                                 style="<%= dateStyle %>" 
+                                 defaultText="illegalDateFormat"/>              
+              </core:ifNot>
+              <core:ifNot value='<%= timeStyle.equals("notShown") %>'>
+                <i18n:formatTime value="<%= (Date)propinf.getPropertyValue() %>" 
+                                 style="<%= timeStyle %>" 
+                                defaultText="illegalTimeFormat"/>     
+              </core:ifNot>
+            </core:if>
+
+            <core:defaultCase>
+              <%= propinf.getPropertyValue() %>
+            </core:defaultCase>
+
+          </core:exclusiveIf>
+        </core:ifNot>
+      </core:exclusiveIf>
+    </core:defaultCase>
+
+  </core:exclusiveIf>
+  
+
+
+
+</rpv:propertyInfo>
+<%-- @version $Id: //app/portal/version/10.0.3/repview/repview.war/html/content/renderProperty.jspf#2 $$Change: 651448 $--%>

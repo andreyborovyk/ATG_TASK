@@ -1,0 +1,131 @@
+<HTML>
+<HEAD>
+<TITLE>Inventory</TITLE>
+</HEAD>
+
+<importbean bean="/atg/commerce/inventory/InventoryFormHandler">
+<importbean bean="/atg/dynamo/droplet/IsNull">
+
+<body BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<BODY>
+<setvalue bean="InventoryFormHandler.lowerBound" value="param:lowerBound">
+<setvalue bean="InventoryFormHandler.upperBound" value="param:upperBound">
+<droplet bean="IsNull">
+  <param name="value" value="param:batchNumber">
+  <oparam name="false">
+    <setvalue bean="InventoryFormHandler.batchNumber" value="param:batchNumber" number>
+  </oparam>
+  <oparam name="true">
+    <setvalue bean="InventoryFormHandler.batchNumber" value="0" number>
+  </oparam>
+</droplet>
+
+<a href="index.jhtml"><i>Previous</i>
+<param name="lowerBound" value="bean:InventoryFormHandler.lowerBound">
+<param name="upperBound" value="bean:InventoryFormHandler.upperBound">
+<param name="batchNumber" value="bean:InventoryFormHandler.previousBatchNumber">
+</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="index.jhtml"><i>Next</i>
+<param name="lowerBound" value="bean:InventoryFormHandler.lowerBound">
+<param name="upperBound" value="bean:InventoryFormHandler.upperBound">
+<param name="batchNumber" value="bean:InventoryFormHandler.nextBatchNumber">
+</a>
+<br>
+
+<table border="1" width="80%">
+  
+  <tr border="1" bgcolor="#EEEFFF">
+    <td align="center">Name</td>
+    <td align="center">Sku id</td>
+    <td align="center">Fulfiller</td>
+    <td align="center">Stock/<br>Thresh</td>
+    <td align="center">Back/<br>Thresh</td>
+    <td align="center">Pre/<br>Thresh</td>
+    <td align="center">Status</td>
+    <td align="center">Availablility</td>
+    <td align="center">Bundle</td>
+  </tr>
+  
+  <DROPLET bean="/atg/dynamo/droplet/ForEach">
+    <PARAM name="array" value="bean:InventoryFormHandler.catalogRefIds">
+    <PARAM name="elementName" value="sku">
+    <oparam name="error">
+      <td colspan=8><valueof param="error">error</valueof></td>
+    </oparam>
+    <oparam name="empty">
+      <td colspan=8>No items in the catalog.</td>
+    </oparam>
+    <OPARAM name="output">      
+      <tr border="1">
+	
+	<DROPLET bean="/atg/commerce/catalog/SKULookup">
+	  <PARAM name="id" value="param:sku">
+	  <PARAM name="elementName" value="catalogItem">
+	  <OPARAM name="output">
+	    <td align="CENTER"><valueof param="catalogItem.displayName">?</valueof></td>
+	    <td><valueof param="sku">?</valueof></td>
+	    <td align="CENTER"><valueof param="catalogItem.fulfiller">default</valueof></td>
+	    <DROPLET bean="/atg/commerce/inventory/InventoryLookup">
+	      <PARAM name="itemId" value="param:sku">
+	      <PARAM name="useCache" value="false">
+	      <OPARAM name="output">
+		<td align="CENTER"><valueof param="inventoryInfo.stockLevel">?</valueof> /
+		  <valueof param="inventoryInfo.stockThreshold">?</valueof></td>
+		<td align="CENTER"><valueof param="inventoryInfo.backorderLevel">?</valueof> /
+		  <valueof param="inventoryInfo.backorderThreshold">?</valueof></td>
+		<td align="CENTER"><valueof param="inventoryInfo.preorderLevel">?</valueof> /
+		  <valueof param="inventoryInfo.preorderThreshold">?</valueof></td>
+		<td align="CENTER"> <valueof param="inventoryInfo.availabilityStatusMsg">No inventory item</valueof></td>
+		<td align="CENTER"> <valueof param="inventoryInfo.availabilityDate" date="M/dd/yyyy">No date</valueof></td>
+	      </OPARAM>
+	    </DROPLET> <!-- InventoryLookup -->
+
+	    <td>
+		<DROPLET bean="/atg/dynamo/droplet/ForEach">
+		  <PARAM name="array" value="param:catalogItem.bundleLinks">
+		  <PARAM name="elementName" value="bundle">
+		  <OPARAM name="output">
+		    <valueof param="bundle.item">?</valueof> -
+		    <valueof param="bundle.quantity">?</valueof><br>
+	          </OPARAM>
+		  <OPARAM name="empty">
+		    No
+		  </OPARAM>
+	        </DROPLET> <!-- ForEach -->
+	    </td>
+	  </tr>
+        </OPARAM>
+       </DROPLET> <!-- SKULookup -->
+     </OPARAM>
+  </DROPLET> <!-- foreach -->
+</table>
+
+<a href="index.jhtml"><i>Previous</i>
+<param name="lowerBound" value="bean:InventoryFormHandler.lowerBound">
+<param name="upperBound" value="bean:InventoryFormHandler.upperBound">
+<param name="batchNumber" value="bean:InventoryFormHandler.previousBatchNumber">
+</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="index.jhtml"><i>Next</i>
+<param name="lowerBound" value="bean:InventoryFormHandler.lowerBound">
+<param name="upperBound" value="bean:InventoryFormHandler.upperBound">
+<param name="batchNumber" value="bean:InventoryFormHandler.nextBatchNumber">
+</a>
+<br>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/DCS/admin/atg/commerce/admin/en/inventory/DisplayInventory.jhtml#2 $$Change: 651448 $*/</java>
+

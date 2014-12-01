@@ -1,0 +1,38 @@
+#!/bin/sh
+usage() {
+  echo xmlCombine [input file 1]...[input file n] -o [output file]
+  exit 1
+}
+#
+# We need to give the TemplateParser the current directory so that we
+# can write files relative to that directory.  Dynamo currently still requires
+# that it be in the home directory when it is run.
+#
+STARTDIR=`pwd`
+
+if [ "$1" = "" ]; then
+ usage
+fi
+if [ "x$1" = "x-h" ]; then
+ usage
+fi
+
+#
+# Check that DYNAMO_HOME and DAS_ROOT are set
+#
+PROGRAM_DIR=`dirname $0`
+. $PROGRAM_DIR/checkDynamoHome.sh
+
+#
+# Load in default environment values
+#
+. bin/dynamoEnv.sh
+
+echo -------------------
+echo JAVA_ARGS:  ${JAVA_ARGS}
+echo -------------------
+echo CLASSPATH:  ${CLASSPATH}
+echo -------------------
+echo PATH:       ${PATH}
+
+${JAVA_VM} ${JAVA_ARGS} atg.xml.Combiner $*

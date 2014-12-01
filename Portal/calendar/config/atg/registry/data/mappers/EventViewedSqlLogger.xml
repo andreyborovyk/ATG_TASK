@@ -1,0 +1,109 @@
+<!--
+	@version $Id: //app/portal/version/10.0.3/calendar/config/atg/registry/data/mappers/EventViewedSqlLogger.xml#2 $$Change: 651448 $
+-->
+
+<mapper>
+  <registry-descriptor>
+      <id>/EventViewedSqlLogger.xml</id>
+      <displayname>Calendar Event Viewed SQL Mapper</displayname>
+      <description>Calendar Event Viewed SQL Mapper</description>
+  </registry-descriptor>
+
+  <input-filter context="jms">
+      <value>atg.portal.gear.calendar.EventViewedMessage</value>
+  </input-filter>
+
+  <data-listener>/atg/reporting/dataset/EventViewedLoggerQueue</data-listener>
+
+  <database>
+    <transaction-manager>/atg/dynamo/transaction/TransactionManager</transaction-manager>
+    <datasource>dynamo:/atg/dynamo/service/jdbc/JTDataSource</datasource>
+    <table>
+      <name>cal_event_mapper</name>
+      <display-name>Calendar Event Viewed Sql Mapper</display-name>
+      <mappings>
+        <dataset-mapping hidden="true">
+          <display-name>Dataset Id</display-name>
+          <column>id</column>
+          <type>java.lang.String</type>
+          <property>datasetId</property>
+        </dataset-mapping>
+
+        <timestamp-mapping hidden="true">
+          <display-name>Time Stamp</display-name>
+          <column>tstamp</column>
+          <type>java.sql.Timestamp</type>
+          <property>timestamp</property>
+        </timestamp-mapping>
+                                         
+        <property-mapping>
+          <display-name>Event Name</display-name>
+          <column>event_name</column>
+          <type>java.lang.String</type>
+          <property>context.message.eventName</property>
+        </property-mapping>
+
+        <property-mapping>
+          <display-name>Community Name</display-name>
+          <column>community_name</column>
+          <type>java.lang.String</type>
+          <property>context.message.communityName</property>
+        </property-mapping>
+
+        <property-mapping>
+          <display-name>Start Date</display-name>
+          <column>start_date</column>
+          <type>java.lang.String</type>
+          <property>context.message.startDateString</property>
+        </property-mapping>
+
+        <property-mapping>
+          <display-name>City</display-name>
+          <column>city</column>
+          <type>java.lang.String</type>
+          <property>context.message.city</property>
+        </property-mapping>
+
+        <property-mapping>
+          <display-name>State</display-name>
+          <column>state</column>
+          <type>java.lang.String</type>
+          <property>context.message.state</property>
+        </property-mapping>
+
+        <repository-item-mapping>
+          <display-name>Gear Id</display-name>
+          <column>gear_id</column>
+          <type>java.lang.String</type>
+          <property>context.message.gearId</property>
+          <component>/atg/portal/framework/PortalRepository</component>
+	</repository-item-mapping> 
+
+        <repository-item-mapping>
+          <display-name>Community Id</display-name>
+          <column>community_id</column>
+          <type>java.lang.String</type>
+          <property>context.message.communityId</property>
+          <component>/atg/portal/framework/PortalRepository</component>
+	</repository-item-mapping> 
+			
+        <repository-item-mapping>
+          <display-name>Profile Id</display-name>
+          <column>user_id</column>
+          <type>java.lang.String</type>
+          <property>context.message.profileId</property>
+          <component>/atg/userprofiling/ProfileAdapterRepository</component>
+	</repository-item-mapping> 
+			
+        <property-mapping>
+          <display-name>Message Type</display-name>
+          <column>msg_type</column>
+          <type>java.lang.String</type>
+          <property>context.message.messageType</property>
+        </property-mapping>
+
+     </mappings>
+   </table>
+ </database>
+</mapper>
+<!-- @version $Id: //app/portal/version/10.0.3/calendar/config/atg/registry/data/mappers/EventViewedSqlLogger.xml#2 $$Change: 651448 $ -->

@@ -1,0 +1,1 @@
+atg.helpFields.push(				{ id: "atg_arm_contentBrowserTitle",	type: "popup", 	helpId: "id1"			},				{ id: "atg_arm_linkedDocumentsTitle",	type: "popup", 	helpId: "id2"			},				{ id: "atg_arm_addAttachment", 		type: "popup", 	helpId: "id3"			}			);						console.debug(atg.helpFields);

@@ -1,0 +1,78 @@
+<HTML>
+<HEAD>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+<TITLE>Configure Session Backup Server</TITLE>
+
+
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<nucleus type=import>
+	/atg/dynamo/admin/ForEachNucleusComponent
+        /atg/dynamo/droplet/Switch
+</nucleus>
+
+
+<IMG SRC="images/config-banner.gif" ALT="Dynamo Configuration"
+ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/Component Search<p>
+
+Search for nucleus components or name contexts by partial name (case
+sensitive) or class (begin query with "class:"). Can either search for
+running components, or all components in the configuration path.
+
+<form action="cmpn-search.jhtml">
+<table border=0>
+<tr>
+<td>Query:</td><td><input type="text" name="query" value="param:query" length="30"></input> <input type="submit" value="Search"></td></tr>
+<tr><td>Search:</td><td>
+
+    <droplet name="Switch">
+      <param name="value" value="param:showAll">
+      <oparam name="true">
+        <input type="radio" name="showAll" value="false">Running  
+        <input type="radio" name="showAll" value="true" checked=checked> All (Slow)* 
+      </oparam>
+      <oparam name="default">
+        <input type="radio" name="showAll" value="false" checked=checked>Running  
+        <input type="radio" name="showAll" value="true"> All (Slow)*
+      </oparam>
+    </droplet>  
+</td></tr>
+<tr align="right"><td>&nbsp;</td><td halign="right">
+<br>
+</td></tr>
+</table>
+*Searching all components is resource intensive and not recommended for live production instances.
+</form>
+
+    <droplet name="Switch">
+      <param name="value" value="param:query">
+      <oparam name="unset"></oparam>
+      <oparam name="default">
+
+        <table border="0">
+        <tr align="left"><th>Search Results:</th></tr>
+        <droplet name="ForEachNucleusComponent">
+          <param name="context" value="/">
+          <param name="showAll" value="param:showAll">
+          <param name="recursive" value="true">
+          <param name="sortBy" value="path">
+	  <param name="ignoreRequest" value="false">
+	  <param name="ignoreSession" value="false">
+          <param name="nameExpression" value="param:query">
+          <oparam name="empty"><tr><td>No matches found.</td></tr></oparam>
+          <oparam name="output">
+             <tr class="`((((Integer)request.getObjectParameter("count")).intValue() % 2) == 1) ? "even" : "odd"`"><td>
+	     <setvalue param="path" value="param:element.absoluteName">
+	     <a href="/nucleus/`request.getParameter("path")`"><valueof param="element.absoluteName">???</valueof></a></td></tr>
+          </oparam>
+        </droplet>
+        </table>
+      </oparam>
+    </droplet>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/cmpn-search.jhtml#2 $$Change: 651448 $*/</java>

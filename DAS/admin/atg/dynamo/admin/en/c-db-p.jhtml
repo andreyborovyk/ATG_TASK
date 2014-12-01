@@ -1,0 +1,157 @@
+<nucleus type=import>
+	/atg/dynamo/admin/Configure
+	/atg/dynamo/admin/DbConnectionPool
+</nucleus><java>
+  atg.service.dynamo.ServerConfig configure = (atg.service.dynamo.ServerConfig)
+  	request.resolveName("/atg/dynamo/admin/Configure");
+  atg.service.dynamo.DBConnectionPoolConfig dbCfg =	(atg.service.dynamo.DBConnectionPoolConfig)
+  	request.resolveName("/atg/dynamo/admin/DbConnectionPool");
+
+if ( null == dbCfg.getPoolName() || dbCfg.getPoolName().equals("") )
+	response.sendLocalRedirect( "configure-db-pools.jhtml", request );
+
+</java>
+
+<HTML>
+<HEAD>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+<TITLE>Select a JDBC Connection Pool to Configure</TITLE>
+
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="images/config-banner.gif" ALT="Dynamo Configuration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a href="configure-server.jhtml">Configure</a>
+/<a href="configure-db-pools.jhtml"><param name="dynamoPool" value="true">DB_Pools</a>
+/<a href="configure-jdbc-type.jhtml"><param name="dynamoPool" value="true">JDBC_Type</a>
+/<valueof property=DbConnectionPool.poolName></valueof><p>
+
+<blockquote>
+
+<h2>JDBC Connection Pool: <valueof property=DbConnectionPool.poolName></valueof></h2><p>
+
+<!-- If the Test Status has been set, display it and then clear it. -->
+<droplet bean="/atg/dynamo/droplet/Switch">
+  <param name=value value="bean:DbConnectionPool.testStatus">
+  <oparam name="unset"></oparam>
+  <oparam name="default">
+    <table border=1>
+      <tr><th>Test Status</th></tr>
+      <tr><td>
+        <valueof bean="DbConnectionPool.testStatus" valueishtml></valueof>
+      </td></tr>
+    </table>
+    <setvalue bean="DbConnectionPool.testStatus">
+  </oparam>
+</droplet>
+
+
+<FORM ACTION="c-db-p.jhtml" METHOD=POST>
+
+
+<b>Choose JDBC Driver and Database Vendor</b><br>
+
+<!-- If the Error Message has been set, display it and then clear it. -->
+<droplet bean="/atg/dynamo/droplet/Switch">
+  <param name=value value="bean:DbConnectionPool.errorMessage">
+  <oparam name="unset"></oparam>
+  <oparam name="default">
+    <p><font color=red><valueof property=DbConnectionPool.errorMessage valueishtml></valueof></font><p>
+    <setvalue bean="DbConnectionPool.errorMessage">
+  </oparam>
+</droplet>
+
+
+<P>Select your JDBC driver and database type from those listed in the Pre-Configured drop-down list. If your database is not listed there, select Custom and enter the JDBC information in the fields.</P>
+	<ul>
+		<INPUT TYPE=radio NAME="custom" VALUE="false" property=DbConnectionPool.custom>Pre-Configured JDBC Drivers<p>
+			<ul>
+			<SELECT NAME="database_combination" property=DbConnectionPool.preConfigured>
+			<java>
+			for( int ii=0; ii < dbCfg.KNOWN_CONFIGURATIONS.length; ++ii )
+			{
+				if ( null == dbCfg.KNOWN_CONFIGURATIONS[ii] )
+					continue;
+
+				</java>
+				<OPTION value="`dbCfg.KNOWN_CONFIGURATIONS[ii]`">
+				<java>
+				out.println( dbCfg.KNOWN_CONFIGURATIONS[ii] );
+			}
+			</java>
+			</SELECT>
+			<p>
+			</ul>
+		<INPUT TYPE=radio NAME="custom" VALUE="true" property=DbConnectionPool.custom>Custom JDBC Information<p>
+			<ul>If your JDBC driver and database type does not appear in the Pre-Configured drop-down list, enter the JDBC information here:<BR><BR>
+				URL:<br>
+				<INPUT TYPE="text" property=DbConnectionPool.URL size=35><br>
+				driver:<br>
+				<INPUT TYPE="text" property=DbConnectionPool.driver size=35><br>
+			</ul>
+	</ul>
+
+<p>
+		<b>Database and Server</b> <i>(optional for some drivers/database vendors)</i>
+		<ul>
+                database:<br>
+                <INPUT TYPE="text" property=DbConnectionPool.database size=35><br>
+                (Note: Oracle oci driver requires a TNSNAME database
+                alias in this field.  Oracle thin drivers require the
+                Oracle SID in this field, e.g. 'orcl')<p>
+
+                server:<br>
+                <INPUT TYPE="text" property=DbConnectionPool.server size=35><br>
+                (Note: Sybase jConnect, Oracle thin, and Informix drivers require 'server:port-number' in this field)<p>
+
+                server name:<br>
+                <INPUT TYPE="text" property=DbConnectionPool.dBServerName size=35><br>
+                (Note: This is <em>only</em> for Informix drivers.)
+                </ul>
+<p>
+		<b>Database Login</b>
+		<ul>
+		User Name:<br>
+		<INPUT TYPE=text property=DbConnectionPool.user><p>
+		Password:<br>
+		<INPUT TYPE=password property=DbConnectionPool.password><br>
+		Confirm password:<br>
+		<input type=password property=DbConnectionPool.passwordConfirm>
+		</ul>
+
+		<INPUT TYPE=checkbox property=DbConnectionPool.loggingSQLWarning>
+		<b>Log database warnings</b><p>
+		<INPUT TYPE=checkbox property=DbConnectionPool.loggingSQLInfo>
+		<b>Log all database operations</b><p>
+		<INPUT TYPE=checkbox property=DbConnectionPool.readOnly><b>
+		Read only database connection</b><br><br>
+
+		<b>Number of Connections</b>
+		<ul>
+			Minimum connections opened to the database:<br>
+			<input type="text" property=DbConnectionPool.min><br>
+			Maximum connections opened to the database:<br>
+			<input type="text" property=DbConnectionPool.max><br>
+			Maximum number of idle connections kept open:<br>
+			<input type="text" property=DbConnectionPool.maxFree><br>
+			The default value, -1, means idle connections are never closed.<BR>
+		</ul>
+
+<p>
+<INPUT TYPE="submit" bean=DbConnectionPool.testConnectionPool value="Try to Connect">
+
+<INPUT TYPE="submit" property=DbConnectionPool.applyChanges VALUE="Apply Changes">
+
+
+<p>
+<a href="configure-db-pools.jhtml"><param name="dynamoPool" value="true">Back</a><br>
+
+</FORM>
+
+</blockquote>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/c-db-p.jhtml#3 $$Change: 657611 $ */</java>
+

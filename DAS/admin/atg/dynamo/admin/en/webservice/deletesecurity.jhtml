@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+    <title>Delete Web Service Security Configuration</title>
+  </head>
+<nucleus type=import>
+        /atg/dynamo/droplet/Switch
+        /atg/webservice/security/NucleusAccessControlFormHandler
+</nucleus>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+<IMG SRC="../images/admin-banner.gif" ALT="Dynamo Administration"
+     ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a> / <a href="index.jhtml">Web Service
+	Administration</a> / <a href="browsesecurity.jhtml">Edit
+	Security Configurations</a> / Delete Security Configuration</p><p>
+
+    <h1>Delete Web Service Security Configurations</h1>
+
+<blockquote>
+
+<form action="deletesecurity.jhtml">
+  <input type="hidden" name="choose" value="param:choose">
+  <input type="hidden" bean="NucleusAccessControlFormHandler.securedObjectID" value="param:funcName">
+  <input type="hidden" bean="NucleusAccessControlFormHandler.successURL" value="browsesecurity.jhtml">
+
+<table border=0>
+
+<tr>
+  <td>Permanently delete security configuration:<valueof param="funcName"></valueof></td>
+<tr>
+
+<tr>
+  <td>&nbsp;</td>
+<tr>
+
+<td align=right><input type="submit"
+		       bean="NucleusAccessControlFormHandler.redirect"
+		       value="Cancel" submitValue="browsesecurity.jhtml?choose=`request.getParameter("choose")`"/>&nbsp;&nbsp;<input type="submit" bean="NucleusAccessControlFormHandler.removeConfiguration" value="Delete"/></td></tr>
+
+<tr><td colspan=2>&nbsp;</td></tr>
+</table>
+
+</form>
+<P>
+
+
+</blockquote>
+  </BODY>
+</html>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/webservice/deletesecurity.jhtml#2 $$Change: 651448 $*/</java>

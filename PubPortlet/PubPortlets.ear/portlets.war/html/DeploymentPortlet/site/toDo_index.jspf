@@ -1,0 +1,18 @@
+<!-- BEGIN FILE toDo_index.jspf -->
+<c:choose>
+  <c:when test="${deployRejectProjects != null && param.done_deploy == null && param.done_reject == null}">
+    <c:choose>
+      <c:when test="${deployOrReject == 'deploy'}">
+        <dspel:include page="site_toDo_deploy.jsp" />
+      </c:when>
+      <c:when test="${deployOrReject == 'reject'}">
+        <dspel:include page="site_toDo_reject.jsp" />
+      </c:when>      
+   </c:choose>
+  </c:when><%-- end details--%>
+  <c:otherwise>
+    <dspel:include page="site_toDo.jsp" />
+  </c:otherwise>
+</c:choose>
+<!-- END FILE toDo_index.jspf -->
+<%-- @version $Id: //product/PubPortlet/version/10.0.3/portlets.war/html/DeploymentPortlet/site/toDo_index.jspf#2 $$Change: 651448 $--%>

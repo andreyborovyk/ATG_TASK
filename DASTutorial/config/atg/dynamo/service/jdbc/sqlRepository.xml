@@ -1,0 +1,15 @@
+<gsa-template>
+
+<item-descriptor name="pagestats">
+  <table name="pagestats" id-column-name="pagename" type="primary">
+    <property name="rating1" data-type="int"/>
+    <property name="rating2" data-type="int"/>
+    <property name="rating3" data-type="int"/>
+  </table>
+  <table name="comment" type="multi" id-column-name="pagename" multi-column-name="index">
+    <property name="comments" column-name="value" data-type="list" component-data-type="string"/>
+  </table>
+</item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //product/DAS/version/10.0.3/release/DASTutorial/config/atg/dynamo/service/jdbc/sqlRepository.xml#2 $$Change: 651448 $ -->

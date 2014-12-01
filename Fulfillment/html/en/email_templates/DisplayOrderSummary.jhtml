@@ -1,0 +1,180 @@
+<JAVA>/* A shopping cart-like display of order information */</JAVA>
+
+<importbean bean="/atg/dynamo/droplet/Switch">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/commerce/inventory/InventoryLookup">
+<importbean bean="/atg/commerce/pricing/PriceItem">
+
+<table cellspacing=2 cellpadding=0 border=0>
+<tr>
+<td><b>Quantity</b></td>
+<td></td>
+<td>&nbsp;&nbsp;</td>
+<td><b>Product</b></td>
+<td>&nbsp;&nbsp;</td>
+<td><b>SKU</b></td>
+<td>&nbsp;&nbsp;</td>
+
+<droplet bean="Switch">
+  <param name="value" value="param:displayStockStatus">
+  <oparam name="true">    
+    <td><b>Instock?</b></td>
+    <td>&nbsp;&nbsp;</td>
+  </oparam>
+</droplet>
+
+<td align=right><b>List Price</b></td>
+<td>&nbsp;&nbsp;</td>
+<td align=right><b>Sale Price</b></td>
+<td>&nbsp;&nbsp;</td>
+<td align=right><b>Total Price</b></td>
+</tr>
+
+<droplet bean="Switch">
+  <param name="value" value="param:displayStockStatus">
+  <oparam name="true">    
+    <tr><td colspan=14><hr size=0></td></tr>
+  </oparam>
+  <oparam name="default">
+    <tr><td colspan=12><hr size=0></td></tr>
+  </oparam>
+</droplet>
+
+<droplet bean="ForEach">
+  <param name="array" value="param:order.commerceItems">
+  <param name="elementName" value="item">
+  <oparam name="output">
+		<tr valign=top>
+			<td>
+			    <valueof param="item.quantity">No Quantity</valueof>
+			</td>
+			<td></td>
+			<td>&nbsp;&nbsp;</td>
+			<td>
+			    <valueof param="item.auxiliaryData.productRef.displayName">Unknown</valueof>
+			</td>
+			<td>&nbsp;&nbsp;</td>
+			<td>
+			    <valueof param="item.auxiliaryData.catalogRef.displayName">Unknown</valueof>
+			</td>
+			<td>&nbsp;&nbsp;</td>
+
+			    <droplet bean="Switch">
+			      <param name="value" value="param:displayStockStatus">
+			      <oparam name="true">    
+				<td>
+				    <droplet bean="InventoryLookup">
+				      <param name="itemId" value="param:item.catalogRefId">
+				      <param name="useCache" value="true">
+				      <oparam name="output">
+					<droplet bean="Switch">
+					  <param name="value" value="param:inventoryInfo.availabilityStatus">
+					  <oparam name="1000">
+					    <b>Yes</b>
+					  </oparam>
+					  <oparam name="default">
+					    No
+					  </oparam>
+				        </droplet>
+				      </oparam>
+				    </droplet>
+				</td>
+				<td>&nbsp;&nbsp;</td>
+			      </oparam>
+			    </droplet>
+
+			<td align=right>
+			    <valueof param="item.priceInfo.listPrice" currency>No Price</valueof>
+			</td>
+			<td>&nbsp;&nbsp;</td>
+			<td align=right>
+				<droplet bean="Switch">
+					<param name="value" value="param:item.priceInfo.onSale">
+					<oparam name="true">
+					        <valueof param="item.priceInfo.salePrice" currency></valueof>
+					</oparam>
+					<oparam name="false">
+					        No Sale Price
+					</oparam>
+				</droplet>
+			</td>
+			<td>&nbsp;&nbsp;</td>
+			<td align=right>
+				<valueof param="item.priceInfo.amount" currency>No Price</valueof>
+			</td>
+		</tr>
+  </oparam>
+
+  <oparam name="empty"><tr colspan=10 valign=top><td>No Items</td></tr></oparam>
+</droplet>
+
+<droplet bean="Switch">
+  <param name="value" value="param:displayStockStatus">
+  <oparam name="true">    
+    <tr><td colspan=14><hr size=0></td></tr>
+    <tr>
+      <td colspan=13 align=right>Subtotal</td>
+  </oparam>
+  <oparam name="default">
+    <tr><td colspan=12><hr size=0></td></tr>
+    <tr>
+      <td colspan=11 align=right>Subtotal</td>
+  </oparam>
+</droplet>
+
+<td align=right>
+  <valueof param="order.priceInfo.amount" currency>no price</valueof>
+</td>
+</tr>
+
+<tr>
+<droplet bean="Switch">
+  <param name="value" value="param:displayStockStatus">
+  <oparam name="true">    
+    <td colspan=13 align=right>Shipping</td>
+  </oparam>
+  <oparam name="default">
+    <td colspan=11 align=right>Shipping</td>
+  </oparam>
+</droplet>
+
+<td align=right>
+	<valueof param="order.priceInfo.shipping" currency>no price</valueof>
+</td>
+</tr>
+
+<tr>
+<droplet bean="Switch">
+  <param name="value" value="param:displayStockStatus">
+  <oparam name="true">    
+    <td colspan=13 align=right>Tax</td>
+  </oparam>
+  <oparam name="default">
+    <td colspan=11 align=right>Tax</td>
+  </oparam>
+</droplet>
+
+<td align=right>
+	<valueof param="order.priceInfo.tax" currency>no price</valueof>
+</td>
+</tr>
+        
+<tr>
+<droplet bean="Switch">
+  <param name="value" value="param:displayStockStatus">
+  <oparam name="true">    
+    <td colspan=13 align=right><b>Total</b></td>
+  </oparam>
+  <oparam name="default">
+    <td colspan=11 align=right><b>Total</b></td>
+  </oparam>
+</droplet>
+
+<td align=right>
+	<b><valueof param="order.priceInfo.total" currency>no price</valueof></b>
+</td>
+</tr>
+</table>
+<br>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/Fulfillment/html/en/email_templates/DisplayOrderSummary.jhtml#2 $$Change: 651448 $*/</java>
+

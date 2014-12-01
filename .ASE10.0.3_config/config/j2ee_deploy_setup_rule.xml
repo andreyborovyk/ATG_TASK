@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<rules_template>
+   <product>
+      <name>ATG Adaptive Scenario Engine</name>
+      <version>10.0.3</version>
+      <rules platform="UNIX">
+
+         <!-- Un-Deploy then re-deploy the big ear for QF we assembled pre-PITH -->
+         <j2ee_deploy>
+             <args>-uninstallApplication QuincyFunds</args>
+         </j2ee_deploy>
+         <j2ee_deploy>
+             <args>-installApplication $(rootDir)/QuincyFunds.ear</args>
+         </j2ee_deploy>
+
+      </rules>
+
+      <rules platform="WIN32">
+
+          <!-- Un-Deploy then re-deploy the big ear for QF we assembled pre-PITH -->
+          <j2ee_deploy>
+             <args>-uninstallApplication QuincyFunds</args>
+          </j2ee_deploy>
+          <j2ee_deploy>
+             <args>-installApplication $(rootDir)\QuincyFunds.ear</args>
+          </j2ee_deploy>
+      </rules>
+   </product>
+</rules_template>
+<!-- @version $Id: //product/DAS/version/10.0.3/atginstall/ASE/PITH_config/j2ee_deploy_setup_rule.xml#3 $$Change: 651648 $-->

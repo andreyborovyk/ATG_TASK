@@ -1,0 +1,49 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
+
+<%--
+  This template should be included (using static include) to all SearchAdmin project pages.
+  It defines all required taglibs and resource bundles.
+  See "/searchadmin/template.jsp" for more details.
+
+  @version $Id: //application/SearchAdmin/version/10.0.3/admin-ui/src/web-apps/AdminUI/templates/top.jspf#1 $$Change: 651360 $
+  @updated $DateTime: 2011/06/07 09:18:53 $$Author: rbarbier $
+  --%>
+
+<%-- ATG standard taglibs --%>
+<%@ taglib prefix="d" uri="http://www.atg.com/taglibs/daf/dspjspTaglib1_0"%>
+
+<%-- JSTL taglibs --%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
+<%-- JSP tags --%>
+<%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
+
+<%-- ATG Search taglibs --%>
+<%@ taglib prefix="admin-ui" uri="http://www.atg.com/taglibs/search/searchadminui1_0"%>
+<%@ taglib prefix="admin-beans" uri="http://www.atg.com/taglibs/search/searchadminbeans1_0"%>
+<%@ taglib prefix="adminfunctions" uri="http://www.atg.com/taglibs/search/searchadminfunctions1_0"%>
+<%@ taglib prefix="admin-validator" uri="http://www.atg.com/taglibs/search/searchadminvalidator1_0"%>
+<%@ taglib prefix="admin-dojo" uri="http://www.atg.com/taglibs/search/searchadmindojo1_0"%>
+<%@ taglib prefix="common" uri="http://www.atg.com/taglibs/searchadmin/searchadminBeansTaglib1_0"%>
+
+<%-- ATG Search Customizations taglibs --%>
+<%@ taglib prefix="dictionary" uri="http://www.atg.com/taglibs/searchadmin/dictionaryBeansTaglib1_0"%>
+<%@ taglib prefix="topic" uri="http://www.atg.com/taglibs/searchadmin/topicBeansTaglib1_0"%>
+<%@ taglib prefix="termweights" uri="http://www.atg.com/taglibs/searchadmin/termweightsBeansTaglib1_0"%>
+<%@ taglib prefix="queryrule" uri="http://www.atg.com/taglibs/searchadmin/queryruleBeansTaglib1_0"%>
+<%@ taglib prefix="facets" uri="http://www.atg.com/taglibs/searchadmin/facetsBeansTaglib1_0"%>
+<%@ taglib prefix="tpo" uri="http://www.atg.com/taglibs/searchadmin/tpoBeansTaglib1_0"%>
+
+<fmt:setBundle basename="atg.searchadmin.WebAppResources"/>
+
+<c:set var="formActionUrl" value="${pageContext.request.contextPath}/"/>
+<c:set var="dictionaryPath" value="/workbench/dictionary"/>
+<c:set var="tpoPath" value="/workbench/tpo"/>
+<c:set var="topicPath" value="/workbench/topic"/>
+<c:set var="facetPath" value="/workbench/facet"/>
+<c:set var="queryPath" value="/workbench/query"/>
+<c:set var="weightPath" value="/workbench/weight"/>
+<c:set var="charEncoding" value="UTF-8"/>
+<%-- @version $Id: //application/SearchAdmin/version/10.0.3/admin-ui/src/web-apps/AdminUI/templates/top.jspf#1 $$Change: 651360 $--%>

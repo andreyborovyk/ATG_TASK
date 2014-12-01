@@ -1,0 +1,146 @@
+<importbean bean="/atg/commerce/ShoppingCart">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/Switch">
+<importbean bean="/atg/userprofiling/Profile">
+<setvalue bean="Profile.currentLocation" value="checkout">
+<html>
+<head>
+<title>Order Purchased</title>
+</head>
+
+<body>
+
+<i>location: <valueof bean="Profile.currentLocation"></valueof></i><BR>
+<a href="shoppingcart.jhtml">Shopping Cart</a><BR>
+<P>
+
+<h3>Order Purchased</h3>
+
+<strong>Order Confirmation Number: <valueof bean="ShoppingCart.current.id"></valueof></strong>
+<P>
+
+<table cellspacing=0 cellpadding=0 border=0 width=100%>
+<tr valign=top><td><table cellspacing=2 cellpadding=0 border=0>
+<tr>
+<td><b>Quantity</b></td>
+<td></td>
+<td>&nbsp;&nbsp;</td>
+<td><b>Product</b></td>
+<td>&nbsp;&nbsp;</td>
+<td><b>SKU</b></td>
+<td>&nbsp;&nbsp;</td>
+<td align=right><b>List Price</b></td>
+<td>&nbsp;&nbsp;</td>
+<td align=right><b>Total Price</b></td>
+</tr>
+
+<tr><td colspan=10><hr size=0></td></tr>
+
+
+<droplet bean="ForEach">
+  <param name="array" value="bean:ShoppingCart.current.commerceItems">
+  <param name="elementName" value="item">
+  <oparam name="output">
+<tr valign=top>
+<td>
+<valueof param="item.quantity"></valueof>
+</td>
+<td></td>
+<td></td>
+<td>
+<droplet src="product_fragment.jhtml">
+<param name="childProduct" value="param:item.auxiliaryData.productRef">
+</droplet>
+<!--<br><i>Ship to 'me'</i><br><i>Assembled</i>-->
+</td>
+<td>&nbsp;&nbsp;</td>
+<td>
+<valueof param="item.auxiliaryData.catalogRef.displayName"></valueof>
+</td>
+<td>&nbsp;&nbsp;</td>
+<td align=right>
+<valueof param="item.priceInfo.listPrice" currency>no price</valueof>
+</td>
+<td>&nbsp;&nbsp;</td>
+<td align=right>
+<valueof param="item.priceInfo.amount" currency>no price</valueof>
+</td>
+</tr>
+  </oparam>
+
+  <oparam name="empty"><tr valign=top><td>No Items</td></tr></oparam>
+</droplet>
+
+<tr><td colspan=10><hr size=0></td></tr>
+<tr>
+<td colspan=4 align=right>Subtotal</td>
+<td>
+<valueof bean="ShoppingCart.current.priceInfo.rawSubTotal" currency>no price</valueof>
+</td>
+<td align=right></td>
+</tr>
+
+<tr>
+<td colspan=2 align=right></td>
+<td></td>
+<td align=right>Shipping</td>
+<td>
+<valueof bean="ShoppingCart.current.priceInfo.shipping" currency>no price</valueof>
+</td>
+<td align=right></td>
+</tr>
+
+<tr>
+<td colspan=4 align=right>Tax</td>
+<td>
+<valueof bean="ShoppingCart.current.priceInfo.tax" currency>no price</valueof>
+</td>
+<td align=right></td>
+</tr>
+        
+<tr>
+<td colspan=4 align=right>Total</td>
+<td>
+<valueof bean="ShoppingCart.current.priceInfo.amount" currency>no price</valueof>
+</td>
+<td align=right><b></b></td>
+</tr>
+</table>
+</table>
+
+<table>
+<tr>
+<td>
+<i>Ship via <valueof bean="ShoppingCart.current.shippingGroups[0].shippingMethod"></valueof> to:</i><BR>
+<valueof bean="ShoppingCart.current.shippingGroups[0].shippingAddress.firstName"></valueof>
+<valueof bean="ShoppingCart.current.shippingGroups[0].shippingAddress.lastName"></valueof><BR>
+<valueof bean="ShoppingCart.current.shippingGroups[0].shippingAddress.addressLine1"></valueof><BR>
+<valueof bean="ShoppingCart.current.shippingGroups[0].shippingAddress.city"></valueof>, 
+<valueof bean="ShoppingCart.current.shippingGroups[0].shippingAddress.state"></valueof> 
+<valueof bean="ShoppingCart.current.shippingGroups[0].shippingAddress.postalCode"></valueof><BR>
+</td>
+
+<td>
+<i>Payment Information:</i><BR>
+<valueof bean="ShoppingCart.current.paymentGroups[0].billingAddress.firstName"></valueof>
+<valueof bean="ShoppingCart.current.paymentGroups[0].billingAddress.lastName"></valueof><BR>
+<valueof bean="ShoppingCart.current.paymentGroups[0].billingAddress.addressLine1"></valueof><BR>
+<valueof bean="ShoppingCart.current.paymentGroups[0].billingAddress.city"></valueof>, 
+<valueof bean="ShoppingCart.current.paymentGroups[0].billingAddress.state"></valueof> 
+<valueof bean="ShoppingCart.current.paymentGroups[0].billingAddress.postalCode"></valueof><BR>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+Credit Card: <valueof bean="ShoppingCart.current.paymentGroups[0].creditCardType"></valueof> 
+<valueof bean="ShoppingCart.current.paymentGroups[0].creditCardNumber" CreditCard></valueof><BR>
+Expiration Date: <valueof bean="ShoppingCart.current.paymentGroups[0].expirationMonth"></valueof>/<valueof bean="ShoppingCart.current.paymentGroups[0].expirationYear"></valueof>
+</td>
+</tr>
+</table>
+
+</body>
+</html>
+<java>/* @version $Id: //product/B2BCommerce/version/10.0.3/release/B2BCommerce/html/sample_catalog/order_purchased.jhtml#2 $$Change: 651448 $*/</java>
+

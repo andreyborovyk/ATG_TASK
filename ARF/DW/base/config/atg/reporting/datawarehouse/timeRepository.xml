@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE gsa-template
+        PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN"
+        "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template>
+  <header>
+    <name>Time Repository</name>
+  </header>
+
+  <item-descriptor name="ARF_CAL_MOY">
+    <table name="ARF_CAL_MOY" id-column-name="ID" type="primary">
+      <property name="ID" column-name="ID" data-type="string" required="true"></property>
+      <property name="MONTH_OF_YEAR" column-name="MONTH_OF_YEAR" data-type="int" required="true"></property>
+      <property name="SHORT_NAME_EN" column-name="SHORT_NAME_EN" data-type="string" required="true"></property>
+      <property name="LONG_NAME_EN" column-name="LONG_NAME_EN" data-type="string" required="true"></property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="ARF_CAL_QOY">
+    <table name="ARF_CAL_QOY" id-column-name="ID" type="primary">
+      <property name="ID" column-name="ID" data-type="string" required="true"></property>
+      <property name="QTR_OF_YEAR" column-name="QTR_OF_YEAR" data-type="int" required="true"></property>
+      <property name="SHORT_NAME_EN" column-name="SHORT_NAME_EN" data-type="string" required="true"></property>
+      <property name="LONG_NAME_EN" column-name="LONG_NAME_EN" data-type="string" required="true"></property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="ARF_CAL_DOW">
+    <table name="ARF_CAL_DOW" id-column-name="ID" type="primary">
+      <property name="ID" column-name="ID" data-type="string" required="true"></property>
+      <property name="DAY_OF_WEEK" column-name="DAY_OF_WEEK" data-type="int" required="true"></property>
+      <property name="SHORT_NAME_EN" column-name="SHORT_NAME_EN" data-type="string" required="true"></property>
+      <property name="LONG_NAME_EN" column-name="LONG_NAME_EN" data-type="string" required="true"></property>
+    </table>
+  </item-descriptor>
+  
+  <item-descriptor name="ARF_TIME_YEAR">
+    <table name="ARF_TIME_YEAR" id-column-name="ID" type="primary">
+      <property name="ID" column-name="ID" data-type="string" required="true"></property>
+      <property name="TIMESTAMP" column-name="YEAR_TIMESTAMP" data-type="timestamp" required="true"></property>
+      <property name="YEAR_OF_ERA" column-name="YEAR_OF_ERA" data-type="int" required="true"></property>
+    </table>
+    <property name="YEAR_TIMESTAMP" data-type="timestamp" property-type="atg.repository.dp.TimestampWithTimeZonePropertyDescriptor">
+      <attribute name="dateTimeZoneID" bean="/atg/reporting/datawarehouse/loaders/TimeRepositoryLoader.dateTimeZoneID"/>
+      <attribute name="valueProperty" value="TIMESTAMP"/>
+    </property>
+  </item-descriptor>
+
+  <item-descriptor name="ARF_TIME_MONTH">
+    <table name="ARF_TIME_MONTH" id-column-name="ID" type="primary">
+      <property name="ID" column-name="ID" data-type="string" required="true"></property>
+      <property name="YEAR_ID" column-name="YEAR_ID" data-type="string" required="true"></property>
+      <property name="QTR_ID" column-name="QTR_ID" data-type="string" required="true"></property>
+      <property name="MOY_ID" column-name="MOY_ID" data-type="string" required="true"></property>
+      <property name="TIMESTAMP" column-name="MONTH_TIMESTAMP" data-type="timestamp" required="true"></property>
+      <property name="MONTH_OF_YEAR" column-name="MONTH_OF_YEAR" data-type="int" required="true"></property>
+    </table>
+    <property name="MONTH_TIMESTAMP" data-type="timestamp" property-type="atg.repository.dp.TimestampWithTimeZonePropertyDescriptor">
+      <attribute name="dateTimeZoneID" bean="/atg/reporting/datawarehouse/loaders/TimeRepositoryLoader.dateTimeZoneID"/>
+      <attribute name="valueProperty" value="TIMESTAMP"/>
+    </property>
+  </item-descriptor>
+
+  <item-descriptor name="ARF_TIME_QTR">
+    <table name="ARF_TIME_QTR" id-column-name="ID" type="primary">
+      <property name="ID" column-name="ID" data-type="string" required="true"></property>
+      <property name="YEAR_ID" column-name="YEAR_ID" data-type="string" required="true"></property>
+      <property name="QOY_ID" column-name="QOY_ID" data-type="string" required="true"></property>
+      <property name="TIMESTAMP" column-name="QTR_TIMESTAMP" data-type="timestamp" required="true"></property>
+      <property name="QTR_OF_YEAR" column-name="QTR_OF_YEAR" data-type="int" required="true"></property>
+    </table>
+    <property name="QTR_TIMESTAMP" data-type="timestamp" property-type="atg.repository.dp.TimestampWithTimeZonePropertyDescriptor">
+      <attribute name="dateTimeZoneID" bean="/atg/reporting/datawarehouse/loaders/TimeRepositoryLoader.dateTimeZoneID"/>
+      <attribute name="valueProperty" value="TIMESTAMP"/>
+    </property>
+  </item-descriptor>
+
+  <item-descriptor name="ARF_TIME_WEEK">
+    <table name="ARF_TIME_WEEK" id-column-name="ID" type="primary">
+      <property name="ID" column-name="ID" data-type="string" required="true"></property>
+      <property name="YEAR_ID" column-name="YEAR_ID" data-type="string" required="true"></property>
+      <property name="TIMESTAMP" column-name="WEEK_TIMESTAMP" data-type="timestamp" required="true"></property>
+      <property name="WEEK_OF_YEAR" column-name="WEEK_OF_YEAR" data-type="int" required="true"></property>
+    </table>
+    <property name="WEEK_TIMESTAMP" data-type="timestamp" property-type="atg.repository.dp.TimestampWithTimeZonePropertyDescriptor">
+      <attribute name="dateTimeZoneID" bean="/atg/reporting/datawarehouse/loaders/TimeRepositoryLoader.dateTimeZoneID"/>
+      <attribute name="valueProperty" value="TIMESTAMP"/>
+    </property>
+  </item-descriptor>
+
+  <item-descriptor name="ARF_TIME_DAY">
+    <table name="ARF_TIME_DAY" id-column-name="ID" type="primary">
+      <property name="ID" column-name="ID" data-type="string" required="true"></property>
+      <property name="WEEK_ID" column-name="WEEK_ID" data-type="string" required="true"></property>
+      <property name="MONTH_ID" column-name="MONTH_ID" data-type="string" required="true"></property>
+      <property name="DOW_ID" column-name="DOW_ID" data-type="string" required="true"></property>
+      <property name="TIMESTAMP" column-name="DAY_TIMESTAMP" data-type="timestamp" required="true"></property>
+      <property name="DAY_OF_WEEK" column-name="DAY_OF_WEEK" data-type="int" required="true"></property>
+      <property name="DAY_OF_MONTH" column-name="DAY_OF_MONTH" data-type="int" required="true"></property>
+      <property name="DAY_OF_YEAR" column-name="DAY_OF_YEAR" data-type="int" required="true"></property>
+    </table>
+    <property name="DAY_TIMESTAMP" data-type="timestamp" property-type="atg.repository.dp.TimestampWithTimeZonePropertyDescriptor">
+      <attribute name="dateTimeZoneID" bean="/atg/reporting/datawarehouse/loaders/TimeRepositoryLoader.dateTimeZoneID"/>
+      <attribute name="valueProperty" value="TIMESTAMP"/>
+    </property>
+  </item-descriptor>
+
+  <item-descriptor name="ARF_TIME_HOUR">
+    <table name="ARF_TIME_HOUR" id-column-name="ID" type="primary">
+      <property name="ID" column-name="ID" data-type="string" required="true"></property>
+      <property name="DAY_ID" column-name="DAY_ID" data-type="string" required="true"></property>
+      <property name="TIMESTAMP" column-name="HOUR_TIMESTAMP" data-type="timestamp" required="true"></property>
+      <property name="HOUR_OF_DAY" column-name="HOUR_OF_DAY" data-type="int" required="true"></property>
+    </table>
+    <property name="HOUR_TIMESTAMP" data-type="timestamp" property-type="atg.repository.dp.TimestampWithTimeZonePropertyDescriptor">
+      <attribute name="dateTimeZoneID" bean="/atg/reporting/datawarehouse/loaders/TimeRepositoryLoader.dateTimeZoneID"/>
+      <attribute name="valueProperty" value="TIMESTAMP"/>
+    </property>
+  </item-descriptor>
+
+  <item-descriptor name="ARF_TIME_TOD">
+    <table name="ARF_TIME_TOD" id-column-name="ID" type="primary">
+      <property name="ID" column-name="ID" data-type="int" required="true"></property>
+      <property name="HOUR_OF_DAY" column-name="HOUR_OF_DAY" data-type="int" required="true"></property>
+      <property name="MIN_OF_HOUR" column-name="MIN_OF_HOUR" data-type="int" required="true"></property>
+      <property name="MIN_OF_DAY" column-name="MIN_OF_DAY" data-type="int" required="true"></property>
+      <property name="HALFDAY_OF_DAY" column-name="HALFDAY_OF_DAY" data-type="int" required="true"></property>
+      <property name="HOUR_OF_HALFDAY" column-name="HOUR_OF_HALFDAY" data-type="int" required="true"></property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="ARF_TIME_INTERVAL">
+    <table name="ARF_TIME_INTERVAL" id-column-name="ID" type="primary">
+      <property name="ID" column-name="ID" data-type="short" required="true"></property>
+      <property name="NAME" column-name="NAME" data-type="string" required="true"></property>
+      <property name="NAME_EN" column-name="NAME_EN" data-type="string" required="false"></property>
+      <property name="ABBREVIATION" column-name="ABBREVIATION" data-type="string" required="false"></property>
+      <property name="ABBREVIATION_EN" column-name="ABBREVIATION_EN" data-type="string" required="false"></property>
+      <property name="START_TIMESTAMP" column-name="START_TIMESTAMP" data-type="timestamp" required="true"></property>
+      <property name="END_TIMESTAMP" column-name="END_TIMESTAMP" data-type="timestamp" required="true"></property>
+    </table>
+    <property name="START_INTERVAL_TIMESTAMP" data-type="timestamp" property-type="atg.repository.dp.TimestampWithTimeZonePropertyDescriptor">
+        <attribute name="dateTimeZoneID" bean="/atg/reporting/datawarehouse/loaders/TimeRepositoryLoader.dateTimeZoneID"/>
+        <attribute name="valueProperty" value="START_TIMESTAMP"/>
+    </property>
+    <property name="END_INTERVAL_TIMESTAMP" data-type="timestamp" property-type="atg.repository.dp.TimestampWithTimeZonePropertyDescriptor">
+        <attribute name="dateTimeZoneID" bean="/atg/reporting/datawarehouse/loaders/TimeRepositoryLoader.dateTimeZoneID"/>
+        <attribute name="valueProperty" value="END_TIMESTAMP"/>
+    </property>
+  </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //product/ARF/version/10.0.3/ARF/DW/base/config/atg/reporting/datawarehouse/timeRepository.xml#2 $$Change: 651448 $-->

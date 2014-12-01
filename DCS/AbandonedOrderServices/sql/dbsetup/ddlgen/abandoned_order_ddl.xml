@@ -1,0 +1,113 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="abandoned_order_ddl">
+<comment><![CDATA[$Id: //product/DCS/version/10.0.3/templates/DCS/AbandonedOrderServices/sql/abandoned_order_ddl.xml#1 $]]></comment>
+   <table name="dcspp_ord_abandon">
+      <column name="abandonment_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="order_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="ord_last_updated" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <column name="abandon_state" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="abandonment_count" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="abandonment_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <column name="reanimation_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <column name="convert_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <column name="lost_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <primary-key name="dcspp_ord_abndn_p">
+         <index-column column="abandonment_id" order="asc" seq="1"/>
+      </primary-key>
+      <index name="dcspp_ordabandn1_x" table="dcspp_ord_abandon"> 
+         <index-column column="order_id" order="asc" seq="1"/> 
+      </index>      
+   </table>
+   <table name="dcs_user_abandoned">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="order_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="profile_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+     <primary-key name="dcs_usr_abndnd_p">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="drpt_conv_order">
+      <column name="order_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="converted_date" nullable="n">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <column name="amount" nullable="n">
+         <column-type db="generic" type="numeric" length="19" scale="7"/>
+      </column>
+      <column name="promo_count" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="promo_value" nullable="n">
+         <column-type db="generic" type="numeric" length="19" scale="7"/>
+      </column>
+      <primary-key name="drpt_conv_order_p">
+         <index-column column="order_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="drpt_session_ord">
+      <column name="dataset_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="order_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="date_time" nullable="n">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <column name="amount" nullable="n">
+         <column-type db="generic" type="numeric" length="19" scale="7"/>
+      </column>
+      <column name="submitted" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="order_persistent" nullable="y">
+         <column-type db="generic" type="one-digit" />
+      </column>
+      <column name="session_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="parent_session_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="drpt_session_ord_p">
+         <index-column column="order_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+</schema>
+<!-- @version $Id: //product/DCS/version/10.0.3/templates/DCS/AbandonedOrderServices/sql/abandoned_order_ddl.xml#1 $$Change: 651360 $-->

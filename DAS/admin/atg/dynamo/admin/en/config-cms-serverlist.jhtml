@@ -1,0 +1,122 @@
+
+<nucleus type=import>
+	/atg/dynamo/admin/NSAPIConfigure
+</nucleus>
+
+<java>
+  atg.service.dynamo.NSAPIConfig NSAPIConfigure = (atg.service.dynamo.NSAPIConfig)
+  	request.resolveName("/atg/dynamo/admin/NSAPIConfigure");
+</java>
+
+<HTML>
+<HEAD>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+<TITLE>Install Connection Modules: HTTP Server</TITLE>
+
+
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="images/config-banner.gif" ALT="Dynamo Configuration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a
+href="configure-server.jhtml">Configure</a>/<a
+href="configure-server.jhtml#CM">Connection_Modules</a>/<a
+href="config-cms-path.jhtml">version_path</a>/server
+<p>
+
+<blockquote>
+
+<H2>Install Connection Modules: HTTP Server</H2><p>
+
+<FORM ACTION="config-cms-serverlist.jhtml" METHOD=GET>
+
+<font color=red><valueof property=NSAPIConfigure.errorMessage valueishtml></valueof></font>
+<p>
+
+Select a Sun ONE server from the list below to continue with
+the installation:
+<P>
+
+<B>Note: </B>The installation process will turn off servlet and JSP
+support in the Sun ONE server to prevent conflicts with Dynamo Session
+Tracking.
+<P>
+
+<ul>
+
+  <!-- List each Server for the selected Sun ONE Web       -->
+  <!-- Server installation.  Beside each name, if the      -->
+  <!-- Connection Module is not installed, print a message -->
+  <!-- saying it is not installed.  If it is installed     -->
+  <!-- display a button for uninstalling it.               -->
+
+<java>
+
+Vector serverNames = NSAPIConfigure.getServerNames();
+
+if ( null != serverNames && serverNames.size() > 0 )
+{
+	</java>
+	<TABLE BORDER="1" CELLPADDING="6" CELLSPACING="0">
+	<TR>
+		<TH>Sun ONE Server</TH>
+		<TH>Dynamo CM Status</TH>
+	</TR>
+	<java>
+
+	String rootPath = NSAPIConfigure.getRootPath();
+
+	if ( !rootPath.endsWith(File.separator) )
+		rootPath += File.separator;
+
+	Enumeration ee = serverNames.elements();
+	while( ee.hasMoreElements() )
+	{
+		String	serverName = (String) ee.nextElement(),
+				path = NSAPIConfigure.getRootPath();
+
+		</java>
+		<TR>
+		<TD ALIGN=LEFT VALIGN=TOP>
+		<a href="config-cms-texthandle.jhtml" property=NSAPIConfigure.serverName
+			value=`serverName`>
+		<java>
+		out.print( serverName );
+		</java></a>
+		</TD>
+		<TD ALIGN=LEFT VALIGN=TOP>
+			<java>
+			if ( !NSAPIConfigure.isDynamoInstalledOn(serverName) )
+				out.println( "Not Installed" );
+			else
+			{
+				</java>
+				<INPUT TYPE="submit" name="`serverName`" property="NSAPIConfigure.uninstall"
+					submitvalue="`serverName`" VALUE="Uninstall">
+				<java>
+			}
+			</java>
+		</TD>
+		</TR>
+		<java>
+	}
+	</java>
+	</TABLE>
+	<java>
+}
+else
+{
+	</java>
+	No servers found
+	<java>
+}
+
+</java>
+</ul>
+</FORM>
+</blockquote>
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/config-cms-serverlist.jhtml#2 $$Change: 651448 $ */</java>
+

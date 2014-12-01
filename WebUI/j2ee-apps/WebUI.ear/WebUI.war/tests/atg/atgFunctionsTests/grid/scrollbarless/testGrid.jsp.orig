@@ -1,0 +1,228 @@
+<%--
+
+  Static collection editor test grid.
+
+  --%>
+
+<%@ taglib prefix="c"        uri="http://java.sun.com/jstl/core"                    %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+  <link href="/dojo-1/dijit/themes/tundra/tundra.css" type="text/css" rel="stylesheet" media="all"></link>
+  <link href="/dojo-1/dojo/resources/dojo.css" type="text/css" rel="stylesheet" media="all"></link>
+  <link href="/dojo-1/dojox/grid/_grid/tundraGrid.css" type="text/css" rel="stylesheet" media="all"></link>
+  <link href="/AssetManager/css/styles.css" type="text/css" rel="stylesheet" media="all"></link>
+
+  <script type="text/javascript">
+    var djConfig = {
+      parseOnLoad: true
+    };
+  </script>
+
+  <script type="text/javascript" src="/dojo-1/dojo/dojo.js"></script>
+  <script type="text/javascript" src="/dojo-1/dojo/dojo-atg-apps.js"></script>
+  <script type="text/javascript" src="/dojo-1/dijit/dijit.js"></script>
+  <script type="text/javascript" src="/dojo-1/dijit/dijit-atg-apps.js"></script>
+  <script type="text/javascript" src="/dojo-1/dojox/dojox-atg-apps.js"></script>
+
+  <script type="text/javascript">
+    dojo.require("dojo.parser");
+    dojo.require("dijit.dijit");
+    dojo.require("dojox.grid.Grid");
+    dojo.require("dojox.grid._data.model");
+  </script>
+
+  <script type="text/javascript" src="/dojo-1/dojo-fixes.js"></script>
+
+  <script type="text/javascript"
+          src="/WebUI/atg.js">
+  </script>
+
+  <script type="text/javascript"
+          src="/AssetManager/scripts/gridCollectionEditor.js">
+  </script>
+</head>
+
+<body style="padding: 20px" class="tundra">
+
+  <%-- Derive IDs for some Javascript objects and page elements --%>
+  <c:set var="paramUniqueId" value="testGrid"/>
+  <c:set var="editorObj" value="atg.assetmanager.${paramUniqueId}Editor"/>
+  <c:set var="modelObj" value="atg.assetmanager.${paramUniqueId}Model"/>
+  <c:set var="layoutObj" value="atg.assetmanager.${paramUniqueId}Layout"/>
+  <c:set var="gridObj" value="atg_assetmanager_${paramUniqueId}_grid"/>
+  <c:set var="buttonToolbarId" value="atg_assetmanager_${paramUniqueId}_buttonToolbarId"/>
+  <c:set var="addExistingSpanId" value="atg_assetmanager_${paramUniqueId}_addExistingSpanId"/>
+  <c:set var="addNewSpanId" value="atg_assetmanager_${paramUniqueId}_addNewSpanId"/>
+  <c:set var="reorderSpanId" value="atg_assetmanager_${paramUniqueId}_reorderSpanId"/>
+  <c:set var="numItemsDivId" value="atg_assetmanager_${paramUniqueId}_numItemsDivId"/>
+  <c:set var="noItemsAddedDivId" value="atg_assetmanager_${paramUniqueId}_noItemsAddedDivId"/>
+  <c:set var="insertMenuId" value="atg_assetmanager_${paramUniqueId}_insertMenuId"/>
+
+  <script type="text/javascript">
+
+    // Create an instance of the GridEditor object containing JavaScript
+    // methods for setting up and manipulating the grid.
+    <c:out value="${editorObj}"/> = new atg.assetmanager.GridEditor();
+
+    // Set properties of the GridEditor object.
+    <c:out value="${editorObj}"/>.allowInsert = true;
+    <c:out value="${editorObj}"/>.allowReorder = true;
+    <c:out value="${editorObj}"/>.allowDelete = true;
+    <c:out value="${editorObj}"/>.useColumnHeaders = true;
+    <c:out value="${editorObj}"/>.containsRepItems = false;
+    <c:out value="${editorObj}"/>.editorObjId = '<c:out value="${editorObj}"/>';
+    <c:out value="${editorObj}"/>.gridElementId = '<c:out value="${gridObj}"/>';
+    <c:out value="${editorObj}"/>.numItemsDivId = '<c:out value="${numItemsDivId}"/>';
+    <c:out value="${editorObj}"/>.noItemsAddedDivId = '<c:out value="${noItemsAddedDivId}"/>';
+    <c:out value="${editorObj}"/>.reorderSpanId = '<c:out value="${reorderSpanId}"/>';
+    <c:out value="${editorObj}"/>.addNewSpanId = '<c:out value="${addNewSpanId}"/>';
+    <c:out value="${editorObj}"/>.addExistingSpanId = '<c:out value="${addExistingSpanId}"/>';
+    <c:out value="${editorObj}"/>.insertMenuId = '<c:out value="${insertMenuId}"/>';
+    <c:out value="${editorObj}"/>.itemsLabel = 'Items';
+    <c:out value="${editorObj}"/>.reorderLabel = 'Reorder';
+    <c:out value="${editorObj}"/>.deleteLabel = 'Delete';
+    <c:out value="${editorObj}"/>.insertLabel = 'Insert';
+    <c:out value="${editorObj}"/>.insertExistingAboveLabel = 'Insert Existing Above';
+    <c:out value="${editorObj}"/>.insertExistingBelowLabel = 'Insert Existing Below';
+    <c:out value="${editorObj}"/>.insertNewAboveLabel = 'Insert New Above';
+    <c:out value="${editorObj}"/>.insertNewBelowLabel = 'Insert New Below';
+    <c:out value="${editorObj}"/>.invalidReorderIndexMessage = 'Not a valid reorder index';
+    <c:out value="${editorObj}"/>.componentColumns = [];
+
+  </script>
+
+  <script type="text/javascript">
+
+    // Initialize the GridEditor object. This must be done after the component
+    // JSP is initialized so that the popup menu functions exist.
+    <c:out value="${editorObj}"/>.initialize();
+
+    // Fake some static model data (display name/URI/item id)
+    data =
+      [
+      [ "Item 1", "Fake URI 1", "id0001"],
+      [ "Item 2", "Fake URI 2", "id0002"],
+      [ "Item 3", "Fake URI 3", "id0003"],
+      [ "Item 4", "Fake URI 4", "id0004"],
+      [ "Item 5", "Fake URI 5", "id0005"]
+    ];
+    <c:out value="${modelObj}"/> = new dojox.grid.data.Table(null, data);
+
+    // Fake the layout object (this is almost identical to the real one in use).
+     var columns = [
+	{ name: <c:out value="${editorObj}"/>.reorderLabel,
+          formatter: <c:out value="${editorObj}"/>.formatReorderInput,
+          styles: 'text-align:center;',
+          width: '60px' },
+	{ name: 'Item Id',
+              field: 2,
+              styles: 'text-align:center;',
+              width: '60px' },
+	{ name: 'Item',
+            field: 0,
+            extraField: 1,
+            formatter: <c:out value="${editorObj}"/>.formatLink,
+            styles: 'text-align: center;',
+            width: 'auto'},
+	{ name: " ",
+          formatter: <c:out value="${editorObj}"/>.formatInsertButton,
+          styles: 'text-align:center;',
+          width: '30px' },
+	{ name: " ",
+          formatter: <c:out value="${editorObj}"/>.formatDeleteButton,
+          styles: 'text-align:center;',
+          width: '30px' }
+     ];
+
+    <c:out value="${layoutObj}"/> = [{
+        cells: [columns]
+      }];
+
+    // Stuff to do once the page and grid are loaded.
+    dojo.addOnLoad(function() {
+
+      // Update the Item Count label and other controls as appropriate.
+      <c:out value="${editorObj}"/>.updateEditor(5);
+
+      // Create the insert menu.
+      if (<c:out value="${editorObj}"/>.allowInsert) {
+        <c:out value="${editorObj}"/>.createInsertMenu();
+      }
+
+      // Track window resize events so we can resize the grid.
+      <c:out value="${editorObj}"/>._resizeHandler =
+        dojo.connect(window,
+                    "resize",
+                    dojo.hitch(dijit.byId('<c:out value="${gridObj}"/>'), "update"));
+    });
+
+    dojo.addOnUnload(function() {
+      dojo.disconnect(<c:out value="${editorObj}"/>._resizeHandler);
+    });
+
+  </script>
+
+  <%-- Supply some styling of the grid and controls.
+       FIXME: Move to CSS file?
+       --%>
+  <style type="text/css">
+    #<c:out value='${gridObj}'/> {
+      width: 100%;
+      height: 200px;
+      border: 1px solid silver;
+    }
+    #<c:out value='${numItemsDivId}'/> {
+       text-align: right;
+    }
+  </style>
+
+  <div id="<c:out value='${numItemsDivId}'/>" style="display:none">
+  </div>
+
+  <div id="<c:out value='${noItemsAddedDivId}'/>" style="display:none">
+    <label for="noItemsAddedLabel">
+      No items
+    </label>
+  </div>
+
+  <%-- Create the TurboGrid inside of a DIV. --%>
+  <div id="<c:out value='${gridObj}'/>"
+       jsid="<c:out value='${gridObj}'/>"
+       dojoType="dojox.Grid"
+       model="<c:out value="${modelObj}"/>"
+       structure="<c:out value="${layoutObj}"/>">
+  </div>
+  <br\>&nbsp;<br\>
+
+  <div id="<c:out value='${buttonToolbarId}'/>">
+    <%-- Button for Add Existing --%>
+    <span id="<c:out value='${addExistingSpanId}'/>" style="display:none">
+      <a href="javascript:<c:out value='${editorObj}'/>.addExisting();" class="buttonSmall">
+        Add Existing
+      </a>
+    </span>
+
+    <%-- Button for Add New --%>
+    <span id="<c:out value='${addNewSpanId}'/>" style="display:none">
+      <a href="javascript:<c:out value='${editorObj}'/>.addNew();" class="buttonSmall">
+        Add New
+      </a>
+    </span>
+
+    <%-- Button for Reorder --%>
+    <span id="<c:out value='${reorderSpanId}'/>" style="display:none">
+      <a href="javascript:<c:out value='${editorObj}'/>.reorder();" class="buttonSmall">
+        Reorder
+      </a>
+    </span>
+  </div>
+
+</body>
+</html>
+

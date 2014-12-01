@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE gsa-template
+  PUBLIC "-//Art Technology Group, Inc.//DTD Dynamo Security//EN"
+         "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+         
+<gsa-template>
+
+  <header>
+    <name>Alert Repository</name>
+    <author>Neal Hartmann</author>
+    <version>$Id: //app/portal/version/10.0.3/paf/config/framework/atg/portal/alert/alertRepository.xml#2 $$Change: 651448 $</version>
+    <description>
+      This repository is used to store all alert notifications. 
+    </description>       
+  </header>
+
+
+  <item-descriptor name="alert_user" display-name-resource ="itemDescriptorAlertUser" version-property="version" cache-mode="simple" item-cache-timeout="180000" query-cache-size="100">
+    <attribute name="resourceBundle" value="atg.portal.alert.AlertRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="alt_user" id-column-name="id" type="primary">
+      <property category-resource="categoryInfo" name="version" display-name-resource="version" data-type="int" column-name="version" writable="false" expert="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="targetId" display-name-resource="targetId" column-name="target_id" data-type="string" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="targetType" display-name-resource="targetType" column-name="target_type" data-type="string" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryBasics" name="sourceId" display-name-resource="sourceId" column-name="source_id" data-type="string">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+
+      <property category-resource="categoryBasics" name="messageType" display-name-resource="messageType" column-name="msg_type" data-type="string">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property category-resource="categoryBasics" name="messageBean" display-name-resource="messageBean" column-name="message_bean" data-type="binary">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property category-resource="categoryInfo" name="creationDate" display-name-resource="creationDate" column-name="creation_date" data-type="timestamp" >
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryBasics" name="startDate" display-name-resource="startDate" column-name="start_date" data-type="timestamp" writable="true">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property category-resource="categoryBasics" name="endDate" display-name-resource="endDate" column-name="end_date" data-type="timestamp" writable="true">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+      <property category-resource="categoryBasics" name="deleteFlag" display-name-resource="deleteFlag" column-name="delete_flag" data-type="boolean" writable="true" required="true">
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+    </table>
+    <table name="alt_user_alert_rel" type="multi" id-column-name="id">
+      <property category-resource="categoryBasics" name="users" display-name-resource="users" data-type="set" column-name="alert_id" repository="/atg/userprofiling/ProfileAdapterRepository" component-item-type="user" expert="true" hidden="false">
+        <attribute name="resourceBundle" value="atg.portal.alert.AlertRepositoryTemplateResources"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+
+  <item-descriptor name="alert_group" display-name-resource="itemDescriptorAlertGroup" version-property="version" cache-mode="simple" item-cache-timeout="180000" query-cache-size="100">
+    <attribute name="resourceBundle" value="atg.portal.alert.AlertRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="alt_group" id-column-name="id" type="primary">
+      <property category-resource="categoryInfo" name="version" display-name-resource="version" data-type="int" column-name="version" writable="false" expert="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="targetId" display-name-resource="targetId" column-name="target_id" data-type="string" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="targetType" display-name-resource="targetType" column-name="target_type" data-type="string" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryBasics" name="sourceId" display-name-resource="sourceId" column-name="source_id" data-type="string">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryBasics" name="messageType" display-name-resource="messageType" column-name="msg_type" data-type="string">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property category-resource="categoryBasics" name="messageBean" display-name-resource="messageBean" column-name="message_bean" data-type="binary">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property category-resource="categoryInfo" name="creationDate" display-name-resource="creationDate" column-name="creation_date" data-type="timestamp" writable="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryBasics" name="startDate" display-name-resource="startDate" column-name="start_date" data-type="timestamp" writable="true">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property category-resource="categoryBasics" name="endDate" display-name-resource="endDate" column-name="end_date" data-type="timestamp" writable="true">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+      <property category-resource="categoryBasics" name="deleteFlag" display-name-resource="deleteFlag" column-name="delete_flag" data-type="boolean" writable="true" required="true">
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+    </table>
+
+    <table name="alt_user_alert_rel" type="multi" id-column-name="id">
+      <property category-resource="categoryBasics" name="users" display-name-resource="users" data-type="set" column-name="alert_id" repository="/atg/userprofiling/ProfileAdapterRepository" component-item-type="user" expert="true" hidden="false">
+        <attribute name="resourceBundle" value="atg.portal.alert.AlertRepositoryTemplateResources"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+    
+  <item-descriptor name="alert_user_pref" display-name-resource="itemDescriptorAlertUserPref" display-property="name" version-property="version" cache-mode="simple" item-cache-timeout="180000" query-cache-size="100">
+    <attribute name="resourceBundle" value="atg.portal.alert.AlertRepositoryTemplateResources"/>
+    
+    <table name="alt_user_pref" id-column-name="id" type="primary">
+      <property name="version" display-name-resource="version" data-type="int" column-name="version" writable="false" expert="true">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property name="sourceId" display-name-resource="sourceId" data-type="string" column-name="source_id" required="true">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="sourceType" display-name="sourceType" column-name="source_type" data-type="string" required="true"/>
+
+      <property name="eventType" display-name-resource="eventType" data-type="string" column-name="event_type">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="name" display-name-resource="name" data-type="string" column-name="name" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="value" display-name-resource="value" data-type="string" column-name="value" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+    <table name="alt_chan_usr_rel" type="multi" id-column-name="alt_user_pref_id">
+      <property name="channels" display-name-resource="channels" column-name="channel_id" data-type="set" component-item-type="alert_channel" repository="/atg/portal/alert/AlertRepository" required="false">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="alert_channel" display-name-resource="itemDescriptorAlertChannel" display-property="display_name" version-property="version" cache-mode="simple" item-cache-timeout="180000" query-cache-size="100">
+    <attribute name="resourceBundle" value="atg.portal.alert.AlertRepositoryTemplateResources"/>
+
+    <table name="alt_channel" id-column-name="channel_id" type="primary">
+      <property name="version" display-name-resource="version" data-type="int" column-name="version" writable="false" expert="true">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="component_name" display-name-resource="componentName" data-type="string" column-name="component_name" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="display_name" display-name-resource="displayName" data-type="string" column-name="display_name" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="alert_gear" display-name-resource="itemDescriptorAlertGear" display-property="name" version-property="version" cache-mode="simple" item-cache-timeout="180000" query-cache-size="100">
+    <attribute name="resourceBundle" value="atg.portal.alert.AlertRepositoryTemplateResources"/>
+
+    <table name="alt_gear" id-column-name="id" type="primary">
+      <property name="version" display-name-resource="version" data-type="int" column-name="version" writable="false" expert="true">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property name="sourceId" display-name-resource="sourceId" data-type="string" column-name="source_id" required="true" />
+      <property name="sourceType" display-name-resource="sourceType" data-type="string" column-name="source_type" required="true"/>
+      <property name="messageType" display-name-resource="messageType" data-type="string" column-name="message_type" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="name" display-name-resource="name" data-type="string" column-name="name" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="defaultValue" display-name-resource="defaultValue" data-type="string" column-name="value" required="true">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="resourceBundle" display-name-resource="resourceBundle" data-type="string" column-name="resource_bundle" required="true">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="alert_gear_def" display-name-resource="itemDescriptorAlertGearDef" display-property="name" version-property="version" cache-mode="simple" item-cache-timeout="180000" query-cache-size="100">
+    <attribute name="resourceBundle" value="atg.portal.alert.AlertRepositoryTemplateResources"/>
+
+    <table name="alt_gear_def" id-column-name="id" type="primary">
+      <property name="version" display-name-resource="version" data-type="int" column-name="version" writable="false" expert="true">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property name="messageType" display-name-resource="messageType" data-type="string" column-name="message_type" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="name" display-name-resource="name" data-type="string" column-name="name" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="defaultValue" display-name-resource="defaultValue" data-type="string" column-name="value" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="resourceBundle" display-name-resource="resourceBundle" data-type="string" column-name="resource_bundle" required="true">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //app/portal/version/10.0.3/paf/config/framework/atg/portal/alert/alertRepository.xml#2 $$Change: 651448 $ -->

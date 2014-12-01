@@ -1,0 +1,1399 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE gsa-template SYSTEM "dynamosystemresource:/atg/dtds/gsa/gsa_1.0.dtd">
+<gsa-template>
+
+<import-items>
+
+<!-- ======================================================================= -->
+<!-- View mappings for the AssetUI.Search module                             -->
+<!-- ======================================================================= -->
+
+<!-- We need to prevent most properties of dimension folders from being
+     edited in any type of project other than an "Administer Commerce Search"
+     project.  But we still need to allow *some* dimension folder properties
+     (such as the list of child search configurations) to be edited in all types
+     of projects.
+         
+     Therefore, we need to use a separate item mapping mode for editing dimension
+     folders.  This mode uses a fallback mode of "view" rather than "edit", so
+     none of the default property views are editable.  Custom, editable property
+     views are defined for this mode, for those properties that do need to be
+     edited. -->
+
+<add-item item-descriptor="mapMode" id="aMgrMmSearchFolderEdit">
+  <set-property name="name"><![CDATA[AssetManager.searchFolderEdit]]></set-property>
+  <set-property name="description"><![CDATA[Default edit mode for dimensionFolders]]></set-property>
+  <set-property name="fallbackMode"><![CDATA[aMgrMmView]]></set-property>
+</add-item>
+
+<!-- ======================================================================= -->
+<!-- Customizations for searchTestFolder items                               -->
+<!-- ======================================================================= -->
+
+<!-- searchTestFolder: the default form handler for repository items -->
+
+<add-item item-descriptor="formHandler" id="aMgrFhSTF">
+  <set-property name="name"><![CDATA[AssetManager SearchTestFolderFormHandler]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager default repository asset form handler]]></set-property>
+  <set-property name="path"><![CDATA[/atg/search/web/assetmanager/SearchTestFolderFormHandler]]></set-property>
+  <set-property name="attributes"><![CDATA[atgFormValueDict=aMgrAvSTFValue]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvSTFValue">
+  <set-property name="value"><![CDATA[value]]></set-property>
+</add-item>
+
+<!-- Read-only and editable item mappings; contain one view mapping per tab -->
+
+<add-item item-descriptor="itemMapping" id="aMgrImViewSTF">
+  <set-property name="name"><![CDATA[AssetManager]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager read-only mapping for searchTestFolder items]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmView]]></set-property>
+  <set-property name="itemPath"><![CDATA[/atg/search/repository/SearchTestingRepository]]></set-property>
+  <set-property name="itemName"><![CDATA[searchTestFolder]]></set-property>
+  <set-property name="formHandler"><![CDATA[aMgrFhSTF]]></set-property>
+  <set-property name="viewMappings"><![CDATA[aMgrIvmVSTF]]></set-property>
+  <set-property name="attributes"><![CDATA[disablePreview=aMgrSTFDisablePreview]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemMapping" id="aMgrImEditSTF">
+  <set-property name="name"><![CDATA[AssetManager]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager editable mapping for searchTestFolder items]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmEdit]]></set-property>
+  <set-property name="itemPath"><![CDATA[/atg/search/repository/SearchTestingRepository]]></set-property>
+  <set-property name="itemName"><![CDATA[searchTestFolder]]></set-property>
+  <set-property name="formHandler"><![CDATA[aMgrFhSTF]]></set-property>
+  <set-property name="viewMappings"><![CDATA[aMgrIvmESTF]]></set-property>
+  <set-property name="attributes"><![CDATA[disablePreview=aMgrSTFDisablePreview]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrSTFDisablePreview">
+  <set-property name="value"><![CDATA[true]]></set-property>
+</add-item>
+
+<!-- View mapping for searchTestFolder's single tab -->
+
+<add-item item-descriptor="itemViewMapping" id="aMgrIvmVSTF">
+  <set-property name="name"><![CDATA[AssetManager searchTestFolder view]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager searchTestFolder view]]></set-property>
+  <set-property name="displayName"><![CDATA[aMgrIvmSTFAll.displayName]]></set-property>
+  <set-property name="attributeValues"><![CDATA[resourceBundle=aMgrAvSTFAllResourceBundle]]></set-property>
+  <set-property name="view"><![CDATA[aMgrIvVSTF]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemViewMapping" id="aMgrIvmESTF">
+  <set-property name="name"><![CDATA[AssetManager searchTestFolder view]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager searchTestFolder view]]></set-property>
+  <set-property name="displayName"><![CDATA[aMgrIvmSTFAll.displayName]]></set-property>
+  <set-property name="attributeValues"><![CDATA[resourceBundle=aMgrAvSTFAllResourceBundle]]></set-property>
+  <set-property name="view"><![CDATA[aMgrIvESTF]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvSTFAllResourceBundle">
+  <set-property name="value"><![CDATA[atg.web.assetmanager.WebAppResources]]></set-property>
+</add-item>
+
+<!-- This tab uses a custom JSP for the entire panel -->
+
+<add-item item-descriptor="itemView" id="aMgrIvVSTF">
+  <set-property name="name"><![CDATA[AssetManager Search Test Folder item view]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager editable view for the Search Test Folder]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmView]]></set-property>
+  <set-property name="applicationName"><![CDATA[AssetUI-Search]]></set-property>
+  <set-property name="uri"><![CDATA[/assetEditor/searchTestFolderEditor.jsp]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemView" id="aMgrIvESTF">
+  <set-property name="name"><![CDATA[AssetManager Search Test Folder item edit]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager editable view for the Search Test Folder]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmEdit]]></set-property>
+  <set-property name="applicationName"><![CDATA[AssetUI-Search]]></set-property>
+  <set-property name="uri"><![CDATA[/assetEditor/searchTestFolderEditor.jsp]]></set-property>
+</add-item>
+
+<!-- ======================================================================= -->
+<!-- Customizations for searchTest items                       -->
+<!-- ======================================================================= -->
+<add-item item-descriptor="itemMapping" id="aMgrImViewSearchTest">
+  <set-property name="name"><![CDATA[AssetManager]]></set-property>
+  <set-property name="description"><![CDATA[ATG Search Merchandising read-only mapping for search test]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmView]]></set-property>
+  <set-property name="itemPath"><![CDATA[/atg/search/repository/SearchTestingRepository]]></set-property>
+  <set-property name="itemName"><![CDATA[searchTest]]></set-property>
+  <set-property name="formHandler"><![CDATA[aMgrFhSearchTesting]]></set-property>
+  <set-property name="viewMappings"><![CDATA[aMgrIvmSearchTest]]></set-property>
+  <set-property name="attributes"><![CDATA[hideButtonBar=aMgrAvSearchTestingHideButtonBar]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemMapping" id="aMgrImEditSearchTest">
+  <set-property name="name"><![CDATA[AssetManager]]></set-property>
+  <set-property name="description"><![CDATA[ATG Search Merchandising editable mapping for search test]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmEdit]]></set-property>
+  <set-property name="itemPath"><![CDATA[/atg/search/repository/SearchTestingRepository]]></set-property>
+  <set-property name="itemName"><![CDATA[searchTest]]></set-property>
+  <set-property name="formHandler"><![CDATA[aMgrFhSearchTesting]]></set-property>
+  <set-property name="viewMappings"><![CDATA[aMgrIvmSearchTest]]></set-property>
+  <set-property name="attributes"><![CDATA[hideButtonBar=aMgrAvSearchTestingHideButtonBar]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvSearchTestingHideButtonBar">
+  <set-property name="value"><![CDATA[true]]></set-property>
+</add-item>
+
+<!-- View mapping for only tab -->
+
+<add-item item-descriptor="itemViewMapping" id="aMgrIvmSearchTest">
+  <set-property name="name"><![CDATA[ATG Search Merchandising Search Test Editor]]></set-property>
+  <set-property name="description"><![CDATA[ATG Search Merchandising Search Test Editor]]></set-property>
+  <set-property name="displayName"><![CDATA[aMgrIvmSearchTest.displayName]]></set-property>
+  <set-property name="view"><![CDATA[aMgrIvSearchTest]]></set-property>
+</add-item>
+
+<!-- This tab uses a custom JSP for the entire panel -->
+
+<add-item item-descriptor="itemView" id="aMgrIvSearchTest">
+  <set-property name="name"><![CDATA[AssetManager Search Test item view]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager editable view for the Search Test]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmView]]></set-property>
+  <set-property name="applicationName"><![CDATA[AssetUI-Search]]></set-property>
+  <set-property name="uri"><![CDATA[/searchTesting/input/inputs.jsp]]></set-property>
+</add-item>
+
+<add-item item-descriptor="formHandler" id="aMgrFhSearchTesting">
+  <set-property name="name"><![CDATA[ATG Search Merchandising SearchTestingAssetFormHandler]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager default form handler for search testing]]></set-property>
+  <set-property name="path"><![CDATA[/atg/search/web/assetmanager/SearchTestingFormHandler]]></set-property>
+  <set-property name="attributes"><![CDATA[atgFormValueDict=aMgrAvSearchTestingValueDict]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvSearchTestingValueDict">
+  <set-property name="value"><![CDATA[value]]></set-property>
+</add-item>
+
+<!-- ======================================================================= -->
+<!-- Customizations for availableRankingProperty items                       -->
+<!-- ======================================================================= -->
+
+<!-- Read-only and editable item mappings; contain one view mapping per tab -->
+
+<add-item item-descriptor="itemMapping" id="aMgrImViewAvailableRankingProperty">
+  <set-property name="name"><![CDATA[AssetManager]]></set-property>
+  <set-property name="description"><![CDATA[ATG Search Merchandising read-only mapping for avalilable ranking property]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmView]]></set-property>
+  <set-property name="itemPath"><![CDATA[/atg/search/repository/RefinementRepository]]></set-property>
+  <set-property name="itemName"><![CDATA[availableRankingProperty]]></set-property>
+  <set-property name="formHandler"><![CDATA[aMgrFhRep]]></set-property>
+  <set-property name="viewMappings"><![CDATA[aMgrIvmAvailableRankingProperty]]></set-property>
+  <set-property name="attributes"><![CDATA[disablePreview=aMgrARPDisablePreview]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemMapping" id="aMgrImEditAvailableRankingProperty">
+  <set-property name="name"><![CDATA[AssetManager]]></set-property>
+  <set-property name="description"><![CDATA[ATG Search Merchandising editable mapping for available ranking property]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmEdit]]></set-property>
+  <set-property name="itemPath"><![CDATA[/atg/search/repository/RefinementRepository]]></set-property>
+  <set-property name="itemName"><![CDATA[availableRankingProperty]]></set-property>
+  <set-property name="formHandler"><![CDATA[aMgrFhRep]]></set-property>
+  <set-property name="viewMappings"><![CDATA[aMgrIvmAvailableRankingProperty]]></set-property>
+  <set-property name="attributes"><![CDATA[disablePreview=aMgrARPDisablePreview]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrARPDisablePreview">
+  <set-property name="value"><![CDATA[true]]></set-property>
+</add-item>
+
+<!-- View mapping for only tab -->
+
+<add-item item-descriptor="itemViewMapping" id="aMgrIvmAvailableRankingProperty">
+  <set-property name="name"><![CDATA[ATG Search Merchandising Available Ranking Property Editor]]></set-property>
+  <set-property name="description"><![CDATA[ATG Search Merchandising Available Ranking Property Editor]]></set-property>
+  <set-property name="displayName"><![CDATA[aMgrIvmAvailableRankingProperty.displayName]]></set-property>
+  <set-property name="attributeValues"><![CDATA[hideCategoryBorders=aMgrAvAvailableRankPropHideBorder,resourceBundle=aMgrAvAvailableRankPropResourceBundle]]></set-property>
+  <set-property name="view"><![CDATA[aMgrIvAvailableRankingProperty]]></set-property>
+</add-item>
+
+<!-- This tab uses a custom JSP for the entire panel -->
+
+<add-item item-descriptor="itemView" id="aMgrIvAvailableRankingProperty">
+  <set-property name="name"><![CDATA[AssetManager Available Ranking Property item view]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager editable view for the Available Ranking Property]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmView]]></set-property>
+  <set-property name="applicationName"><![CDATA[AssetUI-Search]]></set-property>
+  <set-property name="uri"><![CDATA[/assetEditor/property/availableRankingPropertyEditor.jsp]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvAvailableRankPropHideBorder">
+  <set-property name="value"><![CDATA[true]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvAvailableRankPropResourceBundle">
+  <set-property name="value"><![CDATA[atg.search.web.assetmanager.SearchConfigTreeResources]]></set-property>
+</add-item>
+
+<!-- ======================================================================= -->
+<!-- Property Editor for "searchConfig.baseSearchConfig"                     -->
+<!-- ======================================================================= -->
+
+<add-item item-descriptor="propertyViewMapping" id="aMgrPvmSrchConfigBaseSC">
+  <set-property name="propertyView"><![CDATA[aMgrPvBaseSearchConfig]]></set-property>
+  <set-property name="attributeValues"><![CDATA[hideCreate=aMgrAvBSCHideCreate,assetPickerHeader=aMgrAvBSCAssetPickerHeader]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager Search Config BaseSearchCfg prop editor]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvBSCHideCreate">
+  <set-property name="value"><![CDATA[true]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvBSCAssetPickerHeader">
+  <set-property name="value"><![CDATA[baseSearchConfigPropertyEditor.assetPickerHeader]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyView" id="aMgrPvBaseSearchConfig">
+  <set-property name="name"><![CDATA[AssetManager Search baseSearchConfig property editor]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager Search baseSearchConfig property editor]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmEdit]]></set-property>
+  <set-property name="type"><![CDATA[Repository Item]]></set-property>
+  <set-property name="applicationName"><![CDATA[AssetUI-Search]]></set-property>
+  <set-property name="uri"><![CDATA[/assetEditor/property/baseSearchConfigPropertyEditor.jsp]]></set-property>
+  <set-property name="isComponentPropertyView"><![CDATA[false]]></set-property>
+</add-item>
+
+<!-- ======================================================================= -->
+<!-- dimension value property mappings                                       -->
+<!-- ======================================================================= -->
+
+<add-item item-descriptor="propertyViewMapping" id="aMgrPvmEDimValE">
+  <set-property name="description"><![CDATA[AssetManager Search dimension value property editor]]></set-property>
+  <set-property name="propertyView"><![CDATA[aMgrPvEDimValE]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyView" id="aMgrPvEDimValE">
+  <set-property name="name"><![CDATA[AssetManager Search dimension value property editor]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager Search dimension value property editor]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmEdit]]></set-property>
+  <set-property name="type"><![CDATA[string]]></set-property>
+  <set-property name="applicationName"><![CDATA[AssetUI-Search]]></set-property>
+  <set-property name="uri"><![CDATA[/assetEditor/property/dimensionValueEditor.jsp]]></set-property>
+  <set-property name="isComponentPropertyView"><![CDATA[false]]></set-property>
+  <set-property name="attributes"><![CDATA[fullWidth=aMgrPvEDimValEFull,includeCellDivider=aMgrPvEDimValCellDiv]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewAttributeDefinition" id="aMgrPvEDimValEFull">
+  <set-property name="description"><![CDATA[Indicates a full-width property editor]]></set-property>
+  <set-property name="defaultValue"><![CDATA[true]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewAttributeDefinition" id="aMgrPvEDimValCellDiv">
+  <set-property name="description"><![CDATA[Indicates that this property view must include a td cell divider]]></set-property>
+  <set-property name="defaultValue"><![CDATA[true]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewMapping" id="aMgrPvmEDimValV">
+  <set-property name="description"><![CDATA[AssetManager Search dimension value property viewer]]></set-property>
+  <set-property name="propertyView"><![CDATA[aMgrPvEDimValV]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyView" id="aMgrPvEDimValV">
+  <set-property name="name"><![CDATA[AssetManager Search dimension value property viewer]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager Search dimension value property viewer]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmEdit]]></set-property>
+  <set-property name="type"><![CDATA[string]]></set-property>
+  <set-property name="applicationName"><![CDATA[AssetUI-Search]]></set-property>
+  <set-property name="uri"><![CDATA[/assetEditor/property/dimensionValueViewer.jsp]]></set-property>
+  <set-property name="isComponentPropertyView"><![CDATA[false]]></set-property>
+  <set-property name="attributes"><![CDATA[fullWidth=aMgrPvVDimValVFull,includeCellDivider=aMgrPvVDimValCellDiv]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewAttributeDefinition" id="aMgrPvVDimValVFull">
+  <set-property name="description"><![CDATA[Indicates a full-width property viewer]]></set-property>
+  <set-property name="defaultValue"><![CDATA[true]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewAttributeDefinition" id="aMgrPvVDimValCellDiv">
+  <set-property name="description"><![CDATA[Indicates that this property view must include a td cell divider]]></set-property>
+  <set-property name="defaultValue"><![CDATA[true]]></set-property>
+</add-item>
+
+
+<!-- ======================================================================= -->
+<!-- search dimension property mappings                                             -->
+<!-- ======================================================================= -->
+
+<add-item item-descriptor="propertyViewMapping" id="aMgrPvmESrchDimE">
+  <set-property name="description"><![CDATA[AssetManager search dimension property editor]]></set-property>
+  <set-property name="propertyView"><![CDATA[aMgrPvESrchDimE]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyView" id="aMgrPvESrchDimE">
+  <set-property name="name"><![CDATA[AssetManager search dimension property editor]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager search dimension property editor]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmEdit]]></set-property>
+  <set-property name="type"><![CDATA[string]]></set-property>
+  <set-property name="applicationName"><![CDATA[AssetUI-Search]]></set-property>
+  <set-property name="uri"><![CDATA[/assetEditor/property/searchDimensionEditor.jsp]]></set-property>
+  <set-property name="isComponentPropertyView"><![CDATA[false]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewMapping" id="aMgrPvmESrchDimV">
+  <set-property name="description"><![CDATA[AssetManager search dimension property viewer]]></set-property>
+  <set-property name="propertyView"><![CDATA[aMgrPvESrchDimV]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyView" id="aMgrPvESrchDimV">
+  <set-property name="name"><![CDATA[AssetManager search dimension property viewer]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager search dimension property viewer]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmEdit]]></set-property>
+  <set-property name="type"><![CDATA[string]]></set-property>
+  <set-property name="applicationName"><![CDATA[AssetUI-Search]]></set-property>
+  <set-property name="uri"><![CDATA[/assetEditor/property/searchDimensionViewer.jsp]]></set-property>
+  <set-property name="isComponentPropertyView"><![CDATA[false]]></set-property>
+</add-item>
+
+
+<!-- ======================================================================= -->
+<!-- Property Editor for "application"                                       -->
+<!-- ======================================================================= -->
+
+<add-item item-descriptor="propertyViewMapping" id="aMgrPvmApplication">
+  <set-property name="description"><![CDATA[AssetManager Search application property editor]]></set-property>
+  <set-property name="propertyView"><![CDATA[aMgrPvApplication]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyView" id="aMgrPvApplication">
+  <set-property name="name"><![CDATA[AssetManager Search application property editor]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager Search application property editor]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmEdit]]></set-property>
+  <set-property name="type"><![CDATA[string]]></set-property>
+  <set-property name="applicationName"><![CDATA[AssetUI-Search]]></set-property>
+  <set-property name="uri"><![CDATA[/assetEditor/property/applicationNameEditor.jsp]]></set-property>
+  <set-property name="isComponentPropertyView"><![CDATA[false]]></set-property>
+  <set-property name="attributes"><![CDATA[fullWidth=aMgrPvApplicationFull]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewAttributeDefinition" id="aMgrPvApplicationFull">
+  <set-property name="description"><![CDATA[Indicates a full-width property editor]]></set-property>
+  <set-property name="defaultValue"><![CDATA[true]]></set-property>
+</add-item>
+
+<!-- ======================================================================= -->
+<!-- Customizations for dimensionFolder items                                -->
+<!-- ======================================================================= -->
+
+<!-- DimensionFolderFormHandler: the default form handler for dimensionFolders -->
+
+<add-item item-descriptor="formHandler" id="aMgrFhDimFolder">
+  <set-property name="name"><![CDATA[AssetManager Search DimensionFolderFormHandler]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager Search default form handler for dimensionFolders]]></set-property>
+  <set-property name="path"><![CDATA[/atg/search/web/assetmanager/DimensionFolderFormHandler]]></set-property>
+  <set-property name="attributes"><![CDATA[atgFormValueDict=aMgrAvDimFolderValueDict]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvDimFolderValueDict">
+  <set-property name="value"><![CDATA[value]]></set-property>
+</add-item>
+
+<!-- Read-only and editable item mappings; contain one view mapping per tab -->
+
+<add-item item-descriptor="itemMapping" id="aMgrImViewDimFldr">
+  <set-property name="name"><![CDATA[AssetManager]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager read-only mapping for dimension folder items]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmView]]></set-property>
+  <set-property name="itemPath"><![CDATA[/atg/search/repository/RefinementRepository]]></set-property>
+  <set-property name="itemName"><![CDATA[dimensionFolder]]></set-property>
+  <set-property name="formHandler"><![CDATA[aMgrFhDimFolder]]></set-property>
+  <set-property name="viewMappings"><![CDATA[aMgrIvmDimFldrAllV]]></set-property>
+  <set-property name="attributes"><![CDATA[disablePreview=aMgrDimFldDisablePreview]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemMapping" id="aMgrImEditDimFldr">
+  <set-property name="name"><![CDATA[AssetManager]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager editable mapping for dimension folders]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmEdit]]></set-property>
+  <set-property name="itemPath"><![CDATA[/atg/search/repository/RefinementRepository]]></set-property>
+  <set-property name="itemName"><![CDATA[dimensionFolder]]></set-property>
+  <set-property name="formHandler"><![CDATA[aMgrFhDimFolder]]></set-property>
+  <set-property name="viewMappings"><![CDATA[aMgrIvmDimFldrAllE]]></set-property>
+  <set-property name="attributes"><![CDATA[disablePreview=aMgrDimFldDisablePreview]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrDimFldDisablePreview">
+  <set-property name="value"><![CDATA[true]]></set-property>
+</add-item>
+
+<!-- Add an extra item mapping for the special edit mode that is used by
+     projects other than "Administer Commerce Search" projects -->
+
+<add-item item-descriptor="itemMapping" id="aMgrImMerchEditDimFldr">
+  <set-property name="name"><![CDATA[AssetManager]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager merchandiser edit mapping for dimension folder items]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmSearchFolderEdit]]></set-property>
+  <set-property name="itemPath"><![CDATA[/atg/search/repository/RefinementRepository]]></set-property>
+  <set-property name="itemName"><![CDATA[dimensionFolder]]></set-property>
+  <set-property name="formHandler"><![CDATA[aMgrFhDimFolder]]></set-property>
+  <set-property name="viewMappings"><![CDATA[aMgrIvmDimFldrAllME]]></set-property>
+  <set-property name="attributes"><![CDATA[disablePreview=aMgrDimFldDisablePreview]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrDimFldDisablePreview">
+  <set-property name="value"><![CDATA[true]]></set-property>
+</add-item>
+
+<!-- View mappings for only tab -->
+
+<add-item item-descriptor="itemViewMapping" id="aMgrIvmDimFldrAllV">
+  <set-property name="name"><![CDATA[AssetManager Search DimensionFolderAll]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager Search dimension folder view]]></set-property>
+  <set-property name="displayName"><![CDATA[aMgrIvmFFAll.displayName]]></set-property>
+  <set-property name="attributeValues"><![CDATA[categorizedGrouping=aMgrAvDimFldrCatsV,excludedProperties=aMgrAvDimFldrExclPropsV,resourceBundle=aMgrAvDimFolderResourceBundleV,textAbovecategoryBasics=aMgrAvDimFolderHelpText]]></set-property>
+  <set-property name="view"><![CDATA[aMgrIvRep]]></set-property>
+  <set-property name="propertyMappings"><![CDATA[dimensionValue=aMgrPvmEDimValV,dimensionService=aMgrPvmESrchDimV]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemViewMapping" id="aMgrIvmDimFldrAllE">
+  <set-property name="name"><![CDATA[AssetManager Search DimensionFolderAll]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager Search dimension folder view]]></set-property>
+  <set-property name="displayName"><![CDATA[aMgrIvmFFAll.displayName]]></set-property>
+  <set-property name="attributeValues"><![CDATA[categorizedGrouping=aMgrAvDimFldrCatsE,excludedProperties=aMgrAvDimFldrExclPropsE,resourceBundle=aMgrAvDimFolderResourceBundleE,additionalFragment=aMgrAvDimFldrAddPageE,additionalFragmentContext=aMgrAvDimFldrAddPageContextE,textAbovecategoryBasics=aMgrAvDimFolderHelpText]]></set-property>
+  <set-property name="view"><![CDATA[aMgrIvRep]]></set-property>
+  <set-property name="propertyMappings"><![CDATA[dimensionValue=aMgrPvmEDimValE,dimensionService=aMgrPvmESrchDimE,searchConfigs=aMgrPvmEFolderChildren,childDimensionFolders=aMgrPvmEFolderChildren]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemViewMapping" id="aMgrIvmDimFldrAllME">
+  <set-property name="name"><![CDATA[AssetManager Search DimensionFolderAll for merchandisers]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager Search dimension folder view for merchandisers]]></set-property>
+  <set-property name="displayName"><![CDATA[aMgrIvmFFAll.displayName]]></set-property>
+  <set-property name="attributeValues"><![CDATA[categorizedGrouping=aMgrAvDimFldrCatsME,excludedProperties=aMgrAvDimFldrExclPropsME,resourceBundle=aMgrAvDimFolderResourceBundleME,additionalFragment=aMgrAvDimFldrAddPageME,additionalFragmentContext=aMgrAvDimFldrAddPageContextME]]></set-property>
+  <set-property name="view"><![CDATA[aMgrIvRep]]></set-property>
+  <set-property name="propertyMappings"><![CDATA[dimensionValue=aMgrPvmEDimValV,dimensionService=aMgrPvmESrchDimV,searchConfigs=aMgrPvmEFolderChildren,childDimensionFolders=aMgrPvmVFolderChildren]]></set-property>
+</add-item>
+
+
+<add-item item-descriptor="propertyViewMapping" id="aMgrPvmEFolderChildren">
+  <set-property name="description"><![CDATA[AssetManager search folder children property editor]]></set-property>
+  <set-property name="propertyView"><![CDATA[aMgrPvEList]]></set-property>
+  <set-property name="attributeValues"><![CDATA[hideAddExisting=aMgrAvFoldrChldHideAE,useNumericSort=aMgrAvFoldrChildNumSort,omitArrowButtons=aMgrAvFoldrChildOmitArrw,headerUriContextRoot=aMgrAvFoldrChildHeaderCxt,headerUri=aMgrAvFoldrChildHeader,collectionTableClass=aMgrAvFoldrChildTableClass]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewMapping" id="aMgrPvmVFolderChildren">
+  <set-property name="description"><![CDATA[AssetManager search folder children property viewer]]></set-property>
+  <set-property name="componentPropertyView"><![CDATA[aMgrPvCVItem]]></set-property>
+  <set-property name="propertyView"><![CDATA[aMgrPvVList]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyView" id="aMgrPvCMEItem">
+  <set-property name="name"><![CDATA[AssetManager RepositoryItem component editor Merch Folder]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager Merch Folder RepositoryItem component editor]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmSearchFolderEdit]]></set-property>
+  <set-property name="type"><![CDATA[Repository Item]]></set-property>
+  <set-property name="applicationName"><![CDATA[AssetManager]]></set-property>
+  <set-property name="uri"><![CDATA[/assetEditor/property/itemComponentEditor.jsp]]></set-property>
+  <set-property name="isComponentPropertyView"><![CDATA[true]]></set-property>
+  <set-property name="isDefault"><![CDATA[true]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvFoldrChldHideAE">
+  <set-property name="value"><![CDATA[true]]></set-property>
+</add-item>
+<add-item item-descriptor="attributeValue" id="aMgrAvFoldrChildNumSort">
+  <set-property name="value"><![CDATA[true]]></set-property>
+</add-item>
+<add-item item-descriptor="attributeValue" id="aMgrAvFoldrChildOmitArrw">
+  <set-property name="value"><![CDATA[true]]></set-property>
+</add-item>
+<add-item item-descriptor="attributeValue" id="aMgrAvFoldrChildHeaderCxt">
+  <set-property name="value"><![CDATA[/AssetUI-Search]]></set-property>
+</add-item>
+<add-item item-descriptor="attributeValue" id="aMgrAvFoldrChildHeader">
+  <set-property name="value"><![CDATA[/assetEditor/property/folderChildrenHeader.jsp]]></set-property>
+</add-item>
+<add-item item-descriptor="attributeValue" id="aMgrAvFoldrChildTableClass">
+  <set-property name="value"><![CDATA[atg_dataTable]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvDimFldrCatsV">
+  <set-property name="value"><![CDATA[categoryBasics,categoryContents]]></set-property>
+</add-item>
+<add-item item-descriptor="attributeValue" id="aMgrAvDimFldrCatsE">
+  <set-property name="value"><![CDATA[categoryBasics,categoryContents]]></set-property>
+</add-item>
+<add-item item-descriptor="attributeValue" id="aMgrAvDimFldrCatsME">
+  <set-property name="value"><![CDATA[categoryBasics,categoryContents]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvDimFldrExclPropsV">
+  <set-property name="value"><![CDATA[id,type,description,parentDimensionFolders]]></set-property>
+</add-item>
+<add-item item-descriptor="attributeValue" id="aMgrAvDimFldrExclPropsE">
+  <set-property name="value"><![CDATA[id,type,description,parentDimensionFolders]]></set-property>
+</add-item>
+<add-item item-descriptor="attributeValue" id="aMgrAvDimFldrExclPropsME">
+  <set-property name="value"><![CDATA[id,type,description,parentDimensionFolders]]></set-property>
+</add-item>
+
+
+<add-item item-descriptor="attributeValue" id="aMgrAvDimFolderResourceBundleV">
+  <set-property name="value"><![CDATA[atg.search.web.assetmanager.SearchConfigTreeResources]]></set-property>
+</add-item>
+<add-item item-descriptor="attributeValue" id="aMgrAvDimFolderResourceBundleE">
+  <set-property name="value"><![CDATA[atg.search.web.assetmanager.SearchConfigTreeResources]]></set-property>
+</add-item>
+<add-item item-descriptor="attributeValue" id="aMgrAvDimFolderResourceBundleME">
+  <set-property name="value"><![CDATA[atg.search.web.assetmanager.SearchConfigTreeResources]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvDimFldrAddPageE">
+  <set-property name="value"><![CDATA[/assetEditor/dimensionFolderAddPage.jsp]]></set-property>
+</add-item>
+<add-item item-descriptor="attributeValue" id="aMgrAvDimFldrAddPageME">
+  <set-property name="value"><![CDATA[/assetEditor/dimensionFolderAddPage.jsp]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvDimFldrAddPageContextE">
+  <set-property name="value"><![CDATA[/AssetUI-Search]]></set-property>
+</add-item>
+<add-item item-descriptor="attributeValue" id="aMgrAvDimFldrAddPageContextME">
+  <set-property name="value"><![CDATA[/AssetUI-Search]]></set-property>
+</add-item>
+<add-item item-descriptor="attributeValue" id="aMgrAvDimFolderHelpText">
+  <set-property name="value"><![CDATA[helpText.dimensionFolder]]></set-property>
+</add-item>
+
+<!-- ======================================================================= -->
+<!-- START Property View for Redirection, Position, Exclusion  property of SearchConfig in editable mode -->
+<!-- ======================================================================= -->
+
+<add-item item-descriptor="propertyView" id="aMgrPvESearchRuleRedirection">
+  <set-property name="name"><![CDATA[Search Merchandising expression editor seach rule Redirection]]></set-property>
+  <set-property name="description"><![CDATA[Search Merchandising expression editor seach rule property editor Redirection]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmEdit]]></set-property>
+  <set-property name="type"><![CDATA[list]]></set-property>
+  <set-property name="applicationName"><![CDATA[AssetUI-Search]]></set-property>
+  <set-property name="uri"><![CDATA[/assetEditor/searchRuleEditor.jsp]]></set-property>
+  <set-property name="isComponentPropertyView"><![CDATA[false]]></set-property>
+  <set-property name="attributes"><![CDATA[fullWidth=aMgrPvESearchRuleRedirectionFull,ruleType=aMgrPvESearchRuleRedirectionType]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewAttributeDefinition" id="aMgrPvESearchRuleRedirectionFull">
+  <set-property name="description"><![CDATA[Indicates a full-width property editor]]></set-property>
+  <set-property name="defaultValue"><![CDATA[true]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewAttributeDefinition" id="aMgrPvESearchRuleRedirectionType">
+  <set-property name="description"><![CDATA[Rule type]]></set-property>
+  <set-property name="defaultValue"><![CDATA[redirection]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyView" id="aMgrPvESearchRulePosition">
+  <set-property name="name"><![CDATA[Search Merchandising expression editor seach rule Position]]></set-property>
+  <set-property name="description"><![CDATA[Search Merchandising expression editor seach rule property editor Position]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmEdit]]></set-property>
+  <set-property name="type"><![CDATA[list]]></set-property>
+  <set-property name="applicationName"><![CDATA[AssetUI-Search]]></set-property>
+  <set-property name="uri"><![CDATA[/assetEditor/searchRuleEditor.jsp]]></set-property>
+  <set-property name="isComponentPropertyView"><![CDATA[false]]></set-property>
+  <set-property name="attributes"><![CDATA[fullWidth=aMgrPvESearchRulePositionFull,ruleType=aMgrPvESearchRulePositionType]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewAttributeDefinition" id="aMgrPvESearchRulePositionFull">
+  <set-property name="description"><![CDATA[Indicates a full-width property editor]]></set-property>
+  <set-property name="defaultValue"><![CDATA[true]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewAttributeDefinition" id="aMgrPvESearchRulePositionType">
+  <set-property name="description"><![CDATA[Rule type]]></set-property>
+  <set-property name="defaultValue"><![CDATA[position]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyView" id="aMgrPvESearchRuleExclusion">
+  <set-property name="name"><![CDATA[Search Merchandising expression editor seach rule Exclusion ]]></set-property>
+  <set-property name="description"><![CDATA[Search Merchandising expression editor seach rule property editor Exclusion ]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmEdit]]></set-property>
+  <set-property name="type"><![CDATA[list]]></set-property>
+  <set-property name="applicationName"><![CDATA[AssetUI-Search]]></set-property>
+  <set-property name="uri"><![CDATA[/assetEditor/searchRuleEditor.jsp]]></set-property>
+  <set-property name="isComponentPropertyView"><![CDATA[false]]></set-property>
+  <set-property name="attributes"><![CDATA[fullWidth=aMgrPvESearchRuleExclusionFull,ruleType=aMgrPvESearchRuleExclusionType]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewAttributeDefinition" id="aMgrPvESearchRuleExclusionFull">
+  <set-property name="description"><![CDATA[Indicates a full-width property editor]]></set-property>
+  <set-property name="defaultValue"><![CDATA[true]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewAttributeDefinition" id="aMgrPvESearchRuleExclusionType">
+  <set-property name="description"><![CDATA[Rule type]]></set-property>
+  <set-property name="defaultValue"><![CDATA[exclusion]]></set-property>
+</add-item>
+
+<!-- START Property View Mapping for Redirection, Position, Exclusion  property of SearchConfig in editable mode -->
+
+<add-item item-descriptor="propertyViewMapping" id="aMgrPvmESearchConfigRuleRedirection">
+  <set-property name="description"><![CDATA[ATG Search Merchandising editable search rule editor Redirection]]></set-property>
+  <set-property name="propertyView"><![CDATA[aMgrPvESearchRuleRedirection]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewMapping" id="aMgrPvmESearchConfigRulePosition">
+  <set-property name="description"><![CDATA[ATG Search Merchandising editable search rule editor Position]]></set-property>
+  <set-property name="propertyView"><![CDATA[aMgrPvESearchRulePosition]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewMapping" id="aMgrPvmESearchConfigRuleExclusion">
+  <set-property name="description"><![CDATA[ATG Search Merchandising editable search rule editor Exclusion]]></set-property>
+  <set-property name="propertyView"><![CDATA[aMgrPvESearchRuleExclusion]]></set-property>
+</add-item>
+
+<!-- START Property View Customizations for Property Weight Tab -->
+
+<add-item item-descriptor="propertyViewMapping" id="aMgrPvmEpropertyWeighting">
+  <set-property name="description"><![CDATA[ATG Search Merchandising Property Weighting Editor]]></set-property>
+  <set-property name="propertyView"><![CDATA[aMgrPvEPWEditor]]></set-property>
+  <set-property name="componentPropertyView"><![CDATA[aMgrPvEPropWeightComponent]]></set-property>
+  <set-property name="attributeValues"><![CDATA[renderHeaderInComponentEditor=aMgrAvPWHeader,hideComponentDelete=aMgrAvPWHideDelete,collectionTableClass=aMgrAvPWTableClass]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewMapping" id="aMgrPvmVpropertyWeighting">
+  <set-property name="description"><![CDATA[ATG Search Merchandising Property Weighting Viewer]]></set-property>
+  <set-property name="propertyView"><![CDATA[aMgrPvEPWViewer]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyView" id="aMgrPvEPropWeightComponent">
+  <set-property name="name"><![CDATA[Search Merchandising Property Weighting component editor]]></set-property>
+  <set-property name="description"><![CDATA[Search Merchandising Property Weighting Component Editor]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmEdit]]></set-property>
+  <set-property name="type"><![CDATA[string]]></set-property>
+  <set-property name="applicationName"><![CDATA[AssetUI-Search]]></set-property>
+  <set-property name="uri"><![CDATA[/assetEditor/property/propertyWeightingComponentEditor.jsp]]></set-property>
+  <set-property name="isComponentPropertyView"><![CDATA[true]]></set-property>
+  <set-property name="isDefault"><![CDATA[false]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyView" id="aMgrPvVPropWeightComponent">
+  <set-property name="name"><![CDATA[Search Merchandising Property Weighting component viewer]]></set-property>
+  <set-property name="description"><![CDATA[Search Merchandising Property Weighting Component Editor]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmView]]></set-property>
+  <set-property name="type"><![CDATA[string]]></set-property>
+  <set-property name="applicationName"><![CDATA[AssetUI-Search]]></set-property>
+  <set-property name="uri"><![CDATA[/assetEditor/property/propertyWeightingComponentEditor.jsp]]></set-property>
+  <set-property name="isComponentPropertyView"><![CDATA[true]]></set-property>
+  <set-property name="isDefault"><![CDATA[false]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvPWTableClass">
+  <set-property name="value"><![CDATA[atg_dataTable atg_smerch_rulesTable]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvPWHeader">
+  <set-property name="value"><![CDATA[true]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvPWHideDelete">
+  <set-property name="value"><![CDATA[true]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyView" id="aMgrPvEPWEditor">
+  <set-property name="name"><![CDATA[Search Merchandising Property Weighting editor]]></set-property>
+  <set-property name="description"><![CDATA[Search Merchandising Property Weighting editor]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmEdit]]></set-property>
+  <set-property name="type"><![CDATA[list]]></set-property>
+  <set-property name="applicationName"><![CDATA[AssetUI-Search]]></set-property>
+  <set-property name="uri"><![CDATA[/assetEditor/property/searchConfigPropertyWeightingEditor.jsp]]></set-property>
+  <set-property name="isComponentPropertyView"><![CDATA[false]]></set-property>
+  <set-property name="attributes"><![CDATA[fullWidth=aMgrPvEPWFull]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyView" id="aMgrPvEPWViewer">
+  <set-property name="name"><![CDATA[Search Merchandising Property Weighting viewer]]></set-property>
+  <set-property name="description"><![CDATA[Search Merchandising Property Weighting viewer]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmView]]></set-property>
+  <set-property name="type"><![CDATA[list]]></set-property>
+  <set-property name="applicationName"><![CDATA[AssetUI-Search]]></set-property>
+  <set-property name="uri"><![CDATA[/assetEditor/property/searchConfigPropertyWeightingViewer.jsp]]></set-property>
+  <set-property name="isComponentPropertyView"><![CDATA[false]]></set-property>
+  <set-property name="attributes"><![CDATA[fullWidth=aMgrPvEPWFull]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewAttributeDefinition" id="aMgrPvEPWFull">
+  <set-property name="description"><![CDATA[Indicates a full-width property editor]]></set-property>
+  <set-property name="defaultValue"><![CDATA[true]]></set-property>
+</add-item>
+
+
+<!-- START Property View Customizations for Property Ranking Tab -->
+
+<add-item item-descriptor="propertyView" id="aMgrPvEValueRank">
+  <set-property name="name"><![CDATA[Search Merchandising PVR editor]]></set-property>
+  <set-property name="description"><![CDATA[Search Merchandising Property value ranking Editor]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmEdit]]></set-property>
+  <set-property name="type"><![CDATA[map]]></set-property>
+  <set-property name="applicationName"><![CDATA[AssetManager]]></set-property>
+  <set-property name="uri"><![CDATA[/assetEditor/property/collectionEditor.jsp]]></set-property>
+  <set-property name="isComponentPropertyView"><![CDATA[false]]></set-property>
+  <set-property name="isDefault"><![CDATA[false]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyView" id="aMgrPvEValueRankComponent">
+  <set-property name="name"><![CDATA[Search Merchandising PVR component editor]]></set-property>
+  <set-property name="description"><![CDATA[Search Merchandising Property value ranking Component Editor]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmEdit]]></set-property>
+  <set-property name="type"><![CDATA[string]]></set-property>
+  <set-property name="applicationName"><![CDATA[AssetUI-Search]]></set-property>
+  <set-property name="uri"><![CDATA[/assetEditor/property/propertyValueRankingComponentEditor.jsp]]></set-property>
+  <set-property name="isComponentPropertyView"><![CDATA[true]]></set-property>
+  <set-property name="isDefault"><![CDATA[false]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyView" id="aMgrPvVValueRankComponent">
+  <set-property name="name"><![CDATA[Search Merchandising PVR component viewer]]></set-property>
+  <set-property name="description"><![CDATA[Search Merchandising Property value ranking Component Editor]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmView]]></set-property>
+  <set-property name="type"><![CDATA[string]]></set-property>
+  <set-property name="applicationName"><![CDATA[AssetUI-Search]]></set-property>
+  <set-property name="uri"><![CDATA[/assetEditor/property/propertyValueRankingComponentEditor.jsp]]></set-property>
+  <set-property name="isComponentPropertyView"><![CDATA[true]]></set-property>
+  <set-property name="isDefault"><![CDATA[false]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewMapping" id="aMgrPvmEValueRanks">
+  <set-property name="description"><![CDATA[AssetManager Property value score]]></set-property>
+  <set-property name="propertyView"><![CDATA[aMgrPvEValueRank]]></set-property> 
+  <set-property name="componentPropertyView"><![CDATA[aMgrPvEValueRankComponent]]></set-property>
+<set-property name="attributeValues"><![CDATA[renderKeyInComponentEditor=aMgrAvRankKey,renderHeaderInComponentEditor=aMgrAvRankHeader,displaySortButton=aMgrAvRankSort,fullWidth=aMgrAvValueRanksFullWidth,collectionTableClass=aMgrAvValueRankTableClass]]></set-property></add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvValueRankTableClass">
+  <set-property name="value"><![CDATA[atg_smerch_propertyRanking formStringList]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewMapping" id="aMgrPvmVValueRanks">
+  <set-property name="description"><![CDATA[AssetManager Property value score]]></set-property>
+  <set-property name="propertyView"><![CDATA[aMgrPvEMap]]></set-property> 
+  <set-property name="componentPropertyView"><![CDATA[aMgrPvVValueRankComponent]]></set-property>
+  <set-property name="attributeValues"><![CDATA[renderKeyInComponentEditor=aMgrAvRankKey,renderHeaderInComponentEditor=aMgrAvRankHeader,displaySortButton=aMgrAvRankSort,fullWidth=aMgrAvValueRanksFullWidth]]></set-property></add-item>
+
+<add-item item-descriptor="propertyViewMapping" id="aMgrPvmVDataType">
+  <set-property name="description"><![CDATA[viewer for rankingPropety.dataType]]></set-property>
+  <set-property name="propertyView"><![CDATA[aMgrPvPropDataType]]></set-property> 
+</add-item>
+
+<add-item item-descriptor="propertyView" id="aMgrPvPropDataType">
+  <set-property name="name"><![CDATA[ATG Search Merchandising rankingProperty.dataType prop ed]]></set-property>
+  <set-property name="description"><![CDATA[ATG Search Merchandising rankingProperty.dataType prop ed]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmView]]></set-property>
+  <set-property name="type"><![CDATA[string]]></set-property>
+  <set-property name="applicationName"><![CDATA[AssetUI-Search]]></set-property>
+  <set-property name="uri"><![CDATA[/assetEditor/property/propertyTypeViewer.jsp]]></set-property>
+  <set-property name="isComponentPropertyView"><![CDATA[false]]></set-property>
+  <set-property name="isDefault"><![CDATA[false]]></set-property>
+  <set-property name="attributes"><![CDATA[]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvRankKey">
+  <set-property name="value"><![CDATA[true]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvRankHeader">
+  <set-property name="value"><![CDATA[true]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvRankSort">
+  <set-property name="value"><![CDATA[true]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvValueRanksFullWidth">
+  <set-property name="value"><![CDATA[true]]></set-property>
+</add-item>
+
+<!-- START Item View Mapping for SearchConfigRule Editor tab of BaseSearchConfig items -->
+
+<add-item item-descriptor="itemMapping" id="aMgrImEditBaseSearchConfig">
+  <set-property name="name"><![CDATA[AssetManager]]></set-property>
+  <set-property name="description"><![CDATA[ATG Search Merchandising editable mapping for base search configs]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmEdit]]></set-property>
+  <set-property name="itemPath"><![CDATA[/atg/search/repository/RefinementRepository]]></set-property>
+  <set-property name="itemName"><![CDATA[baseSearchConfig]]></set-property>
+  <set-property name="formHandler"><![CDATA[aMgrFhSearchConfig]]></set-property>
+  <set-property name="viewMappings"><![CDATA[aMgrIvmBaseSearchConfigGeneralEdit,aMgrIvmSearchConfigRuleRedirection,aMgrIvmSearchConfigRuleExclusion,aMgrIvmSearchConfigPropertyWeighting,aMgrIvmSearchConfigRulePosition]]></set-property>
+  <set-property name="attributes"><![CDATA[disablePreview=aMgrSCfgDisablePreview]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemMapping" id="aMgrImViewBaseSearchConfig">
+  <set-property name="name"><![CDATA[AssetManager]]></set-property>
+  <set-property name="description"><![CDATA[ATG Search Merchandising read-only mapping for base search configs]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmView]]></set-property>
+  <set-property name="itemPath"><![CDATA[/atg/search/repository/RefinementRepository]]></set-property>
+  <set-property name="itemName"><![CDATA[baseSearchConfig]]></set-property>
+  <set-property name="formHandler"><![CDATA[aMgrFhSearchConfig]]></set-property>
+  <set-property name="viewMappings"><![CDATA[aMgrIvmBaseSearchConfigGeneralView,aMgrIvmSearchConfigRuleRedirection,aMgrIvmSearchConfigRuleExclusion,aMgrIvmSearchConfigPropertyWeightingView,aMgrIvmSearchConfigRulePosition]]></set-property>
+  <set-property name="attributes"><![CDATA[disablePreview=aMgrSCfgDisablePreview]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemViewMapping" id="aMgrIvmBaseSearchConfigGeneralView">
+  <set-property name="name"><![CDATA[AssetManager base search config General view]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager base search config General view]]></set-property>
+  <set-property name="displayName"><![CDATA[aMgrIvmSearchConfigGeneral.displayName]]></set-property>
+  <set-property name="attributeValues"><![CDATA[resourceBundle=aMgrAvLogSearchConfigResourceBundle,categorizedGrouping=aMgrAvSearchConfigGeneralCat,finalFragment=aMgrAvSearchConfigSummaryPage,finalFragmentContext=aMgrAvSearchConfigSummaryPageContext,finalFragmentBox=aMgrAvSummaryTableBox,finalFragmentLabel=aMgrAvSummaryTableLabel,summaryTableDropletPath=aMgrAvSearchConfigSummaryTableDroplet,textAbovecategoryBasics=aMgrAvBaseSearchConfigGeneralHelpText,excludedProperties=aMgrAvBaseSearchConfigExclProps]]></set-property>
+  <set-property name="view"><![CDATA[aMgrIvRep]]></set-property>
+  <set-property name="propertyMappings"><![CDATA[locale=aMgrPvmBaseSrchConfigLanguageView,derivedSearchConfigs=aMgrAvPvmDerivedSrchCfgsView,application=aMgrPvmApplication]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemViewMapping" id="aMgrIvmBaseSearchConfigGeneralEdit">
+  <set-property name="name"><![CDATA[AssetManager base search config General edit]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager base search config General edit]]></set-property>
+  <set-property name="displayName"><![CDATA[aMgrIvmSearchConfigGeneral.displayName]]></set-property>
+  <set-property name="attributeValues"><![CDATA[resourceBundle=aMgrAvLogSearchConfigResourceBundle,categorizedGrouping=aMgrAvSearchConfigGeneralCat,finalFragment=aMgrAvSearchConfigSummaryPage,finalFragmentContext=aMgrAvSearchConfigSummaryPageContext,finalFragmentBox=aMgrAvSummaryTableBox,finalFragmentLabel=aMgrAvSummaryTableLabel,summaryTableDropletPath=aMgrAvSearchConfigSummaryTableDroplet,textAbovecategoryBasics=aMgrAvBaseSearchConfigGeneralHelpText,excludedProperties=aMgrAvBaseSearchConfigExclProps]]></set-property>
+  <set-property name="view"><![CDATA[aMgrIvRep]]></set-property>
+  <set-property name="propertyMappings"><![CDATA[locale=aMgrPvmBaseSrchConfigLanguageEdit,derivedSearchConfigs=aMgrAvPvmDerivedSrchCfgsView,application=aMgrPvmApplication]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvBaseSearchConfigGeneralHelpText">
+  <set-property name="value"><![CDATA[helpText.baseSearchConfig.generalTab]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvBaseSearchConfigExclProps">
+  <set-property name="value"><![CDATA[baseSearchConfig,dimensionValue]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyView" id="aMgrPvBaseSrchConfigLanguageEdit">
+  <set-property name="name"><![CDATA[ATG Search Merchandising baseSearchConfig.locale property editor]]></set-property>
+  <set-property name="description"><![CDATA[ATG Search Merchandising baseSearchConfig.locale property editor]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmEdit]]></set-property>
+  <set-property name="type"><![CDATA[string]]></set-property>
+  <set-property name="applicationName"><![CDATA[AssetUI-Search]]></set-property>
+  <set-property name="uri"><![CDATA[/assetEditor/property/localeEditor.jsp]]></set-property>
+  <set-property name="isComponentPropertyView"><![CDATA[false]]></set-property>
+  <set-property name="isDefault"><![CDATA[false]]></set-property>
+  <set-property name="attributes"><![CDATA[fullWidth=aMgrPvBSCLanguageEditFull,includeCellDivider=aMgrPvBSCLangEditCellDiv]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewAttributeDefinition" id="aMgrPvBSCLanguageEditFull">
+  <set-property name="description"><![CDATA[Indicates a full-width property editor]]></set-property>
+  <set-property name="defaultValue"><![CDATA[true]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewAttributeDefinition" id="aMgrPvBSCLangEditCellDiv">
+  <set-property name="description"><![CDATA[Indicates that this property view must include a td cell divider]]></set-property>
+  <set-property name="defaultValue"><![CDATA[true]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyView" id="aMgrPvBaseSrchConfigLanguageView">
+  <set-property name="name"><![CDATA[ATG Search Merchandising baseSearchConfig.locale property viewer]]></set-property>
+  <set-property name="description"><![CDATA[ATG Search Merchandising baseSearchConfig.locale property viewer]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmEdit]]></set-property>
+  <set-property name="type"><![CDATA[string]]></set-property>
+  <set-property name="applicationName"><![CDATA[AssetUI-Search]]></set-property>
+  <set-property name="uri"><![CDATA[/assetEditor/property/languageViewer.jsp]]></set-property>
+  <set-property name="isComponentPropertyView"><![CDATA[false]]></set-property>
+  <set-property name="isDefault"><![CDATA[false]]></set-property>
+  <set-property name="attributes"><![CDATA[]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyView" id="aMgrPvSrchConfigLanguageEdit">
+  <set-property name="name"><![CDATA[ATG Search Merchandising searchConfig.locale property editor]]></set-property>
+  <set-property name="description"><![CDATA[ATG Search Merchandising searchConfig.locale property editor]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmEdit]]></set-property>
+  <set-property name="type"><![CDATA[string]]></set-property>
+  <set-property name="applicationName"><![CDATA[AssetUI-Search]]></set-property>
+  <set-property name="uri"><![CDATA[/assetEditor/property/inheritedLanguageEditor.jsp]]></set-property>
+  <set-property name="isComponentPropertyView"><![CDATA[false]]></set-property>
+  <set-property name="isDefault"><![CDATA[false]]></set-property>
+  <set-property name="attributes"><![CDATA[fullWidth=aMgrPvSCLanguageEditFull,includeCellDivider=aMgrPvSCLangEditCellDiv]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewAttributeDefinition" id="aMgrPvSCLanguageEditFull">
+  <set-property name="description"><![CDATA[Indicates a full-width property editor]]></set-property>
+  <set-property name="defaultValue"><![CDATA[true]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewAttributeDefinition" id="aMgrPvSCLangEditCellDiv">
+  <set-property name="description"><![CDATA[Indicates that this property view must include a td cell divider]]></set-property>
+  <set-property name="defaultValue"><![CDATA[true]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyView" id="aMgrPvSrchConfigLanguageView">
+  <set-property name="name"><![CDATA[ATG Search Merchandising searchConfig.locale property viewer]]></set-property>
+  <set-property name="description"><![CDATA[ATG Search Merchandising searchConfig.locale property viewer]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmEdit]]></set-property>
+  <set-property name="type"><![CDATA[string]]></set-property>
+  <set-property name="applicationName"><![CDATA[AssetUI-Search]]></set-property>
+  <set-property name="uri"><![CDATA[/assetEditor/property/inheritedLanguageEditor.jsp]]></set-property>
+  <set-property name="isComponentPropertyView"><![CDATA[false]]></set-property>
+  <set-property name="isDefault"><![CDATA[false]]></set-property>
+  <set-property name="attributes"><![CDATA[fullWidth=aMgrPvSCLanguageViewFull,readOnly=aMgrPvSCLanguageViewReadOnly,includeCellDivider=aMgrPvSCLanguateViewCellDiv]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewAttributeDefinition" id="aMgrPvSCLanguageViewFull">
+  <set-property name="description"><![CDATA[Indicates a full-width property editor]]></set-property>
+  <set-property name="defaultValue"><![CDATA[true]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewAttributeDefinition" id="aMgrPvSCLanguageViewReadOnly">
+  <set-property name="description"><![CDATA[Indicates this property is read-only]]></set-property>
+  <set-property name="defaultValue"><![CDATA[true]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewAttributeDefinition" id="aMgrPvSCLanguateViewCellDiv">
+  <set-property name="description"><![CDATA[Indicates that this property view must include a td cell divider]]></set-property>
+  <set-property name="defaultValue"><![CDATA[true]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyView" id="aMgrPvSrchDerivedSrchCfgsViewer">
+  <set-property name="name"><![CDATA[ATG Search Merchandising derivedSearchConfigs property viewer]]></set-property>
+  <set-property name="description"><![CDATA[ATG Search Merchandising derivedSearchConfigs property viewer]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmEdit]]></set-property>
+  <set-property name="type"><![CDATA[string]]></set-property>
+  <set-property name="applicationName"><![CDATA[AssetUI-Search]]></set-property>
+  <set-property name="uri"><![CDATA[/assetEditor/property/derivedSearchConfigViewer.jsp]]></set-property>
+  <set-property name="isComponentPropertyView"><![CDATA[false]]></set-property>
+  <set-property name="isDefault"><![CDATA[false]]></set-property>
+  <set-property name="attributes"><![CDATA[]]></set-property>
+</add-item>
+  
+<add-item item-descriptor="propertyViewMapping" id="aMgrAvPvmDerivedSrchCfgsView">
+  <set-property name="description"><![CDATA[AssetManager base search config derivedSearchConfigs property view mapping]]></set-property>
+  <set-property name="propertyView"><![CDATA[aMgrPvSrchDerivedSrchCfgsViewer]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewMapping" id="aMgrPvmBaseSrchConfigLanguageEdit">
+  <set-property name="description"><![CDATA[ATG Search Merchandising baseSearchConfig.locale edit property view mapping]]></set-property>
+  <set-property name="propertyView"><![CDATA[aMgrPvBaseSrchConfigLanguageEdit]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewMapping" id="aMgrPvmBaseSrchConfigLanguageView">
+  <set-property name="description"><![CDATA[ATG Search Merchandising baseSearchConfig.locale view property view mapping]]></set-property>
+  <set-property name="propertyView"><![CDATA[aMgrPvBaseSrchConfigLanguageView]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewMapping" id="aMgrPvmSrchConfigLanguageEdit">
+  <set-property name="description"><![CDATA[ATG Search Merchandising searchConfig.locale edit property view mapping]]></set-property>
+  <set-property name="propertyView"><![CDATA[aMgrPvSrchConfigLanguageEdit]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewMapping" id="aMgrPvmSrchConfigLanguageView">
+  <set-property name="description"><![CDATA[ATG Search Merchandising searchConfig.locale view property view mapping]]></set-property>
+  <set-property name="propertyView"><![CDATA[aMgrPvSrchConfigLanguageView]]></set-property>
+</add-item>
+
+	
+<!-- START Item View Mapping for SearchConfigRule Editor tab of SearchConfig items -->
+
+<add-item item-descriptor="itemMapping" id="aMgrImEditSearchConfig">
+  <set-property name="name"><![CDATA[AssetManager]]></set-property>
+  <set-property name="description"><![CDATA[ATG Search Merchandising editable mapping for search configs]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmEdit]]></set-property>
+  <set-property name="itemPath"><![CDATA[/atg/search/repository/RefinementRepository]]></set-property>
+  <set-property name="itemName"><![CDATA[searchConfig]]></set-property>
+  <set-property name="formHandler"><![CDATA[aMgrFhSearchConfig]]></set-property>
+  <set-property name="viewMappings"><![CDATA[aMgrIvmSearchConfigGeneralEdit,aMgrIvmSearchConfigRuleRedirection,aMgrIvmSearchConfigRuleExclusion,aMgrIvmSearchConfigPropertyWeighting,aMgrIvmSearchConfigRulePosition]]></set-property>
+  <set-property name="attributes"><![CDATA[additionalButtonFragment=aMgrSearchConfigAdditionalButtonFragment,additionalButtonFragmentContext=aMgrSearchConfigAddButtonFragCxt,disablePreview=aMgrSCfgDisablePreview]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemMapping" id="aMgrImViewSearchConfig">
+  <set-property name="name"><![CDATA[AssetManager]]></set-property>
+  <set-property name="description"><![CDATA[ATG Search Merchandising read-only mapping for search configs]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmView]]></set-property>
+  <set-property name="itemPath"><![CDATA[/atg/search/repository/RefinementRepository]]></set-property>
+  <set-property name="itemName"><![CDATA[searchConfig]]></set-property>
+  <set-property name="formHandler"><![CDATA[aMgrFhSearchConfig]]></set-property>
+  <set-property name="viewMappings"><![CDATA[aMgrIvmSearchConfigGeneralView,aMgrIvmSearchConfigRuleRedirection,aMgrIvmSearchConfigRuleExclusion,aMgrIvmSearchConfigPropertyWeightingView,aMgrIvmSearchConfigRulePosition]]></set-property>
+  <set-property name="attributes"><![CDATA[additionalButtonFragment=aMgrSearchConfigAdditionalButtonFragment,additionalButtonFragmentContext=aMgrSearchConfigAddButtonFragCxt,disablePreview=aMgrSCfgDisablePreview]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrSearchConfigAdditionalButtonFragment">
+  <set-property name="value"><![CDATA[/assetEditor/testSearchConfigButton.jsp]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrSearchConfigAddButtonFragCxt">
+  <set-property name="value"><![CDATA[/AssetUI-Search]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrSCfgDisablePreview">
+  <set-property name="value"><![CDATA[true]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemViewMapping" id="aMgrIvmSearchConfigGeneralEdit">
+  <set-property name="name"><![CDATA[AssetManager search config General view]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager search config General view]]></set-property>
+  <set-property name="displayName"><![CDATA[aMgrIvmSearchConfigGeneral.displayName]]></set-property>
+  <set-property name="attributeValues"><![CDATA[resourceBundle=aMgrAvLogSearchConfigResourceBundle,categorizedGrouping=aMgrAvSearchConfigGeneralCat,finalFragment=aMgrAvSearchConfigSummaryPage,finalFragmentContext=aMgrAvSearchConfigSummaryPageContext,finalFragmentBox=aMgrAvSummaryTableBox,finalFragmentLabel=aMgrAvSummaryTableLabel,summaryTableDropletPath=aMgrAvSearchConfigSummaryTableDroplet,textAbovecategoryBasics=aMgrAvSearchConfigGeneralHelpText,excludedProperties=aMgrAvSearchConfigExclProps]]></set-property>
+  <set-property name="view"><![CDATA[aMgrIvRep]]></set-property>
+  <set-property name="propertyMappings"><![CDATA[locale=aMgrPvmSrchConfigLanguageEdit,dimensionValue=aMgrPvmEDimValE,application=aMgrPvmApplication,baseSearchConfig=aMgrPvmSrchConfigBaseSC]]></set-property>
+</add-item>
+  
+<add-item item-descriptor="itemViewMapping" id="aMgrIvmSearchConfigGeneralView">
+  <set-property name="name"><![CDATA[AssetManager search config General view]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager search config General view]]></set-property>
+  <set-property name="displayName"><![CDATA[aMgrIvmSearchConfigGeneral.displayName]]></set-property>
+  <set-property name="attributeValues"><![CDATA[resourceBundle=aMgrAvLogSearchConfigResourceBundle,categorizedGrouping=aMgrAvSearchConfigGeneralCat,finalFragment=aMgrAvSearchConfigSummaryPage,finalFragmentContext=aMgrAvSearchConfigSummaryPageContext,finalFragmentBox=aMgrAvSummaryTableBox,finalFragmentLabel=aMgrAvSummaryTableLabel,summaryTableDropletPath=aMgrAvSearchConfigSummaryTableDroplet,textAbovecategoryBasics=aMgrAvSearchConfigGeneralHelpText,excludedProperties=aMgrAvSearchConfigExclProps]]></set-property>
+  <set-property name="view"><![CDATA[aMgrIvRep]]></set-property>
+  <set-property name="propertyMappings"><![CDATA[locale=aMgrPvmSrchConfigLanguageView,dimensionValue=aMgrPvmEDimValV,application=aMgrPvmApplication]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvSearchConfigGeneralCat">
+  <set-property name="value"><![CDATA[categoryBasics]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvSearchConfigSummaryPage">
+  <set-property name="value"><![CDATA[/assetEditor/summary/summaryTable.jsp]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvSearchConfigSummaryPageContext">
+  <set-property name="value"><![CDATA[/AssetManager]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvSummaryTableBox">
+  <set-property name="value"><![CDATA[true]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvSummaryTableLabel">
+  <set-property name="value"><![CDATA[searchConfig.summaryTable.label]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvSearchConfigSummaryTableDroplet">
+  <set-property name="value"><![CDATA[/atg/web/assetmanager/editor/SearchConfigSummaryTable]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvSearchConfigGeneralHelpText">
+  <set-property name="value"><![CDATA[helpText.searchConfig.generalTab]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvSearchConfigExclProps">
+  <set-property name="value"><![CDATA[derivedSearchConfigs]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemViewMapping" id="aMgrIvmSearchConfigRuleRedirection">
+  <set-property name="name"><![CDATA[ATG Search Merchandising Search Config Rule Editor]]></set-property>
+  <set-property name="description"><![CDATA[ATG Search Merchandising Search Config editor]]></set-property>
+  <set-property name="displayName"><![CDATA[aMgrIvmSearchConfigRuleRedirection.displayName]]></set-property>
+  <set-property name="attributeValues"><![CDATA[resourceBundle=aMgrAvLogSearchConfigResourceBundle,categorizedGrouping=aMgrAvRedirectionRule,textAbovecategoryRedirection=aMgrAvSearchConfigRuleRedirHelpText]]></set-property>
+  <set-property name="propertyMappings"><![CDATA[redirectionRules=aMgrPvmESearchConfigRuleRedirection]]></set-property>
+  <set-property name="view"><![CDATA[aMgrIvRep]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvSearchConfigRuleRedirHelpText">
+  <set-property name="value"><![CDATA[helpText.searchConfig.ruleRedirTab]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemViewMapping" id="aMgrIvmSearchConfigPropertyWeighting">
+  <set-property name="name"><![CDATA[AssetManager search config Property Weighting editor]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager search config Property Weighting editor]]></set-property>
+  <set-property name="displayName"><![CDATA[aMgrIvmSearchConfigPropertyWeighting.displayName]]></set-property>
+  <set-property name="attributeValues"><![CDATA[resourceBundle=aMgrAvLogSearchConfigResourceBundle,categorizedGrouping=aMgrAvRankingProperties,textAbovecategoryPropertyWeighting=aMgrAvSearchConfigPropWeightHelpText]]></set-property>
+  <set-property name="propertyMappings"><![CDATA[rankingProperties=aMgrPvmEpropertyWeighting]]></set-property>
+  <set-property name="view"><![CDATA[aMgrIvRep]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemViewMapping" id="aMgrIvmSearchConfigPropertyWeightingView">
+  <set-property name="name"><![CDATA[AssetManager search config Property Weighting view]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager search config Property Weighting  view]]></set-property>
+  <set-property name="displayName"><![CDATA[aMgrIvmSearchConfigPropertyWeighting.displayName]]></set-property>
+  <set-property name="attributeValues"><![CDATA[resourceBundle=aMgrAvLogSearchConfigResourceBundle,categorizedGrouping=aMgrAvRankingProperties,textAbovecategoryPropertyWeighting=aMgrAvSearchConfigPropWeightHelpText]]></set-property>
+  <set-property name="propertyMappings"><![CDATA[rankingProperties=aMgrPvmVpropertyWeighting]]></set-property>
+  <set-property name="view"><![CDATA[aMgrIvRep]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvSearchConfigPropWeightHelpText">
+  <set-property name="value"><![CDATA[helpText.searchConfig.propWeightTab]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemViewMapping" id="aMgrIvmSearchConfigRuleExclusion">
+  <set-property name="name"><![CDATA[ATG Search Merchandising Search Config Rule Editor Exclusion]]></set-property>
+  <set-property name="description"><![CDATA[ATG Search Merchandising Search Config editor Exclusion]]></set-property>
+  <set-property name="displayName"><![CDATA[aMgrIvmSearchConfigRuleExclusion.displayName]]></set-property>
+  <set-property name="attributeValues"><![CDATA[resourceBundle=aMgrAvLogSearchConfigResourceBundle,categorizedGrouping=aMgrAvExclusionRule,textAbovecategoryResultExclusion=aMgrAvSearchConfigRuleExclHelpText]]></set-property>
+  <set-property name="propertyMappings"><![CDATA[exclusionRules=aMgrPvmESearchConfigRuleExclusion]]></set-property>
+  <set-property name="view"><![CDATA[aMgrIvRep]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvSearchConfigRuleExclHelpText">
+  <set-property name="value"><![CDATA[helpText.searchConfig.ruleExclTab]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemViewMapping" id="aMgrIvmSearchConfigRulePosition">
+  <set-property name="name"><![CDATA[ATG Search Merchandising Search Config Rule Editor Position]]></set-property>
+  <set-property name="description"><![CDATA[ATG Search Merchandising Search Config editor Position]]></set-property>
+  <set-property name="displayName"><![CDATA[aMgrIvmSearchConfigRulePosition.displayName]]></set-property>
+  <set-property name="attributeValues"><![CDATA[resourceBundle=aMgrAvLogSearchConfigResourceBundle,categorizedGrouping=aMgrAvPositionRule,textAbovecategoryResultPositioning=aMgrAvSearchConfigRulePositionHelpText]]></set-property>
+  <set-property name="propertyMappings"><![CDATA[positioningRules=aMgrPvmESearchConfigRulePosition]]></set-property>
+  <set-property name="view"><![CDATA[aMgrIvRep]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvSearchConfigRulePositionHelpText">
+  <set-property name="value"><![CDATA[helpText.searchConfig.rulePositionTab]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemMapping" id="aMgrImEditRankingProperty">
+  <set-property name="name"><![CDATA[AssetManager]]></set-property>
+  <set-property name="description"><![CDATA[ATG Search Merchandising editable mapping for ranking property]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmEdit]]></set-property>
+  <set-property name="itemPath"><![CDATA[/atg/search/repository/RefinementRepository]]></set-property>
+  <set-property name="itemName"><![CDATA[rankingProperty]]></set-property>
+  <set-property name="formHandler"><![CDATA[aMgrFhPropertyRanking]]></set-property>
+  <set-property name="viewMappings"><![CDATA[aMgrIvmRankingPropertyGeneralE]]></set-property>
+  <set-property name="attributes"><![CDATA[disablePreview=aMgrRnkPropDisablePreview]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemMapping" id="aMgrImViewRankingProperty">
+  <set-property name="name"><![CDATA[AssetManager]]></set-property>
+  <set-property name="description"><![CDATA[ATG Search Merchandising read-only mapping for ranking property]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmView]]></set-property>
+  <set-property name="itemPath"><![CDATA[/atg/search/repository/RefinementRepository]]></set-property>
+  <set-property name="itemName"><![CDATA[rankingProperty]]></set-property>
+  <set-property name="formHandler"><![CDATA[aMgrFhPropertyRanking]]></set-property>
+  <set-property name="viewMappings"><![CDATA[aMgrIvmRankingPropertyGeneralV]]></set-property>
+  <set-property name="attributes"><![CDATA[disablePreview=aMgrRnkPropDisablePreview]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrRnkPropDisablePreview">
+  <set-property name="value"><![CDATA[true]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemViewMapping" id="aMgrIvmRankingPropertyGeneralE">
+  <set-property name="name"><![CDATA[ATG Search Merchandising Ranking Property Editor]]></set-property>
+  <set-property name="description"><![CDATA[ATG Search Merchandising Ranking Property editor]]></set-property>
+  <set-property name="displayName"><![CDATA[aMgrIvmRankingProperty.displayName]]></set-property>
+  <set-property name="attributeValues"><![CDATA[resourceBundle=aMgrAvLogSearchConfigResourceBundle,categorizedGrouping=aMgrAvValueRanksProperties,textAbovecategoryValueRanks=aMgrAvPVRHelpText]]></set-property>
+  <set-property name="propertyMappings"><![CDATA[valueRanks=aMgrPvmEValueRanks,dataType=aMgrPvmVDataType]]></set-property>
+  <set-property name="view"><![CDATA[aMgrIvRep]]></set-property>
+</add-item>
+
+
+<add-item item-descriptor="itemViewMapping" id="aMgrIvmRankingPropertyGeneralV">
+  <set-property name="name"><![CDATA[ATG Search Merchandising Ranking Property Viewer]]></set-property>
+  <set-property name="description"><![CDATA[ATG Search Merchandising Ranking Property viewer]]></set-property>
+  <set-property name="displayName"><![CDATA[aMgrIvmRankingProperty.displayName]]></set-property>
+  <set-property name="attributeValues"><![CDATA[resourceBundle=aMgrAvLogSearchConfigResourceBundle,categorizedGrouping=aMgrAvValueRanksProperties,textAbovecategoryValueRanks=aMgrAvPVRHelpText]]></set-property>
+  <set-property name="propertyMappings"><![CDATA[valueRanks=aMgrPvmVValueRanks,dataType=aMgrPvmVDataType]]></set-property>
+  <set-property name="view"><![CDATA[aMgrIvRep]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvPVRHelpText">
+  <set-property name="value"><![CDATA[helpText.rankingProperty]]></set-property>
+</add-item>
+
+<!-- START Attribute value definition for Resource Bundle used in Search Merchandising application-->
+
+<add-item item-descriptor="attributeValue" id="aMgrAvLogSearchConfigResourceBundle">
+  <set-property name="value"><![CDATA[atg.search.web.assetmanager.SearchConfigTreeResources]]></set-property>
+</add-item>
+
+<!-- SearchConfigAssetFormHandler: the default form handler for searchConfig -->
+
+<add-item item-descriptor="formHandler" id="aMgrFhSearchConfig">
+  <set-property name="name"><![CDATA[ATG Search Merchandising SearchConfigAssetFormHandler]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager default form handler for searchConfig]]></set-property>
+  <set-property name="path"><![CDATA[/atg/search/web/assetmanager/SearchConfigFormHandler]]></set-property>
+  <set-property name="attributes"><![CDATA[atgFormValueDict=aMgrAvSearchConfigValueDict]]></set-property>
+</add-item>
+
+<!-- PropertyRankingFormHandler: the default form handler for propertyRanking -->
+
+<add-item item-descriptor="formHandler" id="aMgrFhPropertyRanking">
+  <set-property name="name"><![CDATA[ATG Search Merchandising PropertyRankingFormHandler]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager default form handler for propertyRanking]]></set-property>
+  <set-property name="path"><![CDATA[/atg/search/web/assetmanager/PropertyRankingFormHandler]]></set-property>
+  <set-property name="attributes"><![CDATA[atgFormValueDict=aMgrAvPropertyRankingValueDict]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvSearchConfigValueDict">
+  <set-property name="value"><![CDATA[value]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvPropertyRankingValueDict">
+  <set-property name="value"><![CDATA[value]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvRedirectionRule">
+  <set-property name="value"><![CDATA[categoryRedirection]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvExclusionRule">
+  <set-property name="value"><![CDATA[categoryResultExclusion]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvPositionRule">
+  <set-property name="value"><![CDATA[categoryResultPositioning]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvSearchCfgRuleRedirectionHideBorder">
+  <set-property name="value"><![CDATA[false]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvSearchCfgRuleExclusionHideBorder">
+  <set-property name="value"><![CDATA[false]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvSearchCfgRulePositionHideBorder">
+  <set-property name="value"><![CDATA[false]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvRankingProperties">
+  <set-property name="value"><![CDATA[categoryPropertyWeighting]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvPropertyWeightingHideBorder">
+  <set-property name="value"><![CDATA[false]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvValueRanksProperties">
+  <set-property name="value"><![CDATA[categoryPropertyValueRanking,categoryValueRanks]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvValueRanksHideBorder">
+  <set-property name="value"><![CDATA[false]]></set-property>
+</add-item>
+
+<!-- ======================================================================= -->
+<!-- searchConfig/dimensionFolder Create Form                                -->
+<!-- ======================================================================= -->
+
+<add-item item-descriptor="itemMapping" id="aMgrImCreateDimFldr">
+  <set-property name="name"><![CDATA[AssetManager]]></set-property>
+  <set-property name="description"><![CDATA[ATG Search Merchandising create mapping for dimension folder items]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmCreate]]></set-property>
+  <set-property name="itemPath"><![CDATA[/atg/search/repository/RefinementRepository]]></set-property>
+  <set-property name="itemName"><![CDATA[dimensionFolder]]></set-property>
+  <set-property name="formHandler"><![CDATA[aMgrFhRefinementAssets]]></set-property>
+  <set-property name="viewMappings"><![CDATA[aMgrIvmRefineAssetCreate]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemMapping" id="aMgrImCreateSearchConfig">
+  <set-property name="name"><![CDATA[AssetManager]]></set-property>
+  <set-property name="description"><![CDATA[ATG Search Merchandising create mapping for search configs]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmCreate]]></set-property>
+  <set-property name="itemPath"><![CDATA[/atg/search/repository/RefinementRepository]]></set-property>
+  <set-property name="itemName"><![CDATA[searchConfig]]></set-property>
+  <set-property name="formHandler"><![CDATA[aMgrFhSearchConfigAssets]]></set-property>
+  <set-property name="viewMappings"><![CDATA[aMgrIvmRefineAssetCreate]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemViewMapping" id="aMgrIvmRefineAssetCreate">
+  <set-property name="name"><![CDATA[ATG Search Merchandising RefinementRepository item create ivm]]></set-property>
+  <set-property name="description"><![CDATA[ATG Search Merchandising ivm for creating RefinementRepository items]]></set-property>
+  <set-property name="displayName"><![CDATA[properties]]></set-property>
+  <set-property name="view"><![CDATA[aMgrIvRepCreate]]></set-property>
+</add-item>
+
+<add-item item-descriptor="formHandler" id="aMgrFhRefinementAssets">
+  <set-property name="name"><![CDATA[ATG Search Merchandising RefinementRepository Asset Form Handler]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager default form handler for dimensionFolder/searchConfig items]]></set-property>
+  <set-property name="path"><![CDATA[/atg/web/assetmanager/editor/CreateRefinementAssetFormHandler]]></set-property>
+  <set-property name="attributes"><![CDATA[containerPathProperty=aMgrAvRefineAssetCreateCtr,assetTypeProperty=aMgrAvRefineAssetCreateType]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvRefineAssetCreateCtr">
+  <set-property name="value"><![CDATA[repositoryPathName]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvRefineAssetCreateType">
+  <set-property name="value"><![CDATA[itemDescriptorName]]></set-property>
+</add-item>
+
+<add-item item-descriptor="formHandler" id="aMgrFhSearchConfigAssets">
+  <set-property name="name"><![CDATA[ATG Search Merchandising SearchConfig Asset Form Handler]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager default form handler for searchConfig items]]></set-property>
+  <set-property name="path"><![CDATA[/atg/web/assetmanager/editor/CreateSearchConfigAssetFormHandler]]></set-property>
+  <set-property name="attributes"><![CDATA[containerPathProperty=aMgrAvConfigAssetCreateCtr,assetTypeProperty=aMgrAvConfigAssetCreateType]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvConfigAssetCreateCtr">
+  <set-property name="value"><![CDATA[repositoryPathName]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrAvConfigAssetCreateType">
+  <set-property name="value"><![CDATA[itemDescriptorName]]></set-property>
+</add-item>
+
+<!-- ======================================================================= -->
+<!-- Asset Picker Configuration                                              -->
+<!-- ======================================================================= -->
+
+<add-item item-descriptor="itemMapping" id="aMgrImAPBaseSearchConfigList">
+  <set-property name="name"><![CDATA[*]]></set-property>
+  <set-property name="description"><![CDATA[baseSearchConfig itemMapping for AssetManager asset picker]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmPickSearch]]></set-property>
+  <set-property name="itemPath"><![CDATA[/atg/search/repository/RefinementRepository]]></set-property>
+  <set-property name="itemName"><![CDATA[baseSearchConfig]]></set-property>
+  <set-property name="formHandler"><![CDATA[aMgrFhRep]]></set-property>
+  <set-property name="viewMappings"><![CDATA[aMgrIvmAPBaseSearchConfigList]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemViewMapping" id="aMgrIvmAPBaseSearchConfigList">
+  <set-property name="name"><![CDATA[baseSearchConfig Asset Picker]]></set-property>
+  <set-property name="description"><![CDATA[baseSearchConfig Asset Picker ItemViewMapping]]></set-property>
+  <set-property name="displayName"><![CDATA[List]]></set-property>
+  <set-property name="view"><![CDATA[aMgrIvAPList]]></set-property>
+</add-item>
+
+<!-- ======================================================================= -->
+<!-- CA View mappings for base/search configs                                -->
+<!-- ======================================================================= -->
+
+<add-item item-descriptor="itemMapping" id="caImEditBaseSearchConfig">
+  <set-property name="name"><![CDATA[*]]></set-property>
+  <set-property name="description"><![CDATA[ATG CA editable mapping for base search configs]]></set-property>
+  <set-property name="mode"><![CDATA[2]]></set-property>
+  <set-property name="itemPath"><![CDATA[/atg/search/repository/RefinementRepository]]></set-property>
+  <set-property name="itemName"><![CDATA[baseSearchConfig]]></set-property>
+  <set-property name="formHandler"><![CDATA[1]]></set-property>
+  <set-property name="viewMappings"><![CDATA[caIvmBaseSearchConfigGeneralEdit]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemMapping" id="caImViewBaseSearchConfig">
+  <set-property name="name"><![CDATA[*]]></set-property>
+  <set-property name="description"><![CDATA[ATG CA viewable mapping for base search configs]]></set-property>
+  <set-property name="mode"><![CDATA[1]]></set-property>
+  <set-property name="itemPath"><![CDATA[/atg/search/repository/RefinementRepository]]></set-property>
+  <set-property name="itemName"><![CDATA[baseSearchConfig]]></set-property>
+  <set-property name="formHandler"><![CDATA[1]]></set-property>
+  <set-property name="viewMappings"><![CDATA[caIvmBaseSearchConfigGeneralEdit]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemViewMapping" id="caIvmBaseSearchConfigGeneralEdit">
+  <set-property name="name"><![CDATA[CA base search config General edit]]></set-property>
+  <set-property name="description"><![CDATA[CA base search config General edit]]></set-property>
+  <set-property name="displayName"><![CDATA[Base Search Configuration]]></set-property>
+  <set-property name="view"><![CDATA[2]]></set-property>
+  <set-property name="propertyMappings"><![CDATA[derivedRankingMethodName=caPvmBSCDerRankingMethodV]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewMapping" id="caPvmBSCDerRankingMethodV">
+  <set-property name="description"><![CDATA[CA baseSearchConfig derivedRankingMethodName property viewer]]></set-property>
+  <set-property name="propertyView"><![CDATA[ca_hidden]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemMapping" id="caImEditSearchConfig">
+  <set-property name="name"><![CDATA[*]]></set-property>
+  <set-property name="description"><![CDATA[ATG CA editable mapping for search configs]]></set-property>
+  <set-property name="mode"><![CDATA[2]]></set-property>
+  <set-property name="itemPath"><![CDATA[/atg/search/repository/RefinementRepository]]></set-property>
+  <set-property name="itemName"><![CDATA[searchConfig]]></set-property>
+  <set-property name="formHandler"><![CDATA[1]]></set-property>
+  <set-property name="viewMappings"><![CDATA[caIvmSearchConfigGeneralEdit]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemMapping" id="caImViewSearchConfig">
+  <set-property name="name"><![CDATA[*]]></set-property>
+  <set-property name="description"><![CDATA[ATG CA viewable mapping for search configs]]></set-property>
+  <set-property name="mode"><![CDATA[1]]></set-property>
+  <set-property name="itemPath"><![CDATA[/atg/search/repository/RefinementRepository]]></set-property>
+  <set-property name="itemName"><![CDATA[searchConfig]]></set-property>
+  <set-property name="formHandler"><![CDATA[1]]></set-property>
+  <set-property name="viewMappings"><![CDATA[caIvmSearchConfigGeneralEdit]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemViewMapping" id="caIvmSearchConfigGeneralEdit">
+  <set-property name="name"><![CDATA[CA search config General edit]]></set-property>
+  <set-property name="description"><![CDATA[CA search config General edit]]></set-property>
+  <set-property name="displayName"><![CDATA[Search Configuration]]></set-property>
+  <set-property name="view"><![CDATA[2]]></set-property>
+  <set-property name="propertyMappings"><![CDATA[derivedRankingMethodName=caPvmSCDerRankingMethodV]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewMapping" id="caPvmSCDerRankingMethodV">
+  <set-property name="description"><![CDATA[CA searchConfig derivedRankingMethodName property viewer]]></set-property>
+  <set-property name="propertyView"><![CDATA[ca_hidden]]></set-property>
+</add-item>
+
+</import-items>
+
+</gsa-template>
+<!-- @version $Id: //product/AssetUI/version/10.0.3/Search/src/install/data/viewmapping.xml#2 $$Change: 651448 $ -->

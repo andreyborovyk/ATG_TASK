@@ -1,0 +1,82 @@
+<HTML> <HEAD>
+<TITLE>Warning</TITLE>
+</HEAD>
+
+<importbean bean="/atg/commerce/jdbc/ProductCatalogCopierForm">
+
+<body BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="../images/dcsadminbanner.gif" ALT="Dynamo Commerce Administration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a href="../index.jhtml">Commerce</a>/
+<a href="index.jhtml">ProductCatalog-PriceLists</a>/<a href="CopyCatalog.jhtml">Copy</a><p>
+
+<blockquote>
+
+<H2>About to Copy</H2>
+
+<droplet bean="/atg/dynamo/droplet/IsNull">
+  <param name="value" value="bean:ProductCatalogCopierForm.DBCopier"/>
+  <oparam name="true">
+    <p><font color=cc0000><STRONG>ERROR! </STRONG></font>The DBCopier at <code>
+    /atg/commerce/jdbc/ProductCatalogCopierForm.DBCopier</code> is not defined.
+    You will not be able to continue.  Please verify your configuration.    
+  </oparam>
+  <oparam name="false">
+    <font color=cc0000><STRONG>Warning! </STRONG></font>Continuing with
+    this operation will destroy data in your destination database.  Please
+    make sure the destination you have chosen is correct.
+
+    <form action="CopyWarning.jhtml" method=POST>
+    <input type="hidden" bean="ProductCatalogCopierForm.successURL" value="CopyFinished.jhtml">
+    <input type="hidden" bean="ProductCatalogCopierForm.errorURL" value="CopyFinished.jhtml">
+    <input type="hidden" bean="ProductCatalogCopierForm.sourceServer" value="param:sourceServer">
+    <input type="hidden" bean="ProductCatalogCopierForm.sourceUser" value="param:sourceUser">
+    <input type="hidden" bean="ProductCatalogCopierForm.sourcePassword" value="param:sourcePassword">
+    <input type="hidden" bean="ProductCatalogCopierForm.destinationServer" value="param:destinationServer">
+    <input type="hidden" bean="ProductCatalogCopierForm.destinationUser" value="param:destinationUser">
+    <input type="hidden" bean="ProductCatalogCopierForm.destinationPassword" value="param:destinationPassword">
+
+    <h3>Source</h3>
+    <table>
+      <tr>
+	<td>Server name: </td>
+	<td><valueof param="sourceServer"></valueof></td>
+      </tr>
+      <tr>
+	<td>Username:</td>
+	<td><valueof param="sourceUser"></valueof></td>
+      </tr>
+      <tr>
+	<td>Password:</td>
+	<td>******</td>
+      </tr>
+    </table>
+    <br>
+    <h3>Destination</h3>
+    <table>
+      <tr>
+	<td>Server name: </td>
+	<td><valueof param="destinationServer"></valueof></td>
+      </tr>
+      <tr>
+	<td>Username:</td>
+	<td><valueof param="destinationUser"></valueof></td>
+      </tr>
+      <tr>
+	<td>Password:</td>
+	<td>******</td>
+      </tr>
+    </table>
+    <br>
+    <b>If you are absolutely sure that this configuration is correct, press "Continue".</b>
+    <br>
+    <input type=submit bean="ProductCatalogCopierForm.copy" value="Continue"><br>
+    <p>This could take a few minutes.
+    </form>
+  </oparam>
+</droplet>
+
+</BODY> </HTML>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/DCS/admin/atg/commerce/admin/en/catalog/CopyWarning.jhtml#2 $$Change: 651448 $*/</java>
+

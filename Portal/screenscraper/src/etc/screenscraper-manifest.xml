@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE portal-manifest PUBLIC "-//Art Technology Group, Inc.//DTD Portal Manifest//EN" "http://www.atg.com/dtds/portal/framework/portal_manifest_1.0.dtd">
+
+<portal-manifest name="HTML Screen Scraper" version="1.0" author="ATG Portal Team">
+  
+  <gear-definitions>
+    <gear-definition name="HTML Content Gear" version="1.0" author="ATG Portal Team">
+      <description>HTML Screen Scraper : Renders web content inside a gear</description>
+      
+      <servlet-context>/gear/screenscraper</servlet-context>
+      
+      <dimensions>
+        <dimension name="height">noPreference</dimension>
+        <dimension name="width">noPreference</dimension>
+      </dimensions>
+      
+      <gear-modes>
+      
+        <gear-mode name="content">
+          <display-modes>
+            <display-mode name="shared">
+              <device-output name="html">/html/sharedScreenScraper.jsp</device-output>
+            </display-mode>
+  
+            <display-mode name="full">
+              <device-output name="html">/html/fullScreenScraper.jsp</device-output>
+            </display-mode>
+          </display-modes>
+        </gear-mode>
+        
+        <gear-mode name="about">
+          <display-modes>
+            <display-mode name="shared">
+              <device-output name="html">/html/aboutScreenScraper.jsp</device-output>
+            </display-mode>
+            <display-mode name="full">
+              <device-output name="html">/html/aboutScreenScraper.jsp</device-output>
+            </display-mode>
+          </display-modes>
+        </gear-mode>
+        
+        <gear-mode name="instanceConfig">
+          <display-modes>
+            <display-mode name="full">
+              <device-output name="html">/html/admin/instanceConfig.jsp</device-output>
+            </display-mode>
+          </display-modes>
+        </gear-mode>
+      </gear-modes>
+      
+      <instance-parameters>
+        <parameter name="resourceBundleName" >
+          <default-value>
+            atg.portal.gear.screenscraper.ScreenscraperResources
+           </default-value>
+        </parameter>
+      </instance-parameters>
+
+       <alerts>
+        <alert-message name="SharedModeURLChangedMessage">
+          <message-type>atg.portal.gear.screenscraper.SharedModeURLChangedMessage</message-type>
+          <default-value>yes_locked</default-value>
+          <resource-bundle>atg.portal.gear.screenscraper.SharedModeURLChangedResource</resource-bundle>
+        </alert-message>
+         
+        <alert-message name="FullModeURLChangedMessage">
+          <message-type>atg.portal.gear.screenscraper.FullModeURLChangedMessage</message-type>
+          <default-value>yes_locked</default-value>
+          <resource-bundle>atg.portal.gear.screenscraper.FullModeURLChangedResource</resource-bundle>
+        </alert-message>
+       </alerts>
+
+      </gear-definition>
+  </gear-definitions>
+</portal-manifest>
+<!-- @version $Id: //app/portal/version/10.0.3/screenscraper/etc/screenscraper-manifest.xml#2 $$Change: 651448 $ -->

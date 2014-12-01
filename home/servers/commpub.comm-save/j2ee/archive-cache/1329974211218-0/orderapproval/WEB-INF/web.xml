@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+  <display-name>Order Approval Gear</display-name>
+  <description>Order Approval Gear is used to display orders that need to be approved</description>
+
+  <context-param>
+    <param-name>atg.session.parentContextName</param-name>
+    <param-value>/dyn</param-value>
+    <description>
+      The servlet context of the parent web application.
+    </description>
+  </context-param>
+
+  <servlet>
+    <servlet-name>Nucleus</servlet-name>
+    <servlet-class>atg.nucleus.servlet.NucleusServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <taglib>
+    <taglib-uri>/paf-taglib</taglib-uri>
+    <taglib-location>/WEB-INF/pafTaglib1_0.tld</taglib-location>
+  </taglib>
+
+  <taglib>
+    <taglib-uri>/core-taglib</taglib-uri>
+    <taglib-location>/WEB-INF/coreTaglib1_0.tld</taglib-location>
+  </taglib>
+
+  <taglib>
+    <taglib-uri>/dsp</taglib-uri>
+    <taglib-location>/WEB-INF/dspjspTaglib1_0.tld</taglib-location>
+  </taglib>
+
+  <taglib>
+    <taglib-uri>/jakarta-i18n-1.0</taglib-uri>
+    <taglib-location>/WEB-INF/i18n.tld</taglib-location>
+  </taglib>
+
+</web-app>
+<!-- @version $Id: //product/B2BCommerce/version/10.0.3/gears/OrderApproval/orderapproval.war/WEB-INF/web.xml#2 $$Change: 651448 $ -->

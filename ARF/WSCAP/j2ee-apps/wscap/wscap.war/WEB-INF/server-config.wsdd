@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+ <globalConfiguration>
+  <parameter name="sendMultiRefs" value="true"/>
+  <parameter name="disablePrettyXML" value="true"/>
+  <parameter name="adminPassword" value="admin"/>
+  <parameter name="dotNetSoapEncFix" value="true"/>
+  <parameter name="enableNamespacePrefixOptimization" value="true"/>
+  <parameter name="sendXMLDeclaration" value="true"/>
+  <parameter name="attachments.implementation" value="org.apache.axis.attachments.AttachmentsImpl"/>
+  <parameter name="sendXsiTypes" value="true"/>
+  <requestFlow>
+   <handler type="java:org.apache.axis.handlers.JWSHandler">
+    <parameter name="scope" value="session"/>
+   </handler>
+   <handler type="java:org.apache.axis.handlers.JWSHandler">
+    <parameter name="scope" value="request"/>
+    <parameter name="extension" value=".jwr"/>
+   </handler>
+  </requestFlow>
+ </globalConfiguration>
+ <handler name="LocalResponder" type="java:org.apache.axis.transport.local.LocalResponder"/>
+ <handler name="URLMapper" type="java:org.apache.axis.handlers.http.URLMapper"/>
+ <handler name="Authenticate" type="java:org.apache.axis.handlers.SimpleAuthenticationHandler"/>
+ <service name="AdminService" provider="java:MSG">
+  <parameter name="allowedMethods" value="AdminService"/>
+  <parameter name="enableRemoteAdmin" value="true"/>
+  <parameter name="className" value="org.apache.axis.utils.Admin"/>
+  <namespace>http://xml.apache.org/axis/wsdd/</namespace>
+ </service>
+ <service name="Version" provider="java:RPC">
+  <parameter name="allowedMethods" value="getVersion"/>
+  <parameter name="className" value="org.apache.axis.Version"/>
+ </service>
+ <service name="wscapSOAP" provider="java:RPC" use="literal">
+  <parameter name="allowedMethods" value="*"/>
+  <parameter name="typeMappingVersion" value="1.2"/>
+  <parameter name="wsdlPortType" value="wscap"/>
+  <parameter name="className" value="atg.wscap.WscapSOAPSkeleton"/>
+  <parameter name="wsdlServicePort" value="wscapSOAP"/>
+  <parameter name="wsdlTargetNamespace" value="http://atg/wscap/"/>
+  <parameter name="wsdlServiceElement" value="wscap"/>
+  <parameter name="schemaUnqualified" value="http://atg/wscap/"/>
+  <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns1:QueryOption" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:atg.wscap.QueryOption" xmlns:ns1="http://atg/wscap/"/>
+  <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns3:Visa" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:atg.wscap.Visa" xmlns:ns3="http://atg/wscap/"/>
+  <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns4:QueryResults" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:atg.wscap.QueryResults" xmlns:ns4="http://atg/wscap/"/>
+  <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns5:SearchExpression" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:atg.wscap.SearchExpression" xmlns:ns5="http://atg/wscap/"/>
+  <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns6:Group" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:atg.wscap.Group" xmlns:ns6="http://atg/wscap/"/>
+  <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns7:SortProperty" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:atg.wscap.SortProperty" xmlns:ns7="http://atg/wscap/"/>
+  <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns8:SearchFilter" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:atg.wscap.SearchFilter" xmlns:ns8="http://atg/wscap/"/>
+  <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns9:Query" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:atg.wscap.Query" xmlns:ns9="http://atg/wscap/"/>
+  <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns10:SearchStep" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:atg.wscap.SearchStep" xmlns:ns10="http://atg/wscap/"/>
+  <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns11:UiClass" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:atg.wscap.UiClass" xmlns:ns11="http://atg/wscap/"/>
+  <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns12:BaseClass" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:atg.wscap.BaseClass" xmlns:ns12="http://atg/wscap/"/>
+  <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns14:Role" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:atg.wscap.Role" xmlns:ns14="http://atg/wscap/"/>
+  <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns15:RefProperty" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:atg.wscap.RefProperty" xmlns:ns15="http://atg/wscap/"/>
+  <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns16:Account" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:atg.wscap.Account" xmlns:ns16="http://atg/wscap/"/>
+ <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns17:SearchFilterConditionalExpresssion" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:atg.wscap.SearchFilterConditionalExpresssion" xmlns:ns17="http://atg/wscap/"/>
+ <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns18:SearchFilterFunctionCall" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:atg.wscap.SearchFilterFunctionCall" xmlns:ns18="http://atg/wscap/"/>
+ <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns19:SearchFilterRelationExpresssion" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:atg.wscap.SearchFilterRelationExpresssion" xmlns:ns19="http://atg/wscap/"/>
+ </service>
+ <transport name="http">
+  <requestFlow>
+   <handler type="URLMapper"/>
+   <handler type="java:org.apache.axis.handlers.http.HTTPAuthHandler"/>
+  </requestFlow>
+  <parameter name="qs:list" value="org.apache.axis.transport.http.QSListHandler"/>
+  <parameter name="qs:wsdl" value="org.apache.axis.transport.http.QSWSDLHandler"/>
+  <parameter name="qs.list" value="org.apache.axis.transport.http.QSListHandler"/>
+  <parameter name="qs.method" value="org.apache.axis.transport.http.QSMethodHandler"/>
+  <parameter name="qs:method" value="org.apache.axis.transport.http.QSMethodHandler"/>
+  <parameter name="qs.wsdl" value="org.apache.axis.transport.http.QSWSDLHandler"/>
+ </transport>
+ <transport name="local">
+  <responseFlow>
+   <handler type="LocalResponder"/>
+  </responseFlow>
+ </transport>
+</deployment>

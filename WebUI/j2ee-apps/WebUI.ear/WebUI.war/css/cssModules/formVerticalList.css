@@ -1,0 +1,63 @@
+/* MODULE: Form Vertical List
+   DESCRIPTION: Used within a form to list multiple options in a vertical list.
+   This is the prefered method as opposed to using <br /> tags after each option.
+------------------------------------------------------------------------------*/
+
+ 
+/* Form Veritcal List [Core]
+** DESCRIPTION: Core definition that creates a vertical list without bullets.
+------------------------------------------------------------------------------*/
+
+ul.atg_formVerticalList{
+  list-style:none;
+  margin:0;
+  padding:0;
+  }
+ul.atg_formVerticalList li{
+  margin:0 0 10px 0;
+  line-height:1.3;
+  /* IE specific values used in IE 6 stylesheet (formVerticalList_IE6.css) */
+  }
+
+
+/* Form Veritcal List [Selection Bullets]
+** DESCRIPTION: Use selection elements as bullets.
+** USAGE: Typically used within a form to list multiple options in a vertical list
+          and offering the ability to select between the options.
+** KNOWN ISSUES: Bullets contained in list items with nested elements are not
+                 clickable in Safari.
+------------------------------------------------------------------------------*/
+
+ul.atg_formVerticalList.atg_selectionBullets li {
+	padding-left: 20px;
+  /* IE specific values used in IE 6 stylesheet (formVerticalList_IE6.css) */
+}
+ul.atg_formVerticalList.selectionBullets li input.atg_radioBullet,
+ul.atg_formVerticalList.selectionBullets li input.atg_checkboxBullet{
+  margin-left:-20px;
+  margin-top:0;
+  float:left;
+  /* IE specific values used in IE 6 stylesheet (formVerticalList_IE6.css) */
+  }
+
+
+/* Form Veritcal List [Nested Elements]
+** DESCRIPTION: Defines indentation rules for items nested within the list.
+------------------------------------------------------------------------------*/
+
+ul.atg_formVerticalList li ul{
+  list-style:none;
+  margin:10px 0 10px 10px;
+  padding:0;
+  /* IE specific values used in IE 6 stylesheet (formVerticalList_IE6.css) */
+  }
+ul.atg_formVerticalList li ul li{
+  margin:0 0 7px 0;
+  }
+ul.atg_formVerticalList li table{
+  margin:10px 0 10px 30px;
+  }
+ul.atg_formVerticalList li .atg_dataTableActionsFooter{
+  margin:5px 0 5px 30px;
+  /* IE specific values used in IE 6 stylesheet (formVerticalList_IE6.css) */
+  }

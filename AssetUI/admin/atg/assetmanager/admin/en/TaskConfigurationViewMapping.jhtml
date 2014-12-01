@@ -1,0 +1,48 @@
+<java>
+  // Display properties of all the ViewMapping settings for one task configuration
+  //
+  // Input parameter:
+  //   task - a TaskConfiguration object
+</java>
+
+<importbean bean="/atg/dynamo/droplet/ForEach">
+
+<blockquote>
+  <droplet bean="ForEach">
+    <param name="array" value="param:task.viewMappings">
+    <param name="elementName" value="view">
+    <oparam name="outputStart">
+      <table>
+    </oparam>
+    <oparam name="output">
+      <tr>
+      <td colspan=2><b>ViewMapping mode <valueof param="key"/></b></td>
+      </tr><tr>
+      <td valign=top>item type</td><td valign=top><valueof param="view.defaultItemMapping.itemType"/> (default)</td>
+      </tr><tr>
+      <td valign=top>ItemMapping name</td><td valign=top><valueof param="view.defaultItemMapping.itemMappingName"/></td>
+      </tr><tr>
+      <td valign=top>new ViewMapping mode</td><td valign=top><valueof param="view.defaultItemMapping.viewMappingMode"/></td>
+      </tr>
+      <droplet bean="ForEach">
+        <param name="array" value="param:view.itemMappings">
+        <param name="elementName" value="item">
+        <oparam name="output">
+          <tr>
+          <td valign=top>item type</td><td valign=top><valueof param="item.itemType"/></td>
+          </tr><tr>
+          <td valign=top>ItemMapping name</td><td valign=top><valueof param="item.itemMappingName"/></td>
+          </tr><tr>
+          <td valign=top>new ViewMapping mode</td><td valign=top><valueof param="item.viewMappingMode"/></td>
+          </tr>
+        </oparam>
+      </droplet>
+    </oparam>
+    <oparam name="outputEnd">
+      </table>
+    </oparam>
+  </droplet>
+</blockquote>
+
+<%-- @version $Id: //product/AssetUI/version/10.0.3/src/admin/atg/assetmanager/admin/en/TaskConfigurationViewMapping.jhtml#2 $$Change: 651448 $ --%>
+<java>/* @version $Id: //product/AssetUI/version/10.0.3/src/admin/atg/assetmanager/admin/en/TaskConfigurationViewMapping.jhtml#2 $$Change: 651448 $*/</java>

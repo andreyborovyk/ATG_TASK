@@ -1,0 +1,49 @@
+<java>
+  // Display properties of one task configuration other than its tabs
+  //
+  // Input parameter:
+  //   task - a TaskConfiguration object
+  //   showNames - "true" to display workflow and task names
+</java>
+
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/Switch">
+
+<table>
+  <droplet bean="Switch">
+    <param name="value" value="param:showNames">
+    <oparam name="true">
+      <tr>
+      <td valign=top>workflow name</td><td valign=top><valueof param="task.workflowName"/></td>
+      </tr><tr>
+      <td valign=top>task name</td><td valign=top><valueof param="task.taskName"/></td>
+      </tr>
+    </oparam>
+  </droplet>
+  <tr>
+  <td valign=top>resource bundle</td><td valign=top><valueof param="task.resourceBundle"/></td>
+  </tr><tr>
+  <td valign=top>page</td><td valign=top><valueof param="task.page"/></td>
+  </tr><tr>
+  <td valign=top>asset editor page</td><td valign=top><valueof param="task.editorConfiguration.page"/></td>
+  </tr><tr>
+  <td valign=top>asset editor webAppName</td><td valign=top><valueof param="task.editorConfiguration.webAppName"/></td>
+  </tr><tr>
+  <td valign=top>asset editor resource bundle</td><td valign=top><valueof param="task.editorConfiguration.resourceBundle"/></td>
+  </tr><tr>
+  <td valign=top valign=top>operations</td><td valign=top><valueof param="task.operations"/></td>
+  </tr><tr>
+  <td valign=top>tab order</td><td valign=top><valueof param="task.tabIds"/></td>
+  </tr><tr>
+  <td valign=top>initial tab</td><td valign=top><valueof param="task.initialTab"/></td>
+  </tr>
+</table>
+<droplet src="TaskConfigurationViewMapping.jhtml">
+  <param name="task" value="param:task">
+</droplet>
+<droplet src="TaskConfigurationTabs.jhtml">
+  <param name="task" value="param:task">
+</droplet>
+
+<%-- @version $Id: //product/AssetUI/version/10.0.3/src/admin/atg/assetmanager/admin/en/TaskConfigurationTask.jhtml#2 $$Change: 651448 $ --%>
+<java>/* @version $Id: //product/AssetUI/version/10.0.3/src/admin/atg/assetmanager/admin/en/TaskConfigurationTask.jhtml#2 $$Change: 651448 $*/</java>

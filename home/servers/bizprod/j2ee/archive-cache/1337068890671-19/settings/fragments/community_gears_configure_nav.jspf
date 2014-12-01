@@ -1,0 +1,87 @@
+<%@ page import="java.io.*,java.util.*,atg.portal.servlet.*,atg.portal.framework.*" errorPage="/error.jsp"%>
+
+<%
+  //Request/Response
+  PortalServletResponse portalServletResponse = 
+     (PortalServletResponse)request.getAttribute(Attribute.PORTALSERVLETRESPONSE);
+  PortalServletRequest portalServletRequest = 
+     (PortalServletRequest)request.getAttribute(Attribute.PORTALSERVLETREQUEST);
+%>
+
+<i18n:message id="i18n_link_basic"      key="community_gears_config_header_link_basic"/>
+<i18n:message id="i18n_link_sharing"    key="community_gears_config_header_link_sharing"/>
+<i18n:message id="i18n_link_additional" key="community_gears_config_header_link_additional"/>
+
+<core:CreateUrl id="EgearsURL"      url="/portal/settings/community_gears.jsp">
+  <paf:encodeUrlParam param="paf_page_url"  value='<%=request.getParameter("paf_page_url")%>'/>
+  <paf:encodeUrlParam param="paf_page_id"  value='<%=request.getParameter("paf_page_id")%>'/>
+  <core:UrlParam param="paf_community_id"  value='<%=request.getParameter("paf_community_id")%>'/>
+  <core:UrlParam param="paf_gear_id"  value='<%=request.getParameter("paf_gear_id")%>'/>
+
+
+  
+<table cellpadding="1" cellspacing="0" border="0" bgcolor="#666666" width="98%"><tr><td>
+<table cellpadding="4" cellspacing="0" border="0" bgcolor="#BAD8EC" width="100%"><tr><td>
+<font class="pageheader_edit">
+<img src='<%= response.encodeURL("images/write.gif")%>' height="15" width="28" alt="" border="0"> <i18n:message key="community_pages_gears_title"  />&nbsp;:&nbsp;<%=gearName%></font>
+</td></tr></table>
+</td></tr></table>
+
+<%
+ String basicStyle   = (callingPage.equals("basic"))   ?  
+     " style='text-decoration:none;color:#000000;font-weight:700'" :" class='smaller'";
+ String sharingStyle = (callingPage.equals("sharing")) ?  
+     " style='text-decoration:none;color:#000000;font-weight:700'" :" class='smaller'";
+ String additionalStyle =  (callingPage.equals("additional")) ?  
+     " style='text-decoration:none;color:#000000;font-weight:700'" :" class='smaller'";
+%>
+
+<table cellpadding="4" cellspacing="0" border="0" bgcolor="#96C1DF" width="98%">
+<tr>
+<td NOWRAP><nobr><font class="smaller">&nbsp;&nbsp;
+<dsp:a href='<%= portalServletResponse.encodePortalURL(EgearsURL.getNewUrl()+"&mode=7")%>' target="_top" ><font <%= basicStyle %>  ><%=i18n_link_basic%></font></dsp:a>
+</font>
+
+
+<core:If value="<%=gearItem.isShared()%>"> 
+<nobr><font class="smaller">
+<%= divider %>
+ <dsp:a href='<%= portalServletResponse.encodePortalURL(EgearsURL.getNewUrl()+"&mode=8")%>' target="_top" ><font <%= sharingStyle%> ><%=i18n_link_sharing%></font></dsp:a>
+</font></nobr>
+</core:If>
+
+<core:If value='<%=gearItem.hasMode(atg.portal.framework.GearMode.GEARMODE_INSTANCECONFIG,atg.portal.framework.DisplayMode.DISPLAYMODE_FULL,"htmlURL")%>' >
+
+<nobr><font class="smaller">
+
+  <core:CreateUrl id="returnURL" url="community_gears.jsp">
+       <core:UrlParam param="mode" value="7"/>
+       <core:UrlParam param="paf_community_id"  value="<%=dsp_community_id%>"/>
+       <core:UrlParam param="paf_page_id"       value="<%=dsp_page_id%>"/>
+       <paf:encodeUrlParam param="paf_page_url" value="<%=dsp_page_url%>"/>
+       <core:UrlParam param="paf_gear_id"       value="<%=dsp_gear_id%>"/>
+
+ <core:CreateUrl id="editGearUrlContent" url="community_gears_configure_additional.jsp">
+                  <core:UrlParam param="paf_page_id"       value="<%=dsp_page_id%>"/>
+                  <paf:encodeUrlParam   param="paf_page_url" value="<%=dsp_page_url%>"/> 
+                  <core:UrlParam param="paf_community_id"  value="<%=dsp_community_id%>"/>
+                  <core:UrlParam param="paf_dm"            value="full"/>
+                  <core:UrlParam param="paf_gm"            value="instanceConfig"/>
+                  <paf:encodeUrlParam param="paf_success_url" value="<%= returnURL.getNewUrl()%>"/>
+                  <core:UrlParam param="paf_gear_id"       value="<%=dsp_gear_id%>"/>
+
+<%= divider %>
+<dsp:a href='<%= portalServletResponse.encodePortalURL(editGearUrlContent.getNewUrl()) %>' target="_top"><font <%= additionalStyle %>><%=i18n_link_additional%></font></dsp:a>
+
+</font>
+
+  </core:CreateUrl>
+  </core:CreateUrl>
+</core:If>
+</td>
+<td ><font size="-3">&nbsp;</font></td>
+</tr>
+</table>
+<img src="<%= response.encodeURL("images/clear.gif")%>" height="1" width="1" border="0" alt="" /><br />
+</core:CreateUrl>
+<%-- @version $Id: //app/portal/version/10.0.3/paf/settings.war/fragments/community_gears_configure_nav.jspf#2 $$Change: 651448 $--%>

@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE gsa-template
+        PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN"
+        "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template>
+
+  <header>
+    <name>EPublishing Workflow</name>
+    <author>Natalya Hung</author>
+    <version>$Id: //product/Publishing/version/10.0.3/pws/config/atg/epub/workflow.xml#2 $$Change: 651448 $</version>
+  </header>
+
+  <!-- ==================================================
+  ++   Individual Workflow Instance
+  =================================================== -->
+  <item-descriptor name="individualWorkflow" expert="true" query-cache-size="100"
+                   display-name-resource="itemDescriptorIndividualWorkflow">
+    <attribute name="resourceBundle" value="atg.epub.PublishingRepositoryResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryContextPriority" value="20"/>
+    <attribute name="categoryInfoPriority" value="30"/>
+
+    <table name="epub_ind_workflow" type="primary" id-column-name="id">
+      <property name="id" category-resource="categoryInfo" display-name-resource="id">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="processName" data-type="string" column-name="workflow_name"
+                category-resource="categoryBasics" display-name-resource="workflowName">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="modificationTime" data-type="long" column-name="modification_time"
+                category-resource="categoryInfo" display-name-resource="modificationTime">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="segmentName" data-type="string" column-name="segment_name"
+                category-resource="categoryBasics" display-name-resource="segmentName">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="creatorId" data-type="string" column-name="creator_id"
+                category-resource="categoryBasics" display-name-resource="creatorId">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="state" data-type="string"
+                category-resource="categoryBasics" display-name-resource="state">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="subject" item-type="process" column-name="process_id" required="true"
+                category-resource="categoryBasics" display-name-resource="process">
+         <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="numTransitionRetries" data-type="int" default="0" column-name="num_retries"
+                category-resource="categoryBasics" display-name-resource="numTransitionRetries">
+         <attribute name="propertySortPriority" value="30"/>
+      </property>
+    </table>
+
+    <table name="epub_workflow_strs" type="multi" id-column-name="id" multi-column-name="tag">
+      <property name="contextStrings" data-type="map" component-data-type="string" column-name="context_str"
+                category-resource="categoryContext" display-name-resource="contextStrings">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+    </table>
+    <table name="epub_workflow_bls" type="multi" id-column-name="id" multi-column-name="tag">
+      <property name="contextBooleans" data-type="map" component-data-type="boolean" column-name="context_bool"
+                category-resource="categoryContext" display-name-resource="contextBooleans">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+    </table>
+    <table name="epub_workflow_lngs" type="multi" id-column-name="id" multi-column-name="tag">
+      <property name="contextLongs" data-type="map" component-data-type="long" column-name="context_long"
+                category-resource="categoryContext" display-name-resource="contextLongs">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+    </table>
+    <table name="epub_workflow_dbls" type="multi" id-column-name="id" multi-column-name="tag">
+      <property name="contextDoubles" data-type="map" component-data-type="double" column-name="context_dbl"
+                category-resource="categoryContext" display-name-resource="contextDoubles">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+    </table>
+    <table name="epub_workflow_dats" type="multi" id-column-name="id" multi-column-name="tag">
+      <property name="contextDates" data-type="map" component-data-type="date" column-name="context_date"
+                category-resource="categoryContext" display-name-resource="contextDates">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+    </table>
+    <table name="epub_workflow_ris" type="multi" id-column-name="id" multi-column-name="tag">
+      <property name="contextItemReferences" data-type="map" component-data-type="string" column-name="context_item"
+                category-resource="categoryContext" display-name-resource="contextItemReferences">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+    </table>
+    <property name="contextItems" property-type="atg.repository.ReferencedValuePropertyDescriptor"
+              category-resource="categoryContext" display-name-resource="contextItems">
+      <attribute name="propertySortPriority" value="10"/>
+      <attribute name="referenceProperty" value="contextItemReferences"/>
+      <attribute name="referencedValueDataType" value="atg.repository.RepositoryItem"/>
+    </property>
+    <table name="epub_workflow_vfs" type="multi" id-column-name="id" multi-column-name="tag">
+      <property name="contextFileReferences" data-type="map" component-data-type="string" column-name="context_file"
+                category-resource="categoryContext" display-name-resource="contextFileReferences">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+    </table>
+    <property name="contextFiles" property-type="atg.repository.ReferencedValuePropertyDescriptor"
+              category-resource="categoryContext" display-name-resource="contextFiles">
+      <attribute name="propertySortPriority" value="10"/>
+      <attribute name="referenceProperty" value="contextFileReferences"/>
+      <attribute name="referencedValueDataType" value="atg.vfs.VirtualFile"/>
+    </property>
+  </item-descriptor>
+
+  <!-- ==================================================
+  ++   Collective Workflow Instance
+  =================================================== -->
+  <item-descriptor name="collectiveWorkflow" expert="true" query-cache-size="500"
+                   display-name-resource="itemDescriptorCollectiveWorkflow">
+    <attribute name="resourceBundle" value="atg.epub.PublishingRepositoryResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="epub_coll_workflow" type="primary" id-column-name="id">
+      <property name="id" category-resource="categoryInfo" display-name-resource="id">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="processName" data-type="string" column-name="workflow_name"
+                category-resource="categoryBasics" display-name-resource="workflowName">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="modificationTime" data-type="long" column-name="modification_time"
+                category-resource="categoryInfo" display-name-resource="modificationTime">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="segmentName" data-type="string" column-name="segment_name"
+                category-resource="categoryBasics" display-name-resource="segmentName">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="creatorId" data-type="string" column-name="creator_id"
+                category-resource="categoryBasics" display-name-resource="creatorId">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="state" data-type="string"
+                category-resource="categoryBasics" display-name-resource="state">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="numTransitionRetries" data-type="int" default="0" column-name="num_retries"
+                category-resource="categoryBasics" display-name-resource="numTransitionRetries">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ==================================================
+  ++   Workflow Info
+  =================================================== -->
+  <item-descriptor name="workflowInfo" expert="true"
+                   display-name-resource="itemDescriptorWorkflowInfo">
+    <attribute name="resourceBundle" value="atg.epub.PublishingRepositoryResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="epub_workflow_info" type="primary" id-column-name="id">
+      <property name="id" category-resource="categoryInfo" display-name-resource="id">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="processName" data-type="string" column-name="workflow_name"
+                category-resource="categoryBasics" display-name-resource="workflowName">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="processStatus" data-type="enumerated" default="disabled" column-name="workflow_status"
+                category-resource="categoryBasics" display-name-resource="workflowStatus">
+         <attribute name="propertySortPriority" value="20"/>
+         <attribute name="useCodeForValue" value="true"/>
+         <option value="disabled" code="1"/>
+         <option value="running" code="2"/>
+      </property>
+      <property name="modificationTime" data-type="long" column-name="modification_time"
+                category-resource="categoryInfo" display-name-resource="modificationTime">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="creationTime" data-type="long" column-name="creation_time"
+                category-resource="categoryInfo" display-name-resource="creationTime">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="author" data-type="string"
+                category-resource="categoryInfo" display-name-resource="author">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="lastModifiedBy" data-type="string" column-name="last_modified_by"
+                category-resource="categoryInfo" display-name-resource="lastModifiedBy">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="stateMachineVersion" data-type="int" column-name="psm_version"
+                category-resource="categoryBasics" display-name-resource="stateMachineVersion">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="pdl" data-type="binary" column-name="wdl"
+                category-resource="categoryBasics" display-name-resource="wdl">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+    <table name="epub_wf_mig_info" type="multi" id-column-name="workflow_info_id">
+      <property name="migrationInfos" data-type="set" column-name="id"
+                component-item-type="workflowMigrationInfo" cascade="update,delete"
+                category-resource="categoryBasics" display-name-resource="migrationInfos">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ==================================================
+  ++   Workflow Migration Info
+  =================================================== -->
+  <item-descriptor name="workflowMigrationInfo" expert="true"
+                   display-name-resource="itemDescriptorWorkflowMigrationInfo">
+    <attribute name="resourceBundle" value="atg.epub.PublishingRepositoryResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="epub_wf_mig_info" type="primary" id-column-name="id">
+      <property name="id" category-resource="categoryInfo" display-name-resource="id">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="processName" data-type="string" column-name="workflow_name"
+                category-resource="categoryBasics" display-name-resource="workflowName">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="modificationTime" data-type="long" column-name="modification_time"
+                category-resource="categoryInfo" display-name-resource="modificationTime">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="stateMachineVersion" data-type="int" column-name="psm_version"
+                category-resource="categoryBasics" display-name-resource="stateMachineVersion">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="pdl" data-type="binary" column-name="wdl"
+                category-resource="categoryBasics" display-name-resource="wdl">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="migrationStatus" data-type="enumerated" default="inProgress" column-name="migration_status"
+                category-resource="categoryBasics" display-name-resource="migrationStatus">
+         <attribute name="propertySortPriority" value="30"/>
+         <attribute name="useCodeForValue" value="true"/>
+         <option value="inProgress" code="1"/>
+         <option value="done" code="2"/>
+      </property>
+      <property name="processInfo" item-type="workflowInfo" column-name="workflow_info_id" required="true"
+                category-resource="categoryBasics" display-name-resource="workflowInfo">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+    </table>
+    <table name="epub_wf_mg_inf_seg" type="multi" id-column-name="id" multi-column-name="idx">
+      <property name="segmentNames" data-type="list" component-data-type="string" column-name="segment_name"
+                category-resource="categoryBasics" display-name-resource="segmentNames">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ==================================================
+  ++   Workflow Template Info
+  =================================================== -->
+  <item-descriptor name="workflowTemplateInfo" expert="true"
+                   display-name-resource="itemDescriptorWorkflowTemplateInfo">
+    <attribute name="resourceBundle" value="atg.epub.PublishingRepositoryResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="epub_wf_templ_info" type="primary" id-column-name="id">
+      <property name="id" category-resource="categoryInfo" display-name-resource="id">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="templateName" data-type="string" column-name="template_name"
+                category-resource="categoryBasics" display-name-resource="templateName">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="modificationTime" data-type="long" column-name="modification_time"
+                category-resource="categoryInfo" display-name-resource="modificationTime">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="creationTime" data-type="long" column-name="creation_time"
+                category-resource="categoryInfo" display-name-resource="creationTime">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="author" data-type="string"
+                category-resource="categoryInfo" display-name-resource="author">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="lastModifiedBy" data-type="string" column-name="last_modified_by"
+                category-resource="categoryInfo" display-name-resource="lastModifiedBy">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="pdl" data-type="binary" column-name="wdl"
+                category-resource="categoryBasics" display-name-resource="wdl">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ==================================================
+  ++   Collective Workflow Transition
+  =================================================== -->
+  <item-descriptor name="collectiveWorkflowTransition" expert="true"
+                   display-name-resource="itemDescriptorCollectiveWorkflowTransition">
+    <attribute name="resourceBundle" value="atg.epub.PublishingRepositoryResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="epub_wf_coll_trans" type="primary" id-column-name="id">
+      <property name="id" category-resource="categoryInfo" display-name-resource="id">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="processName" data-type="string" column-name="workflow_name"
+                category-resource="categoryBasics" display-name-resource="workflowName">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="modificationTime" data-type="long" column-name="modification_time"
+                category-resource="categoryInfo" display-name-resource="modificationTime">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="serverId" data-type="string" column-name="server_id"
+                category-resource="categoryBasics" display-name-resource="serverId">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="messageBean" data-type="binary" column-name="message_bean"
+                category-resource="categoryBasics" display-name-resource="messageBean">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="eventType" data-type="string" column-name="event_type"
+                category-resource="categoryBasics" display-name-resource="eventType">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="segmentName" data-type="string" column-name="segment_name"
+                category-resource="categoryBasics" display-name-resource="segmentName">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="state" data-type="string"
+                category-resource="categoryBasics" display-name-resource="state">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="collectiveInstance" item-type="collectiveWorkflow" column-name="coll_workflow_id"
+                category-resource="categoryBasics" display-name-resource="collectiveInstance">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="step" data-type="enumerated" default="actions1"
+                category-resource="categoryBasics" display-name-resource="step">
+         <attribute name="propertySortPriority" value="30"/>
+         <attribute name="useCodeForValue" value="true"/>
+         <option value="actions1" code="1"/>
+         <option value="actions2" code="2"/>
+         <option value="nextState1" code="3"/>
+         <option value="nextState2" code="4"/>
+      </property>
+      <property name="count" column-name="current_count" data-type="int"
+                category-resource="categoryBasics" display-name-resource="count">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="lastQueryId" data-type="string" column-name="last_query_id"
+                category-resource="categoryBasics" display-name-resource="lastQueryId">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ==================================================
+  ++   Individual Workflow Transition
+  =================================================== -->
+  <item-descriptor name="individualWorkflowTransition" expert="true"
+                   display-name-resource="itemDescriptorIndividualWorkflowTransition">
+    <attribute name="resourceBundle" value="atg.epub.PublishingRepositoryResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="epub_wf_ind_trans" type="primary" id-column-name="id">
+      <property name="id" category-resource="categoryInfo" display-name-resource="id">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="processName" data-type="string" column-name="workflow_name"
+                category-resource="categoryBasics" display-name-resource="workflowName">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="modificationTime" data-type="long" column-name="modification_time"
+                category-resource="categoryInfo" display-name-resource="modificationTime">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="serverId" data-type="string" column-name="server_id"
+                category-resource="categoryBasics" display-name-resource="serverId">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="messageBean" data-type="binary" column-name="message_bean"
+                category-resource="categoryBasics" display-name-resource="messageBean">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="eventType" data-type="string" column-name="event_type"
+                category-resource="categoryBasics" display-name-resource="eventType">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="segmentName" data-type="string" column-name="segment_name"
+                category-resource="categoryBasics" display-name-resource="segmentName">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="state" data-type="string"
+                category-resource="categoryBasics" display-name-resource="state">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="lastQueryId" data-type="string" column-name="last_query_id"
+                category-resource="categoryBasics" display-name-resource="lastQueryId">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ==================================================
+  ++   Workflow Deletion
+  =================================================== -->
+  <item-descriptor name="workflowDeletion" expert="true"
+                   display-name-resource="itemDescriptorWorkflowDeletion">
+    <attribute name="resourceBundle" value="atg.epub.PublishingRepositoryResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="epub_wf_deletion" type="primary" id-column-name="id">
+      <property name="id" category-resource="categoryInfo" display-name-resource="id">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="processName" data-type="string" column-name="workflow_name"
+                category-resource="categoryBasics" display-name-resource="workflowName">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="modificationTime" data-type="long" column-name="modification_time"
+                category-resource="categoryInfo" display-name-resource="modificationTime">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+    <table name="epub_wf_del_segs" type="multi" id-column-name="id" multi-column-name="idx">
+      <property name="segmentNames" data-type="list" component-data-type="string" column-name="segment_name"
+                category-resource="categoryBasics" display-name-resource="segmentNames">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ==================================================
+  ++   Workflow Migration
+  =================================================== -->
+  <item-descriptor name="workflowMigration" expert="true"
+                   display-name-resource="itemDescriptorWorkflowMigration">
+    <attribute name="resourceBundle" value="atg.epub.PublishingRepositoryResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="epub_wf_migration" type="primary" id-column-name="id">
+      <property name="id" category-resource="categoryInfo" display-name-resource="id">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="processName" data-type="string" column-name="workflow_name"
+                category-resource="categoryBasics" display-name-resource="workflowName">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="oldModificationTime" data-type="long" column-name="old_mod_time"
+                category-resource="categoryBasics" display-name-resource="oldModificationTime">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="newModificationTime" data-type="long" column-name="new_mod_time"
+                category-resource="categoryBasics" display-name-resource="newModificationTime">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="migrationInfo" item-type="workflowMigrationInfo" column-name="migration_info_id"
+                category-resource="categoryBasics" display-name-resource="migrationInfo">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+    </table>
+    <table name="epub_wf_mig_segs" type="multi" id-column-name="id" multi-column-name="idx">
+      <property name="segmentNames" data-type="list" component-data-type="string" column-name="segment_name"
+                category-resource="categoryBasics" display-name-resource="segmentNames">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //product/Publishing/version/10.0.3/pws/config/atg/epub/workflow.xml#2 $$Change: 651448 $ -->

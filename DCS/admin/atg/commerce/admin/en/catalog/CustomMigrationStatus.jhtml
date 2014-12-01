@@ -1,0 +1,70 @@
+<HTML>
+<HEAD>
+<TITLE>Custom To Custom Catalog Migration</TITLE>
+</HEAD>
+
+<importbean bean="/atg/commerce/catalog/custom/CustomCatalogMigrationService">
+
+<body BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="../images/dcsadminbanner.gif" ALT="Dynamo Commerce Administration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a href="../index.jhtml">Commerce</a>/Custom to Custom Catalog Migration<p>
+
+<blockquote>
+
+<H2>Custom To Custom Catalog Migration</H2>
+
+<img src="../../images/bluedot.gif" width=505 height=1><p>
+
+MIGRATION STARTED.  RELOAD THIS PAGE FOR STATUS UPDATES.<P>
+
+<droplet bean="/atg/dynamo/droplet/ForEach">
+  <param name="array" value="bean:CustomCatalogMigrationService.errorMessages">
+  <param name="elementName" value="message">
+  <oparam name="outputStart">
+   ERRORS:<P>
+  </oparam>
+  <oparam name="output">
+   <valueof param="message.messageText"/><BR>
+  </oparam>
+  <oparam name="outputEnd">
+   <p>
+  </oparam>
+</droplet>
+<droplet bean="/atg/dynamo/droplet/ForEach">
+  <param name="array" value="bean:CustomCatalogMigrationService.warningMessages">
+  <param name="elementName" value="message">
+  <oparam name="outputStart">
+   WARNINGS:<P>
+  </oparam>
+  <oparam name="output">
+   <valueof param="message.messageText"/><BR>
+  </oparam>
+  <oparam name="outputEnd">
+   <p>
+  </oparam>
+</droplet>
+<droplet bean="/atg/dynamo/droplet/ForEach">
+  <param name="array" value="bean:CustomCatalogMigrationService.infoMessages">
+  <param name="elementName" value="message">
+  <oparam name="outputStart">
+   INFO:<P>
+  </oparam>
+  <oparam name="output">
+   <valueof param="message.messageText"/><BR>
+  </oparam>
+  <oparam name="outputEnd">
+   <p>
+  </oparam>
+</droplet>
+
+<img src="../images/bluedot.gif" width=505 height=1>
+<p>
+
+</blockquote>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/DCS/admin/atg/commerce/admin/en/catalog/CustomMigrationStatus.jhtml#2 $$Change: 651448 $*/</java>
+

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE repository-admins
+        PUBLIC "-//Art Technology Group, Inc.//DTD Repository Admin Registration//EN"
+        "http://www.atg.com/dtds/ui/dps/admins_1.1.dtd">
+
+<repository-admins>
+
+<custom-admin id="ProfileRepositoryAdmin">
+  <display-name bundle="atg.ui.bizui.PersonalizationToolsResources" resource="profileRepositoryAdmin"/>
+  <profile-repository>true</profile-repository>
+  <priority>40</priority>
+  <admin class="atg.ui.bizui.ProfileRepositoryAdmin"/>
+  <controller>atg/devtools/ProfileControllers.xml</controller>
+  <menu-definition-xuill>atg.ui.bizui.ProfileMenuDefinition</menu-definition-xuill>
+  <privilege>people-profiles-privilege</privilege>
+
+
+  <standard-bean-displays>
+      <bean-display type="media-external" class="atg.ui.repository.MediaExternalEditor">
+        <property name="externalExcludedTableProperties" value="path, version, mimeType, data"/>
+      </bean-display>
+
+      <bean-display type="media-internal-binary" class="atg.ui.repository.MediaInternalBinaryEditor">
+        <property name="internalBinaryExcludedTableProperties" value="path, version, mimeType,data, length,url"/>
+      </bean-display>
+
+      <bean-display type="media-internal-text" class="atg.ui.repository.MediaTextEditor">
+        <property name="internalTextExcludedTableProperties" value="path, version, data, mimeType,length, url"/>
+      </bean-display>
+    </standard-bean-displays>
+
+ <create-bean-displays>
+      <bean-display type="media-external" class="atg.ui.repository.MediaExternalEditor">
+        <property name="externalExcludedTableProperties" value="path, version, mimeType, data"/>
+      </bean-display>
+
+      <bean-display type="media-internal-binary" class="atg.ui.repository.MediaInternalBinaryEditor">
+        <property name="internalBinaryExcludedTableProperties" value="path, version, mimeType,data, length,url"/>
+      </bean-display>
+
+      <bean-display type="media-internal-text" class="atg.ui.repository.MediaTextEditor">
+        <property name="internalTextExcludedTableProperties" value="path, version, data, mimeType,length, url"/>
+      </bean-display>
+    </create-bean-displays>
+
+</custom-admin>
+
+<custom-admin id="IndividualProfileAdmin">
+  <display-name bundle="atg.ui.bizui.PersonalizationToolsResources" resource="individualProfileAdmin"/>
+  <profile-repository>true</profile-repository>
+  <priority>10</priority>
+  <admin class="atg.ui.bizui.IndividualProfileAdmin"/>
+  <controller>atg/devtools/IndividualProfileAdminControllers.xml</controller>
+  <item-type>user</item-type>
+  <menu-definition-xuill>atg.ui.bizui.IndividualProfileAdminMenuDefinition</menu-definition-xuill>
+  <privilege>people-profiles-indiv-privilege</privilege>
+
+</custom-admin>
+
+<custom-admin id="OrganizationAdmin">
+  <display-name bundle="atg.ui.userdirectory.picker.OrganizationAppResources" resource="organizations" />
+  <profile-repository>true</profile-repository>
+  <!-- <repository-name>UserProfiles</repository-name> -->
+  <priority>20</priority>
+  <admin class="atg.ui.userdirectory.admin.OrganizationsAdmin"/>
+  <controller>atg/devtools/OrganizationAdminControllers.xml</controller>
+  <item-type>organization</item-type>
+  <menu-definition-xuill>atg.ui.userdirectory.admin.OrganizationsMenuDefinition</menu-definition-xuill>
+  <privilege>people-organizationadmin-privilege</privilege>
+</custom-admin>
+
+<custom-admin id="RoleAdmin">
+  <display-name bundle="atg.ui.userdirectory.picker.OrganizationAppResources" resource="roleAdmin" />
+  <!-- <repository-name>UserProfiles</repository-name> -->
+  <profile-repository>true</profile-repository>
+  <priority>30</priority>
+  <admin class="atg.ui.userdirectory.admin.RolesAdmin"/>
+  <controller>atg/devtools/RoleAdminControllers.xml</controller>
+  <item-type>role</item-type>
+  <menu-definition-xuill>atg.ui.userdirectory.admin.RolesMenuDefinition</menu-definition-xuill>
+  <privilege>people-roleadmin-privilege</privilege>
+</custom-admin>
+
+
+</repository-admins>
+<!-- @version $Id: //product/DPS/version/10.0.3/templates/DPS/config/userprofiling/atg/devtools/admins.xml#2 $$Change: 651448 $ -->

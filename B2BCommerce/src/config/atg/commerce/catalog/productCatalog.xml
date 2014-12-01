@@ -1,0 +1,70 @@
+<!-- Common product catalog additions for B2B commerce applications -->
+<!-- $Id: //product/B2BCommerce/version/10.0.3/templates/B2BCommerce/config/atg/commerce/catalog/productCatalog.xml#2 $$Change: 651448 $ -->
+
+<!-- This file contains the extensions to the custom catalog -->
+<!-- definition.  It primarily just adds certain properties  -->
+<!-- to the product definition to allow for data that is     -->
+<!-- appropriate for b2b.                                    -->
+
+<gsa-template xml-combine="append">
+
+  <!-- Product Additions -->
+  <!-- add "manufacturer" property -->
+
+  <item-descriptor name="product">
+    <table name="dbc_product" type="auxiliary" id-column-name="product_id">
+      <attribute name="resourceBundle" value="atg.b2bcommerce.ProductCatalogTemplateResources"/>
+
+      <property category-resource="categoryB2BProperties" name="manufacturer" column-name="manufacturer" display-name-resource="manufacturer" item-type="manufacturer">
+        <attribute name="resourceBundle" value="atg.b2bcommerce.ProductCatalogTemplateResources"/>
+       </property>
+     </table>
+  </item-descriptor>
+
+
+  <!-- Sku Additions -->
+  <!-- add "manufacturer part number" -->
+  <!-- add "unit of measure" -->
+
+  <item-descriptor name="sku">
+   <table name="dbc_sku" type="auxiliary" id-column-name="sku_id">
+    <attribute name="resourceBundle" value="atg.b2bcommerce.ProductCatalogTemplateResources"/>
+
+    <property category-resource="categoryB2BProperties" name="manufacturer_part_number" 
+        column-name="manuf_part_num" display-name-resource="manufacturersPartNumber" data-type="String">
+      <attribute name="resourceBundle" value="atg.b2bcommerce.ProductCatalogTemplateResources"/>
+    </property>
+   </table>
+    
+   <table name="dbc_measurement" type="auxiliary" id-column-name="sku_id">
+   <attribute name="resourceBundle" value="atg.b2bcommerce.ProductCatalogTemplateResources"/>
+     <property category-resource="skuMeasurements" name="quantity" column-name="quantity" display-name-resource="quantity" data-type="double"/>
+      <property category-resource="skuMeasurements" name="unit_of_measure" column-name="unit_of_measure" display-name-resource="unitOfMeasure" data-type="enumerated" default="">
+        <attribute name="useCodeForValue" value="false"/>
+        <option value="unitOfMeasureNone" code="5000"/>
+        <option resource="unitOfMeasureUnits" code="5001"/>
+        <option resource="unitOfMeasurePounds" code="5002"/>
+        <option resource="unitOfMeasureKilograms" code="5003"/>
+        <option resource="unitOfMeasureGallons" code="5004"/>
+        <option resource="unitOfMeasureLiters" code="5005"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+
+  <!-- Define manufacturer item descriptor to include mfgr name -->
+  <!-- description, and email address for questions from buyers -->
+
+  <item-descriptor name="manufacturer" display-property="displayName" display-name-resource="itemDescriptorManufacturer">
+    <attribute name="resourceBundle" value="atg.b2bcommerce.ProductCatalogTemplateResources"/>
+
+    <table name="dbc_manufacturer" type="primary" id-column-name="manufacturer_id">
+      <property category-resource="categoryBasics" name="displayName" column-name="manufacturer_name" display-name-resource="manufacturerName" data-type="String"/>
+      <property category-resource="categoryBasics" name="description" column-name="description" display-name-resource="description" data-type="String"/>
+      <property category-resource="categoryBasics" name="long_description" column-name="long_description" display-name-resource="longDescription" data-type="big string"/>
+      <property category-resource="categoryBasics" name="email" column-name="email" display-name-resource="emailAddress" data-type="String"/>
+   </table>
+  </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //product/B2BCommerce/version/10.0.3/templates/B2BCommerce/config/atg/commerce/catalog/productCatalog.xml#2 $$Change: 651448 $ -->

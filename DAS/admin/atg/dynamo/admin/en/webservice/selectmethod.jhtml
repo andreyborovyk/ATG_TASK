@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+    <title>Create Web Service: Select a Method</title>
+  </head>
+<nucleus type=import>
+	/atg/dynamo/admin/ForEachMethod
+        /atg/dynamo/droplet/Switch
+</nucleus>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+<IMG SRC="../images/admin-banner.gif" ALT="Dynamo Administration"
+     ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<JAVA>
+  String strCmpName = request.getParameter("cmpnName");
+  if ("null".equals(strCmpName)) {
+	request.setParameter("cmpnName", null);
+        strCmpName = null;
+  }
+
+  Object objResolve = null;
+
+  if (strCmpName != null) {
+    objResolve = request.resolveName(strCmpName);
+  }
+
+  request.setParameter("resolvedCmpn", objResolve);
+
+</JAVA>
+
+
+<droplet name="Switch">
+   <PARAM NAME="value" VALUE="param:resolvedCmpn">
+   <OPARAM name="unset">
+     <JAVA> request.addQueryParameter("cmpnName",
+	      request.getParameter("cmpnName")); 
+            response.sendRedirect(request.encodeURL("create.jhtml"));
+     </JAVA>
+   </OPARAM>
+</droplet>
+
+
+
+<a href="/">admin</a> / <a href="index.jhtml">Web Service
+	Administration</a> / Create Web Service</p><p>
+
+    <h2>Create Web Service</h2>
+    <h1>Select A Method</h1>
+
+<blockquote>
+
+<B>Current Selections</B><BR>
+<TABLE border=0>
+<TR><TD>&nbsp;&nbsp;&nbsp;</TD><TD>
+  Nucleus Component: <valueof param="cmpnName">???</valueof></TD></TR>
+</TABLE>
+<P>
+
+
+
+<B>Methods of <valueof param="cmpnName">???</valueof></B><P><P>
+
+<droplet name="ForEachMethod">
+  <param name="object" value="param:resolvedCmpn">
+  <oparam name="output">
+    &nbsp;&nbsp;&nbsp;&nbsp;
+      <droplet name="Switch">
+        <param name="value" value="param:element.supportedForWebServices">
+        <oparam name="false">
+          <font color="gray">
+          <a href="#notsupported" style="color:gray"><valueof param="element.methodName">???</valueof>*</a>: <valueof param="element"></valueof></font>
+        </oparam>
+        <oparam name="true">
+         <a href="paramnames.jhtml">
+           <param name="cmpnName" value="param:cmpnName">
+           <param name="methodName" value="param:element.longSignatureString">
+	     <valueof param="element.methodName">???</valueof></a> :
+	    <valueof param="element"></valueof>
+        </oparam>
+      </droplet>
+   <P>
+  </oparam>
+  <oparam name="empty">
+    (none)
+  </oparam>
+</droplet>
+
+<P>
+<a name="notsupported">* = Method not supported because either one of
+          its parameters, or its return type is either 
+	  an abstract data type
+	  (map, collection, interface, abstract class, or an object
+          with abstract data type properties), or the object equivalent
+	  of a primitive (Integer, Boolean, Double, etc).</a>
+<BR><BR>
+
+</blockquote>
+  </BODY>
+</html>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/webservice/selectmethod.jhtml#2 $$Change: 651448 $*/</java>

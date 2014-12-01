@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE scenario
+  SYSTEM
+  "dynamosystemresource:/atg/scenario/definition/sdl.dtd">
+
+<scenario modification-time="964051985397" enabled="false" author="admin" creation-time="964051985397">
+  <segment>
+    <segment-name>Redirect to Offer Page</segment-name>
+    <!--================================-->
+    <!--== Logs in  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.dps.Login</event-name>
+    </event>
+    <!--================================-->
+    <!--== Offer code is (Offer Code)  -->
+    <!--================================-->
+    <condition id="2" construct="people-element">
+      <filter operator="eq" construct="profile-property-filter">
+        <subject-property>
+          <property-name>offerCode</property-name>
+        </subject-property>
+        <constant placeholder-name="Offer Code">001</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Redirect to (Offer Page)  -->
+    <!--================================-->
+    <action id="3">
+      <action-name>redirect</action-name>
+      <action-param name="path">
+        <constant placeholder-name="Offer Page">investoroffer1.jsp</constant>
+      </action-param>
+    </action>
+  </segment>
+</scenario>

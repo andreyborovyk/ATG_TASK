@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This is a generated file -->
+
+<!DOCTYPE schema SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="versioned_personalization_ddl" description="">
+<comment> @version $Id: //product/DPS/version/10.0.3/templates/DPS/sql/personalization_ddl.xml#2 $$Change: 651448 $</comment>
+<comment>
+This file contains create table statements needed to configure your 
+database for personzalization assets.
+
+This script will create tables and indexes associated with 
+the user segment list manager.
+</comment>
+
+   
+	 <table name="dps_seg_list" description="User segment lists">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="the id of the workspace that the asset exists on" nullable="n" name="workspace_id">
+				 <column-type length="40" type="varchar" db="generic"/>
+			</column>
+			<column description="the id of the branch that the asset exists on" nullable="n" name="branch_id">
+				 <column-type length="40" type="varchar" db="generic"/>
+			</column>
+			<column description="is this version the head of branch" nullable="n" name="is_head">
+				 <column-type type="one-digit" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="flag indicating that the version is deleted" nullable="n" name="version_deleted">
+				 <column-type length="1" type="numeric" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="flag indicating that version is editable" nullable="n" name="version_editable">
+				 <column-type length="1" type="numeric" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="the predecessor version number" nullable="y" name="pred_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="date the asset was checked in if not a working version" nullable="y" name="checkin_date">
+				 <column-type type="datetime" db="generic"/>
+				 <column-type type="timestamp" db="oracle"/>
+			</column>
+
+			<!-- Data Columns -->
+     <column name="segment_list_id" nullable="n" default="" i18n="n" description="">
+       <column-type db="generic" type="varchar" length="40"/>
+     </column>
+     <column name="display_name" nullable="y" default="" i18n="n" description="">
+       <column-type db="generic" type="varchar" length="256"/>
+     </column>
+     <column name="description" nullable="y" default="" i18n="n" description="">
+       <column-type db="generic" type="varchar" length="1024"/>
+     </column>
+     <column name="folder_id" nullable="y" default="" i18n="n" description="">
+       <column-type db="generic" type="varchar" length="40"/>
+     </column>
+     
+   
+			<primary-key name="dps_seg_list_p">
+       <index-column column="segment_list_id" seq="1" order="asc"/>
+     	 <index-column seq="2" order="asc" column="asset_version"/>
+			</primary-key>
+			<index table="dps_seg_list" name="dps_seg_list_wsx">
+				 <index-column seq="1" order="asc" column="workspace_id"/>
+			</index>
+			<index table="dps_seg_list" name="dps_seg_list_cix">
+				 <index-column seq="1" order="asc" column="checkin_date"/>
+			</index>
+	 </table>
+
+   
+	 <table name="dps_seg_list_name" description="User segment names, within a list">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+     <column name="segment_list_id" nullable="n" default="" i18n="n" description="">
+       <column-type db="generic" type="varchar" length="40"/>
+     </column>
+     <column name="seq" nullable="n" default="" i18n="n" description="">
+       <column-type db="generic" type="integer"/>
+     </column>
+     <column name="group_name" nullable="n" default="" i18n="n" description="">
+       <column-type db="generic" type="varchar" length="256"/>
+     </column>
+     
+     
+   
+			<primary-key name="dps_s_l_n_p">
+       <index-column column="segment_list_id" seq="1" order="asc"/>
+       <index-column column="seq" seq="2" order="asc"/>
+     	 <index-column seq="3" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table>
+
+   
+	 <table name="dps_seg_list_folder" description="Folder">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="the id of the workspace that the asset exists on" nullable="n" name="workspace_id">
+				 <column-type length="40" type="varchar" db="generic"/>
+			</column>
+			<column description="the id of the branch that the asset exists on" nullable="n" name="branch_id">
+				 <column-type length="40" type="varchar" db="generic"/>
+			</column>
+			<column description="is this version the head of branch" nullable="n" name="is_head">
+				 <column-type type="one-digit" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="flag indicating that the version is deleted" nullable="n" name="version_deleted">
+				 <column-type length="1" type="numeric" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="flag indicating that version is editable" nullable="n" name="version_editable">
+				 <column-type length="1" type="numeric" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="the predecessor version number" nullable="y" name="pred_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="date the asset was checked in if not a working version" nullable="y" name="checkin_date">
+				 <column-type type="datetime" db="generic"/>
+				 <column-type type="timestamp" db="oracle"/>
+			</column>
+
+			<!-- Data Columns -->
+     <column name="folder_id" nullable="n" default="" i18n="n" description="">
+       <column-type db="generic" type="varchar" length="40"/>
+     </column>
+     <column name="display_name" nullable="y" default="" i18n="n" description="">
+       <column-type db="generic" type="varchar" length="256"/>
+     </column>
+     <column name="description" nullable="y" default="" i18n="n" description="">
+       <column-type db="generic" type="varchar" length="1024"/>
+     </column>
+     <column name="parent_folder_id" nullable="y" default="" i18n="n" description="">
+       <column-type db="generic" type="varchar" length="40"/>
+     </column>
+     
+     
+   
+			<primary-key name="dps_s_l_f_p">
+       <index-column column="folder_id" seq="1" order="asc"/>
+     	 <index-column seq="2" order="asc" column="asset_version"/>
+			</primary-key>
+			<index table="dps_seg_list_folder" name="dps_seg_list_f_wsx">
+				 <index-column seq="1" order="asc" column="workspace_id"/>
+			</index>
+			<index table="dps_seg_list_folder" name="dps_seg_list_f_cix">
+				 <index-column seq="1" order="asc" column="checkin_date"/>
+			</index>
+	 </table>
+</schema>
+<!-- @version $Id: //product/DPS/version/10.0.3/templates/DPS/sql/personalization_ddl.xml#2 $$Change: 651448 $-->

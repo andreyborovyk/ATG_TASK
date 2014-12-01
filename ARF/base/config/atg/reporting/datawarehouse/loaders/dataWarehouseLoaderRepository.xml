@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE gsa-template
+        PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN"
+        "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+<gsa-template>
+  <header>
+    <name>Data Warehouse Loader Repository</name>
+    <version>$Id: //product/ARF/version/10.0.3/ARF/base/config/atg/reporting/datawarehouse/loaders/dataWarehouseLoaderRepository.xml#2 $</version>
+  </header>
+
+  <item-descriptor name="queue" cache-mode="disabled">
+    <table name="ARF_LOADER_QUEUE" id-column-name="LOADER_QUEUE_ID" type="primary">
+      <property name="name" column-name="NAME" data-type="string" required="true"/>
+    </table>
+
+    <table name="ARF_LQ_ENTRIES" id-column-name="LOADER_QUEUE_ID" type="multi">
+      <property name="entries" column-name="QUEUE_ENTRY_ID" data-type="set" component-item-type="queueEntry"/>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="queueEntry" cache-mode="disabled">
+    <table name="ARF_QUEUE_ENTRY" id-column-name="QUEUE_ENTRY_ID" type="primary">
+      <property name="filename" column-name="FILENAME" data-type="string" required="true"/>
+      <property name="queue" column-name="LOADER_QUEUE_ID" item-type="queue" required="true"/>
+      <property name="creationDate" column-name="CREATION_DATE" data-type="timestamp" required="true"/>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="loaderProgress" cache-mode="disabled">
+    <table name="ARF_LOADER_PROG" id-column-name="LOADER_PROGRESS_ID" type="primary">
+      <property name="filename" column-name="FILENAME" data-type="string" required="true"/>
+      <property name="queue" column-name="LOADER_QUEUE_ID" item-type="queue" required="true"/>
+      <property name="startTimestamp" column-name="START_TIMESTAMP" data-type="timestamp"/>
+      <property name="endTimestamp" column-name="END_TIMESTAMP" data-type="timestamp"/>
+      <property name="status" column-name="STATUS" data-type="enumerated" required="true">
+        <attribute name="useCodeForValue" value="false"/>
+        <option code="1" value="in-progress"/>
+        <option code="2" value="failed"/>
+        <option code="3" value="done"/>
+      </property>
+      <property name="statusDetail" column-name="STATUS_DETAIL" data-type="string">
+        <attribute name="maxLength" value="4096"/>
+      </property>
+      <property name="owner" column-name="OWNER" data-type="string"/>
+      <property name="recordsProcessed" column-name="RECORDS_PROCESSED" data-type="int" required="true" default="0"/>
+    </table>
+  </item-descriptor>
+</gsa-template>
+<!-- @version $Id: //product/ARF/version/10.0.3/ARF/base/config/atg/reporting/datawarehouse/loaders/dataWarehouseLoaderRepository.xml#2 $$Change: 651448 $-->

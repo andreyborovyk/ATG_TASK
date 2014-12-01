@@ -1,0 +1,53 @@
+<importbean bean="/atg/userprofiling/servlet/ProfileRepositoryItemPropertyValueServlet">
+<importbean bean="/atg/dynamo/droplet/TableForEach">
+<importbean bean="/atg/dynamo/droplet/IsNull">
+
+<declareparam name="resultItems" value="atg.repository.RepositoryItem" description="An array of Repository Items">
+<declareparam name="property" value="java.lang.String" description="The Property to Display">
+
+
+<droplet bean="IsNull">
+ <param name="value" value="param:resultItems">
+ <oparam name="false">
+
+      
+      
+      <droplet bean="TableForEach">
+           <param name="array" value="param:resultItems">
+	   <param name="sortProperties" value="param:property">
+	   <param name="numColumns" value="2">
+	   <oparam name="outputStart"><table border=0><tr><th align=left>Profile Login</th><th align=left>Profile Id</th></tr></oparam>
+	   <oparam name="outputEnd"></table><p>Click on a profile listed above to view/edit it.</oparam>
+	   <oparam name="output"> 
+              	    
+	     <droplet bean="IsNull">
+	      <param name="value" value="param:element">
+	       <oparam name="false">	       
+
+                <droplet bean="ProfileRepositoryItemPropertyValueServlet">
+                  <param name="item" value="param:element">
+	          <param name="name" value="param:property">
+	          <oparam name="output">
+		    <tr>
+		     <td><a href="edit.jhtml"><param name="id" value="param:element.repositoryId"><valueof param="element.itemDisplayName">null</valueof></a></td>
+		     <td><valueof param="element.repositoryId">null</valueof></td>
+		    </tr>		     	      	   
+       	          </oparam>
+                </droplet>
+		
+               </oparam>
+	      </droplet>
+		
+           </oparam>
+           <oparam name="empty"><strong>No Matches Found!</strong><p></oparam>
+     </droplet>
+     
+     
+  </oparam>
+  <oparam name="true">
+     
+    <strong>No Matches Found!</strong><p>
+    
+  </oparam>
+</droplet>
+<java>/* @version $Id: //product/DPS/version/10.0.3/release/DPS/admin/atg/userprofiling/admin/en/searchresults_items.jhtml#2 $$Change: 651448 $ */</java>

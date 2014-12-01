@@ -1,0 +1,85 @@
+
+        <c:url var="wsrpProducerURL" value="/configProducer.jsp"/>
+
+  <TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR>
+      <TD BGCOLOR="#B7B8B7">
+        <TABLE WIDTH="200" BORDER="0" CELLPADDING="4" CELLSPACING="1">
+
+
+            <fmt:message var="i18n_import_jsr168_portlet" key="wsrp_producer_admin-nav-sidebar-import_jsr168portlet" bundle="${producerAdminbundle}"/>
+            <fmt:message var="i18n_producer_offered_portlets" key="wsrp_producer_admin-nav-sidebar-pop" bundle="${producerAdminbundle}"/>
+            <fmt:message var="i18n_delete_producer_registration" key="wsrp_producer_admin-nav-sidebar-del-producer" bundle="${producerAdminbundle}"/>
+            <fmt:message var="i18n_about_wsrp_producer" key="wsrp_producer_admin-nav-sidebar-about-wsrp" bundle="${producerAdminbundle}"/>
+
+<%
+
+    String currPid       = "0";
+    // used for sidebar sub selection used for sub page with area this copies
+    // an index array to a rendering array that provides the side links
+
+    String sbwsrpURLStr = (String)pageContext.getAttribute("wsrpProducerURL");
+    // this data stucture holds the target base url in its first index
+    // the following indices hold the side bar link text
+    // the numbers are 1) the mode for the hightlight in this case it make the link black
+    // and not underlined.  the other numbers are to trigger the link to be highlighted
+    // and blue and unerlined when the modes match.
+
+    String secondLevelData[][][] = {
+    {/* Producer Admin Links */
+     { sbwsrpURLStr  ,""  ,""},
+     {(String)pageContext.getAttribute("i18n_producer_offered_portlets"),"1" ,"-5-6-"},
+     {(String)pageContext.getAttribute("i18n_import_jsr168_portlet"),"2" ,"-7-8-"},
+     {(String)pageContext.getAttribute("i18n_delete_producer_registration"),"3" ,"-9-"},
+     {(String)pageContext.getAttribute("i18n_about_wsrp_producer"),"4" ,""}
+     },
+    {/* starter */
+     {"","",""},
+     {"","",""}
+    }
+};
+
+ int index = (Integer.valueOf(currPid)).intValue();
+ StringBuffer outputStrSB = new StringBuffer(); // reset
+ if ( secondLevelData[index] != null ) {
+  String secondLevel[][] =  secondLevelData[index];
+  for ( int i = 1 ; i < secondLevel.length ; i++ ) {
+   if (! secondLevel[i][1].equals(mode) ) {
+    if ( secondLevel[i][2].indexOf("-"+mode+"-") > -1 ) {
+       outputStrSB.append("<TR><TD ALIGN='left' BGCOLOR='#CBD1D7'><a class='portaladmin_leftnav' target='_top' href='");
+       outputStrSB.append(secondLevel[0][0]);
+       outputStrSB.append("?mode=");
+       outputStrSB.append(secondLevel[i][1]);
+       outputStrSB.append("'><b>");
+       outputStrSB.append(secondLevel[i][0]);
+       outputStrSB.append("</b></a></td></tr>\n");
+     } else {
+       outputStrSB.append("<TR><TD ALIGN='left' BGCOLOR='#EAEEF0'><a class='portaladmin_leftnav' target='_top' href='");
+       outputStrSB.append(secondLevel[0][0]);
+       outputStrSB.append("?mode=");
+       outputStrSB.append(secondLevel[i][1]);
+       outputStrSB.append("'>");
+       outputStrSB.append(secondLevel[i][0]);
+       outputStrSB.append("</a></td></tr>\n");
+     }
+   } else {
+       outputStrSB.append("<TR><TD ALIGN='left' BGCOLOR='#CBD1D7'><a class='portaladmin_leftnav' target='_top' style='text-decoration:none' href='");
+       outputStrSB.append(secondLevel[0][0]);
+       outputStrSB.append("?mode=");
+       outputStrSB.append(secondLevel[i][1]);
+       outputStrSB.append("'><b>");
+       outputStrSB.append(secondLevel[i][0]);
+       outputStrSB.append("</b></a></td></tr>\n");
+   }
+  }
+ }
+
+ out.print(outputStrSB.toString());
+%>
+
+        </table>
+    </td></tr>
+</table>
+
+<img src='<%=clearGif%>' height="1" width="150" alt="">
+<%-- @version $Id: //product/WSRP/version/10.0.3/admin/admin/admin/nav_sidebar.jspf#2 $$Change: 651448 $--%>

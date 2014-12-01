@@ -1,0 +1,58 @@
+<%--
+  This page fragment resolves which resource bundle to use. It checks for resource 
+  bundle definitions in the following order:
+    1. propertyViewMapping.attributes
+    2. itemViewMapping.attributes
+    3. itemMapping.attributes
+    4. default
+         translates nucleus path.to.repository (i.e. /path/to/Repository)
+         to a resource bundle (i.e. path.to.RepositoryResource)
+
+  @param   mpv   A request scoped, MappedPropertyView item for this view
+  
+  @version $Id $$Change $
+  @updated $DateTime $$Author $
+  --%>
+
+<%--
+  Get the resource bundle, checking in the following order
+    propertyViewMapping, itemViewMapping, itemMapping, default
+--%>
+<c:choose>
+  <%-- defined in the propertyViewMapping--%>
+  <c:when test="${! empty mpv.attributes.resourceBundle}">
+    <c:set var="bundleName" value="${mpv.attributes.resourceBundle}" />
+  </c:when>
+
+  <%-- defined in the itemViewMapping --%>
+  <c:when test="${! empty mpv.view.attributes.resourceBundle}">
+    <c:set var="bundleName" value="${mpv.view.attributes.resourceBundle}" />
+  </c:when>
+
+  <%-- defined in the itemMapping --%>
+  <c:when test="${! empty mpv.view.itemMapping.attributes.resourceBundle}">
+    <c:set var="bundleName" value="${mpv.view.itemMapping.attributes.resourceBundle.value}" />
+  </c:when>
+
+  <%-- default: path.to.RepositoryResource --%>
+  <c:otherwise>
+    <c:set var="itemPath" value="${mpv.view.itemMapping.itemPath}" />
+    <c:forTokens items="${itemPath}" 
+                 delims="/" 
+                 var="pathComponent" 
+                 varStatus="status">
+      <c:choose>
+        <c:when test="${status.first}">
+          <c:set var="bundleName" value="${pathComponent}" />
+        </c:when>
+        <c:when test="${status.last}">
+          <c:set var="bundleName" value="${bundleName}.${pathComponent}Resource" />
+        </c:when>
+        <c:otherwise>
+          <c:set var="bundleName" value="${bundleName}.${pathComponent}" />
+        </c:otherwise>
+      </c:choose>
+    </c:forTokens>
+  </c:otherwise>
+</c:choose>
+<%-- @version $Id: //product/BIZUI/version/10.0.3/jsp-src/views/property/includes/resourceBundleResolver.jspf#2 $$Change: 651448 $--%>

@@ -1,0 +1,352 @@
+/*
+ * CSS containing default styles for the inline expression editor.
+ *
+ * @version $Id: //product/WebUI/version/10.0.3/src/web-apps/WebUI/css/inlineExpreditorStyles.css#1 $$Change: 651360 $
+ * @updated $DateTime: 2011/06/07 09:18:53 $$Author: rbarbier $
+ */
+
+/* The wrapper around an expression editor panel */
+.expreditorContainer {
+  background: #ffffff;
+  margin: 5px;
+  cursor: pointer;
+}
+
+/* The div that contains all of the controls for a root expression */
+.expreditorPanel {
+  padding: 5px;
+  line-height: 200%;
+  overflow: hidden;
+}
+* html .expreditorPanel { /* clear float in IE6 */
+  zoom: 1;
+}
+*+html .expreditorPanel { /* clear float in IE7 */
+  zoom: 1;
+}
+/* A clickable label that displays the value of a terminal expression */
+a.terminalLabel:link, a.terminalLabel:visited, a.terminalLabel:active {
+  border: 1px solid #ADADAD;
+  padding: 0 3px;
+  white-space: nowrap;
+  line-height: 1.7;
+  background-color: #fff;
+  display: inline-block;
+}
+
+a.terminalLabel:hover {
+   border: solid 1px #000000;
+}
+
+a.terminalLabelHidden {
+  background-image: url(../images/little-diamond.gif);
+  border: 1px solid #ccc;
+  padding: 3px;
+  width: 18px;
+  height: 18px;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-color: #fff;
+}
+* html a.terminalLabelHidden {
+  padding: 5px 3px 2px;
+}
+a.terminalLabelHidden:hover {
+  border: solid 1px #000000;
+}
+
+/* Popup menu for a list of terminal choices */
+.terminalMenu {
+  background-color: #ffffff;
+  border: solid 1px #000000;
+  padding: 2px;
+  line-height: 100%;
+  z-index: 2000;
+}
+
+.terminalMenuScrolling {
+  width: 200px;
+  height: 250px;
+  overflow: auto;
+  background-color: #ffffff;
+  border: solid 1px #000000;
+  padding: 2px;
+  line-height: 100%;
+  z-index: 2000;
+}
+
+/* A normal label in a terminal choice popup menu */
+a.terminalMenuLabel, a.terminalMenuLabel:active, a.terminalMenuLabel:link, a.terminalMenuLabel:visited {
+  font-weight: normal;
+  color: #000000;
+}
+
+a.terminalMenuLabel:hover {
+  font-weight: normal;
+  background-color: #000000;
+  color: #ffffff;
+}
+
+/* The label for the current choice in a terminal choice popup menu */
+a.terminalMenuLabelCurrent, a.terminalMenuLabelCurrent:active, a.terminalMenuLabelCurrent:link, a.terminalMenuLabelCurrent:visited {
+  font-weight: bold;
+  color: #000000;
+}
+
+a.terminalMenuLabelCurrent:hover {
+  font-weight: bold;
+  background-color: #000000;
+  color: #ffffff;
+}
+
+/*
+  The following styles are used for inline expressions inside of segments,
+  content groups, or content targeters.
+*/
+
+.expressionBlocks {
+  border:none;
+}
+
+.ruleSetContent {
+  padding:0 !important;
+}
+
+.ruleSet {
+  width:auto;
+  border-collapse:collapse;
+}
+
+.ruleSetLabel {
+  width:150px !important;
+  white-space:nowrap !important;
+  font-weight:bold;
+  border-bottom:1px solid #ccc;
+  border-right:1px solid #ddd;
+  padding-left:10px;
+  padding-right:10px;
+  vertical-align:top;
+  padding-top:10px;
+}
+
+.ruleSetLabel.last {
+  border-bottom:none;
+}
+
+.ruleSetExpression {
+  border-bottom:1px solid #ccc;
+  background-color:#f0f5f9;
+  padding-right:10px;
+  width:100%;
+}
+
+.ruleSetExpression p {
+  margin:5px 0 5px 6px !important;
+}
+
+.ruleSetExpression.last {
+  border-bottom:none;
+}
+
+.ruleSetSeperator {
+  border-top:1px solid #ddd;
+  border-bottom:1px solid #ddd;
+  padding:5px 0 5px 0;
+  margin:20px 15px 20px 15px;
+  font-weight:bold;
+  font-size:1.2em;
+  text-align:center;
+}
+
+.panelHeader {
+  background:#f7e773;
+  width:90%;
+  height:20px;
+  padding:5px 10px 2px 10px;
+  margin:0 15px 0 15px;
+  border:1px solid #c2c2c2;
+        color:#666;
+}
+
+.panelHeader input {
+  border-left:1px solid #9099a2;
+  border-top:1px solid #9099a2;
+  border-right:1px solid #7d858c;
+  border-bottom:1px solid #7d858c;
+  color:#505050;
+        background:#fff url(../images/bg_button.gif) repeat-x left bottom;
+  cursor:pointer;
+  padding: 1px 5px !important;
+}
+
+html>body .panelHeader input {
+  height:auto;
+}
+
+html>body .panelHeader {
+  height:auto;
+  overflow:hidden;
+}
+
+.panelHeader h5 {
+  float:left;
+  margin:0;
+  padding:2px 0 0 0;
+  font-size:1.1em;
+}
+
+.panelHeader .actions {
+  float:right;
+  text-align:right;
+  /* fix bug - 'Hide' button isn't displayed on IE in multisite mode */
+  width: 400px !important;
+}
+
+.panelContent {
+  padding:10px 10px 10px 10px;
+  margin:0 15px 0 15px;
+  width:90%;
+  border-left:1px solid #c2c2c2;
+  border-bottom:1px solid #c2c2c2;
+  border-right:1px solid #c2c2c2;
+  overflow:hidden;
+}
+
+html>body .panelContent {
+  padding:0 10px 10px 10px;
+}
+
+.panelContent .panelHeader {
+  margin:10px 0 0 0;
+  background:#d1d1d1;
+  height:15px;
+  padding:5px;
+  overflow:hidden;
+  width:auto;
+}
+.panelContent .panelHeader .actions{
+padding:0;
+width:70%;
+  }
+
+.panelContent .panelHeader h5 {
+  font-size:1em;
+  padding:0;
+}
+
+.panelContent .panelContent {
+  margin:0;
+  display:block;
+  padding:0 10px 0 10px;
+  width:auto;
+}
+
+.iconPanelMinimize{
+  display:block;
+  width:12px;
+  padding:8px 0 8px 0;
+  background:url(../images/icon_panelMinimize.gif) no-repeat left 3px;
+  float:right;
+  height:15px;
+}
+
+.iconPanelMaximize {
+  display:block;
+  width:12px;
+  padding:8px 0 8px 0;
+  background:url(../images/icon_panelMaximize.gif) no-repeat left 3px;
+  float:right;
+  height:15px;
+}
+
+.iconPanelMoveUp {
+  display:block;
+  width:15px;
+  padding:8px 0 8px 0;
+  background:url(../images/icon_panelMoveUp.gif) no-repeat left 3px;
+  float:right;
+  margin-right:7px;
+  margin-left:7px;
+  height:15px;
+}
+
+.iconPanelMoveDown {
+  display:block;
+  width:15px;
+  padding:8px 0 8px 0;
+  background:url(../images/icon_panelMoveDown.gif) no-repeat left 3px;
+  float:right;
+  margin-right:7px;
+  height:15px;
+}
+
+.iconPanelClose {
+  display:block;
+  width:16px;
+  padding:8px 0 8px 0;
+  background:url(../images/icon_panelClose.gif) no-repeat left 3px;
+  float:right;
+  margin-left:10px;
+  height:15px;
+}
+
+a {
+  outline:none;
+}
+
+a.tokenTerminalLabel:link,
+a.tokenTerminalLabel:visited,
+a.tokenTerminalLabel:hover,
+a.tokenTerminalLabel:active{
+  padding-right: 20px;
+  background: #fff url(../images/icons/icons_expEditor.gif) no-repeat right 6px;
+}
+a.dateTerminalLabel:link,
+a.dateTerminalLabel:visited,
+a.dateTerminalLabel:hover,
+a.dateTerminalLabel:active{
+  padding-right: 20px;
+  background: #fff url(../images/icons/icons_expEditor.gif) no-repeat right -13px;
+}
+a.itemTerminalLabel:link,
+a.itemTerminalLabel:visited,
+a.itemTerminalLabel:hover,
+a.itemTerminalLabel:active{
+  padding-right: 20px;
+  background: #fff url(../images/icons/icons_expEditor.gif) no-repeat right -34px;
+}
+
+.containerHeader {
+  background:#f7e773;
+  width:90%;
+  height:20px;
+  padding:5px 10px 2px 10px;
+  margin:0 15px 0 15px;
+  border:1px solid #c2c2c2;
+  color:#666;
+}
+
+.containerHeader h5 {
+  float:left;
+  margin:0;
+  padding:2px 0 0 0;
+  font-size:1.1em;
+}
+
+.containerHeader .actions {
+  float:right;
+  text-align:right;
+}
+
+.containerContent {
+  padding:10px 10px 10px 10px;
+  margin:0 15px 0 15px;
+  width:90%;
+  border-left:1px solid #c2c2c2;
+  border-bottom:1px solid #c2c2c2;
+  border-right:1px solid #c2c2c2;
+  overflow:hidden;
+}
+
+
+/* @version $Id: //product/WebUI/version/10.0.3/src/web-apps/WebUI/css/inlineExpreditorStyles.css#1 $$Change: 651360 $ */

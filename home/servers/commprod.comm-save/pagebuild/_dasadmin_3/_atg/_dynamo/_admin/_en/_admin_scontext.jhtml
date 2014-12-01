@@ -1,0 +1,71 @@
+<HTML>
+<HEAD>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+<TITLE>Edit Component Browser Context</TITLE>
+
+
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<nucleus type=import>
+        /atg/dynamo/admin/context/AdminContextFormHandler
+	/atg/dynamo/admin/ForEachNucleusComponent
+        /atg/dynamo/droplet/Switch
+        /atg/dynamo/droplet/ForEach
+</nucleus>
+
+
+<IMG SRC="images/config-banner.gif" ALT="Dynamo Configuration"
+ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/Edit Component Browser Context<p>
+
+You can set the context (certain thread-specific settings) for the
+Nucleus component browser. Context settings will remain in effect
+until cleared. Note non-component-browser parts of the Dynamo Admin
+will not be affected.<P>
+
+For example, setting the current site may affect session-scoped
+site-specific components, while setting the current project (only
+available when running the Publishing module) may affect versioned
+repositories and proxied preview components (targeters, slots, profile
+groups and segments).<P>
+
+Setting contexts in the component browser is meant primarily as a
+debugging aid for proxied components and versioned
+repositories. Please clear contexts when not needed as they may affect
+component browser admin servlets not written with context setting in mind.
+
+<droplet name="Switch">
+  <param name="value" value="param:returnPage"/>
+  <oparam name="unset"> </oparam>
+  <oparam name="null"> </oparam>
+  <oparam name="default"><setvalue bean="AdminContextFormHandler.successURL" value="param:returnPage"> </oparam>
+</droplet>
+
+<form action="admin-context.jhtml">
+  <input type="hidden" bean="AdminContextFormHandler.successURL">
+  <table border=0>
+  <droplet name="ForEach">
+    <param name="array" value="bean:AdminContextFormHandler.providerAndCurrentContexts"/>
+    <oparam name="empty"><tr><td>(no context providers)</td></tr></oparam>
+
+    <oparam name="output">
+      <tr><th>
+      <valueof param="element.provider.displayName">???</valueof></th><td><select bean="AdminContextFormHandler.providerAndCurrentContexts[param:index].selectedContextId">
+      <option value="null">None
+      <droplet name="ForEach">
+        <param name="array" value="bean:AdminContextFormHandler.providerAndCurrentContexts[param:index].options"/>
+        <oparam name="output">
+          <option value="param:element.id"><valueof param="element.displayName">???</valueof>
+        </oparam>
+      </droplet>
+      </select>
+      </td></tr>
+    </oparam>
+  </droplet>
+  </table>
+  <input type="submit" bean="AdminContextFormHandler.clearAll" value="Clear">
+  <input type="submit" bean="AdminContextFormHandler.setContexts" value="Set">
+</form>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/admin-context.jhtml#2 $$Change: 651448 $*/</java>

@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Getting Started With Gear Development</title>
+</head>
+<body>
+<h1>Getting Started With Gear Development</h1>
+<h6>&copy; 2002 ATG<br>
+</h6>
+The quickest way to learn how to write your own gears is to look at the supplied
+gears. &nbsp;As a quick starting point, a skeleton of a gear has been provided
+in the PDK/starter-template directory. &nbsp;It includes example pages for
+each different gear mode, an associated gear manifest and the files needed
+for packaging it into a WAR, EAR or DAR file.<br>
+<br>
+For more detailed developer documentation, please see the Portal Developer's
+Guide in the ATG 6 Portal documentation.<br>
+<h2>Deciding What Gear Modes You Need</h2>
+The first task in developing a gear is to decide what gear modes you want
+to support. &nbsp;You will definitely want a "content" mode, since your gear
+won't be displayable without one. &nbsp;You will usually want a "userConfig"
+mode so users can customize the gear for themselves. &nbsp;The "instanceConfig"
+mode is intended for configuration that is common for all users of a gear.
+&nbsp;The last major mode is "installConfig" which is intended for configuration
+that is technical or complex in nature, such as setting up connections to
+a back-end service such as a Repository or database.<br>
+<br>
+Each gear mode can have two display modes, "shared" and "full". &nbsp;"Shared"
+mode is used when the gear is on a page with other gears, and "full" is used
+when the gear gets the full page to itself. &nbsp;Generally a gear will have
+"shared" and "full" display modes for the "content" gear mode, and the other
+gear modes will only have a "full" display mode.<br>
+<br>
+A mode will look something like this in the manifest for your gear:
+<pre>&nbsp;&nbsp;&lt;gear-mode name="content"&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;display-modes&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;display-mode name="shared"&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   &lt;device-output name="html"&gt;/html/sharedMode.jsp&lt;/device-output&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/display-mode&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;display-mode name="full"&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   &lt;device-output name="html"&gt;/html/fullMode.jsp&lt;/device-output&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/display-mode&gt;<br>&nbsp;&nbsp;&nbsp; &lt;/display-modes&gt;<br>&nbsp; &lt;/gear-mode&gt;</pre>
+<h2>Building Your Gear</h2>
+As with most other Java development nowadays, "ant" is the tool of choice.
+&nbsp;You can get ant from <a
+ href="http://jakarta.apache.org/ant/index.html">http://jakarta.apache.org/ant/index.html</a>.
+&nbsp;The build.xml supplied with the starter-template gear has been tested
+with ant 1.4.1. &nbsp;To build starter-template, change to the directory containing
+the build.xml file and type "ant". &nbsp;Ant will then run the default target
+in the buildfile. &nbsp;The default target is "build", which builds but does
+not install the gear. &nbsp;If you want to install the gear you can use "install"
+(installs the gear, building it if necessary) or "all" (rebuilds the gear
+and the installs it).<br>
+<br>
+<h2>Installing Your Gear</h2>
+Installing a gear is a two-part process. &nbsp;First you have to deploy it
+to your app server. &nbsp;Second, you have to upload the gear's manifest so
+the Portal knows what to do with it. &nbsp;On DAS you will need to remember
+to add the new gear's module to the "-m" option you use to startDynamo. &nbsp;There
+is an example gear manifest in PDK/starter-template/starter-template-manifest.xml.<br>
+<h2>Creating URLs to Get to Different Modes</h2>
+A common task you will have in writing your gear is to create URLs to switch
+from one mode to another. &nbsp;To do this you will use the core:createUrl
+tag and set the appropriate parameters to make the framework change modes.
+&nbsp;An example of this is:
+<pre><br>&lt;core:CreateUrl id="fullGearUrl" url="&lt;%= pafEnv.getOriginalRequestURI() %&gt;"&gt;<br>&nbsp; &lt;core:UrlParam param="paf_dm" value="full"/&gt;<br>&nbsp; &lt;core:UrlParam param="paf_gear_id" value="&lt;%= pafEnv.getGear().getId() %&gt;"/&gt;<br>&nbsp; &lt;p&gt;&lt;a href="&lt;%= fullGearUrl.getNewUrl() %&gt;"&gt;Click here&lt;/a&gt;&lt;/p&gt;<br>&lt;/core:CreateUrl&gt;</pre>
+This will take the URL of the current portal page (getOriginalRequestURI())
+and switch to the "full" display mode (paf_dm=full) of the current gear (paf_gear_id=&lt;%=
+pafEnv.getGear().getId() %&gt;). &nbsp;The gear's ID is its unique identifier
+in the Portal system. &nbsp;If you want to have multiple pages in a gear
+mode you just need to use a "switching page" for your gear mode that uses
+a UrlParam you specify to choose which page to jsp:include for display. &nbsp;See
+discussionFull.jsp in the Discussion gear for an example of a switching page.<br>
+<br>
+<h2>Using Color Palettes</h2>
+To make your gear respect the colors of the community's chosen color palette,
+you just need to use the ColorPalette object you can get from the Page object.
+&nbsp;Once you have the gear environment<br>
+<br>
+<pre>&lt;paf:InitializeGearEnvironment id="pafEnv"&gt;</pre>
+<br>
+you can get the color Strings you need from the ColorPalette object.<br>
+<br>
+<pre>&lt;%<br>&nbsp;&nbsp; atg.portal.framework.ColorPalette cp = pafEnv.getPage().getColorPalette();<br>&nbsp;&nbsp; String titleBGColor = cp.getHighlightBackgroundColor();<br>&nbsp;&nbsp; String titleTextColor = cp.getHighlightTextColor();<br>&nbsp;&nbsp; String gearBGColor = cp.getGearBackgroundColor();<br>&nbsp;&nbsp; String gearTextColor = cp.getGearTextColor();<br>%&gt;</pre>
+<br>
+These Strings are the hexadecimal colors you need for your HTML code.<br>
+<h2>Font Style Guide</h2>
+To make it easy for gears to use the same fonts as other gears, Portal provides
+a stylesheet with common font types. &nbsp;The top level page template includes
+the stylesheet, so it will always be available to gears. Gears should try
+to restrict themselves to using only these types or subclasses so that the
+gear will have a common look to the other gears in the portal.<br>
+<pre>  <br> body { font-family:verdana,arial,geneva,helvetica,san-serif ; }  <br> font { font-family:verdana,arial,geneva,helvetica,san-serif ; }<br>  <br> a              { text-decoration:none }  <br> a.gear_nav     { text-transform:lowercase }  <br> a.gear_content { text-decoration:none }  <br><br> .smaller {font-size:8pt; }  <br> .small   {font-size:10pt; }  <br> .medium  {font-size:11pt; }  <br> .large   {font-size:13pt; }  <br> .larger  {font-size:17pt; }  <br>  <br> .smaller_bold {font-size:8pt; font-weight:700 }  <br> .small_bold   {font-size:10pt; font-weight:700 }  <br> .medium_bold  {font-size:11pt; font-weight:700 }  <br> .large_bold   {font-size:13pt; font-weight:700 }  <br> .larger_bold  {font-size:17pt; font-weight:700 }<br><br></pre>
+Here are some graphics to help with your style selections:<br>
+<a href="shared-view.gif">Shared mode font styles and spacing</a><br>
+<a href="fullview.gif">Full mode font styles and spacing</a><br>
+<a href="fullview-info.gif">Full mode data entry form styles and spacing</a><br>
+<br>
+</body>
+</html>

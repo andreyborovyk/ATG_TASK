@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE gsa-template SYSTEM "dynamosystemresource:/atg/dtds/gsa/gsa_1.0.dtd">
+<gsa-template>
+
+<import-items>
+
+<!-- View mapping for category Facet tab -->
+
+<add-item item-descriptor="itemViewMapping" id="AmIvmCatFacet">
+  <set-property name="name"><![CDATA[AssetManager category facet itemViewMapping]]></set-property>
+  <set-property name="displayName"><![CDATA[AmIvmCatFacet.displayName]]></set-property>
+  <set-property name="view"><![CDATA[AmIvFacet]]></set-property>
+  <set-property name="attributeValues"><![CDATA[includedCategories=AmAvCatFacetIncCat,resourceBundle=AmAvFacetBnd,specificProperties=AmAvCatFacetSpecProp]]></set-property>
+  <set-property name="propertyMappings"><![CDATA[refineConfig=AmPvmRefineConfig]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemView" id="AmIvFacet">
+  <set-property name="name"><![CDATA[AssetManager facet itemView]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager facet itemView]]></set-property>
+  <set-property name="mode"><![CDATA[AmMmDef]]></set-property>
+  <set-property name="viewComponent"><![CDATA[atg.assetmanager.editor.view.FacetViewPanel]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="AmAvFacetBnd">
+  <set-property name="value"><![CDATA[atg.remote.commerce.search.Resources]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="AmAvCatFacetSpecProp">
+  <set-property name="value"><![CDATA[refineConfig]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="AmAvCatFacetIncCat">
+  <set-property name="value"><![CDATA[categoryRefinements]]></set-property>
+</add-item>
+
+<!-- View mapping for catalog Facet tab -->
+
+<add-item item-descriptor="itemViewMapping" id="AmIvmLogFacet">
+  <set-property name="name"><![CDATA[AssetManager catalog facet itemViewMapping]]></set-property>
+  <set-property name="displayName"><![CDATA[AmIvmCatFacet.displayName]]></set-property>
+  <set-property name="view"><![CDATA[AmIvFacet]]></set-property>
+  <set-property name="attributeValues"><![CDATA[resourceBundle=AmAvFacetBnd,specificProperties=AmAvCatFacetSpecProp]]></set-property>
+  <set-property name="propertyMappings"><![CDATA[refineConfig=AmPvmRefineConfig]]></set-property>
+</add-item>
+
+<!-- Property view mapping for RefineConfig -->
+
+<add-item item-descriptor="propertyViewMapping" id="AmPvmRefineConfig"> 
+  <set-property name="propertyView"><![CDATA[AmPvRefineConfig]]></set-property> 
+  <set-property name="description"><![CDATA[RC readonly view]]></set-property> 
+</add-item>
+
+<add-item item-descriptor="propertyView" id="AmPvRefineConfig">
+  <set-property name="name"><![CDATA[RefineConfig readonly Property view]]></set-property>
+  <set-property name="description"><![CDATA[RefineConfig readonly Property view]]></set-property>
+  <set-property name="mode"><![CDATA[AmMmDef]]></set-property>
+  <set-property name="type"><![CDATA[?]]></set-property>
+  <set-property name="viewComponent"><![CDATA[atg.assetmanager.editor.view.property.DefaultEditor]]></set-property>
+  <set-property name="isComponentPropertyView"><![CDATA[false]]></set-property>
+  <set-property name="isDefault"><![CDATA[false]]></set-property>
+  <set-property name="attributes"><![CDATA[customAssetPropertyService=AmPvadRefineConfigService]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewAttributeDefinition" id="AmPvadRefineConfigService">
+  <set-property name="defaultValue"><![CDATA[/atg/remote/assetmanager/editor/service/RefineConfigPropertyService]]></set-property> 
+  <set-property name="description"><![CDATA[Maximum length of the data in the field]]></set-property>
+</add-item>  
+
+</import-items>
+
+<!-- ======================================================================= -->
+<!-- Customizations for catalog items                                       -->
+<!-- ======================================================================= -->
+
+<update-item item-descriptor="itemMapping" id="AmImLog">
+  <set-property name="viewMappings" add="true"><![CDATA[AmIvmCatFacet]]></set-property>
+</update-item>
+
+<!-- ======================================================================= -->
+<!-- Customizations for category items                                       -->
+<!-- ======================================================================= -->
+
+<update-item item-descriptor="itemMapping" id="AmImCat">
+  <set-property name="viewMappings" add="true"><![CDATA[AmIvmCatFacet]]></set-property>
+</update-item>
+
+</gsa-template>
+<!-- @version $Id: //product/DCS-UI/version/10.0.3/search/src/install/data/flex/viewmapping.xml#2 $$Change: 651448 $ -->

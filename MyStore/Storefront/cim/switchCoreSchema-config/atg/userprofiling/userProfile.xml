@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+
+<!DOCTYPE gsa-template
+        PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN"
+        "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template>
+
+  <header>
+    <name>Store Import Profile Changes</name>
+    <author>CIM Team</author>
+    <version>$Id: //edu/ILT-Courses/main/COMM/StudentFiles/COM/setup/copy-files/apps/MyStore/Storefront/cim/switchCoreSchema-config/atg/userprofiling/userProfile.xml#3 $$Change: 635816 $</version>
+  </header>  
+
+  <item-descriptor name="user">
+    <table shared-table-sequence="1" name="dcs_usr_usedpromo" type="multi" id-column-name="id">
+      <property name="usedPromotions" xml-combine="remove"/>
+      <property name="usedPromotions" display-name-resource="usedPromotions" data-type="set" queryable="false" readable="true" column-name="promotion_id" hidden="false" category-resource="categoryCommercePromotions" expert="false" required="false" cache-mode="disabled" writable="true" component-data-type="string">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="resourceBundle" value="atg.commerce.UserProfileTemplateResources"/>
+      </property>      
+    </table>
+    <table name="dcs_user_catalog" type="auxiliary" id-column-name="user_id">
+      <property name="catalog" xml-combine="remove"/>
+      <property category-resource="categoryCommerceGeneral" display-name-resource="catalog" name="catalog" column-name="user_catalog" data-type="string">
+        <attribute name="resourceBundle" value="atg.commerce.UserProfileTemplateResources"/>
+      </property>
+    </table>
+    
+
+    <table name="crs_items_bought" type="multi" multi-column-name="sequence_id" id-column-name="user_id">
+      <property name="itemsBought" xml-combine="remove"/>
+      <property name="itemsBought" category-resource="categoryOrderTracking" column-name="item" display-name-resource="itemsBought" data-type="list" queryable="true" cache-mode="disabled" component-data-type="string">
+        <attribute name="propertySortyPriority" value="-10"/>
+        <attribute name="resourceBundle" value="atg.projects.store.profile.UserProfileTemplateResources"/>
+      </property>
+    </table>
+    
+    <table name="dcs_user" type="auxiliary" id-column-name="user_id">
+      <property name="priceList" xml-combine="remove"/>
+      <property category-resource="categoryCommerceGeneral" display-name-resource="priceList" name="priceList" column-name="price_list" data-type="string">
+        <attribute name="resourceBundle" value="atg.commerce.UserProfileTemplateResources"/>
+      </property>
+      <property name="salePriceList" xml-combine="remove"/>
+      <property category-resource="categoryCommerceGeneral" display-name-resource="salePriceList" name="salePriceList" column-name="sale_price_list" data-type="string">
+        <attribute name="resourceBundle" value="atg.projects.store.profile.UserProfileTemplateResources"/>
+      </property>
+    </table>
+  </item-descriptor>
+  
+  <item-descriptor name="promotionStatus"> 
+    <table name="dcs_usr_promostat" type="primary" id-column-name="status_id">               
+      <property name="promotion" xml-combine="remove">
+      </property>        
+      <property name="promotion" data-type="string" column-name="promotion" required="true" display-name-resource="promotion">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //edu/ILT-Courses/main/COMM/StudentFiles/COM/setup/copy-files/apps/MyStore/Storefront/cim/switchCoreSchema-config/atg/userprofiling/userProfile.xml#3 $$Change: 635816 $ -->

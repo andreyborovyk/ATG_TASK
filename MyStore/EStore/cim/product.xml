@@ -1,0 +1,726 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE product SYSTEM "http://www.atg.com/dtds/product_1_0.dtd">
+<product id="store" extends="b2ccommerce">
+
+  <title resource-key="StoreCommerceProduct.name">ATG Commerce Reference Store</title>
+  <detail resource-key="StoreCommerceProduct.detail">Includes ATG Platform, Content Administration, Site Administration, B2C Commerce, Merchandising and, optionally, ACI and Preview</detail>
+
+  <requires-addon-id id="merch"/>
+
+  <product-id-required id ="siteadmin"/>
+  
+  <!-- addons --> 
+  <product-addon-group id="search">
+    <product-addon id="search">
+      <modify-server-instance-type id="management">
+        <append-module name="Store.Search"/>
+        <append-module name="Store.Search.Index"/>
+      </modify-server-instance-type>
+
+      <modify-server-instance-type id="production">
+        <append-module name="Store.Search"/>
+      </modify-server-instance-type>
+
+      <modify-server-instance-type id="staging">
+        <append-module name="Store.Search"/>
+      </modify-server-instance-type>
+    </product-addon>
+  </product-addon-group>
+
+  <product-addon-group id="store_addon_group">  
+
+    <title>Choose ATG Commerce Reference Store AddOns :</title>
+
+      <product-addon id="storefront_demo">
+        <title resource-key="">Storefront Demo Application</title>            
+
+        <modify-server-instance-type id="production">
+          <append-module name="Store.Storefront"/>
+        </modify-server-instance-type>  
+
+        <modify-server-instance-type id="staging">
+          <append-module name="Store.Storefront"/>
+        </modify-server-instance-type>  
+
+        <modify-server-instance-type id="management_db">
+          <append-module name="Store.Storefront"/>
+        </modify-server-instance-type>  
+      </product-addon>
+      
+      <product-addon id="cybersource">
+        <title resource-key="">Cybersource Integration</title>            
+
+        <modify-server-instance-type id="production">
+          <append-module name="Store.Cybersource"/>
+        </modify-server-instance-type>  
+
+        <modify-server-instance-type id="staging">
+          <append-module name="Store.Cybersource"/>
+        </modify-server-instance-type> 
+      </product-addon>
+
+
+      <product-addon id="international">
+        <title>International</title>
+        <detail resource-key="">Enables multi-country and multi-language functionality</detail>
+        
+        <modify-server-instance-type id="production">
+          <append-module name="Store.EStore.International"/>
+        </modify-server-instance-type>
+        
+        <modify-server-instance-type id="staging">
+          <append-module name="Store.EStore.International"/>
+        </modify-server-instance-type>
+        
+        <modify-server-instance-type id="management">
+          <append-module name="Store.EStore.International.Versioned"/>
+        </modify-server-instance-type>    
+
+      </product-addon>      
+
+      <product-addon id="fulfillment">            
+        <title resource-key="">Fulfillment</title>        
+      </product-addon>
+
+  </product-addon-group>
+
+  <product-addon-group id="dcs-csr" min-occurs="1" max-occurs="1">
+    <title>DCS-CSR</title>
+    <product-id-required id="commerceservicecenter" />
+    <product-addon id="dcs-csr">
+      <title resource-key="dcs-csr">DCS-CSR</title>
+
+      <modify-server-instance-type id="svcagent">
+        <prepend-module name="Store.EStore" />
+        <append-module name="DCS.PublishingAgent"/>
+        <append-module name="Store.DCS-CSR"/>
+      </modify-server-instance-type>
+    </product-addon>
+  </product-addon-group>
+  
+  <product-addon-group max-occurs="1" min-occurs="-1" id="storefront_options">
+    <title>Choose Storefront AddOns:</title>
+    <requires-product-addon id="storefront_demo"/>
+
+    <product-addon id="storefront_no_publishing">
+      <title resource-key="">Storefront Without Publishing</title>
+
+      <modify-server-instance-type id="production">
+        <append-module name="Store.Storefront.NoPublishing"/>
+      </modify-server-instance-type>
+
+      <modify-server-instance-type id="staging">
+        <append-module name="Store.Storefront.NoPublishing"/>
+      </modify-server-instance-type>
+
+    </product-addon>
+  </product-addon-group>
+
+  <product-addon-group id="store-sampledata" min-occurs="1" max-occurs="1">
+    <title>Choose Storefront Sample Data Configuration:</title>
+    <requires-product-addon id="storefront_demo"/>
+
+    <product-addon id="storefront-full-setup">
+      <title resource-key="">Full</title>
+      <detail resource-key="">Populated product catalog, users, orders, promotions, etc.</detail>
+    </product-addon>
+
+    <product-addon id="storefront-basic-setup">
+      <title resource-key="">Minimal</title>
+      <detail resource-key="">Empty product catalog and minimum data required for startup</detail>
+    </product-addon>
+  </product-addon-group>
+
+  <product-addon-group id="store_fufillment"  min-occurs="1" max-occurs="1">  
+
+    <title>Choose ATG Commerce Reference Store Fulfillment AddOns :</title>
+    <requires-product-addon id="fulfillment"/>
+      <product-addon id="fulfillment_using_atg">
+        <title resource-key=""> Fulfillment using ATG Platform</title>
+        <detail resource-key="">Manages order fulfillment using the ATG Platform</detail>
+        
+        <modify-server-instance-type id="production">
+          <append-module name="Store.Fulfillment"/>         
+        </modify-server-instance-type>        
+        
+        <modify-server-instance-type id="staging">
+          <append-module name="Store.Fulfillment"/>         
+        </modify-server-instance-type>   
+      </product-addon>      
+
+  </product-addon-group>
+
+  <product-addon-combo id="store-agent-International">
+    <combo-product-addon id="international"/>
+    <combo-product-addon id="dcs-csr"/>
+    
+    <modify-server-instance-type id="svcagent">
+      <append-module name="Store.EStore.International" before="DCS-CSR"/>
+    </modify-server-instance-type>  
+
+    <modify-server-instance-type id="svcagent">
+      <append-module name="Store.DCS-CSR.International"/>
+    </modify-server-instance-type>  
+
+  </product-addon-combo>
+
+  <product-addon-combo id="store-agent-cybersource">
+    <combo-product-addon id="cybersource"/>
+    <combo-product-addon id="dcs-csr"/>
+    
+    <modify-server-instance-type id="svcagent">
+      <append-module name="Store.Cybersource" before="DCS-CSR"/>
+    </modify-server-instance-type>  
+  </product-addon-combo>
+
+  <product-addon-combo id="store-agent-storefront_demo">
+    <combo-product-addon id="storefront_demo"/>
+    <combo-product-addon id="dcs-csr"/>
+    
+    <modify-server-instance-type id="svcagent">
+      <append-module name="Store.Storefront" before="DCS-CSR"/>
+    </modify-server-instance-type>  
+  </product-addon-combo>
+
+  <product-addon-combo id="store-agent-storefront_no_publishing">
+    <combo-product-addon id="storefront_no_publishing"/>
+    <combo-product-addon id="dcs-csr"/>
+    
+    <modify-server-instance-type id="svcagent">
+      <append-module name="Store.Storefront.NoPublishing" before="DCS-CSR"/>
+    </modify-server-instance-type>  
+  </product-addon-combo>
+  
+  <product-addon-combo id="store-nonswitchingdatasource">
+    <combo-product-addon id="nonswitchingdatasource"/>
+
+    <modify-server-instance-type id="production">
+      <append-module name="Store.EStore" before="DCS-ABTest.runtime"/>
+    </modify-server-instance-type>
+
+    <modify-server-instance-type id="staging">
+      <append-module name="Store.EStore" before="DCS-ABTest.runtime"/>
+    </modify-server-instance-type>
+  </product-addon-combo>  
+
+  <product-addon-combo id="international-search">
+    <combo-product-addon id="search"/>
+    <combo-product-addon id="international"/>
+    
+    <modify-server-instance-type id="management">   
+      <append-module name="Store.EStore.International.Search"/>
+      <append-module name="Store.EStore.International.Search.Index"/>     
+    </modify-server-instance-type>
+    
+    <modify-server-instance-type id="production">
+      <append-module name="Store.EStore.International.Search"/>
+      <append-module name="Store.EStore.International.Search.Query"/>
+    </modify-server-instance-type>
+    
+    <modify-server-instance-type id="staging">
+      <append-module name="Store.EStore.International.Search"/>
+      <append-module name="Store.EStore.International.Search.Query"/>
+    </modify-server-instance-type>
+
+  </product-addon-combo>  
+  
+  <product-addon-combo id="store-externalPreview-International">
+    <combo-product-addon id="externalPreviewServer"/>
+    <combo-product-addon id="international"/>
+    
+    <modify-server-instance-type id="externalpreview">
+      <append-module name="Store.EStore.International.Versioned"/>       
+    </modify-server-instance-type>
+  </product-addon-combo>
+  
+  <product-addon-combo id="store-externalPreviewStorefront">
+    <combo-product-addon id="externalPreviewServer"/>
+    <combo-product-addon id="storefront_demo"/>
+  </product-addon-combo>  
+
+  <product-addon-combo id="store-externalPreview">
+    <combo-product-addon id="externalPreviewServer"/>
+    
+    <modify-server-instance-type id="externalpreview">
+      <prepend-module name="Store.EStore.Versioned"/>
+      <remove-module name="B2CCommerce.Versioned"/>
+      <remove-module name="DCS.Versioned"/>       
+    </modify-server-instance-type>
+  </product-addon-combo>  
+  
+  <product-addon-combo id="storefront-preview">
+    <combo-product-addon id="previewOnManagement"/>
+    <combo-product-addon id="storefront_demo"/>
+  
+    <modify-server-instance-type id="management_db">
+      <remove-module name="Store.Storefront"/>
+    </modify-server-instance-type>
+  </product-addon-combo>    
+
+  <product-addon-combo id="storefront-datawarehouse">
+     <combo-product-addon id="reporting"/>
+    <combo-product-addon id="storefront_demo"/>
+
+    <modify-server-instance-type id="datawarehouse_loader">
+      <append-module name="Store.EStore"/>
+    </modify-server-instance-type>
+  </product-addon-combo>
+
+  <product-addon-combo id="storefront-datawarehouse-international">
+    <combo-product-addon id="reporting"/>
+    <combo-product-addon id="storefront_demo"/>
+    <combo-product-addon id="international"/>
+
+    <modify-server-instance-type id="datawarehouse_loader">
+      <append-module name="Store.EStore.International"/>
+    </modify-server-instance-type>
+  </product-addon-combo>
+
+
+  <product-addon-combo id="storefront-datawarehouse-sampledata">
+    <combo-product-addon id="search"/>
+    <combo-product-addon id="reporting"/>
+    <combo-product-addon id="storefront_demo"/>
+
+    <modify-server-instance-type id="datawarehouse">
+      <append-module name="Store.Storefront"/>
+    </modify-server-instance-type>
+  </product-addon-combo>
+
+  <!-- server instance types -->
+  <server-instance-type id="management">
+    <title resource-key="StoreCommerceCAServer.name">ATG Commerce Reference Store Publishing</title>
+    <detail resource-key="StoreCommerceCAServer.detail"/>
+
+    <append-module name="DCS-UI"/>
+    <append-module name="Store.EStore.Versioned"/>
+    <append-module name="Store.Storefront" before="DCS-ABTest.runtime,ABTest.runtime"/> 
+    
+    <config-directory>
+      <property-file file="/atg/dynamo/service/jdbc/DirectJTDataSource.properties">
+        <property-group id="base">
+          <property name="className">
+            <value>atg.nucleus.JNDIReference</value>
+          </property>
+          <property name="JNDIName">
+            <value>${AppServerPortsProvider.jndiPrefix}${NamedDatasource[management].datasourceValue.jndiName}</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/dynamo/service/jdbc/DirectJTDataSource_production.properties">
+        <property-group id="base">
+          <property name="className">
+            <value>atg.nucleus.JNDIReference</value>
+          </property>
+        </property-group>
+        <property-group id="nonswitching">
+          <requires-addon-id id="nonswitchingdatasource"/>
+          <property name="JNDIName">
+            <value>${AppServerPortsProvider.jndiPrefix}${NamedDatasource[nonswitchingCore].datasourceValue.jndiName}</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/dynamo/service/jdbc/DirectJTDataSource_staging.properties">
+        <property-group id="staging">
+          <requires-addon-id id="staging"/>
+          <property name="className">
+            <value>atg.nucleus.JNDIReference</value>
+          </property>
+          <property name="JNDIName">
+            <value>${AppServerPortsProvider.jndiPrefix}${NamedDatasource[stagingnonswitchingCore].datasourceValue.jndiName}</value>
+          </property>
+        </property-group>
+      </property-file>
+
+      <property-file file="/atg/store/stores/StoreRepository_production.properties">
+        <property-group id="nonswitching">
+          <requires-addon-id id="nonswitchingdatasource"/>
+          <property name="dataSource">
+            <value>/atg/dynamo/service/jdbc/JTDataSource_production</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/commerce/pricing/priceLists/PriceLists_production.properties">
+        <property-group id="nonswitching">
+          <requires-addon-id id="nonswitchingdatasource"/>
+          <property name="dataSource">
+            <value>/atg/dynamo/service/jdbc/JTDataSource_production</value>
+          </property>
+        </property-group>
+      </property-file>
+
+      <property-file file="/atg/search/testing/ProductionEnvironment.properties">
+        <property-group id="search">
+          <requires-addon-id id="search"/>
+          <property name="searchEnvironmentName^">
+            <value>/atg/commerce/search/catalog/QueryRequest.searchEnvironmentName</value>
+          </property>
+          <property name="availableLocaleNames">
+            <value>en_US</value>
+          </property>
+        </property-group>
+      </property-file>
+
+      <property-file file="/atg/registry/ContentRepositories.properties">
+        <property-group id="staging">
+          <requires-addon-id id="staging"/>
+          <property name="initialRepositories+">
+            <value>/atg/store/stores/StoreRepository_staging</value>
+          </property>
+        </property-group>
+      </property-file>
+      
+      <property-file file="/atg/commerce/catalog/ProductCatalog_production.properties">
+          <property-group id="basic">
+            <requires-addon-id id="nonswitchingdatasource"/>
+            <property name="dataSource">
+              <value>/atg/dynamo/service/jdbc/JTDataSource_production</value>
+            </property>
+          </property-group>
+        </property-file>
+        
+        <property-file file="moduleList.properties">
+          <property-group id="base">
+            <property name="modules">
+              <value>${ServerInstanceType[management].calculatedModuleString}</value>
+            </property>
+          </property-group>
+        </property-file>
+        
+        <property-file file="/atg/search/repository/RefinementRepository_production.properties">
+          <property-group id="nonswitching">
+            <requires-addon-id id="nonswitchingdatasource" />
+            <requires-addon-id id="search" />
+            <property name="dataSource">
+              <value>/atg/dynamo/service/jdbc/JTDataSource_production</value>
+            </property>
+          </property-group>
+        </property-file>
+
+      <property-file file="/atg/store/stores/StoreRepository_production.properties">
+        <property-group id="switchingonly">
+          <requires-addon-id id="switchingdatasource" />
+          <property name="dataSource">
+            <value>/atg/dynamo/service/jdbc/SwitchingDataSource</value>
+          </property>
+        </property-group>
+      </property-file>
+
+      <property-file file="/atg/dynamo/service/preview/Localhost.properties">
+        <property-group id="base">
+          <requires-addon-id id="preview"/>
+          <property name="hostName">
+            <value>localhost</value>
+              <input type="text">
+                <label>Enter Local Preview Hostname</label>
+                <validator id="NoWhiteSpaceInputValidator">
+                  <error-message>Hostname cannot contain whitespace</error-message>
+                </validator>
+              </input>
+          </property>
+          <property name="port">
+            <value>8080</value>
+              <input type="text">
+                <label>Enter Local Preview Host Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid port number</error-message>
+                </validator>
+              </input>
+          </property>
+        </property-group>
+      </property-file>
+
+      <property-file file="/atg/search/routing/IndexDeploymentService.properties">
+        <property-group id="search">
+          <requires-addon-id id="search"/>
+          <property name="clientLockManager">
+            <value>/atg/search/service/SearchClientLockManager</value>
+          </property>
+        </property-group>
+      </property-file>
+      
+      <property-file file="/atg/searchadmin/repository/service/SyncService.properties">
+        <property-group id="search">
+          <requires-addon-id id="search"/>
+          <property name="clientLockManager">
+            <value>/atg/search/service/SearchClientLockManager</value>
+          </property>
+        </property-group>
+      </property-file> 
+      
+    </config-directory>
+
+  </server-instance-type>     
+
+  <server-instance-type id="production" >
+
+    <title resource-key="StoreCommerceProductionServer.name">ATG Commerce Reference Store Production</title>
+    <detail/>
+
+    <append-module name="DCS.AbandonedOrderServices"/>
+
+    <config-directory>
+      <property-file file="moduleList.properties">
+        <property-group id="base">
+          <property name="modules">
+            <value>${ServerInstanceType[production].calculatedModuleString}</value>
+          </property>
+        </property-group>
+      </property-file>
+      
+      <property-file file="/atg/commerce/catalog/ProductCatalog.properties">
+        <property-group id="nonswitching">
+          <requires-addon-id id="nonswitchingdatasource"/>
+          <property name="dataSource">
+            <value>/atg/dynamo/service/jdbc/JTDataSource</value>
+          </property>
+        </property-group>
+      </property-file>
+      
+      <property-file file="/atg/store/stores/StoreRepository.properties">
+        <property-group id="nonswitching">
+          <requires-addon-id id="nonswitchingdatasource"/>
+          <property name="dataSource">
+            <value>/atg/dynamo/service/jdbc/JTDataSource</value>
+          </property>
+        </property-group>
+        <property-group id="switching">
+          <requires-addon-id id="switchingdatasource"/>
+          <property name="dataSource">
+            <value>/atg/dynamo/service/jdbc/SwitchingDataSource</value>
+          </property>
+        </property-group>
+      </property-file>
+
+      <property-file file="/atg/commerce/pricing/priceLists/PriceLists.properties">
+        <property-group id="nonswitching">
+          <requires-addon-id id="nonswitchingdatasource"/>
+          <property name="dataSource">
+            <value>/atg/dynamo/service/jdbc/JTDataSource</value>
+          </property>
+        </property-group>
+      </property-file>
+
+
+      <property-file file="atg/dynamo/service/jdbc/DirectJTDataSource.properties">
+        <property-group id="nonswitching">
+          <requires-addon-id id="nonswitchingdatasource"/>
+          <property name="className">
+            <value>atg.nucleus.JNDIReference</value>
+          </property>
+          <property name="JNDIName">
+            <value>${AppServerPortsProvider.jndiPrefix}${NamedDatasource[nonswitchingCore].datasourceValue.jndiName}</value>
+          </property>
+        </property-group>
+      </property-file>
+
+      <property-file file="/atg/multisite/DefaultSiteRuleFilter.properties">
+        <property-group id="basic-setup">
+          <requires-addon-id id="storefront-basic-setup"/>
+          <property name="defaultSiteId">
+            <value>basicSite</value>
+          </property>
+        </property-group>
+      </property-file>
+
+    </config-directory>
+  </server-instance-type>
+  
+  <server-instance-type id="staging" >
+
+    <title resource-key="StoreCommerceStagingServer.name">ATG Commerce Reference Store Staging</title>
+    <detail/>
+
+    <append-module name="DCS.AbandonedOrderServices"/>
+    
+    <config-directory>
+      <property-file file="/atg/commerce/catalog/ProductCatalog.properties">
+        <property-group id="base">
+          <property name="dataSource">
+            <value>/atg/dynamo/service/jdbc/JTDataSource</value>
+          </property>
+        </property-group>
+      </property-file>
+      
+      <property-file file="/atg/store/stores/StoreRepository.properties">
+        <property-group id="base">
+          <property name="dataSource">
+            <value>/atg/dynamo/service/jdbc/JTDataSource</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/commerce/pricing/priceLists/PriceLists.properties">
+        <property-group id="base">
+          <property name="dataSource">
+            <value>/atg/dynamo/service/jdbc/JTDataSource</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/multisite/DefaultSiteRuleFilter.properties">
+        <property-group id="basic-setup">
+          <requires-addon-id id="storefront-basic-setup"/>
+          <property name="defaultSiteId">
+            <value>basicSite</value>
+          </property>
+        </property-group>
+      </property-file>
+      
+    </config-directory>
+  </server-instance-type>
+
+  <server-instance-type id="datawarehouse_loader">
+    <config-directory>
+      <property-file file="/atg/commerce/catalog/ProductCatalog.properties">
+        <property-group id="nonswitching">
+          <requires-addon-id id="nonswitchingdatasource"/>
+          <property name="dataSource">
+            <value>/atg/dynamo/service/jdbc/JTDataSource_production</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/commerce/pricing/priceLists/PriceLists.properties">
+        <property-group id="reportingnonswitching">
+          <requires-addon-id id="reporting" />
+          <requires-addon-id id="nonswitchingdatasource"/>
+          <property name="dataSource">
+            <value>/atg/dynamo/service/jdbc/JTDataSource_production</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/store/stores/StoreRepository.properties">
+        <property-group id="nonswitching">
+          <requires-addon-id id="nonswitchingdatasource"/>
+          <property name="dataSource">
+            <value>/atg/dynamo/service/jdbc/JTDataSource_production</value>
+          </property>
+        </property-group>
+        <property-group id="switchingonly">
+          <requires-addon-id id="switchingdatasource"/>
+          <property name="dataSource">
+            <value>/atg/dynamo/service/jdbc/SwitchingDataSource</value>
+          </property>
+        </property-group>
+      </property-file>
+    </config-directory>
+  </server-instance-type>
+
+  <server-instance-type id="externalpreview">
+    <config-directory>
+      <property-file file="/atg/dynamo/service/jdbc/DirectJTDataSource.properties">
+        <property-group id="base">
+          <property name="JNDIName">
+            <value>${AppServerPortsProvider.jndiPrefix}${NamedDatasource[management].datasourceValue.jndiName}</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/dynamo/service/jdbc/DirectJTDataSource_production.properties">
+        <property-group id="base">
+          <property name="className">
+            <value>atg.nucleus.JNDIReference</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/dynamo/service/jdbc/DirectJTDataSource_staging.properties">
+        <property-group id="staging">
+          <requires-addon-id id="staging"/>
+          <property name="className">
+            <value>atg.nucleus.JNDIReference</value>
+          </property>
+          <property name="JNDIName">
+            <value>${AppServerPortsProvider.jndiPrefix}${NamedDatasource[stagingnonswitchingCore].datasourceValue.jndiName}</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/store/stores/StoreRepository_production.properties">
+        <property-group id="nonswitching">
+          <requires-addon-id id="nonswitchingdatasource"/>
+          <property name="dataSource">
+            <value>/atg/dynamo/service/jdbc/JTDataSource_production</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/commerce/pricing/priceLists/PriceLists_production.properties">
+        <property-group id="nonswitching">
+          <requires-addon-id id="nonswitchingdatasource"/>
+          <property name="dataSource">
+            <value>/atg/dynamo/service/jdbc/JTDataSource_production</value>
+          </property>
+        </property-group>
+      </property-file>
+
+      <property-file file="/atg/search/testing/ProductionEnvironment.properties">
+        <property-group id="search">
+          <requires-addon-id id="search"/>
+          <property name="searchEnvironmentName^">
+            <value>/atg/commerce/search/catalog/QueryRequest.searchEnvironmentName</value>
+          </property>
+          <property name="availableLocaleNames">
+            <value>en_US</value>
+          </property>
+        </property-group>
+      </property-file>
+     
+      <property-file file="/atg/commerce/catalog/ProductCatalog_production.properties">
+          <property-group id="basic">
+            <requires-addon-id id="nonswitchingdatasource"/>
+            <property name="dataSource">
+              <value>/atg/dynamo/service/jdbc/JTDataSource_production</value>
+            </property>
+          </property-group>
+        </property-file>        
+        
+        <property-file file="moduleList.properties">
+          <property-group id="base">
+            <property name="modules">
+              <value>${ServerInstanceType[management].calculatedModuleString}</value>
+            </property>
+          </property-group>
+        </property-file>
+        
+    </config-directory>
+  </server-instance-type>
+
+   <server-instance-type id="svcagent">
+    <title resource-key="AgentServer.name">ATG Agent Server</title>
+    <config-directory>
+      <property-file file="/atg/store/stores/StoreRepository.properties">
+        <property-group id="nonswitching">
+          <requires-addon-id id="dcs-csr"/>
+		  <requires-addon-id id="nonswitchingdatasource" />
+          <property name="dataSource">
+            <value>/atg/dynamo/service/jdbc/JTDataSource_production</value>
+          </property>
+        </property-group>
+		<property-group id="switchingonly">
+		  <requires-addon-id id="dcs-csr"/>
+          <requires-addon-id id="switchingdatasource" />
+          <property name="dataSource">
+            <value>/atg/dynamo/service/jdbc/SwitchingDataSource</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/store/StoreConfiguration.properties">
+        <property-group id="base">
+          <property name="siteHttpServerName" persist-key="productionServerSiteHttpServerName">
+            <input type="text">
+              <label>Enter Production Server Hostname</label>
+              <validator id="NoWhiteSpaceInputValidator">
+                <error-message>Hostname cannot contain whitespace</error-message>
+              </validator>
+            </input>
+          </property>
+          <property name="siteHttpServerPort" persist-key="productionServerSiteHttpServerPort">
+            <value>${AppServerPortsProvider.siteHttpPort}</value>
+            <input type="text">
+              <label>Enter Production Server Site HTTP Port</label>
+              <validator id="PortNumberInputValidator">
+                <error-message>Invalid port number</error-message>
+              </validator>
+            </input>
+          </property>
+        </property-group>
+      </property-file>
+    </config-directory>
+  </server-instance-type>
+</product>
+<!-- @version $Id: //edu/ILT-Courses/main/COMM/StudentFiles/COM/setup/copy-files/apps/MyStore/EStore/cim/product.xml#3 $$Change: 635816 $-->

@@ -1,0 +1,568 @@
+--
+-- Dynamo3 MIB
+--
+-- Summary
+--
+-- 1                                    iso
+-- 1.3                                  org
+-- 1.3.6                                dod
+-- 1.3.6.1                              internet
+-- 1.3.6.1.4                            private
+-- 1.3.6.1.4.1                          enterprises
+-- 1.3.6.1.4.1.2725                     atg
+-- 1.3.6.1.4.1.2725.1                   dynamo3
+--
+-- 1.3.6.1.4.1.2725.1.1                 d3System
+-- 1.3.6.1.4.1.2725.1.1.1               sysServerName              OCTET STRING
+-- 1.3.6.1.4.1.2725.1.1.2               sysStatus                  OCTET STRING
+-- 1.3.6.1.4.1.2725.1.1.3               sysUpTime                  OCTET STRING
+-- 1.3.6.1.4.1.2725.1.1.4               sysTotalMem                Integer64
+-- 1.3.6.1.4.1.2725.1.1.5               sysFreeMem                 Integer64
+-- 1.3.6.1.4.1.2725.1.1.6               sysNumInfoMsgs             Counter64
+-- 1.3.6.1.4.1.2725.1.1.7               sysNumWarningMsgs          Counter64
+-- 1.3.6.1.4.1.2725.1.1.8               sysNumErrorMsgs            Counter64
+--
+-- 1.3.6.1.4.1.2725.1.2                 d3LoadManagement
+-- 1.3.6.1.4.1.2725.1.2.1               lmIsManager                TruthValue
+-- 1.3.6.1.4.1.2725.1.2.2               lmManagerIndex             Integer32
+-- 1.3.6.1.4.1.2725.1.2.3               lmIsPrimaryManager         TruthValue
+-- 1.3.6.1.4.1.2725.1.2.4               lmServicingCMs             TruthValue
+-- 1.3.6.1.4.1.2725.1.2.5               lmCMLDRPAddress            IpAddress
+-- 1.3.6.1.4.1.2725.1.2.6               lmCMLDRPPort               Integer32
+-- 1.3.6.1.4.1.2725.1.2.7               lmMngdEnttyTable
+-- 1.3.6.1.4.1.2725.1.2.7.1             lmMngdEnttyEntry
+-- 1.3.6.1.4.1.2725.1.2.7.1.1           lmIndex                    Integer32
+-- 1.3.6.1.4.1.2725.1.2.7.1.2           lmSNMPAddress              IpAddress
+-- 1.3.6.1.4.1.2725.1.2.7.1.3           lmSNMPPort                 Integer32
+-- 1.3.6.1.4.1.2725.1.2.7.1.4           lmProbability              Integer32
+-- 1.3.6.1.4.1.2725.1.2.7.1.5           lmNewSessions              TruthValue
+-- 1.3.6.1.4.1.2725.1.2.7.1.6           lmNewSessionOverride       INTEGER
+--
+-- 1.3.6.1.4.1.2725.1.3                 d3SessionTracking
+-- 1.3.6.1.4.1.2725.1.3.1               stCreatedSessionCnt        Counter64
+-- 1.3.6.1.4.1.2725.1.3.2               stValidSessionCnt          Integer64
+-- 1.3.6.1.4.1.2725.1.3.3               stRestoredSessionCnt       Counter64
+-- 1.3.6.1.4.1.2725.1.3.4               stDictionaryServerStatus   INTEGER
+--
+-- 1.3.6.1.4.1.2725.1.4                 d3DRPServer
+-- 1.3.6.1.4.1.2725.1.4.1               drpAddress                 IpAddress
+-- 1.3.6.1.4.1.2725.1.4.2               drpPort                    Integer32
+-- 1.3.6.1.4.1.2725.1.4.3               drpTotalReqsServed         Counter64
+-- 1.3.6.1.4.1.2725.1.4.4               drpTotalReqTime            Counter64
+-- 1.3.6.1.4.1.2725.1.4.5               drpAvgReqTime              Integer64
+-- 1.3.6.1.4.1.2725.1.4.6               drpNewSessions             TruthValue
+-- 1.3.6.1.4.1.2725.1.4.7               drpAvailable               TruthValue
+-- 1.3.6.1.4.1.2725.1.4.8               drpId                      OCTET STRING
+--
+-- 1.3.6.1.4.1.2725.1.5                 d3DBConnPooling
+-- 1.3.6.1.4.1.2725.1.5.1               dbPoolsTable
+-- 1.3.6.1.4.1.2725.1.5.1.1             dbPoolsEntry
+-- 1.3.6.1.4.1.2725.1.5.1.1.1           dbIndex                    Integer32
+-- 1.3.6.1.4.1.2725.1.5.1.1.2           dbPoolID                   OCTET STRING
+-- 1.3.6.1.4.1.2725.1.5.1.1.3           dbMinConn                  Integer32
+-- 1.3.6.1.4.1.2725.1.5.1.1.4           dbMaxConn                  Integer32
+-- 1.3.6.1.4.1.2725.1.5.1.1.5           dbMaxFreeConn              Integer32
+-- 1.3.6.1.4.1.2725.1.5.1.1.6           dbBlocking                 TruthValue
+-- 1.3.6.1.4.1.2725.1.5.1.1.7           dbConnOut                  Integer32
+-- 1.3.6.1.4.1.2725.1.5.1.1.8           dbFreeResources            Integer32
+-- 1.3.6.1.4.1.2725.1.5.1.1.9           dbTotalResources           Integer32
+--
+
+
+DYNAMO3-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+    MODULE-IDENTITY,
+    OBJECT-TYPE,
+    Integer32,
+    Counter64,
+    IpAddress
+        FROM SNMPv2-SMI
+    TruthValue
+        FROM SNMPv2-TC;
+
+-- Integer32 and Counter64 are preferably loaded from SNMPv2-SMI,
+-- but some compilers can't seem to find them.  If they can be found,
+-- comment them out for MIB compilation.
+--Integer32 ::= INTEGER (-2147483648..2147483647)
+--Counter64 ::= INTEGER (0..18446744073709551615)
+Integer64 ::= INTEGER (-922337203685477808..922337203685477807)
+
+-- Path to root.
+
+org            OBJECT IDENTIFIER ::= { iso 3 }
+dod            OBJECT IDENTIFIER ::= { org 6 }
+internet       OBJECT IDENTIFIER ::= { dod 1 }
+
+private        OBJECT IDENTIFIER ::= { internet 4 }
+enterprises    OBJECT IDENTIFIER ::= { private 1 }
+
+atg            OBJECT IDENTIFIER ::= { enterprises 2725 }
+dynamo3        OBJECT IDENTIFIER ::= { atg 1 }
+
+-- -------------------------------------------------------------
+-- Until a place is found in the MIB for this (or a place is
+-- made for it), the MODULE-IDENTITY will remain commented out.
+--
+-- dynamoMib MODULE-IDENTITY
+--     LAST-UPDATED "9709170000Z"
+--     ORGANIZATION "Art Technology Group"
+--     CONTACT-INFO
+--         "        pagan lord craig
+--          Postal: ATG
+--                  101 Huntington Ave
+--                  Floor 22
+--                  Boston, MA <BUG>
+--                  USA
+--             Tel: +1 617 859-1212
+--             Fax: +1 617 859-1211
+--          E-mail: support@atg.com"
+--     DESCRIPTION
+--         "The Dynamo MIB."
+--
+--     REVISION "9708260000Z"
+--     DESCRIPTION
+--         "A way to provide Dynamo3's load management
+--          system with the required statistics and parameters."
+--
+--     ::= { dynamo3 1 }
+-- -------------------------------------------------------------
+
+--
+-- The D3 System Group
+--
+-- The D3 System group contains information about the D3 system.
+--
+d3System OBJECT IDENTIFIER ::= { dynamo3 1 }
+
+sysServerName OBJECT-TYPE
+    SYNTAX      OCTET STRING
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "The indentifying name given to this Dynamo."
+    ::= { d3System 1 }
+
+sysStatus OBJECT-TYPE
+    SYNTAX      OCTET STRING
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "String indicating current status.  BUG: (should be replaced
+        w/ an ENUMERATED or something)"
+    ::= { d3System 2 }
+
+sysUpTime OBJECT-TYPE
+    SYNTAX      OCTET STRING
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "A timestamp from the time Dynamo was last initialized.
+        BUG: (change to a DateAndTime)"
+    ::= { d3System 3 }
+
+sysTotalMem OBJECT-TYPE
+    SYNTAX      Integer64
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "The total amount of memory currently available for allocating
+        objects, measured in bytes."
+    ::= { d3System 4 }
+
+sysFreeMem OBJECT-TYPE
+    SYNTAX      Integer64
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "An approximation of the total amount of memory currently
+        available for future allocated objects, measured in bytes."
+    ::= { d3System 5 }
+
+sysNumInfoMsgs OBJECT-TYPE
+    SYNTAX      Counter64
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "The number of system global info messages written."
+    ::= { d3System 6 }
+
+sysNumWarningMsgs OBJECT-TYPE
+    SYNTAX      Counter64
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "The number of system global warning messages written."
+    ::= { d3System 7 }
+
+sysNumErrorMsgs OBJECT-TYPE
+    SYNTAX      Counter64
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "The number of system global error messages written."
+    ::= { d3System 8 }
+
+--
+-- The D3 Load Management Group
+--
+--
+--
+d3LoadManagement OBJECT IDENTIFIER ::= { dynamo3 2 }
+
+lmIsManager OBJECT-TYPE
+    SYNTAX      TruthValue
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "True if this Dynamo is running a load manager."
+    ::= { d3LoadManagement 1 }
+
+lmManagerIndex OBJECT-TYPE
+    SYNTAX      Integer32
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "Returns this Dynamo's offset into the list of
+         load managing entities."
+    ::= { d3LoadManagement 2 }
+
+lmIsPrimaryManager OBJECT-TYPE
+    SYNTAX      TruthValue
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "True if the load manager is an acting primary
+         manager."
+    ::= { d3LoadManagement 3 }
+
+lmServicingCMs OBJECT-TYPE
+    SYNTAX      TruthValue
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "True if the load manager has serviced any
+         connection module requests in the amount of
+         time set as the connection module polling
+         interval."
+    ::= { d3LoadManagement 4 }
+
+lmCMLDRPAddress OBJECT-TYPE
+    SYNTAX      IpAddress
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "The IP address of the connection module agent."
+    ::= { d3LoadManagement 5 }
+
+lmCMLDRPPort OBJECT-TYPE
+    SYNTAX      Integer32
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "The port of the connection module agent."
+    ::= { d3LoadManagement 6 }
+
+lmMngdEnttyTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF LmMngdEnttyEntry
+    ACCESS      not-accessible
+    STATUS      current
+    DESCRIPTION
+        "A list of load managed entities."
+    ::= { d3LoadManagement 7 }
+
+lmMngdEnttyEntry OBJECT-TYPE
+    SYNTAX      LmMngdEnttyEntry
+    ACCESS      not-accessible
+    STATUS      current
+    DESCRIPTION
+        "A managed entity entry containing load distribution
+        information."
+    INDEX { lmIndex }
+    ::= { lmMngdEnttyTable 1 }
+
+LmMngdEnttyEntry ::= SEQUENCE {
+    lmIndex                 Integer32,
+    lmSNMPAddress           IpAddress,
+    lmSNMPPort              Integer32,
+    lmProbability           Integer32,
+    lmNewSessions           TruthValue,
+    lmNewSessionOverride    Integer32
+}
+
+lmIndex OBJECT-TYPE
+    SYNTAX      Integer32
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "A unique value for each managed entity."
+    ::= { lmMngdEnttyEntry 1 }
+
+lmSNMPAddress OBJECT-TYPE
+    SYNTAX      IpAddress
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "The IP address for entry's SNMP agent."
+    ::= { lmMngdEnttyEntry 2 }
+
+lmSNMPPort OBJECT-TYPE
+    SYNTAX      Integer32
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "The port for the entry's SNMP agent."
+    ::= { lmMngdEnttyEntry 3 }
+
+lmProbability OBJECT-TYPE
+    SYNTAX      Integer32
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "The probability that the entry will be given a new session."
+    ::= { lmMngdEnttyEntry 4 }
+
+lmNewSessions OBJECT-TYPE
+    SYNTAX      TruthValue
+    ACCESS      read-write
+    STATUS      current
+    DESCRIPTION
+        "Whether or not the entry is accepting new sessions, or if the
+        load manager is allowing new sessions to be sent to the entry.
+        This value is inclusive of any override indicated by
+        lmNewSessionOverride."
+    ::= { lmMngdEnttyEntry 5 }
+
+lmNewSessionOverride OBJECT-TYPE
+    SYNTAX      INTEGER {notAccepting(0),
+                         accepting(1),
+                         noOverride(-1)}
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "The override set for whether or not a server is accepting
+        new sessions."
+    ::= { lmMngdEnttyEntry 6 }
+
+
+--
+-- The D3 Session Tracking Group
+--
+--
+--
+d3SessionTracking OBJECT IDENTIFIER ::= { dynamo3 3 }
+
+stCreatedSessionCnt OBJECT-TYPE
+    SYNTAX      Counter64
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "The number of created sessions."
+    ::= { d3SessionTracking 1 }
+
+stValidSessionCnt OBJECT-TYPE
+    SYNTAX      Integer64
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "The number of valid sessions."
+    ::= { d3SessionTracking 2 }
+
+stRestoredSessionCnt OBJECT-TYPE
+    SYNTAX      Counter64
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "The number of sessions migrated to server."
+    ::= { d3SessionTracking 3 }
+
+--
+-- The D3 DRP Server Group
+--
+--
+--
+d3DRPServer OBJECT IDENTIFIER ::= { dynamo3 4 }
+
+drpAddress OBJECT-TYPE
+    SYNTAX      IpAddress
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "The IP address of the DRP server."
+    ::= { d3DRPServer 1 }
+
+drpPort OBJECT-TYPE
+    SYNTAX      Integer32
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "The port of the DRP server."
+    ::= { d3DRPServer 2 }
+
+drpTotalReqsServed OBJECT-TYPE
+    SYNTAX      Counter64
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "Total number of DRP requests serviced."
+    ::= { d3DRPServer 3 }
+
+drpTotalReqTime OBJECT-TYPE
+    SYNTAX      Counter64
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "Total service time in msecs for all DRP
+         requests."
+    ::= { d3DRPServer 4 }
+
+drpAvgReqTime OBJECT-TYPE
+    SYNTAX      Integer64
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "Average service time in msecs for each
+         DRP request."
+    ::= { d3DRPServer 5 }
+
+drpNewessions OBJECT-TYPE
+    SYNTAX      TruthValue
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "True if this Dynamo is accepting new sessions."
+    ::= { d3DRPServer 6 }
+
+drpAvailable OBJECT-TYPE
+    SYNTAX      TruthValue
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "True if this DRP server is available to handle requests."
+    ::= { d3DRPServer 7 }
+
+drpId OBJECT-TYPE
+    SYNTAX      OCTET STRING
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "The unique 6-byte id for this DRP server (if unset, 0 0 0 0 0 0)."
+    ::= { d3DRPServer 8 }
+
+--
+-- The D3 DB connection pooling group.
+--
+--
+--
+d3DBConnPooling OBJECT IDENTIFIER ::= { dynamo3 5 }
+
+dbPoolsTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF DbPoolsEntry
+    ACCESS      not-accessible
+    STATUS      current
+    DESCRIPTION
+        "A list of JDBC connection pooling services."
+    ::= { d3DBConnPooling 1 }
+
+dbPoolsEntry OBJECT-TYPE
+    SYNTAX      DbPoolsEntry
+    ACCESS      not-accessible
+    STATUS      current
+    DESCRIPTION
+        "A pooling service entry containing information about
+        the pools configuration and current status."
+    INDEX { dbIndex }
+    ::= { dbPoolsTable 1 }
+
+DbPoolsEntry ::= SEQUENCE {
+    dbIndex             Integer32,
+    dbPoolID            OCTET STRING,
+    dbMinConn           Integer32,
+    dbMaxConn           Integer32,
+    dbMaxFreeConn       Integer32,
+    dbBlocking          TruthValue,
+    dbConnOut           Integer32,
+    dbFreeResources     Integer32,
+    dbTotalResources    Integer32
+}
+
+dbIndex OBJECT-TYPE
+    SYNTAX      Integer32
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "A unique value for each pooling service."
+    ::= { dbPoolsEntry 1 }
+
+dbPoolID OBJECT-TYPE
+    SYNTAX      OCTET STRING
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "The name of the DB connection pool service."
+    ::= { dbPoolsEntry 2 }
+
+dbMinConn OBJECT-TYPE
+    SYNTAX      Integer32
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "The minimum number of connections pooled."
+    ::= { dbPoolsEntry 3 }
+
+dbMaxConn OBJECT-TYPE
+    SYNTAX      Integer32
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "The maximum number of connections pooled."
+    ::= { dbPoolsEntry 4 }
+
+dbMaxFreeConn OBJECT-TYPE
+    SYNTAX      Integer32
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "The maximum number of free pooled connections at a time."
+    ::= { dbPoolsEntry 5 }
+
+dbBlocking OBJECT-TYPE
+    SYNTAX      TruthValue
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "Whether or not the pool is to block on check outs."
+    ::= { dbPoolsEntry 6 }
+
+dbConnOut OBJECT-TYPE
+    SYNTAX      Integer32
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "Returns the number of connections checked out."
+    ::= { dbPoolsEntry 7 }
+
+dbFreeResources OBJECT-TYPE
+    SYNTAX      Integer32
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "Returns the number of free connections in the pool.  This number
+        refers to actually created connections that are not currently
+        checked out.  It does not include how many more connections are
+        allowed to be created as set by the maximum number of connections
+        allowed in the pool."
+    ::= { dbPoolsEntry 8 }
+
+dbTotalResources OBJECT-TYPE
+    SYNTAX      Integer32
+    ACCESS      read-only
+    STATUS      current
+    DESCRIPTION
+        "Returns the number of total connections in the pool.  This number
+        refers to actually created connections and is not an indication of
+        how many more connections may be created and used in the pool."
+    ::= { dbPoolsEntry 9 }
+
+END
+

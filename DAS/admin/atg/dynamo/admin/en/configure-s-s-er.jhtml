@@ -1,0 +1,86 @@
+
+<nucleus type=import>
+	/atg/dynamo/admin/Configure
+</nucleus>
+
+<java>
+  atg.service.dynamo.ServerConfig configure = (atg.service.dynamo.ServerConfig) request.resolveName("/atg/dynamo/admin/Configure");
+</java>
+
+<HTML>
+<HEAD>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+<TITLE>Error URL</TITLE>
+
+
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+<IMG SRC="images/config-banner.gif" ALT="Dynamo Configuration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a href="configure-server.jhtml">Configure</a>/<a href="configure-server-services.jhtml">Servers</a>/Error_URL<p>
+
+
+
+
+
+<blockquote>
+
+<h3>Server: <i><valueof property=Configure.serverName></valueof></i></h3>
+
+
+
+
+<H2>Configure Error URL</H2>
+<P>Dynamo provides a default error report page to display in the event of page compilation or Java runtime errors. If you want to display a different error report page, enter its URL:</P>
+<FORM ACTION="configure-server-services.jhtml" METHOD=POST>
+
+<input name="currentProperties" property="Configure.currentProperties" type=hidden value="errorURL">
+
+(currently
+
+<java>
+	if ( !configure.isDefaultServer() && !configure.isUsingDefault("errorURL") )
+		out.println( " not " );
+</java>
+
+using defaults)
+
+<p>
+
+		<b>Error URL</b>
+		<blockquote>
+		
+		<INPUT TYPE="text"  property="Configure.errorURL" SIZE=45>
+		<p>
+
+<INPUT TYPE="submit" property="Configure.applyChanges" VALUE="Apply Changes">
+
+<java>
+if ( !configure.isDefaultServer() && !configure.isUsingDefault("errorURL") )
+{
+</java>
+    <INPUT TYPE="submit" property="Configure.applyDefault" VALUE="Use Defaults">
+<java>
+}
+</java>
+</blockquote>
+</form>
+<p>
+<hr>
+<b>Change Server</b>
+<p>
+<valueof property=Configure.serverConfiguredText></valueof>
+<p>
+<droplet src="SelectServer.jhtml">
+    <param name="returnURL" value="configure-s-s-er.jhtml">
+</droplet>
+<!--<INPUT TYPE="reset" VALUE="Reset Form">-->
+<p>
+<a href="configure-server-services.jhtml">Back</a><br>
+
+</blockquote>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/configure-s-s-er.jhtml#2 $$Change: 651448 $ */</java>
+

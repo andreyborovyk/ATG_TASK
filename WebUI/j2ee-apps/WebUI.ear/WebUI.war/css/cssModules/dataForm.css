@@ -1,0 +1,93 @@
+/* MODULE: Data Form
+   DESCRIPTION: Structure for creating forms
+------------------------------------------------------------------------------*/
+
+
+.atg ul.atg_dataForm{
+  list-style:none;
+  /*width:600px;*/
+  padding-left:0;
+	margin: 0;
+}
+
+.atg ul.atg_dataForm li{
+  margin-bottom:5px;
+  padding-right:19px;
+  float:left;
+  /*width:360px;*/
+  list-style:none;
+}
+
+.atg ul.atg_dataForm label{
+  white-space:nowrap;
+}
+
+
+.atg ul.atg_dataForm:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+
+
+/* Form Veritcal List [Core]
+** DESCRIPTION: Core definition that creates a vertical list without bullets.
+------------------------------------------------------------------------------*/
+
+
+dl.atg_dataForm{
+  margin: 0;
+	overflow: hidden;
+	zoom: 1;
+	
+}
+dl.atg_dataForm dt{
+  margin: 0 5px 15px 0;
+  float: left;
+  font-weight: 500;
+  clear: left;
+  width: 150px;
+  text-align: right;
+  padding-top: 4px;
+}
+dl.atg_dataForm dd{
+  margin: 0 0 15px 0;
+  float: left;
+  overflow: hidden;
+  display: block;
+}
+dl.atg_dataForm dd input,
+dl.atg_dataForm dd select{
+  font-size: 1em;
+}
+dl.atg_dataForm dd input.atg_numField{
+  width: 50px;
+}
+dl.atg_dataForm dd select.atg_multiSelect{
+  height: 80px;
+}
+dl.atg_dataForm dd ul.atg_simpleBoolean{
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+dl.atg_dataForm dd ul.atg_simpleBoolean li{
+  float: left;
+  margin-right: 8px;
+}
+dl.atg_dataForm dd ul.atg_formVerticalList{
+  width: 200px;
+}
+dl.atg_dataForm dt.atg_inlineLabel{
+ clear: none;
+ width: auto;
+ padding-left: 20px;
+}
+fieldset{
+  clear: both;
+  padding: 10px;
+}
+

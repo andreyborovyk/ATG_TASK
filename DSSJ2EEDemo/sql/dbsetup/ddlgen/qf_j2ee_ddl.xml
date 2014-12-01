@@ -1,0 +1,813 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="qf_j2ee_ddl">
+<comment><![CDATA[ @version $Id: //product/DSS/version/10.0.3/templates/DSSJ2EEDemo/sql/qf_j2ee_ddl.xml#3 $$Change: 655658 $]]></comment>
+<comment><![CDATA[
+DDL FOR QUINCY FUNDS J2EE DEMO                                                       
+]]></comment>
+<comment><![CDATA[
+There are multiple repositories ( 7 ) associated - and used exclusively - 
+by the Quincy Funds J2EE Demo.  This SQL scripts defines them all. 
+Each table "family" has the repository name of the repository which 
+maps the tables to its descriptors.                                                  
+]]></comment>
+
+   <table name="dss_qf_ftr_fldr" description="features repository">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="parentFolder" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="name" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dss_qf_ftr_fldr_pk">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dss_qf_ftr">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="last_modified" nullable="y">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="language" nullable="y">
+         <column-type db="generic" type="varchar" length="12"/>
+      </column>
+      <column name="title" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="headline" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="the_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="parentFolder" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="name" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="author" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="relativePath" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="smallImageURL" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="targets" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="512"/>
+         <column-type db="mssql" type="varchar" length="512" scale=""/>
+      </column>
+      <column name="file_content" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="length" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <primary-key name="dss_qf_ftr_pk">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dss_qf_ftr_trgs">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="seq_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="targets" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dss_qf_ftr_trgs_pk">
+         <index-column column="id" order="asc" seq="1"/>
+         <index-column column="seq_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dss_qf_ftr_trgs_fk" referenced-table="dss_qf_ftr">
+         <fkey-column referencing-column="id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="dss_qf_ftr_keys">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="seq_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="keywords" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dss_qf_ftr_keys_pk">
+         <index-column column="id" order="asc" seq="1"/>
+         <index-column column="seq_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dss_qf_ftr_keys_fk" referenced-table="dss_qf_ftr">
+         <fkey-column referencing-column="id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="dss_qf_ftr_cont">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="file_content" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="8000"/>
+         <column-type db="mssql" type="text"/>
+         <column-type db="sybase" type="text"/>
+      </column>
+      <primary-key name="dss_qf_ftr_cont_p">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dss_qf_ftr_cont_f" referenced-table="dss_qf_ftr">
+         <fkey-column referencing-column="id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="dss_qf_fund_fldr" description="funds repository">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="parentFolder" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="name" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dss_qf_fund_fldrpk">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dss_qf_fund">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="fundName" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="aggressiveIndex" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="symbol" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="category" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="price" nullable="y">
+         <column-type db="generic" type="numeric" length="25" scale="6"/>
+      </column>
+      <column name="parentFolder" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="objective" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="1024"/>
+         <column-type db="oracle" type="varchar2" length="765" scale=""/>
+         <column-type db="db2" type="varchar" length="1024" scale=""/>
+         <column-type db="mssql" type="varchar" length="1024" scale=""/>
+         <column-type db="sybase" type="varchar" length="1024"/>
+      </column>
+      <column name="strategy" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="1024"/>
+         <column-type db="mssql" type="varchar" length="1024" scale=""/>
+      </column>
+      <column name="inceptionDate" nullable="y">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="last_modified" nullable="y">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="ytd" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="oneyear" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="threeyear" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="fiveyear" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="tenyear" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="sinceInception" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="intro" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="1024"/>
+         <column-type db="mssql" type="varchar" length="1024" scale=""/>
+      </column>
+      <column name="compFundName" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="zeroToTen" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="tenToHundred" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="overHundred" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="relativePath" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="file_content" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="language" nullable="y">
+         <column-type db="generic" type="varchar" length="12"/>
+      </column>
+      <primary-key name="dss_qf_fund_pk">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dss_qf_fund_trgs">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="seq_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="subject" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dss_qf_fund_trgspk">
+         <index-column column="id" order="asc" seq="1"/>
+         <index-column column="seq_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dss_qf_fund_trgsfk" referenced-table="dss_qf_fund">
+         <fkey-column referencing-column="id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="dss_qf_fund_types">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="seq_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="subject" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dss_qf_fund_typepk">
+         <index-column column="id" order="asc" seq="1"/>
+         <index-column column="seq_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dss_qf_fund_typefk" referenced-table="dss_qf_fund">
+         <fkey-column referencing-column="id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="dss_qf_fund_cont">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="file_content" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="8000"/>
+         <column-type db="mssql" type="text"/>
+         <column-type db="sybase" type="text"/>
+      </column>
+      <primary-key name="dss_qf_fund_cont_p">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dss_qf_fund_cont_f" referenced-table="dss_qf_fund">
+         <fkey-column referencing-column="id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="dss_qf_news_fldr" description="news repository">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="parentFolder" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="name" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dss_qf_news_fldrpk">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dss_qf_news">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="author" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="headline" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="the_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="goLiveDate" nullable="y">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="status" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="authorId" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="editorId" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="notes" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="relativePath" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="parentFolder" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="contentName" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="language" nullable="y">
+         <column-type db="generic" type="varchar" length="12"/>
+      </column>
+      <column name="file_content" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="news_content" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="8000"/>
+         <column-type db="mssql" type="text"/>
+         <column-type db="sybase" type="text"/>
+      </column>
+      <primary-key name="dss_qf_news_pk">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dss_qf_news_trgs">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="seq_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="subject" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dss_qf_news_trg_pk">
+         <index-column column="id" order="asc" seq="1"/>
+         <index-column column="seq_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dss_qf_news_trg_fk" referenced-table="dss_qf_news">
+         <fkey-column referencing-column="id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="dss_qf_offer_fldr" description="offers repository">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="parentFolder" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="name" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dss_qf_offer_fldpk">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dss_qf_offer">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="author" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="lastModified" nullable="y">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="length" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="relativePath" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="parentFolder" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="title" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="imageURL" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="language" nullable="y">
+         <column-type db="generic" type="varchar" length="12"/>
+      </column>
+      <column name="file_content" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dss_qf_offer_pk">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dss_qf_offer_keys">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="seq_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="keywords" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dss_qf_offer_keypk">
+         <index-column column="id" order="asc" seq="1"/>
+         <index-column column="seq_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dss_qf_offer_keyfk" referenced-table="dss_qf_offer">
+         <fkey-column referencing-column="id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="dss_qf_tip_fldr" description="investment tips repository">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="parentFolder" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="name" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dss_qf_tip_fldr_pk">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dss_qf_tip">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="author" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="lastModified" nullable="y">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="length" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="relativePath" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="parentFolder" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="title" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="imageURL" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="language" nullable="y">
+         <column-type db="generic" type="varchar" length="12"/>
+      </column>
+      <column name="file_content" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dss_qf_tip_pk">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dss_qf_tip_keys">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="seq_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="keywords" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dss_qf_tip_keys_pk">
+         <index-column column="id" order="asc" seq="1"/>
+         <index-column column="seq_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dss_qf_tip_keys_fk" referenced-table="dss_qf_tip">
+         <fkey-column referencing-column="id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="dss_qf_tip_trgs">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="seq_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="targets" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dss_qf_tip_trgs_pk">
+         <index-column column="id" order="asc" seq="1"/>
+         <index-column column="seq_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dss_qf_tip_trgs_fk" referenced-table="dss_qf_tip">
+         <fkey-column referencing-column="id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="dss_qf_email_fldr" description="e-mail repository">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="parentFolder" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="name" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dss_qf_email_fldpk">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dss_qf_email">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="author" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="lastModified" nullable="y">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="length" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="relativePath" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="parentFolder" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="title" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="agg_content" nullable="y">
+         <column-type db="generic" type="varchar" length="1024"/>
+         <column-type db="mssql" type="varchar" length="1024" scale=""/>
+      </column>
+      <column name="ModContent" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="1024"/>
+         <column-type db="mssql" type="varchar" length="1024" scale=""/>
+      </column>
+      <column name="ConsContent" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="1024"/>
+         <column-type db="mssql" type="varchar" length="1024" scale=""/>
+      </column>
+      <column name="BrokerSignature" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="language" nullable="y">
+         <column-type db="generic" type="varchar" length="12"/>
+      </column>
+      <column name="file_content" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dss_qf_email_pk">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dss_qf_email_keys">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="seq_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="keywords" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dss_qf_email_keypk">
+         <index-column column="id" order="asc" seq="1"/>
+         <index-column column="seq_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dss_qf_email_keyfk" referenced-table="dss_qf_email">
+         <fkey-column referencing-column="id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="dss_qf_img_fldr" description="images repository">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="parentFolder" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="name" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dss_qf_img_fldr_pk">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dss_qf_img">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="author" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="lastModified" nullable="y">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="length" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="relativePath" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="parentFolder" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="title" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="alt" nullable="y">
+         <column-type db="generic" type="varchar" length="1024"/>
+         <column-type db="mssql" type="varchar" length="1024" scale=""/>
+      </column>
+      <column name="imageURL" nullable="y">
+         <column-type db="generic" type="varchar" length="1024"/>
+         <column-type db="mssql" type="varchar" length="1024" scale=""/>
+      </column>
+      <column name="dimensions" nullable="y">
+         <column-type db="generic" type="varchar" length="1024"/>
+         <column-type db="mssql" type="varchar" length="1024" scale=""/>
+      </column>
+      <column name="file_content" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dss_qf_img_pk">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dss_qf_img_types">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="seq_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="types" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dss_qf_img_typespk">
+         <index-column column="id" order="asc" seq="1"/>
+         <index-column column="seq_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dss_qf_img_typesfk" referenced-table="dss_qf_img">
+         <fkey-column referencing-column="id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="dss_qf_user" description="profile extensions -- imported and modified from DSSDemo">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="number_news_items" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="num_feature_items" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="broker_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="strategy" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="goals" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="actual_strategy" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="actual_goals" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="aggressive_index" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="pub_privileges" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <primary-key name="dss_qf_user_pk">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dss_qf_interest" description="user interests (multi-valued attribute table">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="interest" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dss_qf_interest_pk">
+         <index-column column="id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+   </table>
+   <table name="dss_qf_fund_list" description="fund list">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="fund_identifier" nullable="y">
+         <column-type db="generic" type="varchar" length="72"/>
+      </column>
+      <primary-key name="dss_qf_fund_listpk">
+         <index-column column="id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+   </table>
+   <table name="dss_qf_fund_share" description="actual count of the shares per fund list">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="share_count" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <primary-key name="dss_qf_fund_sharpk">
+         <index-column column="id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+   </table>
+   <table name="dss_qf_fnds_viewd">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="fund_identifier" nullable="y">
+         <column-type db="generic" type="varchar" length="64"/>
+      </column>
+      <primary-key name="dss_qf_fnds_viewpk">
+         <index-column column="id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+   </table>
+   <table name="dss_qf_investor" description="investor property">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="asset_value" nullable="y">
+         <column-type db="generic" type="numeric" length="25" scale="6"/>
+      </column>
+      <primary-key name="dss_qf_investor_pk">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dss_qf_broker" description="broker property">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="commission_pct" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <primary-key name="dss_qf_broker_pk">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+</schema>
+<!-- @version $Id: //product/DSS/version/10.0.3/templates/DSSJ2EEDemo/sql/qf_j2ee_ddl.xml#3 $$Change: 655658 $ -->

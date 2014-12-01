@@ -1,0 +1,182 @@
+
+
+<dspel:setvalue bean="ProducerAdminFormHandler.jsr168GearId" paramvalue="id"/>
+<dspel:getvalueof id="portletDescription" idtype="oasis.names.tc.wsrp.v1.types.PortletDescription"
+                                        bean="ProducerAdminFormHandler.portletDescription">
+
+   <dspel:form action="configProducer.jsp" method="post" >
+
+      <c:url var="CancelUrl" value="${origURI}">
+      <c:param name="mode" value="2"/>
+      </c:url>
+
+     <dspel:input type="HIDDEN" bean="ProducerAdminFormHandler.cancelUrl" value="${CancelUrl}" />
+
+     <c:url var="SuccessUrl" value="${origURI}">
+     <c:param name="mode" value="8"/>
+     </c:url>
+
+     <dspel:input type="HIDDEN" bean="ProducerAdminFormHandler.successUrl" value="${SuccessUrl}" />
+
+     <c:url var="FailureUrl" value="${origURI}">
+              <c:param name="mode" value="7"/>
+     </c:url>
+     <dspel:input type="HIDDEN" bean="ProducerAdminFormHandler.failureUrl" value="${FailureUrl}" />
+
+     <table cellpadding="1" cellspacing="0" border="0" bgcolor="#666666" width="100%"><tr><td>
+        <table cellpadding="4" cellspacing="0" border="0" bgcolor="#999999" width="100%"><tr><td>
+            <font class="pageheader">
+            <fmt:message key="change-gear-def-title" bundle="${producerAdminbundle}"/>
+            </font>
+        </td></tr></table>
+     </td></tr></table>
+
+     <table cellpadding="4" cellspacing="0" border="0" bgcolor="#EAEEF0" width="100%"><tr><td>
+        <font class="smaller">
+            <fmt:message key="change-gear-def-title-info" bundle="${producerAdminbundle}"/>
+        </font>
+     </td></tr></table>
+
+    <table cellspacing="0" cellpadding="0"  border="0" bgcolor="#c9d1d7" width="100%" id="table1">
+    <tr>
+        <td width="200"><font class="smaller">&nbsp;
+            <fmt:message key="remote-portlet-handle" bundle="${producerAdminbundle}"/>
+        </td>
+	    <td>&nbsp;<font class="smaller_bold"><dspel:valueof bean="ProducerAdminFormHandler.portletHandle"/></td>
+	</tr>
+    <tr>
+		<td width="200"><font class="smaller">&nbsp;
+            <fmt:message key="remote-portlet-title" bundle="${producerAdminbundle}"/>
+        </td>
+		<td>&nbsp;<dspel:input type="text" size="30" bean="ProducerAdminFormHandler.title"/></td>
+	</tr>
+    <tr>
+		<td width="200"><font class="smaller">&nbsp;
+            <fmt:message key="remote-portlet-short-title" bundle="${producerAdminbundle}"/>
+    </td>
+		<td>&nbsp;<dspel:input type="text" size="30" bean="ProducerAdminFormHandler.shortTitle"/></td>
+	</tr>
+	<tr>
+		<td width="200"><font class="smaller">&nbsp;
+        <fmt:message key="remote-portlet-display-name" bundle="${producerAdminbundle}"/>
+    </td>
+		<td>&nbsp;<dspel:input type="text" size="30" bean="ProducerAdminFormHandler.displayName" /></td>
+	</tr>
+	<tr>
+		<td width="200"><font class="smaller">&nbsp;
+        <fmt:message key="remote-portlet-description" bundle="${producerAdminbundle}"/>
+    </td>
+		<td>&nbsp;<dspel:textarea rows="4" cols="50" bean="ProducerAdminFormHandler.description"/></td>
+   </tr>
+   <tr>
+		<td width="200"><font class="smaller">&nbsp;
+        <fmt:message key="remote-portlet-only-secure" bundle="${producerAdminbundle}"/>
+    </td>
+		<td>&nbsp;<font class="smaller_bold"><dspel:valueof bean="ProducerAdminFormHandler.onlySecure"/></td>
+	</tr>
+	<tr>
+		<td width="200"><font class="smaller">&nbsp;
+        <fmt:message key="remote-portlet-default-markup-secure" bundle="${producerAdminbundle}"/>
+    </td>
+		<td>&nbsp;<font class="smaller_bold"><dspel:valueof bean="ProducerAdminFormHandler.defaultSecure"/></td>
+	</tr>
+	<tr>
+		<td width="200"><font class="smaller">&nbsp;
+        <fmt:message key="remote-portlet-user-get-methods" bundle="${producerAdminbundle}"/>
+    </td>
+		<td>&nbsp;<font class="smaller_bold"><dspel:valueof bean="ProducerAdminFormHandler.usesGetmethod"/></td>
+	</tr>
+	<tr>
+		<td width="200"><font class="smaller">&nbsp;
+        <fmt:message key="remote-portlet-userContext-stored-in-session" bundle="${producerAdminbundle}"/>
+    </td>
+		<td>&nbsp;<font class="smaller_bold"><dspel:valueof bean="ProducerAdminFormHandler.userContextInSession"/></td>
+	</tr>
+	<tr>
+		<td width="200"><font class="smaller">&nbsp;
+        <fmt:message key="remote-portlet-templates-stored-in-session" bundle="${producerAdminbundle}"/>
+    </td>
+		<td>&nbsp;<font class="smaller_bold"><dspel:valueof bean="ProducerAdminFormHandler.templatesInSession"/></td>
+	</tr>
+	<tr>
+		<td width="200"><font class="smaller">&nbsp;
+        <fmt:message key="remote-portlet-has-user-specific-states" bundle="${producerAdminbundle}"/>
+    </td>
+		<td>&nbsp;<font class="smaller_bold"><dspel:valueof bean="ProducerAdminFormHandler.userSpecificStates"/></td>
+	</tr>
+	<tr>
+		<td width="200"><font class="smaller">&nbsp;
+        <fmt:message key="remote-portlet-supports-template-processing" bundle="${producerAdminbundle}"/>
+    </td>
+		<td>&nbsp;<font class="smaller_bold"><dspel:valueof bean="ProducerAdminFormHandler.templateProcessing"/></td>
+	</tr></table>
+
+    <table cellspacing="0" cellpadding="2"  border="0" bgcolor="#c9d1d7" width="100%" id="table1">
+
+        <tr><td nowrap>
+		    <font class="smaller">&nbsp;
+            <fmt:message key="remote-portlet-markupType" bundle="${producerAdminbundle}"/>
+        </td></tr>
+
+    <dspel:getvalueof id="markupType" idtype="oasis.names.tc.wsrp.v1.types.MarkupType[]" bean="ProducerAdminFormHandler.markupType">
+      <c:set var="counterOfmarkupType" value="0"/>
+        <c:forEach var="markupTypeDefintion" items="${markupType}" varStatus="status">
+            <c:set var="counterOfmarkupType" value="${counterOfmarkupType+1}"/>
+              <c:if test="${status.index==0}">
+              </c:if>
+    	        <tr><td width="400">
+	    	        <table border="1"cellpadding="1" width="100%" id="table2">
+		    	        <tr>
+				            <td><font class="smaller">&nbsp;<c:out value="${markupTypeDefintion.mimeType}"/>&nbsp;</td>
+				            <td><font class="smaller">
+                              <c:set var="counterOfmodes" value="0"/>
+                              <c:forEach var="modesArrayDefinition" items="${markupTypeDefintion.modes}" varStatus="status">
+                                  <c:set var="counterOfmodes" value="${counterOfmodes+1}"/>
+                                  <c:if test="${status.index==0}">
+                                  </c:if>
+                                        <li><input type="checkbox" name="<c:out value="${modesArrayDefinition}"/>" value="true"/><c:out value="${modesArrayDefinition}"/>&nbsp;&nbsp;
+                                  </c:forEach>
+                        <c:if test="${counterOfmodes == 0}">
+                             <font class="smaller"><fmt:message key="wsrp-producer-admin-no-av-modes" bundle="${producerAdminbundle}"/></font>
+                        </c:if>
+                    </td>
+                    <td><font class="smaller">
+                            <c:set var="counterOfWindow" value="0"/>
+                            <c:forEach var="windowsArrayDefinition" items="${markupTypeDefintion.windowStates}" varStatus="status">
+                                <c:set var="counterOfWindow" value="${counterOfWindow+1}"/>
+                                <c:if test="${status.index==0}">
+                                </c:if>
+                                      <li>&nbsp;<c:out value="${windowsArrayDefinition}"/>&nbsp;
+                            </c:forEach>
+                       <c:if test="${counterOfWindow == 0}">
+                            <font class="smaller"><fmt:message key="wsrp-producer-admin-no-av-windows-states" bundle="${producerAdminbundle}"/></font>
+                       </c:if>
+                    </td></tr></table>
+		       </td></tr>
+       </c:forEach>
+     </dspel:getvalueof>
+          <c:if test="${counterOfmarkupType == 0}">
+             <font class="smaller"><fmt:message key="wsrp-producer-admin-no-av-mime-types" bundle="${producerAdminbundle}"/></font>
+           </c:if>
+    </td></tr></table>
+
+	<table cellspacing="0" cellpadding="4"  border="0" bgcolor="#c9d1d7" width="100%" id="table1">
+        <tr><td nowrap>
+            <tr><td>
+            </td></tr>
+            <tr><td>
+            </td></tr>
+        <tr>
+        	<td width="200"><font class="smaller">&nbsp;<dspel:input type="submit" bean="ProducerAdminFormHandler.updatePortletDesc" value="Import"/></td><td>
+                <dspel:input type="submit" bean="ProducerAdminFormHandler.cancel" value="Cancel"/>
+            </td>
+        </tr>
+
+    </dspel:form>
+    </dspel:getvalueof>
+    </table>
+
+    <img src='<%=clearGif%>' height="1" width="1" alt=""><br>
+	
+    <dspel:setvalue bean="ProducerAdminFormHandler.reset"/>
+<%-- @version $Id: //product/WSRP/version/10.0.3/admin/admin/admin/changePortletDescription.jspf#2 $$Change: 651448 $--%>

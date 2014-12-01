@@ -1,0 +1,29 @@
+<!-- Title: GiftPurchasedEmail -->
+<importbean bean="/atg/dynamo/droplet/Switch">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/IsNull">
+<importbean bean="/atg/commerce/inventory/InventoryLookup">
+<importbean bean="/atg/commerce/pricing/PriceItem">
+
+<setvalue param="messageSubject" value="A Gift has been purchased for you.">
+<java>/*
+<setvalue param="messageFrom" value="DCS5Team@example.com">
+<setvalue param="messageReplyTo" value="DCS5Team@example.com">
+*/</java>
+<setvalue param="messageTo" value="param:message.profile.email">
+<setvalue param="mailingName" value="GiftPurchased">
+
+<setvalue param="order" value="param:message.order">
+<setvalue param="recipient" value="param:message.profile">
+<setvalue param="item" value="param:message.item">
+
+<p> Dear <valueof param="recipient.firstName">Valued Customer</valueof>
+ <valueof param="recipient.lastName"></valueof>
+
+<p> A gift has been purchased for you by <valueof bean="/atg/userprofiling/Profile.firstName">unknown</valueof>  <valueof bean="/atg/userprofiling/Profile.lastName">unknown</valueof>
+
+<p> The following item was purchased:
+
+<p> Thank you,
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/Fulfillment/html/en/email_templates/GiftPurchased.jhtml#2 $$Change: 651448 $*/</java>
+

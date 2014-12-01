@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Servlet 2.3 deployment descriptor for a web application.  See the DTD for
+     more information about the contents of this file. -->
+
+<!DOCTYPE web-app PUBLIC
+          "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+          "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+
+  <display-name>
+    FlexUI
+  </display-name>
+
+  <description>
+    FlexUI
+  </description>
+
+  <!-- This is the name of the "parent web application", i.e. an application
+       that has a SessionNameContextServlet defined in it which will define the
+       session scope for this web application. -->
+  <context-param>
+    <param-name>atg.session.parentContextName</param-name>
+    <param-value>/dyn</param-value>
+    <description>
+      The servlet context of the parent web application.
+    </description>
+  </context-param>
+
+  <!-- If context-root is set here, then ServletContextWebAppRegistry will use
+       this setting as the context root for this web application.  This must
+       match the context-root setting in application.xml. -->
+  <context-param>
+    <param-name>context-root</param-name>
+    <param-value>FlexUI</param-value>
+  </context-param>
+
+  <!-- Turn off preview for this app-->
+  <context-param>
+    <param-name>atg.preview</param-name>
+    <param-value>false</param-value>
+  </context-param>
+
+  <!-- This filter invokes the DAF servlet pipeline.  It is intended to
+       eliminate the need for dsp:page tags in JSPs.  (Unfortunately, this
+       functionality is not fully implemented as of ATG 6.1.0, so dsp:page
+       tags are also still required.) -->
+  <filter>
+    <filter-name>PageFilter</filter-name>
+    <filter-class>atg.filter.dspjsp.PageFilter</filter-class>
+  </filter>   
+
+  <filter-mapping>
+    <filter-name>PageFilter</filter-name>
+    <url-pattern>/messagebroker/*</url-pattern>
+  </filter-mapping>
+
+  <!-- Http Flex Session attribute and binding listener support -->
+  <listener>
+    <listener-class>flex.messaging.HttpFlexSession</listener-class>
+  </listener>
+
+  <!-- MessageBroker Servlet -->
+  <servlet>
+    <servlet-name>MessageBrokerServlet</servlet-name>
+    <display-name>MessageBrokerServlet</display-name>
+    <servlet-class>flex.messaging.MessageBrokerServlet</servlet-class>
+    <init-param>
+      <param-name>services.configuration.file</param-name>
+      <param-value>/WEB-INF/flex/services-config.xml</param-value>
+    </init-param>
+  </servlet>
+
+  <!-- Configure the Nucleus Servlet. This servlet definition is required in
+       each web application that uses Dynamo functionality.  When mapped, it
+       exposes the Nucleus component browser, but should not be mapped to any
+       paths on a live site. -->
+  <servlet>
+    <servlet-name>NucleusServlet</servlet-name>
+    <servlet-class>atg.nucleus.servlet.NucleusServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>MessageBrokerServlet</servlet-name>
+    <url-pattern>/messagebroker/*</url-pattern>
+  </servlet-mapping>
+
+  <!-- NB: This is in the OOTB BlazeDS web.xml.  What should we do about it,
+       given that we are cross-app-server?? -->
+  <!-- for WebSphere deployment, please uncomment -->
+  <!--
+  <resource-ref>
+    <description>Flex Messaging WorkManager</description>
+    <res-ref-name>wm/MessagingWorkManager</res-ref-name>
+    <res-type>com.ibm.websphere.asynchbeans.WorkManager</res-type>
+    <res-auth>Container</res-auth>
+    <res-sharing-scope>Shareable</res-sharing-scope>
+  </resource-ref>
+  -->
+
+</web-app>
+<!-- @version $Id: //product/FlexUI/version/10.0.3/src/web-apps/FlexUI/WEB-INF/web.xml#2 $$Change: 651448 $-->

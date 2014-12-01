@@ -1,0 +1,24 @@
+<DECLAREPARAM NAME="giftlistId" CLASS="String" DESCRIPTION="The gift list Id">
+<DECLAREPARAM NAME="giftId" CLASS="String" DESCRIPTION="The gift item Id">
+
+<importbean bean="/atg/dynamo/droplet/IsEmpty">
+
+<!-- check if parameter giftlistId and giftId has been passed 
+     into page.  ifso, then call RemoveItemFromGiftlist droplet 
+     to remove item from the giftlist -->
+
+<droplet bean="IsEmpty">
+<param name="value" value="param:giftId">
+<oparam name="false">
+  <droplet name="/atg/commerce/gifts/RemoveItemFromGiftlist">
+    <param name="giftlistId" value="param:giftlistId">
+    <param name="giftId" value="param:giftId">
+    <oparam name="error">
+      <font color=cc0000><STRONG><UL>
+      <li>Either gift list not found or you are not the owner.
+      </UL></STRONG></font>
+    </oparam>
+  </droplet>
+</oparam>
+</droplet>
+<java>/* @version $Id: //product/B2BCommerce/version/10.0.3/release/B2BCommerce/html/sample_catalog/remove_from_list.jhtml#2 $$Change: 651448 $*/</java>

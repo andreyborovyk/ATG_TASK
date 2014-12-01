@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+		"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>Dojo Textarea Widget Demo</title>
+		<script type="text/javascript" src="/dojo-1/dojo/dojo.js"
+			djConfig="isDebug: true, parseOnLoad: true"></script>
+
+		<script type="text/javascript">
+			dojo.require("dijit._Widget");
+			
+			
+		  dojo.registerModulePath("atg.widget", "/WebUI/dijit");
+			dojo.require("atg.widget.form.defaultText");
+			//dojo.require("dojo.parser");
+		</script>
+		
+		<script type="text/javascript" charset="utf-8">
+		  
+		  dojo.addOnLoad(function(){
+        dojo.query(".atg_widgets_defaultText").forEach(function(inputElement){
+          
+          new atg.widget.form.defaultText({}, inputElement);
+  			});
+  			
+  			new atg.widget.form.defaultText({}, dojo.byId('inputNeedsDefault'));
+  			
+      });
+		  
+		</script>
+		
+		
+		<style type="text/css">
+
+  		@import "/WebUI/css/cssFramework.css";
+			
+			@import "/dojo-1/dijit/themes/atg/atg.css";
+			
+			/* From CommerceAssist.css */
+			
+			span.required {
+      color:#339900;
+      cursor:default;
+      font-size:1em;
+      font-weight:bold;
+      padding:20px;
+      }
+      span.requiredStar {
+      color:#000;
+      cursor:default;  
+      font-size:1.2em;
+      font-weight:bold;
+      }
+      
+  		.atg_widget_defaultText_view{
+  		  color: #7F7F7F;
+  		}
+			
+		</style>
+
+	</head>
+	<body>
+		<h2 class="pageSubContentTitle">Default Text Input Widget</h2>
+
+    <form action="defaultText_submit" method="get" accept-charset="utf-8">
+      <ul>
+        <li>
+          <label>
+            Plain Text Input
+          </label>
+          <input type="text" value="Enter Phone #" class="atg_widgets_defaultText" /></li>
+        <li>
+          <label>
+            Another Plain Text Input
+          </label>
+          <input type="text" value="Click Here" id="inputNeedsDefault"/>
+        </li>
+        
+        <li>
+          <label>
+            Not Enhanced
+          </label>
+          <input type="text" value="Standard Existing Value" />
+        </li>
+        
+        <li>
+          <label>
+            Password Text Input (currently not fully supported)
+          </label>
+          <input type="password" value="Secret Password" class="atg_widgets_defaultText" />
+        </li>
+      </ul>
+    </form>
+
+
+</body>
+</html>

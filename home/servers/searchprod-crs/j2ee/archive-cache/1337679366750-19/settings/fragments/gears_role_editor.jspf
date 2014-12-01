@@ -1,0 +1,117 @@
+
+
+  <core:CreateUrl id="redirectUrl" url="<%= urlTargetJsp%>">
+   <core:UrlParam param="mode"             value="<%=mode%>"/>
+   <core:UrlParam param="userGroupType"    value='<%= request.getParameter("userGroupType")%>'/>
+   <core:UrlParam param="searchFilter"     value='<%= request.getParameter("searchFilter")%>'/>
+   <core:UrlParam param="paf_page_id"      value="<%= dsp_page_id %>"/>
+   <core:UrlParam param="paf_gear_id"      value="<%= dsp_gear_id %>"/>
+   <paf:encodeUrlParam param="paf_page_url" value="<%=dsp_page_url%>"/>
+   <core:UrlParam param="paf_community_id" value="<%= dsp_community_id %>"/>
+   <core:UrlParam param="hasSearched"      value='<%= request.getParameter("hasSearched")%>'/>
+   <core:UrlParam param="firstName"        value='<%= request.getParameter("firstName")%>'/>
+   <core:UrlParam param="lastName"         value='<%= request.getParameter("lastName")%>'/>
+   <core:UrlParam param="login"            value='<%= request.getParameter("login")%>'/>
+   <core:UrlParam param="email"            value='<%= request.getParameter("email")%>'/>
+   <core:UrlParam param="organizationId"   value='<%= request.getParameter("organizationId")%>'/>
+   <core:UrlParam param="paf_user_id"      value='<%= request.getParameter("paf_user_id")%>'/>
+   <core:UrlParam param="paf_org_id"      value='<%= request.getParameter("paf_org_id")%>'/>
+
+   <% urlFormTarget = redirectUrl.getNewUrl(); %>
+<%-- 
+   setting the successURL to null enables the feedback messages 
+   which may need to be remove if blank pages re-appear
+   the commented section below of the setvalues are the right way
+--%>
+    <dsp:setvalue bean='<%=beanTarget+".successURL"%>' value=""/>
+    <dsp:setvalue bean='<%=beanTarget+".failureURL"%>' value=""/>
+<%--
+    <dsp:setvalue bean='<%=beanTarget+".successURL"%>' value="<%=urlFormTarget %>"/>
+    <dsp:setvalue bean='<%=beanTarget+".failureURL"%>' value="<%=urlFormTarget %>"/>
+--%>
+
+ </core:CreateUrl>
+
+
+<dsp:getvalueof id="user_id" idtype="java.lang.String" param="paf_user_id">
+<dsp:getvalueof id="org_id"  idtype="java.lang.String" param="paf_org_id">
+
+
+<%-- initialize form handler fields --%>
+<dsp:setvalue bean="GearRoleFormHandler.communityId" value="<%=dsp_community_id%>"/>
+<dsp:setvalue bean="GearRoleFormHandler.gearId" value="<%=dsp_gear_id%>"/>
+
+<%-- For some reason core:IfNotNull does not work for these tests,
+     always rendering the content even if the value is actually null. --%>
+<% if (user_id != null) { %>
+  <dsp:setvalue bean="GearRoleFormHandler.userId" value="<%=user_id%>"/>
+<% } else if (org_id != null) { %>
+  <dsp:setvalue bean="GearRoleFormHandler.organizationId" value="<%=org_id%>"/>
+<% } %>
+
+
+<table cellpadding="2" cellspacing="0" border="0" bgcolor="#EAEEF0" width="100%">
+
+<dsp:form action="<%=urlFormTarget%>" method="POST">
+
+ <core:CreateUrl id="cancelURL" url="/portal/settings/community_gears.jsp">
+  <core:UrlParam param="paf_community_id" value="<%=dsp_community_id%>"/>
+  <core:UrlParam param="paf_gear_id" value="<%=dsp_gear_id%>"/>
+  <core:UrlParam param="mode" value="13"/>
+   <paf:encodeUrlParam param="paf_page_url" value="<%=dsp_page_url%>"/>
+    <dsp:input type="hidden" bean="GearRoleFormHandler.cancelURL" value="<%=cancelURL.getNewUrl()%>"/>
+ </core:CreateUrl>
+
+<tr><td>
+<dsp:getvalueof id="entityName" idtype="String" bean="GearRoleFormHandler.entityName">
+<font class="small_bold">&nbsp;
+
+ <i18n:message key="community_gears_role_header_param">
+  <i18n:messageArg value="<%=entityName%>" />
+ </i18n:message>
+
+</font>
+</dsp:getvalueof><%-- user --%>
+</tr></tr></table>
+
+<img src="<%= response.encodeURL("images/clear.gif")%>" height="1" width="1" border="0"><br>
+
+<table cellpadding="4" cellspacing="0" border="0" width="100%"><tr><td>
+ <dsp:getvalueof id="roleSettings" idtype="boolean[]" bean="GearRoleFormHandler.roleSettings">
+ <dsp:getvalueof id="categories" idtype="String[]" bean="GearRoleFormHandler.categories">
+ <dsp:getvalueof id="roleNames" idtype="String[]" bean="GearRoleFormHandler.roleNames">
+<%
+   int index = 0;
+   String lastCategoryName = "";
+   
+ %>
+
+<tr>
+<td NOWRAP><font class="smaller">
+
+<core:ForEach id="roleNameLoop" values="<%=roleNames%>"
+              castClass="java.lang.String"
+              elementId="roleName">
+
+<dsp:input type="checkbox" bean='<%= "GearRoleFormHandler.roleSettings[" + index++ + "]" %>'/>&nbsp;<%=roleName%><br>
+
+
+</core:ForEach><%-- roleName --%>
+</font></td></tr>
+</dsp:getvalueof><%-- categories --%>
+</dsp:getvalueof><%-- roleNames --%>
+</dsp:getvalueof><%-- settings --%>
+
+<tr><td>
+<font class="smaller">
+<dsp:input type="SUBMIT" value="<%=update01%>" bean="GearRoleFormHandler.update" />&nbsp;
+
+<%--<dsp:input type="SUBMIT" value="<%=cancel01%>" bean="GearRoleFormHandler.cancel"/> --%>
+</font>
+</td></tr>
+</table>
+</dsp:form>
+
+</dsp:getvalueof><%-- roleName         --%>
+</dsp:getvalueof><%-- org_id           --%>
+<%-- @version $Id: //app/portal/version/10.0.3/paf/settings.war/fragments/gears_role_editor.jspf#2 $$Change: 651448 $--%>

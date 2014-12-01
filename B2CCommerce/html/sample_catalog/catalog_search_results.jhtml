@@ -1,0 +1,118 @@
+<!--
+*
+* This jhtml file demonstrates how to display the results of a simple
+* search for products in the product catalog repository.  The session scoped
+* CatalogSearch form handler will store results of search in the property
+* searchResultsByItemType.  This page will iterate through information in
+* that property using the switch and foreach droplets.
+*
+* The first ForEach droplet used is to iterate through each result set returned
+* for a given item type.  The results are stored in a table indexed by item
+* type or key.  The next droplet used is Switch which tests for a specific
+* item type (category or product).  Finally, an inner ForEach droplet is
+* used to iterate over each item in the result set to be displayed.  The
+* corresponding template is used to display the particular item.
+*
+-->
+
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/Switch">
+<importbean bean="/atg/dynamo/droplet/IsEmpty">
+<importbean bean="/atg/commerce/catalog/CatalogSearch">
+<importbean bean="/atg/userprofiling/Profile">
+
+<setvalue bean="Profile.currentLocation" value="catalog_search">
+
+<html>
+<head>
+<title>Search Results</title>
+</head>
+
+<body>
+<i>location: <valueof bean="Profile.currentLocation"></valueof></i><BR>
+<a href="index.jhtml">Catalog Home</a><BR>
+<a href="shoppingcart.jhtml">Shopping Cart</a>
+
+<h3>Search Results</h3>
+
+<!-- CatalogSearch will return multiple result sets based on item type,
+category and product.  iterate through each result set by item type
+to display the type of item returned by the query. -->
+<droplet bean="ForEach">
+  <param name="array" value="bean:CatalogSearch.searchResultsByItemType">
+  <oparam name="output">
+  <droplet bean="Switch">
+    <param name="value" value="param:key">
+    <!-- item type equals category, display all categories found -->
+    <oparam name="category">
+    <h2>Category Results</h2>
+    <blockquote>
+    <!-- using an inner loop, so assign subResultSet to parameter
+    outerelem -->
+    <setvalue param="outerelem" value="param:element">
+    <droplet bean="IsEmpty">
+    <param name="value" value="param:outerelem">
+    <oparam name="false">
+    <OL>
+    <!-- for each item found in subResultSet, outerelem, loop through
+    and display each category -->
+    <droplet bean="ForEach">
+      <param name="array" value="param:outerelem">
+      <oparam name="output">
+        <LI>
+      <!-- use category_fragment to display each category -->
+      <droplet src="category_fragment.jhtml">
+      <param name="childCategory" value="param:element">
+      </droplet>
+      </oparam>
+    </droplet>
+    </OL>
+    </oparam>
+    <!-- no categories found -->
+    <oparam name="true">
+    No category items in the catalog could be found that match your search
+    </oparam>
+    </droplet>
+    </blockquote>
+
+    </oparam>
+    <!-- item type equals product, display all products found -->
+    <oparam name="product">
+    <h2>Product Results</h2>
+    <blockquote>
+    <setvalue param="outerelem" value="param:element">
+    <droplet bean="IsEmpty">
+      <param name="value" value="param:outerelem">
+      <oparam name="false">
+        <OL>
+        <!-- for each item found in subResultSet, outerelem, loop through
+        and display each product -->
+        <droplet bean="ForEach">
+          <param name="array" value="param:outerelem">
+          <oparam name="output">
+          <LI>
+            <!-- use product_fragment.jhtml to display each product -->
+            <droplet src="product_fragment.jhtml">
+             <param name="childProduct" value="param:element">
+        </droplet>
+      </oparam>
+      </droplet>
+      </OL>
+    </oparam>
+    <oparam name="true">
+    No product items in the catalog could be found that match your search
+    </oparam>
+    </droplet>
+    </blockquote>
+    </oparam>
+  </droplet>
+  </oparam>
+</droplet>
+
+<!-- include catalog_search_form.jhtml for other searches -->
+<droplet src="catalog_search_form.jhtml"></droplet>
+
+</body>
+</html>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/B2CCommerce/html/sample_catalog/catalog_search_results.jhtml#2 $$Change: 651448 $*/</java>
+

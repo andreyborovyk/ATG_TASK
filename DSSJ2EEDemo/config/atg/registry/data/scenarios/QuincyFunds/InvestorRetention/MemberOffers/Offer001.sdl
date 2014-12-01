@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE scenario
+  SYSTEM
+  "dynamosystemresource:/atg/scenario/definition/sdl.dtd">
+
+<scenario author="admin" creation-time="964135454000" enabled="true" last-modified-by="admin" modification-time="1028236915441">
+  <segment migrate-from="1007668824764" migrate-users="true">
+    <segment-name>Redirect to Offer 001</segment-name>
+    <!--================================-->
+    <!--== Logs in  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.dps.Login</event-name>
+    </event>
+    <!--================================-->
+    <!--== Offer code is 001  -->
+    <!--================================-->
+    <condition construct="people-element" id="2">
+      <filter construct="profile-property-filter" operator="eq">
+        <subject-property>
+          <property-name>offerCode</property-name>
+        </subject-property>
+        <constant>001</constant>
+      </filter>
+    </condition>
+    <fork id="3">
+      <branch id="3.1">
+        <!--================================-->
+        <!--== Locale is en_US  -->
+        <!--================================-->
+        <condition construct="people-element" id="3.1.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>locale</property-name>
+            </subject-property>
+            <constant>en_US</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Redirect to page with Dynamo path /QuincyFunds/en/offer.jsp?ElementId=/repositories/Offers/en_US/offer001.html  -->
+        <!--================================-->
+        <action id="3.1.2">
+          <action-name>redirect</action-name>
+          <action-param name="path">
+            <constant>/QuincyFunds/en/offer.jsp?ElementId=/repositories/Offers/en_US/offer001.html</constant>
+          </action-param>
+        </action>
+      </branch>
+      <branch id="3.2">
+        <!--================================-->
+        <!--== Locale is fr_FR  -->
+        <!--================================-->
+        <condition construct="people-element" id="3.2.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>locale</property-name>
+            </subject-property>
+            <constant>fr_FR</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Redirect to page with Dynamo path /QuincyFunds/fr/offer.jsp?ElementId=/repositories/Offers/fr_FR/offer001.html  -->
+        <!--================================-->
+        <action id="3.2.2">
+          <action-name>redirect</action-name>
+          <action-param name="path">
+            <constant>/QuincyFunds/fr/offer.jsp?ElementId=/repositories/Offers/fr_FR/offer001.html</constant>
+          </action-param>
+        </action>
+      </branch>
+      <branch id="3.3">
+        <!--================================-->
+        <!--== Locale is ja_JP  -->
+        <!--================================-->
+        <condition construct="people-element" id="3.3.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>locale</property-name>
+            </subject-property>
+            <constant>ja_JP</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Redirect to page with Dynamo path /QuincyFunds/ja/offer.jsp?ElementId=/repositories/Offers/ja_JP/offer001.html  -->
+        <!--================================-->
+        <action id="3.3.2">
+          <action-name>redirect</action-name>
+          <action-param name="path">
+            <constant>/QuincyFunds/ja/offer.jsp?ElementId=/repositories/Offers/ja_JP/offer001.html</constant>
+          </action-param>
+        </action>
+      </branch>
+      <branch id="3.4">
+        <!--================================-->
+        <!--== Locale is de_DE  -->
+        <!--================================-->
+        <condition construct="people-element" id="3.4.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>locale</property-name>
+            </subject-property>
+            <constant>de_DE</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Redirect to page with Dynamo path /QuincyFunds/de/offer.jsp?ElementId=/repositories/Offers/de_DE/offer001.html  -->
+        <!--================================-->
+        <action id="3.4.2">
+          <action-name>redirect</action-name>
+          <action-param name="path">
+            <constant>/QuincyFunds/de/offer.jsp?ElementId=/repositories/Offers/de_DE/offer001.html</constant>
+          </action-param>
+        </action>
+      </branch>
+    </fork>
+  </segment>
+</scenario>

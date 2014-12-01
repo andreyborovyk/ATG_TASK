@@ -1,0 +1,724 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE gsa-template
+        PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN"
+        "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template>
+  <header>
+    <name>Search Datawarehouse Repository</name>
+    <author>Search Team</author>
+    <version>$Id: //product/ARF/version/10.0.3/ARF/DW/Search/config/atg/reporting/datawarehouse/searchDatawarehouseRepository.xml#1 $Change: $</version>
+  </header>
+
+  <!-- ++++++++++++++++++++++++++++++ -->
+  <!-- Item Descriptor: searchProject -->
+  <!-- ++++++++++++++++++++++++++++++ -->
+  <item-descriptor name="searchProject" id-space-name="arf_search_project">
+    <table name="ARF_SEARCH_PROJECT" type="primary" id-column-name="ID">
+      <property name="id" column-name="ID" data-type="short" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <!-- SearchProject repository id -->
+      <property name="projectId" column-names="NPROJECT_ID" data-type="string" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="name" column-names="NAME" data-type="string" required="true" default="Unknown">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="nameEn" column-names="NAME_EN" data-type="string" required="false">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="lastUpdate" column-name="RECORD_LAST_UPDATE" data-type="timestamp" required="false">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property name="startDate" column-name="RECORD_START_DATE" data-type="timestamp" required="false">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property name="endDate" column-name="RECORD_END_DATE" data-type="timestamp" required="false">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+      <property name="mostRecent" column-name="MOST_RECENT" data-type="boolean" required="true">
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+      <property name="deleted" column-name="DELETED" data-type="boolean" required="true" default="false">
+        <attribute name="propertySortPriority" value="90"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ++++++++++++++++++++++++++++++++++ -->
+  <!-- Item Descriptor: searchEnvironment -->
+  <!-- ++++++++++++++++++++++++++++++++++ -->
+  <item-descriptor name="searchEnvironment" id-space-name="arf_search_environment">
+    <table name="ARF_SEARCH_ENVIRONMENT" type="primary" id-column-name="ID">
+      <property name="id" column-name="ID" data-type="short" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <!-- dimensionId is environment id + site name ??? -->
+      <property name="environmentId" column-names="NENVIRONMENT_ID" data-type="string" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="name" column-names="NAME" data-type="string" required="true" default="Unknown">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="nameEn" column-names="NAME_EN" data-type="string" required="false">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="searchProject" item-type="searchProject" column-names="PROJECT_ID" required="true">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property name="lastUpdate" column-name="RECORD_LAST_UPDATE" data-type="timestamp" required="false">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property name="startDate" column-name="RECORD_START_DATE" data-type="timestamp" required="false">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+      <property name="endDate" column-name="RECORD_END_DATE" data-type="timestamp" required="false">
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+      <property name="mostRecent" column-name="MOST_RECENT" data-type="boolean" required="true">
+        <attribute name="propertySortPriority" value="90"/>
+      </property>
+      <property name="deleted" column-name="DELETED" data-type="boolean" required="true" default="false">
+        <attribute name="propertySortPriority" value="100"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ++++++++++++++++++++++++++++ -->
+  <!-- Item Descriptor: profileType -->
+  <!-- ++++++++++++++++++++++++++++ -->
+  <item-descriptor name="profileType">
+    <table name="ARF_PROFILE_TYPE" type="primary" id-column-name="ID">
+      <property name="id" column-name="ID" data-type="short" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="repositoryName" column-names="REPOSITORY_NAME" data-type="string" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ++++++++++++++++++++++++++ -->
+  <!-- Item Descriptor: queryType -->
+  <!-- ++++++++++++++++++++++++++ -->
+  <!-- Only contains one column so why define as repository item?  To define enumerable query subject in Cognos! -->
+  <item-descriptor name="queryType">
+    <table name="ARF_QUERY_TYPE" type="primary" id-column-name="ID">
+      <property name="id" column-name="ID" data-type="int" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <!-- Native type ID -->
+      <property name="typeId" column-names="NTYPE_ID" data-type="string" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="name" column-names="NAME" data-type="string" required="true">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="nameEn" column-names="NAME_EN" data-type="string" required="false">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ++++++++++++++++++++++++ -->
+  <!-- Item Descriptor: content -->
+  <!-- ++++++++++++++++++++++++ -->
+  <item-descriptor name="content" id-space-name="arf_content">
+    <table name="ARF_CONTENT" type="primary" id-column-name="ID">
+      <property name="id" column-name="ID" data-type="int" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="title" column-names="TITLE" data-type="string" required="true"/>
+      <!--
+      Hash of the full url plus first 200 characters of the URL.
+      Used by the ContentDimensionHandler to lookup a URL for an existing content dimension
+      -->
+      <property name="urlKey" column-names="URL_KEY" data-type="string" required="true"/>
+      <!--
+      If the content is the Document, then it will have the path for the url. Otherwise if the content is the repository
+      item, then contentUrl contains repositoryId:item-descName:RepositoryPath. Also the below three properties will be
+      populated.
+      -->
+      <property name="url" column-names="URL" data-type="string" required="true"/>
+      <!-- doc type for unstructured or repository item descriptor name for repository content -->
+      <property name="contentType" column-names="CONTENT_TYPE" data-type="string" required="true"/>
+    </table>
+  </item-descriptor>
+
+  <!-- ++++++++++++++++++++++ -->
+  <!-- Item Descriptor: topic -->
+  <!-- ++++++++++++++++++++++ -->
+  <item-descriptor name="topic" id-space-name="arf_search_topic">
+    <table name="ARF_SEARCH_TOPIC" type="primary" id-column-name="ID">
+      <property name="id" column-name="ID" data-type="int" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <!-- Corresponds to a customization repository Topic id -->
+      <property name="topicId" column-names="NTOPIC_ID" data-type="string" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="name" column-names="NAME" data-type="string" required="true" default="Unknown">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="nameEn" column-names="NAME_EN" data-type="string" required="false">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="description" column-names="DESCRIPTION" data-type="string" required="false">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property name="descriptionEn" column-names="DESCRIPTION_EN" data-type="string" required="false">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property name="parentTopic" column-names="PARENT_TOPIC_ID" item-type="topic" required="false">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property name="lastUpdate" column-name="RECORD_LAST_UPDATE" data-type="timestamp" required="false">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+      <property name="startDate" column-name="RECORD_START_DATE" data-type="timestamp" required="false">
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+      <property name="endDate" column-name="RECORD_END_DATE" data-type="timestamp" required="false">
+        <attribute name="propertySortPriority" value="90"/>
+      </property>
+      <property name="mostRecent" column-name="MOST_RECENT" data-type="boolean" required="true">
+        <attribute name="propertySortPriority" value="100"/>
+      </property>
+      <property name="deleted" column-name="DELETED" data-type="boolean" required="true" default="false">
+        <attribute name="propertySortPriority" value="110"/>
+      </property>
+      <property name="path" column-name="TOPIC_PATH" data-type="string" required="false">
+        <attribute name="propertySortPriority" value="120"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- +++++++++++++++++++++++++++ -->
+  <!-- Item Descriptor: TopicGroup -->
+  <!-- +++++++++++++++++++++++++++ -->
+  <item-descriptor name="topicGroup" id-space-name="arf_topic_group">
+    <table name="ARF_TOPIC_GROUP" type="primary" id-column-names="ID">
+      <property name="id" column-name="ID" data-type="int" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="name" data-type="string" column-names="NAME" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="hashValue" data-type="string" column-names="HASH_VALUE" required="true">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="length" data-type="int" column-names="LENGTH" required="true">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+
+    <table name="ARF_TOPIC_GROUP_MBRS" type="multi" id-column-name="TOPIC_GROUP_ID">
+      <property name="topics" column-name="TOPIC_ID" data-type="set" component-item-type="topic"
+          required="false" writable="true">
+        <attribute name="uiwriteable" value="true"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ++++++++++++++++++++++++++++ -->
+  <!-- Item Descriptor: UnknownTerm -->
+  <!-- ++++++++++++++++++++++++++++ -->
+  <item-descriptor name="unknownTerm" id-space-name="arf_word">
+    <table name="ARF_WORD" type="primary" id-column-names="ID">
+      <property name="id" column-name="ID" data-type="int" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="word" data-type="string" column-names="WORD" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- +++++++++++++++++++++++++++++++++ -->
+  <!-- Item Descriptor: UnknownTermGroup -->
+  <!-- +++++++++++++++++++++++++++++++++ -->
+  <item-descriptor name="unknownTermGroup" id-space-name="arf_word_group">
+    <table name="ARF_WORD_GROUP" type="primary" id-column-names="ID">
+      <property name="id" column-name="ID" data-type="int" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="name" data-type="string" column-names="NAME" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="hashValue" data-type="string" column-names="HASH_VALUE" required="true">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="numWords" data-type="int" column-names="NUM_WORDS" required="true">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+
+    <table name="ARF_WORD_GROUP_MBRS" type="multi" id-column-name="WORD_GROUP_ID">
+      <property name="words" column-name="WORD_ID" data-type="set" component-item-type="unknownTerm"
+          required="false" writable="true">
+        <attribute name="uiwriteable" value="true"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ++++++++++++++++++++++++++++++++++++ -->
+  <!-- Item Descriptor: dictionary adapter  -->
+  <!-- ++++++++++++++++++++++++++++++++++++ -->
+  <item-descriptor name="dictionaryAdapter" id-space-name="arf_dictionary_adapter">
+    <table name="ARF_DICTIONARY_ADAPTER" type="primary" id-column-names="ID">
+      <property name="id" column-name="ID" data-type="short" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="name" data-type="string" column-names="NAME" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ++++++++++++++++++++++++++++ -->
+  <!-- Item Descriptor: customTerm -->
+  <!-- ++++++++++++++++++++++++++++ -->
+  <item-descriptor name="customTerm" id-space-name="arf_custom_term">
+    <table name="ARF_CUSTOM_TERM" type="primary" id-column-names="ID">
+      <property name="id" column-name="ID" data-type="int" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="name" data-type="string" column-names="NAME" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="adapter" item-type="dictionaryAdapter" column-names="ADAPTER_ID" required="true">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- +++++++++++++++++++++++++++++++++ -->
+  <!-- Item Descriptor: customTermGroup -->
+  <!-- +++++++++++++++++++++++++++++++++ -->
+  <item-descriptor name="customTermGroup" id-space-name="arf_custtrm_grp">
+    <table name="ARF_CUSTTRM_GRP" type="primary" id-column-names="ID">
+      <property name="id" column-name="ID" data-type="int" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="name" data-type="string" column-names="NAME" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="hashValue" data-type="string" column-names="HASH_VALUE" required="true">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="length" data-type="int" column-names="LENGTH" required="true">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+
+    <table name="ARF_CUSTTRM_GRP_MBRS" type="multi" id-column-name="CUSTOM_TERM_GROUP_ID">
+      <property name="customTerms" column-name="CUSTOM_TERM_ID" data-type="set" component-item-type="customTerm"
+          required="false" writable="true">
+        <attribute name="uiwriteable" value="true"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ++++++++++++++++++++++++++++ -->
+  <!-- Item Descriptor: finderTerm -->
+  <!-- ++++++++++++++++++++++++++++ -->
+  <item-descriptor name="finderTerm" id-space-name="arf_finder_term">
+    <table name="ARF_FINDER_TERM" type="primary" id-column-names="ID">
+      <property name="id" column-name="ID" data-type="int" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="name" data-type="string" column-names="NAME" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- +++++++++++++++++++++++++++++++++ -->
+  <!-- Item Descriptor: finderTermGroup -->
+  <!-- +++++++++++++++++++++++++++++++++ -->
+  <item-descriptor name="finderTermGroup" id-space-name="arf_findtrm_grp">
+    <table name="ARF_FINDTRM_GRP" type="primary" id-column-names="ID">
+      <property name="id" column-name="ID" data-type="int" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="name" data-type="string" column-names="NAME" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="hashValue" data-type="string" column-names="HASH_VALUE" required="true">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="length" data-type="int" column-names="LENGTH" required="true">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+
+    <table name="ARF_FINDTRM_GRP_MBRS" type="multi" id-column-name="FINDER_TERM_GROUP_ID">
+      <property name="finderTerms" column-name="FINDER_TERM_ID" data-type="set" component-item-type="finderTerm"
+          required="false" writable="true">
+        <attribute name="uiwriteable" value="true"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ++++++++++++++++++++++++++++ -->
+  <!-- Item Descriptor: nullTerm -->
+  <!-- ++++++++++++++++++++++++++++ -->
+  <item-descriptor name="nullTerm" id-space-name="arf_null_term">
+    <table name="ARF_NULL_TERM" type="primary" id-column-names="ID">
+      <property name="id" column-name="ID" data-type="int" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="name" data-type="string" column-names="NAME" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- +++++++++++++++++++++++++++++++++ -->
+  <!-- Item Descriptor: nullTermGroup -->
+  <!-- +++++++++++++++++++++++++++++++++ -->
+  <item-descriptor name="nullTermGroup" id-space-name="arf_nulltrm_grp">
+    <table name="ARF_NULLTRM_GRP" type="primary" id-column-names="ID">
+      <property name="id" column-name="ID" data-type="int" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="name" data-type="string" column-names="NAME" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="hashValue" data-type="string" column-names="HASH_VALUE" required="true">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="length" data-type="int" column-names="LENGTH" required="true">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+
+    <table name="ARF_NULLTRM_GRP_MBRS" type="multi" id-column-name="NULL_TERM_GROUP_ID">
+      <property name="nullTerms" column-name="NULL_TERM_ID" data-type="set" component-item-type="nullTerm"
+          required="false" writable="true">
+        <attribute name="uiwriteable" value="true"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ++++++++++++++++++++++++++++ -->
+  <!-- Item Descriptor: nulxTerm -->
+  <!-- ++++++++++++++++++++++++++++ -->
+  <item-descriptor name="nulxTerm" id-space-name="arf_nulx_term">
+    <table name="ARF_NULX_TERM" type="primary" id-column-names="ID">
+      <property name="id" column-name="ID" data-type="int" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="name" data-type="string" column-names="NAME" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- +++++++++++++++++++++++++++++++++ -->
+  <!-- Item Descriptor: nullTermGroup -->
+  <!-- +++++++++++++++++++++++++++++++++ -->
+  <item-descriptor name="nulxTermGroup" id-space-name="arf_nulxtrm_grp">
+    <table name="ARF_NULXTRM_GRP" type="primary" id-column-names="ID">
+      <property name="id" column-name="ID" data-type="int" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="name" data-type="string" column-names="NAME" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="hashValue" data-type="string" column-names="HASH_VALUE" required="true">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="length" data-type="int" column-names="LENGTH" required="true">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+
+    <table name="ARF_NULXTRM_GRP_MBRS" type="multi" id-column-name="NULX_TERM_GROUP_ID">
+      <property name="nulxTerms" column-name="NULX_TERM_ID" data-type="set" component-item-type="nulxTerm"
+          required="false" writable="true">
+        <attribute name="uiwriteable" value="true"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ++++++++++++++++++++++ -->
+  <!-- Item Descriptor: searchConfig -->
+  <!-- ++++++++++++++++++++++ -->
+  <item-descriptor name="searchConfig" id-space-name="arf_search_config">
+    <attribute name="BasicsPriority" value="10"/>
+    <attribute name="InfoPriority" value="20"/>
+    <attribute name="naturalKey" value="searchConfigId"/>
+    <table name="ARF_SEARCH_CONFIG" type="primary" id-column-name="ID">
+      <property name="id" column-name="ID" data-type="short" required="true" category="Info">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <!-- Corresponds to a refinementRepository searchConfig id -->
+      <property name="searchConfigId" column-names="NSEARCH_CONFIG_ID" data-type="string" required="true" category="Info">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="name" column-names="NAME" data-type="string" required="true" default="Unknown" category="Basics">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="description" column-names="DESCRIPTION" data-type="string" required="false" category="Basics">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="lastUpdate" column-name="RECORD_LAST_UPDATE" data-type="timestamp" required="false" category="Info">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property name="startDate" column-name="RECORD_START_DATE" data-type="timestamp" required="false" category="Info">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property name="endDate" column-name="RECORD_END_DATE" data-type="timestamp" required="false" category="Info">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+      <property name="mostRecent" column-name="MOST_RECENT" data-type="boolean" required="true" category="Info">
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+      <property name="deleted" column-name="DELETED" data-type="boolean" required="true" default="false" category="Info">
+        <attribute name="propertySortPriority" value="90"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ++++++++++++++++++++++ -->
+  <!-- Item Descriptor: searchRuleType -->
+  <!-- ++++++++++++++++++++++ -->
+  <item-descriptor name="searchRuleType">
+    <attribute name="BasicsPriority" value="10"/>
+    <attribute name="InfoPriority" value="20"/>
+    <table name="ARF_SEARCH_RULE_TYPE" type="primary" id-column-name="ID">
+      <property name="id" column-name="ID" data-type="short" required="true" category="Info">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="searchRuleTypeId" column-names="NSEARCH_RULE_TYPE_ID" data-type="string" required="true" category="Info">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="name" column-names="NAME" data-type="string" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="nameEn" column-names="NAME_EN" data-type="string" required="false" category="Basics">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ++++++++++++++++++++++ -->
+  <!-- Item Descriptor: searchRule -->
+  <!-- ++++++++++++++++++++++ -->
+  <item-descriptor name="searchRule" id-space-name="arf_search_rule">
+    <attribute name="BasicsPriority" value="10"/>
+    <attribute name="InfoPriority" value="20"/>
+    <attribute name="naturalKey" value="searchRuleId"/>
+    <table name="ARF_SEARCH_RULE" type="primary" id-column-name="ID">
+      <property name="id" column-name="ID" data-type="int" required="true" category="Info">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <!-- Corresponds to a refinementRepository searchRule id -->
+      <property name="searchRuleId" column-names="NSEARCH_RULE_ID" data-type="string" required="true" category="Info">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="name" column-names="NAME" data-type="string" required="true" default="Unknown" category="Basics">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="description" column-names="DESCRIPTION" data-type="string" required="false" category="Basics">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="type" column-names="RULE_TYPE_ID" item-type="searchRuleType" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property name="lastUpdate" column-name="RECORD_LAST_UPDATE" data-type="timestamp" required="false" category="Info">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property name="startDate" column-name="RECORD_START_DATE" data-type="timestamp" required="false" category="Info">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+      <property name="endDate" column-name="RECORD_END_DATE" data-type="timestamp" required="false" category="Info">
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+      <property name="mostRecent" column-name="MOST_RECENT" data-type="boolean" required="true" category="Info">
+        <attribute name="propertySortPriority" value="90"/>
+      </property>
+      <property name="deleted" column-name="DELETED" data-type="boolean" required="true" default="false" category="Info">
+        <attribute name="propertySortPriority" value="100"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- +++++++++++++++++++++++++++++++++ -->
+  <!-- Item Descriptor: searchRuleGroup -->
+  <!-- +++++++++++++++++++++++++++++++++ -->
+  <item-descriptor name="searchRuleGroup" id-space-name="arf_search_rule_grp">
+    <attribute name="BasicsPriority" value="10"/>
+    <attribute name="InfoPriority" value="20"/>
+    <table name="ARF_SEARCH_RULE_GRP" type="primary" id-column-names="ID">
+      <property name="id" column-name="ID" data-type="int" required="true" category="Info">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="name" data-type="string" column-names="NAME" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="hashValue" data-type="string" column-names="HASH_VALUE" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="length" data-type="int" column-names="LENGTH" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+
+    <table name="ARF_SEARCH_RULE_GRP_MBRS" type="multi" id-column-name="SEARCH_RULE_GROUP_ID">
+      <property name="searchRules" column-name="SEARCH_RULE_ID" data-type="set" component-item-type="searchRule"
+          required="false" writable="true" category="Basics">
+        <attribute name="propertySortPriority" value="50"/>
+        <attribute name="uiwriteable" value="true"/>
+      </property>
+    </table>
+  </item-descriptor>
+  
+  <!-- +++++++++++++++++++++++++++ -->
+  <!-- Item Descriptor: search site constraints -->
+  <!-- +++++++++++++++++++++++++++ -->
+  <item-descriptor name="searchSiteConstraints" id-space-name="arf_srch_site_constr">
+    <table name="ARF_SRCH_SITE_CONSTR" type="primary" id-column-names="ID">
+      <property name="id" column-name="ID" data-type="int" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="name" data-type="string" column-names="NAME" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="hashValue" data-type="string" column-names="HASH_VALUE" required="true">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="length" data-type="int" column-names="LENGTH" required="true">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+
+    <table name="ARF_SRCH_SITE_CONSTR_MBRS" type="multi" id-column-name="SITE_CONSTR_ID">
+      <property name="sites" column-name="SITE_ID" data-type="set" component-item-type="site"
+          required="false" writable="true">
+        <attribute name="uiwriteable" value="true"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ++++++++++++++++++++++++++ -->
+  <!-- Item Descriptor: QueryFact -->
+  <!-- ++++++++++++++++++++++++++ -->
+  <item-descriptor name="queryFact" id-space-name="arf_query">
+    <table name="ARF_QUERY" type="primary" id-column-names="ID">
+      <property name="id" column-name="ID" data-type="int" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="queryTimestamp" data-type="timestamp" column-names="QUERY_TIMESTAMP" required="false"/>
+      <property name="queryDay" item-type="ARF_TIME_DAY" column-names="QUERY_DAY_ID" required="true"/>
+      <property name="queryTime" item-type="ARF_TIME_TOD" column-names="QUERY_TIME_ID" required="true"/>
+
+      <property name="queryId" column-names="NQUERY_ID" data-type="string" required="true"/>
+      <!-- profileId is currently a string because search could be performed by either internal user or external user -->
+      <property name="externalProfile" item-type="user" column-names="EXTERNAL_PROFILE_ID" required="true"/>
+      <property name="internalProfile" item-type="ARF_IU_USER" column-names="INTERNAL_PROFILE_ID" required="true"/>
+      <property name="profileType" item-type="profileType" column-name="PROFILE_TYPE_ID" required="true"/>
+
+      <!-- Search environ grouped per project -->
+      <property name="searchEnvironment" item-type="searchEnvironment" column-names="SEARCH_ENVIRONMENT_ID" required="true"/>
+
+      <property name="language" item-type="language" column-names="LANGUAGE_ID" required="true"/>
+      <property name="queryType" item-type="queryType" column-names="QUERY_TYPE_ID" required="true"/>
+      <property name="question" item-type="question" column-names="QUESTION_ID" required="true"/>
+
+      <property name="segmentCluster" column-name="SEGCLSTR_ID" item-type="segmentCluster" required="true"/>
+      <property name="demographic" column-name="DEMOGRAPHIC_ID" item-type="demographic" required="true"/>
+      <property name="siteVisit" column-name="SITE_VISIT_ID" item-type="siteVisit" required="true"/>
+
+      <property name="topicGroup" column-name="TOPIC_GROUP_ID" item-type="topicGroup" required="true"/>
+      <property name="selectedTopicGroup" column-name="SELECTED_TOPIC_GROUP_ID" item-type="topicGroup" required="true"/>
+
+      <property name="unknownTermGroup" column-name="WORD_GROUP_ID" item-type="unknownTermGroup" required="true"/>
+      <property name="customTermGroup" column-name="CUSTOM_TERM_GROUP_ID" item-type="customTermGroup" required="true"/>
+      <property name="finderTermGroup" column-name="FINDER_TERM_GROUP_ID" item-type="finderTermGroup" required="true"/>
+      <property name="nullTermGroup" column-name="NULL_TERM_GROUP_ID" item-type="nullTermGroup" required="true"/>
+      <property name="nulxTermGroup" column-name="NULX_TERM_GROUP_ID" item-type="nulxTermGroup" required="true"/>
+
+      <property name="searchConfig" column-name="SEARCH_CONFIG_ID" item-type="searchConfig" required="true"/>
+      <property name="searchRuleGroup" column-name="SEARCH_RULE_GROUP_ID" item-type="searchRuleGroup" required="true"/>
+
+      <!-- response time (milliseconds) -->
+      <property name="responseTimeMSecs" data-type="int" default="0" column-names="RESPONSE_TIME" required="true"/>
+      <property name="topScore" data-type="double" default="0" column-names="TOP_SCORE" required="true"/>
+      <property name="resultsCount" data-type="int" default="0" column-names="RESULTS_COUNT" required="true"/>
+
+      <property name="lastSelected" data-type="boolean" column-name="LAST_SELECTED" required="true" default="false"/>
+      <property name="sessionId" data-type="string" column-name="SESSION_ID" required="false"/>
+      <property name="site" column-name="SITE_ID" item-type="site" required="true"/>
+      <property name="siteConstraints" column-name="SITE_CONSTR_ID" item-type="searchSiteConstraints" required="true"/>
+    </table>
+  </item-descriptor>
+
+  <!-- ++++++++++++++++++++++++++++++++ -->
+  <!-- Item Descriptor: ViewContentFact -->
+  <!-- ++++++++++++++++++++++++++++++++ -->
+  <item-descriptor name="viewContentFact" id-space-name="arf_view_content">
+    <table name="ARF_VIEW_CONTENT" type="primary" id-column-name="ID">
+      <property name="id" column-name="ID" data-type="int" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="viewTimestamp" data-type="timestamp" column-names="VIEW_TIMESTAMP" required="false"/>
+      <property name="viewDay" item-type="ARF_TIME_DAY" column-names="VIEW_DAY_ID" required="true"/>
+      <property name="viewTime" item-type="ARF_TIME_TOD" column-names="VIEW_TIME_ID" required="true"/>
+
+      <property name="externalProfile" item-type="user" column-names="EXTERNAL_PROFILE_ID" required="true"/>
+      <property name="internalProfile" item-type="ARF_IU_USER" column-names="INTERNAL_PROFILE_ID" required="true"/>
+      <property name="profileType" item-type="profileType" column-name="PROFILE_TYPE_ID" required="true"/>
+
+      <property name="segmentCluster" column-name="SEGCLSTR_ID" item-type="segmentCluster" required="true"/>
+      <property name="demographic" column-name="DEMOGRAPHIC_ID" item-type="demographic" required="true"/>
+      <property name="siteVisit" column-name="SITE_VISIT_ID" item-type="siteVisit" required="true"/>
+
+      <property name="topicGroup" column-name="TOPIC_GROUP_ID" item-type="topicGroup" required="true"/>
+
+      <property name="lastViewed" data-type="boolean" column-name="LAST_VIEWED" required="true" default="false"/>
+
+      <!-- Search environ grouped per project -->
+      <property name="searchEnvironment" item-type="searchEnvironment" column-names="SEARCH_ENVIRONMENT_ID" required="true"/>
+      <property name="language" item-type="language" column-names="LANGUAGE_ID" required="true"/>
+      <property name="content" item-type="content" column-names="CONTENT_ID" required="true"/>
+      <property name="queryFact" item-type="queryFact" column-names="QUERY_ID" required="true"/>
+      <property name="naturalQueryId" data-type="string" column-names="NQUERY_ID" required="true"/>
+      <property name="sessionId" data-type="string" column-name="SESSION_ID" required="false"/>
+      <property name="site" column-name="SITE_ID" item-type="site" required="true"/>
+    </table>
+  </item-descriptor>
+
+  <!-- ++++++++++++++++++++++++++++++++++++ -->
+  <!-- Item Descriptor: searchSiteVisitFact -->
+  <!-- ++++++++++++++++++++++++++++++++++++ -->
+  <item-descriptor name="searchSiteVisitFact" id-space-name="arf_search_site_visit">
+    <table name="ARF_SEARCH_SITE_VISIT" type="primary" id-column-name="ID">
+      <property name="id" column-name="ID" data-type="int" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="ssvTimestamp" data-type="timestamp" column-names="SSV_TIMESTAMP" required="false"/>
+      <property name="ssvDay" item-type="ARF_TIME_DAY" column-names="SSV_DAY_ID" required="true"/>
+      <property name="ssvTime" item-type="ARF_TIME_TOD" column-names="SSV_TIME_ID" required="true"/>
+
+      <property name="externalProfile" item-type="user" column-names="EXTERNAL_PROFILE_ID" required="true"/>
+      <property name="internalProfile" item-type="ARF_IU_USER" column-names="INTERNAL_PROFILE_ID" required="true"/>
+      <property name="profileType" item-type="profileType" column-name="PROFILE_TYPE_ID" required="true"/>
+
+      <property name="segmentCluster" column-name="SEGCLSTR_ID" item-type="segmentCluster" required="true"/>
+      <property name="demographic" column-name="DEMOGRAPHIC_ID" item-type="demographic" required="true"/>
+      <property name="siteVisit" column-name="SITE_VISIT_ID" item-type="siteVisit" required="true"/>
+
+      <!-- Search environ grouped per project -->
+      <property name="searchEnvironment" item-type="searchEnvironment" column-names="SEARCH_ENVIRONMENT_ID" required="true"/>
+      <property name="language" item-type="language" column-names="LANGUAGE_ID" required="true"/>
+      <property name="sessionId" data-type="string" column-name="SESSION_ID" required="false"/>
+      <property name="site" column-name="SITE_ID" item-type="site" required="true"/>
+    </table>
+  </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //product/ARF/version/10.0.3/ARF/DW/Search/config/atg/reporting/datawarehouse/searchDatawarehouseRepository.xml#1 $$Change: 651360 $-->

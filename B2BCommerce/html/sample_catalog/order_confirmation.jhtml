@@ -1,0 +1,249 @@
+<importbean bean="/atg/commerce/order/purchase/CommitOrderFormHandler">
+<importbean bean="/atg/commerce/order/purchase/CancelOrderFormHandler">
+<importbean bean="/atg/commerce/ShoppingCart">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/Switch">
+<importbean bean="/atg/dynamo/droplet/IsEmpty">
+<importbean bean="/atg/userprofiling/Profile">
+<setvalue bean="Profile.currentLocation" value="checkout">
+<html>
+<head>
+<title>Order Confirmation</title>
+</head>
+
+<body>
+<a href="index.jhtml">Catalog Home</a> - 
+<a href="product_search.jhtml">Product Search</a> - 
+<a href="shoppingcart.jhtml">Shopping Cart</a> - 
+<a href="lists.jhtml">My Lists</a> - 
+<a href="comparison.jhtml">Product Comparison</a> -
+<a href="giftlist_search.jhtml">Gift List Search</a> - 
+<droplet bean="/atg/dynamo/droplet/Switch">
+  <param name="value" value="bean:/atg/userprofiling/Profile.transient">
+  <oparam name="false">
+    <a href="logout.jhtml">Logout</a>
+  </oparam>
+  <oparam name="true">
+    <a href="login.jhtml">Login</a> or <a href="register.jhtml">Register</a>
+  </oparam>
+</droplet>
+<BR>
+<i>location: <valueof bean="Profile.currentLocation"></valueof></i>
+
+<h3>Order Confirmation</h3>
+
+<droplet name="/atg/dynamo/droplet/Switch">
+<param name="value" value="bean:CommitOrderFormHandler.formError">
+<oparam name="true">
+  <font color=cc0000><STRONG><UL>
+    <droplet name="/atg/dynamo/droplet/ErrorMessageForEach">
+      <param name="exceptions" value="bean:CommitOrderFormHandler.formExceptions">
+      <oparam name="output">
+	<LI> <valueof param="message"></valueof>
+      </oparam>
+    </droplet>
+    </UL></STRONG></font>
+</oparam>
+</droplet>
+
+<droplet name="/atg/dynamo/droplet/Switch">
+<param name="value" value="bean:CancelOrderFormHandler.formError">
+<oparam name="true">
+  <font color=cc0000><STRONG><UL>
+    <droplet name="/atg/dynamo/droplet/ErrorMessageForEach">
+      <param name="exceptions" value="bean:CancelOrderFormHandler.formExceptions">
+      <oparam name="output">
+	<LI> <valueof param="message"></valueof>
+      </oparam>
+    </droplet>
+    </UL></STRONG></font>
+</oparam>
+</droplet>
+
+<p>
+
+<form action="order_confirmation.jhtml" method="post">
+
+<input type="hidden" bean="CommitOrderFormHandler.commitOrderSuccessURL" value="order_commit.jhtml">
+<input type="hidden" bean="CommitOrderFormHandler.SessionExpirationURL" value="session_expired.jhtml">
+
+<table cellspacing=0 cellpadding=0 border=0 width=100%>
+<tr valign=top><td><table cellspacing=2 cellpadding=0 border=0>
+<tr>
+<td><b>Quantity</b></td>
+<td></td>
+<td>&nbsp;&nbsp;</td>
+<td><b>Product</b></td>
+<td>&nbsp;&nbsp;</td>
+<td><b>SKU</b></td>
+<td>&nbsp;&nbsp;</td>
+<td align=right><b>List Price</b></td>
+<td>&nbsp;&nbsp;</td>
+<td align=right><b>Sale Price</b></td>
+<td>&nbsp;&nbsp;</td>
+<td align=right><b>Total Price</b></td>
+</tr>
+
+<tr><td colspan=15><hr size=0></td></tr>
+
+
+<droplet bean="ForEach">
+  <param name="array" value="bean:ShoppingCart.current.commerceItems">
+  <param name="elementName" value="item">
+  <oparam name="output">
+<tr valign=top>
+<td>
+<valueof param="item.quantity"></valueof>
+</td>
+<td></td>
+<td></td>
+<td><valueof param="item.auxiliaryData.productRef.displayName"></valueof></td>
+<td>&nbsp;&nbsp;</td>
+<td>
+<valueof param="item.auxiliaryData.catalogRef.displayName"></valueof>
+</td>
+<td>&nbsp;&nbsp;</td>
+<td align=right>
+<valueof param="item.priceInfo.listPrice" currency>no price</valueof>
+</td>
+<td>&nbsp;&nbsp;</td>
+<td align=right>
+<droplet bean="Switch">
+<param name="value" value="param:item.priceInfo.onSale">
+<oparam name="true"><valueof param="item.priceInfo.salePrice" currency></valueof></oparam>
+</droplet>
+</td>
+<td>&nbsp;&nbsp;</td>
+<td align=right>
+<valueof param="item.priceInfo.amount" currency>no price</valueof>
+</td>
+</tr>
+  </oparam>
+
+  <oparam name="empty">
+<tr valign=top>
+<td>No Items</td>
+</tr>
+  </oparam>
+</droplet>
+
+<tr><td colspan=15><hr size=0></td></tr>
+<tr>
+<td colspan=4 align=right>Subtotal</td>
+<td>
+<valueof bean="ShoppingCart.current.priceInfo.amount" currency>no price</valueof>
+</td>
+<td align=right></td>
+</tr>
+
+<tr>
+<td colspan=2 align=right></td>
+<td></td>
+<td align=right>Shipping</td>
+<td>
+<valueof bean="ShoppingCart.current.priceInfo.shipping" currency>no price</valueof>
+</td>
+<td align=right></td>
+</tr>
+
+<tr>
+<td colspan=4 align=right>Tax</td>
+<td>
+<valueof bean="ShoppingCart.current.priceInfo.tax" currency>no price</valueof>
+</td>
+<td align=right></td>
+</tr>
+        
+<tr>
+<td colspan=4 align=right>Total</td>
+<td>
+<valueof bean="ShoppingCart.current.priceInfo.total" currency>no price</valueof>
+</td>
+<td align=right><b></b></td>
+</tr>
+</table>
+</table>
+
+
+<b>Shipping Information</b><BR>
+
+<droplet bean="ForEach">
+  <param name="array" value="bean:ShoppingCart.current.ShippingGroups">
+  <param name="elementName" value="ShippingGroup">
+  <param name="indexName" value="shippingGroupIndex">
+
+  <!-- First output all of the address information for this shipping group -->
+  <oparam name="output">
+
+    <droplet bean="Switch">
+      <param name="value" value="param:ShippingGroup.shippingGroupClassType">
+
+      <oparam name="b2bHardgoodShippingGroup"> 
+        <i>Ship via <valueof param="ShippingGroup.shippingMethod"></valueof> to:</i><BR>
+        <valueof param="ShippingGroup.shippingAddress.firstName"></valueof>
+        <valueof param="ShippingGroup.shippingAddress.middleName"></valueof>
+        <valueof param="ShippingGroup.shippingAddress.lastName"></valueof><BR>
+        <valueof param="ShippingGroup.shippingAddress.address1"></valueof><BR>
+        <droplet bean="IsEmpty">
+         <param name="value" value="param:ShippingGroup.shippingAddress.address2">
+         <oparam name="false">
+           <valueof param="ShippingGroup.shippingAddress.address2"></valueof><BR>
+         </oparam>
+        </droplet>
+        <valueof param="ShippingGroup.shippingAddress.city"></valueof>, 
+        <valueof param="ShippingGroup.shippingAddress.state"></valueof> 
+        <valueof param="ShippingGroup.shippingAddress.postalCode"></valueof><BR>
+        <valueof param="ShippingGroup.shippingAddress.country"></valueof><BR>
+        <valueof param="ShippingGroup.shippingAddress.email"></valueof><BR>
+        <valueof param="ShippingGroup.shippingAddress.phoneNumber"></valueof><BR>
+     </oparam>    
+
+      <oparam name="electronicShippingGroup">
+       <p><i>Email to:</i><br>
+       <valueof param="ShippingGroup.emailAddress"></valueof>
+      </oparam>
+    </droplet> <!-- End switch on type of shipping Group -->
+
+    <droplet bean="Switch">
+    <param name="value" value="param:ShippingGroup.specialInstructions.allowPartialShipment">
+    <oparam name="true">Allow partial shipments</oparam>
+    <oparam name="false">Do not allow partial shipments</oparam>
+    </droplet>
+
+  </oparam>
+</droplet>  
+
+<br><P>
+<b>Payment Information:</b><BR>
+
+<droplet bean="ForEach">
+  <param name="array" value="bean:ShoppingCart.current.PaymentGroups">
+  <param name="elementName" value="PaymentGroup">
+  <param name="indexName" value="paymentGroupIndex">
+  <oparam name="output">
+    <droplet bean="Switch">
+      <param name="value" value="param:PaymentGroup.paymentGroupClassType">
+      <oparam name="creditCard">
+        <BR>Credit Card: <valueof param="PaymentGroup.creditCardType"></valueof> 
+        <valueof param="PaymentGroup.creditCardNumber" CreditCard></valueof>
+        <BR>Expiration Date: <valueof param="PaymentGroup.expirationMonth"></valueof>/<valueof param="PaymentGroup.expirationYear"></valueof>
+      </oparam>
+      <oparam name="default">
+        <BR><valueof param="PaymentGroup.paymentGroupClassType"/> <valueof param="PaymentGroup.id"/>
+      </oparam>
+    </droplet>
+    Amount: <valueof param="PaymentGroup.amount" currency />
+  </oparam>
+</droplet>
+
+<P>
+
+<input type=submit bean="CommitOrderFormHandler.commitOrder" value="Purchase">
+
+
+</form>
+
+</body>
+</html>
+<java>/* @version $Id: //product/B2BCommerce/version/10.0.3/release/B2BCommerce/html/sample_catalog/order_confirmation.jhtml#2 $$Change: 651448 $*/</java>
+

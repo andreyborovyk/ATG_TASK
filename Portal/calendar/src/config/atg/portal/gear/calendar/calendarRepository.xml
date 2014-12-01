@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE gsa-template
+	PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN"
+	"http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template>
+
+  <header>
+    <name>Calender Repository</name>
+    <author>jeff Banister</author>
+    <version>$Id: //app/portal/version/10.0.3/calendar/config/atg/portal/gear/calendar/calendarRepository.xml#2 $$Change: 651448 $</version>
+  </header>
+
+  <item-descriptor name="event" display-name-resource="itemDescriptorCalendarBaseEvent" version-property="version" display-property="name" sub-type-property="type" sub-type-value="base-event" query-cache-size="100">
+		<attribute name="resourceBundle" value="atg.portal.gear.calendar.CalendarRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="cal_base_event" type="primary" id-column-name="id">
+      <property category-resource="categoryInfo" name="id" display-name-resource="id">
+	      <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryInfo" name="version" data-type="int" column-name="version" display-name-resource="version" writable="false" expert="true">
+	      <attribute name="propertySortPriority" value="20"/>
+      </property>
+      
+      <property category-resource="categoryBasics" name="name" display-name-resource="name" column-name="name" required="true">
+	      <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="description" display-name-resource="description" column-name="description">
+	      <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryBasics" name="startTime" display-name-resource="startTime" data-type="timestamp" column-name="start_time">
+	      <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryBasics" name="startDate" display-name-resource="startDate" data-type="timestamp" column-name="start_date">
+	      <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property category-resource="categoryBasics" name="localStartTime" display-name-resource="localStartTime" data-type="timestamp" column-name="local_start_time">
+	      <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property category-resource="categoryBasics" name="endTime" display-name-resource="endTime" data-type="timestamp" column-name="end_time">
+	      <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property category-resource="categoryBasics" name="endDate" display-name-resource="endDate" data-type="timestamp" column-name="end_date">
+	      <attribute name="propertySortPriority" value="70"/>
+      </property>
+      <property category-resource="categoryBasics" name="localEndTime" display-name-resource="localEndTime" data-type="timestamp" column-name="local_end_time">
+	      <attribute name="propertySortPriority" value="80"/>
+      </property>
+      <property category-resource="categoryBasics" name="timeZone" display-name-resource="timeZone" data-type="string" column-name="time_zone">
+	      <attribute name="propertySortPriority" value="90"/>
+      </property>
+      <property category-resource="categoryBasics" name="ignoreTime" display-name-resource="ignoreTime" data-type="boolean" default="false" column-name="ignore_time">
+	      <attribute name="propertySortPriority" value="100"/>
+      </property>
+      <property category-resource="categoryBasics" name="gearId" display-name-resource="gearId" data-type="string" column-name="gear_id">
+	      <attribute name="propertySortPriority" value="110"/>
+      </property>
+      
+      <property category-resource="categoryBasics" name="owner" display-name-resource="owner" column-name="owner" data-type="string">
+	      <attribute name="propertySortPriority" value="120"/>
+      </property>
+      <property category-resource="categoryBasics" name="publicEvent" display-name-resource="publicEvent" data-type="boolean" default="false" column-name="public_event">
+         <attribute name="propertySortPriority" value="130"/>
+      </property>
+
+      <property category-resource="categoryInfo" name="item_acl" display-name-resource="itemacl" column-name="item_acl" data-type="string" expert="true">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+   <property name="type" data-type="enumerated" column-name="event_type" writable="false" hidden="true">
+     <attribute name="useCodeForValue" value="false"/> 
+     <option value="base-event" code="1"/>
+     <option value="detail-event" code="2"/>
+   </property>
+    </table>
+
+  </item-descriptor>
+
+  <item-descriptor name="detailEvent"  super-type="event" sub-type-value="detail-event" display-name-resource="itemDescriptorCalendarDetailEvent" display-property="name" query-cache-size="100">
+     <attribute name="resourceBundle" value="atg.portal.gear.calendar.CalendarRepositoryTemplateResources"/>
+
+    <attribute name="categoryDetailPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="10"/>
+
+    <table name="cal_detail_event" type="auxiliary" id-column-name="event_id">
+      <property category-resource="categoryDetail" name="address1" display-name-resource="address1" data-type="string" column-name="address1">
+	      <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryDetail" name="address2" display-name-resource="address2" data-type="string" column-name="address2">
+	      <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryDetail" name="address3" display-name-resource="address3" data-type="string" column-name="address3">
+	      <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryDetail" name="city" display-name-resource="city" data-type="string" column-name="city">
+	      <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property category-resource="categoryDetail" name="state" display-name-resource="state" data-type="string" column-name="state">
+	      <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property category-resource="categoryDetail" name="country" display-name-resource="country" data-type="string" column-name="country">
+	      <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property category-resource="categoryDetail" name="postalCode" display-name-resource="postalCode" data-type="string" column-name="postal_code">
+	      <attribute name="propertySortPriority" value="70"/>
+      </property>
+      
+      <property category-resource="categoryDetail" name="contactName" display-name-resource="contactName" data-type="string" column-name="contact_name">
+	      <attribute name="propertySortPriority" value="80"/>
+      </property>
+      <property category-resource="categoryDetail" name="contactPhone" display-name-resource="contactPhone" data-type="string" column-name="contact_phone">
+	      <attribute name="propertySortPriority" value="90"/>
+      </property>
+      <property category-resource="categoryDetail" name="contactEmail" display-name-resource="contactEmail" data-type="string" column-name="contact_email">
+	      <attribute name="propertySortPriority" value="100"/>
+      </property>
+      <property category-resource="categoryDetail" name="relatedUrl" display-name-resource="url" data-type="string" column-name="url">
+	      <attribute name="propertySortPriority" value="110"/>
+      </property>
+    </table>
+
+  </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //app/portal/version/10.0.3/calendar/config/atg/portal/gear/calendar/calendarRepository.xml#2 $$Change: 651448 $ -->

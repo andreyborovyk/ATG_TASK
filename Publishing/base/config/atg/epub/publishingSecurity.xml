@@ -1,0 +1,24 @@
+<!DOCTYPE secured-repository-template
+  PUBLIC "-//Art Technology Group, Inc.//DTD Dynamo Security//EN"
+  "http://www.atg.com/dtds/security/secured_repository_template_1.0.dtd">
+
+<secured-repository-template>
+
+  <!-- Process security attributes -->
+  <item-descriptor name="process">
+    <acl-property name="acl"/>
+    
+    <descriptor-acl value="Profile$role$epubAdmin:read,write,create,delete;Profile$role$epubManager:read,write,create,delete;Profile$role$epubUser:read,write,create,delete;Admin$role$administrators-group:read,write,create,delete"/>
+  </item-descriptor>
+
+  <!-- Project security attributes -->
+  <item-descriptor name="project">
+    <acl-property name="acl"/>
+    
+    <descriptor-acl value="Profile$role$epubAdmin:read,write,create,delete;Profile$role$epubManager:read,write,create,delete;Profile$role$epubUser:read,write,create,delete;Admin$role$administrators-group:read,write,create,delete"/>
+
+    <!--creation-base-acl value="Profile$role$epubAdmin:read,write,list,destroy,read_acl,write_acl;Profile$role$epubUser:read,write,list,destroy;Admin$role$administrators-group:read,write,list,destroy,read_acl,write_acl"/-->
+  </item-descriptor>
+
+</secured-repository-template>
+<!-- @version $Id: //product/Publishing/version/10.0.3/pws/config/atg/epub/publishingSecurity.xml#2 $$Change: 651448 $ -->

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<portlet-app 
+             xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd" 
+             version="1.0" 
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+             xsi:schemaLocation="portlet-app_1_0.xsd">
+
+  <portlet>
+    <description>A Generic proxy portlet which demonstrates WSRP integration with ATG Portal.</description>
+    <portlet-name>WSRP4ATGProxyPortlet</portlet-name>
+    <display-name>WSRP4ATG Proxy Portlet</display-name>
+
+    <portlet-class>atg.wsrp.consumer.ProxyPortlet</portlet-class>
+
+<!-- init params for the consumer proxy portlet -->
+    <init-param>
+      <name>titleBarPagePath</name>
+      <value>/inner_title_bar.jsp</value>
+    </init-param>
+    <init-param>
+      <name>notConfiguredPagePath</name>
+      <value>/index.jsp</value>
+    </init-param>
+    <init-param>
+      <name>errorPagePath</name>
+      <value>/error.jsp</value>
+    </init-param>
+    
+    <supports>
+      <mime-type>text/html</mime-type>
+      <!-- the standard modes for the consumer -->
+      <portlet-mode>VIEW</portlet-mode>
+      <portlet-mode>edit</portlet-mode>
+      <portlet-mode>help</portlet-mode>
+      <portlet-mode>preview</portlet-mode>
+      <!-- for the installConfig & instanceConfig gear modes of the consumer proxy portlet -->
+      <portlet-mode>config</portlet-mode>
+      <portlet-mode>edit_defaults</portlet-mode>
+    </supports>    
+    <portlet-info>
+      <title>WSRP4ATG Proxy Portlet</title>
+    </portlet-info>
+  </portlet>
+  
+  <custom-portlet-mode>
+    <portlet-mode>preview</portlet-mode>
+  </custom-portlet-mode>
+  <custom-portlet-mode>
+    <portlet-mode>config</portlet-mode>
+  </custom-portlet-mode>
+  <custom-portlet-mode>
+    <portlet-mode>edit_defaults</portlet-mode>
+  </custom-portlet-mode>  
+
+</portlet-app>
+<!-- @version $Id: //product/WSRP/version/10.0.3/consumer/proxyPortlet/proxyPortlet/WEB-INF/portlet.xml#2 $$Change: 651448 $-->

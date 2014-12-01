@@ -1,0 +1,73 @@
+<importbean bean="/atg/commerce/order/purchase/PaymentGroupDroplet">
+<importbean bean="/atg/commerce/order/purchase/PaymentGroupFormHandler">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/Switch">
+<importbean bean="/atg/dynamo/droplet/ErrorMessageForEach">
+<importbean bean="/atg/userprofiling/Profile">
+
+<body>
+<a href="index.jhtml">Catalog Home</a> - 
+<a href="product_search.jhtml">Product Search</a> - 
+<a href="shoppingcart.jhtml">Shopping Cart</a> - 
+<a href="lists.jhtml">My Lists</a> - 
+<a href="comparison.jhtml">Product Comparison</a> -
+<a href="giftlist_search.jhtml">Gift List Search</a> - 
+<droplet bean="/atg/dynamo/droplet/Switch">
+  <param name="value" value="bean:/atg/userprofiling/Profile.transient">
+  <oparam name="false">
+    <a href="logout.jhtml">Logout</a>
+  </oparam>
+  <oparam name="true">
+    <a href="login.jhtml">Login</a> or <a href="register.jhtml">Register</a>
+  </oparam>
+</droplet>
+<BR>
+<i>location: <valueof bean="Profile.currentLocation"></valueof></i><p>
+
+<java>/* Check for errors */</java>
+<droplet name="Switch">
+  <param name="value" value="bean:PaymentGroupFormHandler.formError">
+  <oparam name="true">
+    <font color=cc0000><STRONG><UL>
+      <droplet name="ErrorMessageForEach">
+        <param name="exceptions" value="bean:PaymentGroupFormHandler.formExceptions">
+        <oparam name="output">
+        <LI> <valueof param="message"></valueof>
+        </oparam>
+      </droplet>
+    </UL></STRONG></font>
+  </oparam>
+</droplet>
+
+Here we utilize the PaymentGroupDroplet to initialize an InvoiceRequest PaymentGroup.
+Anonymous users and those not authorized to use InvoiceRequests should not use this
+PaymentGroup type.
+
+
+<droplet bean="PaymentGroupDroplet">
+  <param name="clear" value="true">
+  <param name="initOrderPayment" value="true">
+  <param name="paymentGroupTypes" value="invoiceRequest">
+  <param name="initPaymentGroups" value="true">
+  <oparam name="output">
+  <!-- begin output -->
+    <setvalue param="invoiceRequestName" value="Request Invoice">
+    <setvalue bean="PaymentGroupFormHandler.listId" value="param:order.id">
+    <setvalue bean="PaymentGroupFormHandler.paymentGroupId" value="param:invoiceRequestName">
+    <form action="invoice_request.jhtml" method=post>
+      <input type=hidden bean="PaymentGroupFormHandler.currentList[0].paymentMethod" value="param:invoiceRequestName"><valueof param="invoiceRequestName"/>
+      <input type=text bean="PaymentGroupFormHandler.currentPaymentGroup.PONumber" value="">
+      <input type="hidden" priority=9 bean="PaymentGroupFormHandler.ListId" value="param:order.id">
+      <input type="hidden" priority=9 bean="PaymentGroupFormHandler.paymentGroupId" value="param:invoiceRequestName">
+      <input type=hidden bean="PaymentGroupFormHandler.applyPaymentGroupsSuccessURL" value="order_confirmation.jhtml">
+      <input type=submit bean="PaymentGroupFormHandler.applyPaymentGroups" value="Continue">
+    </form>
+  <!-- end output -->
+  </oparam>
+</droplet>
+
+<p>Go <a href="billing.jhtml?init=true">back</a> to normal billing page.
+
+</body>
+</html>
+<java>/* @version $Id: //product/B2BCommerce/version/10.0.3/release/B2BCommerce/html/sample_catalog/invoice_request.jhtml#2 $$Change: 651448 $*/</java>

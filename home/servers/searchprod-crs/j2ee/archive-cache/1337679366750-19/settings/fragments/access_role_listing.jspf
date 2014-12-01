@@ -1,0 +1,103 @@
+
+<%-- Initialize the role ACL editor form --%>
+
+<dsp:setvalue bean='<%=beanTarget+".communityId"%>' value="<%= dsp_community_id %>"/>
+
+  <% if ( beanTarget.indexOf("GearAccess") > -1 ) { %>
+    <dsp:setvalue bean='<%=beanTarget+".gearId"%>' value="<%= dsp_gear_id %>"/>
+  <% } %>
+  <% if ( beanTarget.indexOf("PageAccess") > -1 ) { %>
+    <dsp:setvalue bean='<%=beanTarget+".pageId"%>' value="<%= dsp_page_id %>"/>
+  <% } %>
+
+<dsp:setvalue bean='<%=beanTarget+".principals"%>' value='<%=pageContext.getAttribute("roleList",pageContext.PAGE_SCOPE)%>'/>
+
+ <% String urlFormTarget = "" ; %> 
+ <core:CreateUrl id="redirectUrl" url="<%=urlTargetJsp%>">
+  <core:UrlParam param="mode" value="<%=mode%>"/>
+  <core:UrlParam param="userGroupType" value='<%= request.getParameter("userGroupType")%>'/>
+  <core:UrlParam param="searchFilter" value='<%= request.getParameter("searchFilter")%>'/>
+  <core:UrlParam param="paf_page_id" value="<%= dsp_page_id %>"/>
+  <core:UrlParam param="paf_gear_id" value="<%= dsp_gear_id %>"/>
+  <paf:encodeUrlParam param="paf_page_url" value="<%=dsp_page_url%>"/>
+  <core:UrlParam param="paf_community_id" value="<%= dsp_community_id %>"/>
+   <% urlFormTarget = redirectUrl.getNewUrl();  %>
+   <dsp:setvalue bean='<%=beanTarget+".successURL"%>' value=""/>
+   <dsp:setvalue bean='<%=beanTarget+".failureURL"%>' value=""/>
+<%--
+   <dsp:setvalue bean='<%=beanTarget+".successURL"%>' value="<%=urlFormTarget %>"/>
+   <dsp:setvalue bean='<%=beanTarget+".failureURL"%>' value="<%=urlFormTarget %>"/>
+--%>
+ </core:CreateUrl>
+
+
+
+<%-- Beginning of the role ACL editor form --%>
+
+<img src="<%=clearGif%>" height="1" width="1" border="0"><br>
+
+<dsp:form action="<%= urlFormTarget %>" method="POST" name="type" synchronized='<%="/atg/portal/admin/"+beanTarget%>'>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr ><td colspan="5"><nobr><font size="-2"><b><i18n:message key="role_list_column_header_name"/></b></font></nobr></td></tr>
+<tr bgcolor="#000000"><td colspan="5"><img src='<%=clearGif%>' height="1" width="1" border="0"></td></tr>
+
+<core:ForEach id="roleIterator"
+      values='<%= pageContext.getAttribute("roleList",pageContext.PAGE_SCOPE) %>' 
+      castClass="atg.userdirectory.Role"
+      elementId="role">
+
+<%
+   currName = role.getName();
+   String roleSetting  = beanTarget+".settings[" + rowCount + "]";
+   String prinSetting = beanTarget+".principalIds[" + rowCount + "]";
+   if ( ( request.getParameter("searchFilter") == null) || ( role.getName().toLowerCase().indexOf(currFilter.toLowerCase()) > -1   ) ) { 
+   bgcolorA = (  bgcolorA == "dddddd" ) ? "ffffff" : "dddddd";
+   hasSeen = true;
+%>
+
+ <tr bgcolor='<%="#"+bgcolorA%>'>
+ <td NOWRAP width="100%"><nobr><font class="smaller">&nbsp;<%= role.getName()%></font><br></nobr></td>
+
+ <td NOWRAP><nobr><font class="smaller"><dsp:input type="radio" bean="<%=roleSetting%>" value="allow"/>&nbsp;<%=i18n_label_allow%>&nbsp;&nbsp;&nbsp;&nbsp;</font><br></nobr></td>
+
+ <td NOWRAP><nobr><font class="smaller"><dsp:input type="radio" bean="<%=roleSetting%>" value="deny"/>&nbsp;<%=i18n_label_deny%>&nbsp;&nbsp;&nbsp;&nbsp;</font><br></nobr></td>
+ <td NOWRAP><nobr><font class="smaller"><dsp:input type="radio" bean="<%=roleSetting%>" value="defer"/>&nbsp;<%=i18n_label_defer%>&nbsp;&nbsp;&nbsp;&nbsp;</font><br></nobr></td>
+
+ </tr>
+
+ <dsp:input type="hidden" bean='<%=prinSetting%>' value='<%= role.getPrimaryKey()%>'/>
+
+<% } else { %>
+
+<dsp:input type="hidden" bean="<%=roleSetting%>"/>
+<dsp:input type="hidden" bean='<%=prinSetting%>' value='<%= role.getPrimaryKey()%>'/>
+
+<% }
+   rowCount++;
+%>
+</core:ForEach>
+
+<tr bgcolor="#000000">
+<td colspan="5"><img src='<%=clearGif%>' height="1" width="1" border="0"></td>
+</tr>
+</table>
+
+<core:If value='<%=hasSeen == true%>'>
+<font class="small"><br>
+<i18n:message id="done01" key="update" />
+<dsp:input type="SUBMIT"  bean='<%=beanTarget+".update"%>'  value="<%= done01 %>" />
+<i18n:message id="cancel01" key="reset" />&nbsp;
+<input type="RESET"  value="<%= cancel01 %>"/>
+</font>
+
+</core:If>
+
+<core:If value='<%=hasSeen == false%>'>
+<font class="smaller"><br>
+<i18n:message key="acl_no_match_for_roles"/>
+</font>
+</core:If>
+
+ </dsp:form>
+<%-- @version $Id: //app/portal/version/10.0.3/paf/settings.war/fragments/access_role_listing.jspf#2 $$Change: 651448 $--%>

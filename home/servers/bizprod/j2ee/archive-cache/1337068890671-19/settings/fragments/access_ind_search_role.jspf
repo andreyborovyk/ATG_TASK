@@ -1,0 +1,53 @@
+
+<% 
+if ( userType.indexOf("_all") == -1 ) {
+ if (users.getUsersForRoleAndAlphabet((String) userType, "ALL" , (String) dsp_community_id,0,1,null).size() > 0 ) {
+    pageContext.setAttribute("userList", users.getUsersForRoleAndAlphabet((String) userType, "ALL", (String) communityId,0,-1, sortBy),pageContext.PAGE_SCOPE);
+   //  Show  Section two and sirname filter form 
+%>
+
+<img src="<%= response.encodeURL("images/clear.gif")%>" height="1" width="1" border="0"><br>
+
+<table cellpadding="6" cellspacing="0" border="0" bgcolor="#BAD8EC" width="100%"><tr><td>
+<form action="<%=urlTargetJsp%>" method="GET" name="filter">
+
+<input type="hidden" name="mode"             value='<%= mode%>'>
+<input type="hidden" name="userGroupType"    value='<%= request.getParameter("userGroupType")%>'/>
+<input type="hidden" name="paf_page_id"      value="<%= dsp_page_id %>">
+<input type="hidden" name="paf_gear_id"      value="<%= dsp_gear_id %>">
+<input type="hidden" name="paf_page_url"     value="<%= dsp_page_url%>">
+<input type="hidden" name="paf_community_id" value="<%= dsp_community_id %>">
+
+
+<font class="smaller">
+<i18n:message key="acl_general_narrow_users_params">
+ <i18n:messageArg value="<%=i18n_bold%>"/>
+ <i18n:messageArg value="<%=i18n_end_bold%>"/>
+</i18n:message>
+
+<br><br>
+
+<input type="text" size="20" maxlength="20" name="searchFilter" value="<%=currFilter%>">&nbsp;</font><font size="-2"><input type="submit" value="<%=submitLabelFilter%>" name="filterSubmit"></font>
+
+</form>
+
+</td></tr></table>
+   
+
+
+<%
+  } else { 
+  if ( request.getParameter("submit") != null ) {
+ 
+%>
+
+<img src="<%=clearGif%>" height="1" width="1" border="0"><br>
+<table cellpadding="6" cellspacing="0" border="0" bgcolor="#BAD8EC" width="100%"><tr><td>
+<font class="smaller">
+<i18n:message key="acl_no_ind_of_type"/>
+</td></tr></table>
+<%   } //  end if submit not null 
+    } // end else no one of that type
+}
+%>
+<%-- @version $Id: //app/portal/version/10.0.3/paf/settings.war/fragments/access_ind_search_role.jspf#2 $$Change: 651448 $--%>

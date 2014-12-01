@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE taglib
+    PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN"
+    "http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_2.dtd">
+
+<taglib>
+  <tlib-version>1.0</tlib-version>
+  <jsp-version>1.2</jsp-version>
+  <short-name>bizui_rt</short-name>
+  <uri>http://www.atg.com/taglibs/bizui_rt</uri>
+  <display-name>Bizui Tags</display-name>
+  <description>Bizui 1.0 tag library</description>
+
+  <tag>
+    <name>getItemMapping</name>
+    <tag-class>atg.bizui.taglib.GetItemMappingTag</tag-class>
+    <tei-class>atg.bizui.taglib.GetItemMappingTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Get mappings for specified item and mode
+    </description>
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>item</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>itemEditor</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>encodedType</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>itemPath</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>itemName</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>mode</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>fallbackMode</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>readOnlyMode</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>mappingName</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>propertyList</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>showExpert</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>showDefault</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>displayId</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>transient</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>viewMappingFactory</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>parentPropertyView</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>getAppContext</name>
+    <tag-class>atg.bizui.taglib.GetAppContextTag</tag-class>
+    <tei-class>atg.bizui.taglib.GetAppContextTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Given a web application name, return it's context root or null
+    </description>
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>webAppName</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>      
+  </tag>
+
+  <tag>
+    <name>getTaskURL</name>
+    <tag-class>atg.bizui.taglib.GetTaskURLTag</tag-class>
+    <tei-class>atg.bizui.taglib.GetTaskURLTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Given a taskInfo, returns the appropriate URL via the ActivityManager's
+      configuration. Returns an ActivityInfo object which contains a url property.
+    </description>
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>task</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>      
+    <attribute>
+      <name>activityId</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>      
+    <attribute>
+      <name>useTaskActivity</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>      
+  </tag>
+
+  <tag>
+    <name>getProcessURL</name>
+    <tag-class>atg.bizui.taglib.GetProcessURLTag</tag-class>
+    <tei-class>atg.bizui.taglib.GetProcessURLTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Given a process, returns the appropriate URL via the ActivityManager's configuration.
+      Returns an ActivityInfo object which contains a url property.
+    </description>
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>process</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>      
+    <attribute>
+      <name>projectView</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>      
+  </tag>
+
+  <tag>
+    <name>getActivitySource</name>
+    <tag-class>atg.bizui.taglib.GetActivitySourceTag</tag-class>
+    <tei-class>atg.bizui.taglib.GetActivitySourceTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Given an ActivitySourceId, returns the associated ActivitySource
+    </description>
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>activitySourceId</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>      
+    <attribute>
+      <name>workflowName</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>      
+  </tag>
+
+  <tag>
+    <name>getRenderPortletId</name>
+    <tag-class>atg.bizui.taglib.RenderPortletIdTag</tag-class>
+    <tei-class>atg.bizui.taglib.RenderPortletIdTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Given a workflow name, will return id of portlet to render
+    </description>
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>workflowName</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>      
+  </tag>
+
+  <tag>
+    <name>elementState</name>
+    <tag-class>atg.bizui.taglib.ElementStateTag</tag-class>
+    <tei-class>atg.bizui.taglib.ElementStateTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Toggles the UI element state
+    </description>
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>key</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>      
+    <attribute>
+      <name>elementState</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>      
+    <attribute>
+      <name>value</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>      
+  </tag>
+
+</taglib>
+

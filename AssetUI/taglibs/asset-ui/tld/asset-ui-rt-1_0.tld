@@ -1,0 +1,844 @@
+<?xml version="1.0"?>
+
+<!-- ======================================================================= -->
+<!-- Tag Library Descriptor for the asset-ui tag library.                    -->
+<!-- ======================================================================= -->
+
+<!DOCTYPE taglib
+  PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN"
+  "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
+
+<taglib>
+  <tlib-version>1.0</tlib-version>
+  <jsp-version>1.2</jsp-version>
+  <short-name>asset-ui_rt</short-name>
+  <uri>http://www.atg.com/taglibs/asset-ui_rt</uri>
+  <display-name>AssetUI Tags (RT version)</display-name>
+  <description>AssetUI RT 1.0 tag library</description>
+
+  <!-- getItemMappingInfo tag -->
+  <tag>
+    <name>getItemMappingInfo</name>
+    <tag-class>atg.assetui.taglib.GetItemMappingInfoTag</tag-class>
+    <tei-class>atg.assetui.taglib.GetItemMappingInfoTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>Gets a bean containing item mapping parameters for an asset in a workflow task</description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets the name of the scripting variable that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the attribute that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>scope</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets the scope in which the results are stored.  Valid values are [page|request|session|application]</description>
+    </attribute>
+
+    <attribute>
+      <name>item</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets item to be mapped</description>
+    </attribute>
+
+    <attribute>
+      <name>itemDescriptorName</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the item descriptor name to be mapped</description>
+    </attribute>
+
+    <attribute>
+      <name>repositoryPath</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets repository path to be mapped</description>
+    </attribute>
+
+    <attribute>
+      <name>mode</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the preferred view mapping mode</description>
+    </attribute>
+
+    <attribute>
+      <name>taskConfig</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the bean that holds task configuration information</description>
+    </attribute>
+  </tag>
+
+  <!-- getTaskConfiguration tag -->
+  <tag>
+    <name>getTaskConfiguration</name>
+    <tag-class>atg.assetui.taglib.GetTaskConfigurationTag</tag-class>
+    <tei-class>atg.assetui.taglib.GetTaskConfigurationTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>Gets a bean containing the asset manager configuration for the current request's current workflow task</description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets the name of the scripting variable that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the attribute that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>scope</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets the scope in which the results are stored.  Valid values are [page|request|session|application]</description>
+    </attribute>
+
+    <attribute>
+      <name>config</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the bean that manages configuration information</description>
+    </attribute>
+  </tag>
+
+  <!-- ===================================================================== -->
+  <!-- addMappedItemViewsToSet tag -->
+  <tag>
+    <name>addMappedItemViewsToSet</name>
+    <tag-class>atg.assetui.taglib.AddMappedItemViewsToSetTag</tag-class>
+    <tei-class>atg.assetui.taglib.AddMappedItemViewsToSetTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>Tag that will add a list or set of MappedItemViews to a Set, where the MappedItemViews.itemViewMapping values are unique </description>
+
+    <attribute>
+      <name>currentSet</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>the current set of items</description>
+    </attribute>
+
+    <attribute>
+      <name>newItems</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>the new items to add</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the attribute that will hold the results</description>
+    </attribute>
+
+  </tag>
+
+  <!-- ===================================================================== -->
+  <!-- performListAction tag -->
+  <tag>
+    <name>performListAction</name>
+    <tag-class>atg.assetui.taglib.PerformListActionTag</tag-class>
+    <body-content>empty</body-content>
+    <description>The performListAction tag updates the server side collection object when an asset needs to be added to or removed from the list associated with the current view. </description>
+
+    <attribute>
+      <name>item</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The uri of the asset whose state is changing.</description>
+    </attribute>
+
+    <attribute>
+      <name>listManager</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The path to a nucleus component that contains a ListManager.</description>
+    </attribute>
+
+    <attribute>
+      <name>action</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The action to perform on the node.  One of 'add', 'remove', 'addAll', or 'removeAll'.</description>
+    </attribute>
+  </tag>
+
+  <!-- ===================================================================== -->
+  <!-- getConfirmationMessage tag -->
+  <tag>
+    <name>getConfirmationMessage</name>
+    <tag-class>atg.assetui.taglib.GetConfirmationMessageTag</tag-class>
+    <body-content>JSP</body-content>
+    <description>The getConfirmationMessage tag takes the name of ConfirmationMessageGenerator component and generates a ConfirmationMessage object. </description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets the name of the scripting variable that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the attribute that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>messageGeneratorComponentName</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The name of the component that can generate the message.</description>
+    </attribute>
+
+  </tag>
+
+  <!-- ===================================================================== -->
+  <!-- getAssetAccessTag -->
+  <tag>
+    <name>getAssetAccess</name>
+    <tag-class>atg.assetui.taglib.GetAssetAccessTag</tag-class>
+    <body-content>JSP</body-content>
+    <description>Get the ACL for this item</description>
+
+    <attribute>
+      <name>item</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>the item</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the attribute that will hold the results</description>
+    </attribute>
+
+  </tag>
+
+  <!-- ===================================================================== -->
+  <!-- resolveAssetTag -->
+  <tag>
+    <name>resolveAsset</name>
+    <tag-class>atg.assetui.taglib.ResolveAssetTag</tag-class>
+    <tei-class>atg.assetui.taglib.ResolveAssetTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      return an asset by its URI
+      var - required, return object which is the asset. Type is atg.service.asset.AssetWrapper.
+      uri - required, the URI of the asset to return
+      separator - optional, the separator char of the uri. Default is '/';
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>uri</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>separator</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- ===================================================================== -->
+  <!-- getAssetInfoTag -->
+  <tag>
+    <name>getAssetInfo</name>
+    <tag-class>atg.assetui.taglib.GetAssetInfoTag</tag-class>
+    <tei-class>atg.assetui.taglib.GetAssetInfoTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      return an asset by its URI
+      var - required, return object which is an AssetInfo.
+      uri - required, the URI of the AssetInfo to return
+      separator - optional, the separator char of the uri. Default is '/';
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>uri</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>separator</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- ===================================================================== -->
+  <!-- createAssetURITag -->
+  <tag>
+    <name>createAssetURI</name>
+    <tag-class>atg.assetui.taglib.CreateAssetURITag</tag-class>
+    <tei-class>atg.assetui.taglib.CreateAssetURITag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+       Return an asset uri using the given information
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>componentName</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>itemDescriptorName</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>itemId</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>virtualFilePath</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>repositoryItem</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>virtualFile</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>object</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>separator</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- ===================================================================== -->
+  <!-- wrapAssetTag -->
+  <tag>
+    <name>wrapAsset</name>
+    <tag-class>atg.assetui.taglib.WrapAssetTag</tag-class>
+    <tei-class>atg.assetui.taglib.WrapAssetTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      return an AssetWrapper
+      var - required, return wrapped asset. Type is atg.service.asset.AssetWrapper.
+      object - required, the object to be wrapper.  may be any type resolvable by atg.service.asset.AssetResolver
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>object</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- ===================================================================== -->
+  <!-- initAssetPickerData -->
+  <tag>
+    <name>initAssetPickerData</name>
+    <tag-class>atg.assetui.taglib.InitAssetPickerDataTag</tag-class>
+    <tei-class>atg.assetui.taglib.InitAssetPickerDataTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+       Initialize data needed to pop up the asset picker.
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- ===================================================================== -->
+  <!-- isDataEditable -->
+  <tag>
+    <name>isDataEditable</name>
+    <tag-class>atg.assetui.taglib.IsDataEditableTag</tag-class>
+    <body-content>JSP</body-content>
+    <description>
+       Render body of tag if the data on this page may be edited.  If the data contains versioned assets, then it will
+       be editable only if there is a current project in editable state.  Non versioned data will always be editable.
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- ===================================================================== -->
+  <!-- getGroupPropertyNamesTag -->
+  <tag>
+    <name>getGroupPropertyNames</name>
+    <tag-class>atg.assetui.taglib.GetGroupPropertyNamesTag</tag-class>
+    <tei-class>atg.assetui.taglib.GetGroupPropertyNamesTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+       Return an enumeration of property names that are the possible groups for a repository item.
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>repositoryItem</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- ===================================================================== -->
+  <!-- getContentRepositoriesTag -->
+  <tag>
+    <name>getContentRepositories</name>
+    <tag-class>atg.assetui.taglib.GetContentRepositoriesTag</tag-class>
+    <tei-class>atg.assetui.taglib.GetContentRepositoriesTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+       Return a list of all content repositories and its item types.
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+   <!-- ===================================================================== -->
+   <!-- getProfileTypes -->
+  <tag>
+    <name>getProfileTypes</name>
+    <tag-class>atg.assetui.taglib.GetProfileTypesTag</tag-class>
+    <tei-class>atg.assetui.taglib.GetProfileTypesTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>Gets the list of types and subtypes for a profile repository</description>
+
+    <attribute>
+      <name>repositoryPath</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the path of the profile repository</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the attribute that will hold the results</description>
+    </attribute>
+  </tag>
+
+  <!-- ===================================================================== -->
+  <!-- findActivity tag -->
+  <tag>
+    <name>findActivity</name>
+    <tag-class>atg.assetui.taglib.FindActivityTag</tag-class>
+    <tei-class>atg.assetui.taglib.FindActivityTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>Searches an ActivityManager for an activity with a given id</description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets the name of the scripting variable that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the attribute that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>scope</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets the scope in which the results are stored.  Valid values are [page|request|session|application]</description>
+    </attribute>
+
+    <attribute>
+      <name>activityManager</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the ActivityManager to be searched</description>
+    </attribute>
+
+    <attribute>
+      <name>activityId</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the id of the activity to be searched for</description>
+    </attribute>
+  </tag>
+
+
+  <!-- ===================================================================== -->
+  <!-- isAssetSecuredTag -->
+  <tag>
+    <name>isAssetSecured</name>
+    <tag-class>atg.assetui.taglib.IsAssetSecuredTag</tag-class>
+    <tei-class>atg.assetui.taglib.IsAssetSecuredTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Checks whether the asset is secured or not.
+    </description>
+
+    <attribute>
+      <name>item</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets page variable with either true or false,true if the asset is secured.</description>
+    </attribute>
+  </tag>
+
+  <!-- ===================================================================== -->
+  <!-- GetSecuredViewMappingTag-->
+  <tag>
+    <name>getSecuredViewMapping</name>
+    <tag-class>atg.assetui.taglib.GetSecuredViewMappingTag</tag-class>
+    <tei-class>atg.assetui.taglib.GetSecuredViewMappingTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Provide the view mapping for Security tab.
+    </description>
+
+    <attribute>
+      <name>mappedItem</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets mappedItem type variable on the page with mappedItem returned from the tag.</description>
+    </attribute>
+  </tag>
+
+  <!-- ===================================================================== -->
+  <!-- getPrincipalDisplayNameTag -->
+  <tag>
+    <name>getPrincipalDisplayName</name>
+    <tag-class>atg.assetui.taglib.GetPrincipalDisplayNameTag</tag-class>
+    <tei-class>atg.assetui.taglib.GetPrincipalDisplayNameTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Returns the key value pairs for ID and Display name in a string separated by semicolumn.
+    </description>
+
+    <attribute>
+      <name>itemAcl</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets page variable with a string containing key value pairs.</description>
+    </attribute>
+  </tag>
+
+  <!-- ===================================================================== -->
+  <!-- getResourceValueTag -->
+  <tag>
+    <name>getResourceValue</name>
+    <tag-class>atg.assetui.taglib.GetResourceValueTag</tag-class>
+    <tei-class>atg.assetui.taglib.GetResourceValueTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      This is a tag that can be used to retrieve resource values from a configured MultiBundleFormatter.
+    </description>
+
+    <attribute>
+      <name>formatter</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>key</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- ===================================================================== -->
+  <!-- CollectionAdapterOperation -->
+  <tag>
+    <name>collectionAdapterOperation</name>
+    <tag-class>atg.assetui.taglib.CollectionAdapterOperationTag</tag-class>
+    <tei-class>atg.assetui.taglib.CollectionAdapterOperationTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Invokes an operation on a CollectionAdapter.
+    </description>
+
+    <attribute>
+      <name>collectionAdapter</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The CollectionAdapter object.</description>
+    </attribute>
+
+    <attribute>
+      <name>collectionAdapterPath</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The Nucleus path of the CollectionAdapter object.</description>
+    </attribute>
+
+    <attribute>
+      <name>removeIndex</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The index of an element to remove in the collection.</description>
+    </attribute>
+
+    <attribute>
+      <name>insertIndex</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The index to insert one or more items into the collection.</description>
+    </attribute>
+
+    <attribute>
+      <name>insertIds</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The IDs of one or more items to insert into the collection.</description>
+    </attribute>
+
+    <attribute>
+      <name>addIds</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The IDs of one or more items to add to the collection.</description>
+    </attribute>
+
+    <attribute>
+      <name>reorderIndices</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>An encoded string representing order-by-number changes.</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the attribute that will hold the results</description>
+    </attribute>
+  </tag>
+
+  <!-- ===================================================================== -->
+  <!-- IsOperationAllowed -->
+  <tag>
+    <name>isOperationAllowed</name>
+    <tag-class>atg.assetui.taglib.IsOperationAllowedTag</tag-class>
+    <body-content>JSP</body-content>
+    <description>
+      Renders the tag body if the named operation is allowed on the given assetType or assetURI. 
+    </description>
+
+    <attribute>
+      <name>operation</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The name of the operation to test.  e.g. "revert", "link", "delete"</description>
+    </attribute>
+
+    <attribute>
+      <name>assetURI</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The URI of the asset to test.</description>
+    </attribute>
+
+    <attribute>
+      <name>itemDescriptorName</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The type of the asset to test.  Use this with repositoryPath.</description>
+    </attribute>
+
+    <attribute>
+      <name>repositoryPath</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The nucleus path to the repsitory that contains the assetType to test.</description>
+    </attribute>
+  </tag>
+
+   <!-- ===================================================================== -->
+   <!-- OpenTreeTag -->
+  <tag>
+    <name>openTreeTag</name>
+    <tag-class>atg.assetui.taglib.OpenTreeTag</tag-class>
+    <body-content>empty</body-content>
+    <description>Opens LHP tree node by given assetURI</description>
+
+    <attribute>
+      <name>assetURI</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    
+    <attribute>
+      <name>siteId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>treeDefinition</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    
+    <attribute>
+      <name>treeState</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  
+   <!-- ===================================================================== -->
+   <!-- getControlCenterState tag -->
+  <tag>
+    <name>getControlCenterState</name>
+    <tag-class>atg.assetui.taglib.GetControlCenterStateTag</tag-class>
+    <body-content>empty</body-content>
+    <description>Retrieves ControlCenterState object</description>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the attribute that will hold the results</description>
+    </attribute>
+    
+    <attribute>
+      <name>service</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets service path</description>
+    </attribute>
+  </tag>
+  
+  
+</taglib>

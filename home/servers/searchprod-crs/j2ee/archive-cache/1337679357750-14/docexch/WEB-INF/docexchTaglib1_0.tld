@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE taglib
+	PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.1//EN"
+	"http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_1.dtd">
+
+<taglib>
+  <tlibversion>1.0</tlibversion>
+  <jspversion>1.1</jspversion>
+  <shortname>dex</shortname>
+
+  <info>The tag library containing the Document Exchange Gear tags</info>
+
+  <!-- DocExchPageTag -->
+  <tag>
+    <name>DocExchPage</name>
+    <tagclass>atg.portal.gear.docexch.taglib.DocExchPageTag</tagclass>
+    <teiclass>atg.portal.gear.docexch.taglib.DocExchPageTEI</teiclass>
+    <bodycontent>JSP</bodycontent>
+    <info>
+      Expose gear instance parameters as properties.
+    </info>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>gearEnv</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- isDocInGear -->
+  <tag>
+    <name>isDocInGear</name>
+    <tagclass>atg.portal.gear.docexch.taglib.TestDocInGearTag</tagclass>
+    <bodycontent>JSP</bodycontent>
+    <info>
+      This tag renders its body if the document is available in the current gear environment 
+    </info>
+
+    <attribute>
+      <name>document</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>gearEnv</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- mayEdit -->
+  <tag>
+    <name>mayEdit</name>
+    <tagclass>atg.portal.gear.docexch.taglib.MayEdit</tagclass>
+    <bodycontent>JSP</bodycontent>
+    <info>
+      This tag renders its body if the current user has permission to edit this document.  CommunityLeaders and document authors have this permission.
+    </info>
+
+    <attribute>
+      <name>document</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+</taglib>

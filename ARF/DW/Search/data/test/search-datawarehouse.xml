@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE gsa-template SYSTEM "dynamosystemresource:/atg/dtds/gsa/gsa_1.0.dtd">
+<!--
+  This file contains SearchAdmin test data for using in SearchAdmin.datawarehouse module  
+  -->
+<gsa-template>
+  <import-items>
+    <!-- Search Admin Project items -->
+    <add-item item-descriptor="SearchProject" id="srch-proj-001">
+      <set-property name="name"><![CDATA[SearchProj-001]]></set-property>
+      <set-property name="description"><![CDATA[Test Search Project 001]]></set-property>
+    </add-item>
+    <add-item item-descriptor="SearchProject" id="srch-proj-002">
+      <set-property name="name"><![CDATA[SearchProj-002]]></set-property>
+      <set-property name="description"><![CDATA[Test Search Project 002]]></set-property>
+    </add-item>
+
+    <!-- Search Admin Environment items -->
+    <add-item item-descriptor="SearchEnvironment" id="srch-env-001">
+      <set-property name="name"><![CDATA[SearchEnv-1.1]]></set-property>
+      <set-property name="SearchProject" value="srch-proj-001"/>
+      <set-property name="shadow" value="true"/>
+    </add-item>
+    <add-item item-descriptor="SearchEnvironment" id="srch-env-002">
+      <set-property name="name"><![CDATA[SearchEnv-1.2]]></set-property>
+      <set-property name="SearchProject" value="srch-proj-001"/>
+      <set-property name="shadow" value="false"/>
+    </add-item>
+    <add-item item-descriptor="SearchEnvironment" id="srch-env-003">
+      <set-property name="name"><![CDATA[SearchEnv-2.1]]></set-property>
+      <set-property name="SearchProject" value="srch-proj-002"/>
+      <set-property name="shadow" value="false"/>
+    </add-item>
+    <add-item item-descriptor="SearchEnvironment" id="srch-env-004">
+      <set-property name="name"><![CDATA[SearchEnv-2.2]]></set-property>
+      <set-property name="SearchProject" value="srch-proj-002"/>
+      <set-property name="shadow" value="true"/>
+    </add-item>
+    <add-item item-descriptor="SearchEnvironment" id="srch-env-005">
+      <set-property name="name"><![CDATA[SearchEnv-2.3]]></set-property>
+      <set-property name="SearchProject" value="srch-proj-002"/>
+      <set-property name="shadow" value="false"/>
+    </add-item>
+
+  </import-items>
+</gsa-template>
+<!-- @version $Id: //product/ARF/version/10.0.3/ARF/DW/Search/data/test/search-datawarehouse.xml#1 $$Change: 651360 $-->

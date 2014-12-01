@@ -1,0 +1,217 @@
+#!/bin/sh
+
+##############
+# usage
+#
+usage()
+{
+    COMMAND=`basename $0`
+    echo "Usage: $COMMAND [-h] [-c <opt-configpath> ] [-m <opt-modules> ]"
+    echo ""
+    echo "Options:"
+    echo "     -m <opt-module>:<opt-module>:...          Run with the additionally specified modules"
+    echo "     -c <opt-configpath>:<opt-configpath>:...  Run with the additionally specified configpath"
+    echo "     -h                                        Display command usage"
+    echo ""
+}
+
+###############
+# parseArgs
+#
+parseArgs()
+{
+    # Parse arguments
+    #
+    while [ "x$1" != "x" ]
+    do
+  case $1 in
+      -m) OPT_MODULES=${OPT_MODULES:-"$2"}
+         shift
+         ;;
+      -c) OPT_CONFIGPATH=${OPT_CONFIGPATH:-"$2"}
+         shift
+         ;;
+      -h) usage
+         exit 0;;
+      *) usage
+          exit 1;;
+  esac
+  shift
+    done
+    
+}
+
+###############
+# initHome
+#
+initHome()
+{
+    # NUCLEUS_HOME 
+    #
+    if [ -z "$NUCLEUS_HOME" ] ; then
+  if [ -r "$PWD/startNucleus" ] ; then
+      NUCLEUS_HOME=`dirname ${PWD}`
+  elif [ -r "$PWD/bin/startNucleus" ] ; then
+      NUCLEUS_HOME=${PWD}
+  else
+      echo "Error: Unable to determine NUCLEUS_HOME"
+      exit 1;
+  fi
+    fi
+}
+
+###############
+# initDynamoHome
+#
+initDynamoHome()
+{
+    # DYNAMO_HOME 
+    #
+    if [ -z "$DYNAMO_HOME" ] ; then
+  if [ -r "$PWD/startNucleus" ] ; then
+      DYNAMO_HOME=`dirname ${PWD}`
+  elif [ -r "$PWD/bin/startNucleus" ] ; then
+      DYNAMO_HOME=${PWD}
+  else
+      echo "Error: Unable to determine DYNAMO_HOME"
+      exit 1;
+  fi
+    fi
+}
+
+###############
+# initRoot
+#
+initRoot()
+{
+
+    # NUCLEUS_ROOT
+    #
+    if [ -z "$NUCLEUS_ROOT" ] ; then
+  NUCLEUS_ROOT=`dirname ${NUCLEUS_HOME}`
+    fi
+}
+
+###############
+# initModules
+#
+initModules()
+{
+    # NUCLEUS_MODULES
+    #
+    NUCLEUS_MODULES=${NUCLEUS_MODULES:-"Initial"}
+    if [ -n "$OPT_MODULES" ] ; then
+  NUCLEUS_MODULES=$NUCLEUS_MODULES:$OPT_MODULES
+    fi
+    if [ -n "$MODULES" ] ; then
+  NUCLEUS_MODULES=$NUCLEUS_MODULES:$MODULES
+    fi
+}
+
+
+###############
+# initConfigPath
+#
+initConfigPath()
+{
+    # NUCLEUS_CONFIGPATH
+    #
+    NUCLEUS_CONFIGPATH=${NUCLEUS_CONFIGPATH:-"$NUCLEUS_HOME/localconfig"}
+    if [ -n "$CONFIGPATH" ] ; then
+    NUCLEUS_CONFIGPATH=$CONFIGPATH:$NUCLEUS_CONFIGPATH
+    fi
+    if [ -n "$OPT_CONFIGPATH" ] ; then
+  NUCLEUS_CONFIGPATH=$OPT_CONFIGPATH:$NUCLEUS_CONFIGPATH
+    fi
+}
+
+###############
+# initJVM
+#
+initJVM()
+{
+    # JAVA_VM
+    #
+    if [ -z "$JAVA_VM" ] ; then
+  if [ -n "$JAVA_HOME"  ] ; then
+      if [ -x "$JAVA_HOME/jre/sh/java" ] ; then
+    # IBM's JDK on AIX uses strange locations for the executables
+    JAVA_VM="$JAVA_HOME/jre/sh/java"
+      else
+    JAVA_VM="$JAVA_HOME/bin/java"
+      fi
+  else
+      JAVA_VM=java
+  fi
+    fi
+
+    if [ ! -x "$JAVA_VM" ] ; then
+  echo "Error: JAVA_HOME is not defined correctly."
+  echo "  We cannot execute $JAVA_VM"
+  exit 1
+    fi
+}
+
+###############
+# initEnv
+#
+initEnv()
+{
+    PWD=`pwd`
+    initHome $*
+    initDynamoHome $*
+    initRoot $*
+    initModules $*
+    initConfigPath $*
+    initJVM $*
+
+    # Change into NUCLEUS_HOME
+    cd $NUCLEUS_HOME
+
+    # Determine NUCLEUS environment 
+    #
+    TEMP_ENVIRONMENT_SCRIPT="/tmp/dynamoEnv$$.sh"
+    DYNAMO_SERVER_LAUNCHER_CMD="${JAVA_VM} -classpath $NUCLEUS_HOME/locallib:$NUCLEUS_HOME/lib/launcher.jar -Datg.dynamo.home=${NUCLEUS_HOME} -Datg.dynamo.root=${NUCLEUS_ROOT} -Datg.dynamo.server.home=${NUCLEUS_HOME} -Datg.dynamo.modulepath=${NUCLEUS_ROOT} atg.applauncher.dynamo.DynamoServerLauncher -environment ${TEMP_ENVIRONMENT_SCRIPT} ${NUCLEUS_MODULES} ${NUCLEUS_CONFIGPATH}"
+    $DYNAMO_SERVER_LAUNCHER_CMD
+    DYNAMO_SERVER_LAUNCHER_STATUS=$?
+    if [ "$DYNAMO_SERVER_LAUNCHER_STATUS" != "0" ] ; then
+  echo "Error: $DYNAMO_SERVER_LAUNCHER_CMD failed"
+  rm -f $TEMP_ENVIRONMENT_SCRIPT
+  exit 1
+    fi
+
+    . $TEMP_ENVIRONMENT_SCRIPT
+    rm -f $TEMP_ENVIRONMENT_SCRIPT
+}
+
+###############
+# dumpEnv
+#
+dumpEnv() 
+{
+    echo "" 
+    echo; echo "JAVA_VM:              $JAVA_VM"
+    echo; echo "JAVA_ARGS:            $JAVA_ARGS"
+    echo; echo "NUCLEUS_ROOT:         $NUCLEUS_ROOT"
+    echo; echo "NUCLEUS_HOME:         $NUCLEUS_HOME"
+    echo; echo "MODULES:              $DYNAMO_MODULES"
+    echo; echo "CONFIGPATH:           $CONFIGPATH"
+    echo; echo "CLASSPATH:            $CLASSPATH"
+    echo ""
+}
+
+###############
+# Main
+
+parseArgs $*
+initEnv  $*
+dumpEnv $*
+
+# Start NUCLEUS
+COMMAND="${JAVA_VM} -cp ${CLASSPATH} -Datg.dynamo.home=${NUCLEUS_HOME} -Datg.dynamo.root=${NUCLEUS_ROOT} -Datg.dynamo.server.home=${NUCLEUS_HOME} -Datg.dynamo.modulepath=${NUCLEUS_ROOT} ${JAVA_ARGS} atg.applauncher.dynamo.DynamoServerLauncher ${DYNAMO_MODULES} ${CONFIGPATH}"
+if [ ! -d "$NUCLEUS_HOME/logs" ] ; then
+  mkdir -p $NUCLEUS_HOME/logs
+fi
+NUCLEUS_PIDFILE=$NUCLEUS_HOME/logs/nucleus.pid
+rm -rf $NUCLEUS_PIDFILE
+sh -c 'echo $$ >> '"$NUCLEUS_PIDFILE; exec $COMMAND 2>&1"

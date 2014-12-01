@@ -1,0 +1,109 @@
+
+    <admin:GetAllItems id="items">
+	
+	   <font class="smaller">
+
+    <table cellpadding="1" cellspacing="0" border="0" bgcolor="#666666" width="100%"><tr><td>
+	<table cellpadding="4" cellspacing="0" border="0" bgcolor="#999999" width="100%"><tr><td>
+	<font class="pageheader"><i18n:message key="admin-gears-available-gear"/>
+	</td></tr></table>
+	</td></tr></table>
+	
+	<table cellpadding="4" cellspacing="0" border="0" bgcolor="#EAEEF0" width="100%"><tr><td>
+	<font class="smaller"><i18n:message key="admin-gear-infotext-available-gears"/> <br>
+	</td></tr></table>
+	<img src="<%=clearGif%>" height="1" width="7" border="0"><br>
+	
+
+	<!--this table bounds the list of avalailable communities and folders-->
+	<table cellpadding="4" cellspacing="0" border="0" width="100%" bgcolor="#c9d1d7"><tr><td>
+	
+	<!--this table generates the list-->
+     <table cellpadding="0" cellspacing="0" border="0">
+            <!-- FOUR COLUMNS -->
+   <%
+    String imgFolderOpen = "<img src='"+ response.encodeURL("images/folder_open.gif") +"' height='13' width='16' border='0'>";
+    %>
+
+          <core:ForEach id="folders"
+              values="<%= items.getGearDefinitionFolders(atg.portal.framework.Comparators.getFolderComparator()) %>"
+              castClass="atg.portal.framework.folder.GearDefinitionFolder"
+              elementId="folder">
+          <tr>
+              <td colspan="4"><img src="<%=clearGif%>" height="4" width="4" border="0"></td>
+          </tr>
+
+          <tr>
+            
+             <td><%= imgFolderOpen %>&nbsp;</td>
+
+             <td nowrap colspan="3"><font class="small"><b><%=folder.getName()%></b></font></td>
+          </tr>
+         
+          <core:ForEach id="geardefinitions"
+              values="<%= folder.getGearDefinitionSet(atg.portal.framework.Comparators.getGearDefinitionComparator()) %>"
+              castClass="atg.portal.framework.GearDefinition"
+              elementId="geardef">
+<%--           <admin:GetGearDefinitionDetails id="gearDefinition" itemId="<%=geardef.getId()%>"> --%>
+          <tr>
+              <td></td>
+              <td nowrap>
+            <font class="small">&nbsp;
+<% if (geardef.hasUniqueName()) { %>
+  <i18n:message key="gear-name">
+    <i18n:messageArg value="<%=geardef.getName(response.getLocale())%>"/>
+    <i18n:messageArg value="<%=geardef.getVersion()%>"/>
+  </i18n:message> 
+<% } else { %>
+  <i18n:message key="gear-and-author">
+    <i18n:messageArg value="<%=geardef.getName(response.getLocale())%>"/>
+    <i18n:messageArg value="<%=geardef.getVersion()%>"/>
+    <i18n:messageArg value="<%=geardef.getAuthor()%>"/>
+  </i18n:message> 
+<% } %>
+  
+            </font>
+              </td>
+              <td nowrap><font class="smaller">&nbsp;&nbsp;
+            <!-- build URL to delete gear definition with link -->
+            <core:CreateUrl id="deleteGearUrl" url="/portal/admin/gear.jsp">
+                <core:UrlParam param="paf_gear_def_id" value="<%= (String) geardef.getId()%>"/>
+                <core:UrlParam param="paf_page_url" value="/portal/admin/gear.jsp"/>
+                <core:UrlParam param="mode" value="5"/>
+
+               <dsp:a target="_top" href="<%=deleteGearUrl.getNewUrl()%>"><i18n:message key="admin-gears-delete"/></dsp:a>
+            </core:CreateUrl>
+            </font>
+              </td>
+          <core:IfNotNull value='<%=geardef.getGearMode(atg.portal.framework.GearMode.GEARMODE_INSTALLCONFIG)%>'>
+ <core:CreateUrl id="editInstallConfig" url='<%=geardef.getServletContext()+geardef.getGearMode(atg.portal.framework.GearMode.GEARMODE_INSTALLCONFIG).getDisplayMode(atg.portal.framework.DisplayMode.DISPLAYMODE_FULL).getDeviceOutput("htmlURL").getURL()%>'>
+   <core:UrlParam param="paf_gear_def_id" value="<%= (String) geardef.getId()%>"/>
+    <paf:encodeUrlParam param="paf_success_url" value="/portal/admin/frame_content_gears.jsp"/>
+<%--
+<td nowrap><font class="smaller">&nbsp;&nbsp;<dsp:a href="<%= editInstallConfig.getNewUrl() %>"><i18n:message key="admin-gears-configure"/></dsp:a></font></td>
+--%>
+ <core:CreateUrl id="initFrameConfig" url="/portal/admin/frame.jsp">
+  <core:UrlParam param="paf_gear_def_id" value="<%= (String) geardef.getId()%>"/>
+  <core:UrlParam param="navHighLight" value="gears"/>
+  <core:UrlParam param="currPid" value="1"/>
+  <paf:encodeUrlParam param="contentTarget" value="<%=editInstallConfig.getNewUrl()%>"/>
+
+<td><font class="smaller">&nbsp;&nbsp;
+
+<dsp:a target="_top" href="<%= initFrameConfig.getNewUrl() %>"><i18n:message key="admin-gears-configure"/></dsp:a>
+
+</font></td>
+
+</core:CreateUrl>
+</core:CreateUrl>
+
+             <td><!-- noconfig --></td> 
+</core:IfNotNull>
+        </tr>
+<%--          </admin:GetGearDefinitionDetails> --%>
+        </core:ForEach>
+
+       </core:ForEach>
+      </table>
+    </admin:GetAllItems>
+<%-- @version $Id$$Change$--%>

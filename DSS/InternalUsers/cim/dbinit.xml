@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE database-initializer SYSTEM "http://www.atg.com/dtds/dbinit_1_0.dtd">
+<database-initializer>
+
+  <schema id="versionedSchema">
+
+    <sql>
+      <path>
+	<create>
+	  sql/db_components/${database}/internal_scenario_ddl.sql
+	</create>
+	<drop>
+	  sql/uninstall/${database}/drop_internal_scenario_ddl.sql
+	</drop>
+      </path>
+    </sql>
+    
+
+    <data-import>
+      <repository-path>/atg/userprofiling/InternalProfileRepository</repository-path>
+      <import-file-path>/Publishing/base/install/epub-role-data.xml</import-file-path>
+      <user>publishing</user>
+      <workspace>workspace</workspace>
+      <comment>initial_data_import</comment>			
+    </data-import>		
+
+  </schema>
+
+  <schema id="unversionedSchema">
+
+    <sql>
+      <path>
+	<create>
+	  sql/db_components/${database}/internal_scenario_ddl.sql
+	</create>
+	<drop>
+	  sql/uninstall/${database}/drop_internal_scenario_ddl.sql
+	</drop>
+      </path>
+    </sql>
+    
+
+    <data-import>
+      <repository-path>/atg/userprofiling/InternalProfileRepository</repository-path>
+      <import-file-path>/Publishing/base/install/epub-role-data.xml</import-file-path>
+    </data-import>		
+
+  </schema>
+
+  <server-instance-type id="management">
+    
+    <datasource id="management">
+      <schema id="versionedSchema"/>
+    </datasource>	
+    
+  </server-instance-type>
+
+  <server-instance-type id="svcagent">
+    
+    <datasource id="svcagent">
+      <schema id="unversionedSchema"/>
+    </datasource> 
+    
+  </server-instance-type>
+
+</database-initializer>
+<!-- @version $Id: //product/DSS/version/10.0.3/release/DSS/InternalUsers/cim/dbinit.xml#2 $$Change: 651448 $-->

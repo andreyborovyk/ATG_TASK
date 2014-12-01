@@ -1,0 +1,192 @@
+<java type=import>
+	atg.service.perfmonitor.*
+</java>
+
+<HTML>
+<HEAD>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+<TITLE>Performance Monitor</TITLE>
+</HEAD>
+
+<body bgcolor="#FFFFFF" text="#00214A" vlink="#637DA6" link="#E87F02">
+<img src="images/performance-monitor-banner.gif" alt="Performance Monitor" align=top width="585" height="37" border="0">
+
+<p><a href="/">admin</a>/
+<droplet bean="/atg/dynamo/droplet/Switch">
+<param name="value" value="bean:/atg/dynamo/Configuration.dynamoAppServer">
+  <!-- Dynamo App Server -->
+  <oparam name="true">
+    <a href="performance.jhtml">Performance Summary</a>/
+  </oparam>
+</droplet>
+Performance Monitor
+
+<h2>Performance Monitor</h2>
+<p><a href="performance-monitor-config.jhtml">Performance Monitor Configuration</a>
+
+<java>
+  PerformanceMonitor perfmon = PerformanceMonitor.getPerformanceMonitor();
+  if (perfmon.getMode() != PerformanceMonitor.DISABLED) {
+    out.println("<p><a href=\"#threads\">Threads</a><br>");
+    if (perfmon.getMode() == PerformanceMonitor.TIME || perfmon.getMode() == PerformanceMonitor.MEMORY)
+      out.println("<a href=\"#timeperfdata\">Time Performance Data</a><br>");
+    if (perfmon.getMode() == PerformanceMonitor.MEMORY)
+      out.println("<a href=\"#memoryperfdata\">Memory Performance Data</a><br>");
+    // Need to sync on the hashtable for the enumeration
+    synchronized (perfmon.getThreadStackHash()) {
+</java>
+
+<!-- This is the threads section of the page -->
+<p><h2><a name="threads">Threads</a></h2>
+
+<table border=2 cellpadding=2>
+  <DROPLET BEAN="/atg/dynamo/droplet/ForEach">
+    <PARAM NAME="array" VALUE="bean:/atg/dynamo/service/PerformanceMonitor.threadStackHash">
+	<OPARAM NAME="empty">
+        There are currently no active threads
+	</OPARAM>
+      <OPARAM NAME="output">
+      <tr bgcolor="#DADADA">
+        <td colspan=3><b>Thread</b>: <VALUEOF PARAM="key.name"></VALUEOF></td>
+      </tr>
+      <tr>
+        <td><b>Operation Stack</b></td>
+        <td><b>Parameter</b></td>
+        <td><b>Start Time</b></td>
+      </tr>
+      <DROPLET BEAN="/atg/dynamo/droplet/ForEach">
+        <PARAM NAME="array" VALUE="param:element">
+        <PARAM NAME="reverseOrder" VALUE="true">
+        <OPARAM NAME="output">
+          <tr>
+            <td><VALUEOF PARAM="element.operation"></VALUEOF></td>
+            <td><VALUEOF PARAM="element.parameter"><i>No Parameter Supplied</i></VALUEOF></td>
+            <td><VALUEOF PARAM="element.starttime" converter="date" date="EEE MM/dd/yyyy hh:mm:ss.SSS aa">Unavailable</VALUEOF></td>
+          </tr>
+        </OPARAM>
+      </DROPLET>
+      </OPARAM>
+  </DROPLET>
+</table>
+
+<!-- This is the performance data section of the page -->
+<java>
+     } // synchronized section
+     synchronized (perfmon.getPerformanceHash()) {
+  	if (perfmon.getMode() == PerformanceMonitor.TIME ||
+		perfmon.getMode() == PerformanceMonitor.MEMORY) {
+</java>
+
+<p><h2><a name="timeperfdata">Time Performance Data</a></h2>
+<table border=2 cellpadding=2>
+  <tr>
+    <td>
+      <b>Operation</b>
+    </td>
+    <td>
+      <b>Number of Executions</b>
+    </td>
+    <td>
+      <b>Average Execution Time (msec)</b>
+    </td>
+    <td>
+      <b>Minimum Execution Time (msec)</b>
+    </td>
+    <td>
+      <b>Maximum Execution Time (msec)</b>
+    </td>
+    <td>
+      <b>Total Execution Time (msec)</b>
+    </td>
+  </tr>
+
+    <DROPLET BEAN="/atg/dynamo/droplet/TableForEach">
+      <PARAM NAME="array" VALUE="bean:/atg/dynamo/service/PerformanceMonitor.performanceHash">
+      <PARAM NAME="numColumns" VALUE="6">
+      <OPARAM NAME="empty">
+        There is no time performance data available
+      </OPARAM>
+      <OPARAM NAME="output">
+        <tr>
+          <TD><A HREF="performance-data-time.jhtml"><VALUEOF PARAM="key"></VALUEOF>
+          	  <param name="operation" value="param:key"></a></TD>
+	    <TD><VALUEOF PARAM="element.performanceTotals.totalNumberOfExecutions"></VALUEOF></TD>
+	    <TD><VALUEOF PARAM="element.performanceTotals.averageExecutionTime"></VALUEOF></TD>
+	    <TD><VALUEOF PARAM="element.performanceTotals.minimumExecutionTime"></VALUEOF></TD>
+	    <TD><VALUEOF PARAM="element.performanceTotals.maximumExecutionTime"></VALUEOF></TD>
+	    <TD><VALUEOF PARAM="element.performanceTotals.totalExecutionTime"></VALUEOF></TD>
+        </tr>
+      </OPARAM>
+    </DROPLET>
+</table>
+
+<java>
+  	if (perfmon.getMode() == PerformanceMonitor.MEMORY) {
+</java>
+
+<p><h2><a name="memoryperfdata">Memory Performance Data</a></h2>
+<table border=2 cellpadding=2>
+  <tr>
+    <td>
+      <b>Operation</b>
+    </td>
+    <td>
+      <b>Number of Executions</b>
+    </td>
+    <td>
+      <b>Average Memory Required (kilobytes)</b>
+    </td>
+    <td>
+      <b>Minimum Memory Required (kilobytes)</b>
+    </td>
+    <td>
+      <b>Maximum Memory Required (kilobytes)</b>
+    </td>
+    <td>
+      <b>Total Memory Required (kilobytes)</b>
+    </td>
+  </tr>
+
+    <DROPLET BEAN="/atg/dynamo/droplet/TableForEach">
+      <PARAM NAME="array" VALUE="bean:/atg/dynamo/service/PerformanceMonitor.performanceHash">
+      <PARAM NAME="numColumns" VALUE="6">
+      <OPARAM NAME="empty">
+		There is no memory performance data available
+      </OPARAM>
+      <OPARAM NAME="output">
+        <tr>
+          <TD><A HREF="performance-data-memory.jhtml"><VALUEOF PARAM="key"></VALUEOF>
+          	  <param name="operation" value="param:key"></a></TD>
+	    <TD><VALUEOF PARAM="element.performanceTotals.memTotalNumberOfExecutions"></VALUEOF></TD>
+	    <TD><VALUEOF PARAM="element.performanceTotals.averageMemoryRequired" NUMBER="###,###.##"></VALUEOF></TD>
+	    <TD><VALUEOF PARAM="element.performanceTotals.minimumMemoryRequired" NUMBER="###,###.##"></VALUEOF></TD>
+	    <TD><VALUEOF PARAM="element.performanceTotals.maximumMemoryRequired" NUMBER="###,###.##"></VALUEOF></TD>
+	    <TD><VALUEOF PARAM="element.performanceTotals.totalMemoryRequired" NUMBER="###,###.##"></VALUEOF></TD>
+        </tr>
+      </OPARAM>
+    </DROPLET>
+</table>
+
+<java>
+        } // if (perfmon.getMode() == PerformanceMonitor.MEMORY)
+  	} else {
+</java>
+<p>
+Performance data is only available when the Performance Monitor is running
+in TIME or MEMORY mode. It is currently running in NORMAL mode. Go to 
+<a href="performance-monitor-config.jhtml">Performance Monitor Configuration</a> to change the mode.
+
+<java>
+  	} // if (perfmon.getMode() == PerformanceMonitor.TIME || perfmon.getMode() == PerformanceMonitor.MEMORY)
+    }
+  } else {
+</java>
+<p>The Performance Monitor is in DISABLED mode. Performance data is not available. Go to <a href="performance-monitor-config.jhtml">Performance Monitor Configuration</a> to change the mode.
+<java>
+  }// if (perfmon.getMode() == PerformanceMonitor.DISABLED)
+</java>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/performance-monitor.jhtml#2 $$Change: 651448 $ */</java>
+

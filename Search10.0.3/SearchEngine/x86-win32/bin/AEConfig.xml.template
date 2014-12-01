@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<AnswerEngine>
+	<!-- Variables: -->
+	<!-- USER_INSTALL_BINDIR = $install/Search$version/SearchEngine/$platform/bin -->
+	<!-- USER_INSTALL_ENGINEDIR = $install/Search$version/SearchEngine -->
+
+	<Query>
+		<!-- Global result list controls -->
+		<ResponseNumberSettings></ResponseNumberSettings>
+	</Query>
+	<Content>
+		<!-- Global search parameters -->
+		<RelQuestSettings></RelQuestSettings>
+
+		<!-- Limit on text size for indexing, causing large documents to be chunked -->
+		<DocZoneLimit>0x8000</DocZoneLimit>
+
+		<!-- indexing term extraction log, used for development only only -->
+		<ExtractLogFile></ExtractLogFile>
+
+		<!-- topic matching log (in berkeley DB), used for inspection only -->
+		<TopicMatcherLogFile></TopicMatcherLogFile>
+	</Content>
+	<Server>
+		<!-- physical index partition (memory map) file name -->
+		<!--<MemMapFile>**Was Not Specified**</MemMapFile>-->
+
+		<!-- physical index partition file store (luistore)  -->
+		<!--<FileStgStoreFile>**Was Not Specified**</FileStgStoreFile>-->
+
+		<!-- language data directory -->
+		<AEDataDirectory>{USER_INSTALL_ENGINEDIR}/language</AEDataDirectory>
+
+		<!-- physical index partition (memory map) reserve (maximum) size -->
+		<!-- default is auto size, set to limit -->
+		<!--<MemoryReserveSize>0x54000000</MemoryReserveSize>-->
+
+		<!-- physical index partition (memory map) growth increment -->
+		<!-- default is auto size, set to limit -->
+		<!--<MemoryIncrementSize>0x00800000</MemoryIncrementSize>-->
+
+		<!-- physical index partition (memory map)  -->
+		<!-- default is auto size, set to limit -->
+		<!--<MemoryThreshold>0x06000000</MemoryThreshold>-->
+
+		<!-- Maximum threads for query processing  -->
+		<!-- default is auto size, set to limit -->
+		<!--<MaxThreads>10</MaxThreads>-->
+
+		<!-- interval for logging load information in sec -->
+		<PerformanceLoggingPeriod>600</PerformanceLoggingPeriod>
+    
+		<!-- threshold for logging slow requests in ms -->
+		<SlowRequestThreshold>5000</SlowRequestThreshold>
+    
+		<!-- compress files in deploy share  -->
+		<CompressDeployShare>1</CompressDeployShare>
+	</Server>
+	<PDF>
+		<!-- path to PDF extraction utility program  -->
+		<PdfExepath>{USER_INSTALL_BINDIR}/PdfExtract/expdf{EXE_EXTENSION}</PdfExepath>
+
+		<!-- time out for PDF utility program	-->
+		<PdfTimeout>3600</PdfTimeout>
+	</PDF>
+	<Inso>
+		<!-- path to Stellent rich-content extraction utility program	-->
+		<InsoExepath>{USER_INSTALL_BINDIR}/HtmlFilter/exsimple{EXE_EXTENSION}</InsoExepath>
+
+		<!-- time out for Stellent utility program  -->
+		<InsoTimeout>3600</InsoTimeout>
+	</Inso>
+</AnswerEngine>
+

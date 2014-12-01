@@ -1,0 +1,69 @@
+#!/bin/sh
+
+#
+# Check that DYNAMO_HOME and DAS_ROOT are set
+#
+PROGRAM_DIR=`dirname $0`
+. $PROGRAM_DIR/checkDynamoHome.sh
+
+# don't load applications
+DYNAMO_BASE=1
+
+SERVERNAME="."
+PREFIX=""
+SERVERCONFIGPATH=":localconfig"
+BCARGS=""
+
+usage() 
+{
+    echo "USAGE: batchCompile [<server-name>] [-url <url>] [-documentRoot <doc-root>]"
+    echo "       <server-name> Compile pages for the specified server"
+    echo "       -url          URL prefix to compile (e.g. /demo), defaults to / "
+    echo "       -documentRoot the doc root to compile (e.g. /atg/Dynamo5.6.1/admin)"
+}
+
+while [ "x$1" != "x" ]
+do
+case $1 in
+      -url) BCARGS="${BCARGS} $1 $2"
+          shift
+          ;;
+      -documentRoot) BCARGS="${BCARGS} $1 $2"
+          shift
+          ;;
+      -usage) 
+          usage
+          exit 0
+          ;;
+      -*) BCARGS="${BCARGS} $1" 
+          ;;
+       *) if [ "$SERVERNAME" = "." ] ; then
+            SERVERNAME="servers/$1"
+	    PREFIX="-prefix ${SERVERNAME}"
+            SERVERCONFIGPATH=":localconfig:servers/$1/localconfig"
+          else
+            echo "Too many arguments: $1"
+            usage 
+            exit 1
+          fi;;
+      esac  
+  shift
+done
+
+#
+# Load in default environment values
+#
+. bin/dynamoEnv.sh
+
+#
+# localconfig is always at the end
+#
+CONFIGPATH=${CONFIGPATH}${SERVERCONFIGPATH}
+
+#
+# Check for options.  If any invalid options are specified
+# then return usage.
+#
+MAINCLASS=atg.service.sitewalker.BatchCompileSiteWalker
+
+${JAVA_VM} ${JAVA_ARGS} ${MAINCLASS} ${CONFIGPATH}:../DAS/config/batchconfig.jar ${BCARGS} ${PREFIX}

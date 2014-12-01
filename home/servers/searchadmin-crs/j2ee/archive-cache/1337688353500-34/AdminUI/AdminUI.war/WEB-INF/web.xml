@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee" version="2.4"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
+             http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+  <display-name>
+    ATG Search Admin UI
+  </display-name>
+
+  <description>
+    Admin UI!
+  </description>
+
+  <!-- This is the name of the "parent web application", i.e. an application
+       that has a SessionNameContextServlet defined in it which will define the
+       session scope for this web application. -->
+  <context-param>
+    <param-name>atg.session.parentContextName</param-name>
+    <param-value>/dyn</param-value>
+  </context-param>
+
+  <!-- If context-root is set here, then ServletContextWebAppRegistry will use
+       this setting as the context root for this web application.  This must
+       match the context-root setting in application.xml. -->
+  <context-param>
+    <param-name>context-root</param-name>
+    <param-value>adminui</param-value>
+  </context-param>
+
+  <!-- Turn off preview for this app-->
+  <context-param>
+    <param-name>atg.preview</param-name>
+    <param-value>false</param-value>
+  </context-param>
+
+  <!-- This filter invokes the DAF servlet pipeline. -->
+  <filter>
+    <filter-name>PageFilter</filter-name>
+    <filter-class>atg.filter.dspjsp.PageFilter</filter-class>
+  </filter>
+
+  <!--This filter checks to ensure that the current user is logged in-->
+  <filter>
+    <filter-name>RequireLoginFilter</filter-name>
+    <filter-class>atg.searchadmin.adminui.navigation.RequireLoginFilter</filter-class>
+    <init-param>
+      <param-name>userDirectory</param-name>
+      <param-value>/atg/userprofiling/InternalProfileUserDirectory</param-value>
+    </init-param>
+    <init-param>
+      <param-name>accessRightName</param-name>
+      <param-value>Generic Access to the ATG Search</param-value>
+    </init-param>
+    <init-param>
+      <param-name>profileComponentName</param-name>
+      <param-value>/atg/userprofiling/Profile</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loginURI</param-name>
+      <param-value>/redirectToLogin.jsp</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingDebug</param-name>
+      <param-value>false</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingWarning</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingError</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingInfo</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  </filter>
+
+  <filter>
+    <filter-name>NavigationFilter</filter-name>
+    <filter-class>atg.searchadmin.adminui.navigation.NavigationFilter</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>PageFilter</filter-name>
+    <url-pattern>*.jsp</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>PageFilter</filter-name>
+    <url-pattern>*.dojo</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>PageFilter</filter-name>
+    <url-pattern>/error</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>PageFilter</filter-name>
+    <servlet-name>ErrorHandlerServlet</servlet-name>
+    <dispatcher>ERROR</dispatcher>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>PageFilter</filter-name>
+    <url-pattern>/download</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>PageFilter</filter-name>
+    <url-pattern>/back</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>PageFilter</filter-name>
+    <url-pattern>/logout</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>RequireLoginFilter</filter-name>
+    <url-pattern>*.jsp</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>RequireLoginFilter</filter-name>
+    <url-pattern>*.dojo</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>RequireLoginFilter</filter-name>
+    <url-pattern>/error</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>RequireLoginFilter</filter-name>
+    <servlet-name>ErrorHandlerServlet</servlet-name>
+    <dispatcher>ERROR</dispatcher>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>RequireLoginFilter</filter-name>
+    <url-pattern>/download</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>RequireLoginFilter</filter-name>
+    <url-pattern>/back</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>RequireLoginFilter</filter-name>
+    <url-pattern>/logout</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>NavigationFilter</filter-name>
+    <url-pattern>*.jsp</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+  </filter-mapping>
+
+  <!-- Configure the Nucleus Servlet. This servlet definition is required in
+  each web application that uses Dynamo functionality.  When mapped, it
+  exposes the Nucleus component browser, but should not be mapped to any
+  paths on a live site. -->
+  <servlet>
+    <servlet-name>NucleusServlet</servlet-name>
+    <servlet-class>atg.nucleus.servlet.NucleusServlet</servlet-class>
+    <load-on-startup>2</load-on-startup>
+  </servlet>
+
+  <!-- Configure dojo trees controller Servlet -->
+  <servlet>
+    <servlet-name>dojoController</servlet-name>
+    <servlet-class>atg.searchadmin.adminui.navigation.DojoTreeController</servlet-class>
+  </servlet>
+  <!-- Download servlet-->
+  <servlet>
+    <servlet-name>DownloadServlet</servlet-name>
+    <servlet-class>atg.searchadmin.workbenchui.formhandlers.DownloadServlet</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>ErrorHandlerServlet</servlet-name>
+    <servlet-class>atg.searchadmin.adminui.navigation.ErrorHandlerServlet</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>NavigationBackServlet</servlet-name>
+    <servlet-class>atg.searchadmin.adminui.navigation.NavigationBackServlet</servlet-class>
+  </servlet>
+  
+   <servlet>
+    <servlet-name>DocumentRetrieverServlet</servlet-name>
+    <servlet-class>atg.searchadmin.adminui.formhandlers.DocumentRetrieverServlet</servlet-class>
+    <init-param>
+      <param-name>errorPage</param-name>
+      <param-value>/searchadmin/document_content_error.jsp</param-value>
+    </init-param>
+    <init-param>
+      <param-name>contentType</param-name>
+      <param-value>application/pdf</param-value>
+    </init-param>
+    <init-param>
+      <param-name>bufferSize</param-name>
+      <param-value>2048</param-value>
+    </init-param>
+  </servlet>
+  <servlet>
+    <servlet-name>logoutServlet</servlet-name>
+    <servlet-class>atg.searchadmin.adminui.navigation.LogoutServlet</servlet-class>
+  </servlet>
+  
+
+  <!-- Configure dojo trees controller Servlet mapping-->
+  <servlet-mapping>
+    <servlet-name>dojoController</servlet-name>
+    <url-pattern>*.dojo</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>DownloadServlet</servlet-name>
+    <url-pattern>/download</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>logoutServlet</servlet-name>
+    <url-pattern>/logout</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>ErrorHandlerServlet</servlet-name>
+    <url-pattern>/error</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>NavigationBackServlet</servlet-name>
+    <url-pattern>/back</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>DocumentRetrieverServlet</servlet-name>
+    <url-pattern>/documentRetriever</url-pattern>
+  </servlet-mapping>
+
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+
+  <error-page>
+    <error-code>500</error-code>
+    <location>/error</location>
+  </error-page>
+  <error-page>
+    <error-code>404</error-code>
+    <location>/error</location>
+  </error-page>
+  <error-page>
+    <exception-type>java.lang.Exception</exception-type>
+    <location>/error</location>
+  </error-page>
+
+  <jsp-config>
+    <taglib>
+      <taglib-uri>http://java.sun.com/jsp/jstl/core</taglib-uri>
+      <taglib-location>/WEB-INF/tld/c.tld</taglib-location>
+    </taglib>
+    <taglib>
+      <taglib-uri>http://java.sun.com/jsp/jstl/fmt</taglib-uri>
+      <taglib-location>/WEB-INF/tld/fmt.tld</taglib-location>
+    </taglib>
+    <taglib>
+      <taglib-uri>http://java.sun.com/jsp/jstl/fn</taglib-uri>
+      <taglib-location>/WEB-INF/tld/fn.tld</taglib-location>
+    </taglib>
+  </jsp-config>
+
+</web-app>
+<!-- @version $Id: //application/SearchAdmin/version/10.0.3/admin-ui/src/web-apps/AdminUI/WEB-INF/web.xml#2 $$Change: 651448 $-->

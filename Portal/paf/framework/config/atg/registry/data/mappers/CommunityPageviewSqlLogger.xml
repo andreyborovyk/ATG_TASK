@@ -1,0 +1,73 @@
+<!--
+	@version $Id: //app/portal/version/10.0.3/paf/config/framework/atg/registry/data/mappers/CommunityPageviewSqlLogger.xml#2 $$Change: 651448 $
+-->
+
+<mapper>
+  <registry-descriptor>
+      <id>/CommunityPageviewSqlLogger.xml</id>
+      <displayname>Community Page Visit SQL Mapper</displayname>
+      <description>Community Page Visit Mapper</description>
+  </registry-descriptor>
+
+  <input-filter context="jms">
+      <value>atg.portal.messaging.CommunityPageviewMessage</value>
+  </input-filter>
+
+  <data-listener>/atg/reporting/dataset/CommunityPageviewLoggerQueue</data-listener>
+
+  <database>
+    <transaction-manager>/atg/dynamo/transaction/TransactionManager</transaction-manager>
+    <datasource>dynamo:/atg/dynamo/service/jdbc/JTDataSource</datasource>
+    <table>
+      <name>paf_page_visit</name>
+      <display-name>Community Page Visit Sql Mapper</display-name>
+      <mappings>
+        <dataset-mapping hidden="true">
+          <display-name>Dataset Id</display-name>
+          <column>id</column>
+          <type>java.lang.String</type>
+          <property>datasetId</property>
+        </dataset-mapping>
+
+        <timestamp-mapping hidden="true">
+          <display-name>Time Stamp</display-name>
+          <column>tstamp</column>
+          <type>java.sql.Timestamp</type>
+          <property>timestamp</property>
+        </timestamp-mapping>
+                                         
+        <repository-item-mapping>
+          <display-name>Community Id</display-name>
+          <column>community_id</column>
+          <type>java.lang.String</type>
+          <property>context.message.communityId</property>
+          <component>/atg/portal/framework/PortalRepository</component>
+	</repository-item-mapping> 
+			
+        <repository-item-mapping>
+          <display-name>Profile Id</display-name>
+          <column>user_id</column>
+          <type>java.lang.String</type>
+          <property>context.message.profileId</property>
+          <component>/atg/userprofiling/ProfileAdapterRepository</component>
+	</repository-item-mapping> 
+			
+        <property-mapping>
+          <display-name>Path</display-name>
+          <column>page_path</column>
+          <type>java.lang.String</type>
+          <property>context.message.pagePath</property>
+        </property-mapping>
+
+        <property-mapping>
+          <display-name>Message Type</display-name>
+          <column>msg_type</column>
+          <type>java.lang.String</type>
+          <property>context.message.messageType</property>
+        </property-mapping>
+
+     </mappings>
+   </table>
+ </database>
+</mapper>
+<!-- @version $Id: //app/portal/version/10.0.3/paf/config/framework/atg/registry/data/mappers/CommunityPageviewSqlLogger.xml#2 $$Change: 651448 $ -->

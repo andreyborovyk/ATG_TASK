@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="wscap" targetNamespace="http://atg/wscap/" xmlns:tns="http://atg/wscap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+<wsdl:types>
+  <xsd:schema targetNamespace="http://atg/wscap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://atg/wscap/">
+	<xsd:complexType name="BaseClass">
+		<xsd:sequence>
+			<xsd:element name="id" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+			<xsd:element name="name" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+			<xsd:element name="hasChildren" type="xsd:boolean"/>
+			<xsd:element name="ancestors" type="tns:BaseClass" maxOccurs="unbounded" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="UiClass">
+		<xsd:complexContent>
+			<xsd:extension base="tns:BaseClass">
+				<xsd:sequence>
+					<xsd:element name="description" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="Folder">
+	  <xsd:complexContent>
+		<xsd:extension base="tns:UiClass"/>
+	  </xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="Account">
+	  <xsd:complexContent>
+		<xsd:extension base="tns:UiClass">
+		  <xsd:sequence>
+			<xsd:element name="userName" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+			<xsd:element name="surName" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+			<xsd:element name="givenName" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+			<xsd:element name="email" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+			<xsd:element name="postalAddress" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+			<xsd:element name="homePhone" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+			<xsd:element name="businessPhone" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+			<xsd:element name="pagerPhone" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+			<xsd:element name="faxPhone" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+			<xsd:element name="mobilePhone" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+			<xsd:element name="contentLocale" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+			<xsd:element name="productLocale" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+		  </xsd:sequence>
+		</xsd:extension>
+	  </xsd:complexContent>
+	</xsd:complexType>
+	
+	<xsd:complexType name="Group">
+	  <xsd:complexContent>
+		<xsd:extension base="tns:UiClass">
+                  <xsd:sequence>
+                    <xsd:element name="members" type="tns:BaseClass" maxOccurs="unbounded" minOccurs="0"/>
+                  </xsd:sequence>
+                </xsd:extension>
+	  </xsd:complexContent>
+	</xsd:complexType>
+    
+	<xsd:complexType name="Role">
+	  <xsd:complexContent>
+		<xsd:extension base="tns:UiClass">
+                  <xsd:sequence>
+                    <xsd:element name="members" type="tns:BaseClass" maxOccurs="unbounded" minOccurs="0"/>
+                  </xsd:sequence>
+                </xsd:extension>
+	  </xsd:complexContent>
+	</xsd:complexType>
+    	
+	<xsd:complexType name="QueryResults">
+	  <xsd:complexContent>
+		<xsd:extension base="xsd:anyType">
+                  <xsd:sequence>
+            		<xsd:element name="queryResult" type="tns:BaseClass" maxOccurs="unbounded" minOccurs="0"/>
+		  </xsd:sequence>
+                </xsd:extension>
+	  </xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="Visa">
+	  <xsd:sequence>
+            <xsd:element name="account" type="tns:Account"/>
+            <xsd:element name="groups" type="tns:Group" maxOccurs="unbounded" minOccurs="0"/>
+            <xsd:element name="roles" type="tns:Role" maxOccurs="unbounded" minOccurs="0"/>
+          </xsd:sequence>                        	
+	</xsd:complexType>
+	
+	<xsd:complexType name="RefProperty">
+	  <xsd:sequence>
+		<xsd:element name="name" type="xsd:string"/>
+		<xsd:element name="value" type="xsd:string"/>
+	  </xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="SearchFilter">
+	  <xsd:sequence>
+		<xsd:element name="searchFilterType" type="xsd:int"/>
+          </xsd:sequence>
+	</xsd:complexType>
+	
+       <xsd:complexType name="SearchFilterConditionalExpresssion">
+	  <xsd:complexContent>
+	    <xsd:extension base="tns:SearchFilter">
+	      <xsd:sequence>
+                <xsd:element name="filters" type="tns:SearchFilter" maxOccurs="unbounded" minOccurs="0"/>
+                <xsd:element name="operator" type="xsd:string"/>
+              </xsd:sequence>
+	    </xsd:extension>
+	  </xsd:complexContent>
+       </xsd:complexType>
+
+       <xsd:complexType name="SearchFilterFunctionCall">
+	  <xsd:complexContent>
+	    <xsd:extension base="tns:SearchFilter">
+	      <xsd:sequence>
+                <xsd:element name="functionName" type="xsd:string"/>
+                <xsd:element name="parameters" type="xsd:string" maxOccurs="unbounded" minOccurs="0"/>
+              </xsd:sequence>
+	    </xsd:extension>
+	  </xsd:complexContent>
+       </xsd:complexType>
+
+       <xsd:complexType name="SearchFilterRelationExpresssion">
+	  <xsd:complexContent>
+	    <xsd:extension base="tns:SearchFilter">
+	      <xsd:sequence>
+                 <xsd:element name="constraint" type="xsd:string"/>
+                 <xsd:element name="operator" type="xsd:string"/>
+                 <xsd:element name="propertyName" type="xsd:string"/>
+              </xsd:sequence>
+	    </xsd:extension>
+	  </xsd:complexContent>
+       </xsd:complexType>
+
+
+	<xsd:complexType name="SearchStep">
+	  <xsd:sequence>
+		<xsd:element name="axis" type="xsd:int"/>
+		<xsd:element name="predicate" type="tns:SearchFilter"/>
+	  </xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="SearchExpression">
+	  <xsd:sequence>
+		<xsd:element name="objectId" type="xsd:string"/>
+		<xsd:element name="steps" type="tns:SearchStep" maxOccurs="unbounded" minOccurs="0"/>
+	  </xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="QueryOption">
+	  <xsd:sequence>
+		<xsd:element name="maxCount" type="xsd:long"/>
+		<xsd:element name="skipCount" type="xsd:long"/>
+		<xsd:element name="refProps" type="tns:RefProperty"/>
+	  </xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="SortProperty">
+	  <xsd:sequence>
+		<xsd:element name="propertyName" type="xsd:string"/>
+		<xsd:element name="sortOrder" type="xsd:int"/>
+	  </xsd:sequence>
+	</xsd:complexType>
+		
+	<xsd:complexType name="Query">
+	  <xsd:sequence>
+		<xsd:element name="contentLocale" type="xsd:string"/>
+		<xsd:element name="productLocale" type="xsd:string"/>
+		<xsd:element name="properties" type="xsd:string" maxOccurs="unbounded" minOccurs="0"/>
+		<xsd:element name="queryOption" type="tns:QueryOption"/>
+		<xsd:element name="searchExpression" type="tns:SearchExpression"/>
+		<xsd:element name="sortProperties" type="tns:SortProperty" maxOccurs="unbounded" minOccurs="0"/>
+	  </xsd:sequence>
+	</xsd:complexType>
+
+  </xsd:schema>
+</wsdl:types>
+
+<wsdl:message name="getAccountGroupsRolesResponse">
+  <wsdl:part name="getAccountGroupsRolesResponse" type="tns:Visa">
+  </wsdl:part>
+</wsdl:message>
+<wsdl:message name="getAccountGroupsRolesRequest">
+  <wsdl:part name="userId" type="xsd:string">
+  </wsdl:part>
+</wsdl:message>
+<wsdl:message name="validateResponse">
+  <wsdl:part name="validateResponse" type="tns:Visa"/>
+</wsdl:message>
+<wsdl:message name="validateRequest">
+  <wsdl:part name="userName" type="xsd:string"/>
+  	<wsdl:part name="password" type="xsd:string"/>
+</wsdl:message>
+<wsdl:message name="searchResponse">
+  <wsdl:part name="queryResponse" type="tns:QueryResults"/>
+</wsdl:message>
+<wsdl:message name="searchRequest">
+  <wsdl:part name="cognosQuery" type="tns:Query"/>
+</wsdl:message>
+
+<wsdl:portType name="wscap">
+  <wsdl:operation name="getAccountGroupsRoles">
+  	<wsdl:input message="tns:getAccountGroupsRolesRequest"/>
+  	<wsdl:output message="tns:getAccountGroupsRolesResponse"/>
+  </wsdl:operation>
+  <wsdl:operation name="validate">
+  	<wsdl:input message="tns:validateRequest"/>
+   	<wsdl:output message="tns:validateResponse"/>
+  </wsdl:operation>
+  <wsdl:operation name="search">
+  	<wsdl:input message="tns:searchRequest"/>
+  	<wsdl:output message="tns:searchResponse"/>
+  </wsdl:operation>
+</wsdl:portType>
+
+<wsdl:binding name="wscapSOAP" type="tns:wscap">
+  <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getAccountGroupsRoles">
+      <soap:operation soapAction="http://atg/wscap/getAccountGroupsRoles"/>
+      <wsdl:input>
+        <soap:body use="literal" namespace="http://atg/wscap/" parts=" userId"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" namespace="http://atg/wscap/" parts=" getAccountGroupsRolesResponse"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="validate">
+      <soap:operation soapAction="http://atg/wscap/validate"/>
+      <wsdl:input>
+        <soap:body use="literal" namespace="http://atg/wscap/" parts=" userName password"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" namespace="http://atg/wscap/" parts=" validateResponse"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="search">
+      <soap:operation soapAction="http://atg/wscap/search"/>
+      <wsdl:input>
+        <soap:body use="literal" namespace="http://atg/wscap/" parts=" cognosQuery"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" namespace="http://atg/wscap/" parts=" queryResponse"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="wscap">
+    <wsdl:port name="wscapSOAP" binding="tns:wscapSOAP">
+      <soap:address location="http://localhost:12794/wscapEclipse/services/wscapSOAP"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

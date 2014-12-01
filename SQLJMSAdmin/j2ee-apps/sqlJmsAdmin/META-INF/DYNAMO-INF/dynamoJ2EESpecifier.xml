@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE dynamo-j2ee-specifier SYSTEM "http://www.atg.com/j2ee/dtds/dynamoJ2EESpecifier_1_2.dtd">
+<dynamo-j2ee-specifier>
+  <application-name>sqlJmsAdmin</application-name>
+
+  <ejb-protocol>iiop</ejb-protocol>
+  <user-manager>
+    dynamo:/atg/dynamo/security/AdminUserAuthority
+  </user-manager>
+
+  <war>
+    <module-uri>webModule</module-uri>
+
+    <security-role>
+      <role-name>admin</role-name>
+      <security-group>administrators-group</security-group>
+    </security-role>
+    
+    <web-application-mapping>
+      <uri-prefix>/sqlJmsAdmin</uri-prefix>
+    </web-application-mapping>
+
+    <taglib>
+      <taglib-uri>/coreTaglib</taglib-uri>
+      <atg-taglib-src-dir>DAS/taglib/coreTaglib/1.0</atg-taglib-src-dir>      
+    </taglib>
+  </war>
+
+  <ejb-jar>
+    <module-uri>idgenEjb</module-uri>
+    
+    <enterprise-beans>
+      <session>
+        <ejb-name>IdGenerator</ejb-name>
+	<resource-ref>
+	  <res-ref-name>jdbc/IdGeneratorDataSource</res-ref-name>
+	  <resource-name>dynamo:/atg/dynamo/service/jdbc/JTDataSource</resource-name>
+	</resource-ref>
+      </session>
+    </enterprise-beans>
+  </ejb-jar>
+
+  <ejb-jar>
+    <module-uri>ejbModule</module-uri>
+    
+    <enterprise-beans>
+      <session>
+        <ejb-name>DMSAdmin</ejb-name>
+      </session>
+
+      <!-- Dummy Session beans 2-8, because BEA WL8.1 has a bug 
+           which requires you to have as many session beans as
+           you have BMP entity beans. -->
+      <session>
+        <ejb-name>Dummy2</ejb-name>
+      </session>
+    
+      <session>
+        <ejb-name>Dummy3</ejb-name>
+      </session>
+    
+      <session>
+        <ejb-name>Dummy4</ejb-name>
+      </session>
+    
+      <session>
+        <ejb-name>Dummy5</ejb-name>
+      </session>
+    
+      <session>
+        <ejb-name>Dummy6</ejb-name>
+      </session>
+    
+      <session>
+        <ejb-name>Dummy7</ejb-name>
+      </session>
+    
+      <session>
+        <ejb-name>Dummy8</ejb-name>
+      </session>
+    
+      <entity>
+        <ejb-name>DMSClient</ejb-name>
+	<resource-ref>
+	  <res-ref-name>jdbc/datasource</res-ref-name>
+	  <resource-name>dynamo:/atg/dynamo/service/jdbc/JTDataSource</resource-name>
+	</resource-ref>
+      </entity>
+
+      <entity>
+        <ejb-name>DMSQueue</ejb-name>
+	<resource-ref>
+	  <res-ref-name>jdbc/datasource</res-ref-name>
+	  <resource-name>dynamo:/atg/dynamo/service/jdbc/JTDataSource</resource-name>
+	</resource-ref>
+      </entity>
+
+      <entity>
+        <ejb-name>DMSQueueEntry</ejb-name>
+	<resource-ref>
+	  <res-ref-name>jdbc/datasource</res-ref-name>
+	  <resource-name>dynamo:/atg/dynamo/service/jdbc/JTDataSource</resource-name>
+	</resource-ref>
+      </entity>
+
+      <entity>
+        <ejb-name>DMSTopic</ejb-name>
+	<resource-ref>
+	  <res-ref-name>jdbc/datasource</res-ref-name>
+	  <resource-name>dynamo:/atg/dynamo/service/jdbc/JTDataSource</resource-name>
+	</resource-ref>
+      </entity>
+
+      <entity>
+        <ejb-name>DMSTopicSubscription</ejb-name>
+	<resource-ref>
+	  <res-ref-name>jdbc/datasource</res-ref-name>
+	  <resource-name>dynamo:/atg/dynamo/service/jdbc/JTDataSource</resource-name>
+	</resource-ref>
+      </entity>
+
+      <entity>
+        <ejb-name>DMSTopicEntry</ejb-name>
+	<resource-ref>
+	  <res-ref-name>jdbc/datasource</res-ref-name>
+	  <resource-name>dynamo:/atg/dynamo/service/jdbc/JTDataSource</resource-name>
+	</resource-ref>
+      </entity>
+
+      <entity>
+        <ejb-name>DMSMessage</ejb-name>
+	<resource-ref>
+	  <res-ref-name>jdbc/datasource</res-ref-name>
+	  <resource-name>dynamo:/atg/dynamo/service/jdbc/JTDataSource</resource-name>
+	</resource-ref>
+      </entity>
+
+      <entity>
+        <ejb-name>DMSMessageProperty</ejb-name>
+	<resource-ref>
+	  <res-ref-name>jdbc/datasource</res-ref-name>
+	  <resource-name>dynamo:/atg/dynamo/service/jdbc/JTDataSource</resource-name>
+	</resource-ref>
+      </entity>
+    </enterprise-beans>
+  </ejb-jar>
+
+  
+
+</dynamo-j2ee-specifier>
+<!-- @version $Id: //product/DAS/version/10.0.3/release/SQLJMSAdmin/j2ee-apps/sqlJmsAdmin/META-INF/DYNAMO-INF/dynamoJ2EESpecifier.xml#2 $$Change: 651448 $ -->

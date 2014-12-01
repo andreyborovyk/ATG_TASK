@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE gsa-template
+        PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN"
+        "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template>
+
+  <header>
+    <name>ExampleRepository</name>
+    <author>Mark Stewart</author>
+    <version>$Id: //product/DAS/version/10.0.3/release/RL/Example/config/atg/rl-example/exampleRepository.xml#2 $$Change: 651448 $</version>
+    <description>
+      This is a repository item descriptor template that demonstrates various configurations
+      and uses for the Repository Loader. It includes content repository item types including
+      a folder item as well as non-content item types. Also demonstrated are item descriptors
+      with nested item descriptors.
+    </description>
+  </header>
+
+  <!-- *********************************** -->
+  <!--   Content Folder Item Definition    -->
+  <!-- *********************************** -->  
+  <item-descriptor name="fileFolder" folder="true"
+      content-name-property="name" 
+      folder-id-property="parentFolder"
+      display-property="name"
+      item-cache-size="1000" query-cache-size="500">
+
+    <table name="rlex_file_folder" type="primary" id-column-name="folder_id">
+      <property name="id" column-name="folder_id" data-type="string">
+        <attribute name="propertySortPriority" value="10"/>          
+      </property>      
+      <property name="name" column-name="folder_name" data-type="string" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="parentFolder" column-name="parent_folder" item-type="fileFolder">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+
+  </item-descriptor>
+
+  <!-- *********************************** -->
+  <!--   File Content Item Definition      -->
+  <!--   (super type for content items)    -->
+  <!-- *********************************** -->
+  <item-descriptor name="fileAsset" sub-type-property="type"
+      content-name-property="filename" 
+      folder-id-property="parentFolder"
+      content-length-property="size" 
+      last-modified-property="lastModified"
+      display-property="filename"
+      item-cache-size="1000" query-cache-size="500">
+
+    <table name="rlex_file_asset" type="primary" id-column-name="file_asset_id">
+      <property name="id" column-name="file_asset_id" data-type="string">
+        <attribute name="propertySortPriority" value="10"/>          
+      </property>
+      <property name="type" column-name="asset_type" data-type="enumerated">
+        <attribute name="propertySortPriority" value="20"/>
+        <attribute name="useCodeForValue" value="false"/>
+        <option value="textFileAsset"   code="101"/>
+        <option value="binaryFileAsset" code="102"/>
+        <option value="htmlArticle"     code="103"/>
+        <option value="txtPressRelease" code="104"/>
+        <option value="xmlPressRelease" code="105"/>
+        <option value="gifImage"        code="106"/>
+        <option value="jpgImage"        code="107"/>
+      </property>
+
+      <property name="filename" column-name="filename" data-type="string" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="lastModified" column-name="last_modified" data-type="timestamp">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="size" column-name="size_bytes" data-type="long">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property name="parentFolder" column-name="parent_folder" item-type="fileFolder">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+    </table>
+
+  </item-descriptor>
+
+  <!-- *********************************** -->
+  <!--   Text Item Definitions             -->
+  <!-- *********************************** -->
+  <item-descriptor name="textFileAsset" super-type="fileAsset" sub-type-value="textFileAsset"
+      content-property="content" display-name-resource="itemDescriptorTextFileAsset"
+      item-cache-size="1000" query-cache-size="500">
+
+    <table name="rlex_text_file" type="auxiliary" id-column-name="text_file_id">
+      <property name="id" column-name="text_file_id" data-type="string"/>
+      <property name="content" column-name="text_content" data-type="big string"/>
+    </table>
+  </item-descriptor>
+
+  <!-- *********************************** -->
+  <!--   Binary Item Definitions           -->
+  <!-- *********************************** -->
+  <item-descriptor name="binaryFileAsset" super-type="fileAsset" sub-type-value="binaryFileAsset"
+      content-property="content" 
+      item-cache-size="1000" query-cache-size="500">
+
+    <table name="rlex_binary_file" type="auxiliary" id-column-name="binary_file_id">
+      <!-- categoryInfo -->
+      <property name="id" column-name="binary_file_id" data-type="string" />
+
+      <!-- categoryData -->
+      <property name="content" column-name="binary_content" data-type="binary"/>
+    </table>
+  </item-descriptor>
+
+
+  <!-- ******************************************* -->
+  <!--   htmlArticle Item Definition               -->
+  <!-- ******************************************* -->
+  <item-descriptor name="htmlArticle" super-type="textFileAsset" sub-type-value="htmlArticle"
+      content="true"
+      item-cache-size="1000" query-cache-size="500">    
+
+    <table name="rlex_article_file" type="auxiliary" id-column-name="article_file_id">
+      <property name="id" column-name="article_file_id" data-type="string" />
+      <property name="published" column-name="published_date" data-type="timestamp" />
+      <property name="keywords" column-name="keywords" data-type="string" />
+    </table>
+  </item-descriptor>
+
+
+  <!-- ******************************************* -->
+  <!--   txtPressRelease Item Definition           -->
+  <!-- ******************************************* -->
+  <item-descriptor name="txtPressRelease" super-type="textFileAsset" sub-type-value="txtPressRelease"
+      content="true"
+      item-cache-size="1000" query-cache-size="500">
+  </item-descriptor>
+
+  <!-- ******************************************* -->
+  <!--   xmlPressRelease Item Definition           -->
+  <!-- ******************************************* -->
+  <item-descriptor name="xmlPressRelease" super-type="textFileAsset" sub-type-value="xmlPressRelease"
+      content="true"
+      item-cache-size="1000" query-cache-size="500">
+  </item-descriptor>
+
+
+  <!-- ********************************************* -->
+  <!--   gifImage Item Definition                    -->
+  <!-- ********************************************* -->
+  <item-descriptor name="gifImage" super-type="binaryFileAsset" sub-type-value="gifImage"
+      content="true"
+      item-cache-size="1000" query-cache-size="500">
+  </item-descriptor>
+
+  <!-- ********************************************* -->
+  <!--   jpgImage Item Definition                    -->
+  <!-- ********************************************* -->
+  <item-descriptor name="jpgImage" super-type="binaryFileAsset" sub-type-value="jpgImage"
+      content="true"
+      item-cache-size="1000" query-cache-size="500">
+  </item-descriptor>
+
+
+  <!-- ********************************************* -->
+  <!--        Non-content Item Definitions           -->
+  <!-- ********************************************* -->
+
+  <!-- ********************************************* -->
+  <!--   address Item Definition                     -->
+  <!-- ********************************************* -->
+  <item-descriptor name="address"> 
+    <table name="rlex_address" type="primary" id-column-name="addr_id"> 
+      <property name="addr_id" column-name="addr_id" data-type="string"/>
+      <property name="user" column-name="user_id" item-type="user"/> 
+      <property name="street" data-type="string"/> 
+      <property name="city" data-type="string"/> 
+    </table> 
+  </item-descriptor> 
+
+
+  <!-- ********************************************* -->
+  <!--   contact Item Definition                     -->
+  <!-- ********************************************* -->
+  <item-descriptor name="contact"> 
+    <table name="rlex_contact" type="primary" id-column-name="con_id"> 
+      <property name="con_id" column-name="con_id" data-type="string"/>
+      <property name="rank" column-name="rank" data-type="int"/>
+      <property name="user" column-name="user_id" item-type="user"/> 
+      <property name="email" data-type="string"/> 
+      <property name="url" data-type="string"/> 
+    </table> 
+  </item-descriptor> 
+
+  <!-- ********************************************* -->
+  <!--   phone Item Definition                       -->
+  <!-- ********************************************* -->
+  <item-descriptor name="phone">
+    <table name="rlex_phone" type="primary" id-column-name="phone_id" multi-column-name="kind">
+      <property name="phone_id" column-name="phone_id" data-type="string"/>
+      <property name="kind" column-name="kind" data-type="string"/>
+      <property name="user" column-name="user_id" item-type="user"/> 
+      <property name="pnumber" data-type="string"/> 
+    </table> 
+  </item-descriptor> 
+
+  <!-- ********************************************* -->
+  <!--   user Item Definition                        -->
+  <!-- ********************************************* -->
+  <item-descriptor name="user" default="true"> 
+    <table name="rlex_user" type="primary" id-column-name="id"> 
+      <property name="id" data-type="string"/> 
+      <property name="name" column-name="nam_col" data-type="string"/>
+      <property name="age" column-name="age_col" data-type="string"/> 
+    </table> 
+
+    <!-- a set of address items -->
+    <table name="rlex_address" type="multi" id-column-name="user_id"> 
+      <property name="addresses" column-name="addr_id" data-type="set" 
+                    component-item-type="address" cascade="delete,update"/> 
+    </table> 
+
+    <!-- a set of contact items -->
+    <table name="rlex_contact" type="multi" id-column-name="user_id"> 
+      <property name="contacts" column-name="con_id" data-type="set" 
+                    component-item-type="contact" cascade="delete,update"/> 
+    </table>
+
+    <!-- a map of phone items -->
+    <table name="rlex_phone" type="multi" id-column-name="user_id" multi-column-name="kind">
+      <property name="numbers" column-name="phone_id" data-type="map"
+                    component-item-type="phone" cascade="delete,update"/>
+    </table>
+
+    <!-- a one-to-one mapping in an aux table -->
+    <table name="rlex_job" type="auxiliary" id-column-names="id">
+       <property name="jobtype"/>
+       <property name="title"/>
+    </table>
+  
+    <!-- a multivalue property (array)  --> 
+    <table name="rlex_subjects" type="multi" id-column-names="id" multi-column-name="seq_num">
+      <property name="favoriteSubjects" 
+                column-names="subject" data-type="array" component-data-type="string"/>
+    </table>
+
+    <!-- a multivalue property (list)  --> 
+    <table name="rlex_worst" type="multi" id-column-names="id" multi-column-name="seq_num">
+      <property name="worstSubjects" 
+                column-names="subject" data-type="list" component-data-type="string"/>
+    </table>
+
+    <!-- a multivalue property (map)  --> 
+    <table name="rlex_credit_card" type="multi" id-column-names="id" multi-column-name="card_key">
+          <property name="card_num" 
+                    column-names="card_num" data-type="map" component-data-type="string"/>
+    </table>
+
+  </item-descriptor> 
+
+
+</gsa-template>
+<!-- @version $Id: //product/DAS/version/10.0.3/release/RL/Example/config/atg/rl-example/exampleRepository.xml#2 $$Change: 651448 $ -->

@@ -1,0 +1,90 @@
+<!--
+	@version $Id: //app/portal/version/10.0.3/poll/config/atg/registry/data/mappers/PollVoteSqlLogger.xml#2 $$Change: 651448 $
+-->
+
+<mapper>
+  <registry-descriptor>
+      <id>/PollVoteSqlLogger.xml</id>
+      <displayname>Poll Vote SQL Mapper</displayname>
+      <description>Poll Vote SQL Mapper</description>
+  </registry-descriptor>
+
+  <input-filter context="jms">
+      <value>atg.portal.gear.poll.PollVoteMessage</value>
+  </input-filter>
+
+  <data-listener>/atg/reporting/dataset/PollVoteLoggerQueue</data-listener>
+
+  <database>
+    <transaction-manager>/atg/dynamo/transaction/TransactionManager</transaction-manager>
+    <datasource>dynamo:/atg/dynamo/service/jdbc/JTDataSource</datasource>
+    <table>
+      <name>plg_vote_mapper</name>
+      <display-name>Poll Vote Sql Mapper</display-name>
+      <mappings>
+        <dataset-mapping hidden="true">
+          <display-name>Dataset Id</display-name>
+          <column>id</column>
+          <type>java.lang.String</type>
+          <property>datasetId</property>
+        </dataset-mapping>
+
+        <timestamp-mapping hidden="true">
+          <display-name>Time Stamp</display-name>
+          <column>tstamp</column>
+          <type>java.sql.Timestamp</type>
+          <property>timestamp</property>
+        </timestamp-mapping>
+                                         
+        <repository-item-mapping>
+          <display-name>Poll Id</display-name>
+          <column>poll_id</column>
+          <type>java.lang.String</type>
+          <property>context.message.pollId</property>
+          <component>/atg/portal/gear/poll/PollRepository</component>
+	</repository-item-mapping> 
+
+        <repository-item-mapping>
+          <display-name>Poll Selection</display-name>
+          <column>poll_selection</column>
+          <type>java.lang.String</type>
+          <property>context.message.pollSelection</property>
+          <component>/atg/portal/gear/poll/PollRepository</component>
+	</repository-item-mapping> 
+
+        <repository-item-mapping>
+          <display-name>Gear Id</display-name>
+          <column>gear_id</column>
+          <type>java.lang.String</type>
+          <property>context.message.gearId</property>
+          <component>/atg/portal/framework/PortalRepository</component>
+	</repository-item-mapping> 
+
+        <repository-item-mapping>
+          <display-name>Community Id</display-name>
+          <column>community_id</column>
+          <type>java.lang.String</type>
+          <property>context.message.communityId</property>
+          <component>/atg/portal/framework/PortalRepository</component>
+	</repository-item-mapping> 
+			
+        <repository-item-mapping>
+          <display-name>Profile Id</display-name>
+          <column>user_id</column>
+          <type>java.lang.String</type>
+          <property>context.message.profileId</property>
+          <component>/atg/userprofiling/ProfileAdapterRepository</component>
+	</repository-item-mapping> 
+			
+        <property-mapping>
+          <display-name>Message Type</display-name>
+          <column>msg_type</column>
+          <type>java.lang.String</type>
+          <property>context.message.messageType</property>
+        </property-mapping>
+
+     </mappings>
+   </table>
+ </database>
+</mapper>
+<!-- @version $Id: //app/portal/version/10.0.3/poll/config/atg/registry/data/mappers/PollVoteSqlLogger.xml#2 $$Change: 651448 $ -->

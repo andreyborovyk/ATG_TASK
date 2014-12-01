@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE dynamo-message-system
+        SYSTEM
+        "http://www.atg.com/dtds/patchbay/patchbay_1.0.dtd">
+
+<dynamo-message-system>
+
+  <patchbay>
+
+    <message-source>
+      <nucleus-name>
+        /atg/epub/workflow/process/WorkflowProcessManager
+      </nucleus-name>
+
+      <output-port>
+        <port-name>
+	  CollectiveTimers
+        </port-name>
+	<output-destination>
+	  <destination-name>
+	    patchbay:/sqldms/EPubQueue/CollectiveTimerEvents
+	  </destination-name>
+	  <destination-type>
+	    Queue
+	  </destination-type>
+	</output-destination>
+      </output-port>
+
+      <output-port>
+        <port-name>
+	  BatchTimers
+        </port-name>
+	<output-destination>
+	  <destination-name>
+	    patchbay:/sqldms/EPubQueue/BatchTimerEvents
+	  </destination-name>
+	  <destination-type>
+	    Queue
+	  </destination-type>
+	</output-destination>
+      </output-port>
+
+      <output-port>
+        <port-name>
+	  SegmentStartTimers
+        </port-name>
+	<output-destination>
+          <provider-name>
+            local
+          </provider-name>
+          <destination-name>
+	    localdms:/local/EPubTopic/SegmentStartTimerEvents
+          </destination-name>
+          <destination-type>
+            Topic
+          </destination-type>
+        </output-destination>
+      </output-port>
+
+      <output-port>
+        <port-name>
+	  ProcessUpdates
+        </port-name>
+	<output-destination>
+          <destination-name>
+	    patchbay:/sqldms/EPubTopic/WorkflowUpdateEvents
+          </destination-name>
+          <destination-type>
+            Topic
+          </destination-type>
+        </output-destination>
+      </output-port>
+
+      <output-port>
+        <port-name>
+	  MigrationUpdates
+        </port-name>
+	<output-destination>
+          <destination-name>
+	    patchbay:/sqldms/EPubTopic/WorkflowMigrationUpdateEvents
+          </destination-name>
+          <destination-type>
+            Topic
+          </destination-type>
+        </output-destination>
+      </output-port>
+
+    </message-source>
+
+    <message-sink>
+      <nucleus-name>
+        /atg/epub/workflow/process/WorkflowProcessManager
+      </nucleus-name>
+
+<!-- ADD global events here -->
+<!--
+      <input-port>
+        <port-name>
+          GlobalEvents
+        </port-name>
+        <input-destination>
+	  <provider-name>
+	    local
+	  </provider-name>
+	  <destination-name>
+	    localdms:/local/DASQueue/StartupEvents
+	  </destination-name>
+	  <destination-type>
+	    Queue
+	  </destination-type>
+	</input-destination>
+      </input-port>
+-->
+
+      <input-port>
+        <port-name>
+	  IndividualTimers
+        </port-name>
+	<input-destination>
+	  <destination-name>
+            patchbay:/sqldms/EPubQueue/IndividualTimerEvents
+          </destination-name>
+          <destination-type>
+            Queue
+          </destination-type>
+	</input-destination>
+      </input-port>
+
+      <input-port>
+        <port-name>
+	  CollectiveTimers
+        </port-name>
+	<input-destination>
+	  <destination-name>
+	    patchbay:/sqldms/EPubQueue/CollectiveTimerEvents
+	  </destination-name>
+	  <destination-type>
+	    Queue
+	  </destination-type>
+	</input-destination>
+      </input-port>
+
+      <input-port>
+        <port-name>
+	  BatchTimers
+        </port-name>
+	<input-destination>
+	  <destination-name>
+	    patchbay:/sqldms/EPubQueue/BatchTimerEvents
+	  </destination-name>
+	  <destination-type>
+	    Queue
+	  </destination-type>
+	</input-destination>
+      </input-port>
+
+      <input-port>
+        <port-name>
+	 SegmentStartTimers
+        </port-name>
+	<input-destination>
+	  <provider-name>
+	    local
+	  </provider-name>
+	  <destination-name>
+            localdms:/local/EPubTopic/SegmentStartTimerEvents
+          </destination-name>
+          <destination-type>
+	    Topic
+          </destination-type>
+	</input-destination>
+      </input-port>
+
+    </message-sink>
+  </patchbay>
+
+  <local-jms>
+    <jndi-prefix>/local</jndi-prefix>
+
+    <topic-name>/EPubTopic/SegmentStartTimerEvents</topic-name>
+  </local-jms>
+
+</dynamo-message-system>
+<!-- @version $Id: //product/Publishing/version/10.0.3/pws/config/atg/dynamo/messaging/dynamoMessagingSystemEPubGlobal.xml#2 $$Change: 651448 $ -->

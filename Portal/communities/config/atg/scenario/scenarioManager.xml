@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE process-manager-configuration
+        PUBLIC "-//Art Technology Group, Inc.//DTD Process Manager//EN"
+        'http://www.atg.com/dtds/processmanager/processmanager_1.0.dtd'>
+
+<!-- Scenario manager customization file that illustrates custom actions and
+     scenario grammar extensions. -->
+     
+<process-manager-configuration>
+
+  <!-- Add a custom scenario grammar extension file. -->
+  <grammar-registry>
+    <grammar-extension-file>atg.portal.gear.communities.communities-expression-grammar</grammar-extension-file>
+  </grammar-registry>
+
+  <!-- Add all new JMS messages to the event registry -->
+  <event-registry>
+    <event>
+      <jms-type>
+        atg.portal.gear.communities.FavoriteAddedMessage
+      </jms-type>
+      <message-class>
+        atg.portal.gear.communities.FavoriteAddedMessage
+      </message-class>
+      <message-context>
+        session
+      </message-context>
+      <message-scope>
+        individual
+      </message-scope>
+      <display-name-resource>
+        favoriteAddedMessageDisplayName
+      </display-name-resource>
+      <description-resource>
+        favoriteAddedMessageDescription
+      </description-resource>
+      <resource-bundle>
+        atg.portal.gear.communities.CommunitiesMessagingSystemResources
+      </resource-bundle>
+    </event>
+
+    <event>
+      <jms-type>
+        atg.portal.gear.communities.FavoriteRemovedMessage
+      </jms-type>
+      <message-class>
+        atg.portal.gear.communities.FavoriteRemovedMessage
+      </message-class>
+      <message-context>
+        session
+      </message-context>
+      <message-scope>
+        individual
+      </message-scope>
+      <display-name-resource>
+        favoriteRemovedMessageDisplayName
+      </display-name-resource>
+      <description-resource>
+        favoriteRemovedMessageDescription
+      </description-resource>
+      <resource-bundle>
+        atg.portal.gear.communities.CommunitiesMessagingSystemResources
+      </resource-bundle>
+    </event>
+  </event-registry>
+
+</process-manager-configuration>
+<!-- @version $Id: //app/portal/version/10.0.3/communities/config/atg/scenario/scenarioManager.xml#2 $$Change: 651448 $ -->

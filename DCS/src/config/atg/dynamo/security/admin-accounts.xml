@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Dynamo Commerce Server privilege accounts -->
+<!-- $Id: //product/DCS/version/10.0.3/templates/DCS/config/atg/dynamo/security/admin-accounts.xml#2 $$Change: 651448 $ -->
+<!DOCTYPE accounts
+        PUBLIC "-//Art Technology Group, Inc.//DTD Dynamo Accounts//EN"
+        "http://www.atg.com/dtds/security/accounts_1.0.dtd">
+
+<accounts>
+
+  <!-- Privileges associated with the Tools menu entry -->
+  <privilege name="tools-pipeline-editor-privilege">
+    <attribute name="description">Tools: Pipeline Editor</attribute>
+  </privilege>
+
+  <!-- Group that, by default, grants access to all commerce repositories -->
+  <group name="commerce-repositories-user-group">
+    <attribute name="description">Commerce Repositories User</attribute>
+  </group>
+
+  <!-- Administrators group gets access to the pipeline editor -->
+  <group name="administrators-group">
+    <member-of name="tools-pipeline-editor-privilege"/>
+  </group>
+
+  <!-- Need to grant pipeline editor privileges to developers  -->
+  <group name="developers-group">
+    <member-of name="tools-pipeline-editor-privilege"/>
+  </group>
+
+  <!-- Administrator account gets access to all commerce repositories -->
+  <login name="admin">
+    <member-of name="commerce-repositories-user-group"/>
+  </login>
+
+  <!-- Commerce accounts -->
+  <login name="merchant">
+    <attribute name="firstName">Mark</attribute>
+    <attribute name="lastName">Merchant</attribute>
+    <attribute name="password">merchant</attribute>
+    <member-of name="everyone-group"/>
+    <member-of name="commerce-repositories-user-group"/>
+  </login>
+</accounts>
+<!-- @version $Id: //product/DCS/version/10.0.3/templates/DCS/config/atg/dynamo/security/admin-accounts.xml#2 $$Change: 651448 $ -->

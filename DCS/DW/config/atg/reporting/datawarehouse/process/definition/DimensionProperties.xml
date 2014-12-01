@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data-warehouse-dimension-loader-definition>
+  <data-warehouse-repository repository="/atg/reporting/datawarehouse/WarehouseRepository">
+
+    <data-warehouse-repository-item item="category" natural-key="categoryId">
+      <production-repository repository="/atg/commerce/catalog/ProductCatalog"
+                             nickname="catalog">
+        <production-repository-item item="category"/>
+      </production-repository>
+      <property-mappings>
+        <warehouse-property name="name">
+          <production-property name="catalog.category.displayName"/>
+        </warehouse-property>
+        <warehouse-property name="nameEn">
+          <production-property name="catalog.category.displayName"/>
+        </warehouse-property>
+        <warehouse-property name="description">
+          <production-property name="catalog.category.description"/>
+        </warehouse-property>
+        <warehouse-property name="descriptionEn">
+          <production-property name="catalog.category.description"/>
+        </warehouse-property>
+        <warehouse-property name="parentCategory">
+          <production-property name="catalog.category.parentCategory"/>
+        </warehouse-property>
+      </property-mappings>
+    </data-warehouse-repository-item>
+
+    <data-warehouse-repository-item item="product" natural-key="productId">
+      <production-repository repository="/atg/commerce/catalog/ProductCatalog"
+                             nickname="catalog">
+        <production-repository-item item="product"/>
+      </production-repository>
+      <property-mappings>
+        <warehouse-property name="name">
+          <production-property name="catalog.product.displayName"/>
+        </warehouse-property>
+        <warehouse-property name="nameEn">
+          <production-property name="catalog.product.displayName"/>
+        </warehouse-property>
+        <warehouse-property name="description">
+          <production-property name="catalog.product.description"/>
+        </warehouse-property>
+        <warehouse-property name="descriptionEn">
+          <production-property name="catalog.product.description"/>
+        </warehouse-property>
+        <warehouse-property name="parentCategory"
+                conversion-component="/atg/reporting/datawarehouse/process/converter/ProductParentCategoryConverter">
+          <production-property name="catalog.product"
+                               conversion-context-name="product"/>
+        </warehouse-property>
+        <warehouse-property name="brand">
+          <production-property name="catalog.product.brand"/>
+        </warehouse-property>
+        <warehouse-property name="brandEn">
+          <production-property name="catalog.product.brand"/>
+        </warehouse-property>
+      </property-mappings>
+    </data-warehouse-repository-item>
+
+    <data-warehouse-repository-item item="sku" natural-key="skuId">
+      <production-repository repository="/atg/commerce/catalog/ProductCatalog"
+                             nickname="catalog">
+        <production-repository-item item="sku"/>
+      </production-repository>
+      <property-mappings>
+        <warehouse-property name="name">
+          <production-property name="catalog.sku.displayName"/>
+        </warehouse-property>
+        <warehouse-property name="nameEn">
+          <production-property name="catalog.sku.displayName"/>
+        </warehouse-property>
+        <warehouse-property name="description">
+          <production-property name="catalog.sku.description"/>
+        </warehouse-property>
+        <warehouse-property name="descriptionEn">
+          <production-property name="catalog.sku.description"/>
+        </warehouse-property>
+        <warehouse-property name="wholesalePrice">
+          <production-property name="catalog.sku.wholesalePrice"/>
+        </warehouse-property>
+        <warehouse-property name="listPrice">
+          <production-property name="catalog.sku.listPrice"/>
+        </warehouse-property>
+        <warehouse-property name="salePrice">
+          <production-property name="catalog.sku.salePrice"/>
+        </warehouse-property>
+        <warehouse-property name="onSale">
+          <production-property name="catalog.sku.onSale"/>
+        </warehouse-property>
+        <warehouse-property name="parentProduct"
+                conversion-component="/atg/reporting/datawarehouse/process/converter/CollectionDimensionConverter">
+          <production-property name="catalog.sku.parentProducts"
+                               conversion-context-name="collection"/>
+        </warehouse-property>
+      </property-mappings>
+    </data-warehouse-repository-item>
+    
+    <data-warehouse-repository-item item="promotion" natural-key="promotionId">
+          <production-repository repository="/atg/commerce/catalog/ProductCatalog"
+                                 nickname="catalog">
+            <production-repository-item item="promotion"/>
+          </production-repository>
+          <property-mappings>
+            <warehouse-property name="name">
+              <production-property name="catalog.promotion.displayName"/>
+            </warehouse-property>
+            <warehouse-property name="nameEn">
+              <production-property name="catalog.promotion.displayName"/>
+            </warehouse-property>
+            <warehouse-property name="description">
+              <production-property name="catalog.promotion.description"/>
+            </warehouse-property>
+            <warehouse-property name="descriptionEn">
+              <production-property name="catalog.promotion.description"/>
+            </warehouse-property>
+            <warehouse-property name="promotionType" conversion-component="/atg/reporting/datawarehouse/process/converter/PromotionTypeConverter">
+              <production-property name="catalog.promotion.type"  conversion-context-name="type"/>
+            </warehouse-property>
+            <warehouse-property name="enabled">
+              <production-property name="catalog.promotion.enabled"/>
+            </warehouse-property>
+            <warehouse-property name="beginUsable">
+              <production-property name="catalog.promotion.beginUsable"/>
+            </warehouse-property>
+            <warehouse-property name="endUsable">
+              <production-property name="catalog.promotion.endUsable"/>
+            </warehouse-property>
+            <warehouse-property name="global">
+              <production-property name="catalog.promotion.global"/>
+            </warehouse-property>
+          </property-mappings>
+    </data-warehouse-repository-item>
+
+    <data-warehouse-repository-item item="site">
+      <property-mappings>
+        <warehouse-property name="defaultCatalogName" conversion-component="/atg/reporting/datawarehouse/process/converter/SiteDefaultCatalogNameConverter">
+          <production-property name="SiteRepository.siteConfiguration" conversion-context-name="siteConfiguration"/>
+        </warehouse-property>
+        <warehouse-property name="currencyName" conversion-component="/atg/reporting/datawarehouse/process/converter/SiteCurrencyNameConverter">
+          <production-property name="SiteRepository.siteConfiguration.defaultListPriceList" conversion-context-name="defaultListPriceList"/>
+        </warehouse-property>        
+        <warehouse-property name="currencyAlpha3Code" conversion-component="/atg/reporting/datawarehouse/process/converter/SiteCurrencyAlpha3CodeConverter">
+          <production-property name="SiteRepository.siteConfiguration.defaultListPriceList" conversion-context-name="defaultListPriceList"/>
+        </warehouse-property>        
+      </property-mappings>
+    </data-warehouse-repository-item>
+
+  </data-warehouse-repository>
+</data-warehouse-dimension-loader-definition>
+<!-- @version $Id: //product/DCS/version/10.0.3/DW/config/atg/reporting/datawarehouse/process/definition/DimensionProperties.xml#2 $$Change: 651448 $-->

@@ -1,0 +1,55 @@
+<importbean bean="/atg/dynamo/droplet/Switch">
+<importbean bean="/atg/userprofiling/Profile">
+<setvalue bean="Profile.currentLocation" value="home">
+<html>
+<head>
+<title>Sample Product Catalog (home)</title>
+</head>
+
+<body>
+Catalog Home - 
+<a href="product_search.jhtml">Product Search</a> - 
+<a href="shoppingcart.jhtml">Shopping Cart</a> - 
+<a href="lists.jhtml">My Lists</a> - 
+<a href="comparison.jhtml">Product Comparison</a> -
+<a href="giftlist_search.jhtml">Gift List Search</a> - 
+<droplet bean="Switch">
+  <param name="value" value="bean:Profile.transient">
+  <oparam name="false">
+    <a href="logout.jhtml">Logout</a>
+  </oparam>
+  <oparam name="true">
+    <a href="login.jhtml">Login</a> or <a href="register.jhtml">Register</a>
+  </oparam>
+</droplet>
+<BR>
+<i>location: <valueof bean="Profile.currentLocation"></valueof></i><BR>
+
+<h3>Sample Product Catalog</h3>
+
+<droplet name="Switch">
+<param name="value" value="bean:Profile.transient">
+<oparam name="false">
+Welcome <valueof bean="Profile.firstName"></valueof>!
+</oparam>
+<oparam name="true">
+<a href="login.jhtml">Login</a> or <a href="register.jhtml">Register</a>
+</oparam>
+</droplet>
+
+<P>
+
+<droplet bean="/atg/targeting/TargetingForEach">
+  <param name="targeter" value="bean:/atg/registry/RepositoryTargeters/ProductCatalog/RootCategories">
+  <param name="elementName" value="category">
+  <oparam name="output">
+    <droplet src="category_navigation.jhtml"></droplet>
+  </oparam>
+</droplet>
+
+<droplet src="product_text_search.jhtml"></droplet>
+
+</body>
+</html>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/DCS/html/sample_catalog/index.jhtml#2 $$Change: 651448 $*/</java>
+

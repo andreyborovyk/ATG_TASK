@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gsa-template>
+
+
+
+<item-descriptor name="product" sub-type-property="type">
+    <table name="dcs_product" type="primary" id-column-name="product_id">
+    <property name="type" data-type="enumerated" column-name="product_type" xml-combine="append">
+    <attribute name="useCodeForValue" value="false"/>
+    <option value="subscribable" code="1"/>
+     </property>
+    </table>
+    <table name="mys_subs_product" type="auxiliary" id-column-name="id">
+    <property name="frequency" column-name="frequency" data-type="enumerated" default='weekly'>
+    <attribute name="useCodeForValue" value="false"/>
+    <option value="daily" code="1"/>
+    <option value="weekly" code="2"/>
+    <option value="fortnightly" code="3"/>
+    <option value="monthly" code="4"/>    
+    </property>
+    <property name="noOfIssues" column-name="no_of_issues" data-type="int" default="12"/>
+    </table>
+    
+    </item-descriptor>
+    
+    <!-- 
+    <item-descriptor name="subscription-product" super-type="product" sub-type-value="subscribable">
+    <table name="mys_subs_product" type="auxiliary" id-column-name="id">
+    <property name="frequency" column-name="frequency" data-type="enumerated" default='weekly'>
+    <attribute name="useCodeForValue" value="false"/>
+    <option value="daily" code="1"/>
+    <option value="weekly" code="2"/>
+    <option value="fortnightly" code="3"/>
+    <option value="monthly" code="4"/>    
+    </property>
+    <property name="noOfIssues" column-name="no_of_issues" data-type="int" default="12"/>
+    </table>
+    </item-descriptor>
+    -->
+    
+    <item-descriptor name="sku" sub-type-property="type" xml-combine="append">
+    <table name="dcs_sku" type="primary" id-column-name="sku_id">
+     <property name="type" data-type="enumerated" column-name="sku_type">
+        <attribute name="useCodeForValue" value="false"/>
+        <option value="subscribeSku" code="1001"/>
+       </property>
+      </table>
+      <table name="mys_subs_sku" type="auxiliary" id-column-name="id">
+    <property name="duration" column-name="duration" data-type="enumerated">
+    <attribute name="useCodeForValue" value="false"/>
+    <option value="quarterly" code="1"/>
+    <option value="halfyearly" code="2"/>
+    <option value="annual" code="3"/>
+    </property>
+    </table>
+    </item-descriptor>
+    <!-- 
+    <item-descriptor name="subscription-sku"  super-type="sku" sub-type-value="subscribeSku" >
+    <table name="mys_subs_sku" type="auxiliary" id-column-name="id">
+    <property name="duration" column-name="duration" data-type="enumerated">
+    <attribute name="useCodeForValue" value="false"/>
+    <option value="quarterly" code="1"/>
+    <option value="halfyearly" code="2"/>
+    <option value="annual" code="3"/>
+    </property>
+    </table>
+    </item-descriptor>  
+    -->
+</gsa-template>

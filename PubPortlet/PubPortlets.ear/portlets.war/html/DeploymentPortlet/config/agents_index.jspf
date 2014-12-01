@@ -1,0 +1,14 @@
+<!-- BEGIN FILE agents_index.jspf -->
+<c:choose>
+ <c:when test="${addOrEditAgent == 'add'}">
+    <dspel:include page="config_add_agent.jsp" />
+ </c:when>
+ <c:when test="${addOrEditAgent == 'edit' && editAgentIDs != null}">
+   <dspel:include page="config_edit_agents.jsp" />
+ </c:when>      
+ <c:otherwise>
+   <dspel:include page="config_agents.jsp" />
+ </c:otherwise>
+</c:choose>
+<!-- END FILE agents_index.jspf -->
+<%-- @version $Id: //product/PubPortlet/version/10.0.3/portlets.war/html/DeploymentPortlet/config/agents_index.jspf#2 $$Change: 651448 $--%>

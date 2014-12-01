@@ -1,0 +1,67 @@
+<html>
+
+<head>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+<title>Choose Type of JDBC Connection Pool</title>
+</head>
+
+<body BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="images/config-banner.gif" ALT="Dynamo Configuration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<droplet bean="/atg/dynamo/droplet/Switch">
+<!--          <param name="value" value="bean:/atg/dynamo/Configuration.dynamoAppServer"> -->
+          <param name="value" value="param:dynamoPool"> 
+          <oparam name="true">
+
+<a href="/">admin</a>/<a href="configure-server.jhtml">Configure</a>
+/<a href="configure-db-pools.jhtml"><param name="dynamoPool" value="param:dynamoPool">DB_Pools</a>/JDBC_Type<p>
+
+<blockquote>
+
+<h2>Choose Type of JDBC Connection Pool</h2>
+
+Please check the appropriate JDBC driver:
+<p>
+
+<ul>
+  <li>
+    <a href="c-db-p.jhtml"><b>JDBC 1.x/2.x driver</b></a>
+  </li>
+  <li>
+    <b>JDBC 2.x driver with XA Support</b> <em>(currently not configurable from Configuration Manager)</em>
+  </li>
+</ul>	 
+
+	</oparam>
+
+	<oparam name="false">
+
+<a href="/">admin</a>/<a href="configure-server.jhtml">Configure</a>
+/<a href="configure-db-pools.jhtml"><param name="dynamoPool" value="param:dynamoPool">DB_Pools</a>/JDBC_Type<p>
+
+<blockquote>
+
+<h2>Choose Type of JDBC Connection Pool</h2>
+
+Please check the appropriate JDBC driver:
+<p>
+
+<ul>
+  <li>
+    <a href="native-c-db-p.jhtml"><b>JDBC 1.x/2.x driver</b></a>
+  </li>
+  <li>
+    <b>JDBC 2.x driver with XA Support</b> <em>(currently not configurable from Configuration Manager)</em>
+  </li>
+</ul>
+
+	</oparam>
+
+</droplet>
+    
+</blockquote>
+
+</body>
+</html>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/configure-jdbc-type.jhtml#2 $$Change: 651448 $*/</java>

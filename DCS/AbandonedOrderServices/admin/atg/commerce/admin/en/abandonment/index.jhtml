@@ -1,0 +1,44 @@
+<HTML>
+<HEAD>
+<TITLE>Abandoned Order Messages</TITLE>
+</HEAD>
+
+<importbean bean="/atg/commerce/order/abandoned/AbandonedOrderFormHandler">
+
+<body BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="../images/dcsadminbanner.gif" ALT="Dynamo Commerce Administration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a href="../index.jhtml">Commerce</a>/Abandoned Orders<p>
+
+<blockquote>
+<H2>Abandoned Order Messages</H2>
+
+Use this section to notify the Dynamo Commerce Server of updated
+abandoned orders. A JMS message will be sent as notification. Enter an order
+ID for each order whose abandonment state has been updated.  Then choose the
+new abandonment state of the order(s).<br>
+
+<form action="index.jhtml" method=POST>
+Order Ids: 
+<input type=textarea rows=2 cols=40 bean="AbandonedOrderFormHandler.orderIdString" value="">
+<br><br>
+              
+Abandonment State: 
+<select bean="AbandonedOrderFormHandler.abandonmentState">
+ <option value="ABANDONED"/>ABANDONED
+ <option value="REANIMATED"/>REANIMATED
+ <option value="CONVERTED"/>CONVERTED
+ <option value="LOST"/>LOST
+</select>
+<input type=submit bean="AbandonedOrderFormHandler.sendAbandonmentMessages" value="Notify...">
+</form>
+
+<img src="../../images/bluedot.gif" width=505 height=1><p>
+
+</blockquote>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/DCS/AbandonedOrderServices/admin/atg/commerce/admin/en/abandonment/index.jhtml#1 $$Change: 651360 $*/</java>
+

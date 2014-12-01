@@ -1,0 +1,718 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE product SYSTEM "http://www.atg.com/dtds/product_1_0.dtd">
+<product id="commerce" extends="platform">
+
+  <title/>
+  <detail/>
+
+  <!-- named datasource definitions -->   
+
+  <!-- addons --> 
+  <product-addon-group id="search">
+      <product-addon id="search">
+        <title>ATG Search</title>
+        <modify-server-instance-type id="production">
+          <append-module name="DCS.Search"/>
+        </modify-server-instance-type>
+
+        <modify-server-instance-type id="staging">
+          <append-module name="DCS.Search"/>
+        </modify-server-instance-type>
+        
+        <modify-server-instance-type id="management">
+          <append-module name="DCS.Search.Versioned"/>
+        </modify-server-instance-type>
+
+        <modify-server-instance-type id="externalpreview">
+          <append-module name="DCS.Search.Versioned"/>
+        </modify-server-instance-type>        
+      </product-addon>
+  </product-addon-group>  
+        
+  <product-addon-group id="baseaddon_group">  
+    <title>Choose Commerce AddOns :</title>
+      <product-addon id="merch">            
+        <title resource-key="">Merchandising UI</title>
+        
+        <modify-server-instance-type id="management">
+          <prepend-module name="DCS-UI.Versioned"/>
+        </modify-server-instance-type>
+        
+      </product-addon>
+      
+      <product-addon id="reporting">            
+        <modify-server-instance-type id="datawarehouse">
+          <prepend-module name="DCS.DW"/>
+        </modify-server-instance-type>
+      </product-addon>     
+  </product-addon-group>    
+  
+  <product-addon-group id="search_index_options" min-occurs="1" max-occurs="1">    
+      <title>Search Index Type Selection :</title>
+      <requires-product-addon id="search"/>
+
+      <product-addon id="indexByProduct" >
+        <title resource-key="">Index by Product</title>
+
+      </product-addon>
+
+      <product-addon id="indexBySku" >
+        <title resource-key="">Index by SKU</title>
+
+        <modify-server-instance-type id="management">
+          <append-module name="DCS.Search.Index.SKUIndexing"/>
+          <append-module name="DCS.Search.Query.SKUIndexing"/>
+        </modify-server-instance-type>
+
+        <modify-server-instance-type id="production">
+          <append-module name="DCS.Search.Index.SKUIndexing"/>
+          <append-module name="DCS.Search.Query.SKUIndexing"/>
+        </modify-server-instance-type>
+        
+        <modify-server-instance-type id="staging">
+          <append-module name="DCS.Search.Index.SKUIndexing"/>
+          <append-module name="DCS.Search.Query.SKUIndexing"/>
+        </modify-server-instance-type>
+        <modify-server-instance-type id="datawarehouse_loader">
+          <append-module name="DCS.Search.Index.SKUIndexing"/>
+          <append-module name="DCS.Search.Query.SKUIndexing"/>
+        </modify-server-instance-type>
+
+      </product-addon>
+  </product-addon-group>  
+  
+  <!-- addon combos -->    
+
+  <product-addon-combo id="searchandmerchcombo">
+    <combo-product-addon id="search"/>        
+    <combo-product-addon id="merch"/>    
+    
+      <modify-server-instance-type id="management">
+        <prepend-module name="DCS-UI.Search"/>
+      </modify-server-instance-type>
+
+  </product-addon-combo>
+
+  <product-addon-combo id="search-reporting-commerce">
+  
+    <combo-product-addon id="search"/>
+    <combo-product-addon id="reporting"/>
+    
+    <modify-server-instance-type id="datawarehouse_loader">
+      <append-module name="DCS.DW.Search"/>
+    </modify-server-instance-type>    
+
+    <modify-server-instance-type id="datawarehouse">
+      <append-module name="DCS.DW.Search"/>
+    </modify-server-instance-type>    
+
+  </product-addon-combo>  
+  
+  <server-instance-type id="management">
+    <title />
+    <detail />
+    
+    <config-directory>   
+          
+    <!-- Switching Datasource Properties -->
+        <property-file file="/atg/commerce/pricing/priceLists/PriceLists_production.properties">
+          <property-group id="switchingonly">
+            <requires-addon-id id="switchingdatasource" />
+            <property name="dataSource">
+              <value>/atg/dynamo/service/jdbc/SwitchingDataSource</value>
+            </property>
+          </property-group>
+        </property-file>
+        
+         <property-file file="/atg/commerce/catalog/ProductCatalog_production.properties">
+          <property-group id="switchingonly">
+            <requires-addon-id id="switchingdatasource" />
+            <property name="dataSource">
+              <value>/atg/dynamo/service/jdbc/SwitchingDataSource</value>
+            </property>
+          </property-group>
+        </property-file>
+    
+      <!-- Search Datasource Properties -->
+        <property-file file="/atg/search/service/SearchJTDataSource.properties">
+          <property-group id="search">
+            <requires-addon-id id="search"/>
+            <property name="componentPath">
+              <value>/atg/dynamo/service/jdbc/DirectJTDataSource_production</value>
+            </property>
+          </property-group>
+        </property-file>
+
+        <property-file file="/atg/commerce/search/IndexedItemsGroup.properties">
+          <property-group id="searchonly">
+            <requires-addon-id id="search" />
+            <property name="repository">
+              <value>/atg/commerce/catalog/ProductCatalog_production</value>
+            </property>
+          </property-group>
+        </property-file>
+
+        <property-file file="/atg/commerce/search/IndexedItemsGroup_staging.properties">
+          <property-group id="searchonly">
+            <requires-addon-id id="search" />
+            <requires-addon-id id="staging" />
+            <property name="repository">
+              <value>/atg/commerce/catalog/ProductCatalog_staging</value>
+            </property>
+          </property-group>
+        </property-file>
+
+        <property-file file="/atg/search/repository/IndexingDeploymentListener.properties">
+          <property-group id="searchonly">
+            <requires-addon-id id="search" />
+            <requires-addon-id id="staging" />
+            <property name="indexingOutputConfigs+">
+              <value>/atg/commerce/search/ProductCatalogOutputConfig_staging</value>
+            </property>
+          </property-group>
+        </property-file>
+
+        <property-file file="/atg/commerce/search/config/RemoteCatalogRankConfigAdapter.properties">
+          <property-group id="searchonly">
+            <requires-addon-id id="search" />
+            <property name="enabled">
+              <value>true</value>
+            </property>
+            <property name="remoteHost" persist-key="searchRemoteHost">
+              <input type="text">
+                <label>Enter the Remote Production Search Instance Host Name</label>
+                <validator id="CannotBeBlankValidator" phase="POSTINPUT">
+                  <error-message>Host Name Cannot Be Blank</error-message>
+                </validator>
+              </input>
+            </property>
+            <property name="remotePort" persist-key="searchRemotePort">
+              <input type="text">
+                <label>Enter the Remote Production Search Instance RMI Port Number</label>
+                <validator id="PortNumberInputValidator" phase="POSTINPUT" >
+                  <error-message>Invalid Port Number.</error-message>
+                </validator>
+              </input>
+            </property>
+          </property-group>
+        </property-file>
+        
+        <property-file file="/atg/commerce/search/config/RemoteSearchUpdateAdapter.properties">
+          <property-group id="searchonly">
+            <requires-addon-id id="search" />
+            <property name="enabled">
+              <value>true</value>
+            </property>
+            <property name="remoteHost" >
+              <value>${LookupProvider.searchRemoteHost}</value>
+            </property>
+            <property name="remotePort" >
+              <value>${LookupProvider.searchRemotePort}</value>
+            </property>
+          </property-group>
+        </property-file>
+        
+        <property-file file="/atg/commerce/search/config/CatalogRankConfigAdapter.properties">
+          <property-group id="searchonly">
+            <requires-addon-id id="search" />
+            <property name="componentPath">
+              <value>/atg/commerce/search/config/RemoteCatalogRankConfigAdapter</value>
+            </property>
+          </property-group>
+        </property-file>
+        
+         <property-file file="/atg/commerce/search/config/SearchUpdateAdapter.properties">
+          <property-group id="searchonly">
+            <requires-addon-id id="search" />
+            <property name="componentPath">
+              <value>/atg/commerce/search/config/RemoteSearchUpdateAdapter</value>
+            </property>
+          </property-group>
+        </property-file>
+        
+         <property-file file="/atg/commerce/search/refinement/RemoteCatalogRefineConfigAdapter.properties">
+          <property-group id="searchonly">
+            <requires-addon-id id="search" />
+            <property name="remoteHost">
+              <value>${LookupProvider.searchRemoteHost}</value>
+            </property>
+            <property name="remotePort" >
+              <value>${LookupProvider.searchRemotePort}</value>
+            </property>
+            <property name="remoteCustomizationDataAdapterNucleusPath">
+              <value>/atg/commerce/search/refinement/CatalogRefineConfigAdapter</value>
+            </property>
+            <property name="invokerNucleusPath">
+              <value>/atg/search/adapter/RemoteCustomizationInvokerService</value>
+            </property>
+          </property-group>
+        </property-file>
+        
+        <property-file file="/atg/commerce/search/refinement/CatalogRefineConfigAdapter.properties">
+        <property-group id="searchonly">
+            <requires-addon-id id="search" />
+            <property name="componentPath">
+              <value>RemoteCatalogRefineConfigAdapter</value>
+            </property>
+            </property-group>
+         </property-file>
+        
+        
+      <!--Search AND Switching Datasource Properties -->  
+        <property-file file="/atg/search/repository/RefinementRepository_production.properties">
+          <property-group id="stagingswitchingonly">
+            <requires-addon-id id="switchingdatasource" />
+            <requires-addon-id id="search" />
+            <property name="dataSource">
+              <value>/atg/dynamo/service/jdbc/SwitchingDataSource</value>
+            </property>
+          </property-group>
+        </property-file>
+        
+      <!-- Search AND Staging Properties -->
+        <property-file file="/atg/search/testing/StagingEnvironment.properties">
+          <property-group id="searchstagingonly">
+            <requires-addon-id id="search" />
+            <requires-addon-id id="staging" />
+            <property name="searchEnvironmentName">
+              <value>commerce_staging</value>
+            </property>
+            <property name="availableLocaleNames" >
+              <value>en_US</value>
+            </property>
+          </property-group>
+        </property-file>  
+
+        <!-- Moved from "staging" -->
+        <property-file file="/atg/commerce/search/config/RemoteCatalogRankConfigAdapter_staging.properties">
+          <property-group id="searchonly">
+            <requires-addon-id id="search" />
+            <requires-addon-id id="staging" />
+            <property name="enabled">
+              <value>true</value>
+            </property>
+            <property name="remoteHost" persist-key="searchRemoteHostStaging">
+              <input type="text">
+                <label>Enter the Remote Staging Search Instance Host Name</label>
+                <validator id="CannotBeBlankValidator" phase="POSTINPUT">
+                  <error-message>Host Name Cannot Be Blank</error-message>
+                </validator>
+              </input>
+            </property>
+            <property name="remotePort" persist-key="searchRemotePortStaging">
+              <input type="text">
+                <label>Enter the Remote Staging Search Instance RMI Port Number</label>
+                <validator id="PortNumberInputValidator" phase="POSTINPUT" >
+                  <error-message>Invalid Port Number.</error-message>
+                </validator>
+              </input>
+            </property>
+          </property-group>
+        </property-file>
+        
+        <property-file file="/atg/commerce/search/config/RemoteSearchUpdateAdapter_staging.properties">
+          <property-group id="searchonly">
+            <requires-addon-id id="search" />
+            <requires-addon-id id="staging" />
+            <property name="enabled">
+              <value>true</value>
+            </property>
+            <property name="remoteHost" >
+              <value>${LookupProvider.searchRemoteHostStaging}</value>
+            </property>
+            <property name="remotePort" >
+              <value>${LookupProvider.searchRemotePortStaging}</value>
+            </property>
+          </property-group>
+        </property-file>
+        
+        <property-file file="/atg/commerce/search/config/CatalogRankConfigAdapter_staging.properties">
+          <property-group id="searchonly">
+            <requires-addon-id id="search" />
+            <requires-addon-id id="staging" />
+            <property name="componentPath">
+              <value>/atg/commerce/search/config/RemoteCatalogRankConfigAdapter_staging</value>
+            </property>
+          </property-group>
+        </property-file>
+        
+        <property-file file="/atg/commerce/search/config/SearchUpdateAdapter_staging.properties">
+          <property-group id="searchonly">
+            <requires-addon-id id="search" />
+            <requires-addon-id id="staging" />
+            <property name="componentPath">
+              <value>/atg/commerce/search/config/RemoteSearchUpdateAdapter_staging</value>
+            </property>
+          </property-group>
+        </property-file>
+
+        <property-file file="/atg/commerce/search/refinement/RemoteCatalogRefineConfigAdapter_staging.properties">
+          <property-group id="searchonly">
+            <requires-addon-id id="search" />
+            <requires-addon-id id="staging" />
+            <property name="remoteHost">
+              <value>${LookupProvider.searchRemoteHostStaging}</value>
+            </property>
+            <property name="remotePort" >
+              <value>${LookupProvider.searchRemotePortStaging}</value>
+            </property>
+            <property name="enabled">
+              <value>true</value>
+            </property>
+          </property-group>
+        </property-file>
+        
+        <property-file file="/atg/commerce/search/refinement/CatalogRefineConfigAdapter_staging.properties">
+          <property-group id="searchonly">
+            <requires-addon-id id="search" />
+            <requires-addon-id id="staging" />
+            <property name="componentPath">
+              <value>RemoteCatalogRefineConfigAdapter_staging</value>
+            </property>
+          </property-group>
+        </property-file>
+
+      </config-directory>
+   </server-instance-type>
+  
+  <server-instance-type id="production">
+    <config-directory>   
+      
+    <!--Switching Datasource Property Configuration -->   
+    
+        <property-file file="/atg/commerce/pricing/priceLists/PriceLists.properties">
+          <property-group id="switchingonly">
+            <requires-addon-id id="switchingdatasource" />
+            <property name="dataSource">
+              <value>/atg/dynamo/service/jdbc/SwitchingDataSource</value>
+            </property>
+          </property-group>
+        </property-file>
+        
+       <property-file file="/atg/commerce/catalog/ProductCatalog.properties">
+          <property-group id="switchingonly">
+            <requires-addon-id id="switchingdatasource" />
+            <property name="dataSource">
+              <value>/atg/dynamo/service/jdbc/SwitchingDataSource</value>
+            </property>
+          </property-group>
+        </property-file>                
+
+        <!--Staging AND Switching Datasource Properties -->  
+        <property-file file="/atg/search/repository/RefinementRepository.properties">
+          <property-group id="stagingswitchingonly">
+            <requires-addon-id id="switchingdatasource" />
+            <requires-addon-id id="search" />
+            <property name="dataSource">
+              <value>/atg/dynamo/service/jdbc/SwitchingDataSource</value>
+            </property>
+          </property-group>
+        </property-file>
+        
+        <!--Search -->
+        <property-file file="/atg/commerce/search/config/CatalogRankConfigAdapter.properties">
+          <property-group id="search">
+            <requires-addon-id id="search" />
+              <property name="componentPath">
+                <value>LocalCatalogRankConfigAdapter</value>
+              </property>
+            </property-group>
+         </property-file>   
+         
+        
+        <!-- Search and Reporting -->
+        <property-file file="/atg/commerce/search/catalog/QueryRequest.properties">
+          <property-group id="searchreportingonly">
+            <requires-addon-id id="search" />
+            <requires-addon-id id="reporting" />
+            <property name="dataSource">
+              <value>/atg/dynamo/service/jdbc/SwitchingDataSource</value>
+            </property>
+            <property name="firingSearchEvents">
+              <value>true</value>
+            </property>
+          </property-group>
+        </property-file>
+
+       <property-file file="/atg/dynamo/service/Initial.properties">
+          <property-group id="search">
+            <requires-addon-id id="search" />
+            <property name="$class">
+              <value>atg.nucleus.InitialService</value>
+            </property>
+            <property name="initialServices+">
+              <value>/atg/commerce/search/ProductCatalogOutputConfig</value>
+            </property>
+          </property-group>
+        </property-file>
+        
+      </config-directory>
+    </server-instance-type>
+  
+  <server-instance-type id="staging">
+    <config-directory>
+    
+        <property-file file="/atg/epub/DeploymentAgent.properties">
+          <property-group id="nonswitching">            
+            <property name="switchableDataStores^">
+              <value>/Constants.null</value>
+            </property>
+          </property-group>
+        </property-file>
+      
+        <property-file file="/atg/search/repository/RefinementRepository.properties">
+          <property-group id="searchonly">
+            <requires-addon-id id="search" />
+            <property name="dataSource">
+              <value>/atg/dynamo/service/jdbc/JTDataSource</value>
+            </property>
+          </property-group>
+        </property-file>
+		
+        <property-file file="/atg/commerce/search/catalog/QueryRequest.properties">
+          <property-group id="searchonly">
+            <requires-addon-id id="search" />
+            <property name="targetType">
+              <value>Staging</value>
+            </property>
+          </property-group>
+        </property-file>
+
+        <property-file file="/atg/dynamo/service/Initial.properties">
+          <property-group id="search">
+            <requires-addon-id id="search" />
+            <property name="$class">
+              <value>atg.nucleus.InitialService</value>
+            </property>
+            <property name="initialServices+">
+              <value>/atg/commerce/search/ProductCatalogOutputConfig_staging</value>
+            </property>
+          </property-group>
+        </property-file>       
+
+        <property-file file="/atg/search/service/SearchJTDataSource.properties">
+          <property-group id="search">
+            <requires-addon-id id="search"/>
+            <property name="componentPath">
+              <value>/atg/dynamo/service/jdbc/DirectJTDataSource_production</value>
+            </property>
+          </property-group>
+        </property-file>
+
+        <property-file file="/atg/commerce/search/IncrementalCMSListener.properties">
+          <property-group id="searchonly">
+            <requires-addon-id id="search" />
+            <requires-addon-id id="staging" />
+            <property name="indexingOutputConfigs">
+              <value>/atg/commerce/search/ProductCatalogOutputConfig_staging</value>
+            </property>
+          </property-group>
+        </property-file>
+
+        <property-file file="/atg/commerce/search/IndexingPropertyProvider.properties">
+          <property-group id="searchonly">
+            <requires-addon-id id="search" />
+            <requires-addon-id id="staging" />
+            <property name="indexingOutputConfig">
+              <value>/atg/commerce/search/ProductCatalogOutputConfig_staging</value>
+            </property>
+          </property-group>
+        </property-file>
+        
+      </config-directory>
+    </server-instance-type>
+    
+    <server-instance-type id="datawarehouse_loader">
+      <config-directory>      
+      
+        <property-file file="/atg/commerce/pricing/priceLists/PriceLists.properties">
+          <property-group id="switchingonly">
+            <requires-addon-id id="switchingdatasource" />
+            <property name="dataSource">
+              <value>/atg/dynamo/service/jdbc/SwitchingDataSource</value>
+            </property>
+          </property-group>
+        </property-file>
+        
+         <property-file file="/atg/search/repository/RefinementRepository.properties">
+          <property-group id="switchingonly">
+            <requires-addon-id id="switchingdatasource" />
+            <property name="dataSource">
+              <value>/atg/dynamo/service/jdbc/SwitchingDataSource</value>
+            </property>
+          </property-group>
+        </property-file>    
+    
+        <property-file file="/atg/commerce/catalog/ProductCatalog.properties">
+          <property-group id="switchingonly">
+            <requires-addon-id id="switchingdatasource" />
+            <property name="dataSource">
+              <value>/atg/dynamo/service/jdbc/SwitchingDataSource</value>
+            </property>
+          </property-group>
+        </property-file>
+    
+        <property-file file="/atg/reporting/datawarehouse/CommerceWarehouseConfiguration.properties">
+          <property-group id="base">
+            <property name="standardCurrencyCode" persist-key="reportingCurrencyCode">
+              <value>USD</value>
+              <input type="text">
+                <label>Enter the ISO Currency Code:</label>
+                 <validator id="CannotBeBlankValidator" phase="POSTINPUT">
+                  <error-message>ISO Currency Code cannot be blank</error-message>
+                 </validator>
+              </input>
+            </property>
+          </property-group>
+        </property-file>
+    </config-directory>
+   </server-instance-type>
+  
+  <server-instance-type id="externalpreview">
+    <config-directory>     
+      
+    <!-- Switching Datasource Properties -->
+        <property-file file="/atg/commerce/pricing/priceLists/PriceLists_production.properties">
+          <property-group id="switchingonly">
+            <requires-addon-id id="switchingdatasource" />
+            <property name="dataSource">
+              <value>/atg/dynamo/service/jdbc/SwitchingDataSource</value>
+            </property>
+          </property-group>
+        </property-file>
+        
+         <property-file file="/atg/commerce/catalog/ProductCatalog_production.properties">
+          <property-group id="switchingonly">
+            <requires-addon-id id="switchingdatasource" />
+            <property name="dataSource">
+              <value>/atg/dynamo/service/jdbc/SwitchingDataSource</value>
+            </property>
+          </property-group>
+        </property-file>
+      <!-- Search Datasource Properties -->
+        <property-file file="/atg/commerce/search/IndexedItemsGroup.properties">
+          <property-group id="searchonly">
+            <requires-addon-id id="search" />
+            <property name="repository">
+              <value>/atg/commerce/catalog/ProductCatalog_production</value>
+            </property>
+          </property-group>
+        </property-file>
+        
+        <property-file file="/atg/commerce/search/config/RemoteCatalogRankConfigAdapter.properties">
+          <property-group id="searchonly">
+            <requires-addon-id id="search" />
+            <property name="enabled">
+              <value>true</value>
+            </property>
+            <property name="remoteHost" persist-key="searchRemoteHost">
+              <input type="text">
+                <label>Enter the Remote Search Host Name</label>
+                <validator id="CannotBeBlankValidator" phase="POSTINPUT">
+                  <error-message>Host Name Cannot Be Blank</error-message>
+                </validator>
+              </input>
+            </property>
+            <property name="remotePort" persist-key="searchRemotePort">
+              <input type="text">
+                <label>Enter the Remote Search Port Number</label>
+                <validator id="PortNumberInputValidator" phase="POSTINPUT" >
+                  <error-message>Invalid Port Number.</error-message>
+                </validator>
+              </input>
+            </property>
+          </property-group>
+        </property-file>
+        
+        <property-file file="/atg/commerce/search/config/RemoteSearchUpdateAdapter.properties">
+          <property-group id="searchonly">
+            <requires-addon-id id="search" />
+            <property name="enabled">
+              <value>true</value>
+            </property>
+            <property name="remoteHost" >
+              <value>${LookupProvider.searchRemoteHost}</value>
+            </property>
+            <property name="remotePort" >
+              <value>${LookupProvider.searchRemotePort}</value>
+            </property>
+          </property-group>
+        </property-file>
+        
+        <property-file file="/atg/commerce/search/config/CatalogRankConfigAdapter.properties">
+          <property-group id="searchonly">
+            <requires-addon-id id="search" />
+            <property name="componentPath">
+              <value>/atg/commerce/search/config/RemoteCatalogRankConfigAdapter</value>
+            </property>
+          </property-group>
+        </property-file>
+        
+         <property-file file="/atg/commerce/search/config/SearchUpdateAdapter.properties">
+          <property-group id="searchonly">
+            <requires-addon-id id="search" />
+            <property name="componentPath">
+              <value>/atg/commerce/search/config/RemoteSearchUpdateAdapter</value>
+            </property>
+          </property-group>
+        </property-file>
+        
+         <property-file file="/atg/commerce/search/refinement/RemoteCatalogRefineConfigAdapter.properties">
+          <property-group id="searchonly">
+            <requires-addon-id id="search" />
+            <property name="remoteHost">
+              <value>${LookupProvider.searchRemoteHost}</value>
+            </property>
+            <property name="remotePort" >
+              <value>${LookupProvider.searchRemotePort}</value>
+            </property>
+            <property name="remoteCustomizationDataAdapterNucleusPath">
+              <value>/atg/commerce/search/refinement/CatalogRefineConfigAdapter</value>
+            </property>
+            <property name="invokerNucleusPath">
+              <value>/atg/search/adapter/RemoteCustomizationInvokerService</value>
+            </property>
+          </property-group>
+        </property-file>
+        
+        <property-file file="/atg/commerce/search/refinement/CatalogRefineConfigAdapter.properties">
+        <property-group id="searchonly">
+            <requires-addon-id id="search" />
+            <property name="componentPath">
+              <value>RemoteCatalogRefineConfigAdapter</value>
+            </property>
+            </property-group>
+         </property-file>
+        
+        
+      <!--Search AND Switching Datasource Properties -->  
+        <property-file file="/atg/search/repository/RefinementRepository_production.properties">
+          <property-group id="stagingswitchingonly">
+            <requires-addon-id id="switchingdatasource" />
+            <requires-addon-id id="search" />
+            <property name="dataSource">
+              <value>/atg/dynamo/service/jdbc/SwitchingDataSource</value>
+            </property>
+          </property-group>
+        </property-file>
+        
+      <!-- Search AND Staging Properties -->
+        <property-file file="/atg/search/testing/StagingEnvironment.properties">
+          <property-group id="searchstagingonly">
+            <requires-addon-id id="search" />
+            <requires-addon-id id="staging" />
+            <property name="searchEnvironmentName">
+              <value>commerce_staging</value>
+            </property>
+            <property name="availableLocaleNames" >
+              <value>en_US</value>
+            </property>
+          </property-group>
+        </property-file>
+             
+    </config-directory>
+  </server-instance-type>
+  <!-- server instances -->    
+  
+</product>
+<!-- @version $Id: //product/DCS/version/10.0.3/release/DCS/cim/product.xml#2 $$Change: 651448 $-->

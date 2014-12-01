@@ -1,0 +1,67 @@
+<HTML>
+<HEAD>
+<TITLE>Logout</TITLE>
+</HEAD>
+
+<importbean bean="/atg/userprofiling/Profile">
+<importbean bean="/atg/userprofiling/ProfileFormHandler">
+<importbean bean="/atg/userprofiling/ProfileErrorMessageForEach">
+<importbean bean="/atg/dynamo/droplet/Switch">
+
+
+<BODY>
+<a href="index.jhtml">Catalog Home</a> - 
+<a href="product_search.jhtml">Product Search</a> - 
+<a href="shoppingcart.jhtml">Shopping Cart</a> - 
+<a href="lists.jhtml">My Lists</a> - 
+<a href="comparison.jhtml">Product Comparison</a> -
+<a href="giftlist_search.jhtml">Gift List Search</a> - 
+<droplet bean="Switch">
+  <param name="value" value="bean:Profile.transient">
+  <oparam name="false">
+    Logout
+  </oparam>
+  <oparam name="true">
+    <a href="login.jhtml">Login</a> or <a href="register.jhtml">Register</a>
+  </oparam>
+</droplet>
+<BR>
+
+<FORM ACTION="logout.jhtml" METHOD="POST">
+<INPUT TYPE="HIDDEN" BEAN="ProfileFormHandler.logoutSuccessURL" VALUE="index.jhtml">
+
+<strong><font size=+1>
+<droplet name="Switch">
+<param name="value" value="bean:Profile.transient">
+<oparam name="false">
+  Thank you for visiting <valueof bean="Profile.Login"></valueof>
+</oparam>
+<oparam name="default">
+  Thank you for visiting!
+</oparam>
+</droplet>
+</font></strong>
+<BR>Click on the button below to logout.<P>
+
+<droplet name="Switch">
+<param name="value" value="bean:ProfileFormHandler.formError">
+<oparam name="true">
+  <font color=cc0000><STRONG><UL>
+    <droplet name="ProfileErrorMessageForEach">
+      <param name="exceptions" value="bean:ProfileFormHandler.formExceptions">
+      <oparam name="output">
+	<LI> <valueof param="message"></valueof>
+      </oparam>
+    </droplet>
+    </UL></STRONG></font>
+</oparam>
+</droplet>
+
+<INPUT TYPE="SUBMIT" VALUE="logout" BEAN="ProfileFormHandler.logout">
+
+</FORM>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/B2CCommerce/html/sample_catalog/logout.jhtml#2 $$Change: 651448 $*/</java>
+

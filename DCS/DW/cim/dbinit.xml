@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE database-initializer SYSTEM "http://www.atg.com/dtds/dbinit_1_0.dtd">
+<database-initializer>
+
+	<schema id="dwSchema">
+	
+		<sql>
+			<path>
+				<create>
+				  sql/db_components/${database}/arf_dcs_ddl.sql
+				</create>
+				<drop>
+					sql/uninstall/${database}/drop_arf_dcs_ddl.sql
+				</drop>
+			</path>
+		</sql>
+
+		<sql>
+			<path>
+				<create>
+				  sql/db_components/${database}/arf_dcs_init.sql
+				</create>
+				<drop>
+					<!-- there is no matching drop script -->
+				</drop>
+			</path>
+		</sql>
+
+	</schema>
+
+	<server-instance-type id="datawarehouse">
+	
+		<datasource id="all">
+			<schema id="dwSchema"/>
+		</datasource>	
+		
+	</server-instance-type>
+
+</database-initializer>
+<!-- @version $Id: //product/DCS/version/10.0.3/DW/cim/dbinit.xml#2 $$Change: 651448 $-->

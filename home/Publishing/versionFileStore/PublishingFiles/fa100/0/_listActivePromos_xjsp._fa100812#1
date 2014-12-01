@@ -1,0 +1,16 @@
+<%--
+  This page is used to display the user's active promotions. 
+  --%>
+
+<%@ taglib prefix="c"     uri="http://java.sun.com/jstl/core"                    %>
+<%@ taglib prefix="dspel" uri="http://www.atg.com/taglibs/daf/dspjspELTaglib1_0" %>
+
+<dspel:page>
+
+  <dspel:include page="renderItems.jsp">
+    <dspel:param name="profilePropertyName" value="activePromotions"/>
+    <dspel:param name="itemDisplayPropertyName" value="promotion.displayName"/>
+  </dspel:include>
+
+</dspel:page>
+<%-- @version $Id: //application/campaigns/version/10.0/communication/common/src/web-apps/Outreach/collections/listActivePromos.jsp#1 $$Change: 610294 $--%>

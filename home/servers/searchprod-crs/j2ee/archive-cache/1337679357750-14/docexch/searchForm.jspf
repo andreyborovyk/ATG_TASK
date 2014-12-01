@@ -1,0 +1,59 @@
+<%-- Search Form --%>
+
+
+<dsp:form method="POST" action="<%= gearEnv.getOriginalRequestURI() %>">
+
+   <core:CreateUrl  id="searchResultsURL" url="<%= gearEnv.getOriginalRequestURI() %>">
+     <core:UrlParam param="paf_gear_id" value="<%= gearEnv.getGear().getId() %>"/>
+     <core:UrlParam param="paf_dm" value="full"/>
+     <core:UrlParam param="dexmode" value="searchResults"/>
+     <dsp:input type="hidden" bean="SearchFormHandler.successURL"  value="<%=searchResultsURL.getNewUrl()%>" />
+     <dsp:input type="hidden" bean="SearchFormHandler.errorURL"  value="<%=searchResultsURL.getNewUrl()%>" />
+  </core:CreateUrl> 
+
+  <input type="hidden" name="paf_dm" value="shared"/>
+  <input type="hidden" name="paf_gear_id" value="<%= gearEnv.getGear().getId() %>"/>
+
+  <dsp:input type="hidden" bean="SearchFormHandler.repositoryPath" 
+	value="<%= dexpage.getRepositoryPath() %>"/>
+  <dsp:input type="hidden" bean="SearchFormHandler.itemTypeName" 
+	value="<%= dexpage.getItemDescriptorName() %>"/>
+  <dsp:input type="hidden" bean="SearchFormHandler.gearIdPropertyName" 
+	value="<%= dexpage.getGearIdPropertyName() %>"/>
+  <dsp:input type="hidden" bean="SearchFormHandler.gearId" 
+	value="<%= gearEnv.getGear().getId() %>"/>
+  <dsp:input type="hidden" bean="SearchFormHandler.titlePropertyName" 
+	value="<%= dexpage.getTitlePropertyName() %>"/>
+  <dsp:input type="hidden" bean="SearchFormHandler.descriptionPropertyName" 
+	value="<%= dexpage.getDescriptionPropertyName() %>"/>
+  <dsp:input type="hidden" bean="SearchFormHandler.authorPropertyName" 
+	value="<%= dexpage.getAuthorPropertyName() %>"/>
+  <dsp:input type="hidden" bean="SearchFormHandler.authorFirstNameProperty" 
+	value="<%= dexpage.getAuthorDisplayProp1() %>"/>
+  <dsp:input type="hidden" bean="SearchFormHandler.authorLastNameProperty" 
+	value="<%= dexpage.getAuthorDisplayProp2() %>"/>
+
+<dsp:getvalueof id="keywords" idtype="String[]" bean="SearchFormHandler.keywords">
+<%
+ StringBuffer keywordsValue = new StringBuffer("");
+ if(keywords != null) {
+  for(int i = 0 ; i < keywords.length ; i++) {
+   keywordsValue.append(keywords[i]);
+   if(i < (keywords.length - 1))
+    keywordsValue.append(" ");
+  }
+ }
+%>
+ <table width="99%" align=center>
+  <tr>
+    <td width="100%" align=left>  
+  <dsp:input type="text" bean="SearchFormHandler.keywords" value="<%= keywordsValue %>" />
+  <dsp:input type="submit" bean="SearchFormHandler.search" value="<%= searchButton %>"/> 
+    </td>
+  </tr>
+ </table>
+</dsp:getvalueof>
+</dsp:form>
+
+<%-- End Search Form --%>
+<%-- @version $Id: //app/portal/version/10.0.3/docexch/docexch.war/searchForm.jspf#2 $$Change: 651448 $--%>

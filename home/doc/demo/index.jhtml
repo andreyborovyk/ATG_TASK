@@ -1,0 +1,92 @@
+<IMPORTBEAN BEAN="/atg/dynamo/droplet/ComponentExists">
+<HTML>
+<HEAD>
+<TITLE>Dynamo Demonstrations</TITLE>
+<STYLE TYPE="text/css">
+<!--
+A:visited {text-decoration:none;}
+A:active {text-decoration:none;}
+A:link {text-decoration:none;}
+Body { font-size: 10pt; font-family: arial, helvetica, sans-serif; }
+Blockquote { font-size: 10pt; font-family: arial, helvetica, sans-serif; }
+P { font-size: 10pt; font-family: arial, helvetica, sans-serif; }
+TD { font-size: 10pt; font-family: arial, helvetica, sans-serif; }
+OL { font-size: 10pt; font-family: arial, helvetica, sans-serif; }
+UL { font-size: 10pt; font-family: arial, helvetica, sans-serif; }
+CODE { font-size: 9pt; font-family: "courier new", courier, monospace; }
+PRE { font-size: 9pt; font-family: "courier new", courier, monospace; }
+VAR { font-size: 9pt; font-style: italic; font-family: "courier new", courier, monospace;}
+H1 { font-size: 24pt; font-family: arial, helvetica, sans-serif; }
+H2 { font-size: 18pt; font-family: arial, helvetica, sans-serif; }
+H3 { font-size: 12pt; font-family: arial, helvetica, sans-serif; }
+H4 { font-size: 10pt; font-family: arial, helvetica, sans-serif; }
+-->
+</STYLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" LINK="#E87F02" ALINK="#E87F02" VLINK="#E87F02">
+<IMG SRC="images/d-gear-demo.gif" WIDTH=585 HEIGHT=37 BORDER=0 ALT="Dynamo Tutorial">
+
+<BLOCKQUOTE>
+<TABLE WIDTH="560">
+<TR><TD>
+<br><h2>Product Demos</h2>
+<DROPLET BEAN="ComponentExists">
+  <param name="path" value="/atg/modules/DSSDemo">
+  <oparam name="true">
+    <P><A HREF="dlink.jhtml?demoPath=/DSSDemo/QuincyFunds/"><B>QuincyFunds &nbsp;&nbsp;
+    <FONT SIZE=-2>(JHTML version)</FONT></B></A><BR>
+    Demo of Dynamo Personalization Server and Dynamo Scenario Server. </P>
+  </oparam>
+  <oparam name="false">
+    <P><A HREF="dlink.jhtml?demoPath=/QuincyFunds/"><B>QuincyFunds &nbsp;&nbsp;
+    <FONT SIZE=-2>(JSP version)</FONT></B></A><BR>
+    Demo of Dynamo Personalization Server and Dynamo Scenario Server. </P>
+  </oparam>
+</DROPLET>
+
+<P><A HREF="dlink.jhtml?demoPath=/PioneerCycling/"><B>Pioneer Cycling</B></A><BR>
+ATG Consumer Commerce solution set. </P>
+
+<P><A HREF="dlink.jhtml?demoPath=/Motorprise/"><B>Motorprise</B></A><BR>
+ATG Business Commerce solution set. </P>
+
+
+<P><A HREF="dlink.jhtml?demoPath=/portal-demo/channels/geomatrix/cam/"><B>Geomatrix Channel Portal</B></A><BR>
+Partner Relationship Management portal demo.
+</P>
+<P><A HREF="dlink.jhtml?demoPath=/portal-demo/wireless/krystal/mykrystal/"><B>Krystal Communications 
+Customer Portal</B></A><BR>
+Consumer wireless portal demo.
+</P>
+<P><A HREF="dlink.jhtml?demoPath=/portal-demo/b2e/roimax/intranet/"><B>ROIMax Employee Portal</B></A><BR>
+Corporate portal demo.
+</P>
+
+<droplet bean="/atg/dynamo/droplet/Switch">
+  <param name="value" value="bean:/atg/dynamo/Configuration.dynamoAppServer">
+  <oparam name="true">
+  <!-- Dynamo App Server -->
+
+    <h2>Developer Demos</h2>
+    <P><A HREF="dlink.jhtml?demoPath=/meeting/"><B>Dynamo Meeting Manager</B></A><BR>
+
+    A full-fledged J2EE application that showcases advanced development
+    techniques such as Enterprise Java Beans (EJBs), container-managed
+    persistence (CMP), declarative security, enclosure programming, and
+    RQL Queries. Also demonstrates login management through EJBs and
+    CMP. <I>For Java programmers.</I>
+    </P>
+  </oparam>
+</droplet>    
+
+<!------Bottom --------------------->
+<BR><BR>
+<HR>
+<P><I><FONT SIZE="-1"><A HREF="copyright.html" NAME="Copyright">Copyright</A> &copy; 1997-2010 Art Technology Group, Inc. All rights
+reserved.</FONT></I></P>
+
+</TD></TR>
+</TABLE>
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/home/doc/demo/index.jhtml#2 $$Change: 651448 $*/</java>

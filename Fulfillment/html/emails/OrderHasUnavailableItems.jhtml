@@ -1,0 +1,82 @@
+<!-- Title: FulfillmentEmail -->
+<importbean bean="/atg/dynamo/droplet/Switch">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/IsNull">
+<importbean bean="/atg/commerce/pricing/PriceItem">
+
+<setvalue param="messageSubject" value="Your order will be delayed.">
+<java>/*
+<setvalue param="messageFrom" value="DCS5Team@example.com">
+<setvalue param="messageReplyTo" value="DCS5Team@example.com">
+*/</java>
+<setvalue param="mailingName" value="OrderHasUnavailableItems">
+
+<setvalue param="order" value="param:message.order">
+<setvalue param="itemRels" value="param:message.shipItemRels">
+<setvalue param="profile" value="param:message.profile">
+
+<p> Dear <valueof param="profile.firstName">Valued Customer</valueof>
+ <valueof param="profile.lastName"></valueof>,
+
+<p>The confirmation number for your order is: 
+<valueof param="order.id">Not defined</valueof>
+
+<p>Your order could not be completed at this time.
+
+<!-- Shipping information -->
+<table>
+<tr valign=top>
+  <td>
+      <b>These items are temporarily unavailable:</b><br>
+      <droplet bean="ForEach">
+	<param name="array" value="param:itemRels">
+	<param name="elementName" value="itemRel">
+	<oparam name="empty">
+	  Please ignore this email.
+	</oparam>
+	<oparam name="output">
+	   <valueof param="itemRel.commerceItem.auxiliaryData.catalogRef.displayName">No display name.</valueof>
+	   is
+	  <droplet bean="Switch">
+	    <param name="value" value="param:itemRel.state">
+	    <oparam name="3">
+	      PRE_ORDERED
+	    </oparam>
+	    <oparam name="4">
+	      BACK_ORDERED
+	    </oparam>	    
+	    <oparam name="11">
+	      OUT_OF_STOCK
+	    </oparam>	    
+	  </droplet>
+	  <br>
+       </oparam>
+     </droplet>
+ </td>
+</tr>
+<tr></tr>
+</table>
+
+<p>Please verify the following information.
+
+<hr>
+
+<!-- Itemized order -->
+<br>
+<droplet src="DisplayOrderSummary.jhtml">
+  <param name="order" value="param:order">
+  <param name="displayStockStatus" value="false">
+</droplet>
+
+<!-- Shipping information -->
+<droplet src="DisplayShippingInfo.jhtml">
+  <param name="order" value="param:order">
+</droplet>
+
+<!-- Payment information -->
+<droplet src="DisplayPaymentInfo.jhtml">
+  <param name="order" value="param:order">
+</droplet>
+
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/Fulfillment/html/emails/OrderHasUnavailableItems.jhtml#2 $$Change: 651448 $*/</java>
+

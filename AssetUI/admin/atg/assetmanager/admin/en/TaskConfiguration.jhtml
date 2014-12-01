@@ -1,0 +1,105 @@
+<html>
+  <head>
+    <title>Task Configuration</title>
+    <link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css" title="Standard">
+    <link rel="alternate stylesheet" type="text/css" href="/atg/dynamo/admin/admin-retro.css" title="Retro"">
+  </head>
+
+  <importbean bean="/atg/web/assetmanager/configuration/ConfigurationManager">
+  <importbean bean="/atg/dynamo/droplet/ForEach">
+  <importbean bean="/atg/dynamo/droplet/Format">
+
+  <body text=00214A bgcolor=ffffff link=E87F02 vlink=637DA6>
+    <img src="/atg/dynamo/admin/images/comp-banner.gif" alt="Dynamo Component Browser" align=top width=585 height=37 border=0><p>
+    <h2>/atg/web/assetmanager/configuration/ConfigurationManager task and activity configuration settings</h2>
+
+    <table>
+      <tr>
+      <td><b>Available configurations:</b></td>
+      <td><a href="#_activity_">Default activity</a></td>
+      </tr>
+      <droplet bean="ForEach">
+        <param name="array" value="bean:ConfigurationManager.activityMap">
+        <oparam name="output">
+          <tr>
+          <td>&nbsp;</td>
+          <td>
+            <droplet bean="Format">
+              <param name="format" value="#activity_{key}">
+              <oparam name="output">
+                <a href="param:message">Activity <valueof param="key"/></a>
+              </oparam>
+            </droplet>
+          </td>
+          </tr>
+        </oparam>
+      </droplet>
+      <tr>
+      <td>&nbsp;</td>
+      <td><a href="#_task_">Default task</a></td>
+      </tr>
+      <droplet bean="ForEach">
+        <param name="array" value="bean:ConfigurationManager.taskMap">
+        <oparam name="output">
+          <tr>
+          <td>&nbsp;</td>
+          <td>
+            <droplet bean="Format">
+              <param name="format" value="#task_{key}">
+              <oparam name="output">
+                <a href="param:message">Task <valueof param="key"/></a>
+              </oparam>
+            </droplet>
+          </td>
+          </tr>
+        </oparam>
+      </droplet>
+    </table>
+
+    <a name="_activity_"></a><b>Default activity</b><br>
+    <droplet src="TaskConfigurationTask.jhtml">
+      <param name="task" value="bean:ConfigurationManager.defaultActivityConfiguration">
+    </droplet>
+
+    <droplet bean="ForEach">
+      <param name="array" value="bean:ConfigurationManager.activityMap">
+      <param name="elementName" value="task">
+      <oparam name="output">
+        <droplet bean="Format">
+          <param name="format" value="activity_{key}">
+          <oparam name="output">
+            <a name="param:message"></a><b>Activity <valueof param="key"/></b><br>
+          </oparam>
+        </droplet>
+        <droplet src="TaskConfigurationTask.jhtml">
+          <param name="task" value="param:task">
+        </droplet>
+      </oparam>
+    </droplet>
+
+    <a name="_task_"></a><b>Default task</b><br>
+    <droplet src="TaskConfigurationTask.jhtml">
+      <param name="task" value="bean:ConfigurationManager.defaultTaskConfiguration">
+    </droplet>
+
+    <droplet bean="ForEach">
+      <param name="array" value="bean:ConfigurationManager.taskMap">
+      <param name="elementName" value="task">
+      <oparam name="output">
+        <droplet bean="Format">
+          <param name="format" value="task_{key}">
+          <oparam name="output">
+            <a name="param:message"></a><b>Task <valueof param="key"/></b><br>
+          </oparam>
+        </droplet>
+        <droplet src="TaskConfigurationTask.jhtml">
+          <param name="task" value="param:task">
+          <param name="showNames" value="true">
+        </droplet>
+      </oparam>
+    </droplet>
+
+  </body>
+</html>
+<%-- @version $Id: //product/AssetUI/version/10.0.3/src/admin/atg/assetmanager/admin/en/TaskConfiguration.jhtml#2 $$Change: 651448 $ --%>
+<java>/* @version $Id: //product/AssetUI/version/10.0.3/src/admin/atg/assetmanager/admin/en/TaskConfiguration.jhtml#2 $$Change: 651448 $*/</java>

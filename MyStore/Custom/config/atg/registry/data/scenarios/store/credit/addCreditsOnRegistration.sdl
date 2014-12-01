@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE process SYSTEM "dynamosystemresource:/atg/dtds/pdl/pdl_1.0.dtd">
+<process author="admin" creation-time="1417439719624" enabled="true" last-modified-by="admin" modification-time="1417439769534">
+  <segment migrate-subjects="true">
+    <segment-name>Segment 1</segment-name>
+    <!--================================-->
+    <!--== Registers  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.dps.Register</event-name>
+    </event>
+    <!--================================-->
+    <!--== Add credit Number to add: 1000  -->
+    <!--================================-->
+    <action id="2">
+      <action-name>Add Credit</action-name>
+      <action-param name="credit">
+        <constant type="java.lang.Double">1000.0</constant>
+      </action-param>
+    </action>
+  </segment>
+</process>

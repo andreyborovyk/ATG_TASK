@@ -1,0 +1,20 @@
+<importbean bean="/atg/userprofiling/Profile">
+<importbean bean="/atg/dynamo/droplet/IsEmpty">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+
+<droplet src="remove_from_list.jhtml"></droplet>
+
+<droplet bean="IsEmpty">
+  <param name="value" value="bean:Profile.giftlists">
+  <oparam name="false">  
+    <droplet bean="/atg/dynamo/droplet/ForEach">
+      <param name="array" value="bean:Profile.giftlists">
+      <oparam name="output">
+        <droplet src="manage_singlegiftlist.jhtml">
+          <param name="giftlist" value="param:element">
+        </droplet>
+      </oparam>
+    </droplet>
+  </oparam>
+</droplet>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/B2CCommerce/html/sample_catalog/manage_giftlists.jhtml#2 $$Change: 651448 $*/</java>

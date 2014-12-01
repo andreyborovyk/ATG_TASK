@@ -1,0 +1,172 @@
+<%-- 
+Page:   	configAlerts.jsp
+Gear:  	 	Discussion Gear
+gearmode: 	instanceConfig
+displayMode: 	full
+
+Author:      	Jeff Banister
+Description: 	This page is included by instanceConfig.jsp, and renders and handles a form to 
+      		set configuration options for gear alerts, the envioroment has been initialized
+--%>
+
+<i18n:message id="alertsConfigPageTitle" key="alertsConfigPageTitle"/>
+<i18n:message id="backtogearadminLink" key="backtogearadmin-link"/>
+<i18n:message id="alertOptionsLabel" key="alertOptionsLabel"/>
+<i18n:message id="alertNoOptionDesc" key="alertNoOptionDesc"/>
+<i18n:message id="alertLockedOptionDesc" key="alertLockedOptionDesc"/>
+<i18n:message id="alertOpenedOptionDesc" key="alertOpenedOptionDesc"/>
+<i18n:message id="saveButtonLabel" key="save-button-label"/>
+<i18n:message id="configFeedbackMsg" key="instance-config-feedback-msg"/>
+
+
+<%
+
+   String NO_VALUE="no";
+   String YES_LOCKED_VALUE="yes_locked";
+   String YES_OPENED_VALUE="yes_opened";
+
+   String thisConfigPage="alerts";
+   String formTargetUrl = "";
+   String gearNameEncoded="";
+   if (gearName!=null) {  gearNameEncoded=atg.servlet.ServletUtil.escapeURLString((String) gearName); }
+
+   String globalAlertMode = pafEnv.getGearInstanceParameter("globalAlertMode");
+%>
+
+
+<jsp:useBean id="alertFormInput" scope="request" class="atg.portal.admin.AlertConfigBean">
+  <jsp:setProperty name="alertFormInput" property="*"/>
+</jsp:useBean>
+
+<!-- handle the form if it was filled in -->
+<core:If value="<%= alertFormInput.getHandleForm() %>" >
+  <paf:handleAlertConfig id="alertConfResult" 
+                    formData="<%= alertFormInput %>" 
+		    gearEnv="<%= pafEnv %>">
+    <core:ExclusiveIf>
+       <core:If value="<%= alertConfResult.getSuccess() %>" >
+        <font class="info"> <%=configFeedbackMsg%></font>
+       </core:If>
+      <%-- if not, display errors --%>
+      <core:DefaultCase>
+        <font class="error"><%=alertConfResult.getErrorMessage()%></font>
+      </core:DefaultCase>
+    </core:ExclusiveIf>
+  </paf:handleAlertConfig>
+</core:If>
+
+
+<core:CreateUrl id="formURL" url="<%= origURI%>">
+  <%  formTargetUrl = formURL.getNewUrl(); %>
+</core:CreateUrl>
+<i18n:message id="i18n_quote" key="html_quote"/>
+  <table cellpadding="1" cellspacing="0" border="0" bgcolor="#666666" width="98%"><tr><td>
+<table cellpadding="4" cellspacing="0" border="0" bgcolor="#BAD8EC" width="100%"><tr><td>
+  <font class="pageheader_edit">
+<i18n:message key="change-alerts-title">
+ <i18n:messageArg value='<%= pafEnv.getGear().getName(response.getLocale()) %>'/>
+  <i18n:messageArg value="<%=i18n_quote%>"/>
+</i18n:message>  
+</td></tr></table>
+</td></tr></table>
+
+<table cellpadding="2" cellspacing="0" border="0" bgcolor="#EAEEF0" width="98%">
+
+<form ACTION="<%=formTargetUrl %>" METHOD="POST">
+
+<%--
+ Sets form encoding to the same as the encoding of this response.
+ This hidden field will let the form processing code know what the character encoding of the POSTed data is. 
+ --%>
+<input type="hidden" name="_dyncharset" value="<%= response.getCharacterEncoding() %>">
+
+<input type="hidden" name="handleForm" value="true">
+
+<input type="hidden" name="atg.paf.RedirectNoIncludeURL" value="discussion-url">
+<input type="hidden" name="paf_gear_id" value="<%= gearID %>">
+<input type="hidden" name="paf_dm" value="full">
+<input type="hidden" name="paf_gm" value="instanceConfig">
+<input type="hidden" name="config_page" value="<%= thisConfigPage%>">
+<input type="hidden" name="paf_page_id" value="<%= pageID %>"/>
+<input type="hidden" name="paf_page_url" value="<%= pageURLEncoded %>"/>
+<input type="hidden" name="paf_community_id" value="<%= communityID %>"/>
+
+
+<tr><td>
+        <font class="smaller">Use the form below to change the alerts configuration for this gear.
+        </td></tr></table>
+  
+<img src='/gear/discussion/images/clear.gif' height="1" width="1" border="0"><br>
+
+
+
+
+
+<table cellpadding="4" cellspacing="0" border="0" bgcolor="#BAD8EC" width="98%">
+
+
+    <tr>
+      <td colspan=2><img src="/gear/discussion/images/clear.gif" height=5 width=1 border=0></td>
+    </tr>
+
+ <tr>
+   <td colspan=2><font class="smaller"><%=alertOptionsLabel%></font></td>
+ </tr>
+
+    <tr>
+      <td colspan=2><img src="/gear/discussion/images/clear.gif" height=5 width=1 border=0></td>
+    </tr>
+
+  <tr>
+    <td colspan=2> 
+      <core:exclusiveIf>
+        <core:if value='<%= NO_VALUE.equals(globalAlertMode) %>'>
+          <input type="radio" name="gearAlertPref" value="<%=NO_VALUE%>" checked><font class="smaller">&nbsp;<%=alertNoOptionDesc%></font>
+        </core:if>
+        <core:defaultCase>
+          <input type="radio" name="gearAlertPref" value="<%=NO_VALUE%>"><font class="smaller">&nbsp;<%=alertNoOptionDesc%></font>
+        </core:defaultCase>
+      </core:exclusiveIf>
+    </td>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan=2> 
+      <core:exclusiveIf>
+        <core:if value='<%= YES_LOCKED_VALUE.equals(globalAlertMode) %>'>
+          <input type="radio" name="gearAlertPref" value="<%=YES_LOCKED_VALUE%>" checked><font class="smaller">&nbsp;<%=alertLockedOptionDesc%></font>
+        </core:if>
+        <core:defaultCase>
+          <input type="radio" name="gearAlertPref" value="<%=YES_LOCKED_VALUE%>"><font class="smaller">&nbsp;<%=alertLockedOptionDesc%></font>
+        </core:defaultCase>
+      </core:exclusiveIf>
+    </td>
+  </tr>
+
+<%-- not supporting this one just yet...
+  <tr>
+    <td colspan=2> 
+    <input type="radio" name="gearAlertPref" value="<%=YES_LOCKED_VALUE%>" ><font size="2" color="#000000">&nbsp;<%=alertOpenedOptionDesc%></font>
+    </td>
+  </tr>
+--%>
+    <tr>
+      <td colspan=2><img src="/gear/discussion/images/clear.gif" height=10 width=1 border=0></td>
+    </tr>
+
+  <core:CreateUrl id="cancelURL" url="<%= origURI%>">
+         <core:UrlParam param="paf_dm" value="full"/>
+         <core:UrlParam param="paf_gm" value="instanceConfig"/>
+	 <core:UrlParam param="paf_gear_id" value="<%= gearID %>"/>
+         <core:UrlParam param="paf_page_id" value="<%= pageID %>"/>
+         <paf:encodeUrlParam param="paf_page_url" value="<%= pageURL %>"/>
+         <core:UrlParam param="paf_community_id" value="<%= communityID %>"/>
+      <tr>
+         <td><INPUT type="submit" value="<%=saveButtonLabel%>">&nbsp;</td>
+         <td>&nbsp;</td>
+  </core:CreateUrl>
+  </tr>
+</form>
+</table>
+<%-- @version $Id: //app/portal/version/10.0.3/discussion/discussion.war/admin/configAlerts.jspf#2 $$Change: 651448 $--%>

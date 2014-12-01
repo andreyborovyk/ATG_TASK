@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE gsa-template
+        PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN"
+        "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template>
+
+  <header>
+    <name>Invoice Repository</name>
+    <author>DCS Development Team</author>
+    <version>$Id: //product/B2BCommerce/version/10.0.3/templates/B2BCommerce/config/atg/commerce/invoice/invoiceRepository.xml#2 $$Change: 651448 $</version>
+  </header>
+
+  <!-- ======================= -->
+  <!-- Invoice item descriptor -->
+  <!-- ======================= -->
+
+  <item-descriptor name="invoice" display-name-resource="itemDescriptorInvoice"  default="true" sub-type-property="type" version-property="version"
+		   display-property="invoiceNumber" cache-mode="locked">
+
+    <attribute name="resourceBundle" value="atg.b2bcommerce.InvoiceRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="dbc_invoice" type="primary" id-column-name="id">
+
+      <!-- Generic id, version, type properties -->
+
+      <property name="id" column-name="id" data-type="string" category-resource="categoryInfo" display-name-resource="id">
+        <attribute name="propertySortPriority" value="-6"/>
+      </property>
+      <property name="version" data-type="int" expert="true" category-resource="categoryInfo" display-name-resource="version">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="-5"/>
+      </property>
+      <property name="type" data-type="enumerated" default="invoice" hidden="true" category-resource="categoryInfo" display-name-resource="type">
+        <attribute name="useCodeForValue" value="false"/>
+      	<option value="invoice" code="5000"/>
+        <attribute name="propertySortPriority" value="-4"/>
+      </property>
+
+      <!-- Generic creation and modification date properties -->
+
+      <property name="creationDate" column-name="creation_date" category-resource="categoryInfo" display-name-resource="creationDate" data-type="timestamp">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="useNowForDefault" value="true"/>
+        <attribute name="propertySortPriority" value="-3"/>
+      </property>
+
+      <property name="lastModifiedDate" column-name="last_mod_date" category-resource="categoryInfo" display-name-resource="lastModifiedDate" data-type="timestamp">
+        <attribute name="useNowForDefault" value="true"/>
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="-2"/>
+      </property>
+
+      <!-- Properties specific to invoices -->
+
+      <property name="invoiceNumber" column-name="invoice_number" category-resource="categoryBasics" display-name-resource="invoiceNumber" data-type="string">
+        <attribute name="propertySortPriority" value="-10"/>
+      </property>
+      <property name="poNumber" column-name="po_number" category-resource="categoryBasics" display-name-resource="poNumber" data-type="string">
+        <attribute name="propertySortPriority" value="-9"/>
+      </property>
+      <property name="requisitionNumber" column-name="req_number" category-resource="categoryBasics" display-name-resource="reqNumber" data-type="string">
+        <attribute name="propertySortPriority" value="-8"/>
+      </property>
+      <property name="deliveryInfo" column-name="delivery_info" category-resource="categoryBasics" display-name-resource="deliveryInfo" item-type="deliveryInfo" 
+                cascade="insert,update,delete">
+        <attribute name="propertySortPriority" value="-7"/>
+      </property>
+      <property name="balanceDue" column-name="balance_due" category-resource="categoryBasics" display-name-resource="balanceDue" data-type="double">
+        <attribute name="propertySortPriority" value="-6"/>
+      </property>
+      <property name="paymentDueDate" column-name="pmt_due_date" category-resource="categoryBasics" display-name-resource="paymentDueDate" data-type="date">
+        <attribute name="propertySortPriority" value="-5"/>
+      </property>
+      <property name="paymentTerms" column-name="pmt_terms" category-resource="categoryBasics" display-name-resource="paymentTerms" item-type="paymentTerms"
+                cascade="insert,update,delete">
+        <attribute name="propertySortPriority" value="-4"/>
+      </property>
+
+      <property name="orderId" column-name="order_id" category-resource="categoryBasics" display-name-resource="orderId" data-type="string">
+        <attribute name="propertySortPriority" value="-3"/>
+      </property>
+      <property name="paymentGroupId" column-name="pmt_group_id" category-resource="categoryBasics" display-name-resource="paymentGroupId" data-type="string">
+        <attribute name="propertySortPriority" value="-2"/>
+      </property>
+
+    </table>
+  </item-descriptor>
+
+
+  <!-- ================================================================================== -->
+  <!-- Billing Info item descriptor, includes billing address and preferred delivery mode -->
+  <!-- ================================================================================== -->
+
+  <item-descriptor name="deliveryInfo" display-name-resource="itemDescriptorDeliveryInfo" sub-type-property="type" version-property="version"
+		   display-property="address1" cache-mode="locked">
+
+    <attribute name="resourceBundle" value="atg.b2bcommerce.InvoiceRepositoryTemplateResources"/>
+
+    <attribute name="categoryNamePriority" value="10"/>
+    <attribute name="categoryAddressPriority" value="20"/>
+    <attribute name="categoryContactPriority" value="30"/>
+    <attribute name="categoryDeliveryPriority" value="40"/>
+    <attribute name="categoryInfoPriority" value="60"/>
+
+    <table name="dbc_inv_delivery" type="primary" id-column-name="id">
+      <attribute name="resourceBundle" value="atg.b2bcommerce.InvoiceRepositoryTemplateResources"/>
+
+      <!-- Generic version and type properties -->
+      <property name="version" data-type="int" expert="true" category-resource="categoryInfo" display-name-resource="version">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="-3"/>
+      </property>
+      <property name="type" data-type="enumerated" default="deliveryInfo" hidden="true" category-resource="categoryInfo" display-name-resource="version">
+        <attribute name="useCodeForValue" value="false"/>
+      	<option value="deliveryInfo" code="5000"/>
+      </property>
+
+      <!-- Billing address properties, similar to DPS contactInfo with some additions -->
+
+      <property name="prefix" data-type="string" column-name="prefix" category-resource="categoryName" display-name-resource="prefix">
+        <attribute name="propertySortPriority" value="-6"/>
+      </property>
+      <property name="firstName" data-type="string" column-name="first_name" category-resource="categoryName" display-name-resource="firstName">
+        <attribute name="propertySortPriority" value="-5"/>
+      </property>
+      <property name="middleName" data-type="string" column-name="middle_name" category-resource="categoryName" display-name-resource="middleName">
+        <attribute name="propertySortPriority" value="-4"/>
+      </property>
+      <property name="lastName" data-type="string" column-name="last_name" category-resource="categoryName" display-name-resource="lastName">
+        <attribute name="propertySortPriority" value="-3"/>
+      </property>
+      <property name="suffix" data-type="string" column-name="suffix" category-resource="categoryName" display-name-resource="suffix">
+        <attribute name="propertySortPriority" value="-2"/>
+      </property>
+      
+      <property name="jobTitle" data-type="string" column-name="job_title" category-resource="categoryAddress" display-name-resource="jobTitle">
+        <attribute name="propertySortPriority" value="-12"/>
+      </property>
+      <property name="companyName" data-type="string" column-name="company_name" category-resource="categoryAddress" display-name-resource="companyName">
+        <attribute name="propertySortPriority" value="-11"/>
+      </property>
+      <property name="address1" data-type="string" column-name="address1" category-resource="categoryAddress" display-name-resource="address1">
+        <attribute name="propertySortPriority" value="-10"/>
+      </property>
+      <property name="address2" data-type="string" column-name="address2" category-resource="categoryAddress" display-name-resource="address2">
+        <attribute name="propertySortPriority" value="-9"/>
+      </property>
+      <property name="address3" data-type="string" column-name="address3" category-resource="categoryAddress" display-name-resource="address3">
+        <attribute name="propertySortPriority" value="-8"/>
+      </property>
+      <property name="city" data-type="string" column-name="city" category-resource="categoryAddress" display-name-resource="city">
+        <attribute name="propertySortPriority" value="-7"/>
+      </property>
+      <property name="county" column-name="county" data-type="string" category-resource="categoryAddress" display-name-resource="county">
+        <attribute name="propertySortPriority" value="-6"/>
+      </property>
+      <property name="state" data-type="string" column-name="state" category-resource="categoryAddress" display-name-resource="state">
+        <attribute name="propertySortPriority" value="-5"/>
+      </property>
+      <property name="postalCode" data-type="string" column-name="postal_code" category-resource="categoryAddress" display-name-resource="postalCode">
+        <attribute name="propertySortPriority" value="-4"/>
+      </property>
+      <property name="country" data-type="string" column-name="country" category-resource="categoryAddress" display-name-resource="country">
+        <attribute name="propertySortPriority" value="-3"/>
+      </property>
+      
+      <property name="phoneNumber" data-type="string" column-name="phone_number" category-resource="categoryContact" display-name-resource="phoneNumber">
+        <attribute name="propertySortPriority" value="-6"/>
+      </property>
+      <property name="faxNumber" data-type="string" column-name="fax_number" category-resource="categoryContact" display-name-resource="faxNumber">
+        <attribute name="propertySortPriority" value="-5"/>
+      </property>
+      <property name="emailAddress" data-type="string" column-name="email_addr" category-resource="categoryContact" display-name-resource="emailAddress">
+        <attribute name="propertySortPriority" value="-4"/>
+      </property>
+
+      <!-- Delivery format preferences                                      -->
+      <!--                                                                  -->
+      <!-- Applications that offer other formats may add more options here. -->
+      <!-- Examples might include XML formatted according to CXML, ebXML,   -->
+      <!-- EDI, RosettaNet, or some custom DTD, or BizTalk, or Adobe PDF    -->
+      <!-- or Microsoft Excel, or CSV files, or whatever else formats an    -->
+      <!-- application might think to offer.                                -->
+
+      <property name="preferredFormat" column-name="format" data-type="enumerated" default="preferredFormatHTML"
+              category-resource="categoryDelivery" display-name-resource="preferredFormat">
+        <attribute name="useCodeForValue" value="false"/>
+	      <option resource="preferredFormatText" code="5000"/>
+	      <option resource="preferredFormatHTML" code="5001"/>
+	      <option resource="preferredFormatXML" code="5002"/>
+        <attribute name="propertySortPriority" value="-5"/>
+      </property>
+
+      <!-- Delivery mode preferences                                        -->
+      <!--                                                                  -->
+      <!-- Applications that offer other types of delivery may add more     -->
+      <!-- options here to represent their delivery capabilities.  Examples -->
+      <!-- might include specific messaging systems or alternate carriers   -->
+      <!-- for physical invoices.  Applications offering other delivery     -->
+      <!-- types will probably need to extend billingInfo to include any    -->
+      <!-- additional parameters those delivery types require (e.g., some   -->
+      <!-- custom network delivery method might require a host name and a   -->
+      <!-- port number.                                                     -->
+      <!--                                                                  -->
+      <!-- Not all combinations of deliveryFormat and deliveryMode make     -->
+      <!-- sense semantically.  You could ask to have CXML delivered by     -->
+      <!-- FAX, in which case you'd probably get a long printout of XML     -->
+      <!-- on your FAX machine.  Not very useful, but there's nothing       -->
+      <!-- currently in the system that prevents you from asking for it.    -->
+
+      <property name="preferredDeliveryMode" column-name="delivery_mode" data-type="enumerated" default="deliveryModeEmail"
+                category-resource="categoryDelivery" display-name-resource="preferredDeliveryMode">
+        <attribute name="useCodeForValue" value="false"/>
+	      <option resource="deliveryModeEmail" code="5000"/>
+	      <option resource="deliveryModeFAX" code="5001"/>
+	      <option resource="deliveryModePostalMail" code="5002"/>
+        <attribute name="propertySortPriority" value="-4"/>
+      </property>
+
+    </table>
+  </item-descriptor>
+
+
+  <!-- ============================= -->
+  <!-- Payment Terms item descriptor -->
+  <!-- ============================= -->
+
+  <item-descriptor name="paymentTerms" display-name-resource="itemDescriptorPaymentTerms" sub-type-property="type" version-property="version" cache-mode="locked">
+    <attribute name="resourceBundle" value="atg.b2bcommerce.InvoiceRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="dbc_inv_pmt_terms" type="primary" id-column-name="id">
+
+      <!-- Generic version and type properties -->
+      <property name="version" data-type="int"  expert="true" category-resource="categoryInfo" display-name-resource="version">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="-5"/>
+      </property>
+      <property name="type" data-type="enumerated" default="paymentTerms" hidden="true" category-resource="categoryInfo" display-name-resource="type">
+        <attribute name="useCodeForValue" value="false"/>
+	      <option value="paymentTerms" code="5000"/>
+      </property>
+
+      <!-- Payment terms properties -->
+
+      <property name="discountPercent" category-resource="categoryBasics" display-name-resource="discountPercent" column-name="disc_percent" data-type="double">
+        <attribute name="propertySortPriority" value="-5"/>
+      </property>
+      <property name="discountDays" category-resource="categoryBasics" display-name-resource="discountDays" column-name="disc_days" data-type="int">
+        <attribute name="propertySortPriority" value="-4"/>
+      </property>
+      <property name="netDays" category-resource="categoryBasics" display-name-resource="netDays" column-name="net_days" data-type="int">
+        <attribute name="propertySortPriority" value="-3"/>
+      </property>
+
+    </table>
+  </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //product/B2BCommerce/version/10.0.3/templates/B2BCommerce/config/atg/commerce/invoice/invoiceRepository.xml#2 $$Change: 651448 $ -->

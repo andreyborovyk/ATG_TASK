@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE pipelinemanager
+  PUBLIC "-//Art Technology Group, Inc.//DTD Dynamo Pipeline Manager//EN"
+         'http://www.atg.com/dtds/pipelinemanager/pipelinemanager_1.0.dtd'>
+<pipelinemanager>
+  <!-- Search query pipeline chain -->
+  <pipelinechain name="searchQuery" transaction="TX_REQUIRED" headlink="lookupQueryDay">
+    <pipelinelink name="lookupQueryDay" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchDayLookupProcessor"/>
+      <transition returnvalue="1" link="lookupQueryTime"/>
+    </pipelinelink>
+    <pipelinelink name="lookupQueryTime" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchTimeLookupProcessor"/>
+      <transition returnvalue="1" link="limitQueryPropertiesLength"/>
+    </pipelinelink>
+    <pipelinelink name="limitQueryPropertiesLength" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/calculators/SearchQueryLimitLengthCalculator"/>
+      <transition returnvalue="1" link="lookupQueryExternalProfile"/>
+    </pipelinelink>
+    <pipelinelink name="lookupQueryExternalProfile" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchExternalProfileLookupProcessor"/>
+      <transition returnvalue="1" link="lookupQueryInternalProfile"/>
+      <transition returnvalue="2" link="lookupQueryInternalProfile"/>
+    </pipelinelink>
+    <pipelinelink name="lookupQueryInternalProfile" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchInternalProfileLookupProcessor"/>
+      <transition returnvalue="1" link="lookupQueryEnvironment"/>
+    </pipelinelink>
+    <pipelinelink name="lookupQueryEnvironment" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchEnvironmentLookupProcessor"/>
+      <transition returnvalue="1" link="lookupQuerySite"/>
+    </pipelinelink>
+    <pipelinelink name="lookupQuerySite" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchSiteLookupProcessor"/>
+      <transition returnvalue="1" link="lookupQuerySiteConstraints"/>
+    </pipelinelink>
+    <pipelinelink name="lookupQuerySiteConstraints" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchSiteConstraintsLookupProcessor"/>
+      <transition returnvalue="1" link="lookupQueryLanguage"/>
+    </pipelinelink>
+    <pipelinelink name="lookupQueryLanguage" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchLanguageLookupProcessor"/>
+      <transition returnvalue="1" link="lookupQueryType"/>
+    </pipelinelink>
+    <pipelinelink name="lookupQueryType" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchQueryTypeLookupProcessor"/>
+      <transition returnvalue="1" link="lookupQueryQuestionTypeGroup"/>
+    </pipelinelink>
+    <pipelinelink name="lookupQueryQuestionTypeGroup" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchQuestionTypeGroupLookupProcessor"/>
+      <transition returnvalue="1" link="lookupQueryNumberTermGroup"/>
+    </pipelinelink>
+    <pipelinelink name="lookupQueryNumberTermGroup" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchNumberTermGroupLookupProcessor"/>
+      <transition returnvalue="1" link="lookupQueryQuestion"/>
+    </pipelinelink>
+    <pipelinelink name="lookupQueryQuestion" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchQueryQuestionLookupProcessor"/>
+      <transition returnvalue="1" link="lookupQuerySegmentCluster"/>
+    </pipelinelink>
+    <pipelinelink name="lookupQuerySegmentCluster" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchSegmentClusterLookupProcessor"/>
+      <transition returnvalue="1" link="lookupQueryDemographic"/>
+    </pipelinelink>
+    <pipelinelink name="lookupQueryDemographic" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchDemographicLookupProcessor"/>
+      <transition returnvalue="1" link="lookupQuerySiteVisit"/>
+    </pipelinelink>
+    <pipelinelink name="lookupQuerySiteVisit" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchSiteVisitLookupProcessor"/>
+      <transition returnvalue="1" link="lookupQueryTopicGroup"/>
+    </pipelinelink>
+    <pipelinelink name="lookupQueryTopicGroup" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchTopicGroupLookupProcessor"/>
+      <transition returnvalue="1" link="lookupQuerySelectedTopicGroup"/>
+    </pipelinelink>
+    <pipelinelink name="lookupQuerySelectedTopicGroup" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchSelectedTopicGroupLookupProcessor"/>
+      <transition returnvalue="1" link="lookupQueryUnknownTermGroup"/>
+    </pipelinelink>
+    <pipelinelink name="lookupQueryUnknownTermGroup" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchUnknownTermGroupLookupProcessor"/>
+      <transition returnvalue="1" link="customTermConverterGroup"/>
+    </pipelinelink>
+    <pipelinelink name="customTermConverterGroup" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/CustomTermConverterProcessor"/>
+      <transition returnvalue="1" link="lookupQueryCustomTermGroup"/>
+    </pipelinelink>
+    <pipelinelink name="lookupQueryCustomTermGroup" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchCustomTermGroupLookupProcessor"/>
+      <transition returnvalue="1" link="lookupQueryFinderTermGroup"/>
+    </pipelinelink>
+    <pipelinelink name="lookupQueryFinderTermGroup" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchFinderTermGroupLookupProcessor"/>
+      <transition returnvalue="1" link="lookupQueryNullTermGroup"/>
+    </pipelinelink>
+    <pipelinelink name="lookupQueryNullTermGroup" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchNullTermGroupLookupProcessor"/>
+      <transition returnvalue="1" link="lookupQueryNulxTermGroup"/>
+    </pipelinelink>
+    <pipelinelink name="lookupQueryNulxTermGroup" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchNulxTermGroupLookupProcessor"/>
+      <transition returnvalue="1" link="lookupQuerySearchConfig"/>
+    </pipelinelink>
+    <pipelinelink name="lookupQuerySearchConfig" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchConfigLookupProcessor"/>
+      <transition returnvalue="1" link="lookupQuerySearchRuleGroup"/>
+    </pipelinelink>
+    <pipelinelink name="lookupQuerySearchRuleGroup" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchRuleGroupLookupProcessor"/>
+      <transition returnvalue="1" link="lookupQueryProfileType"/>
+    </pipelinelink>
+    <pipelinelink name="lookupQueryProfileType" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchProfileTypeLookupProcessor"/>
+      <transition returnvalue="1" link="replaceQueryProperties"/>
+    </pipelinelink>
+    <pipelinelink name="replaceQueryProperties" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/calculators/SearchQueryReplacementCalculator"/>
+      <transition returnvalue="1" link="logQuery"/>
+    </pipelinelink>
+    <pipelinelink name="logQuery" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchQueryLoggerProcessor"/>
+      <transition returnvalue="1" link="updateQueryLastSelected"/>
+    </pipelinelink>
+    <pipelinelink name="updateQueryLastSelected" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchUpdateLastSelectedProcessor"/>
+      <transition returnvalue="1" link="setQueryLastSelected"/>
+    </pipelinelink>
+    <pipelinelink name="setQueryLastSelected" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchSetLastSelectedProcessor"/>
+    </pipelinelink>
+  </pipelinechain>
+
+  <!-- Search view pipeline chain -->
+  <pipelinechain name="searchView" transaction="TX_REQUIRED" headlink="replaceViewContentProperties">
+    <pipelinelink name="replaceViewContentProperties" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/calculators/SearchViewContentReplacementCalculator"/>
+      <transition returnvalue="1" link="lookupViewQueryFact"/>
+    </pipelinelink>
+    <pipelinelink name="lookupViewQueryFact" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchQueryFactLookupProcessor"/>
+      <transition returnvalue="1" link="lookupViewDay"/>
+    </pipelinelink>
+    <pipelinelink name="lookupViewDay" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchDayLookupProcessor"/>
+      <transition returnvalue="1" link="lookupViewTime"/>
+    </pipelinelink>
+    <pipelinelink name="lookupViewTime" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchTimeLookupProcessor"/>
+      <transition returnvalue="1" link="limitViewPropertiesLength"/>
+    </pipelinelink>
+    <pipelinelink name="limitViewPropertiesLength" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/calculators/SearchViewLimitLengthCalculator"/>
+      <transition returnvalue="1" link="lookupViewExternalProfile"/>
+    </pipelinelink>
+    <pipelinelink name="lookupViewExternalProfile" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchExternalProfileLookupProcessor"/>
+      <transition returnvalue="1" link="lookupViewInternalProfile"/>
+      <transition returnvalue="2" link="lookupViewInternalProfile"/>
+    </pipelinelink>
+    <pipelinelink name="lookupViewInternalProfile" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchInternalProfileLookupProcessor"/>
+      <transition returnvalue="1" link="lookupViewEnvironment"/>
+    </pipelinelink>
+    <pipelinelink name="lookupViewEnvironment" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchEnvironmentLookupProcessor"/>
+      <transition returnvalue="1" link="lookupViewSite"/>
+    </pipelinelink>
+    <pipelinelink name="lookupViewSite" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchSiteLookupProcessor"/>
+      <transition returnvalue="1" link="lookupViewLanguage"/>
+    </pipelinelink>
+    <pipelinelink name="lookupViewLanguage" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchLanguageLookupProcessor"/>
+      <transition returnvalue="1" link="lookupViewSegmentCluster"/>
+    </pipelinelink>
+    <pipelinelink name="lookupViewSegmentCluster" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchSegmentClusterLookupProcessor"/>
+      <transition returnvalue="1" link="lookupViewDemographic"/>
+    </pipelinelink>
+    <pipelinelink name="lookupViewDemographic" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchDemographicLookupProcessor"/>
+      <transition returnvalue="1" link="lookupViewSiteVisit"/>
+    </pipelinelink>
+    <pipelinelink name="lookupViewSiteVisit" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchSiteVisitLookupProcessor"/>
+      <transition returnvalue="1" link="calculateUrlKey"/>
+    </pipelinelink>
+    <pipelinelink name="calculateUrlKey" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/calculators/UrlKeyCalculator"/>
+      <transition returnvalue="1" link="lookupViewContent"/>
+    </pipelinelink>
+    <pipelinelink name="lookupViewContent" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchContentLookupProcessor"/>
+      <transition returnvalue="1" link="lookupViewProfileType"/>
+    </pipelinelink>
+    <pipelinelink name="lookupViewProfileType" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchProfileTypeLookupProcessor"/>
+      <transition returnvalue="1" link="logView"/>
+    </pipelinelink>
+    <!-- the Last processor in the chain -->
+    <pipelinelink name="logView" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchViewLoggerProcessor"/>
+      <transition returnvalue="1" link="updateViewLastViewed"/>
+    </pipelinelink>
+    <pipelinelink name="updateViewLastViewed" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchUpdateLastViewedProcessor"/>
+      <transition returnvalue="1" link="setViewLastViewed"/>
+    </pipelinelink>
+    <pipelinelink name="setViewLastViewed" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchSetLastViewedProcessor"/>
+    </pipelinelink>
+  </pipelinechain>
+
+  <!-- Search searchSiteVisitFact pipeline chain -->
+  <pipelinechain name="searchSiteVisit" transaction="TX_REQUIRED" headlink="lookupSearchSiteVisitDay">
+    <pipelinelink name="lookupSearchSiteVisitDay" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchDayLookupProcessor"/>
+      <transition returnvalue="1" link="lookupSearchSiteVisitTime"/>
+    </pipelinelink>
+    <pipelinelink name="lookupSearchSiteVisitTime" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchTimeLookupProcessor"/>
+      <transition returnvalue="1" link="lookupSearchSiteVisitExternalProfile"/>
+    </pipelinelink>
+    <pipelinelink name="lookupSearchSiteVisitExternalProfile" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchExternalProfileLookupProcessor"/>
+      <transition returnvalue="1" link="lookupSearchSiteVisitInternalProfile"/>
+      <transition returnvalue="2" link="lookupSearchSiteVisitInternalProfile"/>
+    </pipelinelink>
+    <pipelinelink name="lookupSearchSiteVisitInternalProfile" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchInternalProfileLookupProcessor"/>
+      <transition returnvalue="1" link="lookupSearchSiteVisitSegmentCluster"/>
+    </pipelinelink>
+    <pipelinelink name="lookupSearchSiteVisitSegmentCluster" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchSegmentClusterLookupProcessor"/>
+      <transition returnvalue="1" link="lookupSearchSiteVisitDemographic"/>
+    </pipelinelink>
+    <pipelinelink name="lookupSearchSiteVisitDemographic" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchDemographicLookupProcessor"/>
+      <transition returnvalue="1" link="lookupSearchSiteVisitEnvironment"/>
+    </pipelinelink>
+    <pipelinelink name="lookupSearchSiteVisitEnvironment" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchEnvironmentLookupProcessor"/>
+      <transition returnvalue="1" link="lookupSearchSiteVisitSite"/>
+    </pipelinelink>
+    <pipelinelink name="lookupSearchSiteVisitSite" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchSiteLookupProcessor"/>
+      <transition returnvalue="1" link="lookupSearchSiteVisitLanguage"/>
+    </pipelinelink>
+    <pipelinelink name="lookupSearchSiteVisitLanguage" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchLanguageLookupProcessor"/>
+      <transition returnvalue="1" link="lookupSearchSiteVisitSiteVisit"/>
+    </pipelinelink>
+    <pipelinelink name="lookupSearchSiteVisitSiteVisit" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchSiteVisitLookupProcessor"/>
+      <transition returnvalue="1" link="lookupSearchSiteVisitProfileType"/>
+    </pipelinelink>
+    <pipelinelink name="lookupSearchSiteVisitProfileType" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchProfileTypeLookupProcessor"/>
+      <transition returnvalue="1" link="logSearchSiteVisit"/>
+    </pipelinelink>
+    <pipelinelink name="logSearchSiteVisit" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchSearchSiteVisitLoggerProcessor"/>
+    </pipelinelink>
+  </pipelinechain>
+
+</pipelinemanager>
+<!-- $Id: //product/ARF/version/10.0.3/ARF/DW/Search/config/atg/reporting/datawarehouse/process/pipeline.xml#1 $ -->
+<!-- @version $Id: //product/ARF/version/10.0.3/ARF/DW/Search/config/atg/reporting/datawarehouse/process/pipeline.xml#1 $$Change: 651360 $-->

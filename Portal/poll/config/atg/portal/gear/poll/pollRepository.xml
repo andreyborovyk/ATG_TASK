@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE gsa-template
+  PUBLIC "-//Art Technology Group, Inc.//DTD Dynamo Security//EN"
+         "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+         
+<gsa-template>
+
+  <item-descriptor name="pollResponse" display-name-resource="itemDescriptorPollResponse" query-cache-size="100"  version-property="version" display-property="responseText">
+    <attribute name="resourceBundle" value="atg.portal.gear.poll.PollRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="plg_poll_response" id-column-name="id" type="primary">
+      <property category-resource="categoryBasics" name="poll" display-name-resource="poll" column-name="poll_id" item-type="poll" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="responseText" display-name-resource="responseText" column-name="response_text" data-type="string" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryBasics" name="shortName" display-name-resource="shortName" column-name="short_name" data-type="string">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryBasics" name="sortOrder" display-name-resource="sortOrder" column-name="sort_order" data-type="int">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property category-resource="categoryBasics" name="responseCount" display-name-resource="responseCount" column-name="response_count" data-type="int" default="0">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property category-resource="categoryBasics" name="barColor" display-name-resource="barColor" column-name="bar_color" data-type="string">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property category-resource="categoryInfo" name="version" display-name-resource="version" data-type="int" queryable="true" readable="true" column-name="version" hidden="false" expert="true" required="false" cache-mode="inherit" writable="false">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="poll" display-name-resource="itemDescriptorPoll" display-property="title" query-cache-size="100"  version-property="version" >
+    <attribute name="resourceBundle" value="atg.portal.gear.poll.PollRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="plg_poll" id-column-name="id" type="primary">
+      <property category-resource="categoryBasics" name="title" display-name-resource="title" column-name="title" data-type="string" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="questionText" display-name-resource="questionText" column-name="question_text" data-type="string">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryInfo" name="creationDate" display-name-resource="creationDate" data-type="date" column-name="creation_date" writable="false">
+        <attribute name="useNowForDefault" value="true"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryInfo" name="version" display-name-resource="version" data-type="int" queryable="true" readable="true" column-name="version" hidden="false" expert="true" required="false" cache-mode="inherit" writable="false">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+    </table>
+
+    <table name="plg_poll_response" type="multi" id-column-name="poll_id">
+      <property category-resource="categoryBasics" name="responses" display-name-resource="responses" column-name="id" data-type="Set" component-item-type="pollResponse">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+    </table> 
+  </item-descriptor>
+
+  <item-descriptor name="gearPoll"  display-name-resource="itemDescriptorGearPoll" query-cache-size="100"  version-property="version">
+    <attribute name="resourceBundle" value="atg.portal.gear.poll.PollRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="plg_gear_poll_rel" id-column-name="id" type="primary">
+      <property name="gear" display-name-resource="gear" data-type="string" column-name="gear_id" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="poll" display-name-resource="poll" column-name="poll_id" item-type="poll" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      
+      <property name="version" display-name-resource="version" data-type="int" queryable="true" readable="true" column-name="version" hidden="false" expert="true" required="false" cache-mode="inherit" writable="false">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+    </table>
+    </item-descriptor>
+    
+</gsa-template>
+<!-- @version $Id: //app/portal/version/10.0.3/poll/config/atg/portal/gear/poll/pollRepository.xml#2 $$Change: 651448 $ -->

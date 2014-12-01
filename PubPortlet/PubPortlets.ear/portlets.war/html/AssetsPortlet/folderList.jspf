@@ -1,0 +1,22 @@
+<%--
+  List of sub-folders for a particular folder. Used in conjunction with AssetSearchFormHandler.
+
+  @version $Id: //product/PubPortlet/version/10.0.3/portlets.war/html/AssetsPortlet/folderList.jspf#2 $$Change: 651448 $
+  @updated $DateTime: 2011/06/07 13:55:45 $$Author: rbarbier $
+  --%>
+<!-- Begin AssetPortlet's folderList.jspf -->
+<div id="assetBrowserFolderList">
+  <dspel:input type="hidden" bean="${assetSearchHandlerPath}.clickedFolder" 
+    id='clickedFolder' value="" priority="10"/>
+  <c:forEach items="${assetSearchHandler.childFolders}" var="child">
+    <img src="/atg/images/icon_folder.gif" 
+      alt="File Asset" width="16" height="16" border="0" class="assetIcon" />
+    <a href="#" 
+       onclick="clickSearchFolder('searchform', '<c:out value="${child.name}"/>', '<dspel:valueof valueishtml="true" value="${searchActionURL}"/>');">
+      <c:out value="${child.name}"/>
+    </a>
+    <br />
+  </c:forEach>
+</div>
+<!-- End AssetPortlet's folderList.jspf -->
+<%-- @version $Id: //product/PubPortlet/version/10.0.3/portlets.war/html/AssetsPortlet/folderList.jspf#2 $$Change: 651448 $--%>

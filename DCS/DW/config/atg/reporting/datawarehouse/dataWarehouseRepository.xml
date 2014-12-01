@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE gsa-template
+        PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN"
+        "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template xml-combine="append">
+  <header>
+    <name>Data Warehouse Repository</name>
+  </header>
+
+  <item-descriptor name="currencyConversion">
+    <table name="ARF_CURRENCY_CONV" id-column-names="DAY_ID,SRC_CURRENCY_ID,DST_CURRENCY_ID" type="primary">
+      <property name="day" column-name="DAY_ID"
+          item-type="ARF_TIME_DAY" required="true"></property>
+      <property name="srcCurrency" column-name="SRC_CURRENCY_ID"
+          item-type="currency" required="true"></property>
+      <property name="dstCurrency" column-name="DST_CURRENCY_ID"
+          item-type="currency" required="true"></property>
+      <property name="srcDstConversionRate" column-name="SRC_DST_CONV_RATE"
+          data-type="double" required="true"></property>
+      <property name="dstSrcConversionRate" column-name="DST_SRC_CONV_RATE"
+          data-type="double" required="true"></property>
+    </table>
+  </item-descriptor>
+
+  <!-- Category dimension -->
+  <item-descriptor name="category" id-space-name="arf_category" display-property="nameEn">
+    <attribute name="naturalKey" value="categoryId"/>
+    <table name="ARF_CATEGORY" id-column-names="ID" type="primary">
+      <property name="id" column-name="ID" data-type="int" required="true"></property>
+      <property name="categoryId" column-name="NCATEGORY_ID" data-type="string" required="true"></property>
+      <property name="name" column-name="NAME" data-type="string" required="true" default="Unknown"></property>
+      <property name="nameEn" column-name="NAME_EN" data-type="string" required="false"></property>
+      <property name="description" column-name="DESCRIPTION" data-type="string" required="false"></property>
+      <property name="descriptionEn" column-name="DESCRIPTION_EN" data-type="string" required="false"></property>
+      <property name="parentCategory" column-name="PARENT_CAT_ID" item-type="category" required="false"></property>
+      <property name="lastUpdate" column-name="RECORD_LAST_UPDATE" data-type="timestamp" required="false"></property>
+      <property name="startDate" column-name="RECORD_START_DATE" data-type="timestamp" required="false"></property>
+      <property name="endDate" column-name="RECORD_END_DATE" data-type="timestamp" required="false"></property>
+      <property name="mostRecent" column-name="MOST_RECENT" data-type="boolean" required="true"></property>
+      <property name="deleted" column-name="DELETED" data-type="boolean" required="true" default="false"></property>
+    </table>
+  </item-descriptor>
+
+  <!-- Product dimension -->
+  <item-descriptor name="product" id-space-name="arf_product" display-property="nameEn">
+    <attribute name="naturalKey" value="productId"/>
+    <table name="ARF_PRODUCT" id-column-names="ID" type="primary">
+      <property name="id" column-name="ID" data-type="int" required="true"></property>
+      <property name="productId" column-name="NPRODUCT_ID" data-type="string" required="true"></property>
+      <property name="name" column-name="NAME" data-type="string" required="true" default="Unknown"></property>
+      <property name="nameEn" column-name="NAME_EN" data-type="string" required="false"></property>
+      <property name="description" column-name="DESCRIPTION" data-type="string" required="false"></property>
+      <property name="descriptionEn" column-name="DESCRIPTION_EN" data-type="string" required="false"></property>
+      <property name="parentCategory" column-name="PARENT_CAT_ID" item-type="category" required="false"></property>
+      <property name="brand" column-name="BRAND" data-type="string" required="false" default="Unknown"></property>
+      <property name="brandEn" column-name="BRAND_EN" data-type="string" required="false"></property>
+      <property name="lastUpdate" column-name="RECORD_LAST_UPDATE" data-type="timestamp" required="false"></property>
+      <property name="startDate" column-name="RECORD_START_DATE" data-type="timestamp" required="false"></property>
+      <property name="endDate" column-name="RECORD_END_DATE" data-type="timestamp" required="false"></property>
+      <property name="mostRecent" column-name="MOST_RECENT" data-type="boolean" required="true"></property>
+      <property name="deleted" column-name="DELETED" data-type="boolean" required="true" default="false"></property>
+    </table>
+  </item-descriptor>
+
+  <!-- SKU dimension -->
+  <item-descriptor name="sku" id-space-name="arf_sku" display-property="nameEn">
+    <attribute name="naturalKey" value="sku"/>
+    <table name="ARF_SKU" id-column-names="ID" type="primary">
+      <property name="id" column-name="ID" data-type="int" required="true"></property>
+      <property name="skuId" column-name="NSKU_ID" data-type="string" required="true"></property>
+      <property name="name" column-name="NAME" data-type="string" required="true" default="Unknown"></property>
+      <property name="nameEn" column-name="NAME_EN" data-type="string" required="false"></property>
+      <property name="description" column-name="DESCRIPTION" data-type="string" required="false"></property>
+      <property name="descriptionEn" column-name="DESCRIPTION_EN" data-type="string" required="false"></property>
+      <property name="parentProduct" column-name="PARENT_PROD_ID" item-type="product" required="false"></property>
+      <property name="wholesalePrice" column-name="WHOLESALE_PRICE" data-type="double" required="false"></property>
+      <property name="listPrice" column-name="LIST_PRICE" data-type="double" required="false"></property>
+      <property name="salePrice" column-name="SALE_PRICE" data-type="double" required="false"></property>
+      <property name="onSale" column-name="ON_SALE" data-type="boolean" required="false"></property>
+      <property name="lastUpdate" column-name="RECORD_LAST_UPDATE" data-type="timestamp" required="false"></property>
+      <property name="startDate" column-name="RECORD_START_DATE" data-type="timestamp" required="false"></property>
+      <property name="endDate" column-name="RECORD_END_DATE" data-type="timestamp" required="false"></property>
+      <property name="mostRecent" column-name="MOST_RECENT" data-type="boolean" required="true"></property>
+      <property name="deleted" column-name="DELETED" data-type="boolean" required="true" default="false"></property>
+    </table>
+  </item-descriptor>
+
+  <!-- Promotions dimension -->
+  <item-descriptor name="promotion" id-space-name="arf_promotion">
+    <table name="ARF_PROMOTION" id-column-names="ID" type="primary">
+      <property name="id" column-name="ID" data-type="short" required="true"></property>
+      <property name="promotionId" column-name="NPROMO_ID" data-type="string" required="true"></property>
+      <property name="name" column-name="PROMO_NAME" data-type="string" required="true"></property>
+      <property name="nameEn" column-name="PROMO_NAME_EN" data-type="string" required="false"></property>
+      <property name="description" column-name="PROMO_DESC" data-type="string" required="false"></property>
+      <property name="descriptionEn" column-name="PROMO_DESC_EN" data-type="string" required="false"></property>
+      <property name="promotionType" column-name="PROMO_TYPE" data-type="string" required="false"></property>
+      <property name="enabled" column-name="PROMO_ENABLED" data-type="boolean" required="false"></property>
+      <property name="beginUsable" column-name="PROMO_BEGIN_USABLE" data-type="timestamp" required="false"></property>
+      <property name="endUsable" column-name="PROMO_END_USABLE" data-type="timestamp" required="false"></property>
+      <property name="global" column-name="PROMO_GLOBAL" data-type="boolean" required="false"></property>
+      <property name="lastUpdate" column-name="RECORD_LAST_UPDATE" data-type="timestamp" required="false"></property>
+      <property name="startDate" column-name="RECORD_START_DATE" data-type="timestamp" required="false"></property>
+      <property name="endDate" column-name="RECORD_END_DATE" data-type="timestamp" required="false"></property>
+      <property name="mostRecent" column-name="MOST_RECENT" data-type="boolean" required="true"></property>
+      <property name="deleted" column-name="DELETED" data-type="boolean" required="true"></property>
+    </table>
+  </item-descriptor>
+
+  <!-- Promotions Group dimension -->
+  <item-descriptor name="promotionGroup" id-space-name="arf_promogrp" display-property="name">
+    <table name="ARF_PROMOGRP" id-column-names="ID" type="primary">
+      <property name="id" column-name="ID" data-type="short" required="true"></property>
+      <property name="name" column-name="NAME" data-type="string" required="true"></property>
+      <property name="length" column-name="LENGTH" data-type="int" required="true"></property>
+      <property name="hashValue" column-name="HASH_VALUE" data-type="string" required="true"></property>
+    </table>
+
+    <table name="ARF_PROMOGRP_MBRS" type="multi" id-column-name="PROMOGRP_ID">
+      <property name="promotions" column-name="PROMOTION_ID" data-type="set" component-item-type="promotion"
+          required="false" writable="true">
+        <attribute name="uiwriteable" value="true"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- Sales Channel dimension -->
+  <item-descriptor name="salesChannel" display-property="nameEn">
+    <attribute name="naturalKey" value="naturalValue"/>
+    <table name="ARF_SALES_CHANNEL" id-column-names="ID" type="primary">
+      <property name="id" column-name="ID" data-type="int" required="true"></property>
+      <property name="naturalCode" column-name="NCODE" data-type="int" required="true"></property>
+      <property name="name" column-name="NAME" data-type="string" required="true" default="Unknown"></property>
+      <property name="nameEn" column-name="NAME_EN" data-type="string" required="false"></property>
+      <property name="description" column-name="DESCRIPTION" data-type="string" required="false"></property>
+      <property name="descriptionEn" column-name="DESCRIPTION_EN" data-type="string" required="false"></property>
+    </table>
+  </item-descriptor>
+
+  <!-- LineItem dimension -->
+  <item-descriptor name="lineItem" id-space-name="arf_line_item">
+    <attribute name="BasicsPriority" value="10"/>
+    <attribute name="InfoPriority" value="30"/>
+    <attribute name="CalculationsPriority" value="20"/>
+    <table name="ARF_LINE_ITEM" id-column-names="LINE_ITEM_ID" type="primary">
+      <property name="id" column-name="LINE_ITEM_ID" data-type="long" required="true" category="Info">
+        <attribute name="propertySortPriority" value="1"/>
+      </property>
+      <property name="submitTimestamp" column-name="SUBMIT_TIMESTAMP" data-type="timestamp" required="false" category="Basics">
+        <attribute name="propertySortPriority" value="2"/>
+      </property>
+      <property name="submitDay" column-name="SUBMIT_DAY_ID" item-type="ARF_TIME_DAY" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="3"/>
+      </property>
+      <property name="submitTime" column-name="SUBMIT_TIME_ID" item-type="ARF_TIME_TOD" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="4"/>
+      </property>
+      <property name="sku" column-name="SKU_ID" item-type="sku" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="5"/>
+      </property>
+      <property name="product" column-name="PRODUCT_ID" item-type="product" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="6"/>
+      </property>
+      <property name="category" column-name="CATEGORY_ID" item-type="category" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="7"/>
+      </property>
+      <property name="customer" column-name="CUSTOMER_ID" item-type="user" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="8"/>
+      </property>
+      <property name="customerId" column-name="NCUSTOMER_ID" data-type="string" required="false" category="Info">
+        <attribute name="propertySortPriority" value="8"/>
+      </property>
+      <property name="originSalesChannel" column-name="ORIGIN_SALES_CHANNEL_ID" item-type="salesChannel" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="9"/>
+      </property>
+      <property name="submitSalesChannel" column-name="SUBMIT_SALES_CHANNEL_ID" item-type="salesChannel" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="agent" column-name="AGENT_ID" item-type="ARF_IU_USER" required="true" category="Basics">
+      </property>      
+      <property name="stimulusGroup" column-name="STIMGRP_ID" item-type="stimulusGroup" required="true" category="Info">
+        <attribute name="propertySortPriority" value="3"/>
+      </property>
+      <property name="segmentCluster" column-name="SEGCLSTR_ID" item-type="segmentCluster" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="9"/>
+      </property>
+      <property name="promotionGroup" column-name="PROMOGRP_ID" item-type="promotionGroup" required="true" category="Info">
+        <attribute name="propertySortPriority" value="4"/>
+      </property>
+      <property name="billingRegion" column-name="BILLING_REGION_ID" item-type="region" required="true" category="Info">
+        <attribute name="propertySortPriority" value="5"/>
+      </property>
+      <property name="shippingRegion" column-name="SHIPPING_REGION_ID" item-type="region" required="true" category="Info">
+        <attribute name="propertySortPriority" value="6"/>
+      </property>
+      <property name="localCurrency" column-name="LOCAL_CURRENCY_ID" item-type="currency" required="true" category="Calculations">
+        <attribute name="propertySortPriority" value="1"/>
+      </property>
+      <property name="demographic" column-name="DEMOGRAPHIC_ID" item-type="demographic" required="true" category="Info">
+        <attribute name="propertySortPriority" value="7"/>
+      </property>
+      <property name="siteVisit" column-name="SITE_VISIT_ID" item-type="siteVisit" required="true" category="Info">
+        <attribute name="propertySortPriority" value="8"/>
+      </property>
+      <property name="order" column-name="ORDER_ID" data-type="int" required="true" category="Info">
+        <attribute name="propertySortPriority" value="2"/>
+      </property>
+      <property name="naturalOrderId" column-name="NORDER_ID" data-type="string" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="2"/>
+      </property>
+      <property name="naturalLineItemId" column-name="NLINE_ITEM_ID" data-type="string" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="1"/>
+      </property>
+      <property name="sessionId" column-name="SESSION_ID" data-type="string" required="false" category="Basics">
+        <attribute name="propertySortPriority" value="1"/>
+      </property>
+      <property name="question" column-name="QUESTION_ID" item-type="question" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="11"/>
+      </property>
+      <property name="quantity" column-name="QUANTITY" data-type="int" required="true" category="Calculations">
+        <attribute name="propertySortPriority" value="2"/>
+      </property>
+      <property name="markedDown" column-name="IS_MARKDOWN" data-type="boolean" required="true" category="Calculations">
+        <attribute name="propertySortPriority" value="19"/>
+      </property>
+      <property name="localUnitPrice" column-name="LOCAL_UNIT_PRICE" data-type="double" required="true" category="Calculations">
+        <attribute name="propertySortPriority" value="3"/>
+      </property>
+      <property name="localGrossRevenue" column-name="LOCAL_GROSS_REVENUE" data-type="double" required="true" category="Calculations">
+        <attribute name="propertySortPriority" value="4"/>
+      </property>
+      <property name="localDiscountAmount" column-name="LOCAL_DISCOUNT_AMOUNT" data-type="double" required="true" category="Calculations">
+        <attribute name="propertySortPriority" value="5"/>
+      </property>
+      <property name="localMarkdownDiscountAmount" column-name="LOCAL_MARKDOWN_DISC_AMOUNT" data-type="double" required="true" category="Calculations">
+        <attribute name="propertySortPriority" value="5"/>
+      </property>
+      <property name="localOrderTaxAllocation" column-name="LOCAL_ORDER_TAX_ALLOC" data-type="double" required="true" category="Calculations">
+        <attribute name="propertySortPriority" value="6"/>
+      </property>
+      <property name="localOrderShippingAllocation" column-name="LOCAL_ORDER_SHIPPING_ALLOC" data-type="double" required="true" category="Calculations">
+        <attribute name="propertySortPriority" value="7"/>
+      </property>
+      <property name="localOrderDiscountAllocation" column-name="LOCAL_ORDER_DISCOUNT_ALLOC" data-type="double" required="true" category="Calculations">
+        <attribute name="propertySortPriority" value="8"/>
+      </property>
+      <property name="localNetRevenue" column-name="LOCAL_NET_REVENUE" data-type="double" required="true" category="Calculations">
+        <attribute name="propertySortPriority" value="9"/>
+      </property>
+      <property name="localOrderNetRevenue" column-name="LOCAL_ORDER_NET_REVENUE" data-type="double" required="true" category="Calculations">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="localOrderManualAdjustmentDebitTotalAllocation" column-name="LOCAL_APPSMT_DBT_ALLOC_AMT" data-type="double" required="false" category="Calculations">
+        <attribute name="propertySortPriority" value="11"/>
+      </property>
+      <property name="localOrderManualAdjustmentCreditTotalAllocation" column-name="LOCAL_APPSMT_CDT_ALLOC_AMT" data-type="double" required="false" category="Calculations">
+        <attribute name="propertySortPriority" value="12"/>
+      </property>
+      <property name="localLineItemPriceOverrideAmount" column-name="LOCAL_PRICE_OVERRIDE_AMT" data-type="double" required="false" category="Calculations">
+        <attribute name="propertySortPriority" value="13"/>
+      </property>
+      <property name="standardUnitPrice" column-name="STANDARD_UNIT_PRICE" data-type="double" required="true" category="Calculations">
+        <attribute name="propertySortPriority" value="14"/>
+      </property>
+      <property name="standardGrossRevenue" column-name="STANDARD_GROSS_REVENUE" data-type="double" required="true" category="Calculations">
+        <attribute name="propertySortPriority" value="15"/>
+      </property>
+      <property name="standardDiscountAmount" column-name="STANDARD_DISCOUNT_AMOUNT" data-type="double" required="true" category="Calculations">
+        <attribute name="propertySortPriority" value="16"/>
+      </property>
+      <property name="standardMarkdownDiscountAmount" column-name="STANDARD_MARKDOWN_DISC_AMOUNT" data-type="double" required="true" category="Calculations">
+        <attribute name="propertySortPriority" value="17"/>
+      </property>
+      <property name="standardOrderTaxAllocation" column-name="STANDARD_ORDER_TAX_ALLOC" data-type="double" required="true" category="Calculations">
+        <attribute name="propertySortPriority" value="18"/>
+      </property>
+      <property name="standardOrderShippingAllocation" column-name="STANDARD_ORDER_SHIPPING_ALLOC" data-type="double" required="true" category="Calculations">
+        <attribute name="propertySortPriority" value="19"/>
+      </property>
+      <property name="standardOrderDiscountAllocation" column-name="STANDARD_ORDER_DISCOUNT_ALLOC" data-type="double" required="true" category="Calculations">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="standardNetRevenue" column-name="STANDARD_NET_REVENUE" data-type="double" required="true" category="Calculations">
+        <attribute name="propertySortPriority" value="21"/>
+      </property>
+      <property name="standardOrderNetRevenue" column-name="STANDARD_ORDER_NET_REVENUE" data-type="double" required="true" category="Calculations">
+        <attribute name="propertySortPriority" value="22"/>
+      </property>
+      <property name="standardOrderManualAdjustmentDebitTotalAllocation" column-name="STANDARD_APPSMT_DBT_ALLOC_AMT" data-type="double" required="false" category="Calculations">
+        <attribute name="propertySortPriority" value="23"/>
+      </property>
+      <property name="standardOrderManualAdjustmentCreditTotalAllocation" column-name="STANDARD_APPSMT_CDT_ALLOC_AMT" data-type="double" required="false" category="Calculations">
+        <attribute name="propertySortPriority" value="24"/>
+      </property>
+      <property name="standardLineItemPriceOverrideAmount" column-name="STANDARD_PRICE_OVERRIDE_AMT" data-type="double" required="false" category="Calculations">
+        <attribute name="propertySortPriority" value="25"/>
+      </property>
+      <property name="submittedSite" column-name="SUBMITTED_SITE_ID" item-type="site" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="12"/>
+      </property>
+      <property name="originSite" column-name="ORIGIN_SITE_ID" item-type="site" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="13"/>
+      </property>
+      <property name="itemSite" column-name="ITEM_SITE_ID" item-type="site" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="14"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="promotionUsage">
+    <attribute name="BasicsPriority" value="10"/>
+    <attribute name="InfoPriority" value="30"/>
+    <attribute name="CalculationsPriority" value="20"/>
+    <table name="ARF_PROMOTION_USAGE" id-column-names="PROMOTION_USAGE_ID" type="primary">
+      <property name="id" column-name="PROMOTION_USAGE_ID" data-type="long" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="promotion" column-name="PROMOTION_ID" item-type="promotion" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="usageTimestamp" column-name="USAGE_TIMESTAMP" data-type="timestamp" required="false" category="Basics">
+        <attribute name="propertySortPriority" value="25"/>
+      </property>
+      <property name="usageDay" column-name="DAY_ID" item-type="ARF_TIME_DAY" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="usageTime" column-name="TIME_ID" item-type="ARF_TIME_TOD" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="sku" column-name="SKU_ID" item-type="sku" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="42"/>
+      </property>
+      <property name="product" column-name="PRODUCT_ID" item-type="product" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="44"/>
+      </property>
+      <property name="category" column-name="CATEGORY_ID" item-type="category" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="46"/>
+      </property>
+      <property name="customer" column-name="CUSTOMER_ID" item-type="user" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property name="agent" column-name="AGENT_ID" item-type="ARF_IU_USER" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="52"/>
+      </property>
+      <property name="originSalesChannel" column-name="ORIGIN_SALES_CHANNEL_ID" item-type="salesChannel" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="53"/>
+      </property>
+      <property name="submitSalesChannel" column-name="SUBMIT_SALES_CHANNEL_ID" item-type="salesChannel" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="54"/>
+      </property>
+      <property name="orderId" column-name="ORDER_ID" data-type="int" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property name="naturalOrderId" column-name="NORDER_ID" data-type="string" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+      <property name="segmentCluster" column-name="SEGCLSTR_ID" item-type="segmentCluster" required="true" category="Info">
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+      <property name="billingRegion" column-name="BILLING_REGION_ID" item-type="region" required="true" category="Info">
+        <attribute name="propertySortPriority" value="90"/>
+      </property>
+      <property name="demographic" column-name="DEMOGRAPHIC_ID" item-type="demographic" required="true" category="Info">
+        <attribute name="propertySortPriority" value="100"/>
+      </property>
+      <property name="siteVisit" column-name="SITE_VISIT_ID" item-type="siteVisit" required="true" category="Info">
+        <attribute name="propertySortPriority" value="110"/>
+      </property>
+      <property name="sessionId" column-name="SESSION_ID" data-type="string" required="false" category="Info">
+        <attribute name="propertySortPriority" value="120"/>
+      </property>
+      <property name="quantity" column-name="QUANTITY" data-type="int" required="true" category="Calculations">
+        <attribute name="propertySortPriority" value="130"/>
+      </property>
+      <property name="localCurrency" column-name="LOCAL_CURRENCY_ID" item-type="currency" required="true" category="Calculations">
+        <attribute name="propertySortPriority" value="140"/>
+      </property>
+      <property name="localNetRevenue" column-name="LOCAL_NET_REVENUE" data-type="double" required="true" category="Calculations">
+        <attribute name="propertySortPriority" value="150"/>
+      </property>
+      <property name="localOrderNetRevenue" column-name="LOCAL_ORDER_NET_REVENUE" data-type="double" required="true" category="Calculations">
+        <attribute name="propertySortPriority" value="155"/>
+      </property>
+      <property name="localDiscountAmount" column-name="LOCAL_DISCOUNT_AMOUNT" data-type="double" required="true" category="Calculations">
+        <attribute name="propertySortPriority" value="160"/>
+      </property>
+      <property name="standardNetRevenue" column-name="STANDARD_NET_REVENUE" data-type="double" required="true" category="Calculations">
+        <attribute name="propertySortPriority" value="170"/>
+      </property>
+      <property name="standardOrderNetRevenue" column-name="STANDARD_ORDER_NET_REVENUE" data-type="double" required="true" category="Calculations">
+        <attribute name="propertySortPriority" value="175"/>
+      </property>
+      <property name="standardDiscountAmount" column-name="STANDARD_DISCOUNT_AMOUNT" data-type="double" required="true" category="Calculations">
+        <attribute name="propertySortPriority" value="180"/>
+      </property>
+      <property name="site" column-name="SITE_ID" item-type="site" required="true" category="Info">
+        <attribute name="propertySortPriority" value="130"/>
+      </property>
+    </table>
+  </item-descriptor>
+</gsa-template>
+
+<!-- @version $Id: //product/DCS/version/10.0.3/DW/config/atg/reporting/datawarehouse/dataWarehouseRepository.xml#2 $$Change: 651448 $ -->

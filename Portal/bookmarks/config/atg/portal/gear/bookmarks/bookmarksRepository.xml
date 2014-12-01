@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE gsa-template
+  PUBLIC "-//Art Technology Group, Inc.//DTD Dynamo Security//EN"
+	 "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+<gsa-template>
+  <header>
+    <name>Bookmarks Repository</name>
+    <author>Portal Group</author>
+    <description>A repository of bookmarks</description>
+  </header>
+
+  <!-- A node can be a bookmark or a folder. -->
+  <item-descriptor name="bookmark-node"
+    display-name-resource="itemDescriptorBookmarkNode"
+    display-property="name" sub-type-property="type" expert="true"
+    version-property="version">
+    <attribute name="resourceBundle" value="atg.portal.gear.bookmarks.BookmarksTemplateResources"/>
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="bmg_bookmark_node" type="primary" id-column-name="id">
+		
+      <property category-resource="categoryInfo" name="version"
+        display-name-resource="version" data-type="int" queryable="true"
+        readable="true" column-name="version" hidden="false" expert="true"
+        required="false" cache-mode="inherit" writable="false">
+	<attribute name="propertySortPriority" value="30"/>
+      </property>
+
+      <property category-resource="categoryInfo" name="type"
+        display-name-resource="type" data-type="enumerated" expert="true"> 
+        <option value="folder"/>
+        <option value="bookmark"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+
+      <property category-resource="categoryInfo" name="id" display-name-resource="id" data-type="string" writable="false">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+
+      <property category-resource="categoryBasics" name="name"
+        display-name-resource="name" column-name="name"
+        data-type="string">
+        <attribute name="maxLength" value="100"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+
+      <property category-resource="categoryBasics" name="description"
+        display-name-resource="description" column-name="description"
+        data-type="string">
+        <attribute name="maxLength" value="500"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+
+      <property category-resource="categoryBasics" name="add-date"
+        display-name-resource="add-date" column-name="add_date"
+        data-type="timestamp"> 
+        <attribute name="useNowForDefault" value="true"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+
+      <property category-resource="categoryBasics"
+        name="last-visit-date" display-name-resource="last-visit-date"
+        column-name="last_visit" data-type="timestamp"> 
+        <attribute name="useNowForDefault" value="true"/>
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+
+      <property category-resource="categoryBasics"
+        name="last-modified-date"
+        display-name-resource="last-modified-date"
+        column-name="last_modified" data-type="timestamp"> 
+        <attribute name="useNowForDefault" value="true"/>
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+	
+  <!-- a folder contains a list of links to nodes. -->
+	<item-descriptor name="bookmark-folder" display-name-resource="itemDescriptorBookmarksFolder" super-type="bookmark-node" sub-type-value="folder" query-cache-size="100">
+		<attribute name="resourceBundle" value="atg.portal.gear.bookmarks.BookmarksTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+		<table name="bmg_folder_child" type="multi" id-column-name="folder_id" multi-column-name="sequence_num">
+			<property category-resource="categoryBasics" name="children" display-name-resource="children" column-name="child" data-type="list" component-item-type="bookmark-node">
+        <attribute name="propertySortPriority" value="25"/>
+      </property>
+		</table>
+	</item-descriptor>
+
+	
+  <!-- the concrete bookmark item. -->
+	<item-descriptor name="bookmark" display-name-resource="itemDescriptorBookmark" super-type="bookmark-node" sub-type-value="bookmark">
+		<attribute name="resourceBundle" value="atg.portal.gear.bookmarks.BookmarksTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+		<table name="bmg_bookmark" type="auxiliary" id-column-name="id">
+			<property category-resource="categoryBasics" name="link" display-name-resource="link" data-type="string" required="true">
+				<attribute name="maxLength" value="300"/>
+        <attribute name="propertySortPriority" value="25"/>
+			</property>
+		</table>
+	</item-descriptor>
+</gsa-template>
+<!-- @version $Id: //app/portal/version/10.0.3/bookmarks/config/atg/portal/gear/bookmarks/bookmarksRepository.xml#2 $$Change: 651448 $ -->

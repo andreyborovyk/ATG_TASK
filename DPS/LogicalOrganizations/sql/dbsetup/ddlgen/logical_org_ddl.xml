@@ -1,0 +1,39 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="user_ddl">
+<comment><![CDATA[ @version $Id: //product/DPS/version/10.0.3/templates/DPS/LogicalOrganizations/sql/logical_org_ddl.xml#2 $$Change: 651448 $]]></comment>
+<comment><![CDATA[
+This file contains create table statements, which will configure 
+your database for use with logical organizations.
+]]></comment>
+
+<comment><![CDATA[
+Add the logical organization definition. This is a
+named "virtual" organization which refers to a normal
+(internal user) organization. It's defined in a separate
+namespace so that is can be accessed from an external users, so
+at least the logical organization name can be displayed.
+]]></comment>
+   <table name="dlo_logical_org">
+      <column name="logical_org_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <!-- the type of the organization, used for sub-typing  -->
+      <column name="type" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+
+      <column name="phys_org_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="phys_org_name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dlo_logical_org_p">
+         <index-column column="logical_org_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+</schema>
+<!-- @version $Id: //product/DPS/version/10.0.3/templates/DPS/LogicalOrganizations/sql/logical_org_ddl.xml#2 $$Change: 651448 $ -->

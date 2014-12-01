@@ -1,0 +1,73 @@
+<DECLAREPARAM NAME="giftlistId" CLASS="String" DESCRIPTION="The giftlist Id">
+
+<importbean bean="/atg/dynamo/droplet/Switch">
+<importbean bean="/atg/dynamo/droplet/IsEmpty">
+<importbean bean="/atg/commerce/ShoppingCart">
+<importbean bean="/atg/commerce/order/ShoppingCartModifier">
+<importbean bean="/atg/commerce/gifts/GiftlistFormHandler">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/userprofiling/Profile">
+
+<html>
+<head>
+<title>Move items from the Shopping Cart to <valueof param="listName">unknown gift list</valueof></title>
+</head>
+
+<body>
+
+<a href="index.jhtml">Catalog Home</a> - 
+<a href="product_search.jhtml">Product Search</a> - 
+<a href="shoppingcart.jhtml">Shopping Cart</a> - 
+<a href="lists.jhtml">My Lists</a> - 
+<a href="comparison.jhtml">Product Comparison</a> -
+<a href="giftlist_search.jhtml">Gift List Search</a> - 
+<droplet bean="Switch">
+  <param name="value" value="bean:Profile.transient">
+  <oparam name="false">
+    <a href="logout.jhtml">Logout</a>
+  </oparam>
+  <oparam name="true">
+    <a href="login.jhtml">Login</a> or <a href="register.jhtml">Register</a>
+  </oparam>
+</droplet>
+<BR>
+
+<h3>Move items from the Shopping Cart to <valueof param="listName">unknown gift list</valueof></h3>
+
+<droplet bean="IsEmpty">
+  <param name="value" value="bean:ShoppingCart.current.commerceItems">
+  <oparam name="false">
+    <form action="lists.jhtml" method="POST">
+    <input type="hidden" bean="GiftlistFormHandler.moveItemsFromCartSuccessURL" value="lists.jhtml">
+
+    <table>
+    <tr><td>Move</td><td>Quantity</td><td>Item</td><td>Price</td></tr>
+    <droplet bean="ForEach">
+      <param name="array" value="bean:ShoppingCart.current.commerceItems">
+      <param name="elementName" value="item">
+      <oparam name="output">
+        <tr>
+        <td><input type="checkbox" unchecked bean="GiftlistFormHandler.itemIds" value="param:item.id">
+            <input type="hidden" bean="GiftlistFormHandler.giftlistId" value="param:giftlistId">
+            <input type="hidden" size=4 name="param:item.id" value="param:item.quantity">
+        </td>
+        <td><valueof param="item.quantity"></valueof></td>
+        <td><valueof param="item.auxiliaryData.catalogRef.displayName"></valueof></td>
+        <td><valueof param="item.priceInfo.amount" currency>no price</valueof></td>
+        </tr>
+      </oparam>  
+     </droplet>
+     </table>
+     <input type=submit bean="GiftlistFormHandler.moveItemsFromCart" value="Move Checked Items"></td>
+     </form>
+  </oparam>
+
+  <oparam name="true">
+    There are no items in your shopping cart to move.
+  </oparam>
+</droplet>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/DCS/html/sample_catalog/move_from_cart.jhtml#2 $$Change: 651448 $*/</java>
+

@@ -1,0 +1,56 @@
+<nucleus type=import>
+  /atg/dynamo/service/ConfigurationReporter
+  /atg/dynamo/droplet/Switch
+  /atg/dynamo/droplet/ForEach
+</nucleus>
+
+<HTML>
+<HEAD>
+  <link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+  <TITLE>Dynamo Configuration Reporter</TITLE>
+</HEAD>
+
+<body>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="images/admin-banner.gif" ALT="Dynamo ConfigurationReporter" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+<a href="/">admin</a>/Configuration Reporter
+
+<h2>Configuration Reporter</h2>
+
+<p>
+Reports on the configuration of this Dynamo server. You can choose from the following types of report:
+<p>
+
+<blockquote>
+    <a href="config-reporter-admin-html-output.jhtml">
+        HTML Component Browser Report
+    </a>
+    <blockquote>
+        Outputs a report on the components in the Dynamo component hierarchy in the form of HTML files, much like the representation of Dynamo components in the Component Browser.
+    </blockquote>
+</blockquote>
+
+<blockquote>
+<a href="config-reporter-bean-representation.jhtml"> 
+    Bean Representation Report
+</a>
+<blockquote>
+Outputs all properties of components in the Dynamo component hierarchy to a serialized output file.
+</blockquote>
+
+<a href="config-reporter-property-representation.jhtml"> 
+    Property Representation Report
+</a>
+<blockquote>
+Outputs component properties of components in the Dynamo component hierarchy
+that have been set through properties files, including properties set in the Dynamo
+Control Center. Excludes properties that have their default values or that were set
+during runtime. 
+</blockquote>
+<a href="config-reporter-conf-path-titled.jhtml">CONFIGPATH Report</a>
+<blockquote>Outputs the configuration path of the current Dynamo server to a file.</blockquote>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/conf-reporter.jhtml#2 $$Change: 651448 $*/</java>

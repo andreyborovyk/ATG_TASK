@@ -1,0 +1,110 @@
+<%--
+  Expects that the containing file will:
+    - import the paf, core and dsp taglibs
+    - set up pafEnv
+    - use dsp:setvalue for a ColorPalette
+    - set a String thisRegionLayoutName to the region to be rendered
+--%>
+<paf:PrepareGearRenderers id="gearRenderers">
+  <paf:GetGears id="gears"
+                regionName="<%= thisRegionLayoutName %>"
+                page="<%= pafEnv.getPage() %>">
+    <core:ForEach id="gearsForEach"
+                  values="<%= gears.getGears() %>"
+                  castClass="atg.portal.framework.Gear"
+                  elementId="gear"> 
+      <paf:GetGearMode id="gearMode" 
+                       defaultGearMode="content" 
+                       onlyForGear="<%= gear %>">
+
+        <%-- Prepare the GearRenderer, register it with the GearRenderers --%>
+        <paf:PrepareGearRenderer gearRenderers="<%= gearRenderers.getGearRenderers() %>"
+                                 gear="<%= gear %>"
+                                 gearMode="<%= gearMode %>"
+                                 regionName="<%= thisRegionLayoutName %>" />
+      </paf:GetGearMode>
+    </core:ForEach>
+
+    <core:ForEach id="gearsForEach"
+                  values="<%= gears.getGears() %>"
+                  castClass="atg.portal.framework.Gear"
+                  elementId="gear"> 
+
+       <%-- 
+            Render a titlebar for the gear
+
+            Note: For improved performace you may not want to dispatch out to a gear 
+            titlebar. In  this case comment out the tag below and inline your titlebar
+            code.
+       --%>
+<%
+   // On WebSphere the JspWriter needs to be flushed to the ServletOutputStream
+   // As the tag uses the PrintWriter to write its content.  Inorder for the
+   // Content to appear in the correct order the JspWriter needs to be flushed.
+   if(atg.servlet.ServletUtil.isWebSphere())
+      out.flush();
+%>
+
+
+       <paf:RenderGearTitle community="<%= pafEnv.getCommunity() %>" gear="<%= gear %>"/>
+
+       <%--  
+           Render the pre gear treatment 
+       	  
+           Note: For improved performance we don't dispatch out to gear pre treatment. If support is
+           needed for dynamic gear pre treatment uncomment the following tag.
+           <paf:RenderGearTitle community="<%= pafEnv.getCommunity() %>" gear="<%= gear %>" type="pre"/>
+       --%>
+       <table border="0" cellpadding="1" cellspacing="0" width="100%">
+         <tr>
+           <td valign="top" bgcolor="#333333">
+             <table border=0 width="100%" cellpadding="0" cellspacing="0">
+               <tr>
+                 <td valign="top" bgcolor="#<%= pafEnv.getPage().getColorPalette().getGearBackgroundColor() %>">
+                   <font class="small">
+                     
+       <%-- 
+           Render the contents of the gear.
+   
+           Note: Dispatches out to registered gear. Dispatching may occur asyncronously. Contents
+           may be retrieved from a contents cache. 
+       --%>
+<%
+   // On WebSphere the JspWriter needs to be flushed to the ServletOutputStream
+   // As the tag uses the PrintWriter to write its content.  Inorder for the
+   // Content to appear in the correct order the JspWriter needs to be flushed.
+   if(atg.servlet.ServletUtil.isWebSphere())
+      out.flush();
+%>
+                     <paf:RenderPreparedGear gear="<%= gear %>" gearRenderers="<%= gearRenderers.getGearRenderers() %>" />
+
+       <%--
+           Render the post gear treatment
+
+	   Note: For improved performance we don't dispatch out to gear post treatment. If support is
+           needed for dynamic gear post treatment uncomment the following tag.
+<%
+   // On WebSphere the JspWriter needs to be flushed to the ServletOutputStream
+   // As the tag uses the PrintWriter to write its content.  Inorder for the
+   // Content to appear in the correct order the JspWriter needs to be flushed.
+   if(atg.servlet.ServletUtil.isWebSphere())
+      out.flush();
+%>
+
+           <paf:RenderGearTitle community="<%= pafEnv.getCommunity() %>" gear="<%= gear %>" type="post"/>
+       --%>
+
+                   </font>
+                 </td>
+               </tr>          
+             </table>
+           </td>
+         </tr>
+       </table>
+
+
+       <br>
+    </core:ForEach>
+  </paf:GetGears>
+</paf:PrepareGearRenderers>
+<%-- @version $Id: //app/portal/version/10.0.3/templates/layoutTemplates.war/web/html/region_template.jspf#2 $$Change: 651448 $--%>

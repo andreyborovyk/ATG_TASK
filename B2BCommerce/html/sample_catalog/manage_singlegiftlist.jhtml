@@ -1,0 +1,123 @@
+<importbean bean="/atg/commerce/gifts/GiftlistFormHandler">
+<importbean bean="/atg/commerce/ShoppingCart">
+<importbean bean="/atg/userprofiling/Profile">
+<importbean bean="/atg/dynamo/droplet/IsEmpty">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/Switch">
+
+<!-- Display giftlist items if any -->
+<setvalue param="items" value="param:giftlist.giftlistItems">
+<setvalue param="giftlistId" value="param:giftlist.id">
+<setvalue param="listName" value="param:giftlist.eventName">
+
+<form action="`request.getRequestURI()`" method="post">
+
+<input type="hidden" bean="GiftlistFormHandler.updateGiftlistItemsSuccessURL" value="`request.getRequestURI()`">
+<input type="hidden" bean="GiftlistFormHandler.updateGiftlistItemsErrorURL" value="`request.getRequestURI()`">
+<input type="hidden" bean="GiftlistFormHandler.giftlistId" value="param:giftlistId">
+
+<!-- Display giftlist name -->
+
+<table cellspacing=2 cellpadding=0 border=0 width=75%>
+
+<tr>
+<td colspan=20><strong><valueof param="giftlist.eventName"></valueof></strong>
+on <valueof param="giftlist.eventDate" date="MMMM dd, yyyy"></valueof>
+<droplet bean="/atg/dynamo/droplet/Switch">
+  <param name="value" value="param:giftlist.published">
+  <oparam name="true">(<i>public</i>)</oparam>
+  <oparam name="false">(<i>private</i>)</oparam>
+</droplet>
+</td>
+</tr>
+
+<droplet bean="IsEmpty">
+  <param name="value" value="param:items">
+  <oparam name="false">
+    <tr>
+    <td>Delete</td>
+    <td>Quantity<br>desired</td><td></td>
+    <td>Quantity<br>purchased</td><td></td>
+    <td>Item</td><td></td><td></td>
+    </tr>
+
+    <droplet bean="/atg/dynamo/droplet/ForEach">
+      <param name="array" value="param:items">
+      <param name="elementName" value="giftItem">
+      <oparam name="output">
+        <tr valign=top>
+        <td><input type=checkbox bean="GiftlistFormHandler.removeGiftitemIds" value="param:giftItem.id"></td>
+        <td><input type="text" name="param:giftlistId" value="param:giftItem.quantityDesired" size=2></td>
+        <td></td><td><valueof param="giftItem.quantityPurchased">-</valueof></td>
+        <td></td>
+        <td>
+        <a href="display_product.jhtml">
+          <param name="id" value="param:giftItem.productId">
+          <droplet bean="/atg/commerce/catalog/SKULookup">
+            <param name="id" value="param:giftItem.catalogRefId">
+            <param name="elementName" value="giftSku">
+            <oparam name="output"><valueof param="giftSku.displayName"></valueof></oparam>
+          </droplet>
+        </a>
+        </td>
+        <td></td>
+        <td><a href="shoppingcart.jhtml">
+              <param name="giftId" value="param:giftItem.id">
+              <param name="giftlistId" value="param:giftlistId">Add to Shopping Cart</a>
+        </td>
+        </tr>
+        <p>
+      </oparam>
+    </droplet>
+
+    <tr>
+    <td colspan=8>
+    <input type=submit bean="GiftlistFormHandler.updateGiftlistItems" value="Update list"></td>
+    </td>
+    </tr>
+
+    <tr>
+    <td colspan=10>
+    &gt; <a href="./lists_new.jhtml">
+           <param name="giftlistId" value="param:giftlistId">Edit this list</a><br>
+
+    <droplet bean="Switch">
+      <param name="value" value="bean:ShoppingCart.current.totalCommerceItemCount">
+      <oparam name="0"></oparam>
+      <oparam name="default">
+        &gt; <a href="move_from_cart.jhtml">
+               <param name="giftlistId" value="param:giftlistId">
+               <param name="listName" value="param:listName">
+               Move items to this gift list from the Shopping Cart
+              </a>
+      </oparam>
+    </droplet>
+    </td>
+    </tr>
+  </oparam>
+      
+  <oparam name="true">
+    <tr>
+    <td colspan=20>
+    This list is empty, <a href="index.jhtml">go shop</a>.<P>
+    &gt; <a href="./lists_new.jhtml"><param name="giftlistId" value="param:giftlistId">Edit this list</a><br>
+
+    <droplet bean="Switch">
+      <param name="value" value="bean:ShoppingCart.current.totalCommerceItemCount">
+      <oparam name="0"></oparam>
+      <oparam name="default">
+        &gt; <a href="move_from_cart.jhtml">
+               <param name="giftlistId" value="param:giftlistId">
+               <param name="listName" value="param:listName">
+               Move items to this gift list from the Shopping Cart
+             </a>
+      </oparam>
+    </droplet>
+    </td>
+    </tr>
+  </oparam>
+</droplet>
+
+</table>
+</form>
+<java>/* @version $Id: //product/B2BCommerce/version/10.0.3/release/B2BCommerce/html/sample_catalog/manage_singlegiftlist.jhtml#2 $$Change: 651448 $*/</java>

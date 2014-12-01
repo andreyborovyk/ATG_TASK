@@ -1,0 +1,379 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="create_sql_jms_ddl">
+<comment><![CDATA[ @version $Id: //product/DAS/version/10.0.3/templates/DAS/sql/create_sql_jms_ddl.xml#2 $$Change: 651448 $]]></comment>
+   <table name="dms_client">
+      <column name="client_name" nullable="n">
+         <column-type db="generic" type="varchar" length="250"/>
+      </column>
+      <column name="client_id" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <primary-key name="dms_client_p">
+         <index-column column="client_name" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dms_queue">
+      <column name="queue_name" nullable="y">
+         <column-type db="generic" type="varchar" length="250"/>
+      </column>
+      <column name="queue_id" nullable="n">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="temp_id" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <primary-key name="dms_queue_p">
+         <index-column column="queue_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dms_queue_recv">
+      <column name="client_id" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="receiver_id" nullable="n">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="queue_id" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <primary-key name="dms_queue_recv_p">
+         <index-column column="receiver_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dms_queue_entry">
+      <column name="queue_id" nullable="n">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="msg_id" nullable="n">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="delivery_date" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="handling_client_id" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="read_state" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <primary-key name="dms_queue_entry_p">
+         <index-column column="queue_id" order="asc" seq="1"/>
+         <index-column column="msg_id" order="asc" seq="2"/>
+      </primary-key>
+   </table>
+   <table name="dms_topic">
+      <column name="topic_name" nullable="y">
+         <column-type db="generic" type="varchar" length="250"/>
+      </column>
+      <column name="topic_id" nullable="n">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="temp_id" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <primary-key name="dms_topic_p">
+         <index-column column="topic_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dms_topic_sub">
+      <column name="client_id" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="subscriber_name" nullable="y">
+         <column-type db="generic" type="varchar" length="250"/>
+      </column>
+      <column name="subscriber_id" nullable="n">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="topic_id" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="durable" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="sybase" type="tinyint" />
+		 <column-type db="mysql" type="tinyint"/>
+      </column>
+      <column name="active" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="sybase" type="tinyint"/>   
+		  <column-type db="mysql" type="tinyint"/>		 
+      </column>
+      <primary-key name="dms_topic_sub_p">
+         <index-column column="subscriber_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dms_topic_entry">
+      <column name="subscriber_id" nullable="n">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>		 
+      </column>
+      <column name="msg_id" nullable="n">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>		 
+      </column>
+      <column name="delivery_date" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>		 
+      </column>
+      <column name="read_state" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>		 
+      </column>
+      <primary-key name="dms_topic_entry_p">
+         <index-column column="subscriber_id" order="asc" seq="1"/>
+         <index-column column="msg_id" order="asc" seq="2"/>
+      </primary-key>
+      <index name="dms_topic_msg_idx" table="dms_topic_entry">
+         <index-column column="msg_id" order="asc" seq="1"/>
+         <index-column column="subscriber_id" order="asc" seq="2"/>
+      </index>
+      <index name="dms_topic_read_idx" table="dms_topic_entry">
+         <index-column column="read_state" order="asc" seq="1"/>
+         <index-column column="delivery_date" order="asc" seq="2"/>
+      </index>
+   </table>
+   <table name="dms_msg">
+      <column name="msg_class" nullable="y">
+         <column-type db="generic" type="varchar" length="250"/>
+      </column>
+      <column name="has_properties" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="sybase" type="tinyint"/>         
+		 <column-type db="mysql" type="tinyint"/>		 
+      </column>
+      <column name="reference_count" nullable="y">
+         <column-type db="generic" type="numeric" length="10" scale="0"/>
+         <column-type db="sybase" type="integer"/> 
+		  <column-type db="mysql" type="integer"/>		 		 
+      </column>
+      <column name="msg_id" nullable="n">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>		 		 
+      </column>
+      <column name="timestamp" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>		 
+      </column>
+      <column name="correlation_id" nullable="y">
+         <column-type db="generic" type="varchar" length="250"/>
+      </column>
+      <column name="reply_to" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>		 		 
+      </column>
+      <column name="destination" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>		 		 
+      </column>
+      <column name="delivery_mode" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="sybase" type="tinyint"/>        
+		 <column-type db="mysql" type="tinyint"/>		 		 
+      </column>
+      <column name="redelivered" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="sybase" type="tinyint"/> 
+		  <column-type db="mysql" type="tinyint"/>		 		 		 
+      </column>
+      <column name="type" nullable="y">
+         <column-type db="generic" type="varchar" length="250"/>
+      </column>
+      <column name="expiration" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>		 		 
+      </column>
+      <column name="priority" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="sybase" type="tinyint"/>   
+		  <column-type db="mysql" type="tinyint"/>		 		 		 		 
+      </column>
+      <column name="small_body" nullable="y">
+         <column-type db="generic" type="varbinary" length="250"/>
+         <column-type db="db2" type="blob" length="250" scale=""/>
+         <column-type db="mssql" type="binary" length="250" scale=""/>
+      </column>
+      <column name="large_body" nullable="y">
+         <column-type db="generic" type="long-varbinary"/>
+         <column-type db="db2" type="blob" length="1048576" scale=""/>
+      </column>
+      <primary-key name="dms_msg_p">
+         <index-column column="msg_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dms_msg_properties">
+      <column name="msg_id" nullable="n">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>		 		 		 
+      </column>
+      <column name="data_type" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="sybase" type="tinyint"/>         
+		 <column-type db="mysql" type="tinyint"/>		 		 		 
+      </column>
+      <column name="name" nullable="n">
+         <column-type db="generic" type="varchar" length="250"/>
+         <column-type db="mssql" type="varchar" length="200" scale=""/>
+      <column-type db="sybase" type="varchar" length="200"/>
+</column>
+      <column name="value" nullable="y">
+         <column-type db="generic" type="varchar" length="250"/>
+      </column>
+      <primary-key name="dms_msg_properti_p">
+         <index-column column="msg_id" order="asc" seq="1"/>
+         <index-column column="name" order="asc" seq="2"/>
+      </primary-key>
+   </table>
+   <sql>
+      <sql-db db="sybase">
+go
+      </sql-db> 
+      <sql-db db="mssql">
+go
+      </sql-db> 
+   </sql>
+   
+   <procedure name="dms_queue_flag">
+      <proc-db db="oracle">
+         <proc-params>
+            <proc-param spec="Pbatch_size    IN NUMBER"/>
+            <proc-param spec="Pread_lock     IN NUMBER"/>
+            <proc-param spec="Pdelivery_date IN NUMBER"/>
+            <proc-param spec="Pclient_id     IN NUMBER"/>
+            <proc-param spec="Pqueue_id      IN NUMBER"/>
+            <proc-param spec="Pupdate_count  OUT NUMBER"/>
+         </proc-params>
+         <proc-body>
+             Begin
+    UPDATE dms_queue_entry qe
+    SET qe.handling_client_id = Pclient_id, 
+        qe.read_state = Pread_lock 
+    WHERE ROWNUM &lt; Pbatch_size
+      AND qe.handling_client_id &lt; 0 
+      AND qe.delivery_date &lt; Pdelivery_date 
+      AND qe.queue_id = Pqueue_id;
+    Pupdate_count := SQL%ROWCOUNT;
+  END;
+         </proc-body> 
+      </proc-db>
+      <proc-db db="sybase">
+         <proc-params>
+            <proc-param spec="@batchSize    INT"/>
+            <proc-param spec="@readLock     NUMERIC(19)"/>
+            <proc-param spec="@deliveryDate NUMERIC(19)"/>
+            <proc-param spec="@clientID     NUMERIC(19)"/>
+            <proc-param spec="@queueID      NUMERIC(19)"/>
+            <proc-param spec="@updateCount  NUMERIC(19) OUTPUT"/>
+         </proc-params>
+         <proc-body>
+             SET ROWCOUNT @batchSize
+  UPDATE dms_queue_entry 
+  SET handling_client_id = @clientID, 
+      read_state = @readLock 
+  WHERE queue_id = @queueID
+    AND handling_client_id &lt; 0 
+    AND delivery_date &lt; @deliveryDate
+  SELECT @updateCount = @@ROWCOUNT 
+
+exec sp_procxmode "dms_queue_flag", "anymode"
+         </proc-body> 
+      </proc-db>
+      <proc-db db="mssql">
+         <proc-params>
+            <proc-param spec="@batchSize    INT"/>
+            <proc-param spec="@readLock     NUMERIC(19)"/>
+            <proc-param spec="@deliveryDate NUMERIC(19)"/>
+            <proc-param spec="@clientID     NUMERIC(19)"/>
+            <proc-param spec="@queueID      NUMERIC(19)"/>
+            <proc-param spec="@updateCount  NUMERIC(19) OUTPUT"/>
+         </proc-params>
+         <proc-body>
+  SET ROWCOUNT @batchSize
+  UPDATE dms_queue_entry 
+  SET handling_client_id = @clientID, 
+      read_state = @readLock 
+  WHERE queue_id = @queueID
+    AND handling_client_id &lt; 0 
+    AND delivery_date &lt; @deliveryDate
+  SELECT @updateCount = @@ROWCOUNT 
+         </proc-body> 
+      </proc-db>
+	  
+   </procedure>
+   <procedure name="dms_topic_flag">
+      <proc-db db="oracle">
+         <proc-params>
+            <proc-param spec="Pbatch_size    IN NUMBER"/>
+            <proc-param spec="Pread_lock     IN NUMBER"/>
+            <proc-param spec="Pdelivery_date IN NUMBER"/>
+            <proc-param spec="Psubscriber_id IN NUMBER"/>
+            <proc-param spec="Pupdate_count  OUT NUMBER"/>
+         </proc-params>
+         <proc-body>
+             Begin
+    UPDATE dms_topic_entry te 
+    SET te.read_state = Pread_lock 
+    WHERE ROWNUM &lt; Pbatch_size
+      AND te.delivery_date &lt; Pdelivery_date 
+      AND te.read_state = 0 
+      AND te.subscriber_id = Psubscriber_id;
+    Pupdate_count := SQL%ROWCOUNT;
+  END; 
+         </proc-body> 
+      </proc-db>
+      <proc-db db="sybase">
+         <proc-params>
+            <proc-param spec="@batchSize    INT"/>
+            <proc-param spec="@readLock     NUMERIC(19)"/>
+            <proc-param spec="@deliveryDate NUMERIC(19)"/>
+            <proc-param spec="@subscriberID NUMERIC(19)"/>
+            <proc-param spec="@updateCount  NUMERIC(19) OUTPUT"/>
+         </proc-params>
+         <proc-body>
+             SET ROWCOUNT @batchSize
+  UPDATE dms_topic_entry 
+  SET read_state = @readLock 
+  WHERE subscriber_id = @subscriberID
+    AND delivery_date &lt; @deliveryDate 
+    AND read_state = 0 
+  SELECT @updateCount = @@ROWCOUNT 
+
+exec sp_procxmode "dms_topic_flag", "anymode"
+         </proc-body> 
+       </proc-db>
+      <proc-db db="mssql">
+         <proc-params>
+            <proc-param spec="@batchSize    INT"/>
+            <proc-param spec="@readLock     NUMERIC(19)"/>
+            <proc-param spec="@deliveryDate NUMERIC(19)"/>
+            <proc-param spec="@subscriberID NUMERIC(19)"/>
+            <proc-param spec="@updateCount  NUMERIC(19) OUTPUT"/>
+         </proc-params>
+         <proc-body>
+  SET ROWCOUNT @batchSize
+  UPDATE dms_topic_entry 
+  SET read_state = @readLock 
+  WHERE subscriber_id = @subscriberID
+    AND delivery_date &lt; @deliveryDate 
+    AND read_state = 0 
+  SELECT @updateCount = @@ROWCOUNT 
+         </proc-body> 
+      </proc-db>
+   </procedure>
+</schema>
+<!-- @version $Id: //product/DAS/version/10.0.3/templates/DAS/sql/create_sql_jms_ddl.xml#2 $$Change: 651448 $ -->

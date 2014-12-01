@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services-config>
+
+  <services>
+    <service-include file-path="remoting-config.xml" />
+    <service-include file-path="proxy-config.xml" />
+    <service-include file-path="messaging-config.xml" />        
+    <service class="atg.flex.messaging.services.DynamoFlexBootstrapService" id="atg-bootstrap">
+      <properties>
+        <destinationRegistryPath>/atg/flex/messaging/services/FlexDestinationRegistry</destinationRegistryPath>
+      </properties>
+    </service> 
+    <default-channels>
+      <channel ref="atg-amf" /> 
+    </default-channels>    
+  </services>
+  
+  <factories>
+    <factory id="nucleus" class="atg.flex.nucleus.NucleusFactory"/>
+  </factories>
+  
+  <security>
+    <!-- Uncomment the correct app server
+    <login-command class="flex.messaging.security.TomcatLoginCommand" server="JBoss"/>
+    <login-command class="flex.messaging.security.WeblogicLoginCommand" server="Weblogic"/>
+    <login-command class="flex.messaging.security.WebSphereLoginCommand" server="WebSphere"/>
+    <login-command class="flex.messaging.security.TomcatLoginCommand" server="Tomcat"/>
+    <login-command class="flex.messaging.security.JRunLoginCommand" server="JRun"/>        
+    -->
+  
+  </security>
+  
+  <channels>
+    <channel-definition id="atg-amf" class="mx.messaging.channels.AMFChannel">
+      <endpoint url="http://{server.name}:{server.port}/{context.root}/messagebroker/amf" class="flex.messaging.endpoints.AMFEndpoint"/>
+      <!--
+        To enable performance data collection:
+        Uncomment and set the following properties appropriately
+        Recommendation: For accurate time information do not
+        turn on both at the same time. Run the test twice: once for
+        gathering timing information and once for gathering sizing
+        information. This would eliminate delays caused by calculating
+        message size with timing-only option. -->
+      <!--
+      <properties>
+        <record-message-times>true</record-message-times>
+        <record-message-sizes>false</record-message-sizes>
+      </properties>
+      -->
+    </channel-definition>
+  
+    <channel-definition id="atg-secure-amf" class="mx.messaging.channels.SecureAMFChannel">
+      <endpoint url="https://{server.name}:{server.port}/{context.root}/messagebroker/amfsecure" class="flex.messaging.endpoints.SecureAMFEndpoint"/>
+      <properties>
+        <add-no-cache-headers>false</add-no-cache-headers>
+        <!--
+          To enable performance data collection:
+          Uncomment and set the following properties appropriately
+          Recommendation: For accurate time information do not
+          turn on both at the same time. Run the test twice: once for
+          gathering timing information and once for gathering sizing
+          information. This would eliminate delays caused by calculating
+          message size with timing-only option. -->
+        <!-- 
+        <record-message-times>true</record-message-times>
+        <record-message-sizes>false</record-message-sizes>
+        -->
+      </properties>
+    </channel-definition>
+  
+    <channel-definition id="atg-amf-stream" class="mx.messaging.channels.StreamingAMFChannel">
+      <endpoint url="http://{server.name}:{server.port}/{context.root}/messagebroker/streamingamf" class="flex.messaging.endpoints.StreamingAMFEndpoint" /> 
+      <properties>
+        <connect-timeout-seconds>1</connect-timeout-seconds>
+        <user-agent-settings>
+          <user-agent match-on="MSIE" kickstart-bytes="2048" max-streaming-connections-per-session="2" /> 
+          <user-agent match-on="Firefox" kickstart-bytes="2048" max-streaming-connections-per-session="8" /> 
+        </user-agent-settings>
+        <!--
+          To enable performance data collection:
+          Uncomment and set the following properties appropriately
+          Recommendation: For accurate time information do not
+          turn on both at the same time. Run the test twice: once for
+          gathering timing information and once for gathering sizing
+          information. This would eliminate delays caused by calculating
+          message size with timing-only option. -->
+        <!-- 
+        <record-message-times>true</record-message-times>
+        <record-message-sizes>false</record-message-sizes>
+        -->
+      </properties>
+    </channel-definition>
+  
+    <channel-definition id="atg-amf-polling" class="mx.messaging.channels.AMFChannel">
+      <endpoint url="http://{server.name}:{server.port}/{context.root}/messagebroker/amfpolling" class="flex.messaging.endpoints.AMFEndpoint"/>
+      <properties>
+        <polling-enabled>true</polling-enabled>
+        <polling-interval-seconds>1</polling-interval-seconds>
+        <!--
+          To enable performance data collection:
+          Uncomment and set the following properties appropriately
+          Recommendation: For accurate time information do not
+          turn on both at the same time. Run the test twice: once for
+          gathering timing information and once for gathering sizing
+          information. This would eliminate delays caused by calculating
+          message size with timing-only option. -->
+        <!-- 
+        <record-message-times>true</record-message-times>
+        <record-message-sizes>false</record-message-sizes>
+        -->
+      </properties>
+    </channel-definition>
+  
+  </channels>
+  
+  <logging>
+    <!--
+      To enable performance data collection:
+      Set the level at least to "Debug" to record the metrics to
+      a log file.
+      By default, on Microsoft Windows the log file is written
+      to the C:\Documents and Settings\USERNAME\Application Data\
+      Macromedia\Flash Player\Logs\flashlog.txt.
+    --> 
+    <target class="flex.messaging.log.ConsoleTarget" level="Warning">
+      <properties>
+        <prefix>[BlazeDS] </prefix>
+        <includeDate>false</includeDate>
+        <includeTime>false</includeTime>
+        <includeLevel>true</includeLevel>
+        <includeCategory>true</includeCategory>
+      </properties>
+      <filters>
+        <pattern>Endpoint.*</pattern>
+        <pattern>Service.*</pattern>
+        <pattern>Configuration</pattern>
+        <pattern>Message.General</pattern>
+      </filters>
+    </target>
+  </logging>
+  
+  <system>
+    <redeploy>
+      <enabled>false</enabled>
+      <!-- 
+      <watch-interval>20</watch-interval>
+      <watch-file>{context.root}/WEB-INF/flex/services-config.xml</watch-file>
+      <watch-file>{context.root}/WEB-INF/flex/proxy-config.xml</watch-file>
+      <watch-file>{context.root}/WEB-INF/flex/remoting-config.xml</watch-file>
+      <watch-file>{context.root}/WEB-INF/flex/messaging-config.xml</watch-file>
+      <watch-file>{context.root}/WEB-INF/flex/data-management-config.xml</watch-file>
+      <touch-file>{context.root}/WEB-INF/web.xml</touch-file>
+       -->
+    </redeploy>
+  </system>
+
+</services-config>
+<!-- @version $Id: //product/FlexUI/version/10.0.3/src/web-apps/FlexUI/WEB-INF/flex/services-config.xml#2 $$Change: 651448 $-->

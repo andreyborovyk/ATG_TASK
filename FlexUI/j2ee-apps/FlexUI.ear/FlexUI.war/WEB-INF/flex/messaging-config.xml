@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service id="message-service" 
+         class="flex.messaging.services.MessageService">
+
+  <destination id="pushDestination">
+    <channels>
+      <channel ref="atg-amf-stream" /> 
+      <channel ref="atg-amf-polling" /> 
+    </channels>
+  </destination>
+
+  <adapters>
+    <adapter-definition
+      id="actionscript"
+      class="flex.messaging.services.messaging.adapters.ActionScriptAdapter"
+      default="true" />
+  </adapters>
+
+</service>
+<!-- @version $Id: //product/FlexUI/version/10.0.3/src/web-apps/FlexUI/WEB-INF/flex/messaging-config.xml#2 $$Change: 651448 $-->

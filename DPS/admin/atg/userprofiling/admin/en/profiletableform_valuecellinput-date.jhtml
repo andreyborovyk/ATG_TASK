@@ -1,0 +1,42 @@
+<importbean bean="/atg/userprofiling/ProfileAdminFormHandler">
+
+<declareparam name="propertyDesc" value="atg.beans.DynamicPropertyDescriptor" description="The DynamicPropertyDescriptor of the cell we want to output">
+<declareparam name="propertyValue" value="java.lang.String" description="Value of the propertyDesc">
+
+<java>
+    Object value;
+
+if((value = request.getObjectParameter("propertyValue")) != null)
+{	
+
+    try 
+    {
+	if( (Class.forName("java.util.Date")).isAssignableFrom(value.getClass()) )
+	{
+		java.util.Date date = null;
+		String dateString = null;
+		
+		date = (java.util.Date)value;
+		
+		String dateFormatString = "MM/dd/yyyy";
+		if(date instanceof java.sql.Timestamp)
+		    dateFormatString = "MM/dd/yyyy hh:mm:ss";
+
+		java.text.SimpleDateFormat df = new java.text.SimpleDateFormat(dateFormatString);
+		
+		dateString = df.format(date);
+		request.setParameter("dateString",dateString);
+	}
+  
+    } catch (ClassNotFoundException  e) 
+    {
+	//if(isLoggingDebug())
+	//    logDebug(e);
+    }
+}
+
+
+</java>
+<input name="param:propertyDesc.name" type="text" value="param:dateString">
+<java>/* @version $Id: //product/DPS/version/10.0.3/release/DPS/admin/atg/userprofiling/admin/en/profiletableform_valuecellinput-date.jhtml#2 $$Change: 651448 $ */</java>
+

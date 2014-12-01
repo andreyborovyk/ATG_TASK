@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+    <title>Web Service Administration</title>
+  </head>
+
+<nucleus type=import>
+	/atg/dynamo/admin/CreateWebServiceProperties
+        /atg/dynamo/droplet/Switch
+</nucleus>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+<IMG SRC="../images/admin-banner.gif" ALT="Dynamo Administration"
+     ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a> / Web Service Administration</p><p>
+
+    <h1>Web Service Administration</h1>
+
+<blockquote>
+<table border=0 cellpadding=5>
+   <tr valign=top>
+    <td><A href="/nucleus/atg/webservice/WebServiceRegistry/">Web
+	Service Registry</A></td>
+    <td>View currently loaded Web Services</td>
+   </tr>
+   <tr valign=top>
+    <td><A href="browsesecurity.jhtml">Web
+	Service Security Manager</A></td>
+    <td>Browse and Edit Web Service Security Configurations</td>
+   </tr>
+   <tr valign=top>
+     <droplet name="Switch">
+       <param name="value" value="bean:CreateWebServiceProperties.canCreateWebService">
+       <oparam name="unset"></oparam>
+       <oparam name="default">
+         <td><A href="selecttype.jhtml">Web Service Creation Wizard</A></td>
+         <td>Use a multi-page wizard to create Web Service that invokes
+	     Nucleus Method, sends a JMS message via Patch Bay or
+	     performs a Repository operation
+         </td>
+       </oparam>
+       <oparam name="false">
+         <td>Web Service Creation Wizard</td>
+         <td>The Web Service Creation Wizard is not available in a standalone-mode
+	     assembled ATG EAR File.  To use the Web Service Creation Wizard, 
+             assemble the EAR file in development mode.
+         </td>
+       </oparam>
+     </droplet>
+   </tr>
+</table>
+</blockquote>
+  </BODY>
+</html>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/webservice/index.jhtml#2 $$Change: 651448 $*/</java>

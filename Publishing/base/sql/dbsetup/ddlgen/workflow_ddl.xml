@@ -1,0 +1,733 @@
+<!DOCTYPE schema SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+
+<schema name="workflow_ddl" description="tables describing workflow processes">
+
+  <!-- what does this mean? <include name="publishing_sql.xml"/> -->
+
+  <comment> @version $Id: //product/Publishing/version/10.0.3/pws/sql/xml/workflow_ddl.xml#2 $</comment>
+
+  <comment>
+    Collective workflow process instances.  These instances represent
+  </comment>
+  <comment>
+    all subjects (processes) going through the workflow process.
+  </comment>
+
+  <table name="epub_coll_workflow" description="information about collective workflow instances">
+    <column name="id" nullable="n"
+        description="unique id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="workflow_name" nullable="y"
+        description="workflow process name">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="modification_time" nullable="y"
+        description="when the workflow process was last modified">
+      <column-type db="generic" type="numeric" length="19"/>
+	  <column-type db="mysql" type="bigint" />
+    </column>
+    <column name="segment_name" nullable="y"
+        description="workflow process segment name">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="creator_id" nullable="y"
+        description="id of collective process instance which created this instance">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="state" nullable="y"
+        description="the instance's current process state machine state">
+      <column-type db="generic" type="varchar" length="16"/>
+    </column>
+    <column name="num_retries" nullable="y"
+        description="number of current transition retries">
+      <column-type db="generic" type="integer"/>
+    </column>
+
+    <primary-key name="epub_coll_wf_pkey">
+      <index-column column="id"/>
+    </primary-key>
+  </table>
+
+  <comment>
+    Individual workflow process instances.  Each of these instances
+  </comment>
+  <comment>
+    represents a single subject (process) going through the workflow
+  </comment>
+  <comment>
+    process.
+  </comment>
+
+  <table name="epub_ind_workflow" description="information about individual workflow instances">
+    <column name="id" nullable="n"
+        description="unique id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="workflow_name" nullable="y"
+        description="workflow process name">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="modification_time" nullable="y"
+        description="when the workflow process was last modified">
+      <column-type db="generic" type="numeric" length="19"/>
+	  <column-type db="mysql" type="bigint" />
+    </column>
+    <column name="segment_name" nullable="y"
+        description="workflow process segment name">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="creator_id" nullable="y"
+        description="id of collective process instance which created this instance">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="state" nullable="y"
+        description="the instance's current process state machine state">
+      <column-type db="generic" type="varchar" length="16"/>
+    </column>
+    <column name="process_id" nullable="n"
+        description="the id of the process this process instance represents">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="num_retries" nullable="y"
+        description="number of current transition retries">
+      <column-type db="generic" type="integer"/>
+    </column>
+
+    <primary-key name="epub_ind_wf_pkey">
+      <index-column column="id"/>
+    </primary-key>
+    <foreign-key name="epub_ind_wf_fkey" referenced-table="epub_process"
+        description="ensures that the associated process exists" index-name="epub_indworkflow_x">
+      <fkey-column referencing-column="process_id" referenced-column="process_id"/>
+    </foreign-key>
+  </table>
+
+  <comment>
+    Indices are needed on these tables to prevent table locks from being
+  </comment>
+  <comment>
+    acquired.  The primary key indices do not prevent this since they
+  </comment>
+  <comment>
+    are on multiple keys.
+  </comment>
+  <comment> </comment>
+  <comment>
+    String context variables associated with individual workflow
+  </comment>
+  <comment>
+    process instances.
+  </comment>
+
+  <table name="epub_workflow_strs" description="information about string context variables">
+    <column name="id" nullable="n"
+        description="id of the associated individual workflow instance">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="tag" nullable="n"
+        description="variable name">
+      <column-type db="generic" type="varchar" length="25"/>
+    </column>
+    <column name="context_str" nullable="y"
+        description="string variable value">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <primary-key name="epub_wf_str_pkey">
+      <index-column column="id" order="asc" seq="1"/>
+      <index-column column="tag" order="asc" seq="2"/>
+    </primary-key>
+    <foreign-key name="epub_wf_str_fkey" referenced-table="epub_ind_workflow"
+        description="ensures that the associated individual workflow instance exists">
+      <fkey-column referencing-column="id" referenced-column="id"/>
+    </foreign-key>
+  </table>
+
+  <comment>
+    Boolean context variables associated with individual workflow
+  </comment>
+  <comment>
+    process instances.
+  </comment>
+
+  <table name="epub_workflow_bls" description="information about boolean context variables">
+    <column name="id" nullable="n"
+        description="id of the associated individual workflow instance">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="tag" nullable="n"
+        description="variable name">
+      <column-type db="generic" type="varchar" length="25"/>
+    </column>
+    <column name="context_bool" nullable="y"
+        description="boolean variable value">
+      <column-type db="generic" type="numeric" length="1"/>
+	  <column-type db="mysql" type="tinyint" />
+    </column>
+    <primary-key name="epub_wf_bl_pkey">
+      <index-column column="id" order="asc" seq="1"/>
+      <index-column column="tag" order="asc" seq="2"/>
+    </primary-key>
+    <foreign-key name="epub_wf_bl_fkey" referenced-table="epub_ind_workflow"
+        description="ensures that the associated individual workflow instance exists">
+      <fkey-column referencing-column="id" referenced-column="id"/>
+    </foreign-key>
+  </table>
+
+  <comment>
+    Long context variables associated with individual workflow process
+  </comment>
+  <comment>
+    instances.
+  </comment>
+
+  <table name="epub_workflow_lngs" description="information about long context variables">
+    <column name="id" nullable="n"
+        description="id of the associated individual workflow instance">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="tag" nullable="n"
+        description="variable name">
+      <column-type db="generic" type="varchar" length="25"/>
+    </column>
+    <column name="context_long" nullable="y"
+        description="long variable value">
+      <column-type db="generic" type="numeric" length="19"/>
+	  <column-type db="mysql" type="bigint" />
+    </column>
+    <primary-key name="epub_wf_lng_pkey">
+      <index-column column="id" order="asc" seq="1"/>
+      <index-column column="tag" order="asc" seq="2"/>
+    </primary-key>
+    <foreign-key name="epub_wf_lng_fkey" referenced-table="epub_ind_workflow"
+        description="ensures that the associated individual workflow instance exists">
+      <fkey-column referencing-column="id" referenced-column="id"/>
+    </foreign-key>
+  </table>
+
+  <comment>
+    Double context variables associated with individual workflow
+  </comment>
+  <comment>
+    process instances.
+  </comment>
+
+  <table name="epub_workflow_dbls" description="information about double context variables">
+    <column name="id" nullable="n"
+        description="id of the associated individual workflow instance">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="tag" nullable="n"
+        description="variable name">
+      <column-type db="generic" type="varchar" length="25"/>
+    </column>
+    <column name="context_dbl" nullable="y"
+        description="double variable value">
+      <column-type db="generic" type="numeric" length="15" scale="4"/>
+    </column>
+    <primary-key name="epub_wf_dbl_pkey">
+      <index-column column="id" order="asc" seq="1"/>
+      <index-column column="tag" order="asc" seq="2"/>
+    </primary-key>
+    <foreign-key name="epub_wf_dbl_fkey" referenced-table="epub_ind_workflow"
+        description="ensures that the associated individual workflow instance exists">
+      <fkey-column referencing-column="id" referenced-column="id"/>
+    </foreign-key>
+  </table>
+
+  <comment>
+    Date context variables associated with individual workflow process
+  </comment>
+  <comment>
+    instances.
+  </comment>
+
+  <table name="epub_workflow_dats" description="information about date context variables">
+    <column name="id" nullable="n"
+        description="id of the associated individual workflow instance">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="tag" nullable="n"
+        description="variable name">
+      <column-type db="generic" type="varchar" length="25"/>
+    </column>
+    <column name="context_date" nullable="y"
+        description="date variable value">
+      <column-type db="generic" type="datetime"/>
+    </column>
+    <primary-key name="epub_wf_dat_pkey">
+      <index-column column="id" order="asc" seq="1"/>
+      <index-column column="tag" order="asc" seq="2"/>
+    </primary-key>
+    <foreign-key name="epub_wf_dat_fkey" referenced-table="epub_ind_workflow"
+        description="ensures that the associated individual workflow instance exists">
+      <fkey-column referencing-column="id" referenced-column="id"/>
+    </foreign-key>
+  </table>
+
+  <comment>
+    Repository item context variables associated with individual 
+  </comment>
+  <comment>
+    workflow process instances.
+  </comment>
+
+  <table name="epub_workflow_ris" description="information about repository item context variables">
+    <column name="id" nullable="n"
+        description="id of the associated individual workflow instance">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="tag" nullable="n"
+        description="variable name">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="context_item" nullable="y"
+        description="repository item reference">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <primary-key name="epub_wf_ri_pkey">
+      <index-column column="id" order="asc" seq="1"/>
+      <index-column column="tag" order="asc" seq="2"/>
+    </primary-key>
+    <foreign-key name="epub_wf_ri_fkey" referenced-table="epub_ind_workflow"
+        description="ensures that the associated individual workflow instance exists">
+      <fkey-column referencing-column="id" referenced-column="id"/>
+    </foreign-key>
+  </table>
+
+  <comment>
+    Virtual file context variables associated with individual 
+  </comment>
+  <comment>
+    workflow process instances.
+  </comment>
+
+  <table name="epub_workflow_vfs" description="information about virtual file context variables">
+    <column name="id" nullable="n"
+        description="id of the associated individual workflow instance">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="tag" nullable="n"
+        description="variable name">
+      <column-type db="generic" type="varchar" length="25"/>
+    </column>
+    <column name="context_file" nullable="y"
+        description="virtual file reference">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <primary-key name="epub_wf_vf_pkey">
+      <index-column column="id" order="asc" seq="1"/>
+      <index-column column="tag" order="asc" seq="2"/>
+    </primary-key>
+    <foreign-key name="epub_wf_vf_fkey" referenced-table="epub_ind_workflow"
+        description="ensures that the associated individual workflow instance exists">
+      <fkey-column referencing-column="id" referenced-column="id"/>
+    </foreign-key>
+  </table>
+
+  <comment>
+    Workflow infos.  Each of these infos corresponds to a workflow
+  </comment>
+  <comment>
+    process definition created via the ACC UI.
+  </comment>
+
+  <table name="epub_workflow_info" description="information about workflow definitions">
+    <column name="id" nullable="n"
+        description="unique id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="workflow_name" nullable="y"
+        description="workflow process name">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="workflow_status" nullable="y"
+        description="workflow status: 1 (disabled), 2 (running)">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <column name="modification_time" nullable="y"
+        description="when the workflow process was last modified">
+      <column-type db="generic" type="numeric" length="19"/>
+	   <column-type db="mysql" type="bigint" />
+    </column>
+    <column name="creation_time" nullable="y"
+        description="when the workflow process was created">
+      <column-type db="generic" type="numeric" length="19"/>
+	  <column-type db="mysql" type="bigint" />
+    </column>
+    <column name="author" nullable="y"
+        description="who created the workflow process">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+    <column name="last_modified_by" nullable="y"
+        description="who last modified the workflow process">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+    <column name="psm_version" nullable="y"
+        description="process state machine version">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <column name="wdl" nullable="y"
+        description="contains the WDL bytes which define the workflow process">
+      <column-type db="generic" type="long-varbinary"/>
+      <column-type db="db2" type="blob" length="1048576"/>
+    </column>
+
+    <primary-key name="epub_wf_info_pkey">
+      <index-column column="id"/>
+    </primary-key>
+  </table>
+
+  <table name="epub_wf_mig_info" description="workflow migration information">
+    <column name="id" nullable="n"
+        description="unique id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="workflow_info_id" nullable="n"
+        description="workflow info id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="workflow_name" nullable="y"
+        description="workflow process name">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="modification_time" nullable="y"
+        description="modification time at the time of migration">
+      <column-type db="generic" type="numeric" length="19"/>
+	  <column-type db="mysql" type="bigint" />
+    </column>
+    <column name="psm_version" nullable="y"
+        description="process state machine version at the time of migration">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <column name="migration_status" nullable="y"
+        description="migration status: 1 (inProgress), 2 (done)">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <column name="wdl" nullable="y"
+        description="workflow process definition at the time of migration">
+      <column-type db="generic" type="long-varbinary"/>
+      <column-type db="db2" type="blob" length="1048576"/>
+    </column>
+
+    <primary-key name="epub_wf_mig_inf_pk">
+      <index-column column="id"/>
+    </primary-key>
+    <foreign-key name="epub_wf_mig_inf_fk" referenced-table="epub_workflow_info"
+        description="ensures that the associated workflow info exists" index-name="epub_wf_mig_info_x" >
+      <fkey-column referencing-column="workflow_info_id" referenced-column="id"/>
+    </foreign-key>
+  </table>
+
+  <table name="epub_wf_mg_inf_seg" description="segment names of workflow migration infos">
+    <column name="id" nullable="n"
+        description="id of the migration info">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="idx" nullable="n"
+        description="segment's index in the list">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <column name="segment_name" nullable="y"
+        description="workflow process segment name">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+
+    <primary-key name="epub_wf_mginfs_pk">
+      <index-column column="id" order="asc" seq="1"/>
+      <index-column column="idx" order="asc" seq="2"/>
+    </primary-key>
+    <foreign-key name="epub_wf_mginfs_fk" referenced-table="epub_wf_mig_info"
+        description="ensures that the associated migration info exists">
+      <fkey-column referencing-column="id" referenced-column="id"/>
+    </foreign-key>
+  </table>
+
+  <comment>
+    Workflow template infos.  Each of these infos corresponds to a
+  </comment>
+  <comment>
+    workflow template process definition created via the ACC UI.
+  </comment>
+
+  <table name="epub_wf_templ_info" description="information about workflow template definitions">
+    <column name="id" nullable="n"
+        description="unique id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="template_name" nullable="y"
+        description="workflow template name">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="modification_time" nullable="y"
+        description="when the workflow template was last modified">
+      <column-type db="generic" type="numeric" length="19"/>
+	  <column-type db="mysql" type="bigint" />
+    </column>
+    <column name="creation_time" nullable="y"
+        description="when the workflow template was created">
+      <column-type db="generic" type="numeric" length="19"/>
+	  <column-type db="mysql" type="bigint" />
+    </column>
+    <column name="author" nullable="y"
+        description="who created the workflow template">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+    <column name="last_modified_by" nullable="y"
+        description="who last modified the workflow template">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+    <column name="wdl" nullable="y"
+        description="contains the WDL bytes which define the workflow template">
+      <column-type db="generic" type="long-varbinary"/>
+      <column-type db="db2" type="blob" length="1048576"/>
+    </column>
+
+    <primary-key name="epub_tl_info_pkey">
+      <index-column column="id"/>
+    </primary-key>
+  </table>
+
+  <comment>
+    Pending collective transitions associated with workflow processes.
+  </comment>
+
+  <table name="epub_wf_coll_trans" description="information about workflow pending collective transitions">
+    <column name="id" nullable="n"
+        description="unique id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="workflow_name" nullable="y"
+        description="workflow process name">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="modification_time" nullable="y"
+        description="when the workflow process was last modified">
+      <column-type db="generic" type="numeric" length="19"/>
+	  <column-type db="mysql" type="bigint" />
+    </column>
+    <column name="server_id" nullable="y"
+        description="workflow process manager server responsible for completing this collective transition">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="event_type" nullable="y"
+        description="type of the JMS message which triggered this collective transition">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="segment_name" nullable="y"
+        description="workflow process segment name">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="state" nullable="y"
+        description="current process state machine state of the workflow instances participating in the transition">
+      <column-type db="generic" type="varchar" length="16"/>
+    </column>
+    <column name="coll_workflow_id" nullable="y"
+        description="id of the collective instance taking the transition">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="step" nullable="y"
+        description="current transition step">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <column name="current_count" nullable="y"
+        description="current transition count">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <column name="last_query_id" nullable="y"
+        description="current transition last query id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="message_bean" nullable="y"
+        description="message bean of the JMS message which triggered this collective transition">
+      <column-type db="generic" type="long-varbinary"/>
+      <column-type db="db2" type="blob" length="1048576"/>
+    </column>
+
+    <primary-key name="epub_wf_ctran_pkey">
+      <index-column column="id"/>
+    </primary-key>
+    <foreign-key name="epub_wf_ctran_fkey" referenced-table="epub_coll_workflow"
+        description="ensures that the associated collective workflow instance exists" index-name="epub_wfcolltrans_x">
+      <fkey-column referencing-column="coll_workflow_id" referenced-column="id"/>
+    </foreign-key>
+  </table>
+
+  <comment>
+    Pending individual transitions associated with workflow processes.
+  </comment>
+
+  <table name="epub_wf_ind_trans" description="information about workflow pending individual transitions">
+    <column name="id" nullable="n"
+        description="unique id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="workflow_name" nullable="y"
+        description="workflow process name">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="modification_time" nullable="y"
+        description="when the workflow process was last modified">
+      <column-type db="generic" type="numeric" length="19"/>
+	  <column-type db="mysql" type="bigint" />
+    </column>
+    <column name="server_id" nullable="y"
+        description="workflow process manager server responsible for completing this individual transition">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="event_type" nullable="y"
+        description="type of the JMS message which triggered this individual transition">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="segment_name" nullable="y"
+        description="workflow process segment name">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="state" nullable="y"
+        description="current process state machine state of the workflow instances participating in the transition">
+      <column-type db="generic" type="varchar" length="16"/>
+    </column>
+    <column name="last_query_id" nullable="y"
+        description="current transition last query id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="message_bean" nullable="y"
+        description="message bean of the JMS message which triggered this individual transition">
+      <column-type db="generic" type="long-varbinary"/>
+      <column-type db="db2" type="blob" length="1048576"/>
+    </column>
+
+    <primary-key name="epub_wf_itran_pkey">
+      <index-column column="id"/>
+    </primary-key>
+  </table>
+
+  <comment>
+    Pending deletions associated with workflow processes.
+  </comment>
+
+  <table name="epub_wf_deletion" description="information about workflow pending deletions">
+    <column name="id" nullable="n"
+        description="unique id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="workflow_name" nullable="y"
+        description="workflow process name">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="modification_time" nullable="y"
+        description="when the workflow process was last modified">
+      <column-type db="generic" type="numeric" length="19"/>
+	  <column-type db="mysql" type="bigint" />
+    </column>
+
+    <primary-key name="epub_wf_del_pkey">
+      <index-column column="id"/>
+    </primary-key>
+  </table>
+
+  <table name="epub_wf_del_segs" description="segment names of workflow pending deletions">
+    <column name="id" nullable="n"
+        description="id of the pending deletion">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="idx" nullable="n"
+        description="segment's index in the list">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <column name="segment_name" nullable="y"
+        description="workflow process segment name">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+
+    <primary-key name="epub_wf_delsg_pkey">
+      <index-column column="id" order="asc" seq="1"/>
+      <index-column column="idx" order="asc" seq="2"/>
+    </primary-key>
+    <foreign-key name="epub_wf_delsg_fkey" referenced-table="epub_wf_deletion"
+        description="ensures that the associated pending deletion exists">
+      <fkey-column referencing-column="id" referenced-column="id"/>
+    </foreign-key>
+  </table>
+
+  <comment>
+    Pending migrations associated with workflow processes.
+  </comment>
+
+  <table name="epub_wf_migration" description="information about workflow pending migrations">
+    <column name="id" nullable="n"
+        description="unique id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="workflow_name" nullable="y"
+        description="workflow process name">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="old_mod_time" nullable="y"
+        description="modification time workflow process is being migrated from">
+      <column-type db="generic" type="numeric" length="19"/>
+	  <column-type db="mysql" type="bigint" />
+    </column>
+    <column name="new_mod_time" nullable="y"
+        description="modification time workflow process is being migrated to">
+      <column-type db="generic" type="numeric" length="19"/>
+	  <column-type db="mysql" type="bigint" />
+    </column>
+    <column name="migration_info_id" nullable="y"
+        description="workflow migration info id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    <primary-key name="epub_wf_mig_pkey">
+      <index-column column="id"/>
+    </primary-key>
+  </table>
+
+  <table name="epub_wf_mig_segs" description="segment names of workflow pending migrations">
+    <column name="id" nullable="n"
+        description="id of the pending migration">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="idx" nullable="n"
+        description="segment's index in the list">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <column name="segment_name" nullable="y"
+        description="workflow process segment name">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+
+    <primary-key name="epub_wf_migsg_pkey">
+      <index-column column="id" order="asc" seq="1"/>
+      <index-column column="idx" order="asc" seq="2"/>
+    </primary-key>
+    <foreign-key name="epub_wf_migsg_fkey" referenced-table="epub_wf_migration"
+        description="ensures that the associated pending migration exists">
+      <fkey-column referencing-column="id" referenced-column="id"/>
+    </foreign-key>
+  </table>
+
+  <comment>
+    Table that keeps track of how the various workflow process manager
+  </comment>
+  <comment>
+    servers are classified.
+  </comment>
+
+  <table name="epub_wf_server_id" description="workflow process manager classification">
+    <column name="server_id" nullable="n"
+        description="workflow process manager server id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="server_type" nullable="n"
+        description="workflow process manager server type: 0 (process editor), 1 (global), 2 (individual)">
+      <column-type db="generic" type="integer"/>
+    </column>
+
+    <primary-key name="epub_wf_server_pk">
+      <index-column column="server_id"/>
+    </primary-key>
+  </table>
+
+</schema>
+<!-- @version $Id: //product/Publishing/version/10.0.3/pws/sql/xml/workflow_ddl.xml#2 $$Change: 651448 $ -->

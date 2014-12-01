@@ -1,0 +1,849 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC
+	"-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+	"http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+  <display-name>Dynamo Default Portal Application</display-name>
+  <description>The Dynamo Default Portal Application may be used as a template for creating new portal applications.</description>
+
+  <!-- Context Parameters                                             -->
+  <!--                                                                -->
+  <!--                                                                -->
+
+  <!-- Context Root                                                   -->
+  <!--                                                                -->
+  <!-- Context root of web application.                               -->
+  <context-param>
+    <param-name>context-root</param-name>
+    <param-value>/portal</param-value>
+  </context-param>
+
+  <!-- DAF context name                                               -->
+  <!--                                                                -->
+  <!--                                                                -->
+  <context-param>
+    <param-name>atg.session.parentContextName</param-name>
+    <param-value>/dyn</param-value>
+    <description>The name of the DAF context.</description>
+  </context-param>
+
+  <context-param>
+    <param-name>atg.dafear.bootstrapContextName</param-name>
+    <param-value>/dyn</param-value>
+    <description>
+      The name of the DAF bootstrap WAR context.
+    </description>
+  </context-param>
+
+  <!-- GearContentsCache                                              -->
+  <!--                                                                -->
+  <!--                                                                -->
+  <context-param>
+    <param-name>GearContentsCache</param-name>
+    <param-value>dynamo:/atg/portal/framework/GearContentsCache</param-value>
+    <description>The JNDI name of the GearsRenders content cache. If not set defaults to atg/portal/framework/GearContentsCache.</description>
+  </context-param>
+
+  <!-- ThreadPool                                                     -->
+  <!--                                                                -->
+  <!--                                                                -->
+  <context-param>
+    <param-name>ThreadPool</param-name>
+    <param-value>dynamo:/atg/portal/framework/GearRendererThreadPool</param-value>
+    <description>The JNDI name of the GearRenders thread pool. If not set defaults to dynamo:/atg/portal/framework/GearRendererThreadPool.</description>
+  </context-param>
+
+  <!-- Filters                                                        -->
+  <!--                                                                -->
+  <!--                                                                -->
+
+  <!-- User Transaction Filter                                        -->
+  <!--                                                                -->
+  <!-- This filter is responsible for demarcating the request with a  -->
+  <!-- transaction.                                                   -->
+  <filter>
+    <filter-name>UserTransactionFilter</filter-name>
+    <display-name>UserTransactionFilter</display-name>
+    <description>Responsible for demarcation the request with a transaction.</description>
+    <filter-class>atg.servlet.UserTransactionFilter</filter-class>
+    <init-param>
+      <param-name>loggingDebug</param-name>
+      <param-value>false</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingWarning</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingError</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingInfo</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>userTransactionName</param-name>
+      <param-value>java:comp/UserTransaction</param-value>
+    </init-param>
+  </filter>
+
+  <!-- Dynamo Server Page Filter                                      -->
+  <!--                                                                -->
+  <!-- This filter invokes the dynamo application framework           -->
+  <!-- servlet pipeline.                                              -->
+  <filter>
+    <filter-name>DynamoServerPageFilter</filter-name>
+    <display-name>DynamoServerPageFilter</display-name>
+    <description>This filter invokes the dynamo application framework servlet pipeline.</description>
+    <filter-class>atg.filter.dspjsp.PageFilter</filter-class>
+  </filter>
+
+  <!-- Portal Server Filter                                           -->
+  <!--                                                                -->
+  <!-- This filter is responsible for wrapping the HttpServletRequest -->
+  <!-- and HttpServletResponse objects with PortalRequest and         -->
+  <!-- PortalResponse objects                                         -->
+  <filter>
+    <filter-name>PortalServerFilter</filter-name>
+    <display-name>PortalServerFilter</display-name>
+    <description>Responsible for wrapping the HttpServletRequest and HttpServletResponse objects.</description>
+    <filter-class>atg.portal.servlet.PortalServerFilter</filter-class>
+    <init-param>
+      <param-name>loggingDebug</param-name>
+      <param-value>false</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingWarning</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingError</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingInfo</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>portalServletRequestFactory</param-name>
+      <param-value>ctx:dynamo:/atg/portal/servlet/PortalServletFactory</param-value>
+    </init-param>
+    <init-param>
+      <param-name>portalServletResponseFactory</param-name>
+      <param-value>ctx:dynamo:/atg/portal/servlet/PortalServletFactory</param-value>
+    </init-param>
+    <init-param>
+      <param-name>wrapping</param-name>
+      <param-value>false</param-value>
+    </init-param>
+    <init-param>
+      <param-name>initD5StyleAttributes</param-name>
+      <param-value>false</param-value>
+    </init-param>
+    <init-param>
+      <param-name>portalServletRequestName</param-name>
+      <param-value>PortalServletRequest</param-value>
+    </init-param>
+  </filter>
+
+  <!-- Gear Servlet Filter                                            -->
+  <!--                                                                -->
+  <!-- This filter is responsible for the configuration of attributes -->
+  <!-- used during the execution of gears.                            -->
+  <filter>
+    <filter-name>GearServletFilter</filter-name>
+    <display-name>GearServletFilter</display-name>
+    <description>Responsible for configuring attributes used in the execution of gears.</description>
+    <filter-class>atg.portal.servlet.GearServletFilter</filter-class>
+    <init-param>
+      <param-name>loggingDebug</param-name>
+      <param-value>false</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingWarning</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingError</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingInfo</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>gearServletRequestFactory</param-name>
+      <param-value>ctx:dynamo:/atg/portal/servlet/PortalServletFactory</param-value>
+    </init-param>
+    <init-param>
+      <param-name>gearServletResponseFactory</param-name>
+      <param-value>ctx:dynamo:/atg/portal/servlet/PortalServletFactory</param-value>
+    </init-param>
+    <init-param>
+      <param-name>gearIdParameterName</param-name>
+      <param-value>paf_gear_id</param-value>
+    </init-param>
+    <init-param>
+      <param-name>gearModeParameterName</param-name>
+      <param-value>paf_gm</param-value>
+    </init-param>
+    <init-param>
+      <param-name>portletContainer</param-name>
+      <param-value>ctx:dynamo:/atg/portal/portletstandard/ATGContainerService</param-value>
+    </init-param>
+  </filter>
+
+  <!-- Display Filter                                                 -->
+  <!--                                                                -->
+  <!-- This filter is responsible for initializing the                -->
+  <!-- PortalServletRequest display mode.                             -->  
+  <filter>
+    <filter-name>DisplayFilter</filter-name>
+    <display-name>DisplayFilter</display-name>
+    <description>Responsible for initializing the PortalServletRequests display mode.</description>
+    <filter-class>atg.portal.servlet.DisplayFilter</filter-class>
+    <init-param>
+      <param-name>loggingDebug</param-name>
+      <param-value>false</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingWarning</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingError</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingInfo</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>defaultDisplayModeName</param-name>
+      <param-value>shared</param-value>
+    </init-param>
+    <init-param>
+      <param-name>displayModeParameterName</param-name>
+      <param-value>paf_dm</param-value>
+    </init-param>
+    <init-param>
+      <param-name>initD5StyleAttributes</param-name>
+      <param-value>false</param-value>
+    </init-param>
+  </filter>
+
+  <!-- Device Filter                                                  -->
+  <!--                                                                -->
+  <!-- This filter is responsible for initializing the                -->
+  <!-- PortalServletRequests device.                                  -->  
+  <filter>
+    <filter-name>DeviceFilter</filter-name>
+    <display-name>DeviceFilter</display-name>
+    <description>Responsible for initializing the PortalServletRequests device.</description>
+    <filter-class>atg.portal.servlet.DeviceFilter</filter-class>
+    <init-param>
+      <param-name>loggingDebug</param-name>
+      <param-value>false</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingWarning</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingError</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingInfo</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>mimeTypePreferences</param-name>
+      <param-value>text/html,text/vnd.wap.wml,application/vnd.wap.wml,text/xml,application/xml,application/xhtml+xml</param-value>
+    </init-param>
+  </filter>
+
+  <!-- Device Filter                                                  -->
+  <!--                                                                -->
+  <!-- This filter is responsible for initializing the                -->
+  <!-- PortalServletRequests device output.                           -->  
+  <filter>
+    <filter-name>DeviceOutputFilter</filter-name>
+    <display-name>DeviceOutputFilter</display-name>
+    <description>Responsible for initializing the PortalServletRequests device output.</description>
+    <filter-class>atg.portal.servlet.DeviceOutputFilter</filter-class>
+    <init-param>
+      <param-name>loggingDebug</param-name>
+      <param-value>false</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingWarning</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingError</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingInfo</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>deviceOutputFactory</param-name>
+      <param-value>ctx:dynamo:/atg/portal/framework/DeviceOutputFactory</param-value>
+    </init-param>
+  </filter>
+
+  <!-- Portal Filter                                                  -->
+  <!--                                                                -->
+  <!-- This filter is responsible for initializing the                -->
+  <!-- PortalServletRequests portal.                                  -->  
+  <filter>
+    <filter-name>PortalFilter</filter-name>
+    <display-name>PortalFilter</display-name>
+    <description>Responsible for initializing the PortalServletRequests portal.</description>
+    <filter-class>atg.portal.servlet.PortalFilter</filter-class>
+    <init-param>
+      <param-name>loggingDebug</param-name>
+      <param-value>false</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingWarning</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingError</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingInfo</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>portalManager</param-name>
+      <param-value>ctx:dynamo:/atg/portal/framework/PortalManager</param-value>
+    </init-param>
+    <init-param>
+      <param-name>portalIdParameterName</param-name>
+      <param-value>paf_portalId</param-value>
+    </init-param>
+  </filter>
+
+  <!-- CommunityFilter                                                -->
+  <!--                                                                -->
+  <!-- This filter is responsible for determining the commnuity       -->
+  <!-- the request belongs to.                                        -->
+  <filter>
+   <filter-name>CommunityFilter</filter-name>
+    <display-name>CommunityFilter</display-name>
+    <description>Responsible for determining the community a request belongs to.</description>
+    <filter-class>atg.portal.servlet.CommunityFilter</filter-class>
+    <init-param>
+      <param-name>loggingDebug</param-name>
+      <param-value>false</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingWarning</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingError</param-name>
+      <param-value>true</param-value>
+    </init-param>                                                
+    <init-param>                                                 
+      <param-name>loggingInfo</param-name>                      
+      <param-value>true</param-value>                           
+    </init-param>
+    <init-param>
+      <param-name>portalManager</param-name>
+      <param-value>ctx:dynamo:/atg/portal/framework/PortalManager</param-value>
+    </init-param>
+    <init-param>
+      <param-name>communityIdParameterName</param-name>
+      <param-value>paf_communityId</param-value>
+    </init-param>
+    <init-param>
+      <param-name>initD5StyleAttributes</param-name>
+      <param-value>false</param-value>
+    </init-param>
+  </filter>
+
+  <!-- PageFilter                                                     -->
+  <!--                                                                -->
+  <!-- This filter is responsible for determining the page            -->
+  <!-- the request belongs to.                                        -->
+  <filter>
+   <filter-name>PageFilter</filter-name>
+    <display-name>PageFilter</display-name>
+    <description>Responsible for determining the page a request belongs to.</description>
+    <filter-class>atg.portal.servlet.PageFilter</filter-class>
+    <init-param>
+      <param-name>loggingDebug</param-name>
+      <param-value>false</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingWarning</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingError</param-name>
+      <param-value>true</param-value>
+    </init-param>                                                
+    <init-param>                                                 
+      <param-name>loggingInfo</param-name>                      
+      <param-value>true</param-value>                           
+    </init-param>
+    <init-param>
+      <param-name>portalManager</param-name>
+      <param-value>ctx:dynamo:/atg/portal/framework/PortalManager</param-value>
+    </init-param>
+    <init-param>
+      <param-name>pageIdParameterName</param-name>
+      <param-value>paf_pageId</param-value>
+    </init-param>
+    <init-param>
+      <param-name>initD5StyleAttributes</param-name>
+      <param-value>false</param-value>
+    </init-param>
+  </filter>
+
+  <!-- AccessFilter                                                   -->
+  <!--                                                                -->
+  <!-- This filter is responsible for checking the permissions        -->
+  <!-- on portal request objects.                                     -->
+  <filter>
+   <filter-name>AccessFilter</filter-name>
+    <display-name>AccessFilter</display-name>
+    <description>Responsible for checking the permissions on portal request objects.</description>
+    <filter-class>atg.portal.servlet.AccessFilter</filter-class>
+    <init-param>
+      <param-name>loggingDebug</param-name>
+      <param-value>false</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingWarning</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingError</param-name>
+      <param-value>true</param-value>
+    </init-param>                                                
+    <init-param>                                                 
+      <param-name>loggingInfo</param-name>                      
+      <param-value>true</param-value>                           
+    </init-param>
+    <init-param>
+      <param-name>passRequest</param-name>
+      <param-value>false</param-value>
+    </init-param>
+    <init-param>
+      <param-name>methodName</param-name>
+      <param-value>forward</param-value>
+    </init-param>
+    <init-param>
+      <param-name>defaultLoginTemplateContextURI</param-name>
+      <param-value>/portal</param-value>
+    </init-param>
+    <init-param>
+      <param-name>defaultLoginTemplatePathURI</param-name>
+      <param-value>/userprofiling/login.jsp</param-value>
+    </init-param>
+    <init-param>
+      <param-name>defaultAccessDeniedTemplateContextURI</param-name>
+      <param-value>/portal</param-value>
+    </init-param>
+    <init-param>
+      <param-name>defaultAccessDeniedTemplatePathURI</param-name>
+      <param-value>/access/accessDenied.jsp</param-value>
+    </init-param>
+    <init-param>
+      <param-name>profileName</param-name>
+      <param-value>dynamo:/atg/userprofiling/Profile</param-value>
+    </init-param>
+    <init-param>
+      <param-name>d5StyleAccess</param-name>
+      <param-value>false</param-value>
+    </init-param>
+  </filter>
+
+  <!-- OfflineFilter                                                  -->
+  <!--                                                                -->
+  <!-- This filter is responsible for checking the offline status     -->
+  <!-- of portal request objects.                                     -->
+  <filter>
+   <filter-name>OfflineFilter</filter-name>
+    <display-name>OfflineFilter</display-name>
+    <description>Responsible for the offline statusof portal request objects.</description>
+    <filter-class>atg.portal.servlet.OfflineFilter</filter-class>
+    <init-param>
+      <param-name>loggingDebug</param-name>
+      <param-value>false</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingWarning</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingError</param-name>
+      <param-value>true</param-value>
+    </init-param>                                                
+    <init-param>                                                 
+      <param-name>loggingInfo</param-name>                      
+      <param-value>true</param-value>                           
+    </init-param>
+    <init-param>
+      <param-name>passRequest</param-name>
+      <param-value>false</param-value>
+    </init-param>
+    <init-param>
+      <param-name>methodName</param-name>
+      <param-value>forward</param-value>
+    </init-param>
+    <init-param>
+      <param-name>offline</param-name>
+      <param-value>false</param-value>
+    </init-param>
+    <init-param>
+      <param-name>defaultOfflineTemplateContextURI</param-name>
+      <param-value>/portal</param-value>
+    </init-param>
+    <init-param>
+      <param-name>defaultOfflineTemplatePathURI</param-name>
+      <param-value>/access/offline.jsp</param-value>
+    </init-param>
+    <init-param>
+      <param-name>d5StyleOffline</param-name>
+      <param-value>false</param-value>
+    </init-param> 
+  </filter>
+
+  <!-- CommunityPageFilter                                            -->
+  <!--                                                                -->
+  <!-- This filter is responsible for determining the community pages -->
+  <!-- belonging to the request.                                      -->
+  <filter>
+   <filter-name>CommunityPageFilter</filter-name>
+    <display-name>CommunityPageFilter</display-name>
+    <description>Responsible for determining the community pages belonging to a request.</description>
+    <filter-class>atg.portal.servlet.CommunityPageFilter</filter-class>
+    <init-param>
+      <param-name>loggingDebug</param-name>
+      <param-value>false</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingWarning</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingError</param-name>
+      <param-value>true</param-value>
+    </init-param>                                                
+    <init-param>                                                 
+      <param-name>loggingInfo</param-name>                      
+      <param-value>true</param-value>                           
+    </init-param>
+  </filter>
+
+  <!-- PortletActionFilter                                            -->
+  <!-- -->
+  <!-- This filter is responsible for handling Portlet action requests -->
+  <!-- -->
+  <filter>
+   <filter-name>PortletActionFilter</filter-name>
+    <display-name>PortletActionFilter</display-name>
+    <description>Responsible for handling Portlet action requests.</description>
+    <filter-class>atg.portal.servlet.PortletActionFilter</filter-class>
+    <init-param>
+      <param-name>loggingDebug</param-name>
+      <param-value>false</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingWarning</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingError</param-name>
+      <param-value>true</param-value>
+    </init-param>                                                
+    <init-param>                                                 
+      <param-name>loggingInfo</param-name>                      
+      <param-value>true</param-value>                           
+    </init-param>
+    <init-param>
+      <param-name>portletContainer</param-name>
+      <param-value>ctx:dynamo:/atg/portal/portletstandard/ATGContainerService</param-value>
+    </init-param>
+  </filter>
+
+  <!-- PageViewEvent Filter                                           -->
+  <!--                                                                -->
+  <!-- This filter is responsible for sending a message each time     -->
+  <!-- a community page has been requested.                           -->
+  <filter>
+    <filter-name>PageViewEventFilter</filter-name>
+    <display-name>PageViewEventFilter</display-name>
+    <description>Responsible sending a message each time a community page has been requested.</description>
+    <filter-class>atg.portal.servlet.PageViewEventFilter</filter-class>
+    <init-param>
+      <param-name>loggingDebug</param-name>
+      <param-value>false</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingWarning</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingError</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingInfo</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>logPageViews</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>gearMessagePublisher</param-name>
+      <param-value>ctx:dynamo:/atg/portal/alert/GearMessagePublisher</param-value>
+    </init-param>
+    <init-param>
+      <param-name>profileName</param-name>
+      <param-value>dynamo:/atg/userprofiling/Profile</param-value>
+    </init-param>
+  </filter>
+
+
+  <!-- Filter Mappings                                                -->
+  <!--                                                                -->
+  <!--                                                                -->
+  <filter-mapping>
+    <filter-name>DynamoServerPageFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <!-- <filter-mapping>                                               -->
+  <!--   <filter-name>UserTransactionFilter</filter-name>             -->
+  <!--   <url-pattern>/*</url-pattern>                                -->
+  <!-- </filter-mapping>                                              -->
+  <filter-mapping>
+    <filter-name>PortalServerFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>GearServletFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>DisplayFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>DeviceFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>DeviceOutputFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>PortalFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>CommunityFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>PageFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>AccessFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>OfflineFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>CommunityPageFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>PortletActionFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>PageViewEventFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  
+  <!-- Servlets                                                       -->
+  <!--                                                                -->
+  <!--                                                                -->
+
+  <!-- PageTemplateDispatchServlet                                    -->
+  <!--                                                                -->
+  <!-- This servlet dispatches request to appropiate page template    -->
+  <servlet>
+    <servlet-name>PageTemplateDispatchServlet</servlet-name>
+    <display-name>PageTemplateDispatchServlet</display-name>
+    <description>This servlet dispatches requests to appropiate page template</description>
+    <servlet-class>atg.portal.servlet.PageTemplateDispatchServlet</servlet-class>
+    <init-param>
+      <param-name>loggingDebug</param-name>
+      <param-value>false</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingWarning</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingError</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingInfo</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>methodName</param-name>
+      <param-value>forward</param-value>
+    </init-param>
+    <init-param>
+      <param-name>defaultDisplayModeName</param-name>
+      <param-value>shared</param-value>
+    </init-param>
+    <init-param>
+      <param-name>defaultDeviceOutputName</param-name>
+      <param-value>htmlURL</param-value>
+    </init-param>
+  </servlet>  
+
+  <!-- NucleusServlet                                                 -->
+  <!--                                                                -->
+  <!-- This servlet initializes nucleus                               -->
+  <servlet>
+    <servlet-name>NucleusServlet</servlet-name>
+    <display-name>NucleusServlet</display-name>
+    <description>Initializes nucleus in the current web application.</description>
+    <servlet-class>atg.nucleus.servlet.NucleusServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <!-- FileServlet                                                    -->
+  <!--                                                                -->
+  <!-- This servlet user to servlet static content                    -->
+  <servlet>
+    <servlet-name>FileServlet</servlet-name>
+    <display-name>FileServlet</display-name>
+    <description>A servlet used to serve static content</description>
+    <servlet-class>atg.servlet.WrappingFileServlet</servlet-class>
+  </servlet>
+
+  <!-- Test Portal Servlet                                            -->
+  <!--                                                                -->
+  <!-- This servlet may be used for testing purposes only             -->
+<!--  <servlet>
+    <servlet-name>TestPortalServlet</servlet-name>
+    <display-name>TestPortalServlet</display-name>
+    <description>This servlet may be used for testing purposes only.</description>
+    <servlet-class>atg.portal.servlet.TestPortalServlet</servlet-class>
+    <init-param>
+      <param-name>loggingDebug</param-name>
+      <param-value>false</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingWarning</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingError</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingInfo</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  </servlet>
+-->
+
+  <!-- Servlet Mappings                                               -->
+  <!--                                                                -->
+  <!--                                                                -->
+  <servlet-mapping>
+    <servlet-name>PageTemplateDispatchServlet</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+  <!-- Mappings which need not pass through the PageTemplateDispatchServlet -->
+  <servlet-mapping>
+    <servlet-name>FileServlet</servlet-name>
+    <url-pattern>*.gif</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>FileServlet</servlet-name>
+    <url-pattern>*.jpg</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>FileServlet</servlet-name>
+    <url-pattern>*.jpeg</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>FileServlet</servlet-name>
+    <url-pattern>*.png</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>FileServlet</servlet-name>
+    <url-pattern>*.js</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>FileServlet</servlet-name>
+    <url-pattern>*.jar</url-pattern>
+  </servlet-mapping>
+   <servlet-mapping>
+    <servlet-name>FileServlet</servlet-name>
+    <url-pattern>*.css</url-pattern>
+  </servlet-mapping>
+<!--  <servlet-mapping>
+    <servlet-name>TestPortalServlet</servlet-name>
+    <url-pattern>/test-servlet</url-pattern>
+  </servlet-mapping>
+-->
+
+  <!-- WelcomeFiles                                               -->
+  <!--                                                            -->
+  <!--                                                            -->
+  <welcome-file-list>
+    <welcome-file>/index.jsp</welcome-file>
+  </welcome-file-list>
+
+  <!-- Error Pages                                                    -->
+  <!--                                                                -->
+  <!--                                                                -->
+  <error-page>
+    <exception-type>java.lang.Exception</exception-type>
+    <location>/error.jsp</location>
+  </error-page>
+  <error-page>
+    <error-code>500</error-code>
+    <location>/error.jsp</location>
+  </error-page>
+
+  <!-- Taglibs                                                    -->
+  <!--                                                            -->
+  <!--                                                            -->
+  <taglib>
+    <taglib-uri>http://www.atg.com/taglibs/portal/paf1_3</taglib-uri>
+    <taglib-location>/WEB-INF/tld/paf1_3.tld</taglib-location>
+  </taglib>
+  <taglib>
+    <taglib-uri>http://www.atg.com/taglibs/daf/dspjspELTaglib1_0</taglib-uri>
+    <taglib-location>/WEB-INF/tld/dspjspELTaglib1_0.tld</taglib-location>
+  </taglib>
+
+</web-app>
+<!-- @version $Id: //app/portal/version/10.0.3/paf/portal.war/WEB-INF/web.xml#2 $$Change: 651448 $ -->

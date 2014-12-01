@@ -1,0 +1,67 @@
+<c:set var="PORTALSERVLETREQUEST"><%= Attribute.PORTALSERVLETREQUEST %></c:set>
+<c:set var="PORTALSERVLETRESPONSE"><%= Attribute.PORTALSERVLETRESPONSE %></c:set>
+<c:set var="portalServletRequest"     value="${requestScope[PORTALSERVLETREQUEST]}"/>
+<c:set var="portalServletResponse"    value="${requestScope[PORTALSERVLETRESPONSE]}"/>
+<c:set var="community"                value="${portalServletRequest.community}"/>
+<c:set var="gearTextColor"            value="#${page.colorPalette.gearTextColor}"/>
+<c:set var="gearBackgroundColor"      value="#${page.colorPalette.gearBackgroundColor}"/>
+
+<c:forEach var="gear"
+	   items="${gears}">
+  <%-- 
+    --  Render a titlebar for the gear
+    --
+    --  Note: For improved performace you may not want to dispatch out to a gear 
+    --  titlebar. In  this case comment out the tag below and inline your titlebar
+    --  code.
+    --%>
+  <paf:titlebar gear="${gear}"/>
+
+  <%--  
+    --  Render the pre gear treatment 
+    --  
+    --  Note: For improved performance we don't dispatch out to gear pre treatment. If support is
+    --  needed for dynamic gear pre treatment uncomment the following tag.
+    --  <paf:titlebar gear="${gear}" type="pre"/>
+    --%>
+  <table border="0" cellpadding="1" cellspacing="0" width="100%">
+    <tr>
+      <td valign="top" bgcolor="<c:out value="${gearTextColor}"/>">
+        <table border="0" width="100%" cellpadding="0" cellspacing="0">
+          <tr>
+            <td valign="top" bgcolor="<c:out value="${gearBackgroundColor}"/>">
+       
+              <%-- 
+                -- Render the contents of the gear.
+                --
+                -- Note: Dispatches out to registered gear. Contents
+                -- may be retrieved from a contents cache. 
+                --%>
+              <font color="<c:out value="${gearTextColor}"/>">
+                <% 
+                  pageContext.setAttribute("gearContextType",GearContext.class);
+	  	  pageContext.setAttribute("gearMode",GearMode.CONTENT);		
+                %>
+                <paf:context var="gearContext" type="${gearContextType}"/>
+                <c:set target="${gearContext}" property="gear" value="${gear}"/>
+                <c:set target="${gearContext}" property="gearMode" value="${gearMode}"/>
+                <paf:include context="${gearContext}"/>     
+              </font>
+             
+            </td>
+          </tr>          
+        </table>
+      </td>
+    </tr>
+  </table>
+  <%--
+    -- Render the post gear treatment
+    --
+    -- Note: For improved performance we don't dispatch out to gear post treatment. If support is
+    -- needed for dynamic gear post treatment uncomment the following tag.
+    -- <paf:titlebar gear="${gear}" type="post"/>
+    --%>
+  <br/>
+
+</c:forEach>
+<%-- @version $Id: //app/portal/version/10.0.3/paf/portal.war/templates/layout/html/region.jspf#2 $$Change: 651448 $--%>

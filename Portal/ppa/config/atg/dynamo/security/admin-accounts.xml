@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE accounts
+        PUBLIC "-//Art Technology Group, Inc.//DTD Dynamo Accounts//EN"
+        "http://www.atg.com/dtds/security/accounts_1.0.dtd">
+
+<!-- ACC security privileges for portal workflow module -->
+
+<accounts>
+
+  <!-- Privilege definition for portal workflow task -->
+  <privilege name="workflow-portal-privilege">
+    <attribute name="description">Workflow: Portal</attribute>
+  </privilege>
+
+  <!-- Grant the above privilege to administrators -->
+  <group name="administrators-group">
+    <member-of name="workflow-portal-privilege"/>
+  </group>
+
+</accounts>
+<!-- @version $Id: //app/portal/version/10.0.3/ppa/config/atg/dynamo/security/admin-accounts.xml#2 $$Change: 651448 $ -->

@@ -1,0 +1,674 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE gsa-template
+        PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN"
+        "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template>
+
+  <header>
+    <name>B2B Organizational Model and User Profile Changes </name>
+    <author>DCS Team</author>
+    <version>$Id: //product/B2BCommerce/version/10.0.3/templates/B2BCommerce/config/atg/userprofiling/userProfile.xml#2 $$Change: 651448 $</version>
+  </header>
+
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+  <!-- Additions to the "user" item descriptor for B2B applications -->
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+  <item-descriptor name="user">
+
+    <attribute name="categoryBillingShippingPriority" value="110"/>
+    <attribute name="myCategoryBillingShippingPriority" value="120"/>
+    <attribute name="categoryPurchasingApprovalsPriority" value="130"/>
+    <attribute name="myCategoryPurchasingApprovalsPriority" value="140"/>
+    <attribute name="categoryPurchasingPreferencesPriority" value="150"/>
+    <attribute name="myCategoryPurchasingPreferencesPriority" value="160"/>
+
+    <table name="dbc_user" type="auxiliary" id-column-name="id">
+      <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+
+      <property category-resource="categoryCommerceContract" name="myCatalog" 
+                item-type="catalog" display-name-resource="myCatalog" 
+                column-name="user_catalog" repository="/atg/commerce/catalog/ProductCatalog" hidden="true">
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="-20"/>
+      </property>
+
+      <property category-resource="categoryCommerceContract" name="myPriceList" 
+                item-type="priceList" display-name-resource="myPriceList" 
+                column-name="price_list" repository="/atg/commerce/pricing/priceLists/PriceLists" hidden="true">
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="-10"/>
+      </property>      
+
+      <property category-resource="categoryBasics" name="businessAddress"
+                display-name-resource="businessAddress"
+                column-name="business_addr" item-type="contactInfo">
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+
+      <property category-resource="myCategoryBillingShipping" name="myDefaultBillingAddress"
+                display-name-resource="myDefaultBillingAddress" cascade="update"
+                column-name="dflt_billing_addr" item-type="contactInfo" hidden="true">
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="-25"/>
+      </property>
+
+      <property category-resource="myCategoryBillingShipping" name="myDefaultShippingAddress"
+                display-name-resource="myDefaultShippingAddress" cascade="update"
+                column-name="dflt_shipping_addr" item-type="contactInfo" hidden="true">
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="-22"/>
+      </property>
+
+      <property category-resource="myCategoryBillingShipping" name="myDefaultPaymentType"
+                display-name-resource="myDefaultPaymentType"
+                column-name="dflt_payment_type" item-type="credit-card" hidden="true">
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="-16"/>
+      </property>
+
+      <property category-resource="myCategoryBillingShipping" name="myDefaultCostCenter"
+                display-name-resource="myDefaultCostCenter"
+                column-name="dflt_cost_center" item-type="cost-center" hidden="true">
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="-14"/>
+      </property>
+
+      <property category-resource="myCategoryPurchasingApprovals" name="myApprovalRequired"
+                display-name-resource="myApprovalRequired"
+                column-name="approval_required" data-type="boolean" hidden="true">
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="-17"/>
+      </property>
+
+      
+      <property category-resource="myCategoryPurchasingApprovals" name="myOrderPriceLimit"
+                display-name-resource="myOrderPriceLimit"
+                column-name="order_price_limit" data-type="double" hidden="true">
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="-10"/>
+      </property>
+    </table>
+
+    <table name="dbc_buyer_approver" type="multi" id-column-name="user_id" multi-column-name="seq">
+      <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+
+      <property category-resource="myCategoryPurchasingApprovals" name="myApprovers"
+                display-name-resource="myApprovers"
+                column-name="approver_id" data-type="list" component-item-type="user" hidden="true">
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="-7"/>
+      </property>
+    </table>
+
+    <table name="dbc_buyer_billing" type="multi" id-column-name="user_id" multi-column-name="tag">
+      <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+
+      <property category-resource="myCategoryBillingShipping" name="myBillingAddrs"
+                display-name-resource="myBillingAddrs"
+                column-name="addr_id" data-type="map" component-item-type="contactInfo" hidden="true">
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="-13"/>
+      </property>
+    </table>
+
+    <table name="dbc_buyer_shipping" type="multi" id-column-name="user_id" multi-column-name="tag">
+      <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+
+      <property category-resource="myCategoryBillingShipping" name="myShippingAddrs"
+                display-name-resource="myShippingAddrs" cascade="update"
+                column-name="addr_id" data-type="map" component-item-type="contactInfo" hidden="true">
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="-10"/>
+      </property>
+    </table>
+
+    <table name="dbc_buyer_payment" type="multi" id-column-name="user_id" multi-column-name="tag">
+      <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+
+      <property category-resource="myCategoryBillingShipping" name="myPaymentTypes"
+                display-name-resource="myPaymentTypes" cascade="update"
+                column-name="payment_id" data-type="map" component-item-type="credit-card" hidden="true">
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="-4"/>
+      </property>
+    </table>
+
+    <table name="dbc_buyer_costctr" type="multi" id-column-name="user_id" multi-column-name="seq">
+      <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+
+      <property category-resource="myCategoryBillingShipping" name="myCostCenters"
+                display-name-resource="myCostCenters"
+                column-name="cost_center_id" data-type="list" component-item-type="cost-center" hidden="true">
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="-1"/>
+      </property>
+    </table>
+
+    <table name="dbc_buyer_prefvndr" type="multi" id-column-name="user_id" multi-column-name="seq">
+      <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+
+      <property category-resource="myCategoryPurchasingPreferences" name="myPreferredVendors"
+                display-name-resource="myPreferredVendors"
+                column-name="vendor" data-type="list" component-data-type="string" hidden="true">
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="-1"/>
+      </property>
+    </table>
+
+    <table name="dbc_buyer_plist" type="multi" id-column-name="user_id" multi-column-name="tag">
+      <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+
+      <property category-resource="categoryPurchasingPreferences" name="purchaseLists"
+                display-name-resource="purchaseLists"
+                column-name="list_id" data-type="list" component-item-type="gift-list"
+                repository="/atg/commerce/gifts/Giftlists" >
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+
+    <!-- Hide standard DPS properties that do not apply to us -->
+    <table name="dps_user" type="primary" id-column-name="id">
+      <property name="gender" hidden="true"/>
+      <property name="dateOfBirth" hidden="true"/>
+    </table>
+    <table name="dps_user_address" type="auxiliary" id-column-name="id">
+      <property name="homeAddress" hidden="true"/>
+    </table>
+    <!-- End hide standard DPS properties -->
+
+    <!-- DerivedPropertyDescriptor properties -->
+    <property name="defaultBillingAddress" item-type="contactInfo" display-name-resource="defaultBillingAddress" 
+              category-resource="categoryBillingShipping">
+      <derivation override-property="myDefaultBillingAddress">
+        <expression>parentOrganization.defaultBillingAddress</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+      <attribute name="propertySortPriority" value="10"/>
+    </property>
+
+    <property name="defaultShippingAddress" item-type="contactInfo" display-name-resource="defaultShippingAddress"
+              category-resource="categoryBillingShipping">
+      <derivation override-property="myDefaultShippingAddress">
+        <expression>parentOrganization.defaultShippingAddress</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+      <attribute name="propertySortPriority" value="20"/>
+    </property>
+
+    <property name="defaultPaymentType" item-type="credit-card" display-name-resource="defaultPaymentType"
+              category-resource="categoryBillingShipping">
+      <derivation override-property="myDefaultPaymentType">
+        <expression>parentOrganization.defaultPaymentType</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+      <attribute name="propertySortPriority" value="30"/>
+    </property>
+
+    <property name="defaultCostCenter" item-type="cost-center" display-name-resource="defaultCostCenter"
+              category-resource="categoryBillingShipping">
+      <derivation override-property="myDefaultCostCenter">
+        <expression>parentOrganization.defaultCostCenter</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+      <attribute name="propertySortPriority" value="40"/>
+    </property>
+
+    <property name="billingAddrs" component-item-type="contactInfo" data-type="map" display-name-resource="billingAddrs"
+              category-resource="categoryBillingShipping">
+      <derivation override-property="myBillingAddrs">
+        <expression>parentOrganization.billingAddrs</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+      <attribute name="propertySortPriority" value="50"/>
+    </property>
+
+    <property name="shippingAddrs" component-item-type="contactInfo" data-type="map" 
+              category-resource="categoryBillingShipping" display-name-resource="shippingAddrs">
+      <derivation override-property="myShippingAddrs">
+        <expression>parentOrganization.shippingAddrs</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+      <attribute name="propertySortPriority" value="60"/>
+    </property>
+
+    <property name="paymentTypes" component-item-type="credit-card" data-type="map" display-name-resource="paymentTypes"
+              category-resource="categoryBillingShipping">
+      <derivation override-property="myPaymentTypes">
+        <expression>parentOrganization.paymentTypes</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+      <attribute name="propertySortPriority" value="70"/>
+    </property>
+
+    <property name="costCenters" component-item-type="cost-center" data-type="list" display-name-resource="costCenters"
+              category-resource="categoryBillingShipping">
+      <derivation override-property="myCostCenters">
+        <expression>parentOrganization.costCenters</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+      <attribute name="propertySortPriority" value="80"/>
+    </property>
+
+    <property name="preferredVendors" component-data-type="string" data-type="list" display-name-resource="preferredVendors"
+              category-resource="categoryPurchasingPreferences">
+      <derivation override-property="myPreferredVendors">
+        <expression>parentOrganization.preferredVendors</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+      <attribute name="propertySortPriority" value="10"/>
+    </property>
+
+    <property category-resource="categoryPurchasingApprovals" name="approvalRequired"
+            display-name-resource="approvalRequired" data-type="boolean">
+
+      <derivation override-property="myApprovalRequired">
+        <expression>parentOrganization.approvalRequired</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+      <attribute name="propertySortPriority" value="10"/>
+    </property>
+
+    <property name="orderPriceLimit" data-type="double"  display-name-resource="orderPriceLimit"
+              category-resource="categoryPurchasingApprovals">
+      <derivation override-property="myOrderPriceLimit">
+        <expression>parentOrganization.orderPriceLimit</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+      <attribute name="propertySortPriority" value="20"/>
+    </property>
+
+    <property name="approvers" data-type="list" component-item-type="user" display-name-resource="approvers"
+              category-resource="categoryPurchasingApprovals">
+      <derivation override-property="myApprovers">
+        <expression>parentOrganization.approvers</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+      <attribute name="propertySortPriority" value="30"/>
+    </property>
+
+    <!-- Contract information -->
+    <property category-resource="categoryCommerceContract" name="contract"
+              item-type="contract" display-name-resource="contract"
+              repository="/atg/commerce/contracts/Contracts"
+              writable="false">
+      <derivation>
+        <expression>parentOrganization.contract</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+      <attribute name="propertySortPriority" value="-30"/>
+    </property>
+    <!-- If myCatalog is not set, use the contract's catalog -->
+    <table name="dcs_user_catalog">
+      <property name="catalog" xml-combine="remove">
+      </property>
+    </table>
+    <table name="dcs_user">
+      <property name="priceList" xml-combine="remove">
+      </property>
+    </table>
+    <property category-resource="categoryCommerceContract" name="catalog"
+               item-type="catalog" display-name-resource="catalog" 
+              repository="/atg/commerce/catalog/ProductCatalog">
+       <derivation override-property="myCatalog">
+        <expression>parentOrganization.contract.catalog</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+      <attribute name="propertySortPriority" value="-15"/>
+    </property>
+    <!-- If myPriceList is not set, use the contract's priceList -->
+    <property category-resource="categoryCommerceContract" name="priceList"
+              item-type="priceList" display-name-resource="priceList"
+              repository="/atg/commerce/pricing/priceLists/PriceLists">
+      <derivation override-property="myPriceList">
+        <expression>parentOrganization.contract.priceList</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+      <attribute name="propertySortPriority" value="-5"/>
+    </property>
+    <!-- end DerivedPropertyDescriptor properties -->
+
+  </item-descriptor>
+
+
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+  <!-- Organization item descriptor for organizational models       -->
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+  <item-descriptor name="organization">
+
+     <attribute name="myCategoryBasicsPriority" value="30"/>
+     <attribute name="categoryBillingShippingPriority" value="40"/>
+     <attribute name="myCategoryBillingShippingPriority" value="50"/>
+     <attribute name="categoryPurchasingApprovalsPriority" value="60"/>
+     <attribute name="myCategoryPurchasingApprovalsPriority" value="70"/>
+     <attribute name="categoryPurchasingPreferencesPriority" value="80"/>
+     <attribute name="myCategoryPurchasingPreferencesPriority" value="90"/>
+
+    <table name="dbc_organization" type="auxiliary" id-column-name="id">
+      <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+
+      <property category-resource="categoryBasics" name="myCustomerType" data-type="enumerated" 
+                 column-name="cust_type" 
+                display-name-resource="myCustomerType" hidden="true">
+        <attribute name="useCodeForValue" value="false"/>
+        <option resource="customerTypeStandard" code="1"/>
+        <option resource="customerTypePreferred" code="2"/>
+        <option resource="customerTypeEnterprise" code="3"/>
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+
+      <property category-resource="categoryBasics" name="type" column-name="type" data-type="enumerated"
+                display-name-resource="type">
+        <attribute name="useCodeForValue" value="false"/>
+        <option resource="typeNone" code="0"/>
+        <option resource="typeCompany" code="1"/>
+        <option resource="typeDivision" code="2"/>
+        <option resource="typeDepartment" code="3"/>
+        <option resource="typeGroup" code="4"/>
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property category-resource="categoryBasics" name="dunsNumber" column-name="duns_number" data-type="string"
+                display-name-resource="dunsNumber">
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+
+      <property category-resource="myCategoryBillingShipping" name="myDefaultBillingAddress"
+                display-name-resource="myDefaultBillingAddress" column-name="dflt_billing_addr" 
+                item-type="contactInfo" hidden="true">
+        <attribute name="propertySortPriority" value="10"/>
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+    </property>
+
+      <property category-resource="myCategoryBillingShipping" name="myDefaultShippingAddress"
+                display-name-resource="myDefaultShippingAddress"
+                column-name="dflt_shipping_addr" item-type="contactInfo" hidden="true">
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+
+      <property category-resource="myCategoryBillingShipping" name="myDefaultPaymentType"
+                display-name-resource="myDefaultPaymentType"
+                column-name="dflt_payment_type" item-type="credit-card" hidden="true">
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+
+      <property category-resource="myCategoryBillingShipping" name="myDefaultCostCenter"
+                display-name-resource="myDefaultCostCenter"
+                column-name="dflt_cost_center" item-type="cost-center" hidden="true">
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+
+      <property category-resource="myCategoryPurchasingApprovals" name="myApprovalRequired"
+                display-name-resource="myApprovalRequired"
+                column-name="approval_required" data-type="boolean"
+                default="true" hidden="true">
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+
+      <property category-resource="myCategoryPurchasingApprovals" name="myOrderPriceLimit"
+                display-name-resource="myOrderPriceLimit"
+                column-name="order_price_limit" data-type="double" hidden="true">
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+
+      <property category-resource="myCategoryBasics" name="myContract" 
+                 display-name-resource="myContract" column-name="contract_id"
+                item-type="contract" repository="/atg/commerce/contracts/Contracts" hidden="true">
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="65"/>
+      </property>
+
+    </table>
+
+    <table name="dbc_org_contact" type="multi" id-column-name="org_id" multi-column-name="seq">
+      <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+
+      <property category-resource="categoryBasics" name="contacts"
+                display-name-resource="contacts"
+                column-name="contact_id" data-type="list" component-item-type="contactInfo">
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+    </table>
+
+    <table name="dbc_org_approver" type="multi" id-column-name="org_id" multi-column-name="seq">
+      <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+
+      <property category-resource="myCategoryPurchasingApprovals" name="myApprovers"
+                display-name-resource="myApprovers"
+                column-name="approver_id" data-type="list" component-item-type="user" hidden="true">
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+
+    </table>
+
+    <table name="dbc_org_billing" type="multi" id-column-name="org_id" multi-column-name="tag">
+      <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+
+      <property category-resource="myCategoryBillingShipping" name="myBillingAddrs"
+                display-name-resource="myBillingAddrs"
+                column-name="addr_id" data-type="map" component-item-type="contactInfo" hidden="true">
+        <attribute name="propertySortPriority" value="50"/>
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+      </property>
+
+    </table>
+
+    <table name="dbc_org_shipping" type="multi" id-column-name="org_id" multi-column-name="tag">
+      <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+
+      <property category-resource="myCategoryBillingShipping" name="myShippingAddrs"
+                display-name-resource="myShippingAddrs" 
+                column-name="addr_id" data-type="map" component-item-type="contactInfo" hidden="true">
+        <attribute name="propertySortPriority" value="60"/>
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+      </property>
+
+    </table>
+
+   <table name="dbc_org_payment" type="multi" id-column-name="org_id" multi-column-name="tag">
+      <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+
+      <property category-resource="myCategoryBillingShipping" name="myPaymentTypes"
+                display-name-resource="myPaymentTypes"
+                column-name="payment_id" data-type="map" component-item-type="credit-card" hidden="true">
+        <attribute name="propertySortPriority" value="70"/>
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+      </property>
+
+    </table>
+
+    <table name="dbc_org_costctr" type="multi" id-column-name="org_id" multi-column-name="seq">
+      <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+
+      <property category-resource="myCategoryBillingShipping" name="myCostCenters"
+                display-name-resource="myCostCenters"
+                column-name="cost_center" data-type="list" component-item-type="cost-center" hidden="true">
+        <attribute name="propertySortPriority" value="80"/>
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+      </property>
+
+    </table>
+
+    <table name="dbc_org_prefvndr" type="multi" id-column-name="org_id" multi-column-name="seq">
+      <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+
+      <property category-resource="myCategoryPurchasingPreferences" name="myPreferredVendors"
+                display-name-resource="myPreferredVendors"
+                column-name="vendor" data-type="list" component-data-type="string" hidden="true">
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+
+    </table>
+
+    <!-- DerivedPropertyDescriptor properties -->
+    <property name="defaultBillingAddress" item-type="contactInfo"
+      display-name-resource="defaultBillingAddress" category-resource="categoryBillingShipping">
+        <derivation override-property="myDefaultBillingAddress">
+           <expression>parentOrganization.defaultBillingAddress</expression>
+        </derivation>
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="50"/>
+    </property>
+
+    <property category-resource="categoryBillingShipping" name="defaultShippingAddress"
+              display-name-resource="defaultShippingAddress" item-type="contactInfo">
+      <derivation override-property="myDefaultShippingAddress">
+        <expression>parentOrganization.defaultShippingAddress</expression>
+      </derivation>
+      <attribute name="propertySortPriority" value="60"/>
+      <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+    </property>
+
+      <property category-resource="categoryBillingShipping" name="defaultPaymentType"
+                display-name-resource="defaultPaymentType"  item-type="credit-card">
+        <derivation override-property="myDefaultPaymentType">
+           <expression>parentOrganization.defaultPaymentType</expression>
+         </derivation>
+        <attribute name="propertySortPriority" value="70"/>
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+      </property>
+
+      <property category-resource="categoryBillingShipping" name="defaultCostCenter"
+                display-name-resource="defaultCostCenter" item-type="cost-center">
+         <derivation override-property="myDefaultCostCenter">
+           <expression>parentOrganization.defaultCostCenter</expression>
+         </derivation>
+        <attribute name="propertySortPriority" value="80"/>
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+      </property>
+
+      <property category-resource="categoryPurchasingApprovals" name="approvalRequired"
+                display-name-resource="approvalRequired" data-type="boolean" default="true">
+         <derivation override-property="myApprovalRequired">
+           <expression>parentOrganization.approvalRequired</expression>
+         </derivation>
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+      </property>
+      
+      <property category-resource="categoryPurchasingApprovals" name="orderPriceLimit"
+                display-name-resource="orderPriceLimit" data-type="double">
+         <derivation override-property="myOrderPriceLimit">
+           <expression>parentOrganization.orderPriceLimit</expression>
+         </derivation>
+        <attribute name="propertySortPriority" value="-10"/>
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+      </property>
+
+      <property category-resource="categoryBasics" name="contract" 
+         display-name-resource="contract"   item-type="contract" repository="/atg/commerce/contracts/Contracts">
+         <derivation override-property="myContract">
+           <expression>parentOrganization.contract</expression>
+         </derivation>
+        <attribute name="propertySortPriority" value="60"/>
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+      </property>
+
+      <property category-resource="categoryPurchasingApprovals" name="approvers"
+                display-name-resource="approvers" data-type="list" component-item-type="user">
+         <derivation override-property="myApprovers">
+           <expression>parentOrganization.approvers</expression>
+         </derivation>
+        <attribute name="propertySortPriority" value="-7"/>
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+      </property>
+
+      <property category-resource="categoryBillingShipping" name="billingAddrs"
+                display-name-resource="billingAddrs" data-type="map" component-item-type="contactInfo">
+         <derivation override-property="myBillingAddrs">
+           <expression>parentOrganization.billingAddrs</expression>
+         </derivation>
+        <attribute name="propertySortPriority" value="-13"/>
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+      </property>
+
+      <property category-resource="categoryBillingShipping" name="shippingAddrs"
+                display-name-resource="shippingAddrs" data-type="map" component-item-type="contactInfo">
+         <derivation override-property="myShippingAddrs">
+           <expression>parentOrganization.shippingAddrs</expression>
+         </derivation>
+        <attribute name="propertySortPriority" value="-10"/>
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+      </property>
+
+      <property category-resource="categoryBillingShipping" name="paymentTypes"
+                display-name-resource="paymentTypes" data-type="map" component-item-type="credit-card">
+         <derivation override-property="myPaymentTypes">
+           <expression>parentOrganization.paymentTypes</expression>
+         </derivation>
+        <attribute name="propertySortPriority" value="-4"/>
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+      </property>
+
+      <property category-resource="categoryBillingShipping" name="costCenters"
+                display-name-resource="costCenters" data-type="list" component-item-type="cost-center">
+         <derivation override-property="myCostCenters">
+           <expression>parentOrganization.costCenters</expression>
+         </derivation>
+        <attribute name="propertySortPriority" value="-1"/>
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+      </property>
+
+      <property category-resource="categoryPurchasingPreferences" name="preferredVendors"
+                display-name-resource="preferredVendors" data-type="list" component-data-type="string">
+         <derivation override-property="myPreferredVendors">
+           <expression>parentOrganization.preferredVendors</expression>
+         </derivation>
+        <attribute name="propertySortPriority" value="-1"/>
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+      </property>
+
+      <property category-resource="categoryBasics" name="customerType" data-type="enumerated" 
+                display-name-resource="customerType">
+         <derivation override-property="myCustomerType">
+           <expression>parentOrganization.customerType</expression>
+         </derivation>
+        <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+
+
+
+  </item-descriptor>
+
+  <!-- 
+  *************************************************************
+  CostCenters
+  *************************************************************
+  -->
+
+  <item-descriptor name="cost-center" item-cache-size="1000" query-cache-size="1000" display-name-resource="itemDescriptorCostCenter" display-property="description">
+    <attribute name="resourceBundle" value="atg.b2bcommerce.UserProfileTemplateResources"/>
+
+    <table name="dbc_cost_center" type="primary" id-column-name="id">
+      <property name="id" writable="false" display-name-resource="id">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="owner" data-type="string" column-name="user_id" display-name-resource="owner">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="identifier" data-type="string" column-name="identifier" display-name-resource="identifier" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="description" data-type="string" column-name="description" display-name-resource="description">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //product/B2BCommerce/version/10.0.3/templates/B2BCommerce/config/atg/userprofiling/userProfile.xml#2 $$Change: 651448 $ -->

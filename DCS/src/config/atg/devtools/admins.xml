@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE repository-admins
+        PUBLIC "-//Art Technology Group, Inc.//DTD Repository Admin Registration//EN"
+        "http://www.atg.com/dtds/ui/dps/admins_1.1.dtd">
+
+<repository-admins>
+
+  <custom-admin id="CustomCatalogFolders">
+    <display-name bundle="atg.ui.commerce.CommerceToolsResources" resource="customCatalogs"/>
+    <task>CatalogManagement</task>
+    <privilege-header>Commerce</privilege-header>
+    <priority>1</priority>
+    <repository-name>ProductCatalog</repository-name>
+    <admin class="atg.ui.commerce.catalog.CatalogFolderAdmin"/>
+    <controller>atg/devtools/catalogFolderControllers.xml</controller>
+    <menu-definition-xuill>atg.ui.commerce.catalog.CatalogFoldersMenuDefinition</menu-definition-xuill>
+
+    <create-bean-displays>
+      <bean-display type="genericFolder" class="atg.ui.repository.RepositoryItemTable">
+        <property name="selectedProperties" value="name"/>
+      </bean-display>
+    </create-bean-displays>
+
+  </custom-admin>
+
+  <custom-admin id="IndividualCatalog">
+    <display-name bundle="atg.ui.commerce.CommerceToolsResources" resource="customCatalogsJB" />
+    <master-task>CustomCatalogFolders</master-task>
+    <task>CatalogManagement</task>
+    <privilege-header>Commerce</privilege-header>
+    <priority>2</priority>
+    <repository-name>ProductCatalog</repository-name>
+    <admin class="atg.ui.commerce.catalog.CatalogAdminJB"/>
+    <controller>atg/devtools/catalogAdminJBControllers.xml</controller>
+    <menu-definition-xuill>atg.ui.commerce.catalog.CatalogMenuDefinition</menu-definition-xuill>
+
+    <create-bean-displays>
+      <bean-display type="media-external" class="atg.ui.repository.MediaExternalEditor">
+        <property name="externalExcludedTableProperties" value="path, version, mimeType, data"/>
+      </bean-display>
+      <bean-display type="media-internal-binary" class="atg.ui.repository.MediaInternalBinaryEditor">
+        <property name="internalBinaryExcludedTableProperties" value="path, version, mimeType,data, length,url"/>
+      </bean-display>
+      <bean-display type="media-internal-text" class="atg.ui.repository.MediaTextEditor">
+        <property name="internalTextExcludedTableProperties" value="path, version, data, mimeType,length, url"/>
+      </bean-display>
+      <bean-display type="folder" class="atg.ui.repository.FolderEditor"/>
+      <bean-display type="category" class="atg.ui.repository.RepositoryItemTable">
+        <property name="excludedProperties" value="catalog,subCatalogs,parentCategory,fixedChildCategories,fixedChildProducts,id,thumbnailImage,smallImage,largeImage"/>
+      </bean-display>
+      <bean-display type="product" class="atg.ui.repository.RepositoryItemTable">
+        <property name="excludedProperties" value="childSKUs,fixedRelatedProducts,relatedProductGroup,id,thumbnailImage,smallImage,largeImage,productInfos"/>
+      </bean-display>
+    </create-bean-displays>
+
+    <standard-bean-displays>
+      <bean-display type="media-external" class="atg.ui.repository.MediaExternalEditor">
+        <property name="externalExcludedTableProperties" value="version, mimeType, data"/>
+        <property name="externalTableReadOnlyProperties" value="path"/>
+        <property name="showEditButton" value="false"/>
+      </bean-display>
+      <bean-display type="media-internal-binary" class="atg.ui.repository.MediaInternalBinaryEditor">
+        <property name="internalBinaryExcludedTableProperties" value="version, mimeType, data, length, url"/>
+        <property name="internalBinaryTableReadOnlyProperties" value="path"/>
+        <property name="showEditButton" value="false"/>
+      </bean-display>
+      <bean-display type="media-internal-text" class="atg.ui.repository.MediaTextEditor">
+        <property name="internalTextExcludedTableProperties" value="version, mimeType, data, length, url"/>
+        <property name="internalTextTableReadOnlyProperties" value="path"/>
+        <property name="showEditButton" value="false"/>
+      </bean-display>
+      <bean-display type="folder" class="atg.ui.repository.FolderEditor"/>
+    </standard-bean-displays>
+
+  </custom-admin>
+
+  <default-admin id="StandardCustomProductCatalog">
+    <display-name bundle="atg.ui.commerce.CommerceToolsResources" resource="standardCatalogElements" />
+    <task>CatalogManagement</task>
+    <privilege-header>Commerce</privilege-header>
+    <priority>20</priority>
+    <repository-name>ProductCatalog</repository-name>
+    <folder-view>true</folder-view>
+    <help-url>dcsRepositoryHelpURL</help-url>
+
+    <create-bean-displays>
+      <bean-display type="media-external" class="atg.ui.repository.MediaExternalEditor">
+        <property name="externalExcludedTableProperties" value="path, version, mimeType, data"/>
+      </bean-display>
+      <bean-display type="media-internal-binary" class="atg.ui.repository.MediaInternalBinaryEditor">
+        <property name="internalBinaryExcludedTableProperties" value="path, version, mimeType,data, length,url"/>
+      </bean-display>
+      <bean-display type="media-internal-text" class="atg.ui.repository.MediaTextEditor">
+        <property name="internalTextExcludedTableProperties" value="path, version, data, mimeType,length, url"/>
+      </bean-display>
+      <bean-display type="folder" class="atg.ui.repository.FolderEditor"/>
+    </create-bean-displays>
+
+    <standard-bean-displays>
+      <bean-display type="media-external" class="atg.ui.repository.MediaExternalEditor">
+        <property name="externalExcludedTableProperties" value="version, mimeType, data"/>
+        <property name="externalTableReadOnlyProperties" value="path"/>
+      </bean-display>
+      <bean-display type="media-internal-binary" class="atg.ui.repository.MediaInternalBinaryEditor">
+        <property name="internalBinaryExcludedTableProperties" value="version, mimeType, data, length, url"/>
+        <property name="internalBinaryTableReadOnlyProperties" value="path"/>
+      </bean-display>
+      <bean-display type="media-internal-text" class="atg.ui.repository.MediaTextEditor">
+        <property name="internalTextExcludedTableProperties" value="version, mimeType, data, length, url"/>
+        <property name="internalTextTableReadOnlyProperties" value="path"/>
+      </bean-display>
+      <bean-display type="folder" class="atg.ui.repository.FolderEditor"/>
+    </standard-bean-displays>
+
+  </default-admin>
+
+  <default-admin id="StandardInventory">
+    <display-name bundle="atg.ui.commerce.CommerceToolsResources" resource="standardInventory" />
+    <task>CatalogManagement</task>
+    <privilege-header>Commerce</privilege-header>
+    <priority>50</priority>
+    <repository-name>Inventory</repository-name>
+    <folder-view>false</folder-view>
+    <help-url>dcsRepositoryHelpURL</help-url>
+  </default-admin>
+
+  <custom-admin id="CustomPriceLists">
+    <display-name bundle="atg.ui.commerce.CommerceToolsResources" resource="customPriceLists"/>
+    <task>Pricing</task>
+    <privilege-header>Commerce</privilege-header>
+    <priority>1</priority>
+    <repository-name>PriceLists</repository-name>
+    <admin class="atg.ui.commerce.pricing.priceLists.PriceListsAdmin"/>
+    <controller>atg/devtools/priceListControllers.xml</controller>
+    <item-type>pricelistsFolder</item-type>
+    <menu-definition-xuill>atg.ui.commerce.pricing.priceLists.PriceListsMenuDefinition</menu-definition-xuill>
+
+    <create-bean-displays>
+      <bean-display type="genericFolder" class="atg.ui.repository.RepositoryItemTable">
+        <property name="selectedProperties" value="name"/>
+      </bean-display>
+    </create-bean-displays>
+
+  </custom-admin>
+
+  <default-admin id="CustomPromotions">
+    <display-name bundle="atg.ui.commerce.CommerceToolsResources" resource="standardPromotions" />
+    <task>Pricing</task>
+    <privilege-header>Commerce</privilege-header>
+    <priority>40</priority>
+    <repository-name>ProductCatalog</repository-name>
+    <folder-view>false</folder-view>
+    <item-type>promotion</item-type>
+    <help-url>dcsRepositoryHelpURL</help-url>
+
+    <create-bean-displays>
+      <bean-display type="media-external" class="atg.ui.repository.MediaExternalEditor">
+        <property name="externalExcludedTableProperties" value="path, version, mimeType, data"/>
+      </bean-display>
+      <bean-display type="media-internal-binary" class="atg.ui.repository.MediaInternalBinaryEditor">
+        <property name="internalBinaryExcludedTableProperties" value="path, version, mimeType,data, length,url"/>
+      </bean-display>
+      <bean-display type="media-internal-text" class="atg.ui.repository.MediaTextEditor">
+        <property name="internalTextExcludedTableProperties" value="path, version, data, mimeType,length, url"/>
+      </bean-display>
+    </create-bean-displays>
+
+    <standard-bean-displays>
+      <bean-display type="media-external" class="atg.ui.repository.MediaExternalEditor">
+        <property name="externalExcludedTableProperties" value="path, version, mimeType, data"/>
+      </bean-display>
+      <bean-display type="media-internal-binary" class="atg.ui.repository.MediaInternalBinaryEditor">
+        <property name="internalBinaryExcludedTableProperties" value="path, version, mimeType,data, length,url"/>
+      </bean-display>
+      <bean-display type="media-internal-text" class="atg.ui.repository.MediaTextEditor">
+        <property name="internalTextExcludedTableProperties" value="path, version, data, mimeType,length, url"/>
+      </bean-display>
+    </standard-bean-displays>
+
+  </default-admin>
+  
+  <default-admin id="StandardOrders">
+    <display-name bundle="atg.ui.commerce.CommerceToolsResources" resource="standardOrders" />
+    <task>PurchasesAndPayments</task>
+    <privilege-header>Commerce</privilege-header>
+    <priority>30</priority>
+    <repository-name>Orders</repository-name>
+    <folder-view>false</folder-view>
+    <help-url>dcsRepositoryHelpURL</help-url>
+  </default-admin>
+
+  <default-admin id="StandardGiftLists">
+    <display-name bundle="atg.ui.commerce.CommerceToolsResources" resource="standardGiftLists" />
+    <task>PurchasesAndPayments</task>
+    <privilege-header>Commerce</privilege-header>
+    <priority>60</priority>
+    <repository-name>Giftlists</repository-name>
+    <folder-view>false</folder-view>
+    <help-url>dcsRepositoryHelpURL</help-url>
+  </default-admin>
+
+  <default-admin id="StandardClaimable">
+    <display-name bundle="atg.ui.commerce.CommerceToolsResources" resource="standardClaimable" />
+    <task>PurchasesAndPayments</task>
+    <privilege-header>Commerce</privilege-header>
+    <priority>70</priority>
+    <repository-name>Claimable</repository-name>
+    <folder-view>false</folder-view>
+    <help-url>dcsRepositoryHelpURL</help-url>
+  </default-admin>
+
+  <default-admin id="StandardSkus">
+    <display-name bundle="atg.ui.commerce.CommerceToolsResources" resource="standardSkus" />
+    <task>CatalogManagement</task>
+    <privilege-header>Commerce</privilege-header>
+    <priority>20</priority>
+    <repository-name>ProductCatalog</repository-name>
+    <folder-view>false</folder-view>
+    <item-type>sku</item-type>
+    <help-url>dcsRepositoryHelpURL</help-url>
+
+    <create-bean-displays>
+      <bean-display type="media-external" class="atg.ui.repository.MediaExternalEditor">
+        <property name="externalExcludedTableProperties" value="path, version, mimeType, data"/>
+      </bean-display>
+      <bean-display type="media-internal-binary" class="atg.ui.repository.MediaInternalBinaryEditor">
+        <property name="internalBinaryExcludedTableProperties" value="path, version, mimeType,data, length,url"/>
+      </bean-display>
+      <bean-display type="media-internal-text" class="atg.ui.repository.MediaTextEditor">
+        <property name="internalTextExcludedTableProperties" value="path, version, data, mimeType,length, url"/>
+      </bean-display>
+      <bean-display type="folder" class="atg.ui.repository.FolderEditor"/>
+      <bean-display type="category" class="atg.ui.repository.RepositoryItemTable">
+        <property name="excludedProperties" value="catalog,subCatalogs,parentCategory,fixedChildCategories,fixedChildProducts,id,thumbnailImage,smallImage,largeImage"/>
+      </bean-display>
+      <bean-display type="product" class="atg.ui.repository.RepositoryItemTable">
+        <property name="excludedProperties" value="childSKUs,fixedRelatedProducts,relatedProductGroup,id,thumbnailImage,smallImage,largeImage,productInfos"/>
+      </bean-display>
+    </create-bean-displays>
+
+    <standard-bean-displays>
+      <bean-display type="media-external" class="atg.ui.repository.MediaExternalEditor">
+        <property name="externalExcludedTableProperties" value="version, mimeType, data"/>
+        <property name="externalTableReadOnlyProperties" value="path"/>
+        <property name="showEditButton" value="false"/>
+      </bean-display>
+      <bean-display type="media-internal-binary" class="atg.ui.repository.MediaInternalBinaryEditor">
+        <property name="internalBinaryExcludedTableProperties" value="version, mimeType, data, length, url"/>
+        <property name="internalBinaryTableReadOnlyProperties" value="path"/>
+        <property name="showEditButton" value="false"/>
+      </bean-display>
+      <bean-display type="media-internal-text" class="atg.ui.repository.MediaTextEditor">
+        <property name="internalTextExcludedTableProperties" value="version, mimeType, data, length, url"/>
+        <property name="internalTextTableReadOnlyProperties" value="path"/>
+        <property name="showEditButton" value="false"/>
+      </bean-display>
+      <bean-display type="folder" class="atg.ui.repository.FolderEditor"/>
+    </standard-bean-displays>
+
+  </default-admin>
+
+  <default-admin id="CustomProducts">
+    <display-name bundle="atg.ui.commerce.CommerceToolsResources" resource="standardProducts" />
+    <task>CatalogManagement</task>
+    <privilege-header>Commerce</privilege-header>
+    <priority>20</priority>
+    <repository-name>ProductCatalog</repository-name>
+    <folder-view>false</folder-view>
+    <item-type>product</item-type>
+    <help-url>dcsRepositoryHelpURL</help-url>
+
+    <create-bean-displays>
+      <bean-display type="media-external" class="atg.ui.repository.MediaExternalEditor">
+        <property name="externalExcludedTableProperties" value="path, version, mimeType, data"/>
+      </bean-display>
+      <bean-display type="media-internal-binary" class="atg.ui.repository.MediaInternalBinaryEditor">
+        <property name="internalBinaryExcludedTableProperties" value="path, version, mimeType,data, length,url"/>
+      </bean-display>
+      <bean-display type="media-internal-text" class="atg.ui.repository.MediaTextEditor">
+        <property name="internalTextExcludedTableProperties" value="path, version, data, mimeType,length, url"/>
+      </bean-display>
+      <bean-display type="folder" class="atg.ui.repository.FolderEditor"/>
+      <bean-display type="category" class="atg.ui.repository.RepositoryItemTable">
+        <property name="excludedProperties" value="catalog,subCatalogs,parentCategory,fixedChildCategories,fixedChildProducts,id,thumbnailImage,smallImage,largeImage"/>
+      </bean-display>
+      <bean-display type="product" class="atg.ui.repository.RepositoryItemTable">
+        <property name="excludedProperties" value="childSKUs,fixedRelatedProducts,relatedProductGroup,id,thumbnailImage,smallImage,largeImage,productInfos"/>
+      </bean-display>
+    </create-bean-displays>
+
+    <standard-bean-displays>
+      <bean-display type="media-external" class="atg.ui.repository.MediaExternalEditor">
+        <property name="externalExcludedTableProperties" value="version, mimeType, data"/>
+        <property name="externalTableReadOnlyProperties" value="path"/>
+        <property name="showEditButton" value="false"/>
+      </bean-display>
+      <bean-display type="media-internal-binary" class="atg.ui.repository.MediaInternalBinaryEditor">
+        <property name="internalBinaryExcludedTableProperties" value="version, mimeType, data, length, url"/>
+        <property name="internalBinaryTableReadOnlyProperties" value="path"/>
+        <property name="showEditButton" value="false"/>
+      </bean-display>
+      <bean-display type="media-internal-text" class="atg.ui.repository.MediaTextEditor">
+        <property name="internalTextExcludedTableProperties" value="version, mimeType, data, length, url"/>
+        <property name="internalTextTableReadOnlyProperties" value="path"/>
+        <property name="showEditButton" value="false"/>
+      </bean-display>
+      <bean-display type="folder" class="atg.ui.repository.FolderEditor"/>
+    </standard-bean-displays>
+
+  </default-admin>
+
+</repository-admins>
+<!-- @version $Id: //product/DCS/version/10.0.3/templates/DCS/config/atg/devtools/admins.xml#2 $$Change: 651448 $ -->

@@ -1,0 +1,155 @@
+<importbean bean="/atg/dynamo/droplet/Switch">
+<importbean bean="/atg/dynamo/droplet/IsEmpty">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/ErrorMessageForEach">
+<importbean bean="/atg/commerce/order/purchase/RepriceOrderDroplet">
+<importbean bean="/atg/commerce/order/purchase/PaymentGroupDroplet">
+<importbean bean="/atg/commerce/order/purchase/PaymentGroupFormHandler">
+<importbean bean="/atg/commerce/order/purchase/CreateCreditCardFormHandler">
+<importbean bean="/atg/userprofiling/Profile">
+
+<body>
+<a href="index.jhtml">Catalog Home</a> - 
+<a href="product_search.jhtml">Product Search</a> - 
+<a href="shoppingcart.jhtml">Shopping Cart</a> - 
+<a href="lists.jhtml">My Lists</a> - 
+<a href="comparison.jhtml">Product Comparison</a> -
+<a href="giftlist_search.jhtml">Gift List Search</a> - 
+<droplet bean="/atg/dynamo/droplet/Switch">
+  <param name="value" value="bean:/atg/userprofiling/Profile.transient">
+  <oparam name="false">
+    <a href="logout.jhtml">Logout</a>
+  </oparam>
+  <oparam name="true">
+    <a href="login.jhtml">Login</a> or <a href="register.jhtml">Register</a>
+  </oparam>
+</droplet>
+<BR>
+<i>location: <valueof bean="Profile.currentLocation"></valueof></i><p>
+
+<java>/* Check for errors */</java>
+<droplet name="Switch">
+  <param name="value" value="bean:PaymentGroupFormHandler.formError">
+  <oparam name="true">
+    <font color=cc0000><STRONG><UL>
+      <droplet name="ErrorMessageForEach">
+        <param name="exceptions" value="bean:PaymentGroupFormHandler.formExceptions">
+        <oparam name="output">
+        <LI> <valueof param="message"></valueof>
+        </oparam>
+      </droplet>
+    </UL></STRONG></font>
+  </oparam>
+</droplet>
+<droplet name="Switch">
+<param name="value" value="bean:CreateCreditCardFormHandler.formError">
+<oparam name="true">
+  <font color=cc0000><STRONG><UL>
+    <droplet name="ErrorMessageForEach">
+      <param name="exceptions" value="bean:CreateCreditCardFormHandler.formExceptions">
+      <oparam name="output">
+	<LI> <valueof param="message"></valueof>
+      </oparam>
+    </droplet>
+    </UL></STRONG></font>
+</oparam>
+</droplet>
+
+<!--The PaymentGroupDroplet and PaymentGroupFormHandler are the foundation 
+of the billing framework. These can be used in a variety of ways to
+determine a user's eligible payment methods and facilitate their application
+to an order's line items.-->
+
+<droplet bean="RepriceOrderDroplet">
+  <param name="pricingOp" value="ORDER_TOTAL">
+</droplet>
+
+<droplet bean="PaymentGroupDroplet">
+  <param name="clear" value="param:init">
+  <param name="paymentGroupTypes" value="creditCard">
+  <param name="initPaymentGroups" value="param:init">
+  <param name="initOrderPayment" value="true">
+  <oparam name="output">
+  <!-- begin output -->
+    <setvalue bean="PaymentGroupFormHandler.listId" value="param:order.id">
+    <droplet bean="ForEach">
+      <param name="array" value="param:paymentGroups">
+      <oparam name="outputStart">
+        <form action="billing.jhtml" method="post">
+        <!-- Since we want to allow anonymous users to be able to checkout, we're not
+        going to require approval of anyone. The approval processor that determines this
+        validation relies on the Profile.approvalRequired property for this information.
+        See /atg/commerce/approval/processor/CheckProfileApprovalRequirements for more information. -->
+        <input type="hidden" bean="Profile.approvalRequired" value="false">        
+        <input type="hidden" bean="PaymentGroupFormHandler.applyDefaultPaymentGroup" value="true">
+        <input type="hidden" bean="PaymentGroupFormHandler.applyPaymentGroupsSuccessURL" value="order_confirmation.jhtml">
+        <input type="hidden" bean="PaymentGroupFormHandler.specifyDefaultPaymentGroupSuccessURL" value="complex_billing.jhtml?init=true">
+        <droplet bean="Switch">
+          <param name="value" value="param:size">
+          <oparam name="0">
+            You have not entered any payment information.
+          </oparam>
+          <oparam name="1">
+            <b>One PaymentGroup</b><BR>
+            <droplet bean="ForEach">
+              <param name="array" value="param:paymentGroups">
+              <oparam name="output">
+                <input type="hidden" priority=9 bean="PaymentGroupFormHandler.listId" value="bean:PaymentGroupFormHandler.listId">
+                <input type=hidden bean="PaymentGroupFormHandler.CurrentList[0].paymentMethod" value="param:key">
+                <valueof param="key"></valueof> 
+                <valueof param="element.creditCardType"></valueof> 
+                <valueof param="element.creditCardNumber" CreditCard></valueof>
+                <input type="submit" bean="PaymentGroupFormHandler.applyPaymentGroups" value="Bill Entire Order to this CreditCard">
+              </oparam>
+            </droplet>
+          </oparam>
+          <oparam name="default">
+            <b>One PaymentGroup</b><BR>
+            <droplet bean="ForEach">
+              <param name="array" value="param:paymentGroups">
+              <oparam name="output">
+                <input type="hidden" priority=9 bean="PaymentGroupFormHandler.listId" value="bean:PaymentGroupFormHandler.listId">
+                <input type=radio bean="PaymentGroupFormHandler.CurrentList[0].paymentMethod" value="param:key">
+                <valueof param="key"></valueof> 
+                <valueof param="element.creditCardType"></valueof> 
+                <valueof param="element.creditCardNumber" CreditCard></valueof><br>
+              </oparam>
+            </droplet>
+            <input type="submit" bean="PaymentGroupFormHandler.applyPaymentGroups" value="Bill Entire Order to this CreditCard">
+
+            <p><b>Multiple PaymentGroups</b>
+            <p>The full order amount begins on the default PaymentGroup. Specific amounts may then be split onto separate PaymentGroups.
+            <droplet bean="ForEach">
+              <param name="array" value="param:paymentGroups">
+              <oparam name="output">
+                <br><input type=radio bean="PaymentGroupFormHandler.defaultPaymentGroupName" value="param:key">
+                <valueof param="key"></valueof> 
+                <valueof param="element.creditCardType"></valueof> 
+                <valueof param="element.creditCardNumber" CreditCard></valueof>
+              </oparam>
+            </droplet>
+            <br><input type="submit" bean="PaymentGroupFormHandler.specifyDefaultPaymentGroup" value="Make this the default CreditCard">
+          </oparam>
+        </droplet>
+        </form>
+      </oparam>
+    </droplet><!-- end ForEach -->
+  <!-- end output -->
+  </oparam>
+</droplet><!-- end PaymentGroupDroplet -->
+
+<a href="store_credit.jhtml">StoreCredit PaymentGroup</a>
+This link provides a page where the PaymentGroupDroplet is utilized to initialize
+the StoreCredit PaymentGroup. StoreCredits are initialized based
+on the ClaimableManager.getStoreCreditsForProfile method, which querires the
+ClaimableRepository.<p>
+
+<a href="invoice_request.jhtml">Request Invoice</a>
+This link provides a page where the PaymentGroupDroplet is utilized to initialize
+the InvoiceRequest PaymentGroup.<p>
+
+<droplet src="credit_card.jhtml"/>
+
+</body>
+</html>
+<java>/* @version $Id: //product/B2BCommerce/version/10.0.3/release/B2BCommerce/html/sample_catalog/billing.jhtml#2 $$Change: 651448 $*/</java>

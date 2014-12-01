@@ -1,0 +1,802 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Naveen Gabrani">
+   <meta name="GENERATOR" content="Mozilla/4.75 [en] (Windows NT 5.0; U) [Netscape]">
+   <title>orderApprovalSpecs</title>
+</head>
+<body>
+
+<div class="navbar">
+<center><a href="#toc">table of contents</a></center>
+
+<hr WIDTH="100%">
+<center>
+<h1>
+<b>Order Approval</b> Gear</h1></center>
+
+<dl>
+<dt>
+Date:</dt>
+
+<dd>
+22 April 2002</dd>
+
+<dt>
+Author:</dt>
+
+<dd>
+<a href="mailto:ngabrani@atg.com">Naveen Gabrani</a></dd>
+</dl>
+
+<hr WIDTH="100%">
+<br><b><font size=+2>Abstract</font></b></div>
+The order approval gear is part of the effort to make the existing Commerce
+functionality available as gears. Making the commerce functionality available
+as gears will allow end users of B2C and B2B commerce sites to customize
+the commerce contents of their sites. From the perspective of portal administrator,
+community leader or end user, the commerce specific gears will behave exactly
+like any other gear. The Order Approval gear will be made available to
+a customer, if they buy both B2B Commerce set and Portals.
+<br>&nbsp;
+<h2>
+<a NAME="toc" id="toc"></a>Contents</h2>
+
+<div class="contents">
+<ol class="toc">
+<li class="tocline">
+<a href="#intro">Introduction</a></li>
+
+<li class="tocline">
+<a href="#terms">Definition of Terms</a></li>
+
+<li class="tocline">
+<a href="#features">Features</a></li>
+
+<li class="tocline">
+<a href="#arch">Architecture</a></li>
+
+<li class="tocline">
+<a href="#impl">Implementation</a></li>
+
+<li class="tocline">
+<a href="#install">Installation, Configuration, Administration and Diagnostics</a></li>
+
+<li class="tocline">
+<a href="#perf">Performance Goals</a></li>
+
+<li class="tocline">
+<a href="#test">Test Development</a></li>
+
+<li class="tocline">
+<a href="#doc">Documentation Requirements</a></li>
+
+<li class="tocline">
+<a href="#extrn">External Code</a></li>
+
+<li class="tocline">
+<a href="#inter">Internationalization </a><a href="#sec">Security</a></li>
+</ol>
+</div>
+
+<p><br>
+<hr WIDTH="100%">
+<br>&nbsp;
+<h3>
+<a NAME="intro" id="intro"></a><b>Introduction</b></h3>
+This document describes the requirements for the order approval gear. The
+order approval will be used to display orders that need to be approved
+by a user. It may also be used to display orders that have already been
+approved or rejected by the user. The order approval gear will rely on
+the existing Commerce and Portal functionality to display order related
+information to the user in a generic fashion. The order approval gear will
+consist of five set of pages - shared view, full view, userconfig, installConfig
+and instanceConfig view.
+<br>&nbsp;
+<h3>
+<a NAME="terms" id="terms"></a><b>Definition of Terms</b></h3>
+
+<h3>
+<a NAME="terms" id="features"></a><b>Features</b></h3>
+<b>Shared and Full view of the gear</b>
+<br>The shared view of a gear is used when the gear is displayed in a page
+along with other gears. The shared view of the order approvals gear will
+contain the following information.
+<p>a) List some of the recently placed orders that need to be approved
+by the user who is logged in. Four fields of the order will be displayed
+- Order number, date ordered, order total and buyer. For example -
+<br>Order #&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Date Ordered&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Order total&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Buyer
+<br>1231&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+1/1/2001&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+432.23&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+XYZ
+<br>1232&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+1/3/2001&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+431.57&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ABC
+<p>The user will also be able to configure the number of recent orders
+that are shown in the shared view. If set to zero, the list of recently
+placed orders will disappear. By default the five most recent orders that
+need to be approved will be shown to the user. It should be noted here
+that the state of the order is not displayed, as the state is always PENDING_APPROVAL.
+Clicking on the order number will take the user to the order details page.
+From the order details page, the user will be able to specify whether the
+order needs to be approved or rejected.
+<p>b) List the number of total orders that need to be approved. For example
+- There are 9 approval requests. If there are no orders that need to be
+approved, then an appropriate message will be displayed. The end user will
+be able to configure whether she wants to see this information or not.
+<p>c) Link to all the orders needing approvals. This will link to the full
+view of the gear.
+<p>d) Link to all the orders that have been already approved or rejected.
+This will also link to the full view of the gear.
+<p>If a user is not logged in, then the contents of the gear will not be
+displayed. The layout template that includes this gear, will require the
+user to login, before the gear can be displayed.
+<p>The full view of the gear will be invoked when the user clicks on the
+"Pending approval requests" or Resolved requests" link. A request parameter
+(type) will be passed to the full view of the gear.
+<p>a) The full view of the order will also show a list of orders like the
+shared view. The full view will have these three pieces of information
+--
+<br>Order #&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Date Ordered&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Order total&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Buyer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+State
+<br>1231&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+1/1/2001&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+432.23&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+XYZ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Blue shoes-4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Approved
+<br>1232&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+1/3/2001&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+431.57&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ABC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Java Book-210&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Approved
+<br>b) Count of orders. For example - "Now viewing orders 1 - 10 out of
+11"
+<br>c) Link to the previous 10 or next 10 orders if necessary.
+<p>Some things to note here are --
+<br>a) The list of orders will have the following columns - Date of the
+order, Order number (this will be a link to the order page), $ value of
+the order, buyer, description and state. The description will contain the
+1st item quantity concatenated with "-" followed by the quantity of the
+item. The order number will have a link to the order page.
+<br>b) By default the full view of the order approval gear will show 10
+orders per page. The user will be able to set the number of orders per
+page in the full page view.
+<br>c) The total number of orders that are displayed will also be configurable
+by the user. By default all the orders will be displayed to the user.
+<br>d) There will be two differences in the the display of orders between
+the approved orders and orders pending approval view.
+<br>1. The first and the obvious one is the list of orders shown will be
+different. They will have the state "PENDING_APPROVAL" or "APPROVED/REJECTED"
+view depending upon the request parameter "approved".
+<br>2. The link to the order page will also be different. For the approved
+list of orders, the link to the order page will typically point to the
+basic order details page of a Commerce application. This order details
+page will not be part of the gear. For the orders pending approval display
+of the full view, the order details page besides giving the details of
+order, will also have Approve and Reject buttons at the bottom. This page
+will be part of the gear.
+<p><b>Rest of the Approval process</b>
+<br>When viewing list of orders pending approval in full view of the gear,
+the user will be able to invoke the rest of the order approval process
+by clicking on any order number. The community leader will have the option
+to either use the approval process included within this gear, or to use
+the approval process available as part of a commerce application. If using
+the approval process of a commerce application, the admin will be able
+to specify the URL of the order page that needs to be used for the approval
+process. The rest of the approval process is modeled on the existing Motorprise
+approval process.
+<p>If the Portal Administrator decides to use the approval process of the
+gear, then the link from the order number in full view will go to the order
+details page of this gear. The order details page will have the following
+sections -
+<br>a) Order number. The order number will be displayed at the top.
+<br>b) Basic order information. This section will include the following
+information - the date the order was placed, the order state, the buyer's
+name, email and organization. The information displayed in this section
+will be optional. The Community leader will be able to disable this display
+of information on this page.
+<br>c) Billing information. This section will include the following information
+for each of the payment method - Payment method, amount, billing address
+and cost center. The information displayed in this section will be optional.
+The Community leader will be able to disable this display of information
+on this page.
+<br>d) Shipping information. This section will include the following information
+for each of the shipping method - Shipping address, shipping method, items
+and the cost for this shipping group. The items will be a list of items
+each of which will have - Quantity, part number, name and price. The cost
+will include the subtotal for this shipping group and the shipping cost.
+The information displayed in this section will be optional. The Community
+leader will be able to disable this display of information on this page.
+<br>e) The total cost of the order and the sales tax will be displayed
+at the bottom.
+<br>f) Also at the bottom of the Orders Pending Approval page, there will
+be links to approve or reject the order. Clicking on these links will bring
+the appropriate pages.
+<p>The sections on order information, billing information, and shipping
+information will be optional, and may be removed by the community leader.
+However all the information will be shown by default.
+<p>The Approve Order page will include three sections of information -
+<br>a) Basic information on the order. This will include the Order number,
+the order placed date, and the buyer name. This section will be optional,
+and&nbsp; the community leader will be able to remove this section of the
+page.
+<br>b) Message text box. This will allow the Approver to store any message
+related to the order and why it is being approved. This section will be
+optional, and&nbsp; the community leader will be able to remove this section
+of the page.
+<br>c) Approve order and Cancel buttons.
+<p>Clicking on the Approve order button will actually approve the order.
+It will bring the approval confirmation page that will have the order number,
+order submitted date, buyer and the message. There will be a link from
+this page that will take the user back to the Full view of the page.
+<p>The Reject Order page will be similar to the Reject order page. It will
+include three sections of information -
+<br>a) Basic information on the order. This will include the Order number,
+the order placed date, and the buyer name. This section will be optional,
+and&nbsp; the community leader will be able to remove this section of the
+page.
+<br>b) Message text box. This will allow the Approver to store any message
+related to the order and why it is being rejected. This section will be
+optional, and&nbsp; the community leader will be able to remove this section
+of the page.
+<br>c) Reject order and Cancel buttons.
+<br>Clicking on the Reject order button will actually reject the order.
+It will bring the rejection confirmation page that will have the order
+number, order submitted date, buyer and the message. There will be a link
+from this page that will take the user back to the Full view of the page.
+<p>This is a list of contents pages that will be part of the order approval
+gear.
+<ol>
+<li>
+Shared view of the gear</li>
+
+<li>
+Full view of the gear. This will display either the orders pending approval
+or orders approved.</li>
+
+<li>
+The order details page with the Approve or Reject buttons.</li>
+
+<li>
+The Approve order page</li>
+
+<li>
+Approval confirmation page</li>
+
+<li>
+The Reject order page</li>
+
+<li>
+The Reject confirmation page</li>
+</ol>
+There will not be any WML pages in this gear.
+<p><b>UserConfig, InstanceConfig and InstallConfig pages</b>
+<br>There are four administration modes that Portals support - installConfig,
+instanceConfig, initialConfig and userConfig. installConfig mode is used
+by the Portal administrator when a gear manifest file is loaded to create
+a gear definition. initialConfig is invoked when a community leader creates
+a gear instance for a community from the gear definition. instanceConfig
+mode is invoked, when a community leader tries to configure a pre-existing
+gear instance. The userConfig mode is available to end users. This allows
+end users to configure user specific parameters. Each gear may or may not
+define these configuration modes.
+<p>The Order Approvals gear will have pages defined for three modes - instanceConfig,
+installConfig and userConfig.
+<p>The userConfig page will have the following fields to be configured
+by the user.
+<ul>
+<li>
+Number of orders displayed on the shared view of the page. By default the
+five most recent orders that need to be approved will be displayed to the
+user.</li>
+
+<li>
+Display the total number of orders that need to be approved in the shared
+page. The end user will be able to configure whether she wants to see this
+information or not. By default this information will be displayed.</li>
+
+<li>
+Number of orders per page in the full view of the page. The default will
+be 10 orders per page.</li>
+
+<li>
+Total number of orders that need to be displayed in the full view. By default
+all the orders will be displayed. A user may specify that she does not
+want to see all the orders, and see only a subset of orders (say 100).</li>
+</ul>
+InstanceConfig page will have the following fields to be configured by
+the community leader.
+<br>&nbsp;
+<ul>
+<li>
+Display the basic order information in the Order details page of the approval
+process. The default will be true. That is by default the basic information
+will be displayed.</li>
+
+<li>
+Display the Billing information in the Order details page of the approval
+process. The default will be true. That is by default the billing information
+will be displayed.</li>
+
+<li>
+Display the Shipping information in the Order details page of the approval
+process. The default will be true. That is by default the shipping information
+will be displayed.</li>
+
+<li>
+Display the basic order information on the Approve order page. The default
+will be true. That is by default the basic order information will be displayed.</li>
+
+<li>
+Display the message text box on the Approve order page. The default will
+be true. That is by default the message text box will be displayed.</li>
+
+<li>
+Display the basic order information on the Reject order page. The default
+will be true. That is by default the basic order information will be displayed.</li>
+
+<li>
+Display the message text box on the Reject order page. The default will
+be true. That is by default the message text box will be displayed.</li>
+</ul>
+All the options of instanceConfog are relevant only if "Use the Order Approval
+process of the gear" is set to true, i.e. if the Approval procedure provided
+by the gear is being used.
+<p>InstallConfig page will have the following fields to be configured by
+the user
+<ul>
+<li>
+Use the Order Approval process of the gear. The default will be true. i.e.
+by default the order approval process of the gear will be used.</li>
+
+<li>
+The order page URL from the approved orders display of the full view. This
+will typically link to the order details page of the commerce application.</li>
+
+<li>
+The order page URL from the pending approval orders display of the full
+view and the shared view. This will be used if the option "Use the Order
+Approval process of the gear" is set to false. So if the Portal Administrator
+wants to use the approval process provided in a Commerce application instead
+of the approval process provided in the gear, than the URL provided in
+here will be used to link from the order number on the Shared view and
+the Pending approval display of the full view.</li>
+</ul>
+
+<h3>
+<a NAME="arch" id="arch"></a><b>Architecture</b></h3>
+One of the main approaches of the Commerce gear development is to reuse
+the existing functionality available in Commerce and B2BCommerce modules
+as far as possible. The order approval gear will also reuse all the existing
+components available in B2BCommerce for the Order Approval procedure.
+<p>The gear configuration pages will use the GearConfigFormHandler. The
+InitializeGearEnvironment tag of PAF tag library will be used to read the
+instance and userConfig parameters.
+<p>The ApprovalRequiredDroplet droplet will be used in the shared view
+and full view to display the orders that need to be approved. To display
+the orders that have been approved or rejected by the user, a new component
+ApprovedOrdersDroplet that will use the same class atg.commerce.approval.ApprovalRequiredDroplet,
+will be created. This component will set the orderStatesRequiringApproval
+property to
+<br>"APPROVED,REJECTED,SUBMITTED,NO_PENDING_ACTION" .
+<br>&nbsp;
+<p><a NAME="impl" id="impl"></a><b>Implementation</b>
+<ol>The Order Approval gear will be a sub module within the CommerceGears
+module - CommerceGears.OrderApproval. This module will have portal.paf
+and B2BCommerce as dependent modules. The Order Approval code will be part
+of the B2BCommerce code at (//product/B2BCommerce/main/projects/OrderApprovalGear).
+<p>A request parameter (type) will be passed to the full view of the gear.
+The top level page of the full view will just have a switch statement based
+on the value of the "approved" parameter. It will include two different
+page fragments based on the type parameter - one to display approved orders
+and the other to display orders pending approval. The pages in the order
+approval flow will need to carry this parameter. After the user has approved
+or rejected an order, the user will be redirected to the full view of the
+gear with type parameter set appropriately.
+<br>&nbsp;
+<ul>
+<h3>
+Gear Pages</h3>
+This gear will contain the following pages. These pages will be implemented
+in JSP.
+<br>&nbsp;
+<table BORDER >
+<tr>
+<th ALIGN=LEFT WIDTH="20%">HTML</th>
+
+<th WIDTH="40%">Shared</th>
+
+<th WIDTH="40%">Full</th>
+</tr>
+
+<tr>
+<th ALIGN=RIGHT>Content</th>
+
+<td ALIGN=CENTER>X</td>
+
+<td ALIGN=CENTER>X&nbsp;</td>
+</tr>
+
+<tr>
+<th ALIGN=RIGHT>UserConfig</th>
+
+<td ALIGN=CENTER>&nbsp;</td>
+
+<td ALIGN=CENTER>X&nbsp;</td>
+</tr>
+
+<tr>
+<th ALIGN=RIGHT>InstanceConfig</th>
+
+<td ALIGN=CENTER>&nbsp;</td>
+
+<td ALIGN=CENTER>X&nbsp;</td>
+</tr>
+
+<tr>
+<th ALIGN=RIGHT>InitialConfig</th>
+
+<td ALIGN=CENTER>&nbsp;</td>
+
+<td ALIGN=CENTER>&nbsp;</td>
+</tr>
+
+<tr>
+<th ALIGN=RIGHT>InstallConfig</th>
+
+<td ALIGN=CENTER>&nbsp;</td>
+
+<td ALIGN=CENTER>X&nbsp;</td>
+</tr>
+
+<tr>
+<th ALIGN=RIGHT>Help</th>
+
+<td ALIGN=CENTER>&nbsp;</td>
+
+<td ALIGN=CENTER>&nbsp;</td>
+</tr>
+
+<tr>
+<th ALIGN=RIGHT>About</th>
+
+<td ALIGN=CENTER>&nbsp;</td>
+
+<td ALIGN=CENTER>&nbsp;</td>
+</tr>
+</table>
+
+<table BORDER >
+<tr>
+<th ALIGN=LEFT WIDTH="20%">WML</th>
+
+<th WIDTH="40%">Shared</th>
+
+<th WIDTH="40%">Full</th>
+</tr>
+
+<tr>
+<th ALIGN=RIGHT>Content</th>
+
+<td ALIGN=CENTER>&nbsp;</td>
+
+<td ALIGN=CENTER>&nbsp;</td>
+</tr>
+
+<tr>
+<th ALIGN=RIGHT>UserConfig</th>
+
+<td ALIGN=CENTER>&nbsp;</td>
+
+<td ALIGN=CENTER>&nbsp;</td>
+</tr>
+
+<tr>
+<th ALIGN=RIGHT>InstanceConfig</th>
+
+<td ALIGN=CENTER>&nbsp;</td>
+
+<td ALIGN=CENTER>&nbsp;</td>
+</tr>
+
+<tr>
+<th ALIGN=RIGHT>InitialConfig</th>
+
+<td ALIGN=CENTER>&nbsp;</td>
+
+<td ALIGN=CENTER>&nbsp;</td>
+</tr>
+
+<tr>
+<th ALIGN=RIGHT>InstallConfig</th>
+
+<td ALIGN=CENTER>&nbsp;</td>
+
+<td ALIGN=CENTER>&nbsp;</td>
+</tr>
+
+<tr>
+<th ALIGN=RIGHT>Help</th>
+
+<td ALIGN=CENTER>&nbsp;</td>
+
+<td ALIGN=CENTER>&nbsp;</td>
+</tr>
+
+<tr>
+<th ALIGN=RIGHT>About</th>
+
+<td ALIGN=CENTER>&nbsp;</td>
+
+<td ALIGN=CENTER>&nbsp;</td>
+</tr>
+</table>
+
+<h3>
+Gear Instance Parameters</h3>
+The following is a list of the gear instance parameter -
+<br>&nbsp;
+<table BORDER COLS=3 WIDTH="75%" >
+<tr>
+<td WIDTH="20%"><b>Parameter name</b></td>
+
+<td WIDTH="20%"><b>Default Value</b></td>
+
+<td WIDTH="64%"><b>Description</b></td>
+</tr>
+
+<tr>
+<td>ShowOrderInfoInDetails</td>
+
+<td>true</td>
+
+<td>Show the basic order information in the Order Details page</td>
+</tr>
+
+<tr>
+<td>ShowBillingInfoInDetails</td>
+
+<td>true</td>
+
+<td>Show the billing information of order in the Order Details page</td>
+</tr>
+
+<tr>
+<td>ShowShipingInfoInDetails</td>
+
+<td>true</td>
+
+<td>Show the shipping information of order in the Order Details page</td>
+</tr>
+
+<tr>
+<td>ShowOrderInfoInApprove</td>
+
+<td>true</td>
+
+<td>Show the basic order information in the Order Approvals page</td>
+</tr>
+
+<tr>
+<td>ShowMessageInApprove</td>
+
+<td>true</td>
+
+<td>Show the message box in the Order Approvals page&nbsp;</td>
+</tr>
+
+<tr>
+<td>ShowOrderInfoInReject</td>
+
+<td>true</td>
+
+<td>Show the basic order information in the Order Rejected page</td>
+</tr>
+
+<tr>
+<td>ShowMessageInfoInReject</td>
+
+<td>true</td>
+
+<td>Show the message box in the Order Rejected page</td>
+</tr>
+</table>
+
+<h3>
+Gear User Parameters</h3>
+The following is a list of the gear user parameter -
+<br>&nbsp;
+<table BORDER COLS=3 WIDTH="75%" >
+<tr>
+<td><b>Parameter name</b></td>
+
+<td><b>default value</b></td>
+
+<td><b>Description</b></td>
+</tr>
+
+<tr>
+<td>NumberOfOrdersShared</td>
+
+<td>5</td>
+
+<td COLSPAN="2">At a maximum show these number of orders in the shared
+view of the gear</td>
+</tr>
+
+<tr>
+<td>ShowApprovedCountShared</td>
+
+<td>true</td>
+
+<td>Specify whether we need show the count of approved orders or not in
+the Shared view</td>
+</tr>
+
+<tr>
+<td>NumberOfOrdersPerPageFull</td>
+
+<td>10</td>
+
+<td>At a maximum show these number of orders per page in the full view
+of the gear</td>
+</tr>
+
+<tr>
+<td>NumberOfOrdersFull</td>
+
+<td>-1</td>
+
+<td>At a maximum show these many number of orders in the full view of the
+gear</td>
+</tr>
+</table>
+
+<h3>
+<font size=+0>The following is a list of the gear install config parameters</font></h3>
+<font size=+0></font>&nbsp;
+<table BORDER COLS=3 WIDTH="60%" >
+<tr>
+<td><b>Parameter name</b></td>
+
+<td WIDTH="20%"><b>default value</b></td>
+
+<td WIDTH="60%"><b>Description</b></td>
+</tr>
+
+<tr>
+<td>UseOrderApprovalOfGear</td>
+
+<td>true</td>
+
+<td WIDTH="65%">Specifies whether the order approval process of the gear
+should be used or of a Commerce application</td>
+</tr>
+
+<tr>
+<td>ApprovedOrderPageURL</td>
+
+<td>checkout/order.jsp</td>
+
+<td>The URL used to link to the order page from the full view displaying
+approved orders.</td>
+</tr>
+
+<tr>
+<td>PendingApprovalOrderPageURL</td>
+
+<td>checkout/order.jsp</td>
+
+<td>The URL used to link to the order page from the full view displaying
+orders that are pending approval.</td>
+</tr>
+</table>
+<font size=+0></font>
+<br><font size=+0></font>&nbsp;
+<h3>
+Alert Message</h3>
+An alert messages will be generated when an order is approved or rejected.
+This will use the new framework of alerts that uses JMS messages that is
+being built for Copper.
+<h3>
+Integrations</h3>
+The gear will use the existing functionality available in the B2BCommerce,
+Commerce and Portals. It will be used in the Ecovida demo. Eventually a
+subset of Motorprise demo will be written using the Commerce gears. At
+that time this gear will be used to build a portals version of Motorprise.
+<h3>
+Existing Components &amp; Taglibs Used</h3>
+The functionality of the pages of this gear is already available in Motorprise.
+So the approval process will use the standard B2CCommece components. Also
+the gear pages will use the following tag libraries -
+<ol>
+<li>
+DSP tag library to access Dynamo's droplets and nucleus components</li>
+
+<li>
+Core tag library to perform basic tasks like switch, if etc.</li>
+
+<li>
+paf tag library to access the functionality of Portal application framework</li>
+
+<li>
+jakarta-i18n tag library to make all the JSP pages internationalized.</li>
+</ol>
+
+<h3>
+New Components &amp; Taglibs Created for this gear</h3>
+No tag library will be written for this gear. The only new component will
+be ApprovedOrdersDroplet which is explained above.</ul>
+
+<h3>
+<a NAME="install" id="install"></a>Installation, Configuration, Administration
+and Diagnostics</h3>
+The Gear manifest file will be one of the deliverables of the development
+process. It will be present in the etc. directory. The Portal administrator
+will be able to load the gear manifest file to create a gear definition
+for the Order Approval gear.
+<h3>
+<a NAME="perf" id="perf"></a>Performance Goals</h3>
+The Order Approval need to be able to display a large number of orders.
+The user needs to be able to view a large number of orders without any
+significant impact on performance.
+<h3>
+<a NAME="test" id="test"></a>Test Development</h3>
+All the pages in the contents and the configuration of Order Approval gear
+will be tested as part of unit testing on DAS and one more application
+server.
+<h3>
+<a NAME="doc" id="doc"></a>Documentation Requirements</h3>
+Besides the technical specifications (this) document, a brief user document
+will also be written. These two documents combined will form the basis
+of the formal documentation that will be written by the documentation group.
+<h3>
+<a NAME="extrn" id="extrn"></a>External Code</h3>
+The gear will rely on the existing order approval functionality available
+in the B2BCommerce module.
+<h3>
+<a NAME="inter" id="inter"></a>Internationalization</h3>
+The order gear will be internationalized using the same style as all the
+existing Portal gears using the Jakarta i18n library. Any text that is
+displayed to the user will be written in a properties file and will be
+printed using the &lt;i18n:message> tag.
+<h3>
+<a NAME="sec" id="sec"></a>Security</h3>
+The code within the instanceConfig page will be included within a &lt;paf:CommunityLeaderCheck>
+tag. This will ensure that only the community leader can access the page.
+The code within all the content pages and userconfig page will be included
+within the &lt;paf:RegisteredUserCheck> tag to ensure that only a registered
+user can access the gear pages.
+<p>Also all the contents pages will have a check to ensure that only users
+that have permissions to approve orders are given access to the contents
+pages.
+<br>&nbsp; &lt;dsp:droplet name="HasFunction">
+<br>&nbsp;&nbsp;&nbsp; &lt;dsp:param bean="Profile.id" name="userId"/>
+<br>&nbsp;&nbsp;&nbsp; &lt;dsp:param name="function" value="approver"/>
+<br>&nbsp;&nbsp;&nbsp; &lt;dsp:oparam name="true">
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Contents of the page go
+here ...
+<br>&nbsp;&nbsp;&nbsp;&nbsp; &lt;/dsp:oparam>
+<br>&nbsp;&nbsp;&nbsp;&nbsp; &lt;dsp:oparam name="false">
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Error message here
+<br>&nbsp;&nbsp;&nbsp;&nbsp; &lt;/dsp:oparam>
+<br>&lt;/dsp:droplet>
+<ol>&nbsp;</ol>
+
+<hr WIDTH="100%">
+<br>&nbsp;</ol>
+
+<hr WIDTH="100%">
+<div class="navbar">
+<center><a href="#toc">table of contents</a></center>
+</div>
+
+</body>
+</html>

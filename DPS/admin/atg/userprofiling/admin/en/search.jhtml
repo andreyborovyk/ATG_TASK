@@ -1,0 +1,91 @@
+<importbean bean="/atg/userprofiling/ProfileFindForm">
+<importbean bean="/atg/userprofiling/PropertyManager">
+
+
+<html>
+<head>
+<title>Search for Profiles</title>
+</head>
+<body BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="images/dpsadminbanner.gif" ALT="Dynamo Personalization Administration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a href="index.jhtml">Personalization
+Administration</a>/Search<p>
+
+<blockquote>
+
+<h2>Search for Profiles</h2>
+
+<b>Search by Attribute</b><br>
+
+ <form method=post action="searchresults.jhtml">
+  <input type="hidden" bean="ProfileFindForm.searchType" value="query">
+ 
+  <select bean="ProfileFindForm.attributeName">
+   <droplet src="search_options.jhtml"> 
+     <param name="selectedAttributeName" value="bean:PropertyManager.loginPropertyName"> 
+   </droplet>
+  </select>
+
+  <select bean="ProfileFindForm.attributeRelation">
+   <option value="==">equals</option>
+   <option value="!=">not equals</option>
+   <option value="&lt;">less than</option>
+   <option value="&gt;">greater than</option>
+   <option value="&lt;=">less than or equals</option>
+   <option value="&gt;=">greater than or equals</option>
+  </select>
+
+  
+  <input type="text" bean="ProfileFindForm.attributeValue" value="">            
+  
+  <!-- BUG 67388 -->
+  <!-- On IE, to trigger handle method if enter key is pressed  -->
+  <!-- instead of the submit button, you need to have a         -->
+  <!-- hidden value that sets the o trigger the handle method.  -->
+  <input type="hidden" bean="ProfileFindForm.searchByAttribute" value=" Search ">
+
+  <input type="submit" bean="ProfileFindForm.searchByAttribute" value=" Search ">
+  <input type="reset"  value=" Reset ">
+ </form>
+
+<img src="/atg/dynamo/admin/images/bluedot.gif" width=505 height=1>
+<p>
+
+<b>Search by Profile Group</b><br> 
+ <form method=post action="searchresults.jhtml">
+  <input type="hidden" bean="ProfileFindForm.searchType" value="group">
+    
+  <select bean="ProfileFindForm.groupName">
+    <droplet src="search_groupoptions.jhtml">
+    </droplet>
+  </select>  
+
+  <input type="submit" bean="ProfileFindForm.searchByProfileGroup" value=" Search ">
+ </form>
+
+<img src="/atg/dynamo/admin/images/bluedot.gif" width=505 height=1>
+<p>
+
+<b>Search for Inactive Users</b><br>
+
+ <form method=post action="searchresults.jhtml">
+  <input type="hidden" bean="ProfileFindForm.searchType" value="query">
+
+  Find people who have not visited in...<BR>
+  <input type="radio" bean="ProfileFindForm.dateValue" value="a year" checked> a year<br>             
+  <input type="radio" bean="ProfileFindForm.dateValue" value="3 months"> 3 months<br>    
+  <input type="radio" bean="ProfileFindForm.dateValue" value="a month"> a month<br>           
+  <input type="radio" bean="ProfileFindForm.dateValue" value="a week" > a week<br>             
+  <input type="radio" bean="ProfileFindForm.dateValue" value="since"> since                 
+  <input type="text" size=20 bean="ProfileFindForm.sinceDate" > <p>  
+  <input type="submit" bean="ProfileFindForm.searchByDate" value=" Search ">
+  <input type="reset"  value=" Reset ">
+ </form>
+
+</blockquote>
+
+</body>
+</html>
+<java>/* @version $Id: //product/DPS/version/10.0.3/release/DPS/admin/atg/userprofiling/admin/en/search.jhtml#2 $$Change: 651448 $ */</java>

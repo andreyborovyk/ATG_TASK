@@ -1,0 +1,422 @@
+<?xml version="1.0"?>
+<rules_template>
+   <product>
+		  <name>ATG Adaptive Scenario Engine</name>
+      <version>10.0.3</version>
+      <rules platform="UNIX">
+				<!-- Necessary for proper license download -->
+			 <set_env_variable>
+				 <target_file>$(rootDir)/home/localconfig/environment.sh</target_file>
+				 <variable>DYNAMO_LICENSED_MODULES</variable>
+				 <new_value>DPS:DSS:</new_value>
+			 </set_env_variable>
+				<!-- Oracle Weblogic -->
+				<if>
+					<variable>appServer</variable>
+					<value>WebLogic</value>
+				<then>
+					<!-- dasEnv.sh -->
+					<echo>
+						<to_file>$(rootDir)/home/localconfig/dasEnv.sh</to_file>
+						<message>
+WL_HOME=$(weblogicHome);export WL_HOME
+</message>
+						<file_mode>OVERWRITE</file_mode>
+					</echo>
+					<echo>
+						<to_file>$(rootDir)/home/localconfig/dasEnv.sh</to_file>
+						<message>
+WL_VERSION=$(weblogicVersion);export WL_VERSION
+</message>
+						<file_mode>APPEND</file_mode>
+					</echo>
+					<echo>
+						<to_file>$(rootDir)/home/localconfig/dasEnv.sh</to_file>
+						<message>
+ATGJRE=$(ATGJRE);export ATGJRE
+</message>
+						<file_mode>APPEND</file_mode>
+					</echo>
+					<!-- Other misc. configuration -->
+					<copy_file>
+						<from_file>$(rootDir)/DAS/lib/protocol.jar</from_file>
+						<to_file>$(weblogicDomain)</to_file>
+					</copy_file>	
+				</then>
+				</if>
+				<!-- WebSphere -->
+				<if>
+					<variable>appServer</variable>
+					<value>WebSphere</value>
+				<then>
+					<!-- dasEnv.sh -->
+					<echo>
+						<to_file>$(rootDir)/home/localconfig/dasEnv.sh</to_file>
+						<message>
+WAS_HOME=$(websphereHome);export WAS_HOME
+	</message>
+						<file_mode>OVERWRITE</file_mode>
+					</echo>
+					<echo>
+						<to_file>$(rootDir)/home/localconfig/dasEnv.sh</to_file>
+						<message>
+WAS_VERSION=$(websphereVersion);export WAS_VERSION
+	</message>
+						<file_mode>APPEND</file_mode>
+					</echo>
+					<echo>
+						<to_file>$(rootDir)/home/localconfig/dasEnv.sh</to_file>
+						<message>
+ATGJRE=$(ATGJRE);export ATGJRE
+	</message>
+						<file_mode>APPEND</file_mode>
+					</echo>
+					<copy_file>
+						<from_file>$(rootDir)/DAF/wsbin/ws-config.xml</from_file>
+						<to_file>$(rootDir)/home</to_file>
+					</copy_file>
+				</then>
+				</if>
+				<!-- WebSphere-Cluster -->
+				<if>
+					<variable>appServer</variable>
+					<value>WebSphere-cluster</value>
+				<then>
+					<!-- dasEnv.sh -->
+					<echo>
+						<to_file>$(rootDir)/home/localconfig/dasEnv.sh</to_file>
+						<message>
+WAS_HOME=$(websphereHome);export WAS_HOME
+	</message>
+						<file_mode>OVERWRITE</file_mode>
+					</echo>
+					<echo>
+						<to_file>$(rootDir)/home/localconfig/dasEnv.sh</to_file>
+						<message>
+WAS_VERSION=$(websphereVersion);export WAS_VERSION
+	</message>
+						<file_mode>APPEND</file_mode>
+					</echo>
+					<echo>
+						<to_file>$(rootDir)/home/localconfig/dasEnv.sh</to_file>
+						<message>
+ATGJRE=$(ATGJRE);export ATGJRE
+	</message>
+						<file_mode>APPEND</file_mode>
+					</echo>
+					<copy_file>
+						<from_file>$(rootDir)/DAF/wsbin/ws-config.xml</from_file>
+						<to_file>$(rootDir)/home</to_file>
+					</copy_file>
+				</then>
+				</if>
+				<!-- JBoss -->
+				<if>
+					<variable>appServer</variable>
+					<value>JBoss</value>
+				<then>
+					<!-- dasEnv.sh -->
+					<echo>
+						<to_file>$(rootDir)/home/localconfig/dasEnv.sh</to_file>
+						<message>
+ATGJRE=$(ATGJRE);export ATGJRE
+</message>
+						<file_mode>OVERWRITE</file_mode>
+					</echo>
+					<echo>
+						<to_file>$(rootDir)/home/localconfig/dasEnv.sh</to_file>
+						<message>
+JBOSS_HOME=$(jBossHome);export JBOSS_HOME
+</message>
+						<file_mode>APPEND</file_mode>
+					</echo>
+					<echo>
+						<to_file>$(rootDir)/home/localconfig/dasEnv.sh</to_file>
+					<message>
+JBOSS_VERSION=$(jBossVersion);export JBOSS_VERSION
+</message>
+						<file_mode>APPEND</file_mode>
+					</echo>
+                                        <!-- Copy the data source definition from mysql into place -->
+                                        <copy_file>
+                                                <from_file>$(rootDir)/DafEar/JBoss/copy-to-jboss_home-your_server-deploy-dir/atg-mysql-ds.xml</from_file>
+                                                <to_file>$(jBossHome)/server/atg/deploy</to_file>											
+                                        </copy_file>
+						                <copy_file>
+							                    <from_file>$(rootDir)/DafEar/JBoss/copy-to-jboss_home-your_server-deploy-dir/atg-apps-mysql-ds.xml</from_file>
+                                                <to_file>$(jBossHome)/server/atg/deploy</to_file>
+                                        </copy_file>
+				</then>
+				</if>
+      </rules>
+      <rules platform="WIN32">
+			 <set_env_variable>
+				 <target_file>$(rootDir)\home\localconfig\environment.bat</target_file>
+				 <variable>DYNAMO_LICENSED_MODULES</variable>
+				 <new_value>DPS;DSS;</new_value>
+			 </set_env_variable>
+				<!-- Oracle Weblogic -->
+				<if>
+					<variable>appServer</variable>
+					<value>WebLogic</value>
+				<then>
+					<!-- dasEnv.bat -->
+					<echo>
+						<to_file>$(rootDir)\home\localconfig\dasEnv.bat</to_file>
+						<message>
+set WL_HOME=$(weblogicHome)
+</message>
+						<file_mode>OVERWRITE</file_mode>
+					</echo>
+					<echo>
+						<to_file>$(rootDir)\home\localconfig\dasEnv.bat</to_file>
+						<message>
+set WL_VERSION=$(weblogicVersion)
+</message>
+						<file_mode>APPEND</file_mode>
+					</echo>
+					<echo>
+						<to_file>$(rootDir)\home\localconfig\dasEnv.bat</to_file>
+						<message>
+set ATGJRE=$(ATGJRE)
+</message>
+						<file_mode>APPEND</file_mode>
+					</echo>
+					<copy_file>
+						<from_file>$(rootDir)\DAS\lib\protocol.jar</from_file>
+						<to_file>$(weblogicDomain)</to_file>
+					</copy_file>	
+				</then>
+				</if>
+				<!-- WebSphere -->
+				<if>
+					<variable>appServer</variable>
+					<value>WebSphere</value>
+				<then>
+					<!-- dasEnv.bat -->
+					<echo>
+						<to_file>$(rootDir)\home\localconfig\dasEnv.bat</to_file>
+						<message>
+set WAS_HOME=$(websphereHome)
+</message>
+						<file_mode>OVERWRITE</file_mode>
+					</echo>
+					<echo>
+						<to_file>$(rootDir)\home\localconfig\dasEnv.bat</to_file>
+						<message>
+set WAS_VERSION=$(websphereVersion)
+</message>
+						<file_mode>APPEND</file_mode>
+					</echo>
+					<echo>
+						<to_file>$(rootDir)\home\localconfig\dasEnv.bat</to_file>
+						<message>
+set ATGJRE=$(ATGJRE)
+</message>
+						<file_mode>APPEND</file_mode>
+					</echo>
+					<copy_file>
+						<from_file>$(rootDir)\DAF\wsbin\ws-config.xml</from_file>
+						<to_file>$(rootDir)\home</to_file>
+					</copy_file>
+				</then>
+				</if>
+				<!-- WebSphere-cluster -->
+				<if>
+					<variable>appServer</variable>
+					<value>WebSphere-cluster</value>
+				<then>
+					<!-- dasEnv.bat -->
+					<echo>
+						<to_file>$(rootDir)\home\localconfig\dasEnv.bat</to_file>
+						<message>
+set WAS_HOME=$(websphereHome)
+</message>
+						<file_mode>OVERWRITE</file_mode>
+					</echo>
+					<echo>
+						<to_file>$(rootDir)\home\localconfig\dasEnv.bat</to_file>
+						<message>
+set WAS_VERSION=$(websphereVersion)
+</message>
+						<file_mode>APPEND</file_mode>
+					</echo>
+					<echo>
+						<to_file>$(rootDir)\home\localconfig\dasEnv.bat</to_file>
+						<message>
+set ATGJRE=$(ATGJRE)
+</message>
+						<file_mode>APPEND</file_mode>
+					</echo>
+					<copy_file>
+						<from_file>$(rootDir)\DAF\wsbin\ws-config.xml</from_file>
+						<to_file>$(rootDir)\home</to_file>
+					</copy_file>
+				</then>
+				</if>
+				<!-- JBoss -->
+				<if>
+					<variable>appServer</variable>
+					<value>JBoss</value>
+				<then>
+					<!-- dasEnv.bat -->
+					<echo>
+						<to_file>$(rootDir)\home\localconfig\dasEnv.bat</to_file>
+						<message>
+set ATGJRE=$(ATGJRE)
+</message>
+						<file_mode>OVERWRITE</file_mode>
+					</echo>
+					<echo>
+						<to_file>$(rootDir)\home\localconfig\dasEnv.bat</to_file>
+						<message>
+set JBOSS_HOME=$(jBossHome)
+</message>
+						<file_mode>APPEND</file_mode>
+					</echo>
+					<echo>
+						<to_file>$(rootDir)\home\localconfig\dasEnv.bat</to_file>
+						<message>
+set JBOSS_VERSION=$(jBossVersion)
+</message>
+						<file_mode>APPEND</file_mode>
+					</echo>
+                                        <!-- Copy the data source definition from mysql into place -->
+                                        <copy_file>
+                                                <from_file>$(rootDir)\DafEar\JBoss\copy-to-jboss_home-your_server-deploy-dir\atg-mysql-ds.xml</from_file>
+                                                <to_file>$(jBossHome)\server\atg\deploy</to_file>
+                                        </copy_file>
+										<copy_file> 
+										<from_file>$(rootDir)\DafEar\JBoss\copy-to-jboss_home-your_server-deploy-dir\atg-apps-mysql-ds.xml</from_file>
+                                                <to_file>$(jBossHome)\server\atg\deploy</to_file>											
+
+                                        </copy_file>
+				</then>
+				</if>
+      </rules>
+   </product>
+	 <product>
+		 <name>ATG Business Commerce</name>
+		 <version>10.0.3</version>
+		 <rules platform="UNIX">
+			 <set_env_variable>
+				 <target_file>$(rootDir)/home/localconfig/environment.sh</target_file>
+				 <variable>DYNAMO_LICENSED_MODULES</variable>
+				 <new_value>B2BCommerce:</new_value>
+			 </set_env_variable>
+			 <set_env_variable>
+				 <target_file>$(rootDir)/home/localconfig/environment.sh</target_file>
+				 <variable>DYNAMO_CLASSPATH_MODULES</variable>
+				 <new_value>Fulfillment:</new_value>
+			 </set_env_variable>
+			 <set_env_variable>
+				 <target_file>$(rootDir)/home/localconfig/environment.sh</target_file>
+				 <variable>DYNAMO_CLASSPATH_MODULES</variable>
+				 <new_value>B2BCommerce:MotorpriseJSP:</new_value>
+			 </set_env_variable>
+		 </rules>
+		 <rules platform="WIN32">
+			 <set_env_variable>
+				 <target_file>$(rootDir)\home\localconfig\environment.bat</target_file>
+				 <variable>DYNAMO_LICENSED_MODULES</variable>
+				 <new_value>B2BCommerce;</new_value>
+			 </set_env_variable>
+			 <set_env_variable>
+				 <target_file>$(rootDir)\home\localconfig\environment.bat</target_file>
+				 <variable>DYNAMO_CLASSPATH_MODULES</variable>
+				 <new_value>Fulfillment;</new_value>
+			 </set_env_variable>
+			 <set_env_variable>
+				 <target_file>$(rootDir)\home\localconfig\environment.bat</target_file>
+				 <variable>DYNAMO_CLASSPATH_MODULES</variable>
+				 <new_value>B2BCommerce;MotorpriseJSP;</new_value>
+			 </set_env_variable>
+		 </rules>
+	 </product>
+	 <product>
+		 <name>ATG Consumer Commerce</name>
+		 <version>10.0.3</version>
+		 <rules platform="UNIX">
+			 <set_env_variable>
+				 <target_file>$(rootDir)/home/localconfig/environment.sh</target_file>
+				 <variable>DYNAMO_LICENSED_MODULES</variable>
+				 <new_value>B2CCommerce:</new_value>
+			 </set_env_variable>
+			 <set_env_variable>
+				 <target_file>$(rootDir)/home/localconfig/environment.sh</target_file>
+				 <variable>DYNAMO_CLASSPATH_MODULES</variable>
+				 <new_value>Fulfillment:</new_value>
+			 </set_env_variable>
+			 <set_env_variable>
+				 <target_file>$(rootDir)/home/localconfig/environment.sh</target_file>
+				 <variable>DYNAMO_CLASSPATH_MODULES</variable>
+				 <new_value>B2CCommerce:</new_value>
+			 </set_env_variable>
+		 </rules>
+		 <rules platform="WIN32">
+			 <set_env_variable>
+				 <target_file>$(rootDir)\home\localconfig\environment.bat</target_file>
+				 <variable>DYNAMO_LICENSED_MODULES</variable>
+				 <new_value>B2CCommerce;</new_value>
+			 </set_env_variable>
+			 <set_env_variable>
+				 <target_file>$(rootDir)\home\localconfig\environment.bat</target_file>
+				 <variable>DYNAMO_CLASSPATH_MODULES</variable>
+				 <new_value>Fulfillment;</new_value>
+			 </set_env_variable>
+			 <set_env_variable>
+				 <target_file>$(rootDir)\home\localconfig\environment.bat</target_file>
+				 <variable>DYNAMO_CLASSPATH_MODULES</variable>
+				 <new_value>B2CCommerce;</new_value>
+			 </set_env_variable>
+		 </rules>
+	 </product>
+	 <product>
+		 <name>ATG Portal</name>
+		 <version>10.0.3</version>
+		 <rules platform="UNIX">
+			 <set_env_variable>
+				 <target_file>$(rootDir)/home/localconfig/environment.sh</target_file>
+				 <variable>DYNAMO_LICENSED_MODULES</variable>
+				 <new_value>Portal.paf.framework:</new_value>
+			 </set_env_variable>
+		 </rules>
+		 <rules platform="WIN32">
+			 <set_env_variable>
+				 <target_file>$(rootDir)\home\localconfig\environment.bat</target_file>
+				 <variable>DYNAMO_LICENSED_MODULES</variable>
+				 <new_value>Portal.paf.framework;</new_value>
+			 </set_env_variable>
+		 </rules>
+	 </product>
+	 <product>
+		 <name>ATG Content Administration</name>
+		 <version>10.0.3</version>
+		 <rules platform="UNIX">
+			 <set_env_variable>
+				 <target_file>$(rootDir)/home/localconfig/environment.sh</target_file>
+				 <variable>DYNAMO_LICENSED_MODULES</variable>
+				 <new_value>Publishing.base:</new_value>
+			 </set_env_variable>
+			 <set_env_variable>
+				 <target_file>$(rootDir)/home/localconfig/environment.sh</target_file>
+				 <variable>DYNAMO_CLASSPATH_MODULES</variable>
+				 <new_value>PubPortlet:</new_value>
+			 </set_env_variable>
+		 </rules>
+		 <rules platform="WIN32">
+			 <set_env_variable>
+				 <target_file>$(rootDir)\home\localconfig\environment.bat</target_file>
+				 <variable>DYNAMO_LICENSED_MODULES</variable>
+				 <new_value>Publishing.base;</new_value>
+			 </set_env_variable>
+			 <set_env_variable>
+				 <target_file>$(rootDir)\home\localconfig\environment.bat</target_file>
+				 <variable>DYNAMO_CLASSPATH_MODULES</variable>
+				 <new_value>PubPortlet;</new_value>
+			 </set_env_variable>
+		 </rules>
+	 </product>
+</rules_template>
+<!-- vi: set ts=2 shiftwidth=2: -->
+<!-- @version $Id: //product/DAS/version/10.0.3/atginstall/ASE/PITH_config/setup_rule.xml#5 $$Change: 657512 $-->

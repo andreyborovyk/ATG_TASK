@@ -1,0 +1,72 @@
+<%@ taglib uri="http://www.atg.com/taglibs/daf/dspjspELTaglib1_0" prefix="dspel" %>
+<%@ taglib prefix="c"       uri="http://java.sun.com/jstl/core" %>
+<dspel:page>
+
+<html>
+<head>
+  <title>Login Form</title>
+</head>
+
+<dspel:importbean bean="/atg/userprofiling/ProfileFormHandler"/>
+<dspel:importbean bean="/atg/userprofiling/ProfileErrorMessageForEach"/>
+<dspel:importbean bean="/atg/dynamo/droplet/Switch"/>
+
+<!-- This form should not show what the current profile attributes are so we will
+     disable the ability to extract default values from the profile. -->
+<dspel:setvalue bean="ProfileFormHandler.extractDefaultValuesFromProfile" value="false"/>
+
+<c:set var="successURL" value="${param.successURL}"/>
+<body>
+
+  <dspel:droplet name="Switch">
+    <dspel:param bean="ProfileFormHandler.profile.transient" name="value"/>
+    <dspel:oparam name="false">
+      You are currently logged in. If you wish to login as a different user
+      please <a href="logout.jsp">logout</a> first.
+    </dspel:oparam>
+
+    <dspel:oparam name="default">
+      <dspel:form action="login.jsp" method="post">
+        <dspel:input bean="ProfileFormHandler.loginSuccessURL" type="hidden" value="${successURL}"/>
+
+        <dspel:droplet name="Switch">
+          <dspel:param bean="ProfileFormHandler.formError" name="value"/>
+          <dspel:oparam name="true">
+            <font color="cc0000"><strong><ul>
+              <dspel:droplet name="ProfileErrorMessageForEach">
+                <dspel:param bean="ProfileFormHandler.formExceptions" name="exceptions"/>
+                <dspel:oparam name="output">
+                  <li> <dspel:valueof param="message"/>
+                </dspel:oparam>
+              </dspel:droplet>
+            </ul></strong></font>
+          </dspel:oparam>
+        </dspel:droplet>
+
+        <table width="456" border="0">
+          <tr>
+            <td valign="middle" align="right">User Name:</td>
+            <td><dspel:input bean="ProfileFormHandler.value.login" maxsize="20" size="20" type="text"/></td>
+          </tr>
+
+          <tr>
+            <td valign="middle" align="right">Password:</td>
+            <td><dspel:input bean="ProfileFormHandler.value.password" maxsize="35" size="35" type="password"/></td>
+          </tr>
+
+          <tr>
+            <td valign="middle" align="right"></td>
+            <td><dspel:input bean="ProfileFormHandler.login" type="submit" value="login"/></td>
+          </tr>
+        </table>
+
+      </dspel:form>
+    </dspel:oparam>
+  </dspel:droplet>
+
+</body>
+</html>
+
+
+</dspel:page>
+<%-- @version $Id: //application/campaigns/version/10.0/communication/common/src/web-apps/Outreach/optInOut/login.jsp#1 $$Change: 610294 $--%>

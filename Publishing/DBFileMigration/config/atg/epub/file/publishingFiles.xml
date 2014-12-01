@@ -1,0 +1,58 @@
+<gsa-template>
+
+  <!-- *********************************** -->
+  <!--   Text Item Definitions             -->
+  <!-- *********************************** -->
+  <item-descriptor name="textFileAsset" super-type="fileAsset" sub-type-value="textFileAsset"
+      content="true" content-property="dbcontent" display-name-resource="itemDescriptorTextFileAsset"
+      item-cache-size="1000" query-cache-size="500" xml-combine="replace">
+
+    <attribute name="resourceBundle" value="atg.epub.file.FileRepositoryResources"/>
+
+    <attribute name="categoryInfoPriority" value="20"/>
+    <attribute name="categoryDataPriority" value="30"/>
+
+    <table name="epub_text_file" type="auxiliary" id-column-name="text_file_id">
+      <!-- categoryInfo -->
+      <property name="id" column-name="text_file_id" data-type="string"
+          category-resource="categoryInfo" display-name-resource="textFileId">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+
+      <!-- categoryData -->
+      <property name="dbcontent" column-name="text_content" data-type="big string"
+          category-resource="categoryData" display-name-resource="textContent">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- *********************************** -->
+  <!--   Binary Item Definitions           -->
+  <!-- *********************************** -->
+  <item-descriptor name="binaryFileAsset" super-type="fileAsset" sub-type-value="binaryFileAsset"
+      content="true" content-property="dbcontent" display-name-resource="itemDescriptorBinaryFileAsset"
+      item-cache-size="1000" query-cache-size="500" xml-combine="replace">
+
+    <attribute name="resourceBundle" value="atg.epub.file.FileRepositoryResources"/>
+
+    <attribute name="categoryInfoPriority" value="20"/>
+    <attribute name="categoryDataPriority" value="30"/>
+
+    <table name="epub_binary_file" type="auxiliary" id-column-name="binary_file_id">
+      <!-- categoryInfo -->
+      <property name="id" column-name="binary_file_id" data-type="string"
+          category-resource="categoryInfo" display-name-resource="binaryFileId">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+
+      <!-- categoryData -->
+      <property name="dbcontent" column-name="binary_content" data-type="binary"
+          category-resource="categoryData" display-name-resource="binaryContent">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //product/Publishing/version/10.0.3/DBFileMigration/config/atg/epub/file/publishingFiles.xml#2 $$Change: 651448 $ -->

@@ -1,0 +1,3411 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE product SYSTEM "http://www.atg.com/dtds/product_1_0.dtd">
+<product id="platform" >
+
+	<title resource-key="PlatformProduct.name">ATG Platform and Content Administration</title>
+	<detail resource-key="PlatformProduct.detail">Includes, optionally, ACI and Preview</detail>
+  
+	<named-datasource id="management" modulelist-server-instance-type="management_db">		
+		<title resource-key="">Publishing</title>
+		<jndi>ATGPublishingDS</jndi>
+	</named-datasource>
+
+	<named-datasource id="nonswitchingCore" modulelist-server-instance-type="production_db" >		
+		<title resource-key="">Production Core</title>
+		<jndi>ATGProductionDS</jndi>
+	</named-datasource>
+
+	<named-datasource id="stagingnonswitchingCore" modulelist-server-instance-type="staging_db" >		
+		<title resource-key="">Staging</title>
+		<jndi>ATGStagingDS</jndi>
+	</named-datasource>
+
+	<named-datasource id="datawarehouse_loader" modulelist-server-instance-type="datawarehouse_loader">		
+		<title resource-key="">Reporting Loader</title>
+		<jndi>ATGLoaderDS</jndi>
+	</named-datasource>
+
+  <named-datasource id="switchingCore" modulelist-server-instance-type="production_db" >    
+    <title resource-key="">Production Core</title>
+    <jndi>ATGProductionDS</jndi>
+  </named-datasource>  
+    
+  <named-datasource id="switchingA" modulelist-server-instance-type="production_db">
+    <title resource-key="">Switching A</title>
+    <jndi>ATGSwitchingDS_A</jndi>
+  </named-datasource>
+            
+  <named-datasource id="switchingB" modulelist-server-instance-type="production_db" >    
+    <title resource-key="">Switching B</title>
+    <jndi>ATGSwitchingDS_B</jndi>
+  </named-datasource>
+
+	<named-datasource id="datawarehouse" modulelist-server-instance-type="datawarehouse">		
+		<title resource-key="">Reporting DataWarehouse</title>
+		<jndi>ATGDataWarehouseDS</jndi>
+	</named-datasource>
+	<!-- addons -->
+	<product-addon-group id="search" min-occurs="1" max-occurs="1">
+		<title>ATG Search</title>
+		<product-id-required id="searchAdmin" />	
+		<product-addon id="search">
+			<title resource-key="">ATG Search</title>
+				<modify-server-instance-type id="production">
+					<append-module name="DAF.Search.Routing"/>
+				</modify-server-instance-type>
+				
+				<modify-server-instance-type id="production_db">
+					<append-module name="SearchAdmin.customizations"/>
+				</modify-server-instance-type>
+
+				<modify-server-instance-type id="staging">
+					<append-module name="DAF.Search.Routing"/>
+					<append-module name="DAF.Search.Topics"/>
+					<append-module name="DAF.Search.Query"/>
+				</modify-server-instance-type>
+				
+				<modify-server-instance-type id="staging_db">
+					<append-module name="SearchAdmin.customizations"/>					
+				</modify-server-instance-type>
+				
+				<modify-server-instance-type id="management">
+					<append-module name="DAF.Search.Versioned"/>
+					<append-module name="DAF.Search.Routing"/>
+					<append-module name="SearchAdmin.AdminUI"/>
+				</modify-server-instance-type>				
+
+			</product-addon>
+			
+	</product-addon-group>
+	 
+	<product-addon-group id="baseaddon_group">	
+		<title>Choose AddOns :</title>
+
+			<product-addon id="reporting">						
+
+				<title resource-key="">Reporting</title>						
+				
+				<modify-server-instance-type id="management">
+					<append-module name="ARF.base"/>
+					<append-module name="ARF.BIZUI"/>
+					<append-module name="ARF.WSCAP"/>					
+				</modify-server-instance-type>
+												
+				<modify-server-instance-type id="production">
+					<append-module name="ARF.base"/>					
+				</modify-server-instance-type>				
+				
+				<modify-server-instance-type id="datawarehouse_loader">
+					<append-module name="ARF.base"/>
+					<add-named-datasource id="datawarehouse"/>
+					<add-named-datasource id="datawarehouse_loader"/>
+					<add-named-datasource id="nonswitchingCore" />
+					<add-server-instance id="loader_lock"/>
+					<add-server-instance id="basic_loader"/>
+				</modify-server-instance-type>
+
+				<modify-server-instance-type id="datawarehouse">
+					<append-module name="ARF.DW.base"/>
+					<append-module name="ARF.DW.InternalUsers"/>
+					<add-named-datasource id="datawarehouse"/>					
+				</modify-server-instance-type>
+				
+			</product-addon>
+			<product-addon id="staging">						
+
+				<title resource-key="">Staging Server</title>						
+
+				<modify-server-instance-type id="staging">
+					<add-server-instance id="basic_staging"/>
+					<add-named-datasource id="stagingnonswitchingCore"/>
+				</modify-server-instance-type>
+				
+				<modify-server-instance-type id="management">
+					<add-named-datasource id="stagingnonswitchingCore"/>
+				</modify-server-instance-type>
+
+				<modify-server-instance id="basic_management">
+					<add-appassembler-option name="layer" value="Staging"/>
+				</modify-server-instance>
+        <modify-server-instance id="management_lock">
+          <add-appassembler-option name="layer" value="Staging"/>
+        </modify-server-instance>
+
+			</product-addon>						
+
+			<product-addon id="preview">						
+
+				<title resource-key="">Preview Server</title>				
+
+			</product-addon>	
+      
+      <product-addon id="lock">
+        <title>Dedicated Lock Servers</title>
+      </product-addon>
+
+	</product-addon-group>
+  <product-addon-group id="lock" min-occurs="1">
+    <title>Dedicated Lock Servers</title>
+    <requires-product-addon id="lock"/>
+    <product-addon id="pubLock">
+      <title>Publishing Dedicated Lock Server</title>
+      <modify-server-instance-type id="PubLock">
+        <add-server-instance id="lock_publishing"></add-server-instance>
+      </modify-server-instance-type>
+      <modify-server-instance-type id="management">
+        <remove-server-instance id="management_lock"></remove-server-instance>
+      </modify-server-instance-type>
+    </product-addon>
+    <product-addon id="prodLock">
+      <title>Production Dedicated Lock Server</title>
+      <modify-server-instance-type id="lock">
+        <add-server-instance id="lock_production"></add-server-instance>
+      </modify-server-instance-type>
+      <modify-server-instance-type id="production">
+        <remove-server-instance id="production_lock"></remove-server-instance>
+      </modify-server-instance-type>
+    </product-addon>
+  </product-addon-group>
+	<product-addon-group id="platform_datasource_group" min-occurs="1" max-occurs="1">		
+			<title>Choose switching or non-switching datasource :</title>			
+	
+			<product-addon id="nonswitchingdatasource" >
+				<title>Non-Switching Datasource</title>
+
+				<modify-server-instance-type id="management">
+					<add-named-datasource id="nonswitchingCore"/>
+				</modify-server-instance-type>
+
+				<modify-server-instance-type id="production">
+					<add-named-datasource id="nonswitchingCore"/>
+				</modify-server-instance-type>	        			
+			
+			</product-addon>
+      
+      <product-addon id="switchingdatasource" >
+        <title>Switching Datasource</title>
+
+        <modify-server-instance-type id="management">
+          <add-named-datasource id="switchingA"/>
+          <add-named-datasource id="switchingB"/>
+          <add-named-datasource id="switchingCore"/>
+        </modify-server-instance-type>
+    
+        <modify-server-instance-type id="production">
+          <add-named-datasource id="switchingA"/>
+          <add-named-datasource id="switchingB"/>
+          <add-named-datasource id="switchingCore"/>
+        </modify-server-instance-type>         
+
+      </product-addon>
+
+	</product-addon-group>	    
+
+	<product-addon-group id="preview_options" min-occurs="1" max-occurs="-1">		
+			<title>Preview Options Selection :</title>
+			<requires-product-addon id="preview"/>
+	
+			<product-addon id="previewOnManagement" >
+				<title resource-key="">Configure Preview to run on the CA Server</title>
+
+				<modify-server-instance id="basic_management">
+					<add-appassembler-option name="layer" value="preview"/>
+				</modify-server-instance>
+        <modify-server-instance id="management_lock">
+          <add-appassembler-option name="layer" value="preview"/>
+        </modify-server-instance>
+
+			</product-addon>
+
+			<product-addon id="externalPreviewServer" >
+				<title resource-key="">Configure External Preview Server</title>
+
+				<modify-server-instance-type id="externalpreview">
+					<add-server-instance id="basic_externalpreview"/>
+					<add-named-datasource id="management" />	
+          <add-named-datasource id="nonswitchingCore" />
+				</modify-server-instance-type>
+				
+				<modify-server-instance id="basic_externalpreview">
+					<add-appassembler-option name="layer" value="preview"/>
+				</modify-server-instance>
+				
+				<modify-server-instance id="basic_management">
+					<add-appassembler-option name="layer" value="preview"/>
+				</modify-server-instance>
+        <modify-server-instance id="management_lock">
+          <add-appassembler-option name="layer" value="preview"/>
+        </modify-server-instance>
+
+			</product-addon>
+
+	</product-addon-group>	  
+
+
+	<product-addon-group id="search_query_console" min-occurs="0">		
+			<title>Include Search QueryConsole</title>
+			<requires-product-addon id="search"/>
+
+			<product-addon id="queryConsoleOnManagement" >
+				<title resource-key="">Include Search QueryConsole on Management</title>
+
+				<modify-server-instance-type id="management">
+					<append-module name="DAF.Search.Base.QueryConsole"/>
+				</modify-server-instance-type>
+
+			</product-addon>
+
+			<product-addon id="queryConsoleOnProduction" >
+				<title resource-key="">Include Search QueryConsole on Production </title>
+
+				<modify-server-instance-type id="production">
+					<append-module name="DAF.Search.Base.QueryConsole"/>
+				</modify-server-instance-type>
+
+			</product-addon>
+	</product-addon-group>	
+
+	<product-addon-combo id="search-reporting">
+	
+		<combo-product-addon id="search"/>
+		<combo-product-addon id="reporting"/>
+		
+		<modify-server-instance-type id="datawarehouse_loader">
+			<append-module name="ARF.DW.Search"/>
+			<append-module name="SearchAdmin.datawarehouse"/>
+		</modify-server-instance-type>		
+    
+    <modify-server-instance-type id="datawarehouse">
+			<append-module name="ARF.DW.Search"/>
+		</modify-server-instance-type>
+    
+	</product-addon-combo>
+  <product-addon-combo id="switching-dedicatedlockserver">
+  
+    <combo-product-addon id="switchingdatasource" />
+    
+    <modify-server-instance-type id="lock">
+      <add-named-datasource id="switchingCore" />
+      <remove-named-datasource id="nonswitchingCore" />
+     </modify-server-instance-type>
+     
+  </product-addon-combo>
+  <product-addon-combo id="externalPreview-switching">
+  
+    <combo-product-addon id="switchingdatasource" />
+    <combo-product-addon id="externalPreviewServer" />
+    
+    <modify-server-instance-type id="externalpreview">
+      <add-named-datasource id="switchingCore" />
+      <add-named-datasource id="switchingA"/>
+      <add-named-datasource id="switchingB"/>
+      <remove-named-datasource id="nonswitchingCore" />
+     </modify-server-instance-type>
+     
+  </product-addon-combo>
+  
+  <product-addon-combo id="switching-reporting">
+  
+    <combo-product-addon id="reporting" />
+    <combo-product-addon id="switchingdatasource" />
+    
+    <modify-server-instance-type id="datawarehouse_loader">
+      <add-named-datasource id="switchingCore" />
+      <add-named-datasource id="switchingA"/>
+      <add-named-datasource id="switchingB"/>
+      <remove-named-datasource id="nonswitchingCore" />
+     </modify-server-instance-type>
+     
+  </product-addon-combo>
+  
+  <product-addon-combo id="search-staging-nonswithcing">
+    <combo-product-addon id="search"/>
+    <combo-product-addon id="staging"/>
+    <combo-product-addon id="nonswitchingdatasource" />
+    <modify-server-instance-type id="staging">
+      <add-named-datasource id="nonswitchingCore"/>
+    </modify-server-instance-type>
+    
+  </product-addon-combo>
+  
+  <product-addon-combo id="search-staging-swithcing">
+    <combo-product-addon id="search"/>
+    <combo-product-addon id="staging"/>
+    <combo-product-addon id="switchingdatasource" />
+    <modify-server-instance-type id="staging">
+      <add-named-datasource id="switchingCore"/>
+    </modify-server-instance-type>
+    
+  </product-addon-combo>
+
+	<server-instance-type id="management">
+		<title resource-key="CAServer.name">Publishing Server</title>
+		<detail resource-key="CAServer.detail"/>
+
+		<append-module name="BIZUI"/>
+		<append-module name="PubPortlet"/>
+		<append-module name="DafEar.Admin"/>
+		
+		<add-named-datasource id="management"/>
+    	<add-server-instance id="management_lock"/>
+		<add-server-instance id="basic_management"/>		
+    
+    <config-directory>
+      <!-- DB2 Specific Properties files -->
+      <property-file file="GLOBAL.properties">
+        <property-group id="db2">
+          <pass-validation id="HasDB2DatasourceValidator" 
+            class="atg.cim.worker.databaseconfig.HasDB2DatasourceValidator">
+            <property name="serverInstanceType">
+              <value>management</value>
+            </property>
+          </pass-validation>
+          <property name="handleRangesInMemory">
+            <value>true</value>
+          </property>
+          <property name="localTransactionModeInitialization">
+            <value>false</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/dynamo/messaging/SqlJmsProvider.properties">
+        <property-group id="db2">
+          <pass-validation id="HasDB2DatasourceValidator" 
+            class="atg.cim.worker.databaseconfig.HasDB2DatasourceValidator">
+            <property name="serverInstanceType">
+              <value>management</value>
+            </property>
+          </pass-validation>
+          <property name="useSetBinaryStream">
+            <value>false</value>
+          </property>
+          <property name="parameterizedSelect">
+            <value>false</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/dynamo/transaction/TransactionManager.properties">
+        <property-group id="db2-websphere">
+          <pass-validation class="atg.cim.worker.appserver.WebsphereValidator" 
+            id="WebsphereValidator"/>
+          <property name="useManagerMethods">
+            <value>true</value>
+          </property>
+        </property-group>
+      </property-file>
+      
+      <!-- End DB2 Specific Properties Files -->
+      
+       <!-- Reporting Property Files -->
+      <property-file file="/atg/cognos/Configuration.properties">
+        <property-group id="reporting">
+          <requires-addon-id id="reporting"/>
+          <property name="className">
+            <value>atg.cognos.service.Configuration</value>
+          </property>
+          <property name="gatewayURLPath" persist-key="cognosGatewayURL">
+            <input type="text">
+              <label>Enter the URL to Cognos</label>
+              <validator id="CannotBeBlankValidator">
+                <error-message>Path Cannot be Blank.</error-message>
+              </validator>
+            </input>
+          </property>
+        </property-group>
+      </property-file>
+      
+      <property-file file="/atg/dynamo/service/ClusterName.properties">
+        <property-group id="base">
+          <property name="clusterName">
+            <value>management</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/dynamo/service/jdbc/JTDataSource.properties">
+        <property-group id="base">
+          <property name="dataSource">
+            <value>/atg/dynamo/service/jdbc/DirectJTDataSource</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/dynamo/service/jdbc/JTDataSource_production.properties">
+        <property-group id="base">
+          <property name="dataSource">
+            <value>/atg/dynamo/service/jdbc/DirectJTDataSource_production</value>
+          </property>
+        </property-group>
+      </property-file>  
+      <property-file file="/atg/dynamo/service/jdbc/DirectJTDataSource.properties">
+        <property-group id="base">
+          <property name="JNDIName">
+            <value>${AppServerPortsProvider.jndiPrefix}${NamedDatasource[management].datasourceValue.jndiName}</value>
+          </property>
+          <property name="className">
+            <value>atg.nucleus.JNDIReference</value>
+          </property>
+        </property-group>
+      </property-file>  
+      <property-file file="/atg/dynamo/service/jdbc/DirectJTDataSource_production.properties">
+        <property-group id="nonswitching">
+          <requires-addon-id id="nonswitchingdatasource"/>
+          <property name="JNDIName">
+            <value>${AppServerPortsProvider.jndiPrefix}${NamedDatasource[nonswitchingCore].datasourceValue.jndiName}</value>
+          </property>
+        </property-group>
+        <property-group id="switching">
+          <requires-addon-id id="switchingdatasource"/>
+          <property name="JNDIName">
+            <value>${AppServerPortsProvider.jndiPrefix}${NamedDatasource[switchingCore].datasourceValue.jndiName}</value>
+          </property>
+        </property-group>
+        <property-group id="base">
+          <property name="className">
+            <value>atg.nucleus.JNDIReference</value>
+          </property>
+        </property-group>
+      </property-file> 
+      
+      <property-file file="/atg/dynamo/service/jdbc/SwitchingDataSourceA.properties">
+          <property-group id="switchingonly">
+            <requires-addon-id id="switchingdatasource" />
+            <property name="JNDIName">
+              <value>${AppServerPortsProvider.jndiPrefix}${NamedDatasource[switchingA].datasourceValue.jndiName}</value>
+            </property>
+            <property name="className">
+              <value>atg.nucleus.JNDIReference</value>
+            </property>
+          </property-group>
+        </property-file>       
+        
+         <property-file file="/atg/dynamo/service/jdbc/SwitchingDataSourceB.properties">
+          <property-group id="switchingonly">
+            <requires-addon-id id="switchingdatasource" />
+            <property name="JNDIName">
+              <value>${AppServerPortsProvider.jndiPrefix}${NamedDatasource[switchingB].datasourceValue.jndiName}</value>
+            </property>
+            <property name="className">
+              <value>atg.nucleus.JNDIReference</value>
+            </property>
+          </property-group>
+        </property-file>
+      <property-file file="/atg/seo/SEORepository_production.properties">
+          <property-group id="seo">
+            <requires-addon-id id="switchingdatasource"/>
+            <property name="dataSource">
+              <value>/atg/dynamo/service/jdbc/SwitchingDataSource</value>
+            </property>
+          </property-group>
+        </property-file>
+    
+        <property-file file="/atg/multisite/SiteRepository_production.properties">
+          <property-group id="site">
+            <requires-addon-id id="switchingdatasource"/>
+            <property name="dataSource">
+              <value>/atg/dynamo/service/jdbc/SwitchingDataSource</value>
+            </property>
+          </property-group>
+        </property-file>
+        <property-file file="/atg/userprofiling/PersonalizationRepository_production.properties">
+          <property-group id="site">
+            <requires-addon-id id="switchingdatasource"/>
+            <property name="dataSource">
+              <value>/atg/dynamo/service/jdbc/SwitchingDataSource</value>
+            </property>
+          </property-group>
+        </property-file>          
+      <property-file file="/atg/dynamo/service/DeploymentDWDataCollectionConfig.properties">
+        <property-group id="reporting">
+          <requires-addon-id id="reporting"/>
+          <property name="defaultRoot" persist-key="reportingDefaultRoot">
+            <input type="path">
+              <label>Enter Path to ACI log file directory</label>
+              <validator id="CannotBeBlankValidator">
+                <error-message>Path Cannot be Blank.</error-message>
+              </validator>
+              <validator id="DirectoryExistsValidator">
+                <error-message>Path is not a directory or it doesn't exist.</error-message>
+              </validator>
+            </input>
+          </property>
+          <property name="enabled">
+            <value>true</value>
+          </property>
+        </property-group>
+      </property-file> 
+      <property-file file="/atg/dynamo/service/DWDataCollectionConfig.properties">
+        <property-group id="reporting">
+          <requires-addon-id id="reporting"/>
+          <property name="defaultRoot" persist-key="reportingDefaultRoot"/>
+          <property name="enabled">
+            <value>true</value>
+          </property>
+        </property-group>
+      </property-file> 
+      <property-file file="/atg/dynamo/service/jdbc/JTDataSource_staging.properties">
+        <property-group id="staging">
+        <requires-addon-id id="staging"/>
+          <property name="dataSource">
+            <value>/atg/dynamo/service/jdbc/DirectJTDataSource_staging</value>
+          </property>
+        </property-group>
+      </property-file>  
+      <property-file file="/atg/dynamo/service/jdbc/DirectJTDataSource_staging.properties">
+        <property-group id="staging">
+        <requires-addon-id id="staging"/>
+          <property name="JNDIName">
+            <value>${AppServerPortsProvider.jndiPrefix}${NamedDatasource[stagingnonswitchingCore].datasourceValue.jndiName}</value>
+          </property>
+          <property name="className">
+            <value>atg.nucleus.JNDIReference</value>
+          </property>
+        </property-group>
+      </property-file>       
+      <property-file file="/atg/dynamo/server/SQLRepositoryEventServer.properties">
+        <property-group id="search">
+          <requires-addon-id id="search"/>
+          <property name="enabled">
+            <value>true</value>
+          </property>
+        </property-group>
+      </property-file>
+
+      <!--Search AND Switching Datasource Properties -->  
+      <property-file file="/atg/search/repository/RefinementRepository_production.properties">
+        <property-group id="stagingswitchingonly">
+          <requires-addon-id id="switchingdatasource" />
+          <requires-addon-id id="search" />
+          <property name="dataSource">
+            <value>/atg/dynamo/service/jdbc/SwitchingDataSource</value>
+          </property>
+        </property-group>
+      </property-file>
+
+      <property-file file="/atg/dynamo/service/ClientLockManager_production.properties">
+        <property-group id="base">
+          <property name="lockServerAddress" persist-key="productionServerLockManagerHost">
+            <input type="text">
+              <label>Enter Production Lock Server Hostname</label>
+              <validator id="NoWhiteSpaceInputValidator">
+                <error-message>Hostname cannot contain whitespace.</error-message>
+              </validator>
+            </input>          
+          </property>
+          <property name="lockServerPort" persist-key="productionServerLockManagerPort">
+            <value>9012</value>
+            <input type="text">
+              <label>Enter Production Lock Server Port</label>
+              <validator id="PortNumberInputValidator">
+                <error-message>Invalid Port Number</error-message>
+              </validator>
+            </input>
+          </property>
+          <property name="useLockServer">
+            <value>true</value>
+          </property>
+        </property-group>
+      </property-file>      
+      <property-file file="/atg/search/config/LanguageDimensionService.properties">
+        <property-group id="search">
+          <requires-addon-id id="search"/>
+          <property name="languageMap">
+            <value>english=en</value>
+          </property>
+          <property name="locales">
+            <value>en,en_US</value>
+          </property>
+        </property-group>
+      </property-file> 
+      
+      <property-file file="/atg/search/testing/SearchTestingService.properties">
+        <property-group id="search">
+          <requires-addon-id id="search"/>
+          <property name="searchEnvironments">
+            <value>/atg/search/testing/ProductionEnvironment</value>
+          </property>
+        </property-group>
+        <property-group id="searchStaging">
+          <requires-addon-id id="search"/>
+          <requires-addon-id id="staging"/>
+          <property name="searchEnvironments+">
+            <value>/atg/search/testing/StagingEnvironment</value>
+          </property>
+        </property-group>
+        <property-group id="searchPreview">
+          <requires-addon-id id="search"/>
+          <requires-addon-id id="preview"/>
+          <property name="searchEnvironments+">
+            <value>/atg/search/testing/PreviewEnvironment</value>
+          </property>
+        </property-group>
+      </property-file>
+    </config-directory>
+    
+    <!-- Scenario Manager Configuration -->
+    <optional-config-directory id="scenario">
+      <title>Scenario Manager</title>  
+      <step id="InternalScenarioManagerValueStep">
+          <title>Internal Scenario Manager Server Configuration</title>
+         <detail>Please enter the Hostname and DRP port for the Internal Management Scenario Server</detail>
+          <task id="InternalManagementScenarioManagerTask">
+              <property name="scenarioId">
+                <value>internal_management</value>
+              </property>              
+        </task>
+        <validator id="AlwaysTrueValidator" phase="PRENAVIGATION">
+           <if-true>
+            <command type="EXECUTE_STEP_TASKS"  />
+            <command type="NEXT_STEP" />
+           </if-true>
+          </validator>
+        </step>
+
+        <!-- Internal Scenario Manager .xml -->
+         <step id="InternalManagementGlobalScenarioStep">
+          <title>Internal Management Global Scenario Server Configuration</title>
+          <detail>Would you like to add a Global Scenario Server? ${InternalManagementScenarioManagerProvider.globalScenarioServersForDisplay}</detail>
+          <navoption id="continue" default="true">
+              <label>Add a new internal global scenario server.</label>
+              <command type="NEXT_STEP" />
+          </navoption>
+          <navoption id="skip">
+              <label>Remove ALL servers from the list.</label>
+              <command type="GOTO_STEP" value="InternalGlobalScenarioRemoveValueStep"/>
+          </navoption>
+          <navoption id="skip">
+              <label>Done.</label>
+              <command type="GOTO_STEP" value="WriteInternalScenarioStep"/>
+          </navoption>
+        </step>
+
+        <step id="GlobalScenarioValueStep">
+          <title>Internal Management Global Scenario Server Configuration</title>
+         <detail>Please enter the Hostname and DRP port for the Internal Management Global Scenario Server.</detail>
+          <task id="GlobalScenarioTask">
+              <property name="scenarioId">
+                <value>internal_management</value>
+              </property>
+           </task>
+         <validator id="AlwaysTrueValidator" phase="PRENAVIGATION">
+           <if-true>
+            <command type="EXECUTE_STEP_TASKS"  />
+            <command type="GOTO_STEP" value="InternalManagementGlobalScenarioStep"/>
+           </if-true>
+          </validator>
+        </step>
+
+        <step id="InternalGlobalScenarioRemoveValueStep">
+          <title />
+          <detail />
+          <task id="ClearGlobalServersTask">
+            <property name="scenarioId">
+              <value>internal_management</value>
+             </property>
+          </task>
+        <validator id="AlwaysTrueValidator" phase="PRENAVIGATION">
+           <if-true>
+            <command type="EXECUTE_STEP_TASKS"  />
+            <command type="GOTO_STEP" value="InternalManagementGlobalScenarioStep"/>
+           </if-true>
+          </validator>
+        </step>
+	
+        <step id="WriteInternalScenarioStep">
+          <task id="WriteScenarioXMLTask">            
+            <property name="serverInstanceTypeId">
+              <value>management</value>
+            </property>
+            <property name="scenarioId">
+              <value>internal_management</value>
+            </property>
+            <property name="filePath">
+              <value>/atg/scenario/internalScenarioManager.xml</value>
+            </property>
+          </task>
+          <validator id="AlwaysTrueValidator" phase="PRENAVIGATION">
+           <if-true>
+            <command type="EXECUTE_STEP_TASKS"  />
+            <command type="NEXT_STEP"/>
+           </if-true>
+          </validator>        
+        </step>  
+
+     
+        <!-- Check and handle preview -->
+
+        <step id="CheckPreviewEnabledStep">
+        <validator id="PreviewEnabledValidator" phase="PRENAVIGATION">
+           <if-true>
+            <command type="GOTO_STEP" value="PreviewScenarioEditorValueStep" />
+            </if-true>
+        </validator>
+        <validator id="InternalPreviewEnabledValidator" phase="PRENAVIGATION">
+          <if-true>
+            <command type="GOTO_STEP" value="PreviewScenarioEditorValueStep" />
+           </if-true>
+           <if-false>
+            <command type="GOTO_STEP" value="FinishedManagementScenarioStep" />
+           </if-false>
+        </validator>
+        </step>
+        
+        
+         <step id="PreviewScenarioEditorValueStep">
+          <title>Preview Scenario Editor Server Configuration</title>
+         <detail>Please enter the Hostname and DRP port for the Preview Scenario Editor Server</detail>
+          <task id="PreviewScenarioManagerTask">
+              <property name="scenarioId">
+                <value>management</value>
+              </property>              
+        </task>
+        <validator id="AlwaysTrueValidator" phase="PRENAVIGATION">
+           <if-true>
+            <command type="EXECUTE_STEP_TASKS"  />
+            <command type="GOTO_STEP" value="PreviewGlobalScenarioStep"/>
+           </if-true>
+          </validator>
+        </step>
+        
+         <step id="PreviewGlobalScenarioStep">
+          <title>Preview Global Scenario Server Configuration</title>
+          <detail>Would you like to add a Global Scenario Server? ${PreviewScenarioManagerProvider.globalScenarioServersForDisplay}</detail>
+          <navoption id="continue" default="true">
+              <label>Yes.</label>
+              <command type="NEXT_STEP" />
+          </navoption>
+          <navoption id="skip">
+              <label>Remove all servers from the list.</label>
+              <command type="GOTO_STEP" value="PreviewGlobalScenarioRemoveValueStep"/>
+          </navoption>
+          <navoption id="skip">
+              <label>Done.</label>
+              <command type="GOTO_STEP" value="WritePreviewScenarioStep"/>
+          </navoption>
+        </step>
+        
+         <step id="PreviewGlobalScenarioValueStep">
+          <title>Preview Global Scenario Server Configuration</title>
+         <detail>Please enter the Hostname and DRP port for the Management Global Scenario Server.</detail>
+          <task id="GlobalScenarioTask">
+              <property name="scenarioId">
+                <value>management</value>
+              </property>
+           </task>
+         <validator id="AlwaysTrueValidator" phase="PRENAVIGATION">
+           <if-true>
+            <command type="EXECUTE_STEP_TASKS"  />
+            <command type="GOTO_STEP" value="PreviewGlobalScenarioStep"/>
+           </if-true>
+          </validator>
+        </step>
+        
+        <step id="PreviewGlobalScenarioRemoveValueStep">
+          <title />
+          <detail />
+          <task id="ClearGlobalServersTask">
+            <property name="scenarioId">
+              <value>management</value>
+             </property>
+          </task>
+        <validator id="AlwaysTrueValidator" phase="PRENAVIGATION">
+           <if-true>
+            <command type="EXECUTE_STEP_TASKS"  />
+            <command type="GOTO_STEP" value="PreviewGlobalScenarioStep"/>
+           </if-true>
+          </validator>
+        </step>
+
+	
+        <step id="WritePreviewScenarioStep">
+          <task id="WriteScenarioXMLTask">            
+            <property name="serverInstanceTypeId">
+              <value>management</value>
+            </property>
+            <property name="scenarioId">
+              <value>management</value>
+            </property>
+            <property name="filePath">
+              <value>/atg/scenario/scenarioManager.xml</value>
+            </property>
+          </task>
+          <validator id="AlwaysTrueValidator" phase="PRENAVIGATION">
+           <if-true>
+            <command type="EXECUTE_STEP_TASKS"  />
+            <command type="NEXT_STEP"/>
+           </if-true>
+          </validator>        
+        </step>  
+        
+        <step id="FinishedManagementScenarioStep">
+         <validator id="AlwaysTrueValidator" phase="PRESTEP">
+           <if-true>
+              <command type="NEXT_STEP" />
+           </if-true>
+          </validator>
+        </step>
+    </optional-config-directory>
+	
+	</server-instance-type>		
+
+	<server-instance-type id="management_db" extends="management">
+		<title></title>
+		<append-module name="Portal.paf"/>
+	</server-instance-type>
+
+	<server-instance-type id="production" >
+
+		<title>Production Server</title>
+		<detail/>
+		<append-module name="DafEar.Admin"/>	
+		<append-module name="DPS"/>
+		<append-module name="DSS"/>	
+		<add-server-instance id="production_lock"/>
+		<add-server-instance id="basic_production"/>   
+    
+    <config-directory>
+      <!-- DB2 Specific Properties files -->
+      <property-file file="GLOBAL.properties">
+        <property-group id="db2">
+          <pass-validation id="HasDB2DatasourceValidator" 
+            class="atg.cim.worker.databaseconfig.HasDB2DatasourceValidator">
+            <property name="serverInstanceType">
+              <value>production</value>
+            </property>
+          </pass-validation>
+          <property name="handleRangesInMemory">
+            <value>true</value>
+          </property>
+          <property name="localTransactionModeInitialization">
+            <value>false</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/dynamo/messaging/SqlJmsProvider.properties">
+        <property-group id="db2">
+          <pass-validation id="HasDB2DatasourceValidator" 
+            class="atg.cim.worker.databaseconfig.HasDB2DatasourceValidator">
+            <property name="serverInstanceType">
+              <value>production</value>
+            </property>
+          </pass-validation>
+          <property name="useSetBinaryStream">
+            <value>false</value>
+          </property>
+          <property name="parameterizedSelect">
+            <value>false</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/dynamo/transaction/TransactionManager.properties">
+        <property-group id="db2-websphere">
+          <pass-validation class="atg.cim.worker.appserver.WebsphereValidator" 
+            id="WebsphereValidator"/>
+          <property name="useManagerMethods">
+            <value>true</value>
+          </property>
+        </property-group>
+      </property-file>
+      
+      <!-- End DB2 Specific Properties Files -->
+      <property-file file="/atg/dynamo/service/ClusterName.properties">
+        <property-group id="base">
+          <property name="clusterName">
+            <value>production</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/dynamo/service/jdbc/JTDataSource.properties">
+        <property-group id="base">
+          <property name="dataSource">
+            <value>/atg/dynamo/service/jdbc/DirectJTDataSource</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/dynamo/service/jdbc/DirectJTDataSource.properties">
+        <property-group id="nonswitching">
+          <requires-addon-id id="nonswitchingdatasource"/>
+          <property name="JNDIName">
+            <value>${AppServerPortsProvider.jndiPrefix}${NamedDatasource[nonswitchingCore].datasourceValue.jndiName}</value>
+          </property>
+         </property-group>
+         <property-group id="switching">
+          <requires-addon-id id="switchingdatasource"/>
+          <property name="JNDIName">
+            <value>${AppServerPortsProvider.jndiPrefix}${NamedDatasource[switchingCore].datasourceValue.jndiName}</value>
+          </property>
+        </property-group>
+         <property-group id="base">
+          <property name="className">
+            <value>atg.nucleus.JNDIReference</value>
+          </property>
+        </property-group>
+      </property-file> 
+      <property-file file="/atg/dynamo/service/jdbc/SwitchingDataSourceA.properties">
+          <property-group id="switchingonly">
+            <requires-addon-id id="switchingdatasource" />
+            <property name="JNDIName">
+              <value>${AppServerPortsProvider.jndiPrefix}${NamedDatasource[switchingA].datasourceValue.jndiName}</value>
+            </property>
+            <property name="className">
+              <value>atg.nucleus.JNDIReference</value>
+            </property>
+          </property-group>
+        </property-file>        
+        
+         <property-file file="/atg/dynamo/service/jdbc/SwitchingDataSourceB.properties">
+          <property-group id="switchingonly">
+            <requires-addon-id id="switchingdatasource" />
+            <property name="JNDIName">
+              <value>${AppServerPortsProvider.jndiPrefix}${NamedDatasource[switchingB].datasourceValue.jndiName}</value>
+            </property>
+            <property name="className">
+              <value>atg.nucleus.JNDIReference</value>
+            </property>
+          </property-group>
+        </property-file>
+        
+        <property-file file="/atg/seo/SEORepository.properties">
+          <property-group id="seo">
+            <requires-addon-id id="switchingdatasource"/>
+            <property name="dataSource">
+              <value>/atg/dynamo/service/jdbc/SwitchingDataSource</value>
+            </property>
+          </property-group>
+        </property-file>
+    
+        <property-file file="/atg/multisite/SiteRepository.properties">
+          <property-group id="site">
+            <requires-addon-id id="switchingdatasource"/>
+            <property name="dataSource">
+              <value>/atg/dynamo/service/jdbc/SwitchingDataSource</value>
+            </property>
+          </property-group>
+        </property-file>   
+        
+         <property-file file="/atg/userprofiling/PersonalizationRepository.properties">
+          <property-group id="site">
+            <requires-addon-id id="switchingdatasource"/>
+            <property name="dataSource">
+              <value>/atg/dynamo/service/jdbc/SwitchingDataSource</value>
+            </property>
+          </property-group>
+        </property-file>  
+           
+      <property-file file="/atg/dynamo/service/GSAInvalidatorService.properties">
+        <property-group id="search">
+          <requires-addon-id id="search"/>
+          <property name="enabled">
+            <value>true</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/search/config/LanguageDimensionService.properties">
+        <property-group id="search">
+          <requires-addon-id id="search"/>
+          <property name="languageMap">
+            <value>english=en</value>
+          </property>
+          <property name="locales">
+            <value>en,en_US</value>
+          </property>
+        </property-group>
+      </property-file>   
+      <property-file file="/atg/dynamo/service/DWDataCollectionConfig.properties">
+        <property-group id="reporting">
+          <requires-addon-id id="reporting"/>
+          <property name="defaultRoot" persist-key="reportingDefaultRoot">
+            <input type="path">
+              <label>Enter Path to ACI log file directory</label>
+              <validator id="CannotBeBlankValidator">
+                <error-message>Path Cannot be Blank.</error-message>
+              </validator>
+              <validator id="DirectoryExistsValidator">
+                <error-message>Path is not a directory or it doesn't exist.</error-message>
+              </validator>
+            </input>
+          </property>
+          <property name="enabled">
+            <value>true</value>
+          </property>
+        </property-group>
+      </property-file>   
+      <property-file file="/atg/dynamo/service/jdbc/DirectJTDataSource_production.properties">
+	     <property-group id="base">
+          <property name="componentPath">
+	         <value>/atg/dynamo/service/jdbc/DirectJTDataSource</value>
+          </property>
+          <property name="className">
+            <value>atg.nucleus.GenericReference</value>
+          </property>
+        </property-group>        
+      </property-file>       
+      <!-- Switching File System Properties -->
+      <property-file file="/atg/epub/DeploymentAgent.properties">
+        <property-group id="nonswitching">
+          <requires-addon-id id="nonswitchingdatasource" />
+          <property name="switchableDataStores^">
+            <value>/Constants.null</value>
+          </property>
+        </property-group>
+        <property-group id="switching">
+          <requires-addon-id id="switchingdatasource" />
+          <property name="switchableDataStores+">
+            <value>/atg/dynamo/service/jdbc/SwitchingDataSource,/atg/epub/file/ConfigFileSystem</value>
+          </property>
+        </property-group>
+      </property-file>
+        <property-file file="/atg/epub/file/ConfigFileSystem.properties">
+          <property-group id="switching">
+            <requires-addon-id id="switchingdatasource" />
+            <property name="className">
+              <value>atg.vfs.switchable.SwitchableLocalFileSystem</value>
+            </property>
+            <property name="journaling">
+              <value>true</value>
+            </property>
+            <property name="liveDirectory">
+              <value>{serverHomeDirResource?resourceURI=PublishingAgent/deploymentconfig/live/config}</value>
+            </property>
+            <property name="stagingDirectory">
+              <value>{serverHomeDirResource?resourceURI=PublishingAgent/deploymentconfig/staging/config}</value>
+            </property>
+            <property name="dataDirectory">
+              <value>{serverHomeDirResource?resourceURI=PublishingAgent/deploymentconfig/data/config}</value>
+            </property>
+            <property name="scheduler">
+              <value>/atg/dynamo/service/Scheduler</value>
+            </property>
+            <property name="name1">
+              <value>DataSourceA</value>
+            </property>
+            <property name="name2">
+              <value>DataSourceB</value>
+            </property>
+          </property-group>
+        </property-file>
+
+    </config-directory>
+    
+    <optional-config-directory id="scenario">
+      <title>Scenario Manager</title>      
+        <step id="ScenarioEditorValueStep">
+          <title>Production Scenario Editor Server Configuration</title>
+         <detail>Please enter the Hostname and DRP port for the Production Scenario Editor Server</detail>
+          <task id="ProductionScenarioManagerTask">
+              <property name="scenarioId">
+                <value>production</value>
+              </property>              
+        </task>
+        <validator id="AlwaysTrueValidator" phase="PRENAVIGATION">
+           <if-true>
+            <command type="EXECUTE_STEP_TASKS"  />
+            <command type="NEXT_STEP" />
+           </if-true>
+          </validator>
+        </step>
+        
+         <step id="ProductionGlobalScenarioStep">
+          <title>Production Global Scenario Server Configuration</title>
+          <detail>Would you like to add a Production Global Scenario Server? ${ProductionScenarioManagerProvider.globalScenarioServersForDisplay}</detail>
+          <navoption id="continue" default="true">
+              <label>Add a production global scenario server.</label>
+              <command type="NEXT_STEP" />
+          </navoption>
+	   <navoption id="skip">
+              <label>Remove ALL global servers from this list.</label>
+              <command type="GOTO_STEP" value="GlobalScenarioRemoveValueStep"/>
+         </navoption>
+          <navoption id="skip">
+              <label>Done</label>
+              <command type="GOTO_STEP" value="WriteProductionScenarioStep"/>
+          </navoption>
+        </step>
+        
+         <step id="GlobalScenarioValueStep">
+          <title>Production Global Scenario Server Configuration</title>
+         <detail>Please enter the Hostname and DRP port for the Production Global Scenario Server.</detail>
+          <task id="GlobalScenarioTask">
+              <property name="scenarioId">
+                <value>production</value>
+              </property>
+           </task>
+         <validator id="AlwaysTrueValidator" phase="PRENAVIGATION">
+           <if-true>
+            <command type="EXECUTE_STEP_TASKS"  />
+            <command type="GOTO_STEP" value="ProductionGlobalScenarioStep"/>
+           </if-true>
+          </validator>
+        </step>
+        
+        <step id="GlobalScenarioRemoveValueStep">
+          <title />
+          <detail />
+          <task id="ClearGlobalServersTask">
+            <property name="scenarioId">
+              <value>production</value>
+             </property>
+          </task>
+        <validator id="AlwaysTrueValidator" phase="PRENAVIGATION">
+           <if-true>
+            <command type="EXECUTE_STEP_TASKS"  />
+            <command type="GOTO_STEP" value="ProductionGlobalScenarioStep"/>
+           </if-true>
+          </validator>
+        </step>
+        
+        <step id="WriteProductionScenarioStep">
+          <task id="WriteScenarioXMLTask">            
+            <property name="serverInstanceTypeId">
+              <value>production</value>
+            </property>
+            <property name="scenarioId">
+              <value>production</value>
+            </property>
+            <property name="filePath">
+              <value>/atg/scenario/scenarioManager.xml</value>
+            </property>
+          </task>
+          <validator id="AlwaysTrueValidator" phase="PRENAVIGATION">
+           <if-true>
+            <command type="EXECUTE_STEP_TASKS"  />
+            <command type="NEXT_STEP"/>
+           </if-true>
+          </validator>    
+        </step>
+        
+        
+        <step id="FinishedProductionScenarioStep">
+         <validator id="AlwaysTrueValidator" phase="PRENAVIGATION">
+           <if-true>
+              <command type="NEXT_STEP" />
+           </if-true>
+          </validator>
+        </step>
+    
+    </optional-config-directory>  
+		
+	</server-instance-type>
+	
+	<server-instance-type id="production_db" extends="production">
+		<title></title>
+	</server-instance-type>
+	<server-instance-type id="staging_db" extends="staging">
+		<title></title>
+	
+	</server-instance-type>
+	
+	<server-instance-type id="staging" >
+
+		<title>Staging Server</title>
+		<detail/>
+		
+		<append-module name="DafEar.Admin"/>	
+    
+		<config-directory>
+      <!-- DB2 Specific Properties files -->
+      <property-file file="GLOBAL.properties">
+        <property-group id="db2">
+          <pass-validation id="HasDB2DatasourceValidator" 
+            class="atg.cim.worker.databaseconfig.HasDB2DatasourceValidator">
+            <property name="serverInstanceType">
+              <value>staging</value>
+            </property>
+          </pass-validation>
+          <property name="handleRangesInMemory">
+            <value>true</value>
+          </property>
+          <property name="localTransactionModeInitialization">
+            <value>false</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/dynamo/messaging/SqlJmsProvider.properties">
+        <property-group id="db2">
+          <pass-validation id="HasDB2DatasourceValidator" 
+            class="atg.cim.worker.databaseconfig.HasDB2DatasourceValidator">
+            <property name="serverInstanceType">
+              <value>staging</value>
+            </property>
+          </pass-validation>
+          <property name="useSetBinaryStream">
+            <value>false</value>
+          </property>
+          <property name="parameterizedSelect">
+            <value>false</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/dynamo/transaction/TransactionManager.properties">
+        <property-group id="db2-websphere">
+          <pass-validation class="atg.cim.worker.appserver.WebsphereValidator" 
+            id="WebsphereValidator"/>
+          <property name="useManagerMethods">
+            <value>true</value>
+          </property>
+        </property-group>
+      </property-file>
+      
+      <!-- End DB2 Specific Properties Files -->
+      <property-file file="/atg/dynamo/service/DWDataCollectionConfig.properties">
+        <property-group id="reporting">
+          <requires-addon-id id="reporting"/>
+          <property name="defaultRoot" persist-key="reportingDefaultRoot">
+            <input type="path">
+              <label>Enter Path to ACI log file directory</label>
+              <validator id="CannotBeBlankValidator">
+                <error-message>Path Cannot be Blank.</error-message>
+              </validator>
+              <validator id="DirectoryExistsValidator">
+                <error-message>Path is not a directory or it doesn't exist.</error-message>
+              </validator>
+            </input>
+          </property>
+          <property name="enabled">
+            <value>false</value>
+          </property>
+        </property-group>
+      </property-file>   
+      <property-file file="/atg/dynamo/service/jdbc/JTDataSource.properties">
+        <property-group id="base">
+          <property name="dataSource">
+            <value>/atg/dynamo/service/jdbc/DirectJTDataSource</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/dynamo/service/jdbc/DirectJTDataSource.properties">
+        <property-group id="nonswitching">
+          <property name="JNDIName">
+            <value>${AppServerPortsProvider.jndiPrefix}${NamedDatasource[stagingnonswitchingCore].datasourceValue.jndiName}</value>
+          </property>
+          <property name="className">
+            <value>atg.nucleus.JNDIReference</value>
+          </property>
+        </property-group>
+      </property-file>      
+      <property-file file="/atg/dynamo/service/GSAInvalidatorService.properties">
+        <property-group id="search">
+          <requires-addon-id id="search"/>
+          <property name="enabled">
+            <value>true</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/search/config/LanguageDimensionService.properties">
+        <property-group id="search">
+          <requires-addon-id id="search"/>
+          <property name="languageMap">
+            <value>english=en</value>
+          </property>
+          <property name="locales">
+            <value>en,en_US</value>
+          </property>
+        </property-group>
+      </property-file>     
+      <property-file file="/atg/dynamo/service/jdbc/DirectJTDataSource_production.properties">
+        <property-group id="nonswitching">
+          <requires-addon-id id="nonswitchingdatasource"/>
+          <requires-addon-id id="search"/>
+          <property name="JNDIName">
+            <value>${AppServerPortsProvider.jndiPrefix}${NamedDatasource[nonswitchingCore].datasourceValue.jndiName}</value>
+          </property>
+        </property-group>
+        <property-group id="switching">
+            <requires-addon-id id="switchingdatasource" />
+            <requires-addon-id id="search"/>
+            <property name="JNDIName">
+              <value>${AppServerPortsProvider.jndiPrefix}${NamedDatasource[switchingCore].datasourceValue.jndiName}</value>
+            </property>
+          </property-group>
+        <property-group id="base">
+          <requires-addon-id id="search"/>
+          <property name="className">
+            <value>atg.nucleus.JNDIReference</value>
+          </property>
+        </property-group>
+      </property-file>      
+      <property-file file="/atg/dynamo/service/ClientLockManager_production.properties">
+        <property-group id="search">
+          <requires-addon-id id="search"/>
+          <property name="lockServerAddress" persist-key="productionServerLockManagerHost">
+            <input type="text">
+              <label>Enter Production Lock Server Hostname</label>
+              <validator id="NoWhiteSpaceInputValidator">
+                <error-message>Hostname cannot contain whitespace.</error-message>
+              </validator>
+            </input>          
+          </property>
+          <property name="lockServerPort" persist-key="productionServerLockManagerPort">
+            <value>9012</value>
+            <input type="text">
+              <label>Enter Production Lock Server Port</label>
+              <validator id="PortNumberInputValidator">
+                <error-message>Invalid Port Number</error-message>
+              </validator>
+            </input>
+          </property>
+          <property name="useLockServer">
+            <value>true</value>
+          </property>
+        </property-group>
+      </property-file>      
+      <property-file file="/atg/search/service/SearchClientLockManager.properties">
+        <property-group id="search">
+          <requires-addon-id id="search"/>
+          <property name="componentPath">
+            <value>/atg/dynamo/service/ClientLockManager_production</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/dynamo/server/SQLRepositoryEventServer_production.properties">
+        <property-group id="search">
+          <requires-addon-id id="search"/>
+          <property name="enabled">
+            <value>true</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/search/service/SearchSQLRepositoryEventServer.properties">
+        <property-group id="search">
+          <requires-addon-id id="search"/>
+          <property name="componentPath">
+            <value>/atg/dynamo/server/SQLRepositoryEventServer_production</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/dynamo/service/jdbc/SQLRepository_production.properties">
+        <property-group id="search">
+          <requires-addon-id id="search"/>
+          <property name="dataSource">
+            <value>/atg/dynamo/service/jdbc/DirectJTDataSource_production</value>
+          </property>
+          <property name="enabled">
+            <value>true</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/search/service/SearchSQLRepository.properties">
+        <property-group id="search">
+          <requires-addon-id id="search"/>
+          <property name="componentPath">
+            <value>/atg/dynamo/service/jdbc/SQLRepository_production</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/dynamo/service/IdGenerator_production.properties">
+        <property-group id="search">
+          <requires-addon-id id="search"/>
+          <property name="dataSource">
+            <value>/atg/dynamo/service/jdbc/DirectJTDataSource_production</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/search/service/SearchIdGenerator.properties">
+        <property-group id="search">
+          <requires-addon-id id="search"/>
+          <property name="componentPath">
+            <value>/atg/dynamo/service/IdGenerator_production</value>
+          </property>
+        </property-group>
+      </property-file>
+    </config-directory>
+    
+    <optional-config-directory id="scenario">
+      <title>Scenario Manager</title>      
+        <step id="ScenarioEditorValueStep">
+          <title>Staging Scenario Editor Server Configuration</title>
+         <detail>Please enter the Hostname and DRP port for the Staging Scenario Editor Server</detail>
+          <task id="StagingScenarioManagerTask">
+              <property name="scenarioId">
+                <value>staging</value>
+              </property>              
+        </task>
+        <validator id="AlwaysTrueValidator" phase="PRENAVIGATION">
+           <if-true>
+            <command type="EXECUTE_STEP_TASKS"  />
+            <command type="NEXT_STEP" />
+           </if-true>
+          </validator>
+        </step>
+        
+         <step id="StagingGlobalScenarioStep">
+          <title>Statging Global Scenario Server Configuration</title>
+          <detail>Would you like to add a Staging Global Scenario Server? ${StagingScenarioManagerProvider.globalScenarioServersForDisplay}</detail>
+          <navoption id="continue" default="true">
+              <label>Add a staging global scenario server.</label>
+              <command type="NEXT_STEP" />
+          </navoption>
+	   <navoption id="skip">
+              <label>Remove ALL global servers from this list.</label>
+              <command type="GOTO_STEP" value="GlobalScenarioRemoveValueStep"/>
+         </navoption>
+          <navoption id="skip">
+              <label>Done</label>
+              <command type="GOTO_STEP" value="WriteStagingScenarioStep"/>
+          </navoption>
+        </step>
+        
+         <step id="GlobalScenarioValueStep">
+          <title>Staging Global Scenario Server Configuration</title>
+         <detail>Please enter the Hostname and DRP port for the Staging Global Scenario Server.</detail>
+          <task id="GlobalScenarioTask">
+              <property name="scenarioId">
+                <value>staging</value>
+              </property>
+           </task>
+         <validator id="AlwaysTrueValidator" phase="PRENAVIGATION">
+           <if-true>
+            <command type="EXECUTE_STEP_TASKS"  />
+            <command type="GOTO_STEP" value="StagingGlobalScenarioStep"/>
+           </if-true>
+          </validator>
+        </step>
+        
+        <step id="GlobalScenarioRemoveValueStep">
+          <title />
+          <detail />
+          <task id="ClearGlobalServersTask">
+            <property name="scenarioId">
+              <value>staging</value>
+             </property>
+          </task>
+        <validator id="AlwaysTrueValidator" phase="PRENAVIGATION">
+           <if-true>
+            <command type="EXECUTE_STEP_TASKS"  />
+            <command type="GOTO_STEP" value="StagingGlobalScenarioStep"/>
+           </if-true>
+          </validator>
+        </step>
+        
+        <step id="WriteStagingScenarioStep">
+          <task id="WriteScenarioXMLTask">            
+            <property name="serverInstanceTypeId">
+              <value>staging</value>
+            </property>
+            <property name="scenarioId">
+              <value>staging</value>
+            </property>
+            <property name="filePath">
+              <value>/atg/scenario/scenarioManager.xml</value>
+            </property>
+          </task>
+          <validator id="AlwaysTrueValidator" phase="PRENAVIGATION">
+           <if-true>
+            <command type="EXECUTE_STEP_TASKS"  />
+            <command type="NEXT_STEP"/>
+           </if-true>
+          </validator>    
+        </step>
+                
+        <step id="FinishedStagingScenarioStep">
+         <validator id="AlwaysTrueValidator" phase="PRENAVIGATION">
+           <if-true>
+              <command type="NEXT_STEP" />
+           </if-true>
+          </validator>
+        </step>
+    
+    </optional-config-directory>  
+
+
+	</server-instance-type>
+
+	<server-instance-type id="externalpreview">
+		<title resource-key="ExternalPreviewServer.name">External Preview Server</title>
+		<detail resource-key="ExternalPreviewServer.detail"/>
+		
+		<append-module name="DafEar.Admin"/>
+    <config-directory>
+      <!-- DB2 Specific Properties files -->
+      <property-file file="GLOBAL.properties">
+        <property-group id="db2">
+          <pass-validation id="HasDB2DatasourceValidator" 
+            class="atg.cim.worker.databaseconfig.HasDB2DatasourceValidator">
+            <property name="serverInstanceType">
+              <value>externalpreview</value>
+            </property>
+          </pass-validation>
+          <property name="handleRangesInMemory">
+            <value>true</value>
+          </property>
+          <property name="localTransactionModeInitialization">
+            <value>false</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/dynamo/messaging/SqlJmsProvider.properties">
+        <property-group id="db2">
+          <pass-validation id="HasDB2DatasourceValidator" 
+            class="atg.cim.worker.databaseconfig.HasDB2DatasourceValidator">
+            <property name="serverInstanceType">
+              <value>externalpreview</value>
+            </property>
+          </pass-validation>
+          <property name="useSetBinaryStream">
+            <value>false</value>
+          </property>
+          <property name="parameterizedSelect">
+            <value>false</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/dynamo/transaction/TransactionManager.properties">
+        <property-group id="db2-websphere">
+          <pass-validation class="atg.cim.worker.appserver.WebsphereValidator" 
+            id="WebsphereValidator"/>
+          <property name="useManagerMethods">
+            <value>true</value>
+          </property>
+        </property-group>
+      </property-file>
+      
+      <!-- End DB2 Specific Properties Files -->
+      <property-file file="/atg/dynamo/service/jdbc/JTDataSource.properties">
+        <property-group id="base">
+          <property name="dataSource">
+            <value>/atg/dynamo/service/jdbc/DirectJTDataSource</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/dynamo/service/jdbc/JTDataSource_production.properties">
+        <property-group id="base">
+          <property name="dataSource">
+            <value>/atg/dynamo/service/jdbc/DirectJTDataSource_production</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/dynamo/service/jdbc/DirectJTDataSource.properties">
+        <property-group id="base">
+          <property name="JNDIName">
+            <value>${AppServerPortsProvider.jndiPrefix}${NamedDatasource[management].datasourceValue.jndiName}</value>
+          </property>
+        </property-group>
+        <property-group id="base">
+          <property name="className">
+            <value>atg.nucleus.JNDIReference</value>
+          </property>
+        </property-group>
+      </property-file> 
+      
+      <property-file file="/atg/dynamo/service/jdbc/SwitchingDataSourceA.properties">
+          <property-group id="switchingonly">
+            <requires-addon-id id="switchingdatasource" />
+            <property name="JNDIName">
+              <value>${AppServerPortsProvider.jndiPrefix}${NamedDatasource[switchingA].datasourceValue.jndiName}</value>
+            </property>
+            <property name="className">
+              <value>atg.nucleus.JNDIReference</value>
+            </property>
+          </property-group>
+        </property-file>
+        
+        
+         <property-file file="/atg/dynamo/service/jdbc/SwitchingDataSourceB.properties">
+          <property-group id="switchingonly">
+            <requires-addon-id id="switchingdatasource" />
+            <property name="JNDIName">
+              <value>${AppServerPortsProvider.jndiPrefix}${NamedDatasource[switchingB].datasourceValue.jndiName}</value>
+            </property>
+            <property name="className">
+              <value>atg.nucleus.JNDIReference</value>
+            </property>
+          </property-group>
+        </property-file>
+              
+      <property-file file="/atg/dynamo/service/GSAInvalidatorService.properties">
+        <property-group id="search">
+          <requires-addon-id id="search"/>
+          <property name="enabled">
+            <value>true</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/search/config/LanguageDimensionService.properties">
+        <property-group id="search">
+          <requires-addon-id id="search"/>
+          <property name="languageMap">
+            <value>english=en</value>
+          </property>
+          <property name="locales">
+            <value>en,en_US</value>
+          </property>
+        </property-group>
+      </property-file>   
+      <property-file file="/atg/dynamo/service/DWDataCollectionConfig.properties">
+        <property-group id="reporting">
+          <requires-addon-id id="reporting"/>
+          <property name="defaultRoot" persist-key="reportingDefaultRoot">
+            <input type="path">
+              <label>Enter Path to ACI log file directory</label>
+              <validator id="CannotBeBlankValidator">
+                <error-message>Path Cannot be Blank.</error-message>
+              </validator>
+              <validator id="DirectoryExistsValidator">
+                <error-message>Path is not a directory or it doesn't exist.</error-message>
+              </validator>
+            </input>
+          </property>
+          <property name="enabled">
+            <value>true</value>
+          </property>
+        </property-group>
+      </property-file>   
+      <property-file file="/atg/dynamo/service/jdbc/DirectJTDataSource_production.properties">
+        <property-group id="nonwitching">
+          <requires-addon-id id="nonswitchingdatasource"/>
+          <property name="JNDIName">
+            <value>${AppServerPortsProvider.jndiPrefix}${NamedDatasource[nonswitchingCore].datasourceValue.jndiName}</value>
+          </property>
+        </property-group>
+        <property-group id="switching">
+          <requires-addon-id id="switchingdatasource"/>
+          <property name="JNDIName">
+            <value>${AppServerPortsProvider.jndiPrefix}${NamedDatasource[switchingCore].datasourceValue.jndiName}</value>
+          </property>
+        </property-group>
+        <property-group id="base">
+          <property name="className">
+            <value>atg.nucleus.JNDIReference</value>
+          </property>
+        </property-group>        
+      </property-file>
+      </config-directory>
+
+    
+    <!-- Scenario Manager Configuration -->
+    <optional-config-directory id="scenario">
+      <title>Scenario Manager</title>  
+      <step id="InternalScenarioManagerValueStep">
+          <title>Internal Scenario Manager Server Configuration</title>
+         <detail>External Preview Servers should use the same internal scenario manager as management.
+Please enter the Hostname and DRP port for the Internal Management Scenario Server</detail>
+          <task id="InternalManagementScenarioManagerTask">
+              <property name="scenarioId">
+                <value>internal_management</value>
+              </property>              
+        </task>
+        <validator id="AlwaysTrueValidator" phase="PRENAVIGATION">
+           <if-true>
+            <command type="EXECUTE_STEP_TASKS"  />
+            <command type="NEXT_STEP" />
+           </if-true>
+          </validator>
+        </step>
+
+        <!-- Internal Scenario Manager .xml -->
+         <step id="InternalManagementGlobalScenarioStep">
+          <title>Internal Management Global Scenario Server Configuration</title>
+          <detail>Would you like to add a Global Scenario Server? ${InternalManagementScenarioManagerProvider.globalScenarioServersForDisplay}</detail>
+          <navoption id="continue" default="true">
+              <label>Add a new internal global scenario server.</label>
+              <command type="NEXT_STEP" />
+          </navoption>
+          <navoption id="skip">
+              <label>Remove ALL servers from the list.</label>
+              <command type="GOTO_STEP" value="InternalGlobalScenarioRemoveValueStep"/>
+          </navoption>
+          <navoption id="skip">
+              <label>Done.</label>
+              <command type="GOTO_STEP" value="WriteInternalScenarioStep"/>
+          </navoption>
+        </step>
+
+        <step id="GlobalScenarioValueStep">
+          <title>Internal Management Global Scenario Server Configuration</title>
+         <detail>Please enter the Hostname and DRP port for the Internal Management Global Scenario Server.</detail>
+          <task id="GlobalScenarioTask">
+              <property name="scenarioId">
+                <value>internal_management</value>
+              </property>
+           </task>
+         <validator id="AlwaysTrueValidator" phase="PRENAVIGATION">
+           <if-true>
+            <command type="EXECUTE_STEP_TASKS"  />
+            <command type="GOTO_STEP" value="InternalManagementGlobalScenarioStep"/>
+           </if-true>
+          </validator>
+        </step>
+
+        <step id="InternalGlobalScenarioRemoveValueStep">
+          <title />
+          <detail />
+          <task id="ClearGlobalServersTask">
+            <property name="scenarioId">
+              <value>internal_management</value>
+             </property>
+          </task>
+        <validator id="AlwaysTrueValidator" phase="PRENAVIGATION">
+           <if-true>
+            <command type="EXECUTE_STEP_TASKS"  />
+            <command type="GOTO_STEP" value="InternalManagementGlobalScenarioStep"/>
+           </if-true>
+          </validator>
+        </step>
+	
+        <step id="WriteInternalScenarioStep">
+          <task id="WriteScenarioXMLTask">            
+            <property name="serverInstanceTypeId">
+              <value>externalpreview</value>
+            </property>
+            <property name="scenarioId">
+              <value>internal_management</value>
+            </property>
+            <property name="filePath">
+              <value>/atg/scenario/internalScenarioManager.xml</value>
+            </property>
+          </task>
+          <validator id="AlwaysTrueValidator" phase="PRENAVIGATION">
+           <if-true>
+            <command type="EXECUTE_STEP_TASKS"  />
+            <command type="NEXT_STEP"/>
+           </if-true>
+          </validator>        
+        </step>  
+
+     
+        <!-- Preview is already selected, so omit validation steps.-->
+
+         <step id="PreviewScenarioEditorValueStep">
+          <title>Preview Scenario Editor Server Configuration</title>
+         <detail>Please enter the Hostname and DRP port for the Preview Scenario Editor Server</detail>
+          <task id="PreviewScenarioManagerTask">
+              <property name="scenarioId">
+                <value>management</value>
+              </property>              
+        </task>
+        <validator id="AlwaysTrueValidator" phase="PRENAVIGATION">
+           <if-true>
+            <command type="EXECUTE_STEP_TASKS"  />
+            <command type="GOTO_STEP" value="PreviewGlobalScenarioStep"/>
+           </if-true>
+          </validator>
+        </step>
+        
+         <step id="PreviewGlobalScenarioStep">
+          <title>Preview Global Scenario Server Configuration</title>
+          <detail>Would you like to add a Global Scenario Server? ${PreviewScenarioManagerProvider.globalScenarioServersForDisplay}</detail>
+          <navoption id="continue" default="true">
+              <label>Yes.</label>
+              <command type="NEXT_STEP" />
+          </navoption>
+          <navoption id="skip">
+              <label>Remove all servers from the list.</label>
+              <command type="GOTO_STEP" value="PreviewGlobalScenarioRemoveValueStep"/>
+          </navoption>
+          <navoption id="skip">
+              <label>Done.</label>
+              <command type="GOTO_STEP" value="WritePreviewScenarioStep"/>
+          </navoption>
+        </step>
+        
+         <step id="PreviewGlobalScenarioValueStep">
+          <title>Preview Global Scenario Server Configuration</title>
+         <detail>Please enter the Hostname and DRP port for the Management Global Scenario Server.</detail>
+          <task id="GlobalScenarioTask">
+              <property name="scenarioId">
+                <value>management</value>
+              </property>
+           </task>
+         <validator id="AlwaysTrueValidator" phase="PRENAVIGATION">
+           <if-true>
+            <command type="EXECUTE_STEP_TASKS"  />
+            <command type="GOTO_STEP" value="PreviewGlobalScenarioStep"/>
+           </if-true>
+          </validator>
+        </step>
+        
+        <step id="PreviewGlobalScenarioRemoveValueStep">
+          <title />
+          <detail />
+          <task id="ClearGlobalServersTask">
+            <property name="scenarioId">
+              <value>management</value>
+             </property>
+          </task>
+        <validator id="AlwaysTrueValidator" phase="PRENAVIGATION">
+           <if-true>
+            <command type="EXECUTE_STEP_TASKS"  />
+            <command type="GOTO_STEP" value="PreviewGlobalScenarioStep"/>
+           </if-true>
+          </validator>
+        </step>
+
+	
+        <step id="WritePreviewScenarioStep">
+          <task id="WriteScenarioXMLTask">            
+            <property name="serverInstanceTypeId">
+              <value>externalpreview</value>
+            </property>
+            <property name="scenarioId">
+              <value>management</value>
+            </property>
+            <property name="filePath">
+              <value>/atg/scenario/scenarioManager.xml</value>
+            </property>
+          </task>
+          <validator id="AlwaysTrueValidator" phase="PRENAVIGATION">
+           <if-true>
+            <command type="EXECUTE_STEP_TASKS"  />
+            <command type="NEXT_STEP"/>
+           </if-true>
+          </validator>        
+        </step>  
+        
+        <step id="FinishedManagementScenarioStep">
+         <validator id="AlwaysTrueValidator" phase="PRESTEP">
+           <if-true>
+              <command type="NEXT_STEP" />
+           </if-true>
+          </validator>
+        </step>
+    </optional-config-directory>
+	
+
+
+
+	</server-instance-type>			
+
+	<server-instance-type id="lock">
+		<title resource-key="LockServer.name">Production LockManager Server</title>
+		<detail resource-key="LockServer.detail"/>
+
+		<append-module name="DAS"/>
+		<append-module name="DafEar.Admin"/>
+    
+    <add-named-datasource id="nonswitchingCore" />  
+    
+    <config-directory>
+      <property-file file="/atg/multisite/Initial.properties">
+        <property-group id="switching">
+          <requires-addon-id id="switchingdatasource"/>
+          <property name="initialServices-">
+            <value>SiteContextPipelineServlet,/atg/dynamo/servlet/dafpipeline/SiteSessionEventTrigger,/atg/dynamo/servlet/pipeline/SiteSessionEventTrigger,/atg/dynamo/servlet/pipeline/SiteContextPipelineServlet,SiteRepository</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/sitemap/Initial.properties">
+        <property-group id="switching">
+          <requires-addon-id id="switchingdatasource"/>
+          <property name="initialServices-">
+            <value>SitemapRepository,SitemapGeneratorService,SitemapWriterService</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/Initial.properties">
+        <property-group id="switching">
+          <requires-addon-id id="switchingdatasource"/>
+          <property name="initialServices-">
+            <value>registry/PipelineRegistry</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/dynamo/servlet/pipeline/DynamoHandler.properties">
+        <property-group id="switching">
+          <requires-addon-id id="switchingdatasource"/>
+          <property name="preSessionServlet^">
+            <value>/Constants.Null</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/dynamo/servlet/dafpipeline/DynamoHandler.properties">
+        <property-group id="switching">
+          <requires-addon-id id="switchingdatasource"/>
+          <property name="preSessionServlet^">
+            <value>/Constants.Null</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/dynamo/servlet/dafpipeline/TailPipelineServlet.properties">
+        <property-group id="switching">
+          <requires-addon-id id="switchingdatasource"/>
+          <property name="interceptors-">
+            <value>VirtualContextRootInterceptor,WebAppLayeringInterceptor</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/dynamo/admin/context/AdminContextManager.properties">
+        <property-group id="switching">
+          <requires-addon-id id="switchingdatasource"/>
+          <property name="adminContextProviders-">
+            <value>SiteAdminContextProvider</value>
+          </property>
+        </property-group>
+      </property-file>
+    </config-directory>  
+		
+	</server-instance-type>	
+	
+	<server-instance-type id="PubLock">
+    <title resource-key="LockServer.name">Publishing LockManager Server</title>
+    <detail resource-key="LockServer.detail"/>
+
+    <append-module name="DAS"/>
+    <append-module name="DafEar.Admin"/>
+    
+    <add-named-datasource id="management" />    
+    
+  </server-instance-type> 	
+	
+	<server-instance-type id="datawarehouse_loader">
+		<title resource-key="Loader.name">Data Warehouse Loader Server</title>
+		<detail resource-key="Loader.detail"/>
+    
+    <append-module name="DafEar.Admin"/>
+		<config-directory>
+      <!-- DB2 Specific Properties files -->
+      <property-file file="GLOBAL.properties">
+        <property-group id="db2">
+          <pass-validation id="HasDB2DatasourceValidator" 
+            class="atg.cim.worker.databaseconfig.HasDB2DatasourceValidator">
+            <property name="serverInstanceType">
+              <value>datawarehouse_loader</value>
+            </property>
+          </pass-validation>
+          <property name="handleRangesInMemory">
+            <value>true</value>
+          </property>
+          <property name="localTransactionModeInitialization">
+            <value>false</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/dynamo/messaging/SqlJmsProvider.properties">
+        <property-group id="db2">
+          <pass-validation id="HasDB2DatasourceValidator" 
+            class="atg.cim.worker.databaseconfig.HasDB2DatasourceValidator">
+            <property name="serverInstanceType">
+              <value>datawarehouse_loader</value>
+            </property>
+          </pass-validation>
+          <property name="useSetBinaryStream">
+            <value>false</value>
+          </property>
+          <property name="parameterizedSelect">
+            <value>false</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/dynamo/transaction/TransactionManager.properties">
+        <property-group id="db2-websphere">
+          <pass-validation class="atg.cim.worker.appserver.WebsphereValidator" 
+            id="WebsphereValidator"/>
+          <property name="useManagerMethods">
+            <value>true</value>
+          </property>
+        </property-group>
+      </property-file>
+      
+      <!-- End DB2 Specific Properties Files -->
+      <property-file file="/atg/dynamo/service/jdbc/JTDataSource.properties">
+        <property-group id="base">
+          <property name="dataSource">
+            <value>/atg/dynamo/service/jdbc/DirectJTDataSource</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/dynamo/service/jdbc/JTDataSource_production.properties">
+        <property-group id="base">
+          <property name="dataSource">
+            <value>/atg/dynamo/service/jdbc/DirectJTDataSource_production</value>
+          </property>
+        </property-group>
+      </property-file>   
+      <property-file file="/atg/dynamo/service/jdbc/SwitchingDataSourceA.properties">
+          <property-group id="switchingonly">
+            <requires-addon-id id="switchingdatasource" />
+            <property name="JNDIName">
+              <value>${AppServerPortsProvider.jndiPrefix}${NamedDatasource[switchingA].datasourceValue.jndiName}</value>
+            </property>
+            <property name="className">
+              <value>atg.nucleus.JNDIReference</value>
+            </property>
+          </property-group>
+        </property-file>
+        
+        
+         <property-file file="/atg/dynamo/service/jdbc/SwitchingDataSourceB.properties">
+          <property-group id="switchingonly">
+            <requires-addon-id id="switchingdatasource" />
+            <property name="JNDIName">
+              <value>${AppServerPortsProvider.jndiPrefix}${NamedDatasource[switchingB].datasourceValue.jndiName}</value>
+            </property>
+            <property name="className">
+              <value>atg.nucleus.JNDIReference</value>
+            </property>
+          </property-group>
+        </property-file>
+        <property-file file="/atg/multisite/SiteRepository.properties">
+          <property-group id="site">
+            <requires-addon-id id="switchingdatasource"/>
+            <property name="dataSource">
+              <value>/atg/dynamo/service/jdbc/SwitchingDataSource</value>
+            </property>
+          </property-group>
+        </property-file> 
+             
+      <property-file file="/atg/dynamo/service/DWDataCollectionConfig.properties">
+          <property-group id="base">
+            <property name="defaultRoot" persist-key="reportingDefaultRoot">
+              <input type="path">
+              <label>Enter Path to ACI log file directory</label>
+              <validator id="CannotBeBlankValidator">
+                <error-message>Path Cannot be Blank.</error-message>
+              </validator>
+              <validator id="DirectoryExistsValidator">
+                <error-message>Path is not a directory or it doesn't exist.</error-message>
+              </validator>
+            </input>
+            </property>
+            <property name="enabled">
+              <value>true</value>
+            </property>
+          </property-group>
+        </property-file>
+        
+        <property-file file="/atg/reporting/datawarehouse/DirectJTDataSource.properties">
+          <property-group id="base">
+            <property name="JNDIName">
+              <value>${AppServerPortsProvider.jndiPrefix}${NamedDatasource[datawarehouse].datasourceValue.jndiName}</value>
+            </property>
+            <property name="className">
+              <value>atg.nucleus.JNDIReference</value>
+            </property>
+           </property-group>
+         </property-file>
+         
+        <property-file file="/atg/dynamo/service/jdbc/DirectJTDataSource.properties">
+          <property-group id="base">
+            <property name="JNDIName">
+              <value>${AppServerPortsProvider.jndiPrefix}${NamedDatasource[datawarehouse_loader].datasourceValue.jndiName}</value>
+            </property>
+            <property name="className">
+              <value>atg.nucleus.JNDIReference</value>
+            </property>
+           </property-group>
+         </property-file>
+         
+         <property-file file="/atg/dynamo/service/jdbc/DirectJTDataSource_production.properties">
+          <property-group id="nonswitching">
+            <requires-addon-id id="nonswitchingdatasource" />
+            <property name="JNDIName">
+              <value>${AppServerPortsProvider.jndiPrefix}${NamedDatasource[nonswitchingCore].datasourceValue.jndiName}</value>
+            </property>
+          </property-group>
+          <property-group id="switching">
+            <requires-addon-id id="switchingdatasource" />
+            <property name="JNDIName">
+              <value>${AppServerPortsProvider.jndiPrefix}${NamedDatasource[switchingCore].datasourceValue.jndiName}</value>
+            </property>            
+           </property-group>
+          <property-group id="base">
+            <property name="className">
+              <value>atg.nucleus.JNDIReference</value>
+            </property>
+           </property-group>
+         </property-file>
+         
+         <property-file file="/atg/reporting/datawarehouse/loaders/TimeRepositoryLoader.properties">
+          <property-group id="base">
+            <property name="dateTimeZoneID" persist-key="reportingDataTimeZoneID">
+              <value>UTC</value>
+              <input type="text">
+                <label>Enter the Time Zone Id: </label>
+              </input>
+            </property>
+          </property-group>
+         </property-file>
+         
+         <property-file file="/atg/dynamo/service/ClientLockManager_production.properties">
+            <property-group id="base">
+              <property name="lockServerAddress" persist-key="productionServerLockManagerHost">
+                <input type="text">
+                  <label>Enter Production Lock Server Hostname</label>
+                  <validator id="NoWhiteSpaceInputValidator">
+                    <error-message>Hostname cannot contain whitespace.</error-message>
+                  </validator>
+                </input>          
+              </property>
+              <property name="lockServerPort" persist-key="productionServerLockManagerPort">
+                <value>9012</value>
+                <input type="text">
+                  <label>Enter Production Lock Server Port</label>
+                  <validator id="PortNumberInputValidator">
+                    <error-message>Invalid Port Number</error-message>
+                  </validator>
+                </input>
+              </property>
+              <property name="useLockServer">
+                <value>true</value>
+              </property>
+            </property-group>
+          </property-file>
+          
+          <property-file file="/atg/dynamo/server/SQLRepositoryEventServer.properties">
+            <property-group id="search">
+              <requires-addon-id id="search"/>
+              <property name="enabled">
+                <value>true</value>
+              </property>
+            </property-group>
+          </property-file>
+          <property-file file="/atg/dynamo/server/SQLRepositoryEventServer_production.properties">
+            <property-group id="search">
+              <requires-addon-id id="search"/>
+              <property name="enabled">
+                <value>true</value>
+              </property>
+            </property-group>
+          </property-file>
+    
+        <!-- Switching File System Properties -->
+      <property-file file="/atg/epub/DeploymentAgent.properties">
+        <property-group id="nonswitching">
+          <requires-addon-id id="nonswitchingdatasource" />
+          <property name="switchableDataStores^">
+            <value>/Constants.null</value>
+          </property>
+        </property-group>
+        <property-group id="switching">
+          <requires-addon-id id="switchingdatasource" />
+          <property name="switchableDataStores+">
+            <value>/atg/dynamo/service/jdbc/SwitchingDataSource,/atg/epub/file/ConfigFileSystem</value>
+          </property>
+        </property-group>
+      </property-file>
+        <property-file file="/atg/epub/file/ConfigFileSystem.properties">
+          <property-group id="switching">
+            <requires-addon-id id="switchingdatasource" />
+            <property name="className">
+              <value>atg.vfs.switchable.SwitchableLocalFileSystem</value>
+            </property>
+            <property name="journaling">
+              <value>true</value>
+            </property>
+            <property name="liveDirectory">
+              <value>{serverHomeDirResource?resourceURI=PublishingAgent/deploymentconfig/live/config}</value>
+            </property>
+            <property name="stagingDirectory">
+              <value>{serverHomeDirResource?resourceURI=PublishingAgent/deploymentconfig/staging/config}</value>
+            </property>
+            <property name="dataDirectory">
+              <value>{serverHomeDirResource?resourceURI=PublishingAgent/deploymentconfig/data/config}</value>
+            </property>
+            <property name="scheduler">
+              <value>/atg/dynamo/service/Scheduler</value>
+            </property>
+            <property name="name1">
+              <value>DataSourceA</value>
+            </property>
+            <property name="name2">
+              <value>DataSourceB</value>
+            </property>
+          </property-group>
+        </property-file>
+
+    </config-directory>    
+	</server-instance-type>			
+
+	<server-instance-type id="datawarehouse">
+		<title/>
+		<detail/>
+		
+	</server-instance-type>			
+
+	<server-instance id="basic_management" type="management" >
+
+		<title>Publishing</title>
+		
+		<ear-file-name>atg_publishing.ear</ear-file-name>
+
+		<server-instance-name>atg_publishing</server-instance-name>
+
+		<config-directory>
+        <property-file file="/atg/dynamo/Configuration.properties">
+          <property-group id="base">
+            <property name="httpPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.httpPort">
+              <value>${AppServerPortsProvider.httpPort}</value>
+              <input type="text">
+                <label>Enter HTTP Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>
+            <property name="httpsPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.httpsPort">
+              <value>${AppServerPortsProvider.httpsPort}</value>
+              <input type="text">
+                <label>Enter HTTPS Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>
+            <property name="siteHttpServerPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.siteHttpPort">
+              <value>${AppServerPortsProvider.siteHttpPort}</value>
+              <input type="text">
+                <label>Enter Site HTTP Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>
+            <property name="rmiPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.rmiPort">
+              <value>${AppServerPortsProvider.rmiPort}</value>
+              <input type="text">
+                <label>Enter RMI Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>
+            <property name="drpPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.drpPort">
+              <value>${AppServerPortsProvider.drpPort}</value>
+              <input type="text">
+                <label>Enter DRP Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>  
+            <property name="fileDeploymentPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.fileDeploymentPort">
+              <value>8810</value>
+              <input type="text">
+                <label>Enter File Deployment Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>
+            <property name="fileSychronizationDeploymentPort"
+              persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.fileSychronizationDeploymentPort">
+              <value>8815</value>
+              <input type="text">
+                <label>Enter File Synchronization Deploy Server Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>
+            <property name="adminPort^"> 
+              <value>/atg/dynamo/Configuration.httpPort</value>
+            </property>         
+          </property-group>
+        </property-file>
+      <property-file file="/atg/dynamo/service/ClientLockManager.properties">
+        <property-group id="base">
+          <property name="lockServerAddress" persist-key="managementServerLockManagerHost">
+            <input type="text">
+              <label>Enter Lock Server Hostname</label>
+              <validator id="NoWhiteSpaceInputValidator">
+                <error-message>Hostname cannot contain whitespace.</error-message>
+              </validator>
+            </input>          
+          </property>
+          <property name="lockServerPort" persist-key="managementServerLockManagerPort">
+            <value>9010</value>
+            <input type="text">
+              <label>Enter Lock Server Port</label>
+              <validator id="PortNumberInputValidator">
+                <error-message>Invalid Port Number</error-message>
+              </validator>
+            </input>
+          </property>
+          <property name="useLockServer">
+            <value>true</value>
+          </property>
+        </property-group>
+      </property-file>			 
+		</config-directory>		
+		
+		<post-deployment-option id="jboss_optimize_jvm">
+		  <title>JBoss JVM Optimization</title>
+		  <requires-app-server>JBoss</requires-app-server>
+		  <step id="JbossOptimizeJVMPostDeploymentOptionStep" type="template" class="atg.cim.productconfig.deploy.jboss.OptimizeJbossJVMTemplate"/>
+		</post-deployment-option>	
+		
+		<post-deployment-option id="${ServerInstanceName}-Weblogic_protocol.jar">
+     <title>Copy protocol.jar</title>
+     <requires-app-server>Weblogic Offline</requires-app-server>
+     <requires-app-server>Weblogic Online</requires-app-server>     
+     <step id="CopyStoreFrontStaticPostDeploymentOptionStep" type="template" class="atg.cim.productconfig.deploy.weblogic.WeblogicProtocolJarPostDeploymentTemplate">
+      <property name="serverInstanceName">
+        <value>${ServerInstanceName}</value>
+      </property>
+     </step>
+    </post-deployment-option> 
+		
+	</server-instance>
+  <server-instance id="management_lock" type="management" >
+
+    <title>Publishing with a Server Lock Manager</title>
+    <detail>Minimum 1 Required</detail>
+    
+    <ear-file-name>atg_publishing_lockserver.ear</ear-file-name>
+
+    <server-instance-name>atg_publishing_lockserver</server-instance-name>
+
+    <config-directory>
+        <property-file file="/atg/dynamo/Configuration.properties">
+          <property-group id="base">
+            <property name="httpPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.httpPort">
+              <value>${AppServerPortsProvider.httpPort}</value>
+              <input type="text">
+                <label>Enter HTTP Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>
+            <property name="httpsPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.httpsPort">
+              <value>${AppServerPortsProvider.httpsPort}</value>
+              <input type="text">
+                <label>Enter HTTPS Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>
+            <property name="siteHttpServerPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.siteHttpPort">
+              <value>${AppServerPortsProvider.siteHttpPort}</value>
+              <input type="text">
+                <label>Enter Site HTTP Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>
+            <property name="rmiPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.rmiPort">
+              <value>${AppServerPortsProvider.rmiPort}</value>
+              <input type="text">
+                <label>Enter RMI Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>
+            <property name="drpPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.drpPort">
+              <value>${AppServerPortsProvider.drpPort}</value>
+              <input type="text">
+                <label>Enter DRP Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property> 
+            <property name="fileDeploymentPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.fileDeploymentPort">
+              <value>8810</value>
+              <input type="text">
+                <label>Enter File Deployment Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>
+            <property name="fileSychronizationDeploymentPort"
+              persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.fileSychronizationDeploymentPort">
+              <value>8815</value>
+              <input type="text">
+                <label>Enter File Synchronization Deploy Server Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>
+            <property name="adminPort^"> 
+              <value>/atg/dynamo/Configuration.httpPort</value>
+            </property>           
+          </property-group>
+        </property-file>
+        <property-file file="/atg/dynamo/Initial.properties">
+          <property-group id="lock">
+            <property name="initialServices+">
+              <value>/atg/dynamo/service/ServerLockManager</value>
+            </property>
+          </property-group>
+        </property-file>
+        <property-file file="/atg/dynamo/service/ServerLockManager.properties">
+          <property-group id="lock">
+            <property name="port" persist-key="managementServerLockManagerPort">
+              <value>9010</value>
+              <input type="text">
+                <label>Enter Lock Server Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>
+            </property>
+          </property-group>
+        </property-file>
+        <property-file file="/atg/dynamo/service/ClientLockManager.properties">
+        <property-group id="base">
+          <property name="lockServerAddress">
+            <value>localhost</value>       
+          </property>
+          <property name="lockServerPort" persist-key="managementServerLockManagerPort"/>
+          <property name="useLockServer">
+            <value>true</value>
+          </property>
+        </property-group>
+      </property-file>         
+    </config-directory>
+
+    <post-deployment-option id="jboss_optimize_jvm">
+      <title>JBoss JVM Optimization</title>
+      <requires-app-server>JBoss</requires-app-server>
+      <step id="JbossOptimizeJVMPostDeploymentOptionStep" type="template" class="atg.cim.productconfig.deploy.jboss.OptimizeJbossJVMTemplate"/>
+    </post-deployment-option>
+    <post-deployment-option id="${ServerInstanceName}-Weblogic_protocol.jar">
+     <title>Copy protocol.jar</title>
+     <requires-app-server>Weblogic Offline</requires-app-server>
+     <requires-app-server>Weblogic Online</requires-app-server>     
+     <step id="CopyStoreFrontStaticPostDeploymentOptionStep" type="template" class="atg.cim.productconfig.deploy.weblogic.WeblogicProtocolJarPostDeploymentTemplate">
+      <property name="serverInstanceName">
+        <value>${ServerInstanceName}</value>
+      </property>
+     </step>
+    </post-deployment-option> 
+  </server-instance>
+  
+  <server-instance id="production_lock" type="production" min-occurs="1">
+    <title>Production with a Server Lock Manager</title>
+    <detail>Minimum 1 Required</detail>
+
+
+			<ear-file-name>atg_production_lockserver.ear</ear-file-name>
+			
+			<server-instance-name>atg_production_lockserver</server-instance-name>
+
+			<config-directory>	     	
+			  <property-file file="/atg/dynamo/Configuration.properties">
+          <property-group id="base">
+            <property name="httpPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.httpPort">
+              <value>${AppServerPortsProvider.httpPort}</value>
+              <input type="text">
+                <label>Enter HTTP Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>
+            <property name="httpsPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.httpsPort">
+              <value>${AppServerPortsProvider.httpsPort}</value>
+              <input type="text">
+                <label>Enter HTTPS Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>
+            <property name="siteHttpServerPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.siteHttpPort">
+              <value>${AppServerPortsProvider.siteHttpPort}</value>
+              <input type="text">
+                <label>Enter Site HTTP Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>
+            <property name="rmiPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.rmiPort">
+              <value>${AppServerPortsProvider.rmiPort}</value>
+              <input type="text">
+                <label>Enter RMI Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>
+            <property name="drpPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.drpPort">
+              <value>${AppServerPortsProvider.drpPort}</value>
+              <input type="text">
+                <label>Enter DRP Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>  
+            <property name="fileDeploymentPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.fileDeploymentPort">
+              <value>8810</value>
+              <input type="text">
+                <label>Enter File Deployment Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property> 
+            <property name="adminPort^"> 
+              <value>/atg/dynamo/Configuration.httpPort</value>
+            </property>
+          </property-group>
+        </property-file>     
+        <property-file file="/atg/dynamo/Initial.properties">
+          <property-group id="lock">
+            <property name="initialServices+">
+              <value>/atg/dynamo/service/ServerLockManager</value>
+            </property>
+          </property-group>
+        </property-file>
+        <property-file file="/atg/dynamo/service/ServerLockManager.properties">
+          <property-group id="lock">
+            <property name="port" persist-key="productionServerLockManagerPort">
+              <value>9012</value>
+              <input type="text">
+                <label>Enter Lock Server Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>
+            </property>
+          </property-group>
+        </property-file>
+        <property-file file="/atg/dynamo/service/ClientLockManager.properties">
+        <property-group id="base">
+          <property name="lockServerAddress">
+            <value>localhost</value>       
+          </property>
+          <property name="lockServerPort" persist-key="productionServerLockManagerPort"/>
+          <property name="useLockServer">
+            <value>true</value>
+          </property>
+        </property-group>
+      </property-file>
+      <property-file file="/atg/dynamo/service/ClientLockManager_production.properties">
+        <property-group id="base">
+          <property name="useLockServer">
+            <value>true</value>
+          </property>
+          <property name="lockServerAddress">
+            <value>localhost</value>       
+          </property>
+          <property name="lockServerPort" persist-key="productionServerLockManagerPort">                               
+          </property>
+        </property-group>
+      </property-file>							
+		</config-directory>
+		
+		<post-deployment-option id="jboss_optimize_jvm">
+      <title>JBoss JVM Optimization</title>
+      <requires-app-server>JBoss</requires-app-server>
+      <step id="JbossOptimizeJVMPostDeploymentOptionStep" type="template" class="atg.cim.productconfig.deploy.jboss.OptimizeJbossJVMTemplate"/>
+    </post-deployment-option>
+    <post-deployment-option id="${ServerInstanceName}-Weblogic_protocol.jar">
+     <title>Copy protocol.jar</title>
+     <requires-app-server>Weblogic Offline</requires-app-server>
+     <requires-app-server>Weblogic Online</requires-app-server>     
+     <step id="CopyStoreFrontStaticPostDeploymentOptionStep" type="template" class="atg.cim.productconfig.deploy.weblogic.WeblogicProtocolJarPostDeploymentTemplate">
+      <property name="serverInstanceName">
+        <value>${ServerInstanceName}</value>
+      </property>
+     </step>
+    </post-deployment-option>
+	</server-instance>
+
+
+	<server-instance id="basic_production" type="production" >
+
+		<title>Production</title>
+		<detail></detail>
+
+
+			<ear-file-name>atg_production.ear</ear-file-name>
+			
+			<server-instance-name>atg_production</server-instance-name>
+
+				<!-- server instance config directory creation task ids, used by ServerInstanceTemplate -->
+			<config-directory>
+			   <property-file file="/atg/dynamo/Configuration.properties">
+          <property-group id="base">
+            <property name="httpPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.httpPort">
+              <value>${AppServerPortsProvider.httpPort}</value>
+              <input type="text">
+                <label>Enter HTTP Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>
+            <property name="httpsPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.httpsPort">
+              <value>${AppServerPortsProvider.httpsPort}</value>
+              <input type="text">
+                <label>Enter HTTPS Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>
+            <property name="siteHttpServerPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.siteHttpPort">
+              <value>${AppServerPortsProvider.siteHttpPort}</value>
+              <input type="text">
+                <label>Enter Site HTTP Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>
+            <property name="rmiPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.rmiPort">
+              <value>${AppServerPortsProvider.rmiPort}</value>
+              <input type="text">
+                <label>Enter RMI Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>
+            <property name="drpPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.drpPort">
+              <value>${AppServerPortsProvider.drpPort}</value>
+              <input type="text">
+                <label>Enter DRP Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>  
+            <property name="fileDeploymentPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.fileDeploymentPort">
+              <value>8810</value>
+              <input type="text">
+                <label>Enter File Deployment Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>
+            <property name="adminPort^"> 
+              <value>/atg/dynamo/Configuration.httpPort</value>
+            </property>
+            </property-group>
+        </property-file>
+      <property-file file="/atg/dynamo/service/ClientLockManager.properties">
+        <property-group id="base">
+          <property name="lockServerAddress" persist-key="productionServerLockManagerHost">
+            <input type="text">
+              <label>Enter Lock Server Hostname</label>
+              <validator id="NoWhiteSpaceInputValidator">
+                <error-message>Hostname cannot contain whitespace.</error-message>
+              </validator>
+            </input>          
+          </property>
+          <property name="lockServerPort" persist-key="productionServerLockManagerPort">
+            <value>9012</value>
+            <input type="text">
+              <label>Enter Lock Server Port</label>
+              <validator id="PortNumberInputValidator">
+                <error-message>Invalid Port Number</error-message>
+              </validator>
+            </input>
+          </property>
+          <property name="useLockServer">
+            <value>true</value>
+          </property>
+        </property-group>
+      </property-file>	
+      <property-file file="/atg/dynamo/service/ClientLockManager_production.properties">
+        <property-group id="base">
+          <property name="useLockServer">
+            <value>true</value>
+          </property>
+          <property name="lockServerAddress" persist-key="productionServerLockManagerHost">                       
+          </property>
+          <property name="lockServerPort" persist-key="productionServerLockManagerPort">                               
+          </property>
+        </property-group>
+      </property-file>         		      
+		</config-directory>
+			
+		<post-deployment-option id="jboss_optimize_jvm">
+      <title>JBoss JVM Optimization</title>
+      <requires-app-server>JBoss</requires-app-server>
+      <step id="JbossOptimizeJVMPostDeploymentOptionStep" type="template" class="atg.cim.productconfig.deploy.jboss.OptimizeJbossJVMTemplate"/>
+    </post-deployment-option>
+    <post-deployment-option id="${ServerInstanceName}-Weblogic_protocol.jar">
+     <title>Copy protocol.jar</title>
+     <requires-app-server>Weblogic Offline</requires-app-server>
+     <requires-app-server>Weblogic Online</requires-app-server>     
+     <step id="CopyStoreFrontStaticPostDeploymentOptionStep" type="template" class="atg.cim.productconfig.deploy.weblogic.WeblogicProtocolJarPostDeploymentTemplate">
+      <property name="serverInstanceName">
+        <value>${ServerInstanceName}</value>
+      </property>
+     </step>
+    </post-deployment-option>
+	</server-instance>
+
+	<server-instance id="basic_staging" type="staging" >
+
+		<title>Staging</title>
+		<detail></detail>
+
+
+			<ear-file-name>atg_staging.ear</ear-file-name>
+			
+			<server-instance-name>atg_staging</server-instance-name>
+
+			<config-directory>
+			   <property-file file="/atg/dynamo/Configuration.properties">
+          <property-group id="base">
+            <property name="httpPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.httpPort">
+              <value>${AppServerPortsProvider.httpPort}</value>
+              <input type="text">
+                <label>Enter HTTP Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>
+            <property name="httpsPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.httpsPort">
+              <value>${AppServerPortsProvider.httpsPort}</value>
+              <input type="text">
+                <label>Enter HTTPS Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>
+            <property name="siteHttpServerPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.siteHttpPort">
+              <value>${AppServerPortsProvider.siteHttpPort}</value>
+              <input type="text">
+                <label>Enter Site HTTP Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>
+            <property name="rmiPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.rmiPort">
+              <value>${AppServerPortsProvider.rmiPort}</value>
+              <input type="text">
+                <label>Enter RMI Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>
+            <property name="drpPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.drpPort">
+              <value>${AppServerPortsProvider.drpPort}</value>
+              <input type="text">
+                <label>Enter DRP Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>  
+            <property name="fileDeploymentPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.fileDeploymentPort">
+              <value>8810</value>
+              <input type="text">
+                <label>Enter File Deployment Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>    
+            <property name="adminPort^"> 
+              <value>/atg/dynamo/Configuration.httpPort</value>
+            </property>     
+          </property-group>
+        </property-file>
+
+      <property-file file="/atg/dynamo/service/ClientLockManager_production.properties">
+        <property-group id="search">
+          <requires-addon-id id="search"/>
+          <property name="lockServerAddress" persist-key="productionServerLockManagerHost">
+            <input type="text">
+              <label>Enter Production Lock Server Hostname</label>
+              <validator id="NoWhiteSpaceInputValidator">
+                <error-message>Hostname cannot contain whitespace.</error-message>
+              </validator>
+            </input>          
+          </property>
+          <property name="lockServerPort" persist-key="productionServerLockManagerPort">
+            <value>9010</value>
+            <input type="text">
+              <label>Enter Production Lock Server Port</label>
+              <validator id="PortNumberInputValidator">
+                <error-message>Invalid Port Number</error-message>
+              </validator>
+            </input>
+          </property>
+          <property name="useLockServer">
+            <value>true</value>
+          </property>
+        </property-group>
+      </property-file>				
+		</config-directory>
+	
+		<post-deployment-option id="jboss_optimize_jvm">
+      <title>JBoss JVM Optimization</title>
+      <requires-app-server>JBoss</requires-app-server>
+      <step id="JbossOptimizeJVMPostDeploymentOptionStep" type="template" class="atg.cim.productconfig.deploy.jboss.OptimizeJbossJVMTemplate"/>
+    </post-deployment-option>
+    <post-deployment-option id="${ServerInstanceName}-Weblogic_protocol.jar">
+     <title>Copy protocol.jar</title>
+     <requires-app-server>Weblogic Offline</requires-app-server>
+     <requires-app-server>Weblogic Online</requires-app-server>     
+     <step id="CopyStoreFrontStaticPostDeploymentOptionStep" type="template" class="atg.cim.productconfig.deploy.weblogic.WeblogicProtocolJarPostDeploymentTemplate">
+      <property name="serverInstanceName">
+        <value>${ServerInstanceName}</value>
+      </property>
+     </step>
+    </post-deployment-option>
+	</server-instance>
+
+	<server-instance id="basic_externalpreview" type="externalpreview" >
+
+		<title>External Preview Server</title>
+		<detail></detail>
+		
+		<ear-file-name>atg_preview.ear</ear-file-name>
+
+		<server-instance-name>atg_external_preview</server-instance-name>
+
+		<config-directory>
+      <property-file file="/atg/dynamo/Configuration.properties">
+          <property-group id="base">
+            <property name="httpPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.httpPort">
+              <value>${AppServerPortsProvider.httpPort}</value>
+              <input type="text">
+                <label>Enter HTTP Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>
+            <property name="httpsPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.httpsPort">
+              <value>${AppServerPortsProvider.httpsPort}</value>
+              <input type="text">
+                <label>Enter HTTPS Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>
+            <property name="siteHttpServerPort^">
+	            <value>/atg/dynamo/Configuration.httpPort</value>
+	          </property>
+            <property name="rmiPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.rmiPort">
+              <value>${AppServerPortsProvider.rmiPort}</value>
+              <input type="text">
+                <label>Enter RMI Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>
+            <property name="drpPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.drpPort">
+              <value>${AppServerPortsProvider.drpPort}</value>
+              <input type="text">
+                <label>Enter DRP Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property> 
+            <property name="fileDeploymentPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.fileDeploymentPort">
+              <value>8810</value>
+              <input type="text">
+                <label>Enter File Deployment Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property> 
+            <property name="fileSychronizationDeploymentPort"
+              persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.fileSychronizationDeploymentPort">
+              <value>8815</value>
+              <input type="text">
+                <label>Enter File Synchronization Deploy Server Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>
+            <property name="adminPort^"> 
+              <value>/atg/dynamo/Configuration.httpPort</value>
+            </property>                   
+          </property-group>
+        </property-file>			
+		</config-directory>
+		
+		<post-deployment-option id="jboss_optimize_jvm">
+      <title>JBoss JVM Optimization</title>
+      <requires-app-server>JBoss</requires-app-server>
+      <step id="JbossOptimizeJVMPostDeploymentOptionStep" type="template" class="atg.cim.productconfig.deploy.jboss.OptimizeJbossJVMTemplate"/>
+    </post-deployment-option>
+    <post-deployment-option id="${ServerInstanceName}-Weblogic_protocol.jar">
+     <title>Copy protocol.jar</title>
+     <requires-app-server>Weblogic Offline</requires-app-server>
+     <requires-app-server>Weblogic Online</requires-app-server>     
+     <step id="CopyStoreFrontStaticPostDeploymentOptionStep" type="template" class="atg.cim.productconfig.deploy.weblogic.WeblogicProtocolJarPostDeploymentTemplate">
+      <property name="serverInstanceName">
+        <value>${ServerInstanceName}</value>
+      </property>
+     </step>
+    </post-deployment-option>
+	</server-instance>
+
+
+	<server-instance id="basic_loader" type="datawarehouse_loader" >
+
+		<title>Datawarehouse Loader</title>
+		<detail></detail>
+		
+		<ear-file-name>atg_dw_loader.ear</ear-file-name>
+
+		<server-instance-name>atg_dw_loader</server-instance-name>
+
+		<config-directory>
+      <property-file file="/atg/dynamo/Configuration.properties">
+        <property-group id="base">
+          <property name="httpPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.httpPort">
+            <value>${AppServerPortsProvider.httpPort}</value>
+            <input type="text">
+              <label>Enter HTTP Port</label>
+              <validator id="PortNumberInputValidator">
+                <error-message>Invalid Port Number</error-message>
+              </validator>
+            </input>              
+          </property>
+          <property name="httpsPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.httpsPort">
+            <value>${AppServerPortsProvider.httpsPort}</value>
+            <input type="text">
+              <label>Enter HTTPS Port</label>
+              <validator id="PortNumberInputValidator">
+                <error-message>Invalid Port Number</error-message>
+              </validator>
+            </input>              
+          </property>
+          <property name="siteHttpServerPort^">
+            <value>/atg/dynamo/Configuration.httpPort</value>
+          </property>
+          <property name="rmiPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.rmiPort">
+            <value>${AppServerPortsProvider.rmiPort}</value>
+            <input type="text">
+              <label>Enter RMI Port</label>
+              <validator id="PortNumberInputValidator">
+                <error-message>Invalid Port Number</error-message>
+              </validator>
+            </input>              
+          </property>
+          <property name="drpPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.drpPort">
+            <value>${AppServerPortsProvider.drpPort}</value>
+            <input type="text">
+              <label>Enter DRP Port</label>
+              <validator id="PortNumberInputValidator">
+                <error-message>Invalid Port Number</error-message>
+              </validator>
+            </input>              
+          </property>  
+          <property name="fileDeploymentPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.fileDeploymentPort">
+            <value>8810</value>
+            <input type="text">
+              <label>Enter File Deployment Port</label>
+              <validator id="PortNumberInputValidator">
+                <error-message>Invalid Port Number</error-message>
+              </validator>
+            </input>              
+          </property>
+          <property name="adminPort^"> 
+              <value>/atg/dynamo/Configuration.httpPort</value>
+            </property>         
+        </property-group>
+      </property-file>	
+      <property-file file="/atg/dynamo/service/ClientLockManager.properties">
+        <property-group id="base">
+          <property name="lockServerAddress" persist-key="loaderServerLockManagerHost">
+            <input type="text">
+              <label>Enter Lock Server Hostname</label>
+              <validator id="NoWhiteSpaceInputValidator">
+                <error-message>Hostname cannot contain whitespace.</error-message>
+              </validator>
+            </input>          
+          </property>
+          <property name="lockServerPort" persist-key="loaderServerLockManagerPort">
+            <value>9013</value>
+            <input type="text">
+              <label>Enter Lock Server Port</label>
+              <validator id="PortNumberInputValidator">
+                <error-message>Invalid Port Number</error-message>
+              </validator>
+            </input>
+          </property>
+          <property name="useLockServer">
+            <value>true</value>
+          </property>
+        </property-group>
+      </property-file>           
+		</config-directory>
+		
+    <post-deployment-option id="jboss_optimize_jvm">
+      <title>JBoss JVM Optimization</title>
+      <requires-app-server>JBoss</requires-app-server>
+      <step id="JbossOptimizeJVMPostDeploymentOptionStep" type="template" class="atg.cim.productconfig.deploy.jboss.OptimizeJbossJVMTemplate"/>
+    </post-deployment-option>
+    <post-deployment-option id="${ServerInstanceName}-Weblogic_protocol.jar">
+     <title>Copy protocol.jar</title>
+     <requires-app-server>Weblogic Offline</requires-app-server>
+     <requires-app-server>Weblogic Online</requires-app-server>     
+     <step id="CopyStoreFrontStaticPostDeploymentOptionStep" type="template" class="atg.cim.productconfig.deploy.weblogic.WeblogicProtocolJarPostDeploymentTemplate">
+      <property name="serverInstanceName">
+        <value>${ServerInstanceName}</value>
+      </property>
+     </step>
+    </post-deployment-option>
+	</server-instance>
+  <server-instance id="loader_lock" type="datawarehouse_loader" >
+
+    <title>Datawarehouse Loader with Server Lock Manager</title>
+    <detail></detail>
+    
+    <ear-file-name>atg_dw_loader_lockserver.ear</ear-file-name>
+
+    <server-instance-name>atg_dw_loader_lockserver</server-instance-name>
+
+    <config-directory>
+      <property-file file="/atg/dynamo/Configuration.properties">
+        <property-group id="base">
+          <property name="httpPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.httpPort">
+            <value>${AppServerPortsProvider.httpPort}</value>
+            <input type="text">
+              <label>Enter HTTP Port</label>
+              <validator id="PortNumberInputValidator">
+                <error-message>Invalid Port Number</error-message>
+              </validator>
+            </input>              
+          </property>
+          <property name="httpsPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.httpsPort">
+            <value>${AppServerPortsProvider.httpsPort}</value>
+            <input type="text">
+              <label>Enter HTTPS Port</label>
+              <validator id="PortNumberInputValidator">
+                <error-message>Invalid Port Number</error-message>
+              </validator>
+            </input>              
+          </property>
+          <property name="siteHttpServerPort^">
+            <value>/atg/dynamo/Configuration.httpPort</value>
+          </property>
+          <property name="rmiPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.rmiPort">
+            <value>${AppServerPortsProvider.rmiPort}</value>
+            <input type="text">
+              <label>Enter RMI Port</label>
+              <validator id="PortNumberInputValidator">
+                <error-message>Invalid Port Number</error-message>
+              </validator>
+            </input>              
+          </property>
+          <property name="drpPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.drpPort">
+            <value>${AppServerPortsProvider.drpPort}</value>
+            <input type="text">
+              <label>Enter DRP Port</label>
+              <validator id="PortNumberInputValidator">
+                <error-message>Invalid Port Number</error-message>
+              </validator>
+            </input>              
+          </property>  
+          <property name="fileDeploymentPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.fileDeploymentPort">
+            <value>8810</value>
+            <input type="text">
+              <label>Enter File Deployment Port</label>
+              <validator id="PortNumberInputValidator">
+                <error-message>Invalid Port Number</error-message>
+              </validator>
+            </input>              
+          </property>
+          <property name="adminPort^"> 
+              <value>/atg/dynamo/Configuration.httpPort</value>
+            </property>         
+        </property-group>
+      </property-file> 
+      <property-file file="/atg/dynamo/Initial.properties">
+          <property-group id="lock">
+            <property name="initialServices+">
+              <value>/atg/dynamo/service/ServerLockManager</value>
+            </property>
+          </property-group>
+        </property-file>
+        <property-file file="/atg/dynamo/service/ServerLockManager.properties">
+          <property-group id="lock">
+            <property name="port" persist-key="loaderServerLockManagerPort">
+              <value>9013</value>
+              <input type="text">
+                <label>Enter Lock Server Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>
+            </property>
+          </property-group>
+        </property-file>
+        <property-file file="/atg/dynamo/service/ClientLockManager.properties">
+        <property-group id="base">
+          <property name="lockServerAddress">
+            <value>localhost</value>       
+          </property>
+          <property name="lockServerPort" persist-key="loaderServerLockManagerPort"/>
+          <property name="useLockServer">
+            <value>true</value>
+          </property>
+        </property-group>
+      </property-file>  
+      
+    </config-directory>
+    
+    <post-deployment-option id="jboss_optimize_jvm">
+      <title>JBoss JVM Optimization</title>
+      <requires-app-server>JBoss</requires-app-server>
+      <step id="JbossOptimizeJVMPostDeploymentOptionStep" type="template" class="atg.cim.productconfig.deploy.jboss.OptimizeJbossJVMTemplate"/>
+    </post-deployment-option>
+    <post-deployment-option id="${ServerInstanceName}-Weblogic_protocol.jar">
+     <title>Copy protocol.jar</title>
+     <requires-app-server>Weblogic Offline</requires-app-server>
+     <requires-app-server>Weblogic Online</requires-app-server>     
+     <step id="CopyStoreFrontStaticPostDeploymentOptionStep" type="template" class="atg.cim.productconfig.deploy.weblogic.WeblogicProtocolJarPostDeploymentTemplate">
+      <property name="serverInstanceName">
+        <value>${ServerInstanceName}</value>
+      </property>
+     </step>
+    </post-deployment-option>
+  </server-instance>
+
+	<server-instance id="lock_production" type="lock" min-occurs="0">
+
+		<title>Dedicated Lock Server for Production</title>
+		<detail></detail>
+		
+		<ear-file-name>lock_production.ear</ear-file-name>
+
+		<server-instance-name>atg_lock_production</server-instance-name>
+
+		<config-directory>
+		  <property-file file="/atg/dynamo/Configuration.properties">
+          <property-group id="base">
+            <property name="httpPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.httpPort">
+              <value>${AppServerPortsProvider.httpPort}</value>
+              <input type="text">
+                <label>Enter HTTP Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>
+            <property name="httpsPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.httpsPort">
+              <value>${AppServerPortsProvider.httpsPort}</value>
+              <input type="text">
+                <label>Enter HTTPS Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>
+            <property name="siteHttpServerPort^">
+              <value>/atg/dynamo/Configuration.httpPort</value>
+            </property>
+            <property name="rmiPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.rmiPort">
+              <value>${AppServerPortsProvider.rmiPort}</value>
+              <input type="text">
+                <label>Enter RMI Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>
+            <property name="drpPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.drpPort">
+              <value>${AppServerPortsProvider.drpPort}</value>
+              <input type="text">
+                <label>Enter DRP Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>  
+            <property name="adminPort^"> 
+              <value>/atg/dynamo/Configuration.httpPort</value>
+            </property>       
+          </property-group>
+        </property-file>        
+				<property-file file="/atg/scenario/ScenarioManager.properties">
+          <property-group id="lock">
+            <property name="enabled">
+              <value>false</value>
+            </property>
+          </property-group>
+        </property-file>
+        <property-file file="/atg/dynamo/Initial.properties">
+          <property-group id="lock">
+            <property name="initialServices+">
+              <value>/atg/dynamo/service/ServerLockManager</value>
+            </property>
+          </property-group>
+        </property-file>
+        <property-file file="/atg/dynamo/service/ServerLockManager.properties">
+          <property-group id="lock">
+            <property name="port" persist-key="productionServerLockManagerPort">
+              <value>9012</value>
+              <input type="text">
+                <label>Enter Lock Server Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>
+            </property>
+          </property-group>
+        </property-file>       
+        <property-file file="/atg/dynamo/service/jdbc/JTDataSource.properties">
+          <property-group id="base">
+            <property name="dataSource">
+              <value>/atg/dynamo/service/jdbc/DirectJTDataSource</value>
+            </property>
+          </property-group>
+        </property-file>
+        <property-file file="/atg/dynamo/service/jdbc/DirectJTDataSource.properties">
+          <property-group id="nonswitching">
+            <requires-addon-id id="nonswitchingdatasource"/>
+            <property name="JNDIName">
+              <value>${AppServerPortsProvider.jndiPrefix}${NamedDatasource[nonswitchingCore].datasourceValue.jndiName}</value>
+            </property>
+           </property-group>
+           <property-group id="switching">
+            <requires-addon-id id="switchingdatasource"/>
+            <property name="JNDIName">
+              <value>${AppServerPortsProvider.jndiPrefix}${NamedDatasource[switchingCore].datasourceValue.jndiName}</value>
+            </property>
+          </property-group>
+           <property-group id="base">
+            <property name="className">
+              <value>atg.nucleus.JNDIReference</value>
+            </property>
+          </property-group>
+        </property-file>
+		</config-directory>
+		
+		<post-deployment-option id="jboss_optimize_jvm">
+      <title>JBoss JVM Optimization</title>
+      <requires-app-server>JBoss</requires-app-server>
+      <step id="JbossOptimizeJVMPostDeploymentOptionStep" type="template" class="atg.cim.productconfig.deploy.jboss.OptimizeJbossJVMTemplate"/>
+    </post-deployment-option>
+    <post-deployment-option id="${ServerInstanceName}-Weblogic_protocol.jar">
+     <title>Copy protocol.jar</title>
+     <requires-app-server>Weblogic Offline</requires-app-server>
+     <requires-app-server>Weblogic Online</requires-app-server>     
+     <step id="CopyStoreFrontStaticPostDeploymentOptionStep" type="template" class="atg.cim.productconfig.deploy.weblogic.WeblogicProtocolJarPostDeploymentTemplate">
+      <property name="serverInstanceName">
+        <value>${ServerInstanceName}</value>
+      </property>
+     </step>
+    </post-deployment-option>
+	</server-instance>
+  <server-instance id="lock_publishing" type="PubLock" min-occurs="0">
+
+    <title>Dedicated Lock Server for Publishing</title>
+    <detail></detail>
+    
+    <ear-file-name>lock_publishing.ear</ear-file-name>
+
+    <server-instance-name>atg_lock_publishing</server-instance-name>
+
+    <config-directory>
+      <property-file file="/atg/dynamo/Configuration.properties">
+          <property-group id="base">
+            <property name="httpPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.httpPort">
+              <value>${AppServerPortsProvider.httpPort}</value>
+              <input type="text">
+                <label>Enter HTTP Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>
+            <property name="httpsPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.httpsPort">
+              <value>${AppServerPortsProvider.httpsPort}</value>
+              <input type="text">
+                <label>Enter HTTPS Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>
+            <property name="siteHttpServerPort^">
+              <value>/atg/dynamo/Configuration.httpPort</value>
+            </property>
+            <property name="rmiPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.rmiPort">
+              <value>${AppServerPortsProvider.rmiPort}</value>
+              <input type="text">
+                <label>Enter RMI Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>
+            <property name="drpPort" persist-key="${AppServerSelection.appServerType}-${ServerInstanceName}.drpPort">
+              <value>${AppServerPortsProvider.drpPort}</value>
+              <input type="text">
+                <label>Enter DRP Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>              
+            </property>  
+            <property name="adminPort^"> 
+              <value>/atg/dynamo/Configuration.httpPort</value>
+            </property>       
+          </property-group>
+        </property-file>        
+        <property-file file="/atg/scenario/ScenarioManager.properties">
+          <property-group id="lock">
+            <property name="enabled">
+              <value>false</value>
+            </property>
+          </property-group>
+        </property-file>
+        <property-file file="/atg/dynamo/Initial.properties">
+          <property-group id="lock">
+            <property name="initialServices+">
+              <value>/atg/dynamo/service/ServerLockManager</value>
+            </property>
+          </property-group>
+        </property-file>
+        <property-file file="/atg/dynamo/service/ServerLockManager.properties">
+          <property-group id="lock">
+            <property name="port" persist-key="managementServerLockManagerPort">
+              <value>9010</value>
+              <input type="text">
+                <label>Enter Lock Server Port</label>
+                <validator id="PortNumberInputValidator">
+                  <error-message>Invalid Port Number</error-message>
+                </validator>
+              </input>
+            </property>
+          </property-group>
+        </property-file>       
+        <property-file file="/atg/dynamo/service/jdbc/JTDataSource.properties">
+          <property-group id="base">
+            <property name="dataSource">
+              <value>/atg/dynamo/service/jdbc/DirectJTDataSource</value>
+            </property>
+          </property-group>
+        </property-file>
+        <property-file file="/atg/dynamo/service/jdbc/DirectJTDataSource.properties">
+          <property-group id="base">
+            <property name="JNDIName">
+              <value>${AppServerPortsProvider.jndiPrefix}${NamedDatasource[management].datasourceValue.jndiName}</value>
+            </property>
+            <property name="className">
+              <value>atg.nucleus.JNDIReference</value>
+            </property>
+          </property-group>
+        </property-file>
+    </config-directory>
+    
+    <post-deployment-option id="jboss_optimize_jvm">
+      <title>JBoss JVM Optimization</title>
+      <requires-app-server>JBoss</requires-app-server>
+      <step id="JbossOptimizeJVMPostDeploymentOptionStep" type="template" class="atg.cim.productconfig.deploy.jboss.OptimizeJbossJVMTemplate"/>
+    </post-deployment-option>
+    <post-deployment-option id="${ServerInstanceName}-Weblogic_protocol.jar">
+     <title>Copy protocol.jar</title>
+     <requires-app-server>Weblogic Offline</requires-app-server>
+     <requires-app-server>Weblogic Online</requires-app-server>     
+     <step id="CopyStoreFrontStaticPostDeploymentOptionStep" type="template" class="atg.cim.productconfig.deploy.weblogic.WeblogicProtocolJarPostDeploymentTemplate">
+      <property name="serverInstanceName">
+        <value>${ServerInstanceName}</value>
+      </property>
+     </step>
+    </post-deployment-option>
+  </server-instance>
+
+
+</product>
+<!-- @version $Id: //product/Publishing/version/10.0.3/cim/product.xml#1 $$Change: 651360 $-->

@@ -1,0 +1,1532 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE gsa-template
+        PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN"
+        "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template>
+
+  <header>
+    <name>Order</name>
+    <author>Manny Parasirakis</author>
+    <version>$Id: //product/DCS/version/10.0.3/templates/DCS/config/atg/commerce/order/orderrepository.xml#2 $$Change: 651448 $</version>
+  </header>
+
+  <item-descriptor name="order" default="true" sub-type-property="type" version-property="version" cache-mode="simple" display-name-resource="itemDescriptorOrder" item-cache-timeout="180000">
+    <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categorySchedulePriority" value="20"/>
+    <attribute name="categoryPricePriority" value="30"/>
+    <attribute name="categoryRelationshipsPriority" value="40"/>
+    <attribute name="categoryInstructionsPriority" value="50"/>
+    <attribute name="categoryInfoPriority" value="90"/>
+
+   <table name="dcspp_order" type="primary" id-column-name="order_id">
+      <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+      
+      <property name="id" column-name="order_id" writable="false" expert="true" category-resource="categoryInfo" display-name-resource="orderId">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="type" data-type="enumerated" default="order" hidden="true" category-resource="categoryInfo" display-name-resource="type">
+        <attribute name="useCodeForValue" value="false"/>
+        <option value="order" code="0"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="version" column-name="version" data-type="int" expert="true" category-resource="categoryInfo" display-name-resource="version">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+
+      <property name="orderClassType" column-name="order_class_type" data-type="string" category-resource="categoryBasics" display-name-resource="orderClassType">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property name="profileId" column-name="profile_id" data-type="string" category-resource="categoryBasics" display-name-resource="profileId">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="description" column-name="description" data-type="string" category-resource="categoryBasics" display-name-resource="description">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="state" column-name="state" data-type="string" default="INCOMPLETE" category-resource="categoryBasics" display-name-resource="state">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="stateDetail" column-name="state_detail" data-type="string" category-resource="categoryBasics" display-name-resource="stateDetail">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      
+      <property name="creationDate" column-name="creation_date" data-type="timestamp" category-resource="categorySchedule" display-name-resource="creationDate"> 
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="createdByOrderId" column-name="created_by_order" data-type="string" category-resource="categorySchedule" display-name-resource="createdByOrderId">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="originOfOrder" column-name="origin_of_order" data-type="enumerated" default="default" expert="true" 
+              category-resource="categorySchedule" display-name-resource="originOfOrder">
+       <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+       <attribute name="useCodeForValue" value="false"/>
+        <option value="default" code="0"/>
+        <option value="scheduledOrder" code="1"/>
+        <option value="contactCenter" code="2"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="explicitlySaved" column-name="explicitly_saved" data-type="boolean" default="false" expert="true" 
+              category-resource="categorySchedule" display-name-resource="explicitlySaved">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="submittedDate" column-name="submitted_date" data-type="timestamp" category-resource="categorySchedule" display-name-resource="submittedDate">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property name="lastModifiedDate" column-name="last_modified_date" data-type="timestamp" category-resource="categorySchedule" display-name-resource="lastModifiedDate">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+      <property name="completedDate" column-name="completed_date" data-type="timestamp" category-resource="categorySchedule" display-name-resource="completedDate">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+
+      <property name="priceInfo" column-name="price_info" item-type="orderPriceInfo" cascade="delete" category-resource="categoryPrice" display-name-resource="priceInfo">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="taxPriceInfo" column-name="tax_price_info" item-type="taxPriceInfo" cascade="delete" category-resource="categoryPrice" display-name-resource="taxPriceInfo">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+
+      <property name="agentId" column-name="agent_id" data-type="string" category-resource="categoryBasics" display-name-resource="agentId">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+
+      <property name="salesChannel" column-name="sales_channel" data-type="enumerated" default="default" expert="true" 
+              category-resource="categorySchedule" display-name-resource="salesChannel">
+       <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+       <attribute name="useCodeForValue" value="false"/>
+        <option value="default" code="0"/>
+        <option value="scheduledOrder" code="1"/>
+        <option value="contactCenter" code="2"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+
+      <property name="creationSiteId" column-name="creation_site_id" data-type="string" category-resource="categoryBasics" display-name-resource="creationSiteId">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property name="siteId" column-name="site_id" data-type="string" category-resource="categoryBasics" display-name-resource="siteId">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+    </table>
+    
+    <table name="dcspp_rel_orders" type="multi" id-column-name="order_id"
+                multi-column-name="sequence_num">
+      <property name="relatedOrders" column-name="related_orders" component-data-type="string"
+                          data-type="list" category-resource="categoryRelationships" display-name-resource="relatedOrders">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+    </table>
+    <table name="dcspp_order_inst" type="multi" id-column-name="order_id" multi-column-name="tag">
+      <property name="specialInstructions" column-name="special_inst" component-data-type="string"
+                          data-type="map" category-resource="categoryInstructions" display-name-resource="specialInstructions">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+    <table name="dcspp_order_sg" type="multi" id-column-name="order_id"
+                multi-column-name="sequence_num">
+      <property name="shippingGroups" column-name="shipping_groups" component-item-type="shippingGroup"
+                          data-type="list" cascade="delete" category-resource="categoryRelationships" display-name-resource="shippingGroups">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+    </table>
+    <table name="dcspp_order_pg" type="multi" id-column-name="order_id"
+                multi-column-name="sequence_num">
+      <property name="paymentGroups" column-name="payment_groups" component-item-type="paymentGroup"
+                          data-type="list" cascade="delete" category-resource="categoryRelationships" display-name-resource="paymentGroups">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+    <table name="dcspp_order_item" type="multi" id-column-name="order_id"
+                multi-column-name="sequence_num">
+      <property name="commerceItems" column-name="commerce_items" component-item-type="commerceItem"
+                          data-type="list" cascade="delete" category-resource="categoryRelationships" display-name-resource="commerceItems">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+    </table>
+    <table name="dcspp_order_rel" type="multi" id-column-name="order_id"
+                multi-column-name="sequence_num">
+      <property name="relationships" column-name="relationships" component-item-type="relationship"
+                          data-type="list" cascade="delete" category-resource="categoryRelationships" display-name-resource="relationships">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+    <table name="dcs_order_markers" type="multi" id-column-name="order_id">
+      <property name="markers" data-type="set" component-item-type="marker" cascade="delete,update"
+	      category-resource="markerInfo" display-name-resource="orderMarkers"
+          column-name="marker_id" 	>
+		      <attribute name="resourceBundle" value="atg.commerce.markers.MarkerTemplateResources"/>
+      </property>
+    </table>
+    <table name="dcspp_order_adj" type="multi" id-column-name="order_id" multi-column-name="sequence_num">
+      <property name="manualAdjustments" data-type="list" component-item-type="manualPricingAdjustment" cascade="delete"
+       column-name="adjustment_id" category-resource="categoryPrice" display-name-resource="orderManualAdjustments">
+      </property>
+    </table>
+
+  </item-descriptor>  
+
+  <item-descriptor name="shippingGroup" sub-type-property="type" version-property="version" expert="true" cache-mode="simple" display-name-resource="itemDescriptorShippingGroup" item-cache-timeout="180000">
+    <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categorySchedulePriority" value="20"/>
+    <attribute name="categoryInstructionsPriority" value="30"/>
+    <attribute name="categoryInfoPriority" value="40"/>
+
+    <table name="dcspp_ship_group" type="primary" id-column-name="shipping_group_id">
+      <property name="type" data-type="enumerated" default="shippingGroup" hidden="true" category-resource="categoryInfo" display-name-resource="type">
+        <attribute name="useCodeForValue" value="false"/>
+        <option value="shippingGroup" code="0"/>
+        <option value="hardgoodShippingGroup" code="1"/>
+        <option value="electronicShippingGroup" code="2"/>
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="version" column-name="version" data-type="int" expert="true" category-resource="categoryInfo" display-name-resource="version">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="shippingGroupClassType" column-name="shipgrp_class_type" data-type="string" category-resource="categoryBasics" display-name-resource="shippingGroupClassType">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="100"/>
+      </property>
+
+      <property name="shippingMethod" column-name="shipping_method" data-type="string" category-resource="categoryBasics" display-name-resource="shippingMethod">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="description" column-name="description" data-type="string" category-resource="categoryBasics" display-name-resource="description">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="shipOnDate" column-name="ship_on_date" data-type="timestamp" category-resource="categorySchedule" display-name-resource="shipOnDate">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="actualShipDate" column-name="actual_ship_date" data-type="timestamp" category-resource="categorySchedule" display-name-resource="actualShipDate">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="state" column-name="state" data-type="string" default="INITIAL" category-resource="categoryBasics" display-name-resource="state">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property name="stateDetail" column-name="state_detail" data-type="string" category-resource="categoryBasics" display-name-resource="stateDetail">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property name="submittedDate" column-name="submitted_date" data-type="timestamp" category-resource="categorySchedule" display-name-resource="submittedDate">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="priceInfo" column-name="price_info" item-type="shippingPriceInfo" cascade="delete" category-resource="categoryBasics" display-name-resource="priceInfo">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+      <property name="order" column-name="order_ref" item-type="order" category-resource="categoryBasics" display-name-resource="order">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="90"/>
+      </property>
+    </table>
+    <table name="dcspp_sg_hand_inst" type="multi" id-column-name="shipping_group_id"
+                multi-column-name="sequence_num">
+      <property name="handlingInstructions" column-name="handling_instrs" component-item-type="handlingInstruction"
+                          data-type="list" cascade="delete" category-resource="categoryInstructions" display-name-resource="handlingInstructions">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+    </table>
+    <table name="dcspp_ship_inst" type="multi" id-column-name="shipping_group_id" multi-column-name="tag">
+      <property name="specialInstructions" column-name="special_inst" component-data-type="string"
+                          data-type="map" category-resource="categoryInstructions" display-name-resource="specialInstructions">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+  </item-descriptor>  
+
+  <item-descriptor name="hardgoodShippingGroup" super-type="shippingGroup" sub-type-value="hardgoodShippingGroup"
+              cache-mode="simple" display-name-resource="itemDescriptorHardgoodShippingGroup" item-cache-timeout="180000">
+
+    <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categorySchedulePriority" value="20"/>
+    <attribute name="categoryInstructionsPriority" value="30"/>
+    <attribute name="categoryInfoPriority" value="40"/>
+    <attribute name="categoryNamePriority" value="50"/>
+    <attribute name="categoryAddressPriority" value="60"/>
+    <attribute name="categoryContactPriority" value="70"/>
+
+    <table name="dcspp_hrd_ship_grp" id-column-name="shipping_group_id">
+      <property name="trackingNumber" column-name="tracking_number" data-type="string" category-resource="categoryBasics" display-name-resource="trackingNumber">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="90"/>
+      </property>
+    </table>
+
+    <table name="dcspp_ship_addr" id-column-name="shipping_group_id">
+      <property name="prefix" column-name="prefix" data-type="string" category-resource="categoryName" display-name-resource="prefix">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="firstName" column-name="first_name" data-type="string" category-resource="categoryName" display-name-resource="firstName">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="middleName" column-name="middle_name" data-type="string" category-resource="categoryName" display-name-resource="middleName">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="lastName" column-name="last_name" data-type="string" category-resource="categoryName" display-name-resource="lastName">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="suffix" column-name="suffix" data-type="string" category-resource="categoryName" display-name-resource="suffix">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+
+      <property name="jobTitle" column-name="job_title" data-type="string" category-resource="categoryAddress" display-name-resource="jobTitle">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="companyName" column-name="company_name" data-type="string" category-resource="categoryAddress" display-name-resource="companyName">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="address1" column-name="address_1" data-type="string" category-resource="categoryAddress" display-name-resource="address1">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="address2" column-name="address_2" data-type="string" category-resource="categoryAddress" display-name-resource="address2">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="address3" column-name="address_3" data-type="string" category-resource="categoryAddress" display-name-resource="address3">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property name="city" column-name="city" data-type="string" category-resource="categoryAddress" display-name-resource="city">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property name="county" column-name="county" data-type="string" category-resource="categoryAddress" display-name-resource="county">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+      <property name="stateAddress" column-name="state" data-type="string" category-resource="categoryAddress" display-name-resource="stateAddress">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+      <property name="postalCode" column-name="postal_code" data-type="string" category-resource="categoryAddress" display-name-resource="postalCode">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="90"/>
+      </property>
+      <property name="country" column-name="country" data-type="string" category-resource="categoryAddress" display-name-resource="country">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="95"/>
+      </property>
+
+      <property name="phoneNumber" column-name="phone_number" data-type="string" category-resource="categoryContact" display-name-resource="phoneNumber">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="faxNumber" column-name="fax_number" data-type="string" category-resource="categoryContact" display-name-resource="faxNumber">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="email" column-name="email" data-type="string" category-resource="categoryContact" display-name-resource="email">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="electronicShippingGroup" super-type="shippingGroup" sub-type-value="electronicShippingGroup"
+              cache-mode="simple" display-name-resource="itemDescriptorElectronicShippingGroup" item-cache-timeout="180000">
+
+    <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categorySchedulePriority" value="20"/>
+    <attribute name="categoryInstructionsPriority" value="30"/>
+    <attribute name="categoryContactPriority" value="60"/>
+    <attribute name="categoryInfoPriority" value="70"/>
+
+    <table name="dcspp_ele_ship_grp" id-column-name="shipping_group_id">
+      <property name="emailAddress" column-name="email_address" data-type="string" category-resource="categoryContact" display-name-resource="emailAddress"/>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="paymentGroup" sub-type-property="type" version-property="version" expert="true"
+              cache-mode="simple" display-name-resource="itemDescriptorPaymentGroup" item-cache-timeout="180000">
+
+    <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryAmountPriority" value="20"/>
+    <attribute name="categoryInstructionsPriority" value="30"/>
+    <attribute name="categoryStatusPriority" value="40"/>
+    <attribute name="categoryInfoPriority" value="90"/>
+
+    <table name="dcspp_pay_group" type="primary" id-column-name="payment_group_id">
+      <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+      
+      <property name="type" data-type="enumerated" default="paymentGroup" expert="true" category-resource="categoryInfo" display-name-resource="type">
+        <attribute name="useCodeForValue" value="false"/>
+        <option value="paymentGroup" code="0"/>
+        <option value="creditCard" code="1"/>
+        <option value="giftCertificate" code="2"/>
+        <option value="storeCredit" code="3"/>
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="version" column-name="version" data-type="int" expert="true" category-resource="categoryInfo" display-name-resource="version">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+
+      <property name="paymentGroupClassType" column-name="paygrp_class_type" data-type="string" category-resource="categoryBasics" display-name-resource="paymentGroupClassType">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="100"/>
+      </property>
+      <property name="paymentMethod" column-name="payment_method" data-type="string" category-resource="categoryBasics" display-name-resource="paymentMethod">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      
+      <property name="amount" column-name="amount" data-type="double" default="0.0" category-resource="categoryAmount" display-name-resource="amount">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="amountAuthorized" column-name="amount_authorized" data-type="double" default="0.0" category-resource="categoryAmount" display-name-resource="amountAuthorized">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="amountDebited" column-name="amount_debited" data-type="double" default="0.0" category-resource="categoryAmount" display-name-resource="amountDebited">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="amountCredited" column-name="amount_credited" data-type="double" default="0.0" category-resource="categoryAmount" display-name-resource="amountCredited">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="currencyCode" column-name="currency_code" data-type="string" category-resource="categoryAmount" display-name-resource="currencyCode">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      
+      <property name="state" column-name="state" data-type="string" default="INITIAL" category-resource="categoryBasics" display-name-resource="state">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="stateDetail" column-name="state_detail" data-type="string" category-resource="categoryBasics" display-name-resource="stateDetail">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="submittedDate" column-name="submitted_date" data-type="timestamp" category-resource="categoryBasics" display-name-resource="submittedDate">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="order" column-name="order_ref" item-type="order" category-resource="categoryBasics" display-name-resource="order">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+    </table>
+    <table name="dcspp_pay_inst" type="multi" id-column-name="payment_group_id" multi-column-name="tag">
+      <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+      
+      <property name="specialInstructions" column-name="special_inst" component-data-type="string"
+                          data-type="map" category-resource="categoryInstructions" display-name-resource="specialInstructions">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+      </property>
+    </table>
+    <table name="dcspp_auth_status" type="multi" id-column-name="payment_group_id" multi-column-name="sequence_num">
+      <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+
+      <property name="authorizationStatus" column-name="auth_status" component-item-type="paymentStatus"
+                            data-type="list" cascade="delete" category-resource="categoryStatus" display-name-resource="authorizationStatus">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+    </table>
+    <table name="dcspp_debit_status" type="multi" id-column-name="payment_group_id" multi-column-name="sequence_num">
+      <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+      
+      <property name="debitStatus" column-name="debit_status" component-item-type="paymentStatus"
+                            data-type="list" cascade="delete" category-resource="categoryStatus" display-name-resource="debitStatus">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+    <table name="dcspp_cred_status" type="multi" id-column-name="payment_group_id" multi-column-name="sequence_num">
+      <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+
+      <property name="creditStatus" column-name="credit_status" component-item-type="paymentStatus"
+                            data-type="list" cascade="delete" category-resource="categoryStatus" display-name-resource="creditStatus">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="creditCard" super-type="paymentGroup" sub-type-value="creditCard" cache-mode="simple" display-name-resource="itemDescriptorCreditCard" item-cache-timeout="180000">
+
+    <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryCreditCardPriority" value="20"/>
+    <attribute name="categoryAmountPriority" value="30"/>
+    <attribute name="categoryStatusPriority" value="40"/>
+    <attribute name="categoryInstructionsPriority" value="50"/>
+    <attribute name="categoryNamePriority" value="60"/>
+    <attribute name="categoryAddressPriority" value="70"/>
+    <attribute name="categoryContactPriority" value="80"/>
+    <attribute name="categoryInfoPriority" value="90"/>
+
+    <table name="dcspp_credit_card" id-column-name="payment_group_id">
+      <property name="creditCardNumber" column-name="credit_card_number" data-type="string" category-resource="categoryCreditCard" display-name-resource="creditCardNumber">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="creditCardType" column-name="credit_card_type" data-type="string" category-resource="categoryCreditCard" display-name-resource="creditCardType">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="expirationMonth" column-name="expiration_month" data-type="string" category-resource="categoryCreditCard" display-name-resource="expirationMonth">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="expirationDayOfMonth" column-name="exp_day_of_month" data-type="string" category-resource="categoryCreditCard" display-name-resource="expirationDayOfMonth">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="expirationYear" column-name="expiration_year" data-type="string" category-resource="categoryCreditCard" display-name-resource="expirationYear">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+    </table>
+
+    <table name="dcspp_bill_addr" type="auxiliary" id-column-name="payment_group_id">
+      <property name="prefix" column-name="prefix" data-type="string" category-resource="categoryName" display-name-resource="prefix">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="firstName" column-name="first_name" data-type="string" category-resource="categoryName" display-name-resource="firstName">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="middleName" column-name="middle_name" data-type="string" category-resource="categoryName" display-name-resource="middleName">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="lastName" column-name="last_name" data-type="string" category-resource="categoryName" display-name-resource="lastName">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="suffix" column-name="suffix" data-type="string" category-resource="categoryName" display-name-resource="suffix">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+
+      <property name="jobTitle" column-name="job_title" data-type="string" category-resource="categoryAddress" display-name-resource="jobTitle">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="companyName" column-name="company_name" data-type="string" category-resource="categoryAddress" display-name-resource="companyName">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="address1" column-name="address_1" data-type="string" category-resource="categoryAddress" display-name-resource="address1">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="address2" column-name="address_2" data-type="string" category-resource="categoryAddress" display-name-resource="address2">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="address3" column-name="address_3" data-type="string" category-resource="categoryAddress" display-name-resource="address3">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property name="city" column-name="city" data-type="string" category-resource="categoryAddress" display-name-resource="city">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property name="county" column-name="county" data-type="string" category-resource="categoryAddress" display-name-resource="county">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+      <property name="stateAddress" column-name="state" data-type="string" category-resource="categoryAddress" display-name-resource="stateAddress">
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+      <property name="postalCode" column-name="postal_code" data-type="string" category-resource="categoryAddress" display-name-resource="postalCode">
+        <attribute name="propertySortPriority" value="90"/>
+      </property>
+      <property name="country" column-name="country" data-type="string" category-resource="categoryAddress" display-name-resource="country">
+        <attribute name="propertySortPriority" value="100"/>
+      </property>
+
+      <property name="phoneNumber" column-name="phone_number" data-type="string" category-resource="categoryContact" display-name-resource="phoneNumber">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="faxNumber" column-name="fax_number" data-type="string" category-resource="categoryContact" display-name-resource="faxNumber">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="email" column-name="email" data-type="string" category-resource="categoryContact" display-name-resource="email">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="giftCertificate" super-type="paymentGroup" sub-type-value="giftCertificate"
+              cache-mode="simple" display-name-resource="itemDescriptorGiftCertificate" item-cache-timeout="180000">
+    
+    <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryAmountPriority" value="20"/>
+    <attribute name="categoryStatusPriority" value="30"/>
+    <attribute name="categoryInstructionsPriority" value="40"/>
+    <attribute name="categoryInfoPriority" value="50"/>
+
+
+    <table name="dcspp_gift_cert" id-column-name="payment_group_id">
+      <property name="profileId" column-name="profile_id" data-type="string" category-resource="categoryBasics" display-name-resource="profileId">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+      <property name="giftCertificateNumber" column-name="gift_cert_number" data-type="string" category-resource="categoryBasics" display-name-resource="giftCertificateNumber">
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="storeCredit" super-type="paymentGroup" sub-type-value="storeCredit"
+              cache-mode="simple" display-name-resource="itemDescriptorStoreCredit" item-cache-timeout="180000">
+
+    <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryAmountPriority" value="20"/>
+    <attribute name="categoryStatusPriority" value="30"/>
+    <attribute name="categoryInstructionsPriority" value="40"/>
+    <attribute name="categoryInfoPriority" value="50"/>
+
+    <table name="dcspp_store_cred" id-column-name="payment_group_id">
+      <property name="profileId" column-name="profile_id" data-type="string" category-resource="categoryBasics" display-name-resource="profileId">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+      <property name="storeCreditNumber" column-name="store_cred_number" data-type="string" category-resource="categoryBasics" display-name-resource="storeCreditNumber">
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="paymentStatus" sub-type-property="type" version-property="version"
+              cache-mode="simple" display-name-resource="itemDescriptorPaymentStatus" item-cache-timeout="180000">
+
+    <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="90"/>
+
+    <table name="dcspp_pay_status" type="primary" id-column-name="status_id">
+      <property name="type" data-type="enumerated" default="paymentStatus" expert="true" category-resource="categoryInfo" display-name-resource="type">
+        <attribute name="useCodeForValue" value="false"/>
+        <option value="creditCardStatus" code="0"/>
+        <option value="giftCertificateStatus" code="1"/>
+        <option value="paymentStatus" code="2"/>
+        <option value="storeCreditStatus" code="4000"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="version" column-name="version" data-type="int" expert="true" category-resource="categoryInfo" display-name-resource="version">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      
+      <property name="transactionId" column-name="trans_id" data-type="string" category-resource="categoryBasics" display-name-resource="transactionId">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="amount" column-name="amount" data-type="double" default="0.0" category-resource="categoryBasics" display-name-resource="amount">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="transactionSuccess" column-name="trans_success" data-type="boolean" category-resource="categoryBasics" display-name-resource="transactionSuccess">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="errorMessage" column-name="error_message" data-type="string" category-resource="categoryBasics" display-name-resource="errorMessage">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property name="transactionTimestamp" column-name="trans_timestamp" data-type="timestamp" category-resource="categoryBasics" display-name-resource="transactionTimestamp">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="creditCardStatus" super-type="paymentStatus" sub-type-value="creditCardStatus"
+              cache-mode="simple" display-name-resource="itemDescriptorCreditCardStatus" item-cache-timeout="180000">
+    
+    <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryStatusPriority" value="20"/>
+    <attribute name="categoryInfoPriority" value="90"/>
+
+    <table name="dcspp_cc_status" id-column-name="status_id">
+      <property name="authorizationExpiration" column-name="auth_expiration" data-type="timestamp" category-resource="categoryStatus" display-name-resource="authorizationExpiration">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="avsCode" column-name="avs_code" data-type="string" category-resource="categoryStatus" display-name-resource="avsCode">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="avsDescriptiveResult" column-name="avs_desc_result" data-type="string" category-resource="categoryStatus" display-name-resource="avsDescriptiveResult">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="giftCertificateStatus" super-type="paymentStatus" sub-type-value="giftCertificateStatus"
+              cache-mode="simple" display-name-resource="itemDescriptorGiftCertificateStatus" item-cache-timeout="180000">
+
+    <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryStatusPriority" value="20"/>
+    <attribute name="categoryInfoPriority" value="90"/>
+
+    <table name="dcspp_gc_status" id-column-name="status_id">
+      <property name="authorizationExpiration" column-name="auth_expiration" data-type="timestamp" category-resource="categoryStatus" display-name-resource="authorizationExpiration"/>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="storeCreditStatus" super-type="paymentStatus" sub-type-value="storeCreditStatus"
+              cache-mode="simple" display-name-resource="itemDescriptorStoreCreditStatus" item-cache-timeout="180000">
+
+    <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryStatusPriority" value="20"/>
+    <attribute name="categoryInfoPriority" value="90"/>
+
+    <table name="dcspp_sc_status" id-column-name="status_id">
+      <property name="authorizationExpiration" column-name="auth_expiration" data-type="timestamp" category-resource="categoryStatus" display-name-resource="authorizationExpiration"/>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="commerceItem" sub-type-property="type" version-property="version"
+              cache-mode="simple" display-name-resource="itemDescriptorCommerceItem" item-cache-timeout="180000">
+    
+    <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryCatalogPriority" value="20"/>
+    <attribute name="categoryInfoPriority" value="30"/>
+
+    <table name="dcspp_item" type="primary" id-column-name="commerce_item_id">
+      <property name="type" data-type="enumerated" default="commerceItem" expert="true" category-resource="categoryInfo" display-name-resource="type">
+        <attribute name="useCodeForValue" value="false"/>
+        <option value="commerceItem" code="0"/>
+        <option value="configurableCommerceItem" code="4001"/>
+        <option value="subSkuCommerceItem" code="4002"/>
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="version" column-name="version" data-type="int" expert="true" category-resource="categoryInfo" display-name-resource="version">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+
+      <property name="commerceItemClassType" column-name="item_class_type" data-type="string" category-resource="categoryBasics" display-name-resource="commerceItemClassType">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="100"/>
+      </property>
+
+      <property name="catalogId" column-name="catalog_id" data-type="string" category-resource="categoryCatalog" display-name-resource="catalogId">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="catalogRefId" column-name="catalog_ref_id" data-type="string" category-resource="categoryCatalog" display-name-resource="catalogRefId">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="catalogKey" column-name="catalog_key" data-type="string" category-resource="categoryCatalog" display-name-resource="catalogKey">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+
+      <property name="productId" column-name="product_id" data-type="string" category-resource="categoryBasics" display-name-resource="productId">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="siteId" column-name="site_id" data-type="string" category-resource="categoryBasics" display-name-resource="siteId">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+      <property name="quantity" column-name="quantity" data-type="long" default="0" category-resource="categoryBasics" display-name-resource="quantity">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="state" column-name="state" data-type="string" default="INITIAL" category-resource="categoryBasics" display-name-resource="state">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="stateDetail" column-name="state_detail" data-type="string" category-resource="categoryBasics" display-name-resource="stateDetail">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="priceInfo" column-name="price_info" item-type="itemPriceInfo" cascade="delete" category-resource="categoryBasics" display-name-resource="priceInfo">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property name="order" column-name="order_ref" item-type="order" category-resource="categoryBasics" display-name-resource="order">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+    </table>
+    <table name="dcspp_commerce_item_markers" type="multi" id-column-name="commerce_item_id">
+      <property name="markers" data-type="set" component-item-type="commerceItemMarker" cascade="delete,update"
+        category-resource="markerInfo" display-name-resource="commerceItemMarkers"
+          column-name="marker_id" 	>
+          <attribute name="resourceBundle" value="atg.commerce.markers.MarkerTemplateResources"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="configurableCommerceItem" super-type="commerceItem" sub-type-value="configurableCommerceItem"
+              cache-mode="simple" display-name-resource="itemDescriptorConfigurableCommerceItem">
+    
+    <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+    
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryCatalogPriority" value="20"/>
+    <attribute name="categoryConfigurationPriority" value="30"/>
+    <attribute name="categoryInfoPriority" value="40"/>
+
+    <table name="dcspp_config_item" id-column-name="config_item_id">
+      <property name="notes" column-name="notes" data-type="string" category-resource="categoryConfiguration" display-name-resource="notes">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="reconfigurationData" column-name="reconfig_data" data-type="string" category-resource="categoryConfiguration" display-name-resource="reconfigurationData">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+    <table name="dcspp_item_ci" type="multi" id-column-name="commerce_item_id" multi-column-name="sequence_num">
+      <property name="commerceItems" column-name="commerce_items" component-item-type="commerceItem"
+                          data-type="list" cascade="delete" category-resource="categoryConfiguration" display-name-resource="commerceItems">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="subSkuCommerceItem" super-type="commerceItem" sub-type-value="subSkuCommerceItem"
+              cache-mode="simple" display-name-resource="itemDescriptorSubSkuCommerceItem" >
+    <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryCatalogPriority" value="20"/>
+    <attribute name="categoryConfigurationPriority" value="30"/>
+    <attribute name="categoryInfoPriority" value="40"/>
+
+    <table name="dcspp_subsku_item" id-column-name="subsku_item_id">
+      <property name="individualQuantity" column-name="ind_quantity" data-type="long" category-resource="categoryBasics" display-name-resource="individualQuantity">
+        <attribute name="propertySortPriority" value="25"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="handlingInstruction" sub-type-property="type" version-property="version" expert="true"
+              cache-mode="simple" display-name-resource="itemDescriptorHandlingInstruction" item-cache-timeout="180000">
+
+    <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="90"/>
+
+    <table name="dcspp_hand_inst" type="primary" id-column-name="handling_inst_id">
+      <property name="type" data-type="enumerated" default="handlingInstruction" expert="true" category-resource="categoryInfo" display-name-resource="type">
+        <attribute name="useCodeForValue" value="false"/>
+        <option value="handlingInstruction" code="0"/>
+        <option value="giftlistHandlingInstruction" code="1"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="version" column-name="version" data-type="int" expert="true" category-resource="categoryInfo" display-name-resource="version">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+
+      <property name="handlingInstructionClassType" column-name="hndinst_class_type" data-type="string" category-resource="categoryBasics" display-name-resource="handlingInstructionClassType">
+        <attribute name="propertySortPriority" value="100"/>
+      </property>
+      <property name="handlingMethod" column-name="handling_method" data-type="string" category-resource="categoryBasics" display-name-resource="handlingMethod">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="shippingGroupId" column-name="shipping_group_id" data-type="string" category-resource="categoryBasics" display-name-resource="shippingGroupId">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="commerceItemId" column-name="commerce_item_id" data-type="string" category-resource="categoryBasics" display-name-resource="commerceItemId">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="quantity" column-name="quantity" data-type="long" default="0" category-resource="categoryBasics" display-name-resource="quantity">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="giftlistHandlingInstruction" super-type="handlingInstruction" sub-type-value="giftlistHandlingInstruction"
+             cache-mode="simple" display-name-resource="itemDescriptorGiftlistHandlingInstruction">
+    
+    <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryGiftListPriority" value="20"/>
+    <attribute name="categoryInfoPriority" value="90"/>
+
+    <table name="dcspp_gift_inst" id-column-name="handling_inst_id">
+      <property name="giftlistId" column-name="giftlist_id" data-type="string" category-resource="categoryGiftList" display-name-resource="giftlistId">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="giftlistItemId" column-name="giftlist_item_id" data-type="string" category-resource="categoryGiftList" display-name-resource="giftlistItemId">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>    
+  </item-descriptor>
+
+  <item-descriptor name="relationship" sub-type-property="type" version-property="version" expert="true"
+              cache-mode="simple" display-name-resource="itemDescriptorRelationship" item-cache-timeout="180000">
+
+    <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="dcspp_relationship" type="primary" id-column-name="relationship_id">
+      <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+
+      <property name="type" data-type="enumerated" expert="true" category-resource="categoryInfo" display-name-resource="type">
+        <attribute name="useCodeForValue" value="false"/>
+        <option value="shipItemRel" code="0"/>
+        <option value="payItemRel" code="1"/>
+        <option value="payShipRel" code="2"/>
+        <option value="payOrderRel" code="3"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="version" column-name="version" data-type="int" expert="true" category-resource="categoryInfo" display-name-resource="version">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      
+      <property name="relationshipClassType" column-name="rel_class_type" data-type="string" category-resource="categoryBasics" display-name-resource="relationshipClassType">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="100"/>
+      </property>
+      <property name="relationshipType" column-name="relationship_type" data-type="string" category-resource="categoryBasics" display-name-resource="relationshipType">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="order" column-name="order_ref" item-type="order" category-resource="categoryBasics" display-name-resource="order">
+        <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="shipItemRel" super-type="relationship" sub-type-value="shipItemRel"
+              cache-mode="simple" display-name-resource="itemDescriptorShipItemRel" >
+    
+    <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryRelationshipPriority" value="20"/>
+    <attribute name="categoryRangePriority" value="30"/>
+    <attribute name="categoryInfoPriority" value="40"/>
+
+    <table name="dcspp_shipitem_rel" id-column-name="relationship_id">
+      <property name="shippingGroup" column-name="shipping_group_id" item-type="shippingGroup" category-resource="categoryRelationship" display-name-resource="shippingGroup">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="commerceItem" column-name="commerce_item_id" item-type="commerceItem" category-resource="categoryRelationship" display-name-resource="commerceItem">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="quantity" column-name="quantity" data-type="long" default="0" category-resource="categoryRelationship" display-name-resource="quantity">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="returnedQuantity" column-name="returned_qty" data-type="long" default="0" category-resource="categoryRelationship" display-name-resource="returnedQuantity">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="amount" column-name="amount" data-type="double" default="0.0" category-resource="categoryRelationship" display-name-resource="amount">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property name="state" column-name="state" data-type="string" default="INITIAL" category-resource="categoryBasics" display-name-resource="state">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property name="stateDetail" column-name="state_detail" data-type="string" category-resource="categoryBasics" display-name-resource="stateDetail">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+    </table>
+    
+    <table name="dcspp_rel_range" type="auxiliary" id-column-name="relationship_id">
+      <property name="lowBound" column-name="low_bound" data-type="long" category-resource="categoryRange" display-name-resource="lowBound">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="highBound" column-name="high_bound" data-type="long" category-resource="categoryRange" display-name-resource="highBound">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="payItemRel" super-type="relationship" sub-type-value="payItemRel"
+              cache-mode="simple" display-name-resource="itemDescriptorPayItemRel">
+    
+    <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryRelationshipPriority" value="20"/>
+    <attribute name="categoryInfoPriority" value="90"/>
+
+    <table name="dcspp_payitem_rel" id-column-name="relationship_id">
+      <property name="paymentGroup" column-name="payment_group_id" item-type="paymentGroup" category-resource="categoryRelationship" display-name-resource="paymentGroup">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="commerceItem" column-name="commerce_item_id" item-type="commerceItem" category-resource="categoryRelationship" display-name-resource="commerceItem">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="quantity" column-name="quantity" data-type="long" default="0" category-resource="categoryRelationship" display-name-resource="quantity">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="amount" column-name="amount" data-type="double" default="0.0" category-resource="categoryRelationship" display-name-resource="amount">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="payShipRel" super-type="relationship" sub-type-value="payShipRel"
+              cache-mode="simple" display-name-resource="itemDescriptorPayShipRel" >
+    
+    <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryRelationshipPriority" value="20"/>
+    <attribute name="categoryInfoPriority" value="90"/>
+
+    <table name="dcspp_payship_rel" id-column-name="relationship_id">
+      <property name="paymentGroup" column-name="payment_group_id" item-type="paymentGroup" category-resource="categoryRelationship" display-name-resource="paymentGroup">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="shippingGroup" column-name="shipping_group_id" item-type="shippingGroup" category-resource="categoryRelationship" display-name-resource="shippingGroup">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="amount" column-name="amount" data-type="double" default="0.0" category-resource="categoryRelationship" display-name-resource="amount">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="payOrderRel" super-type="relationship" sub-type-value="payOrderRel"
+              cache-mode="simple" display-name-resource="itemDescriptorPayOrderRel">
+    
+    <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryRelationshipPriority" value="20"/>
+    <attribute name="categoryInfoPriority" value="90"/>
+
+    <table name="dcspp_payorder_rel" id-column-name="relationship_id">
+      <property name="paymentGroup" column-name="payment_group_id" item-type="paymentGroup" category-resource="categoryRelationship" display-name-resource="paymentGroup">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="orderRef" column-name="order_id" item-type="order" category-resource="categoryRelationship" display-name-resource="orderRef">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="amount" column-name="amount" data-type="double" default="0.0" category-resource="categoryRelationship" display-name-resource="amount">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="amountInfo" sub-type-property="type" version-property="version" expert="true"
+              cache-mode="simple" display-name-resource="itemDescriptorAmountInfo" item-cache-timeout="180000">
+    
+    <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="90"/>
+
+    <table name="dcspp_amount_info" type="primary" id-column-name="amount_info_id">
+      <property name="type" data-type="enumerated" expert="true" category-resource="categoryInfo" display-name-resource="type">
+        <attribute name="useCodeForValue" value="false"/>
+        <option value="orderPriceInfo" code="0"/>
+        <option value="itemPriceInfo" code="1"/>
+        <option value="taxPriceInfo" code="2"/>
+        <option value="shippingPriceInfo" code="3"/>
+        <option value="detailedItemPriceInfo" code="4"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="version" column-name="version" data-type="int" expert="true" category-resource="categoryInfo" display-name-resource="version">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+
+      <property name="currencyCode" column-name="currency_code" data-type="string" category-resource="categoryBasics" display-name-resource="currencyCode">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="amount" column-name="amount" data-type="double" category-resource="categoryBasics" display-name-resource="amount">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="discounted" column-name="discounted" data-type="boolean" category-resource="categoryBasics" display-name-resource="discounted">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="amountIsFinal" column-name="amount_is_final" data-type="boolean" category-resource="categoryBasics" display-name-resource="amountIsFinal">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+     <property name="finalReasonCode" column-name="final_rc" data-type="enumerated" category-resource="categoryBasics" display-name-resource="finalReason">
+      <attribute name="useCodeForValue" value="false"/>
+      <option value="manuallyApplied" code="0"/>
+     </property>
+    </table>
+    <table name="dcspp_amtinfo_adj" type="multi" id-column-name="amount_info_id"
+                  multi-column-name="sequence_num">
+      <property name="adjustments" column-name="adjustments" component-item-type="pricingAdjustment"
+                      data-type="list" cascade="delete" category-resource="categoryBasics" display-name-resource="adjustments">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="orderPriceInfo" super-type="amountInfo" sub-type-value="orderPriceInfo"
+              cache-mode="simple" display-name-resource="itemDescriptorOrderPriceInfo" >
+    
+    <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryOrderPriority" value="20"/>
+    <attribute name="categoryInfoPriority" value="90"/>
+
+    <table name="dcspp_order_price" id-column-name="amount_info_id">
+      <property name="rawSubtotal" column-name="raw_subtotal" data-type="double" category-resource="categoryOrder" display-name-resource="rawSubtotal">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="tax" column-name="tax" data-type="double" category-resource="categoryOrder" display-name-resource="tax">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="shipping" column-name="shipping" data-type="double" category-resource="categoryOrder" display-name-resource="shipping">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="manualAdjustmentTotal" column-name="manual_adj_total" data-type="double" category-resource="categoryOrder" display-name-resource="manualAdjustmentTotal">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+    </table>
+    <table name="dcspp_shipitem_sub" type="multi" id-column-name="amount_info_id" multi-column-name="shipping_group_id">
+      <property name="shippingItemsSubtotalPriceInfos" column-name="ship_item_subtotal" component-item-type="orderPriceInfo"
+                          data-type="map" category-resource="categoryOrder" display-name-resource="shippingItemsSubtotalPriceInfos">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+    <!-- Add TaxableShippingItemPriceInfo and NontaxableShippingItemPriceInfo property   -->
+    <table name="dcspp_taxshipitem" type="multi" id-column-name="amount_info_id" multi-column-name="shipping_group_id">
+      <property name="taxableShippingItemsSubtotalPriceInfos" column-name="tax_ship_item_sub" component-item-type="orderPriceInfo"
+                          data-type="map" category-resource="categoryOrder" display-name-resource="taxableShippingItemsSubtotalPriceInfos">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+    </table>
+    <table name="dcspp_ntaxshipitem" type="multi" id-column-name="amount_info_id" multi-column-name="shipping_group_id">
+      <property name="nonTaxableShippingItemsSubtotalPriceInfos" column-name="non_tax_item_sub" component-item-type="orderPriceInfo"
+                          data-type="map" category-resource="categoryOrder" display-name-resource="nonTaxableShippingItemsSubtotalPriceInfos">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="itemPriceInfo" super-type="amountInfo" sub-type-value="itemPriceInfo"
+              cache-mode="simple" display-name-resource="itemDescriptorItemPriceInfo" >
+    
+    <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryItemPriority" value="20"/>
+    <attribute name="categoryInfoPriority" value="90"/>
+
+    <table name="dcspp_item_price" id-column-name="amount_info_id">
+      <property name="listPrice" column-name="list_price" data-type="double" category-resource="categoryItem" display-name-resource="listPrice">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="rawTotalPrice" column-name="raw_total_price" data-type="double" category-resource="categoryItem" display-name-resource="rawTotalPrice">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="salePrice" column-name="sale_price" data-type="double" category-resource="categoryItem" display-name-resource="salePrice">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="onSale" column-name="on_sale" data-type="boolean" category-resource="categoryItem" display-name-resource="onSale">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property name="orderDiscountShare" column-name="order_discount" data-type="double" category-resource="categoryItem" display-name-resource="orderDiscountShare">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+      <property name="quantityDiscounted" column-name="qty_discounted" data-type="long" category-resource="categoryItem" display-name-resource="quantityDiscounted">
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+      <property name="quantityAsQualifier" column-name="qty_as_qualifier" data-type="long" category-resource="categoryItem" display-name-resource="quantityAsQualifier">
+        <attribute name="propertySortPriority" value="90"/>
+      </property>
+      <property name="priceList" column-name="price_list" item-type="priceList" category-resource="categoryItem" display-name-resource="priceList" 
+              repository="/atg/commerce/pricing/priceLists/PriceLists">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+   </table>
+    <table name="dcspp_itmprice_det" type="multi" id-column-name="amount_info_id"
+                  multi-column-name="sequence_num">
+      <property name="currentPriceDetails" column-name="cur_price_details" component-item-type="detailedItemPriceInfo"
+                      data-type="list" cascade="delete" category-resource="categoryItem" display-name-resource="currentPriceDetails">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="taxPriceInfo" super-type="amountInfo" sub-type-value="taxPriceInfo"
+              cache-mode="simple" display-name-resource="itemDescriptorTaxPriceInfo" >
+    
+    <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryTaxPriority" value="20"/>
+    <attribute name="categoryInfoPriority" value="90"/>
+
+    <table name="dcspp_tax_price" id-column-name="amount_info_id">
+      <property name="cityTax" column-name="city_tax" data-type="double" category-resource="categoryTax" display-name-resource="cityTax">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="countyTax" column-name="county_tax" data-type="double" category-resource="categoryTax" display-name-resource="countyTax">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="stateTax" column-name="state_tax" data-type="double" category-resource="categoryTax" display-name-resource="stateTax">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="countryTax" column-name="country_tax" data-type="double" category-resource="categoryTax" display-name-resource="countryTax">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+    <table name="dcspp_shipitem_tax" type="multi" id-column-name="amount_info_id" multi-column-name="shipping_group_id">
+      <property name="shippingItemsTaxPriceInfos" column-name="ship_item_tax" component-item-type="taxPriceInfo"
+                          data-type="map" category-resource="categoryTax" display-name-resource="shippingItemsTaxPriceInfos">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="shippingPriceInfo" super-type="amountInfo" sub-type-value="shippingPriceInfo"
+              cache-mode="simple" display-name-resource="itemDescriptorShippingPriceInfo" >
+    <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryShippingPriority" value="20"/>
+    <attribute name="categoryInfoPriority" value="90"/>
+
+    <table name="dcspp_ship_price" id-column-name="amount_info_id">
+      <property name="rawShipping" column-name="raw_shipping" data-type="double" category-resource="categoryShipping" display-name-resource="rawShipping">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="detailedItemPriceInfo" super-type="amountInfo" sub-type-value="detailedItemPriceInfo"
+              cache-mode="simple" display-name-resource="itemDescriptorDetailedItemPriceInfo" >
+    
+    <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryDetailedItemPriority" value="20"/>
+    <attribute name="categoryInfoPriority" value="90"/>
+
+    <table name="dcspp_det_price" id-column-name="amount_info_id">
+      <property name="tax" column-name="tax" data-type="double" category-resource="categoryDetailedItem" display-name-resource="tax">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="orderDiscountShare" column-name="order_discount" data-type="double" category-resource="categoryDetailedItem" display-name-resource="orderDiscountShare">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="orderManualAdjustmentShare" column-name="order_manual_adj" data-type="double" category-resource="categoryDetailedItem" display-name-resource="orderManualAdjustmentShare">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="quantity" column-name="quantity" data-type="long" category-resource="categoryDetailedItem" display-name-resource="quantity">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="quantityAsQualifier" column-name="qty_as_qualifier" data-type="long" category-resource="categoryDetailedItem" display-name-resource="quantityAsQualifier">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+    <table name="dcspp_det_range" type="auxiliary" id-column-name="amount_info_id">
+      <property name="lowBound" column-name="low_bound" data-type="long" category-resource="categoryRange"  display-name-resource="lowBound">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="highBound" column-name="high_bound" data-type="long" category-resource="categoryRange" display-name-resource="highBound">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="pricingAdjustment" version-property="version" cache-mode="simple"
+              display-name-resource="itemDescriptorPricingAdjustment" item-cache-timeout="180000">
+    
+    <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="dcspp_price_adjust" type="primary" id-column-name="adjustment_id">
+      <property name="version" column-name="version" data-type="int" expert="true" category-resource="categoryInfo" display-name-resource="version">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      
+      <property name="adjustmentDescription" column-name="adj_description" data-type="string" category-resource="categoryBasics" display-name-resource="adjustmentDescription">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="pricingModel" column-name="pricing_model" item-type="promotion"
+                      repository="/atg/commerce/pricing/Promotions" category-resource="categoryBasics" display-name-resource="pricingModel">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property name="manualPricingAdjustment" column-name="manual_adjustment" item-type="manualPricingAdjustment"
+                      category-resource="categoryBasics" display-name-resource="manualPricingAdjustment">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property name="totalAdjustment" column-name="adjustment" data-type="double" category-resource="categoryBasics" display-name-resource="totalAdjustment">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="quantityAdjusted" column-name="qty_adjusted" data-type="long" category-resource="categoryBasics" display-name-resource="quantityAdjusted">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+    <property name="adjustment" data-type="double" category-resource="categoryBasics" display-name-resource="adjustment">
+      <attribute name="propertySortPriority" value="30"/>
+    </property>
+  </item-descriptor>
+
+  <item-descriptor name="marker" display-name-resource="itemDescriptorMarker"
+  	sub-type-property="type" display-property="key" version-property="version"
+      item-cache-size="1000" query-cache-size="1000">
+     	<attribute name="resourceBundle" value="atg.commerce.markers.MarkerTemplateResources"/>
+   <property name="duplicationMode" data-type="string"
+   	category-resource="markerInfo" display-name-resource="duplicationMode">
+   </property>
+   <table name="dcs_order_markers" type="primary" id-column-name="marker_id">
+	    <property name="id" column-name="marker_id"/>
+      <property name="key" column-name="marker_key" required="true" data-type="string"
+        	category-resource="markerInfo" display-name-resource="key">
+	      <attribute name="propertySortPriority" value="1"/>
+      </property>
+      <property name="value" column-name="marker_value" data-type="string"
+      	category-resource="markerInfo" display-name-resource="value">
+      	<attribute name="propertySortPriority" value="2"/>
+      </property>
+      <property name="data" column-name="marker_data" data-type="string"
+      	category-resource="markerInfo" display-name-resource="data">
+        	<attribute name="propertySortPriority" value="3"/>
+      </property>
+      <property name="creationDate" data-type="timestamp" column-name="creation_date"
+            category-resource="markerInfo" display-name-resource="creationDate">
+		      <attribute name="propertySortPriority" value="4"/>
+        	<attribute name="uiwritable" value="false"/>
+      </property>
+      <property name="version" data-type="int" column-name="version" queryable="false"
+            expert="true" category-resource="markerInfo" display-name-resource="version">
+      	<attribute name="uiwritable" value="false"/>
+      	<attribute name="propertySortPriority" value="5"/>
+      </property>
+      <property name="owner" data-type="string" column-name="order_id"
+        expert="true" category-resource="markerInfo" display-name-resource="parentOrder">
+      </property>
+      <property name="type" data-type="enumerated" column-name="marker_type" hidden="true"/>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="commerceItemMarker" display-name-resource="itemDescriptorCommerceItemMarker"
+  	sub-type-property="type" display-property="key" version-property="version"
+      item-cache-size="1000" query-cache-size="1000">
+     	<attribute name="resourceBundle" value="atg.commerce.markers.MarkerTemplateResources"/>
+   <property name="duplicationMode" data-type="string"
+   	category-resource="markerInfo" display-name-resource="duplicationMode">
+   </property>
+   <table name="dcspp_commerce_item_markers" type="primary" id-column-name="marker_id">
+	    <property name="id" column-name="marker_id"/>
+      <property name="key" column-name="marker_key" required="true" data-type="string"
+        	category-resource="markerInfo" display-name-resource="key">
+	      <attribute name="propertySortPriority" value="1"/>
+      </property>
+      <property name="value" column-name="marker_value" data-type="string"
+      	category-resource="markerInfo" display-name-resource="value">
+      	<attribute name="propertySortPriority" value="2"/>
+      </property>
+      <property name="data" column-name="marker_data" data-type="string"
+      	category-resource="markerInfo" display-name-resource="data">
+        	<attribute name="propertySortPriority" value="3"/>
+      </property>
+      <property name="creationDate" data-type="timestamp" column-name="creation_date"
+            category-resource="markerInfo" display-name-resource="creationDate">
+		      <attribute name="propertySortPriority" value="4"/>
+        	<attribute name="uiwritable" value="false"/>
+      </property>
+      <property name="version" data-type="int" column-name="version" queryable="false"
+            expert="true" category-resource="markerInfo" display-name-resource="version">
+      	<attribute name="uiwritable" value="false"/>
+      	<attribute name="propertySortPriority" value="5"/>
+      </property>
+      <property name="owner" data-type="string" column-name="commerce_item_id"
+        expert="true" category-resource="markerInfo" display-name-resource="parentCommerceItem">
+      </property>
+      <property name="type" data-type="enumerated" column-name="marker_type" hidden="true"/>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="manualPricingAdjustment" sub-type-property="type"  version-property="version" display-name-resource="itemDescriptorManualAdjustment">
+    <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+    <table name="dcspp_manual_adj" type="primary" id-column-name="manual_adjust_id">
+     <property name="id" column-name="manual_adjust_id"/>
+     <property name="notes" column-name="notes" data-type="string" category-resource="adjustmentInfo" 
+display-name-resource="adjustmentNotes"/>
+     <property name="amount" column-name="amount" data-type="double" category-resource="adjustmentInfo" 
+display-name-resource="adjustmentAmount"/>
+     <property name="reasonCode" column-name="reason" data-type="enumerated" default="reasonAppeasement" category-resource="adjustmentInfo" 
+display-name-resource="adjustmentReason">
+      <attribute name="useCodeForValue" value="false"/>
+      <option resource="reasonAppeasement" code="0"/>
+      <option resource="reasonOther" code="1"/>
+     </property>
+     <property name="type" column-name="type" data-type="enumerated" default="OrderFixedAmountAdjustment" hidden="true">
+        <attribute name="useCodeForValue" value="false"/>
+        <option value="OrderFixedAmountAdjustment" code="0"/>
+     </property>
+     <property name="adjustmentType" column-name="adjustment_type" data-type="enumerated" default="amountOff" category-resource="adjustmentInfo" 
+display-name-resource="adjustmentType">
+        <attribute name="useCodeForValue" value="false"/>
+        <option value="amountOff" code="0"/>
+        <option value="amountIncrease" code="1"/>
+     </property>
+      <property name="version" data-type="int" column-name="version" queryable="false"
+            expert="true" category-resource="adjustmentInfo" display-name-resource="version">
+      	<attribute name="uiwritable" value="false"/>
+      	<attribute name="propertySortPriority" value="5"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="OrderFixedAmountAdjustment" super-type="manualPricingAdjustment" 
+sub-type-value="OrderFixedAmountAdjustment" display-name-resource="itemDescriptorOrderFixedAmountAdjustment">
+    <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+  </item-descriptor>
+
+  <item-descriptor name="scheduledOrder" sub-type-property="type" version-property="version" cache-mode="simple"
+                              display-name-resource="itemDescriptorScheduledOrder" item-cache-timeout="180000">
+    <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+    
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categorySchedulePriority" value="20"/>
+    <attribute name="categoryInfoPriority" value="30"/>
+
+    <table name="dbcpp_sched_order" id-column-name="scheduled_order_id" type="primary">
+      <property name="id" column-name="scheduled_order_id" expert="true" category-resource="categoryInfo" display-name-resource="scheduledOrderId">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="type" data-type="enumerated" default="scheduledOrder" expert="true" category-resource="categoryInfo" display-name-resource="type">
+        <attribute name="useCodeForValue" value="false"/>
+        <option value="scheduledOrder" code="5000"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="version" column-name="version" data-type="int" expert="true" category-resource="categoryInfo" display-name-resource="version">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      
+      <property name="name" data-type="string" category-resource="categoryBasics" display-name-resource="name">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="profileId" column-name="profile_id" data-type="string" category-resource="categoryBasics" display-name-resource="profileId">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      
+      <property name="createDate" column-name="create_date" data-type="timestamp" category-resource="categorySchedule" display-name-resource="createDate">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="startDate"  column-name="start_date" data-type="timestamp" category-resource="categorySchedule" display-name-resource="startDate">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="endDate" column-name="end_date" data-type="timestamp" category-resource="categorySchedule" display-name-resource="endDate">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property name="templateOrderId" column-name="template_order" data-type="string" category-resource="categoryBasics" display-name-resource="templateOrderId">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="siteId" column-name="site_id" data-type="string" category-resource="categoryBasics" display-name-resource="siteId">
+        <attribute name="propertySortPriority" value="35"/>
+      </property>
+
+      <!--use code for value, or set value as active/inactive-->
+      <property name="state" data-type="enumerated"  category-resource="categoryBasics" display-name-resource="state">
+        <attribute name="useCodeForValue" value="false"/>
+        <option resource="stateActive" code="0"/>
+        <option resource="stateInactive" code="1"/>
+        <option resource="stateError" code="2"/>
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+
+      <property name="nextScheduledRun" column-name="next_scheduled" data-type="timestamp" category-resource="categorySchedule" display-name-resource="nextScheduledRun">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="schedule" data-type="string" category-resource="categorySchedule" display-name-resource="schedule" > 
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+    </table>
+    <!--A list of the cloned orders generated from this schedule order-->
+    <table name="dbcpp_sched_clone" type="multi" id-column-name="scheduled_order_id" multi-column-name="sequence_num">
+      <property name="clonedOrders" column-name="cloned_order" component-data-type="string"
+                          data-type="list" category-resource="categoryBasics" display-name-resource="clonedOrders">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+    </table>
+
+    <!-- A reference to the last error that occurred for this scheduled order execution -->
+    <table name="dcspp_scherr_aux" type="auxiliary" id-column-name="scheduled_order_id" >
+      <property name="lastError"  item-type="scheduledOrderError" cascade="update,delete" column-name="sched_error_id" display-name-resource="lastScheduledOrderError">
+      </property>
+    </table>
+    
+  </item-descriptor>
+
+  <item-descriptor name="scheduledOrderError" cache-mode="simple"
+                              display-name-resource="itemDescriptorScheduledOrderError" item-cache-timeout="180000">
+    <attribute name="resourceBundle" value="atg.commerce.OrderRepositoryTemplateResources"/>
+
+    <table name="dcspp_sched_error" id-column-name="sched_error_id" type="primary">
+      <property name="id" column-name="sched_error_id" expert="true" display-name-resource="scheduleErrorId">
+        <attribute name="uiwritable" value="false"/>
+      </property>
+      <property name="errorDate"  column-name="error_date" data-type="timestamp" display-name-resource="errorDate">
+      </property>
+    </table>
+
+    <table name="dcspp_schd_errmsg" type="multi" id-column-name="sched_error_id"
+                multi-column-name="sequence_num">
+      <property name="errorMessages" column-name="error_txt" component-data-type="string" data-type="list" display-name-resource="errorMessages">
+      </property>
+    </table>
+  </item-descriptor>
+
+
+</gsa-template>
+<!-- @version $Id: //product/DCS/version/10.0.3/templates/DCS/config/atg/commerce/order/orderrepository.xml#2 $$Change: 651448 $ -->

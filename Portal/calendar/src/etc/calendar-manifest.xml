@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE portal-manifest PUBLIC "-//Art Technology Group, Inc.//DTD Portal Manifest//EN" "http://www.atg.com/dtds/portal/framework/portal_manifest_1.0.dtd">
+
+<portal-manifest name="Calendar Gear" version="2.0" author="ATG Portal Team">
+
+  <gear-definitions>
+    <gear-definition name="Calendar Gear" version="2.0" author="ATG Portal Team">
+      <description>A Web Calendar of Events</description>
+
+      <servlet-context>/gear/calendar</servlet-context>
+
+      <dimensions>
+        <dimension name="height">noPreference</dimension>
+        <dimension name="width">wide</dimension>
+      </dimensions>
+
+      <gear-modes>
+
+        <gear-mode name="content">
+          <display-modes>
+            <display-mode name="shared">
+              <device-output name="html">/html/calendarShared.jsp</device-output>
+            </display-mode>
+            <display-mode name="full">
+              <device-output name="html">/html/calendarFull.jsp</device-output>
+            </display-mode>
+          </display-modes>
+        </gear-mode>
+
+        <gear-mode name="instanceConfig">
+          <display-modes>
+            <display-mode name="full">
+              <device-output name="html">/html/admin/instanceConfig.jsp</device-output>
+            </display-mode>
+          </display-modes>
+        </gear-mode>
+
+      </gear-modes>
+
+      <instance-parameters>
+        <parameter name="globalAlertMode" >
+          <default-value>
+           yes_locked
+          </default-value>
+        </parameter>
+
+        <parameter name="defaultEventType" >
+          <default-value>
+           detail-event
+          </default-value>
+        </parameter>
+
+        <parameter name="yearEndRange" >
+          <default-value>
+            2005
+          </default-value>
+        </parameter>
+
+        <parameter name="openAccessPrivate" >
+          <default-value>
+           false 
+          </default-value>
+        </parameter>
+
+        <parameter name="openAccessPublic" >
+          <default-value>
+            false
+          </default-value>
+        </parameter>
+
+
+      </instance-parameters>
+
+      <alerts>
+
+        <alert-message name="EventCreatedMessage">
+          <message-type>atg.portal.gear.calendar.EventCreatedMessage</message-type>
+          <default-value>yes_locked</default-value>
+          <resource-bundle>atg.portal.gear.calendar.EventCreatedResources</resource-bundle>
+        </alert-message>
+
+        <alert-message name="EventDeletedMessage">
+          <message-type>atg.portal.gear.calendar.EventDeletedMessage</message-type>
+          <default-value>yes_locked</default-value>
+          <resource-bundle>atg.portal.gear.calendar.EventDeletedResources</resource-bundle>
+        </alert-message>
+
+        <alert-message name="EventEditedMessage">
+          <message-type>atg.portal.gear.calendar.EventEditedMessage</message-type>
+          <default-value>yes_locked</default-value>
+          <resource-bundle>atg.portal.gear.calendar.EventEditedResources</resource-bundle>
+        </alert-message>
+
+        <alert-message name="EventViewedMessage">
+          <message-type>atg.portal.gear.calendar.EventViewedMessage</message-type>
+          <default-value>yes_locked</default-value>
+          <resource-bundle>atg.portal.gear.calendar.EventViewedResources</resource-bundle>
+        </alert-message>
+
+      </alerts>
+      
+      <gear-roles>
+  	<gear-role>
+    	  calWriter
+  	</gear-role>
+  	<gear-role>
+     	  calAdmin
+  	</gear-role>
+      </gear-roles>
+
+    </gear-definition>
+
+  </gear-definitions>
+</portal-manifest>
+<!-- @version $Id: //app/portal/version/10.0.3/calendar/etc/calendar-manifest.xml#2 $$Change: 651448 $ -->

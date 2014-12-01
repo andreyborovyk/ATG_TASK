@@ -1,0 +1,932 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE database-initializer SYSTEM "http://www.atg.com/dtds/dbinit_1_0.dtd">
+<database-initializer>
+
+  <schema id="switchCoreSchema">
+    <data-import start-up-module="Store.EStore">
+      <requires-addon-id id="storefront-full-setup"/>
+      <repository-path>/atg/commerce/inventory/InventoryRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/out-inventory.xml</import-file-path>
+    </data-import>
+    <data-import start-up-module="Store.EStore">
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/userprofiling/ProfileAdapterRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/users.xml</import-file-path>
+    </data-import>
+    <data-import start-up-module="DCS.AbandonedOrderServices,Store.EStore">
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/commerce/order/OrderRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/orders.xml</import-file-path>
+    </data-import>
+    <data-import start-up-module="Store.EStore">
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/commerce/gifts/Giftlists</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/wishlists.xml</import-file-path>
+    </data-import>
+    <data-import start-up-module="Store.EStore">
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="international"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/commerce/claimable/ClaimableRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/claimable.xml</import-file-path>
+    </data-import>
+    <data-import start-up-module="Store.EStore">
+      <requires-addon-id id="international"/>
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/commerce/claimable/ClaimableRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/claimable-i18n.xml</import-file-path>
+    </data-import>
+  </schema>
+
+  <schema id="nonswitchCoreSchema">
+    <data-import start-up-module="Store.EStore">
+      <requires-addon-id id="storefront-full-setup"/>
+      <repository-path>/atg/commerce/inventory/InventoryRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/out-inventory.xml</import-file-path>
+    </data-import>
+    <data-import start-up-module="Store.EStore">
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/userprofiling/ProfileAdapterRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/users.xml</import-file-path>
+    </data-import>
+    <data-import start-up-module="DCS.AbandonedOrderServices,Store.EStore">
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/commerce/order/OrderRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/orders.xml</import-file-path>
+    </data-import>
+  </schema>
+
+  <schema id="seoTagSchema">
+    <data-import start-up-module="Store.EStore">
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/seo/SEORepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/seo-tags.xml</import-file-path>
+    </data-import>
+  </schema>
+
+  <schema id="seoTagSchemaInternational">
+    <data-import start-up-module="Store.EStore.International">
+      <requires-addon-id id="storefront-full-setup"/>
+      <requires-addon-id id="international"/>
+      <repository-path>/atg/seo/SEORepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/international-seo-tags.xml</import-file-path>
+    </data-import>
+  </schema>	
+  
+    <schema id="versionedSeoTagSchema">
+    <data-import start-up-module="DAS.Versioned,Store.EStore.Versioned">
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="international"/>
+      <repository-path>/atg/seo/SEORepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/seo-tags.xml</import-file-path>
+      <user>publishing</user>
+      <workspace>seo_tags</workspace>
+      <comment>initial_data_import</comment>
+    </data-import>
+  </schema>
+
+  <schema id="versionedSeoTagSchemaInternational">
+    <data-import start-up-module="DAS.Versioned,Store.EStore.Versioned,Store.EStore.International">
+      <requires-addon-id id="international"/>
+      <requires-addon-id id="storefront-full-setup"/>
+      <repository-path>/atg/seo/SEORepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/international-seo-tags.xml</import-file-path>
+      <user>publishing</user>
+      <workspace>seo_tags</workspace>
+      <comment>initial_data_import</comment>
+    </data-import>
+  </schema>
+	
+  <schema id="sitesSchema">
+    <data-import start-up-module="Store.EStore">
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/multisite/SiteRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/sites.xml</import-file-path>
+    </data-import>
+    <data-import start-up-module="Store.EStore">
+      <requires-addon-id id="storefront-basic-setup"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/multisite/SiteRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/basic-sites.xml</import-file-path>
+    </data-import>
+  </schema>
+  
+  <schema id="sitesSchemaInternational">
+    <data-import start-up-module="Store.EStore.International">
+      <requires-addon-id id="international"/>
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/multisite/SiteRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/international-sites.xml</import-file-path>
+    </data-import>
+    <data-import start-up-module="Store.EStore.International">
+      <requires-addon-id id="international"/>
+      <requires-addon-id id="storefront-basic-setup"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/multisite/SiteRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/basic-international-sites.xml</import-file-path>
+    </data-import>
+  </schema>
+
+  <schema id="promosSchema">
+    <data-import start-up-module="Store.EStore">
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="international"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/commerce/catalog/ProductCatalog</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/promos.xml</import-file-path>
+    </data-import>
+  </schema>
+
+  <schema id="promosSchemaInternational">
+    <data-import start-up-module="Store.EStore.International">
+      <requires-addon-id id="international"/>
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/commerce/catalog/ProductCatalog</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/international-promos.xml</import-file-path>
+    </data-import>
+  </schema>
+
+  <schema id="versionedPromosSchema">
+    <data-import start-up-module="Store.EStore.Versioned">
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="international"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/commerce/catalog/ProductCatalog</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/versioned-promos.xml</import-file-path>
+      <user>publishing</user>
+      <workspace>promos_data</workspace>
+      <comment>initial_data_import</comment>
+    </data-import>
+  </schema>
+
+  <schema id="versionedPromosSchemaInternational">
+    <data-import start-up-module="Store.EStore.Versioned,Store.EStore.International">
+      <requires-addon-id id="international"/>
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/commerce/catalog/ProductCatalog</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/versioned-i18n-promos.xml</import-file-path>
+      <user>publishing</user>
+      <workspace>promos_data</workspace>
+      <comment>initial_data_import</comment>
+    </data-import>
+  </schema>
+
+
+  <schema id="storeTextSchema">
+    <data-import start-up-module="Store.EStore">
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="international"/>
+      <repository-path>/atg/store/stores/StoreRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/storetext.xml</import-file-path>
+    </data-import>
+  </schema>
+
+  <schema id="storeTextSchemaInternational">
+    <data-import start-up-module="Store.EStore.International">
+      <requires-addon-id id="international"/>
+      <requires-addon-id id="storefront-full-setup"/>
+      <repository-path>/atg/store/stores/StoreRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/storetext-i18n.xml</import-file-path>
+    </data-import>
+  </schema>
+
+  <schema id="versionedStoreTextSchema">
+    <data-import start-up-module="Store.EStore.Versioned">
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="international"/>
+      <repository-path>/atg/store/stores/StoreRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/storetext.xml</import-file-path>
+      <user>publishing</user>
+      <workspace>store_text</workspace>
+      <comment>initial_data_import</comment>
+    </data-import>
+  </schema>
+
+  <schema id="versionedStoreTextSchemaInternational">
+    <data-import start-up-module="Store.EStore.Versioned,Store.EStore.International">
+      <requires-addon-id id="international"/>
+      <requires-addon-id id="storefront-full-setup"/>
+      <repository-path>/atg/store/stores/StoreRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/storetext-i18n.xml</import-file-path>
+      <user>publishing</user>
+      <workspace>store_text</workspace>
+      <comment>initial_data_import</comment>
+    </data-import>
+  </schema>
+
+  <schema id="wishlistSchema">
+    <data-import start-up-module="Store.EStore">
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/commerce/gifts/Giftlists</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/wishlists.xml</import-file-path>
+    </data-import>
+  </schema>
+  
+  <schema id="claimableSchema">
+    <data-import start-up-module="Store.EStore">
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="international"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/commerce/claimable/ClaimableRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/claimable.xml</import-file-path>
+    </data-import>
+  </schema>
+
+  <schema id="claimableSchemaInternational">
+    <data-import start-up-module="Store.EStore">
+      <requires-addon-id id="international"/>
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/commerce/claimable/ClaimableRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/claimable-i18n.xml</import-file-path>
+    </data-import>
+  </schema>
+  
+  <schema id="versionedClaimableSchema">
+    <data-import start-up-module="DCS.Versioned">
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="international"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/commerce/claimable/ClaimableRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/claimable.xml</import-file-path>
+      <user>publishing</user>
+      <workspace>claimable_data</workspace>
+      <comment>initial_data_import</comment>
+    </data-import>
+  </schema>
+  
+    <schema id="versionedClaimableSchemaInternational">
+    <data-import start-up-module="DCS.Versioned">
+      <requires-addon-id id="storefront-full-setup"/>
+      <requires-addon-id id="international"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/commerce/claimable/ClaimableRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/claimable-i18n.xml</import-file-path>
+      <user>publishing</user>
+      <workspace>claimable_i18n_data</workspace>
+      <comment>initial_data_import</comment>
+    </data-import>
+  </schema>
+
+  <schema id="catalogSchemaInternational">
+    <data-import start-up-module="Store.EStore.International">
+      <requires-addon-id id="international"/>
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/commerce/catalog/ProductCatalog</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/out-international-catalog.xml</import-file-path>
+    </data-import>
+    <data-import start-up-module="Store.EStore.International">
+      <requires-addon-id id="international"/>
+      <requires-addon-id id="storefront-basic-setup"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/commerce/catalog/ProductCatalog</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/basic-international-catalog.xml</import-file-path>
+    </data-import>
+  </schema>
+  <schema id="catalogSchemaNonInternational">
+    <data-import start-up-module="Store.EStore">
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="international"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/commerce/catalog/ProductCatalog</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/out-no18n-catalog.xml</import-file-path>
+    </data-import>
+    <data-import start-up-module="Store.EStore">
+      <requires-addon-id id="storefront-basic-setup"/>
+      <incompatible-addon-id id="international"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/commerce/catalog/ProductCatalog</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/basic-catalog.xml</import-file-path>
+    </data-import>
+  </schema>
+
+  <schema id="catalogSchema">
+    <data-import start-up-module="Store.EStore">
+      <requires-addon-id id="storefront-full-setup"/>
+      <repository-path>/atg/commerce/pricing/priceLists/PriceLists</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/out-pricelists.xml</import-file-path>
+    </data-import>
+
+    <data-import start-up-module="Store.EStore">
+      <requires-addon-id id="storefront-basic-setup"/>
+      <repository-path>/atg/commerce/pricing/priceLists/PriceLists</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/basic-pricelists.xml</import-file-path>
+    </data-import>
+
+    <data-import start-up-module="Store.EStore">
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/store/stores/StoreRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/stores.xml</import-file-path>
+    </data-import>
+  </schema>
+
+  <schema id="versionedSchemaNonInternational">
+    <data-import start-up-module="Store.EStore.Versioned">
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="international"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/commerce/catalog/ProductCatalog</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/out-versioned-no18n-catalog.xml</import-file-path>
+      <user>publishing</user>
+      <workspace>store_catalog</workspace>
+      <comment>initial_data_import</comment>
+    </data-import>
+    <data-import start-up-module="Store.EStore.Versioned">
+      <requires-addon-id id="storefront-basic-setup"/>
+      <incompatible-addon-id id="international"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/commerce/catalog/ProductCatalog</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/basic-catalog.xml</import-file-path>
+      <user>publishing</user>
+      <workspace>store_catalog</workspace>
+      <comment>initial_data_import</comment>
+    </data-import>
+  </schema>
+  <schema id="versionedSchemaInternational">
+    <data-import start-up-module="Store.EStore.Versioned,Store.EStore.International">
+      <requires-addon-id id="international"/>
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/commerce/catalog/ProductCatalog</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/out-versioned-catalog.xml</import-file-path>
+      <user>publishing</user>
+      <workspace>store_catalog</workspace>
+      <comment>initial_data_import</comment>
+    </data-import>
+    <data-import start-up-module="Store.EStore.Versioned,Store.EStore.International">
+      <requires-addon-id id="international"/>
+      <requires-addon-id id="storefront-basic-setup"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/commerce/catalog/ProductCatalog</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/basic-international-catalog.xml</import-file-path>
+      <user>publishing</user>
+      <workspace>store_catalog</workspace>
+      <comment>initial_data_import</comment>
+    </data-import>
+  </schema>
+  <schema id="versionedSchema">  
+    <data-import start-up-module="Store.EStore.Versioned">
+      <requires-addon-id id="storefront-full-setup"/>
+      <repository-path>/atg/commerce/pricing/priceLists/PriceLists</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/out-pricelists.xml</import-file-path>
+      <user>publishing</user>
+      <workspace>store_pricelist</workspace>
+      <comment>initial_data_import</comment>
+    </data-import>
+
+    <data-import start-up-module="Store.EStore.Versioned">
+      <requires-addon-id id="storefront-basic-setup"/>
+      <repository-path>/atg/commerce/pricing/priceLists/PriceLists</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/basic-pricelists.xml</import-file-path>
+      <user>publishing</user>
+      <workspace>store_pricelist</workspace>
+      <comment>initial_data_import</comment>
+    </data-import>
+
+    <data-import start-up-module="Store.EStore.Versioned">
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/store/stores/StoreRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/stores.xml</import-file-path>
+      <user>publishing</user>
+      <workspace>store_store</workspace>
+      <comment>initial_data_import</comment>
+    </data-import>
+
+    <data-import start-up-module="Store.EStore.Versioned">
+      <requires-addon-id id="storefront-full-setup"/>
+      <requires-addon-id id="previewOnManagement"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/userprofiling/ProfileAdapterRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/users.xml</import-file-path>
+    </data-import>
+
+    <repository-loader post-cleanup="true">
+      <files>
+        <src-module>Store.Storefront.NoPublishing</src-module>
+        <config-path>atg/registry/Slots</config-path>
+        <file-pattern>*.properties</file-pattern>
+      </files>
+      <file-mapping>/atg/epub/file/typemappers/SlotTypeMapping</file-mapping>
+      <folder-mapping>/atg/epub/file/typemappers/FileFolderTypeMapping</folder-mapping>
+    </repository-loader>
+
+    <repository-loader post-cleanup="true">
+      <files>
+        <src-module>Store.Storefront.NoPublishing</src-module>
+        <config-path>atg/registry/RepositoryTargeters/ProductCatalog</config-path>
+        <file-pattern>*.properties</file-pattern>
+      </files>
+      <file-mapping>/atg/epub/file/typemappers/TargeterTypeMapping</file-mapping>
+      <folder-mapping>/atg/epub/file/typemappers/FileFolderTypeMapping</folder-mapping>
+    </repository-loader>
+    
+    <repository-loader post-cleanup="true">
+      <files>
+        <src-module>Store.Storefront.NoPublishing</src-module>
+        <config-path>atg/registry/RepositoryGroups</config-path>
+        <file-pattern>*.properties</file-pattern>
+      </files>
+      <file-mapping>/atg/epub/file/typemappers/ContentGroupTypeMapping</file-mapping>
+      <folder-mapping>/atg/epub/file/typemappers/FileFolderTypeMapping</folder-mapping>
+    </repository-loader>
+    
+    <repository-loader post-cleanup="true">
+      <files>
+        <src-module>Store.Storefront.NoPublishing</src-module>
+        <config-path>atg/registry/RepositoryGroups/UserProfiles</config-path>
+        <file-pattern>*.properties</file-pattern>
+      </files>
+      <file-mapping>/atg/epub/file/typemappers/SegmentTypeMapping</file-mapping>
+      <folder-mapping>/atg/epub/file/typemappers/FileFolderTypeMapping</folder-mapping>
+    </repository-loader>
+    
+    <repository-loader post-cleanup="true">
+      <files>
+        <src-module>Store.Storefront.NoPublishing</src-module>
+        <config-path>atg/registry/data/scenarios/store/abandonedorders</config-path>
+        <file-pattern>*.sdl</file-pattern>
+      </files>
+      <files>
+        <src-module>Store.Storefront.NoPublishing</src-module>
+        <config-path>atg/registry/data/scenarios/store/global</config-path>
+        <file-pattern>*.sdl</file-pattern>
+      </files>
+      <files>
+        <src-module>Store.Storefront.NoPublishing</src-module>
+        <config-path>atg/registry/data/scenarios/store/homepage</config-path>
+        <file-pattern>*.sdl</file-pattern>
+      </files>
+      <files>
+        <src-module>Store.Storefront.NoPublishing</src-module>
+        <config-path>atg/registry/data/scenarios/store/category</config-path>
+        <file-pattern>*.sdl</file-pattern>
+      </files>
+      <files>
+        <src-module>Store.Storefront.NoPublishing</src-module>
+        <config-path>atg/registry/data/scenarios/store/orders</config-path>
+        <file-pattern>*.sdl</file-pattern>
+      </files>
+      <files>
+        <src-module>Store.Storefront.NoPublishing</src-module>
+        <config-path>atg/registry/data/scenarios/DCS</config-path>
+        <file-pattern>*.sdl</file-pattern>
+      </files>
+      <file-mapping>/atg/epub/file/typemappers/ScenarioTypeMapping</file-mapping>
+      <folder-mapping>/atg/epub/file/typemappers/FileFolderTypeMapping</folder-mapping>
+    </repository-loader>
+  </schema>
+
+  <schema id="versionedSitesSchema">
+    <data-import start-up-module="Store.EStore.Versioned">
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <incompatible-addon-id id="search"/>
+      <repository-path>/atg/multisite/SiteRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/sites.xml</import-file-path>
+      <user>publishing</user>
+      <workspace>store_sites</workspace>
+      <comment>initial_sites_import</comment>
+    </data-import>
+    <data-import start-up-module="Store.EStore.Versioned">
+      <requires-addon-id id="storefront-basic-setup"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <incompatible-addon-id id="search"/>
+      <repository-path>/atg/multisite/SiteRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/basic-sites.xml</import-file-path>
+      <user>publishing</user>
+      <workspace>store_sites</workspace>
+      <comment>initial_sites_import</comment>
+    </data-import>
+    <data-import start-up-module="DAF.Search.Versioned,Store.EStore.Versioned">
+      <requires-addon-id id="storefront-full-setup"/>
+      <requires-addon-id id="search"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/multisite/SiteRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/sites.xml</import-file-path>
+      <user>publishing</user>
+      <workspace>store_sites</workspace>
+      <comment>initial_sites_import</comment>
+    </data-import>
+    <data-import start-up-module="DAF.Search.Versioned,Store.EStore.Versioned">
+      <requires-addon-id id="storefront-basic-setup"/>
+      <requires-addon-id id="search"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/multisite/SiteRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/basic-sites.xml</import-file-path>
+      <user>publishing</user>
+      <workspace>store_sites</workspace>
+      <comment>initial_sites_import</comment>
+    </data-import>
+  </schema>
+  <schema id="versionedSitesSchemaInternational">
+    <data-import start-up-module="Store.EStore.Versioned,Store.EStore.International">
+      <requires-addon-id id="international"/>
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <incompatible-addon-id id="search"/>
+      <repository-path>/atg/multisite/SiteRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/international-sites.xml</import-file-path>
+      <user>publishing</user>
+      <workspace>store_sites_i11l</workspace>
+      <comment>initial_sites_import</comment>
+    </data-import>
+    <data-import start-up-module="Store.EStore.Versioned,Store.EStore.International">
+      <requires-addon-id id="international"/>
+      <requires-addon-id id="storefront-basic-setup"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <incompatible-addon-id id="search"/>
+      <repository-path>/atg/multisite/SiteRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/basic-international-sites.xml</import-file-path>
+      <user>publishing</user>
+      <workspace>store_sites_i11l</workspace>
+      <comment>initial_sites_import</comment>
+    </data-import>
+    <data-import start-up-module="DAF.Search.Versioned,Store.EStore.Versioned,Store.EStore.International">
+      <requires-addon-id id="international"/>
+      <requires-addon-id id="storefront-full-setup"/>
+      <requires-addon-id id="search"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/multisite/SiteRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/international-sites.xml</import-file-path>
+      <user>publishing</user>
+      <workspace>store_sites_i11l</workspace>
+      <comment>initial_sites_import</comment>
+    </data-import>
+    <data-import start-up-module="DAF.Search.Versioned,Store.EStore.Versioned,Store.EStore.International">
+      <requires-addon-id id="international"/>
+      <requires-addon-id id="storefront-basic-setup"/>
+      <requires-addon-id id="search"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/multisite/SiteRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/basic-international-sites.xml</import-file-path>
+      <user>publishing</user>
+      <workspace>store_sites_i11l</workspace>
+      <comment>initial_sites_import</comment>
+    </data-import>
+  </schema>
+
+  <schema id="searchCore">
+    <data-import start-up-module="DAF.Search.Routing">
+      <requires-addon-id id="search"/>
+      <requires-addon-id id="storefront-full-setup"/>
+      <repository-path>/atg/search/routing/repository/SearchConfigurationRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/searchconfig-data.xml</import-file-path>
+    </data-import>
+    <data-import start-up-module="SearchAdmin.common">
+      <requires-addon-id id="search"/>
+      <requires-addon-id id="storefront-full-setup"/>
+      <repository-path>/atg/searchadmin/SearchAdminRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/searchadmin-data.xml</import-file-path>
+    </data-import>
+    <data-import start-up-module="DAF.Search.Routing">
+      <requires-addon-id id="search"/>
+      <requires-addon-id id="storefront-full-setup"/>
+      <requires-addon-id id="staging"/>
+      <repository-path>/atg/search/routing/repository/SearchConfigurationRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/staging-searchconfig.xml</import-file-path>
+    </data-import>
+    <data-import start-up-module="SearchAdmin.common">
+      <requires-addon-id id="search"/>
+      <requires-addon-id id="storefront-full-setup"/>
+      <requires-addon-id id="staging"/>
+      <repository-path>/atg/searchadmin/SearchAdminRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/staging-searchadmin.xml</import-file-path>
+    </data-import>
+  </schema>
+  
+  <schema id="searchContent">
+    <data-import start-up-module="DAF.Search.Base">
+      <requires-addon-id id="search"/>
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="international"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/multisite/SiteRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/searchcontent-data.xml</import-file-path>
+    </data-import>
+    <data-import start-up-module="DAF.Search.Base">
+      <requires-addon-id id="search"/>
+      <requires-addon-id id="storefront-full-setup"/>
+      <requires-addon-id id="staging"/>
+      <incompatible-addon-id id="international"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/multisite/SiteRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/staging-searchcontent.xml</import-file-path>
+    </data-import>
+  </schema>
+  
+  <schema id="searchContentInternational">
+    <data-import start-up-module="DAF.Search.Base">
+      <requires-addon-id id="search"/>
+      <requires-addon-id id="international"/>
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/multisite/SiteRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/searchcontent-data.xml</import-file-path>
+    </data-import>
+    <data-import start-up-module="DAF.Search.Base, Store.EStore.International">
+      <requires-addon-id id="search"/>
+      <requires-addon-id id="international"/>
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/multisite/SiteRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/international-searchcontent-data.xml</import-file-path>
+    </data-import>
+    <data-import start-up-module="DAF.Search.Base">
+      <requires-addon-id id="search"/>
+      <requires-addon-id id="international"/>
+      <requires-addon-id id="storefront-full-setup"/>
+      <requires-addon-id id="staging"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/multisite/SiteRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/staging-searchcontent.xml</import-file-path>
+    </data-import>
+    <data-import start-up-module="DAF.Search.Base, Store.EStore.International">
+      <requires-addon-id id="search"/>
+      <requires-addon-id id="international"/>
+      <requires-addon-id id="storefront-full-setup"/>
+      <requires-addon-id id="staging"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/multisite/SiteRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/staging-international-searchcontent.xml</import-file-path>
+    </data-import>
+  </schema>
+
+  <schema id="searchNonInternational">
+    <data-import start-up-module="Store.EStore,DCS.Search.CustomCatalogs">
+      <requires-addon-id id="search"/>
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="international"/>
+      <repository-path>/atg/search/repository/RefinementRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/out-facets.xml</import-file-path>
+    </data-import>
+  </schema>
+  <schema id="searchInternational">
+    <data-import start-up-module="Store.EStore,Store.EStore.International,DCS.Search.CustomCatalogs">
+      <requires-addon-id id="search"/>
+      <requires-addon-id id="international"/>
+      <requires-addon-id id="storefront-full-setup"/>
+      <repository-path>/atg/search/repository/RefinementRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/out-international-facets.xml</import-file-path>
+    </data-import>
+  </schema>
+  <schema id="searchNonInternationalVersioned">
+    <data-import start-up-module="DCS-UI,DCS.Search.CustomCatalogs.Versioned,Store.EStore.Versioned">
+      <requires-addon-id id="search"/>
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="international"/>
+      <repository-path>/atg/search/repository/RefinementRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/out-facets.xml</import-file-path>
+      <user>publishing</user>
+      <workspace>initialSrchFcts</workspace>
+      <comment>initialSrchFcts</comment>
+    </data-import>
+    <data-import start-up-module="DAF.Search.Versioned, Store.EStore.Versioned">
+      <requires-addon-id id="search"/>
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="international"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/multisite/SiteRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/searchcontent-data.xml</import-file-path>
+      <user>publishing</user>
+      <workspace>initialSrchCntn</workspace>
+      <comment>initialSrchCntn</comment>
+    </data-import>
+    <data-import start-up-module="DAF.Search.Versioned, Store.EStore.Versioned">
+      <requires-addon-id id="search"/>
+      <requires-addon-id id="storefront-full-setup"/>
+      <requires-addon-id id="staging"/>
+      <incompatible-addon-id id="international"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/multisite/SiteRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/staging-searchcontent.xml</import-file-path>
+      <user>publishing</user>
+      <workspace>initialSrchCntnStg</workspace>
+      <comment>initialSrchCntnStg</comment>
+    </data-import>
+  </schema>
+  <schema id="searchInternationalVersioned">
+    <data-import start-up-module="DCS-UI,DCS.Search.CustomCatalogs.Versioned,Store.EStore.Versioned,Store.EStore.International">
+      <requires-addon-id id="search"/>
+      <requires-addon-id id="international"/>
+      <requires-addon-id id="storefront-full-setup"/>
+      <repository-path>/atg/search/repository/RefinementRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/out-international-facets.xml</import-file-path>
+      <user>publishing</user>
+      <workspace>initiali18nSrchFcts</workspace>
+      <comment>initiali18nSrchFcts</comment>
+    </data-import>
+    <data-import start-up-module="DAF.Search.Versioned, Store.EStore.Versioned, Store.EStore.International">
+      <requires-addon-id id="search"/>
+      <requires-addon-id id="international"/>
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/multisite/SiteRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/searchcontent-data.xml</import-file-path>
+      <user>publishing</user>
+      <workspace>initialSrchCntn</workspace>
+      <comment>initialSrchCntn</comment>
+    </data-import>
+    <data-import start-up-module="DAF.Search.Versioned, Store.EStore.Versioned, Store.EStore.International">
+      <requires-addon-id id="search"/>
+      <requires-addon-id id="international"/>
+      <requires-addon-id id="storefront-full-setup"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/multisite/SiteRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/international-searchcontent-data.xml</import-file-path>
+      <user>publishing</user>
+      <workspace>initialSrchCntnI11l</workspace>
+      <comment>initialSrchCntnI11l</comment>
+    </data-import>
+    <data-import start-up-module="DAF.Search.Versioned, Store.EStore.Versioned, Store.EStore.International">
+      <requires-addon-id id="search"/>
+      <requires-addon-id id="international"/>
+      <requires-addon-id id="storefront-full-setup"/>
+      <requires-addon-id id="staging"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/multisite/SiteRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/staging-searchcontent.xml</import-file-path>
+      <user>publishing</user>
+      <workspace>initialSrchCntnStg</workspace>
+      <comment>initialSrchCntnStg</comment>
+    </data-import>
+    <data-import start-up-module="DAF.Search.Versioned, Store.EStore.Versioned, Store.EStore.International">
+      <requires-addon-id id="search"/>
+      <requires-addon-id id="international"/>
+      <requires-addon-id id="storefront-full-setup"/>
+      <requires-addon-id id="staging"/>
+      <incompatible-addon-id id="StoreNoSite"/>
+      <repository-path>/atg/multisite/SiteRepository</repository-path>
+      <import-file-path>/CommerceReferenceStore/Store/Storefront/data/staging-international-searchcontent.xml</import-file-path>
+      <user>publishing</user>
+      <workspace>initialSrchCntnI11lStg</workspace>
+      <comment>initialSrchCntnI11lStg</comment>
+    </data-import>
+  </schema>
+  
+  <server-instance-type id="management">
+    <datasource id="management">
+      <schema id="versionedSchemaInternational" />
+      <schema id="versionedSchemaNonInternational" />
+      <schema id="versionedSchema" />
+      <schema id="versionedSitesSchema" />
+      <schema id="versionedSitesSchemaInternational" />
+      <schema id="versionedPromosSchema" />
+      <schema id="versionedPromosSchemaInternational" />
+      <schema id="versionedClaimableSchema" />
+      <schema id="versionedClaimableSchemaInternational" />
+      <schema id="searchNonInternationalVersioned" />
+      <schema id="searchInternationalVersioned" />
+      <schema id="versionedStoreTextSchema" />
+      <schema id="versionedStoreTextSchemaInternational" />
+      <schema id="versionedSeoTagSchema" />
+      <schema id="versionedSeoTagSchemaInternational" />
+    </datasource>
+  </server-instance-type>
+
+  <server-instance-type id="production">
+    <datasource id="nonswitchingCore">
+      <schema id="catalogSchemaNonInternational" />
+      <schema id="catalogSchemaInternational" />
+      <schema id="catalogSchema" />
+      <schema id="nonswitchCoreSchema" />
+      <schema id="searchNonInternational" />
+      <schema id="searchInternational" />
+      <schema id="sitesSchema" />
+      <schema id="sitesSchemaInternational" />
+      <schema id="promosSchema" />
+      <schema id="promosSchemaInternational" />
+      <schema id="seoTagSchema" />
+      <schema id="seoTagSchemaInternational" />
+      <schema id="wishlistSchema"/>
+      <schema id="searchCore"/>
+      <schema id="searchContent"/>
+      <schema id="searchContentInternational"/>
+      <schema id="storeTextSchema" />
+      <schema id="storeTextSchemaInternational" />
+      <schema id="claimableSchema" />
+      <schema id="claimableSchemaInternational" />
+    </datasource>
+
+    <datasource id="switchingA">
+      <schema id="catalogSchemaNonInternational" />
+      <schema id="catalogSchemaInternational" />
+      <schema id="catalogSchema" />
+      <schema id="searchNonInternational" />
+      <schema id="searchInternational" />
+      <schema id="sitesSchema" />
+      <schema id="seoTagSchema" />
+      <schema id="seoTagSchemaInternational" />		
+      <schema id="sitesSchemaInternational" />
+      <schema id="promosSchema" />
+      <schema id="promosSchemaInternational" />
+      <schema id="searchContent"/>
+      <schema id="searchContentInternational"/>
+      <schema id="storeTextSchema" />
+      <schema id="storeTextSchemaInternational" />
+    </datasource>
+
+    <datasource id="switchingB">
+      <schema id="catalogSchemaNonInternational" />
+      <schema id="catalogSchemaInternational" />
+      <schema id="catalogSchema" />
+      <schema id="searchNonInternational" />
+      <schema id="searchInternational" />
+      <schema id="sitesSchema" />
+      <schema id="seoTagSchema" />
+      <schema id="seoTagSchemaInternational" />		
+      <schema id="sitesSchemaInternational" />
+      <schema id="promosSchema" />
+      <schema id="promosSchemaInternational" />
+      <schema id="searchContent"/>
+      <schema id="searchContentInternational"/>
+      <schema id="storeTextSchema" />
+      <schema id="storeTextSchemaInternational" />
+    </datasource>
+
+
+    <datasource id="switchingCore">
+      <schema id="switchCoreSchema" />
+      <schema id="searchCore"/>
+    </datasource>
+  </server-instance-type>
+  
+  <server-instance-type id="staging">
+    <datasource id="stagingnonswitchingCore">
+      <schema id="catalogSchemaNonInternational" />
+      <schema id="catalogSchemaInternational" />
+      <schema id="catalogSchema" />
+      <schema id="nonswitchCoreSchema" />
+      <schema id="searchNonInternational" />
+      <schema id="searchInternational" />
+      <schema id="sitesSchema" />
+      <schema id="sitesSchemaInternational" />
+      <schema id="promosSchema" />
+      <schema id="promosSchemaInternational" />      
+      <schema id="seoTagSchema" />
+      <schema id="seoTagSchemaInternational" />
+      <schema id="wishlistSchema"/>
+      <schema id="storeTextSchema" />
+      <schema id="storeTextSchemaInternational" />
+      <schema id="claimableSchema" />
+      <schema id="claimableSchemaInternational" />
+      <schema id="searchContent"/>
+      <schema id="searchContentInternational"/>
+    </datasource>
+
+    <datasource id="stagingswitchingA">
+      <schema id="catalogSchemaInternational" />
+      <schema id="catalogSchemaNonInternational" />
+      <schema id="catalogSchema" />
+      <schema id="sitesSchema" />
+      <schema id="sitesSchemaInternational" />
+      <schema id="promosSchema" />
+      <schema id="promosSchemaInternational" />      
+      <schema id="seoTagSchema" />
+      <schema id="seoTagSchemaInternational" />
+      <schema id="storeTextSchema" />
+      <schema id="storeTextSchemaInternational" />
+      <schema id="searchContent"/>
+      <schema id="searchContentInternational"/>
+    </datasource>
+
+    <datasource id="stagingswitchingB">
+      <schema id="catalogSchemaInternational" />
+      <schema id="catalogSchemaNonInternational" />
+      <schema id="catalogSchema" />
+      <schema id="sitesSchema" />
+      <schema id="sitesSchemaInternational" />
+      <schema id="promosSchema" />
+      <schema id="promosSchemaInternational" />      
+      <schema id="seoTagSchema" />
+      <schema id="seoTagSchemaInternational" />
+      <schema id="storeTextSchema" />
+      <schema id="storeTextSchemaInternational" />
+      <schema id="searchContent"/>
+      <schema id="searchContentInternational"/>
+    </datasource>
+
+    <datasource id="stagingswitchingCore">
+      <schema id="switchCoreSchema" />
+    </datasource>
+  </server-instance-type>
+  
+</database-initializer>
+  <!--
+    @version $Id: //hosting-blueprint/B2CBlueprint/version/10.0.3/Storefront/cim/dbinit.xml#2 $$Change: 651448 $
+  -->
+<!-- @version $Id: //hosting-blueprint/B2CBlueprint/version/10.0.3/Storefront/cim/dbinit.xml#2 $$Change: 651448 $-->

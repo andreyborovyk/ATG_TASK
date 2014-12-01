@@ -1,0 +1,183 @@
+<nucleus type=import>
+  /atg/dynamo/service/ConfigurationReporter
+  /atg/dynamo/droplet/Switch
+  /atg/dynamo/droplet/ForEach
+</nucleus>
+
+<HTML>
+<HEAD>
+  <link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+  <TITLE>Dynamo Configuration Reporter</TITLE>
+</HEAD>
+
+<body>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="images/batch-compiler-banner.gif" ALT="Dynamo ConfigurationReporter" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+<a href="/">admin</a>/Configuration Reporter
+
+<h2>Configuration Reporter</h2>
+
+Reports on the present Dynamo Configuration.
+
+<A NAME="ComponentFileCreation">
+<h3>CREATE DYNAMO COMPONENTS FILE</h3>
+</A>
+
+<p>
+<blockquote>
+This will browse the Dynamo hierarchy of components starting at the root and output
+the names of all components to an output file.  Components and directories may be
+marked as restricted by their inclusion in the property list restrictedComponents 
+of ConfigurationReporter.  Components which are marked as restricted will not be 
+included in the output file of Component names.  Neither will the names of the children 
+of restricted components if the component is a directory.
+<p>The directory of the Output File must already exist.  Any file of the same name 
+will be overwritten.
+
+<form action="configurationreporter.jhtml" method=post>
+ Output File:
+ <input type=text property="ConfigurationReporter.componentFileName" size=60><br>
+ <p>List of Restricted Components:
+ <input type=text property="ConfigurationReporter.restrictedComponents" size=60><br>    
+ <p><input type=submit property="ConfigurationReporter.outputDynamoComponentHierarchy" value="Create Dynamo Component File">
+</form>
+</blockquote>
+
+<h3>OUTPUT COMPONENT INFORMATION IN HTML FORMAT</h3>
+<blockquote>
+This will read a list of components from the component file created as output in
+<a href="#ComponentFileCreation">CREATE DYNAMO COMPONENTS FILE</a>.  This component
+file must exist before performing this operation.  For each component
+in the list a corresponding HTML page will be created which contains information on the
+component, much like the component page served by the Component Browser.  
+<p>All HTML pages will be dumped to a common output directory.  This directory must
+exist prior to performing this operation.
+
+<form action="configurationreporter.jhtml" method=post>
+ <p>Component File:
+ <input type=text property="ConfigurationReporter.componentFileName" size=60><br>
+ <p>Output Directory:
+ <input type=text property="ConfigurationReporter.adminHTMLOutputDirectory" size=60><br>
+ <p>
+ <p><input type=submit property="ConfigurationReporter.outputDynamoAdministrationPages" value="Create Component HTML Pages">
+</form>
+</blockquote>
+
+<A NAME="OutputBeanComponents">
+<h3>OUTPUT BEAN COMPONENTS INFORMATION TO SERIALIZED FILE</h3>
+</A>
+
+<blockquote>
+This will read a list of components from the component file created as output in
+<a href="#ComponentFileCreation">CREATE DYNAMO COMPONENTS FILE</a>.  This component
+file must exist before performing this operation.  Each component in the list will
+have its bean properties and values recorded.  This list of components will then be
+serialized to an output file.
+
+<form action="configurationreporter.jhtml" method=post>
+ <p><input type=checkbox property="ConfigurationReporter.saveJVMPropertiesInBeanSerialization">
+ Save Java Virtual Machine Properties in Serialization<br>
+ <p><input type=checkbox property="ConfigurationReporter.saveConfigurationPathInBeanSerialization">
+ Save Current Configuration Path in Serialization<br>
+ <p>Component File:
+ <input type=text property="ConfigurationReporter.componentFileName" size=60><br>
+ <p>Serialized File:
+ <input type=text property="ConfigurationReporter.serializedFileName" size=60><br>
+ <p>
+ <p><input type=submit property="ConfigurationReporter.saveBeanRepresentation" value="Create Serialized File">
+</form>
+</blockquote>
+
+<h3>TEST SERIALIZED FILE OF BEAN COMPONENTS</h3>
+<blockquote>
+This will output the serialized file created by 
+<a href="#OutputBeanComponents">OUTPUT BEAN COMPONENTS INFORMATION TO SERIALIZED FILE</a>.
+to an output file in XML format.  This serialized file must be created before
+performing this operation.
+
+<form action="configurationreporter.jhtml" method=post>
+<p><input type=checkbox property="ConfigurationReporter.outputComponentPropertiesInXML">
+Output All Property Values<br>
+<p>Serialized File:
+<input type=text property="ConfigurationReporter.serializedFileName" size=60><br>
+<p>XML Output File:
+<input type=text property="ConfigurationReporter.beanRepresentationXMLFileName" size=60><br>
+<p>
+<input type=submit property="ConfigurationReporter.outputRepresentationToXML" value="Create XML File">
+<p>
+</form>
+</blockquote>
+
+
+<A NAME="ComponentProperties">
+<h3>OUTPUT COMPONENT PROPERTIES SET THROUGH PROPERTIES FILES TO SERIALIZED FILE</h3>
+</A>
+<blockquote>
+This will read a list of components from the component file created as output in
+<a href="#ComponentFileCreation">CREATE DYNAMO COMPONENTS FILE</a>.  This component
+file must exist before performing this operation.  Only those properties which are 
+set through properties files in a specified Configuration Path will be recorded as
+a property of the component.  This Configuration Path is not necessarily the Configuration
+Path of the currently running Dynamo instance, but is read from a file which may be
+created by <a href="#ConfigurationPathFileCreation">OUTPUT CONFIGURATION PATH TO FILE</a>
+The contents of this file will be read to determine the Configuration Path which
+will be searched during this operation.  The list of components with their properties
+and values is then saved to a serialized output file.
+ 
+<form action="configurationreporter.jhtml" method=post>
+ <p><input type=checkbox property="ConfigurationReporter.saveJVMPropertiesInPropertiesSerialization"><br>
+ Save Java Virtual Machine Properties in Serialization<br>
+ <p>Component File:
+ <input type=text property="ConfigurationReporter.componentFileName" size=60><br>
+ <p>Configuration Path File:
+ <input type=text property="ConfigurationReporter.dynamoConfigurationPathFileName" size=60><br>
+ <p>Serialized File:
+ <input type=text property="ConfigurationReporter.serializedPropertiesFileName" size=60><br>
+ <p>
+ <p><input type=submit property="ConfigurationReporter.saveDynamoComponentProperties" value="Create Serialized File">
+</form>
+</blockquote> 
+
+<h3>TEST SERIALIZED FILE OF PROPERTIES COMPONENTS</h3>
+<blockquote>
+This will output the serialized file created by 
+<a href="#ComponentProperties">OUTPUT COMPONENT PROPERTIES SET THROUGH PROPERTIES FILES TO SERIALIZED FILE</a>.
+to an output file in XML format.  This serialized file must be created before
+performing this operation.
+
+<form action="configurationreporter.jhtml" method=post>
+<p><input type=checkbox property="ConfigurationReporter.outputComponentPropertiesInXML">
+Output All Property Values<br>
+<p>Serialized File:
+<input type=text property="ConfigurationReporter.serializedPropertiesFileName" size=60><br>
+<p>XML Output File:
+<input type=text property="ConfigurationReporter.propertyRepresentationXMLFileName" size=60><br>
+<p>
+<input type=submit property="ConfigurationReporter.outputPropertyRepresentationToXML" value="Create XML File">
+<p>
+</form>
+</blockquote>
+
+<A NAME="ConfigurationPathFileCreation">
+<h3>OUTPUT CONFIGURATION PATH TO FILE</h3>
+</A>
+
+<blockquote>
+This will save the Configuration Path of the currently running Dynamo instance to an output file.
+This file is then read as input to <a href="#ComponentProperties">
+OUTPUT COMPONENT PROPERTIES SET THROUGH PROPERTIES FILES TO SERIALIZED FILE</a>. 
+
+<form action="configurationreporter.jhtml" method=post>
+<p>Configuration Path File:
+<input type=text property="ConfigurationReporter.dynamoConfigurationPathFileName" size=60><br>
+<p><input type=submit property="ConfigurationReporter.outputDynamoConfigurationPath" value="Create Configuration Path File">
+</form>
+</blockquote>
+
+
+ 
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/configurationreporter.jhtml#2 $$Change: 651448 $*/</java>
+

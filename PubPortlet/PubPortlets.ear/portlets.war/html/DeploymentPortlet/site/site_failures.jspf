@@ -1,0 +1,78 @@
+<!-- BEGIN FILE site_failures.jspf -->
+
+<c:set var="failures" value="${currentDeployment.status.failureMessages}"/>
+
+<c:if test="${! empty failures}">
+  <div class="contentActions">
+  <table cellpadding="0" cellspacing="0" border="0" width="100%">
+   <tr>
+    <td class="blankSpace">&nbsp;</td>
+    <td><h2><fmt:message key="deployment-errors" bundle="${depBundle}"/></h2></td>
+       <td width="100%" class="error rightAlign">
+    </td>          
+   </tr>
+  </table>
+  </div>
+
+  <div id="adminDeployment">
+<%-- 
+  <style>
+  <!--
+  .hide        { visibility: hidden; display: none }
+  .show        { visibility: visible; display: block }
+  //-->
+  </style>
+--%>
+  <style> 
+  <!-- 
+  .hide        { display: none; } 
+  .show        { display: ; }
+  //-->
+  </style>   
+  <script language="javascript" type="text/javascript">
+  function show(rowID) {
+  var tr = document.getElementById('msg'+rowID);
+   if (tr.className=="hide") {
+        tr.className="show";
+        document.images['img'+rowID].src="/atg/images/minus.gif";
+   }
+   else {
+        tr.className="hide";
+        document.images['img'+rowID].src="/atg/images/plus.gif";
+   }
+  }
+  </script>
+
+  <table cellpadding="0" cellspacing="0" border="0" class="dataTable">
+   <tr>
+    <th class="centerAligned" style="width: 4%;"><img src="/atg/images/listblank.gif" alt="" width="9" height="9" border="0" /></th>
+    <th class="centerAligned" style="width: 4%;"><span class="tableHeader"><fmt:message key="failure-type" bundle="${depBundle}"/></span></th>
+    <th class="centerAligned"><span class="tableHeader"><fmt:message key="failure-error-message" bundle="${depBundle}"/></span></th>
+    <th class="centerAligned"><span class="tableHeader"><fmt:message key="failure-asset" bundle="${depBundle}"/></span></th>
+    <th class="centerAligned wrapNoBorder"><span class="tableHeader"><fmt:message key="failure-timestamp" bundle="${depBundle}"/></span></th>
+   </tr>
+
+   <c:forEach items="${failures}" var="failureInfo" varStatus="status">
+     <%@ include file="site_failure_info.jspf" %>
+   </c:forEach>
+
+   <c:if test="${deploymentServer.displayAutoRollbackFailures}">
+     <c:set var="rbFailures" value="${currentDeployment.status.autoRollbackFailureMessages}"/>
+     <c:if test="${!empty rbFailures}">
+       <c:set var="rowIdPrefix" value="rb"/>
+       <c:forEach items="${rbFailures}" var="failureInfo" varStatus="status">
+         <%@ include file="site_failure_info.jspf" %>
+       </c:forEach>
+     </c:if>
+   </c:if>
+   
+  </table>
+  </div>
+</c:if> <%-- !empty failures --%>
+
+<!-- END FILE site_failures.jspf -->
+<%-- 
+  @version $Id: //product/PubPortlet/version/10.0.3/portlets.war/html/DeploymentPortlet/site/site_failures.jspf#2 $$Change: 651448 $
+  @updated $DateTime: 2011/06/07 13:55:45 $$Author: rbarbier $
+--%>
+<%-- @version $Id: //product/PubPortlet/version/10.0.3/portlets.war/html/DeploymentPortlet/site/site_failures.jspf#2 $$Change: 651448 $--%>

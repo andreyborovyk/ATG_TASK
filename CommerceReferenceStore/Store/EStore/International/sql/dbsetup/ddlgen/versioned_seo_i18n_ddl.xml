@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This is a generated file -->
+
+<!DOCTYPE schema SYSTEM "http://road.atg.com/dtds/ddlgen/schema.dtd">
+<schema name="versioned_seo_i18n_ddl" description="tables for the SEO i18n repository">
+
+<comment> @version $Id: //hosting-blueprint/B2CBlueprint/version/10.0.3/EStore/International/sql/ddlgen/seo_i18n_ddl.xml#1 $$Change: 651360 $</comment>
+
+  
+	 <table name="crs_seo_xlate" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+			</column>
+			<column description="the id of the workspace that the asset exists on" nullable="n" name="workspace_id">
+				 <column-type length="40" type="varchar" db="generic"/>
+			</column>
+			<column description="the id of the branch that the asset exists on" nullable="n" name="branch_id">
+				 <column-type length="40" type="varchar" db="generic"/>
+			</column>
+			<column description="is this version the head of branch" nullable="n" name="is_head">
+				 <column-type type="one-digit" db="generic"/>
+			</column>
+			<column description="flag indicating that the version is deleted" nullable="n" name="version_deleted">
+				 <column-type length="1" type="numeric" db="generic"/>
+			</column>
+			<column description="flag indicating that version is editable" nullable="n" name="version_editable">
+				 <column-type length="1" type="numeric" db="generic"/>
+			</column>
+			<column description="the predecessor version number" nullable="y" name="pred_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+			</column>
+			<column description="date the asset was checked in if not a working version" nullable="y" name="checkin_date">
+				 <column-type type="datetime" db="generic"/>
+			</column>
+
+			<!-- Data Columns -->
+    <column name="translation_id" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column> 
+    
+    <column name="title" description="Page's title content" nullable="y" default="" i18n="n">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+    
+    <column name="display_name" description="Page's display name" nullable="y" default="" i18n="n">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+    
+    <column name="description" description="Page's meta description content" nullable="y" default="" i18n="n">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>   
+    
+    <column name="keywords" description="Page's meta keywords content" nullable="y" default="" i18n="n">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+    
+  <primary-key name="crs_seo_xlate_pk">
+      <index-column column="translation_id" seq="1" order="asc"/>
+    
+				 <index-column seq="2" order="asc" column="asset_version"/>
+			</primary-key>
+			<index table="crs_seo_xlate" name="crs_seo_xlate_wsx">
+				 <index-column seq="1" order="asc" column="workspace_id"/>
+			</index>
+			<index table="crs_seo_xlate" name="crs_seo_xlate_cix">
+				 <index-column seq="1" order="asc" column="checkin_date"/>
+			</index>
+	 </table>
+  
+  
+	 <table name="crs_seo_seo_xlate" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+			</column>
+
+			<!-- Data Columns -->
+    <column name="seo_tag_id" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="locale" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="translation_id" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>    
+    
+    
+  <primary-key name="crs_seo_tag_xlt_pk">
+      <index-column column="seo_tag_id" seq="1" order="asc"/>
+      <index-column column="locale" seq="2" order="asc"/>
+    
+				 <index-column seq="3" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table> 
+</schema>
+<!-- @version $Id: //hosting-blueprint/B2CBlueprint/version/10.0.3/EStore/International/sql/ddlgen/seo_i18n_ddl.xml#1 $$Change: 651360 $-->

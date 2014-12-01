@@ -1,0 +1,49 @@
+<html>
+<head><title>View Configuration</title></head>
+<body>
+  <h3>View Configuration</h3>
+
+  This page is useful for viewing the Nucleus configuration of
+  components that are not accessible via the HTML admin. For example,
+  components that could not be successfully resolved, or components
+  that replace themselves during start up (such as GenericReferences).
+  <P>
+
+  <droplet name="/atg/dynamo/droplet/Switch">
+    <param name="value" value="param:confPath"/>
+    <oparam name="unset">
+    </oparam>
+    <oparam name="default">
+        <hr>
+        <java>
+        String strConfPath = request.getParameter("confPath");
+	if ((strConfPath != null) && !"".equals(strConfPath)) {
+	   atg.nucleus.Configuration confFound =
+	Nucleus.getGlobalNucleus().getConfigurationFinder().findConfiguration(strConfPath,
+	false, null, null);
+	   if (confFound == null) {
+	     out.println("No configuration found for \"" + strConfPath
+	                 + "\"");
+           }
+	   else if (confFound instanceof atg.nucleus.ValueFormatter) {
+	    out.println(((atg.nucleus.ValueFormatter)confFound).formatLongValue());
+           }
+	   else {
+	     out.println(confFound);
+	   }
+        }
+        </java>
+    </oparam> <%-- end default --%>
+  </droplet>
+
+<hr>
+  <form action="viewconf.jhtml" method="POST">
+   <P>
+    Please enter the absolute path of the component:<BR><BR>
+    Configuration path: <input type="text" size="60" name="confPath" value="param:confPath">
+   <P>
+
+  </form>
+</body>
+</html>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/home/doc/viewconf.jhtml#2 $$Change: 651448 $*/</java>

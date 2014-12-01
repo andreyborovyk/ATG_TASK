@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE gsa-template
+  PUBLIC "-//Art Technology Group, Inc.//DTD Dynamo Security//EN"
+         "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+         
+<gsa-template>
+
+  <item-descriptor name="messageThread"  display-name-resource="itemDescriptorMessageThread" query-cache-size="100" version-property="version">
+		<attribute name="resourceBundle" value="atg.portal.gear.discussion.DiscussionRepositoryTemplateResources"/>
+    
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="dtg_thread" id-column-name="id" type="primary">
+			<property category-resource="categoryBasics" name="user" display-name-resource="user" item-type="user" repository="/atg/userprofiling/ProfileAdapterRepository" column-name="userid">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="subject" display-name-resource="subject" column-name="subject" data-type="string" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryBasics" name="content" display-name-resource="content" column-name="content" data-type="string">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryBasics" name="messageBoard" display-name-resource="messageBoard" column-name="message_board" item-type="messageBoard" required="true">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property category-resource="categoryBasics" name="parentThread" display-name-resource="parentThread" column-name="parent_thread" item-type="messageThread">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property category-resource="categoryBasics" name="ultimateThread" display-name-resource="ultimateThread" column-name="ultimate_thread" item-type="messageThread">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property category-resource="categoryBasics" name="childrenQty" display-name-resource="childrenQty" column-name="children_qty" data-type="int" default="0">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+      <property category-resource="categoryBasics" name="topicResponseFlag" display-name-resource="topicResponseFlag" column-name="topic_resp_flag" data-type="enumerated" required="true">
+        <attribute name="useCodeForValue" value="false"/>
+        <option value="topic" code="0"/>
+        <option value="response" code="1"/>
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+      <property category-resource="categoryBasics" name="deleteFlag" display-name-resource="deleteFlag" column-name="delete_flag" data-type="int" default="0" required="true">
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+      <property category-resource="categoryInfo" name="creationDate" display-name-resource="creationDate" data-type="timestamp" column-name="creation_date" writable="false">
+        <attribute name="useNowForDefault" value="true"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryInfo" name="version" display-name-resource="version" data-type="int" queryable="true" readable="true" column-name="version" hidden="false" expert="true" required="false" cache-mode="inherit" writable="false">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+
+  <item-descriptor name="messageBoard" display-name-resource="itemDescriptorMessageBoard" display-property="name" query-cache-size="100" version-property="version">
+		<attribute name="resourceBundle" value="atg.portal.gear.discussion.DiscussionRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="dtg_board" id-column-name="id" type="primary">
+      <property category-resource="categoryBasics" name="name" display-name-resource="name" column-name="name" data-type="string" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="description" display-name-resource="description" column-name="description" data-type="string">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryBasics" name="owner" display-name-resource="owner" item-type="user" repository="/atg/userprofiling/ProfileAdapterRepository" column-name="owner">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryBasics" name="numPosts" display-name-resource="numPosts" column-name="num_posts" data-type="int" default="0">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryBasics" name="boardType" display-name-resource="boardType" column-name="board_type" data-type="enumerated" required="true" default="public">
+        <attribute name="useCodeForValue" value="false"/>
+        <option value="public" code="0"/>
+        <option value="private" code="1"/>
+        <option value="document" code="2"/>
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property category-resource="categoryBasics" name="deleteFlag" display-name-resource="deleteFlag" column-name="delete_flag" data-type="int" default="0" required="true">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      
+      <property category-resource="categoryInfo" name="lastPostTime" display-name-resource="lastPostTime" column-name="last_post_time" data-type="timestamp">
+        <attribute name="useNowForDefault" value="true"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryInfo" name="creationDate" display-name-resource="creationDate" column-name="creation_date" data-type="timestamp" writable="false">
+        <attribute name="useNowForDefault" value="true"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryInfo" name="version" display-name-resource="version" data-type="int" queryable="true" readable="true" column-name="version" hidden="false" expert="true" required="false" cache-mode="inherit" writable="false">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+    </table>
+    
+    <table name="dtg_thread" type="multi" id-column-name="message_board">
+      <property category-resource="categoryBasics" name="threads" display-name-resource="threads" column-name="id" data-type="Set" component-item-type="messageThread">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+    </table> 
+  </item-descriptor>
+
+
+  <item-descriptor name="gearBoards" display-name-resource="itemDescriptorGearBoards" query-cache-size="100">
+		<attribute name="resourceBundle" value="atg.portal.gear.discussion.DiscussionRepositoryTemplateResources"/>
+    
+    <table name="dtg_gear_boards" id-column-name="id" type="primary">
+      <property name="gear" display-name-resource="gear" data-type="string" column-name="gear_id" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="messageBoard" display-name-resource="messageBoard" column-name="message_board_id" item-type="messageBoard" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+  </item-descriptor>
+    
+
+  <item-descriptor name="userGearBoards" display-name-resource="itemDescriptorUserGearBoards" query-cache-size="100">
+		<attribute name="resourceBundle" value="atg.portal.gear.discussion.DiscussionRepositoryTemplateResources"/>
+
+    <table name="dtg_usr_gear_board" id-column-name="id" type="primary">
+      <property name="user" display-name-resource="user" data-type="string" column-name="user_id" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="gear" display-name-resource="gear" data-type="string" column-name="gear_id" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="messageBoard" display-name-resource="messageBoard" column-name="message_board_id" item-type="messageBoard" required="true">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="discussionSearch" display-name="discussionSearch" writable="false">
+    <table name="dtg_view_search" id-column-names="id,gear_id" type="primary">
+      <property name="gear_id" display-name="gear_id" data-type="string" column-name="gear_id" required="true"/>
+      <property name="subject" display-name="subject" column-name="subject" data-type="string" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="content" display-name="content" column-name="content" data-type="string">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="forum_id" display-name="forum_id" data-type="string" column-name="message_board" required="true" />
+      <property name="topic_id" display-name="topic_id" data-type="string" column-name="id" required="true" />
+    </table>
+  </item-descriptor>
+    
+</gsa-template>
+<!-- @version $Id: //app/portal/version/10.0.3/discussion/config/atg/portal/gear/discussion/discussionRepository.xml#2 $$Change: 651448 $ -->

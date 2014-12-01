@@ -1,0 +1,135 @@
+
+<nucleus type=import>
+  /atg/dynamo/admin/Configure
+  /atg/dynamo/admin/DefaultConfigure
+  /atg/dynamo/droplet/Range
+  /atg/dynamo/droplet/Switch
+</nucleus>
+
+<java>
+  atg.service.dynamo.ServerConfig configure = (atg.service.dynamo.ServerConfig) request.resolveName("/atg/dynamo/admin/Configure");
+</java>
+
+<HTML>
+<HEAD>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+<TITLE>Dynamo 5 Configuration</TITLE>
+
+
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="images/config-banner.gif" ALT="Dynamo Configuration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a
+href="configure-server.jhtml">Configure</a>/Servers
+<p>
+
+
+<setvalue property="DefaultConfigure.refresh">
+
+<!-- Display error message and then clear it. -->
+<font color=red><valueof property=Configure.errorMsg valueishtml></valueof></font>
+<setvalue property=Configure.errorMsg>
+<p>
+
+<blockquote>
+<h2>Delete or Reset Server</h2>
+
+
+<form action="confirm.jhtml" method=get>
+ <table border="1" cellpadding="10" cellspacing="0">
+
+  <tr>
+    <th valign=bottom align=left>Server Name</th>
+    <th valign=bottom align=left>Delete Server</th>
+    <th valign=bottom align=left>Reset Server<br>
+                                 Configuration</th>
+  </tr>
+
+  <!-- Output each server which can be deleted and/or reset. -->
+  <!-- The original server cannot be deleted.                -->
+  <droplet name="Range">
+
+    <!-- output all the server names, skipping the first one -->
+    <!-- because that is the default server                  -->
+    <param name="array" value="property:Configure.serverNames">
+    <param name="start" value="2">
+    <param name="howMany" value="100"> <!-- FIXME-->
+
+    <oparam name="output">
+     <tr>
+
+      <!-- html link to page for configuring server -->
+      <td valign=middle align=left>
+        <valueof param=element></valueof>
+      </td>
+
+      <!-- set the Configure bean to be the current server so we can -->
+      <!-- query information about this server                       -->
+      <setvalue bean="Configure.serverName" value="param:element">
+      
+      <!-- output the delete button unless this is the original server -->
+      <td valign=middle align=left>
+        <droplet name="Switch">
+          <param name="value" value="bean:Configure.originalServer">
+          <oparam name="false">
+            <input type=submit property="Configure.deleteServerName"
+             name="param:count"
+             submitvalue="param:element" value="Delete Server">
+          </oparam>
+          <oparam name="true">
+            Cannot delete
+          </oparam>
+        </droplet>
+      </td>
+
+      <!-- output the reset button unless this server is already -->
+      <!-- using defaults                                        -->
+      <td valign=middle align=left>
+        <droplet name="Switch">
+          <param name="value" value="bean:Configure.usingDefaults">
+          <oparam name="true">
+            Using default
+          </oparam>
+          <oparam name="false">
+            <INPUT TYPE="submit" property=Configure.applyDefaults
+             name="reset"
+             submitvalue="param:element"
+             value="Reset to Default">
+          </oparam>
+        </droplet>
+      </td>
+     </tr>
+    </oparam>
+  </droplet>
+ </table>
+</form>
+
+<br>
+
+<h2>Add Server</h2>
+
+<form action="config-individual.jhtml" method=get>
+ <table border="0" cellpadding="7" cellspacing="0">
+  <tr>
+    <td valign=top align=left>
+        Server name:<br>
+        <INPUT TYPE="text" NAME="newServerName" size=25>
+    </td>
+    <td valign=BOTTOM align=left width=155>
+        <INPUT TYPE="submit" property="Configure.addServer" VALUE="Add Server">
+    </td>
+  </tr>
+ </table>
+</form>
+
+</blockquote>
+
+
+
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/config-individual.jhtml#2 $$Change: 651448 $ */</java>
+

@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+    <title>Web Service Security Configuration: Choose Users</title>
+  </head>
+<nucleus type=import>
+        /atg/dynamo/admin/GetSecurityItem
+        /atg/dynamo/admin/GetAllPrincipals
+        /atg/dynamo/admin/UserSearchDroplet
+        /atg/dynamo/droplet/Switch
+        /atg/dynamo/droplet/ForEach
+        /atg/webservice/security/NucleusAccessControlFormHandler
+</nucleus>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+<IMG SRC="../images/admin-banner.gif" ALT="Dynamo Administration"
+     ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+
+<droplet name="GetSecurityItem">
+   <param name="funcName" value="param:funcName">
+   <oparam name="notFound">
+     <JAVA> request.addQueryParameter("funcName",
+	      request.getParameter("funcName"));
+            request.addQueryParameter("choose",
+	      request.getParameter("choose")); 
+            response.sendRedirect(request.encodeURL("securitynotfound.jhtml"));
+     </JAVA>
+   </oparam>
+   <oparam name="output">
+   <setvalue bean="NucleusAccessControlFormHandler.securedObjectID" value="param:funcName">
+
+   <setvalue bean="NucleusAccessControlFormHandler.successURL"
+	     value="edit-sec-item.jhtml">
+
+<a href="/">admin</a> / <a href="index.jhtml">Web Service
+	Administration</a> / <a href="browsesecurity.jhtml">Security
+		Configurations</a> / <a
+					href="edit-sec-item.jhtml"><param name="funcName" value="param:funcName"><param name="choose" value="param:choose">Edit Security Configuration</a> / Choose Users</p><p>
+
+    <h1>Web Service Security Configuration: Choose Users </h1>
+
+<blockquote>
+
+<B>Security Configuration for: </B><valueof param="funcName">???</valueof><P>&nbsp;<P>
+
+To find users to add to the security configuration, use the user
+	search form below:
+
+<P>&nbsp;<P>
+
+<droplet name="GetAllPrincipals">
+  <oparam name="output">
+
+<form action="choose-individuals.jhtml" method="post">
+  <input type="hidden" name="funcName" value="param:funcName">
+  <input type="hidden" name="choose" value="param:choose">
+  <table border="0">
+     <tr>
+       <td colspan="2">
+        <B>List Users</B>
+       </td>
+     </tr>
+     <tr>
+       <td><input bean="UserSearchDroplet.contains"
+		  type="radio" group="contains" value="false">Starting With &nbsp;&nbsp;<input bean="UserSearchDroplet.contains" type="radio" group="contains" value="true">Containing
+       </td>
+     </tr>
+     <tr>
+       <td><input bean="UserSearchDroplet.name" type="text" size="40">
+       </td>
+     </tr>
+
+     <tr>
+       <td align="right"> <input name="searched" value="Search" type="submit">
+       </td>
+     </tr>
+  </table>
+  
+</form>
+
+
+<JAVA>request.addQueryParameter("funcName", request.getParameter("funcName"));
+      request.addQueryParameter("choose", request.getParameter("choose"));
+</JAVA>
+<form action="choose-individuals.jhtml" type="submit" method="post">
+  <input type="hidden" name="funcName" value="param:funcName">
+  <input type="hidden" name="choose" value="param:choose">
+  <input type="hidden"
+	 bean="NucleusAccessControlFormHandler.securedObjectID"
+	 value="param:funcName">
+ <JAVA>request.addQueryParameter("funcName",
+	      request.getParameter("funcName"));
+       request.addQueryParameter("choose", request.getParameter("choose"));</JAVA>
+ <input type="hidden"
+	bean="NucleusAccessControlFormHandler.successURL"
+	value="`request.encodeURL("edit-sec-item.jhtml")`">
+
+<droplet name="Switch">
+  <param name="value" value="param:searched">
+  <oparam name="unset"></oparam>
+  <oparam name="default">
+
+  <droplet name="UserSearchDroplet">
+  <oparam name="empty">No Users Found<P><input type="submit" bean="NucleusAccessControlFormHandler.addPersonae" value="Cancel"></oparam>
+  <oparam name="output">
+           <droplet src="choose-personae.jhtml">
+              <param name="indent" value="">
+              <param name="title" value="Users Found">
+              <param name="principals" value="param:users">
+           </droplet><%-- end droplet choose-personae.jhtml --%>
+
+   <P>
+
+ <input type="hidden" name="funcName" value="param:funcName">
+ <input type="submit" bean="NucleusAccessControlFormHandler.addPersonae" value="Add">
+
+
+
+   </oparam>
+  </droplet><%-- end droplet UserSearchDroplet --%>
+
+   </oparam>
+  </droplet><%-- end droplet Switch --%>
+
+</form>
+
+  </oparam>
+</droplet><%-- end droplet GetAllPrincipals --%>
+
+</blockquote>
+
+   </oparam>
+</droplet><%-- end droplet GetSecurityItem --%>
+
+  </BODY>
+</html>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/webservice/choose-individuals.jhtml#2 $$Change: 651448 $*/</java>

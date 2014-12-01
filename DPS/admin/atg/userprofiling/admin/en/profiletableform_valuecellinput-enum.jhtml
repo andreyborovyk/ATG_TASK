@@ -1,0 +1,46 @@
+<importbean bean="/atg/userprofiling/ProfileAdminFormHandler">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/Switch">
+
+<declareparam name="propertyDesc" value="atg.beans.DynamicPropertyDescriptor" description="The DynamicPropertyDescriptor of the cell we want to output">
+<declareparam name="propertyValue" value="java.lang.String" description="Value of the propertyDesc">
+<declareparam name="propertyTags" value="java.lang.String" description="Values for the enumeration">
+<declareparam name="propertyEditor" value="java.beans.PropertyEditor" description="PropertyEditor for the enumeration">
+
+<select name="param:propertyDesc.name" value="param:propertyValue">
+
+ <droplet bean="ForEach">
+  <param name="array" value="param:propertyTags">
+  <oparam name="output">
+
+    <java>
+      /* 
+       * Use the property editor to compute the value to set each attribute.
+       */
+      java.beans.PropertyEditor editor = (java.beans.PropertyEditor)
+                request.getObjectParameter("propertyEditor");
+      editor.setAsText(request.getParameter("element"));
+      request.setParameter("tagvalue", editor.getValue());
+    </java>
+
+    <droplet bean="Switch">
+      <param name="value" value="param:propertyValue">
+      <oparam name="param:element">
+      
+        <option value="param:tagvalue" selected><valueof param="element">null</valueof>      
+
+      </oparam>
+      <oparam name="default">
+
+        <option value="param:tagvalue"><valueof param="element">null</valueof>
+    
+      </oparam>
+    </droplet>
+
+
+  </oparam>
+ </droplet>
+
+</select>
+<java>/* @version $Id: //product/DPS/version/10.0.3/release/DPS/admin/atg/userprofiling/admin/en/profiletableform_valuecellinput-enum.jhtml#2 $$Change: 651448 $ */</java>
+

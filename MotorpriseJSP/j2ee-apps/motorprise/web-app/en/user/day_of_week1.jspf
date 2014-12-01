@@ -1,0 +1,26 @@
+<%@ taglib uri="dsp" prefix="dsp" %>
+<dsp:page>
+
+<dsp:importbean bean="/atg/commerce/order/scheduled/ScheduledOrderFormHandler"/>
+<!-- Selection of days for shipment including x times/week -->
+<tr>
+  <td align="right"><span class=smallb>Day(s) of week</span></td>
+  <td align="left">
+    <table>
+      <tr>
+        <td>
+         <dsp:select bean="ScheduledOrderFormHandler.complexScheduledOrderMap.calendarSchedule.userInputFields.daysOfWeek">
+          <dsp:option value="2"/>Mon.
+          <dsp:option value="3"/>Tue.
+          <dsp:option value="4"/>Wed.
+          <dsp:option value="5"/>Thu.
+          <dsp:option value="6"/>Fri.
+          <dsp:option value="7"/>Sat.
+          <dsp:option value="1"/>Sun.
+         </dsp:select>
+        </td> 
+     </tr>
+  </table>
+</tr>
+</dsp:page>
+<%-- @version $Id: //product/B2BCommerce/version/10.0.3/release/MotorpriseJSP/j2ee-apps/motorprise/web-app/en/user/day_of_week1.jspf#2 $$Change: 651448 $--%>

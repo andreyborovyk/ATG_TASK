@@ -1,0 +1,131 @@
+<!-- Title: FulfillmentEmail -->
+<importbean bean="/atg/dynamo/droplet/Switch">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/IsNull">
+<importbean bean="/atg/commerce/pricing/PriceItem">
+
+<setvalue param="messageSubject" value="An item has been removed from you order!">
+<java>/*
+<setvalue param="messageFrom" value="DCS5Team@example.com">
+<setvalue param="messageReplyTo" value="DCS5Team@example.com">
+*/</java>
+<setvalue param="mailingName" value="ItemRemoved">
+
+<setvalue param="order" value="param:message.order">
+<setvalue param="profile" value="param:message.profile">
+
+<p> Dear <valueof param="profile.firstName">Valued Customer</valueof>
+ <valueof param="profile.lastName"></valueof>,
+
+<p>The following item has been removed from your order:
+<table cellspacing=2 cellpadding=0 border=0>
+  <tr valign=top>
+    <td>
+	<valueof param="message.commerceItem.quantity"></valueof>
+    </td>
+    <td>
+	<valueof param="message.product.displayName"></valueof>
+    </td>
+    <td>&nbsp;&nbsp;</td>
+    <td>
+	<valueof param="message.catalogRef.displayName"></valueof>
+    </td>
+  </tr>
+</table>
+<p>The confirmation number for this order is: 
+<valueof param="order.id">(Please contact customer service.)</valueof>
+
+<hr>
+
+<!-- Itemized order -->
+<br>
+<table cellspacing=2 cellpadding=0 border=0>
+<tr>
+<td><b>Quantity</b></td>
+<td></td>
+<td>&nbsp;&nbsp;</td>
+<td><b>Product</b></td>
+<td>&nbsp;&nbsp;</td>
+<td><b>SKU</b></td>
+<td>&nbsp;&nbsp;</td>
+<td align=right><b>List Price</b></td>
+<td>&nbsp;&nbsp;</td>
+<td align=right><b>Sale Price</b></td>
+<td>&nbsp;&nbsp;</td>
+<td align=right><b>Total Price</b></td>
+</tr>
+
+<tr><td colspan=12><hr size=0></td></tr>
+
+
+<droplet bean="ForEach">
+  <param name="array" value="param:order.commerceItems">
+  <param name="elementName" value="item">
+  <oparam name="output">
+		<tr valign=top>
+			<td>
+				<valueof param="item.quantity">no quantity</valueof>
+			</td>
+			<td></td>
+			<td>&nbsp;&nbsp;</td>
+			<td>
+			    <valueof param="item.auxiliaryData.productRef.displayName">No display name.</valueof>
+			</td>
+			<td>&nbsp;&nbsp;</td>
+			<td>
+			    <valueof param="item.auxiliaryData.catalogRef.displayName"></valueof>
+			</td>
+			<td>&nbsp;&nbsp;</td>
+			<td align=right>
+				<valueof param="item.priceInfo.listPrice" currency>no price</valueof>
+			</td>
+			<td>&nbsp;&nbsp;</td>
+			<td align=right>
+				<droplet bean="Switch">
+					<param name="value" value="param:item.priceInfo.onSale">
+					<oparam name="true">
+						<valueof param="item.priceInfo.salePrice" currency></valueof>
+					</oparam>
+				</droplet>
+			</td>
+			<td>&nbsp;&nbsp;</td>
+			<td align=right>
+				<valueof param="item.priceInfo.amount" currency>no price</valueof>
+			</td>
+		</tr>
+  </oparam>
+
+  <oparam name="empty"><tr colspan=10 valign=top><td>No Items</td></tr></oparam>
+</droplet>
+
+<tr><td colspan=12><hr size=0></td></tr>
+<tr>
+<td colspan=11 align=right>Subtotal</td>
+<td align=right>
+	<valueof param="order.priceInfo.amount" currency>no price</valueof>
+</td>
+</tr>
+
+<tr>
+<td colspan=11 align=right>Shipping</td>
+<td align=right>
+	<valueof param="order.priceInfo.shipping" currency>no price</valueof>
+</td>
+</tr>
+
+<tr>
+<td colspan=11 align=right>Tax</td>
+<td align=right>
+	<valueof param="order.priceInfo.tax" currency>no price</valueof>
+</td>
+</tr>
+        
+<tr>
+<td colspan=11 align=right><b>Total</b></td>
+<td align=right>
+	<b><valueof param="order.priceInfo.total" currency>no price</valueof></b>
+</td>
+</tr>
+</table>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/Fulfillment/html/emails/ItemRemovedFromOrder.jhtml#2 $$Change: 651448 $*/</java>
+

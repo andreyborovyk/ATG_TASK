@@ -1,0 +1,144 @@
+<nucleus type=import>
+	/atg/dynamo/admin/jdbcbrowser/CreateTableDroplet
+</nucleus>
+
+<html>
+<title>Create Table</title>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+<IMG SRC="images/jdbc-banner.gif" ALT="JDBC Browser" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+<a href="/">admin</a>/<a href="index.jhtml">JDBC Browser</a>/Create Table
+<h1>Create Table</h1>
+
+<droplet name="CreateTableDroplet">
+</droplet>
+
+<form action="createTable.jhtml" method=post>
+
+<h2>Enter Table Description</h2>
+
+Table Name <input property="CreateTableDroplet.tableName">
+
+<table>
+
+<tr>
+<th>Column Name</th>
+<th>Column Type</th>
+<th>Size</th>
+<th>Nullable?</th>
+<th>Unique?</th>
+<th>Primary Key?</th>
+<th>Additional Constraints</th>
+</tr>
+
+<droplet src="createTableColumn.jhtml">
+<param name="nameProp" value="CreateTableColumn1.name">
+<param name="typeProp" value="CreateTableColumn1.type">
+<param name="sizeProp" value="CreateTableColumn1.size">
+<param name="nullableProp" value="CreateTableColumn1.nullable">
+<param name="uniqueProp" value="CreateTableColumn1.unique">
+<param name="primaryKeyProp" value="CreateTableColumn1.primaryKey">
+<param name="otherProp" value="CreateTableColumn1.otherConstraints">
+</droplet>
+
+<droplet src="createTableColumn.jhtml">
+<param name="nameProp" value="CreateTableColumn2.name">
+<param name="typeProp" value="CreateTableColumn2.type">
+<param name="sizeProp" value="CreateTableColumn2.size">
+<param name="nullableProp" value="CreateTableColumn2.nullable">
+<param name="uniqueProp" value="CreateTableColumn2.unique">
+<param name="primaryKeyProp" value="CreateTableColumn2.primaryKey">
+<param name="otherProp" value="CreateTableColumn2.otherConstraints">
+</droplet>
+
+<droplet src="createTableColumn.jhtml">
+<param name="nameProp" value="CreateTableColumn3.name">
+<param name="typeProp" value="CreateTableColumn3.type">
+<param name="sizeProp" value="CreateTableColumn3.size">
+<param name="nullableProp" value="CreateTableColumn3.nullable">
+<param name="uniqueProp" value="CreateTableColumn3.unique">
+<param name="primaryKeyProp" value="CreateTableColumn3.primaryKey">
+<param name="otherProp" value="CreateTableColumn3.otherConstraints">
+</droplet>
+
+<droplet src="createTableColumn.jhtml">
+<param name="nameProp" value="CreateTableColumn4.name">
+<param name="typeProp" value="CreateTableColumn4.type">
+<param name="sizeProp" value="CreateTableColumn4.size">
+<param name="nullableProp" value="CreateTableColumn4.nullable">
+<param name="uniqueProp" value="CreateTableColumn4.unique">
+<param name="primaryKeyProp" value="CreateTableColumn4.primaryKey">
+<param name="otherProp" value="CreateTableColumn4.otherConstraints">
+</droplet>
+
+<droplet src="createTableColumn.jhtml">
+<param name="nameProp" value="CreateTableColumn5.name">
+<param name="typeProp" value="CreateTableColumn5.type">
+<param name="sizeProp" value="CreateTableColumn5.size">
+<param name="nullableProp" value="CreateTableColumn5.nullable">
+<param name="uniqueProp" value="CreateTableColumn5.unique">
+<param name="primaryKeyProp" value="CreateTableColumn5.primaryKey">
+<param name="otherProp" value="CreateTableColumn5.otherConstraints">
+</droplet>
+
+<droplet src="createTableColumn.jhtml">
+<param name="nameProp" value="CreateTableColumn6.name">
+<param name="typeProp" value="CreateTableColumn6.type">
+<param name="sizeProp" value="CreateTableColumn6.size">
+<param name="nullableProp" value="CreateTableColumn6.nullable">
+<param name="uniqueProp" value="CreateTableColumn6.unique">
+<param name="primaryKeyProp" value="CreateTableColumn6.primaryKey">
+<param name="otherProp" value="CreateTableColumn6.otherConstraints">
+</droplet>
+
+<droplet src="createTableColumn.jhtml">
+<param name="nameProp" value="CreateTableColumn7.name">
+<param name="typeProp" value="CreateTableColumn7.type">
+<param name="sizeProp" value="CreateTableColumn7.size">
+<param name="nullableProp" value="CreateTableColumn7.nullable">
+<param name="uniqueProp" value="CreateTableColumn7.unique">
+<param name="primaryKeyProp" value="CreateTableColumn7.primaryKey">
+<param name="otherProp" value="CreateTableColumn7.otherConstraints">
+</droplet>
+
+<droplet src="createTableColumn.jhtml">
+<param name="nameProp" value="CreateTableColumn8.name">
+<param name="typeProp" value="CreateTableColumn8.type">
+<param name="sizeProp" value="CreateTableColumn8.size">
+<param name="nullableProp" value="CreateTableColumn8.nullable">
+<param name="uniqueProp" value="CreateTableColumn8.unique">
+<param name="primaryKeyProp" value="CreateTableColumn8.primaryKey">
+<param name="otherProp" value="CreateTableColumn8.otherConstraints">
+</droplet>
+
+<droplet src="createTableColumn.jhtml">
+<param name="nameProp" value="CreateTableColumn9.name">
+<param name="typeProp" value="CreateTableColumn9.type">
+<param name="sizeProp" value="CreateTableColumn9.size">
+<param name="nullableProp" value="CreateTableColumn9.nullable">
+<param name="uniqueProp" value="CreateTableColumn9.unique">
+<param name="primaryKeyProp" value="CreateTableColumn9.primaryKey">
+<param name="otherProp" value="CreateTableColumn9.otherConstraints">
+</droplet>
+
+<droplet src="createTableColumn.jhtml">
+<param name="nameProp" value="CreateTableColumn10.name">
+<param name="typeProp" value="CreateTableColumn10.type">
+<param name="sizeProp" value="CreateTableColumn10.size">
+<param name="nullableProp" value="CreateTableColumn10.nullable">
+<param name="uniqueProp" value="CreateTableColumn10.unique">
+<param name="primaryKeyProp" value="CreateTableColumn10.primaryKey">
+<param name="otherProp" value="CreateTableColumn10.otherConstraints">
+</droplet>
+
+</table>
+
+<p>
+<input type=submit name="submit" value="Create table">
+
+</form>
+
+</body>
+</html>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/jdbcbrowser/createTable.jhtml#2 $$Change: 651448 $ */</java>
+

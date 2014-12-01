@@ -1,0 +1,68 @@
+<nucleus type=import>
+	/atg/dynamo/admin/Configure
+	/atg/dynamo/admin/NativeDbConnectionPool
+</nucleus><java>
+  atg.service.dynamo.ServerConfig configure = (atg.service.dynamo.ServerConfig)
+  	request.resolveName("/atg/dynamo/admin/Configure");
+  atg.service.dynamo.NativeDBConnectionPoolConfig nativeDbCfg = (atg.service.dynamo.NativeDBConnectionPoolConfig)
+  	request.resolveName("/atg/dynamo/admin/NativeDbConnectionPool");
+
+  if ( null == nativeDbCfg.getPoolName() || nativeDbCfg.getPoolName().equals("") )
+    response.sendLocalRedirect( "configure-db-pools.jhtml", request );
+</java>
+
+<HTML>
+<HEAD>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+
+<TITLE>Configure a Native JDBC Connection Pool</TITLE>
+
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="images/config-banner.gif" ALT="Dynamo Configuration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a href="configure-server.jhtml"><param name="dynamoPool" value="false">Configure</a>
+/<a href="configure-db-pools.jhtml"><param name="dynamoPool" value="false">DB_Pools</a>
+/<valueof property=NativeDbConnectionPool.poolName></valueof><p>
+
+<blockquote>
+
+<h2>Native JDBC Connection Pool: <valueof property=NativeDbConnectionPool.poolName></valueof></h2><p>
+
+<FORM ACTION="native-c-db-p.jhtml" METHOD=POST>
+
+<!-- If the Error Message has been set, display it and then clear it. -->
+<droplet bean="/atg/dynamo/droplet/Switch">
+  <param name=value value="bean:NativeDbConnectionPool.errorMessage">
+  <oparam name="unset"></oparam>
+  <oparam name="default">
+    <p><font color=red><valueof property=NativeDbConnectionPool.errorMessage valueishtml></valueof></font><p>
+    <setvalue bean="NativeDbConnectionPool.errorMessage">
+  </oparam>
+</droplet>
+
+  <ul>
+ <p>
+Dynamo uses native connection pools by creating a JNDI reference to the native connection pool DataSource.
+<p>
+Enter the complete JNDI name for the native connection pool DataSource:
+ </p>
+  <INPUT TYPE="text"  property=NativeDbConnectionPool.JNDIName size=35><br>
+  <p>              
+
+<INPUT TYPE="submit" property=NativeDbConnectionPool.applyChanges VALUE="Apply Changes">
+
+  </ul>
+
+<p>
+<a href="configure-db-pools.jhtml"><param name="dynamoPool" value="false">Back</a><br>
+
+</FORM>
+
+
+</blockquote>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/native-c-db-p.jhtml#2 $$Change: 651448 $*/</java>

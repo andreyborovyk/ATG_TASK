@@ -1,0 +1,185 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+    <title>Create Web Service: EAR Name & Servlet Settings</title>
+  </head>
+<nucleus type=import>
+        /atg/dynamo/droplet/ForEach
+	/atg/dynamo/admin/GetMethod
+	/atg/dynamo/admin/CreateWebService
+        /atg/dynamo/droplet/Switch
+</nucleus>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+<IMG SRC="../images/admin-banner.gif" ALT="Dynamo Administration"
+     ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+
+<droplet name="GetMethod">
+  <param name="object" value="bean:CreateWebService.resolvedComponent">
+  <param name="methodName" value="bean:CreateWebService.methodName">
+  <oparam name="error">
+     ERROR!
+     <JAVA>
+            response.sendRedirect(request.encodeURL("selecttype.jhtml"));
+     </JAVA>
+  </oparam>
+  <oparam name="output">
+
+<a href="/">admin</a> / <a href="index.jhtml">Web Service
+	Administration</a> / Create Web Service </p><p>
+
+    <h2>Create Web Service</h2>
+    <h1>EAR Name & Servlet Settings</h1>
+
+<blockquote>
+
+
+<B>Current Selections</B><BR>
+<TABLE border=0>
+<TR><TD>&nbsp;&nbsp;&nbsp;</TD><TD>
+  <droplet name="Switch">
+   <param name="value" value="bean:CreateWebService.JMSType">
+   <oparam name="default">
+     JMS Type: <valueof bean="CreateWebService.JMSType">???</valueof>
+   </oparam>
+   <oparam name="unset">
+     Nucleus Component: <valueof bean="CreateWebService.componentName">???</valueof><BR>
+    Method: <valueof bean="CreateWebService.methodName">???</valueof><BR>
+    Parameter Names: <valueof bean="CreateWebService.parameterNamesAsString">(none)</valueof><BR>
+   </oparam>
+  </droplet>
+</TD></TR>
+</TABLE>
+
+<BR><B>Settings</B><BR>
+
+<!-- This is awful, but IE6 fails with a DNS error if we try to use
+     "post" here.  And if we try to be fancy and detect IE6 and
+     substitute "get" for "post" only in that case, the redirect
+     doesn't happen.  All of this seems to be related to some
+     timing-related bug in IE's parameter submission code. -->
+
+<form action="appconfig.jhtml" method="get">
+ <input type="hidden" 
+  name="paramNamesString"
+  value="bean:CreateWebService.parameterNamesAsString">
+ <input type="hidden" 
+  value="bean:CreateWebService.parameterNamesAsString"
+  bean="CreateWebService.parameterNamesAsString">
+ 
+
+<table border=0>
+
+  <droplet name="Switch">
+   <param name="value" value="bean:CreateWebService.JMSType">
+   <oparam name="default">
+     <tr><td align="RIGHT">Port Name to send the JMS message&nbsp;</td>
+       <td>
+       <select bean="CreateWebService.portName">
+         <droplet name="ForEach">
+           <param name="array" value="bean:/atg/dynamo/messaging/MessageImporter.outputPortNames">
+           <oparam name="output">
+             <option value="param:element">
+                 <valueof param="element"></valueof>
+           </oparam>
+           <oparam name="empty">
+             no elements
+           </oparam>
+         </droplet>
+         </select>
+       </select>
+       </td>
+     </tr>
+   </oparam>
+   <oparam name="unset">
+   </oparam>
+  </droplet>
+
+  <tr><td align="RIGHT">EAR file name or path&nbsp;</td>
+      <td><input required type="text" size="40" bean="CreateWebService.EARFileName">
+        <droplet name="Switch">
+	  <param name="value" value="bean:CreateWebService.propertyExceptions.EARFile">
+          <oparam name="unset"></oparam>
+          <oparam name="default">
+             <font color="red"><valueof param="value.message">???</valueof></font><br>
+          </oparam>
+        </droplet>
+</td></tr>
+
+
+  <tr><td align="RIGHT">Name for Servlet&nbsp;</td>
+      <td><input type="text" size="40" bean="CreateWebService.servletName" required="true">
+        <droplet name="Switch">
+	  <param name="value" value="bean:CreateWebService.propertyExceptions.servletName">
+          <oparam name="unset"></oparam>
+          <oparam name="default">
+             <font color="red"><valueof param="value.message">???</valueof></font><br>
+          </oparam>
+        </droplet>
+  </td></tr>
+
+
+  <tr><td align="RIGHT">Description of Servlet (optional)&nbsp;</td>
+      <td><input type="text" size="40" bean="CreateWebService.servletDescription">
+        <droplet name="Switch">
+	  <param name="value" value="bean:CreateWebService.propertyExceptions.servletDescription">
+          <oparam name="unset"></oparam>
+          <oparam name="default">
+             <font color="red"><valueof param="value.message">???</valueof></font><br>
+          </oparam>
+        </droplet>
+   </td></tr>
+
+
+  <tr><td align="RIGHT">Network Host Name for this Service*&nbsp;</td>
+      <td><input type="text" size="40" bean="CreateWebService.host">
+        <droplet name="Switch">
+	  <param name="value" value="bean:CreateWebService.propertyExceptions.host">
+          <oparam name="unset"></oparam>
+          <oparam name="default">
+             <font color="red"><valueof param="value.message">???</valueof></font><br>
+          </oparam>
+        </droplet>
+  </td></tr>
+
+  <tr><td align="RIGHT">Network Port Number for this Service*&nbsp;</td>
+      <td><input type="text" size="40" bean="CreateWebService.port">
+        <droplet name="Switch">
+	  <param name="value" value="bean:CreateWebService.propertyExceptions.port">
+          <oparam name="unset"></oparam>
+          <oparam name="default">
+             <font color="red"><valueof param="value.message">???</valueof></font><br>
+          </oparam>
+        </droplet>
+</td></tr>
+
+
+ <input type="hidden" name="cmpnName" value="bean:CreateWebService.componentName"/>
+ <input type="hidden" name="methodName" value="bean:CreateWebService.methodName"/>
+ <input type="hidden" bean="CreateWebService.successURL" value="webmoduleconfig.jhtml">
+
+ <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+ <tr><td colspan=2><droplet name="Switch">
+   <param name="value" value="bean:CreateWebService.JMS">
+   <oparam name="false"><input type="submit" value="Previous"
+submitValue="paramnames.jhtml" bean="CreateWebService.back"></oparam>
+   <oparam name="true"><input type="submit" value="Previous"
+submitValue="selectmessage.jhtml" bean="CreateWebService.back"></oparam>
+ </droplet>&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="Next" bean="CreateWebService.submit"></td></tr>
+</table> 
+</form>
+
+<font size=-1>*Empty Host and Port fields indicate that dynamic
+	    values matching the current request will be returned at runtime.</font>
+
+
+</blockquote>
+
+  </oparam>
+</droplet>
+
+  </BODY>
+</html>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/webservice/appconfig.jhtml#2 $$Change: 651448 $*/</java>

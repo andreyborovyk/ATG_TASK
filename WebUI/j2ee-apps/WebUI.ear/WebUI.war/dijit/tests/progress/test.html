@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+ 
+	<script type="text/javascript" src="/dojo-1/dojo/dojo.js" djConfig="isDebug:true, parseOnLoad: true"></script>
+	
+	<script type="text/javascript" charset="utf-8">
+	  
+	  dojo.require("dijit._Widget");
+	  dojo.require("dijit._Templated");
+		dojo.require("dojo.parser");	// scan page for widgets and instantiate them
+	  
+    // Register the Embedded Assistance widget namespace
+    dojo.registerModulePath("atg.widget", "/WebUI/dijit");
+    dojo.require("atg.widget.progress.base");
+  </script>
+		
+  <script type="text/javascript" charset="utf-8">
+	
+		dojo.addOnLoad(function(){
+
+		 });		
+
+	</script>
+	
+	<style type="text/css" media="screen">
+	  .progressContainer{
+	    margin-bottom: 20px;
+	  }
+	</style>
+	
+	<link rel="stylesheet" href="/WebUI/dijit/progress/templates/progress.css" type="text/css" media="screen" title="no title" charset="utf-8" />
+	
+	<title>ATG Widget Library - Progress Bar Test</title>
+</head>
+
+<body>
+<div id="progress1" dojoType="atg.widget.progressBase" transition="slide" percentProgress="50" pingDelay="2000" pingUrl="ping2.jsp" containerWidth="350px"></div>
+
+<div id="progress2" dojoType="atg.widget.progressBase" transition="slide" percentProgress="0" pingDelay="2000" pingUrl="ping2.jsp" containerWidth="100%"></div>
+
+<div id="progress3" dojoType="atg.widget.progressBase" percentProgress="4" pingDelay="2000" pingUrl="ping2.jsp" containerWidth="350px"></div>
+
+<div id="progress4" dojoType="atg.widget.progressBase" percentProgress="4" pingDelay="2000" pingUrl="ping2.jsp" containerWidth="75%"></div>
+
+<div id="progress5" dojoType="atg.widget.progressBase" transition="slide" percentProgress="4" pingDelay="2000" pingUrl="ping2.jsp"></div>
+
+<div id="progress6" dojoType="atg.widget.progressBase" transition="slide" percentProgress="4" pingDelay="2000" pingUrl="ping2.jsp" barColor="red"></div>
+
+<div id="progress7" dojoType="atg.widget.progressBase" transition="slide" percentProgress="4" pingDelay="2000" pingUrl="ping2.jsp" showValue="false" barColor="yellow"></div>
+
+</body>
+</html>

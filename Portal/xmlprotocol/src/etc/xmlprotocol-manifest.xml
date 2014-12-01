@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE portal-manifest PUBLIC "-//Art Technology Group, Inc.//DTD Portal Manifest//EN" "http://www.atg.com/dtds/portal/framework/portal_manifest_1.0.dtd">
+
+<portal-manifest name="XML Protocol" version="1.0" author="ATG Portal Team">
+  <gear-definitions>
+    <gear-definition name="XML Protocol Gear" version="1.0" author="ATG Portal Team">
+      <description>A gear to communicate with XML-based service providers such as syndicated news</description>
+
+      <servlet-context>/gear/xmlprotocol</servlet-context>
+
+      <dimensions>
+        <dimension name="height">noPreference</dimension>
+        <dimension name="width">noPreference</dimension>
+      </dimensions>
+
+      <gear-modes>
+
+        <gear-mode name="content">
+          <display-modes>
+            <display-mode name="full">
+              <device-output name="html">
+                 /fullfeed.jsp
+              </device-output>
+            </display-mode>
+            <display-mode name="shared">
+              <device-output name="html">
+               /sharedfeed.jsp
+              </device-output>
+            </display-mode>
+          </display-modes>
+        </gear-mode>
+        
+       <gear-mode name="instanceConfig">
+	  <display-modes>
+	    <display-mode name="full">
+	      <device-output name="html">
+		/admin/instanceConfig.jsp
+	      </device-output>
+	    </display-mode>
+	  </display-modes>
+	</gear-mode>
+
+	<gear-mode name="userConfig">
+	  <display-modes>
+	    <display-mode name="full">
+	      <device-output name="html">
+		/userConfig.jsp
+	      </device-output>
+	    </display-mode>
+	  </display-modes>
+        </gear-mode>  
+
+      </gear-modes>       
+
+      <instance-parameters>
+
+        <parameter name="feedAdaptor">
+          <default-value>atg.portal.gear.xmlprotocol.GenericXPathAdaptor</default-value>
+          <description>The adaptor class for communicating with a provider service</description>
+        </parameter>
+        
+
+        <parameter name="instanceUserID">
+          <default-value>test_id</default-value>
+          <description>ID for authenticating with the service provider</description>
+        </parameter>
+        <parameter name="instancePassword">
+          <default-value>test_password</default-value>
+          <description>Password for authenticating with the service provider</description>
+        </parameter>
+ 
+       <parameter name="authenticationUrl" >
+          <default-value>http://localhost:8840/gear/xmlprotocol/data/generic.login.xml</default-value>
+          <description>URL for authenticating with the service provider</description>
+        </parameter>
+       <parameter name="articleUrl">
+          <default-value>http://localhost:8840/gear/xmlprotocol/data/generic.articles/article.jsp</default-value>
+          <description>URL for retrieving articles from the service provider</description>
+        </parameter>
+        <parameter name="categoriesUrl">
+          <default-value>http://localhost:8840/gear/xmlprotocol/data/generic.categories.jsp</default-value>
+          <description>URL for retrieving a list of categories from the service provider</description>
+        </parameter>
+        <parameter name="headlinesUrl">
+          <default-value>http://localhost:8840/gear/xmlprotocol/data/generic.headlines.jsp</default-value>
+          <description>URL for retrieving headlines from the service provider</description>
+        </parameter>
+
+        <parameter name="fullArticleStylesheetUrl">
+          <default-value>http://localhost:8840/gear/xmlprotocol/templates/generic.article.xsl</default-value>
+          <description>URL for articles stylesheet used for full display mode</description>
+        </parameter>
+        <parameter name="fullCategoriesStylesheetUrl">
+          <default-value>http://localhost:8840/gear/xmlprotocol/templates/generic.categories.xsl</default-value>
+          <description>URL for categories stylesheet used for full display mode</description>
+        </parameter>
+        <parameter name="fullHeadlinesStylesheetUrl">
+          <default-value>http://localhost:8840/gear/xmlprotocol/templates/generic.headlines.xsl</default-value>
+          <description>URL for headlines stylesheet used for full display mode</description>
+        </parameter>
+
+       <parameter name="sharedArticleStylesheetUrl">
+          <default-value>http://localhost:8840/gear/xmlprotocol/templates/generic.article.xsl</default-value>
+          <description>URL for articles stylesheet used for shared display mode</description>
+        </parameter>
+        <parameter name="sharedCategoriesStylesheetUrl" >
+          <default-value>http://localhost:8840/gear/xmlprotocol/templates/generic.categories.xsl</default-value>
+          <description>URL for categories stylesheet used for shared display mode</description>
+        </parameter>
+        <parameter name="sharedHeadlinesStylesheetUrl">
+          <default-value>http://localhost:8840/gear/xmlprotocol/templates/generic.headlines.xsl</default-value>
+          <description>URL for headlines stylesheet used for shared display mode</description>
+        </parameter>
+
+      </instance-parameters>
+
+      <user-parameters>
+        <parameter name="categories">
+          <default-value>1,2,3</default-value>
+          <description>Personalized categories selected by the user</description>
+        </parameter>
+        <parameter name="numFullHeadlines">
+          <default-value>5</default-value>
+          <description>Number of headlines to display in full screen mode</description>
+        </parameter>
+        <parameter name="numSharedHeadlines">
+          <default-value>3</default-value>
+          <description>Number of headlines to display in shared mode</description>
+        </parameter>
+        <parameter name="lastAdaptor">
+          <default-value>atg.portal.gear.xmlprotocol.GenericAdaptor</default-value>
+          <description>Last adaptor user personalization settings apply to</description>
+        </parameter>
+      </user-parameters>
+
+    </gear-definition>
+  </gear-definitions>
+</portal-manifest>
+<!-- @version $Id: //app/portal/version/10.0.3/xmlprotocol/etc/xmlprotocol-manifest.xml#2 $$Change: 651448 $ -->

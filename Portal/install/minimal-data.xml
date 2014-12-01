@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE gsa-template SYSTEM "dynamosystemresource:/atg/dtds/gsa/gsa_1.0.dtd">
+<gsa-template>
+<import-items>
+
+<add-item item-descriptor="communityFolder" id="fld100001">
+  <set-property name="urlName"><![CDATA[root]]></set-property>
+  <set-property name="name"><![CDATA[Default Community Folder]]></set-property>
+</add-item>
+
+<add-item item-descriptor="gearDefinitionFolder" tag="root-gear-defn-folder">
+  <set-property name="urlName"><![CDATA[root]]></set-property>
+  <set-property name="name"><![CDATA[Default Gear Folder]]></set-property>
+</add-item>
+
+<add-item item-descriptor="pageFolder" tag="root-page-folder">
+  <set-property name="urlName"><![CDATA[root]]></set-property>
+  <set-property name="name"><![CDATA[Default Page Folder]]></set-property>
+</add-item>
+
+<add-item item-descriptor="deviceOutputs" tag="LAYOUT_100_TEMPLATE">
+  <set-property name="types" value="htmlURL=/templates/layout/html/100.jsp" add="true"/>
+</add-item>
+
+<add-item item-descriptor="deviceOutputs" tag="LAYOUT_25_75_TEMPLATE">
+  <set-property name="types" value="htmlURL=/templates/layout/html/25_75.jsp" add="true"/>
+</add-item>
+
+<add-item item-descriptor="deviceOutputs" tag="LAYOUT_75_25_TEMPLATE">
+  <set-property name="types" value="htmlURL=/templates/layout/html/75_25.jsp" add="true"/>
+</add-item>
+
+<add-item item-descriptor="deviceOutputs" tag="LAYOUT_25_50_25_TEMPLATE">
+  <set-property name="types" value="htmlURL=/templates/layout/html/25_50_25.jsp" add="true"/>
+</add-item>
+
+<add-item item-descriptor="deviceOutputs" tag="LAYOUT_FULL_TEMPLATE">
+  <set-property name="types" value="htmlURL=/templates/layout/html/full.jsp" add="true"/>
+</add-item>
+
+<add-item item-descriptor="deviceOutputs" tag="SHARED_PAGE_TEMPLATE">
+  <set-property name="types" value="htmlURL=/templates/page/html/shared.jsp,wmlURL=/templates/page/wml/shared.jsp" add="true"/>
+</add-item>
+
+<add-item item-descriptor="deviceOutputs" tag="FULL_PAGE_TEMPLATE">
+  <set-property name="types" value="htmlURL=/templates/page/html/full.jsp,wmlURL=/templates/page/wml/full.jsp" add="true"/>
+</add-item>
+
+<add-item item-descriptor="deviceOutputs" tag="TITLE_TEMPLATE_FULL_DO">
+  <set-property name="types" value="htmlURL=/templates/titlebar/html/titlebar.jsp" add="true"/>
+</add-item>
+
+<add-item item-descriptor="deviceOutputs" tag="TITLE_TEMPLATE_SHARED_DO">
+  <set-property name="types" value="htmlURL=/templates/titlebar/html/titlebar.jsp" add="true"/>
+</add-item>
+
+<add-item item-descriptor="deviceOutputs" tag="PRE_TITLE_TEMPLATE_FULL_DO">
+  <set-property name="types" value="htmlURL=/templates/titlebar/html/titlebar-pre.jsp" add="true"/>
+</add-item>
+
+<add-item item-descriptor="deviceOutputs" tag="PRE_TITLE_TEMPLATE_SHARED_DO">
+  <set-property name="types" value="htmlURL=/templates/titlebar/html/titlebar-pre.jsp" add="true"/>
+</add-item>
+
+<add-item item-descriptor="deviceOutputs" tag="POST_TITLE_TEMPLATE_FULL_DO">
+  <set-property name="types" value="htmlURL=/templates/titlebar/html/titlebar-post.jsp" add="true"/>
+</add-item>
+
+<add-item item-descriptor="deviceOutputs" tag="POST_TITLE_TEMPLATE_SHARED_DO">
+  <set-property name="types" value="htmlURL=/templates/titlebar/html/titlebar-post.jsp" add="true"/>
+</add-item>
+
+<add-item item-descriptor="displayModes" tag="PAGE_TEMPLATE_DM">
+  <set-property name="shared" value="$tag:SHARED_PAGE_TEMPLATE$" />
+  <set-property name="full" value="$tag:FULL_PAGE_TEMPLATE$" />
+</add-item>
+
+<add-item item-descriptor="displayModes" tag="25_75_TEMPLATE_DM">
+  <set-property name="shared" value="$tag:LAYOUT_25_75_TEMPLATE$" />
+  <set-property name="full" value="$tag:LAYOUT_FULL_TEMPLATE$" />
+</add-item>
+
+<add-item item-descriptor="displayModes" tag="75_25_TEMPLATE_DM">
+  <set-property name="shared" value="$tag:LAYOUT_75_25_TEMPLATE$" />
+  <set-property name="full" value="$tag:LAYOUT_FULL_TEMPLATE$" />
+</add-item>
+
+<add-item item-descriptor="displayModes" tag="25_50_25_TEMPLATE_DM">
+  <set-property name="shared" value="$tag:LAYOUT_25_50_25_TEMPLATE" />
+  <set-property name="full" value="$tag:LAYOUT_FULL_TEMPLATE$" />
+</add-item>
+
+<add-item item-descriptor="displayModes" tag="100_TEMPLATE_DM">
+  <set-property name="shared" value="$tag:LAYOUT_100_TEMPLATE$" />
+  <set-property name="full" value="$tag:LAYOUT_FULL_TEMPLATE$" />
+</add-item>
+
+<add-item item-descriptor="displayModes" tag="TITLE_TEMPLATE_DM">
+  <set-property name="full" value="$tag:TITLE_TEMPLATE_FULL_DO$"/>
+  <set-property name="shared" value="$tag:TITLE_TEMPLATE_SHARED_DO$"/>
+</add-item>
+
+<add-item item-descriptor="displayModes" tag="PRE_TITLE_TEMPLATE_DM">
+  <set-property name="full" value="$tag:PRE_TITLE_TEMPLATE_FULL_DO$"/>
+  <set-property name="shared" value="$tag:PRE_TITLE_TEMPLATE_SHARED_DO$"/>
+</add-item>
+
+<add-item item-descriptor="displayModes" tag="POST_TITLE_TEMPLATE_DM">
+  <set-property name="full" value="$tag:POST_TITLE_TEMPLATE_FULL_DO$"/>
+  <set-property name="shared" value="$tag:POST_TITLE_TEMPLATE_SHARED_DO$"/>
+</add-item>
+
+<!-- 1 items of type gearTitleTemplate -->
+
+<add-item item-descriptor="gearTitleTemplate" tag="GEAR_TITLE_TEMPLATE">
+  <set-property name="name"><![CDATA[Default Gear Title Template]]></set-property>
+  <set-property name="author"><![CDATA[ATG Portal Team]]></set-property>
+  <set-property name="version"><![CDATA[1.0]]></set-property>
+  <set-property name="servletContext"><![CDATA[/portal]]></set-property>
+  <set-property name="templateDisplayModes" value="$tag:TITLE_TEMPLATE_DM$"/>
+  <set-property name="preTemplateDisplayModes" value="$tag:PRE_TITLE_TEMPLATE_DM$"/>
+  <set-property name="postTemplateDisplayModes" value="$tag:POST_TITLE_TEMPLATE_DM$"/>
+</add-item>
+
+<add-item item-descriptor="pageTemplate" tag="DEFAULT_PAGE_TEMPLATE">
+  <set-property name="servletContext"><![CDATA[/portal]]></set-property>
+  <set-property name="name"><![CDATA[Default Page Template]]></set-property>
+  <set-property name="displayModes" value="$tag:PAGE_TEMPLATE_DM$" />
+</add-item>
+
+<!-- 1 items of type style -->
+
+<add-item item-descriptor="style" tag="DEFAULT_PAGE_STYLE">
+  <set-property name="cssURL"><![CDATA[/templates/style/css/default.css]]></set-property>
+  <set-property name="servletContext"><![CDATA[/portal]]></set-property>
+  <set-property name="name"><![CDATA[Portal Default]]></set-property>
+</add-item>
+
+<!-- 3 items of type regionDefinition -->
+
+<add-item item-descriptor="regionDefinition" tag="100_MIDDLE_RD">
+  <set-property name="width"><![CDATA[wide]]></set-property>
+  <set-property name="height"><![CDATA[short]]></set-property>
+  <set-property name="name"><![CDATA[100_Middle]]></set-property>
+</add-item>
+
+<add-item item-descriptor="regionDefinition" tag="25_50_25_LEFT_RD">
+  <set-property name="width"><![CDATA[narrow]]></set-property>
+  <set-property name="height"><![CDATA[short]]></set-property>
+  <set-property name="name"><![CDATA[25_50_25_Left]]></set-property>
+</add-item>
+
+<add-item item-descriptor="regionDefinition" tag="25_50_25_MIDDLE_RD">
+  <set-property name="width"><![CDATA[wide]]></set-property>
+  <set-property name="height"><![CDATA[short]]></set-property>
+  <set-property name="name"><![CDATA[25_50_25_Middle]]></set-property>
+</add-item>
+
+<add-item item-descriptor="regionDefinition" tag="25_50_25_RIGHT_RD">
+  <set-property name="width"><![CDATA[narrow]]></set-property>
+  <set-property name="height"><![CDATA[short]]></set-property>
+  <set-property name="name"><![CDATA[25_50_25_Right]]></set-property>
+</add-item>
+
+<add-item item-descriptor="regionDefinition" tag="25_75_LEFT_RD">
+  <set-property name="width"><![CDATA[narrow]]></set-property>
+  <set-property name="height"><![CDATA[tall]]></set-property>
+  <set-property name="name"><![CDATA[25_75_Left]]></set-property>
+</add-item>
+
+<add-item item-descriptor="regionDefinition" tag="25_75_RIGHT_RD">
+  <set-property name="width"><![CDATA[wide]]></set-property>
+  <set-property name="height"><![CDATA[tall]]></set-property>
+  <set-property name="name"><![CDATA[25_75_Right]]></set-property>
+</add-item>
+
+<add-item item-descriptor="regionDefinition" tag="75_25_LEFT_RD">
+  <set-property name="width"><![CDATA[wide]]></set-property>
+  <set-property name="height"><![CDATA[tall]]></set-property>
+  <set-property name="name"><![CDATA[75_25_Left]]></set-property>
+</add-item>
+
+<add-item item-descriptor="regionDefinition" tag="75_25_RIGHT_RD">
+  <set-property name="width"><![CDATA[narrow]]></set-property>
+  <set-property name="height"><![CDATA[tall]]></set-property>
+  <set-property name="name"><![CDATA[75_25_Right]]></set-property>
+</add-item>
+
+<!-- 5 items of type layoutTemplate -->
+
+<add-item item-descriptor="layoutTemplate" tag="25_75_PAGE_LT">
+  <set-property name="regionDefinitions" value="$tag:25_75_LEFT_RD$,$tag:25_75_RIGHT_RD$" />
+  <set-property name="servletContext"><![CDATA[/portal]]></set-property>
+  <set-property name="smallImageURL"><![CDATA[/templates/layout/images/25_75.gif]]></set-property>
+  <set-property name="name"><![CDATA[Layout 25-75 Template]]></set-property>
+  <set-property name="displayModes" value="$tag:25_75_TEMPLATE_DM$" />
+</add-item>
+
+<add-item item-descriptor="layoutTemplate" tag="75_25_PAGE_LT">
+  <set-property name="regionDefinitions" value="$tag:75_25_LEFT_RD$,$tag:75_25_RIGHT_RD$" />
+  <set-property name="servletContext"><![CDATA[/portal]]></set-property>
+  <set-property name="smallImageURL"><![CDATA[/templates/layout/images/75_25.gif]]></set-property>
+  <set-property name="name"><![CDATA[Layout 75-25 Template]]></set-property>
+  <set-property name="displayModes" value="$tag:75_25_TEMPLATE_DM$" />
+</add-item>
+
+<add-item item-descriptor="layoutTemplate" tag="25_50_25_PAGE_LT">
+  <set-property name="regionDefinitions"  value="$tag:25_50_25_LEFT_RD$,$tag:25_50_25_MIDDLE_RD$,$tag:25_50_25_RIGHT_RD$" />
+  <set-property name="servletContext"><![CDATA[/portal]]></set-property>
+  <set-property name="smallImageURL"><![CDATA[/templates/layout/images/25_50_25.gif]]></set-property>
+  <set-property name="name"><![CDATA[Layout 25-50-25 Template]]></set-property>
+  <set-property name="displayModes" value="$tag:25_50_25_TEMPLATE_DM$" />
+</add-item>
+
+<add-item item-descriptor="layoutTemplate" tag="100_PAGE_LT">
+  <set-property name="regionDefinitions" value="$tag:100_MIDDLE_RD$" />
+  <set-property name="servletContext"><![CDATA[/portal]]></set-property>
+  <set-property name="smallImageURL"><![CDATA[/templates/layout/images/100.gif]]></set-property>
+  <set-property name="name"><![CDATA[Layout 100 Template]]></set-property>
+  <set-property name="displayModes" value="$tag:100_TEMPLATE_DM$" />
+</add-item>
+
+<add-item item-descriptor="colorPalette" id="Classic">
+  <set-property name="highlightBackgroundColor"><![CDATA[CCCCCC]]></set-property>
+  <set-property name="highlightTextColor"><![CDATA[000000]]></set-property>
+  <set-property name="pageLinkColor"><![CDATA[336699]]></set-property>
+  <set-property name="gearTitleTextColor"><![CDATA[FFFFFF]]></set-property>
+  <set-property name="servletContext"><![CDATA[/portal]]></set-property>
+  <set-property name="pageBackgroundImageURL"><![CDATA[/templates/color/images/bg_colorscheme_classic.gif]]></set-property>
+  <set-property name="pageTextColor"><![CDATA[000000]]></set-property>
+  <set-property name="pageActionLinkColor"><![CDATA[336699]]></set-property>
+  <set-property name="gearTextColor"><![CDATA[666666]]></set-property>
+  <set-property name="gearBackgroundColor"><![CDATA[FFFFFF]]></set-property>
+  <set-property name="smallImageURL"><![CDATA[/templates/color/images/classic.gif]]></set-property>
+  <set-property name="name"><![CDATA[Classic]]></set-property>
+  <set-property name="pageBackgroundColor"><![CDATA[FFFFFF]]></set-property>
+  <set-property name="gearTitleBackgroundColor"><![CDATA[006666]]></set-property>
+  <set-property name="pageVisitedLinkColor"><![CDATA[006666]]></set-property>
+</add-item>
+
+<add-item item-descriptor="colorPalette" id="Chrome">
+  <set-property name="highlightBackgroundColor"><![CDATA[CCCCCC]]></set-property>
+  <set-property name="highlightTextColor"><![CDATA[000000]]></set-property>
+  <set-property name="pageLinkColor"><![CDATA[6666ff]]></set-property>
+  <set-property name="gearTitleTextColor"><![CDATA[cccccc]]></set-property>
+  <set-property name="servletContext"><![CDATA[/portal]]></set-property>
+  <set-property name="author"><![CDATA[ATG Portal Team]]></set-property>
+  <set-property name="pageTextColor"><![CDATA[333333]]></set-property>
+  <set-property name="pageActionLinkColor"><![CDATA[996633]]></set-property>
+  <set-property name="gearTextColor"><![CDATA[333333]]></set-property>
+  <set-property name="gearBackgroundColor"><![CDATA[cccccc]]></set-property>
+  <set-property name="smallImageURL"><![CDATA[/templates/color/images/chrome.gif]]></set-property>
+  <set-property name="name"><![CDATA[Chrome]]></set-property>
+  <set-property name="pageBackgroundColor"><![CDATA[999999]]></set-property>
+  <set-property name="gearTitleBackgroundColor"><![CDATA[333333]]></set-property>
+  <set-property name="pageVisitedLinkColor"><![CDATA[336699]]></set-property>
+</add-item>
+
+<add-item item-descriptor="colorPalette" id="Copper">
+  <set-property name="highlightBackgroundColor"><![CDATA[CCCCCC]]></set-property>
+  <set-property name="highlightTextColor"><![CDATA[000000]]></set-property>
+  <set-property name="pageLinkColor"><![CDATA[0033ff]]></set-property>
+  <set-property name="gearTitleTextColor"><![CDATA[000000]]></set-property>
+  <set-property name="servletContext"><![CDATA[/portal]]></set-property>
+  <set-property name="author"><![CDATA[ATG Portal Team]]></set-property>
+  <set-property name="pageTextColor"><![CDATA[003333]]></set-property>
+  <set-property name="gearTextColor"><![CDATA[000000]]></set-property>
+  <set-property name="gearBackgroundColor"><![CDATA[ffcc99]]></set-property>
+  <set-property name="smallImageURL"><![CDATA[/templates/color/images/copper.gif]]></set-property>
+  <set-property name="name"><![CDATA[Copper]]></set-property>
+  <set-property name="pageBackgroundColor"><![CDATA[cc6633]]></set-property>
+  <set-property name="gearTitleBackgroundColor"><![CDATA[CC9900]]></set-property>
+  <set-property name="pageVisitedLinkColor"><![CDATA[0033ff]]></set-property>
+</add-item>
+
+<add-item item-descriptor="organization" repository="/atg/userprofiling/ProfileAdapterRepository" id="root">
+  <set-property name="name"><![CDATA[root]]></set-property>
+</add-item>
+
+<add-item item-descriptor="role" repository="/atg/userprofiling/ProfileAdapterRepository" id="portal-admin" tag="portal-admin-role">
+  <set-property name="name"><![CDATA[portal-admin]]></set-property>
+  <set-property name="description"><![CDATA[Portal Administrator]]></set-property>
+</add-item>
+
+<add-item item-descriptor="roleFolder"  repository="/atg/userprofiling/ProfileAdapterRepository" id="root">
+  <set-property name="name"><![CDATA[All Communities]]></set-property>
+  <set-property name="childItems" value="$tag:portal-admin-role$" />
+</add-item>
+
+<add-item item-descriptor="user" repository="/atg/userprofiling/ProfileAdapterRepository" id="portal-admin">
+  <set-property name="firstName"><![CDATA[admin]]></set-property>
+  <set-property name="parentOrganization" value="root"/> 
+  <set-property name="ancestors" value="root"/>
+  <set-property name="roles" value="$tag:portal-admin-role$"/>
+  <set-property name="password"><![CDATA[21232f297a57a5a743894a0e4a801fc3]]></set-property>
+  <set-property name="userType"><![CDATA[1]]></set-property>
+  <set-property name="member"><![CDATA[true]]></set-property>
+  <set-property name="login"><![CDATA[admin]]></set-property>
+</add-item>
+
+<add-item item-descriptor="defaultCommunityRole">
+  <set-property name="roleName"><![CDATA[portal-admin]]></set-property>
+  <set-property name="category"><![CDATA[access]]></set-property>
+</add-item>
+<add-item item-descriptor="defaultCommunityRole">
+  <set-property name="roleName"><![CDATA[leader]]></set-property>
+  <set-property name="category"><![CDATA[access]]></set-property>
+</add-item>
+<add-item item-descriptor="defaultCommunityRole">
+  <set-property name="roleName"><![CDATA[member]]></set-property>
+  <set-property name="category"><![CDATA[access]]></set-property>
+</add-item>
+<add-item item-descriptor="defaultCommunityRole">
+  <set-property name="roleName"><![CDATA[guest]]></set-property>
+  <set-property name="category"><![CDATA[access]]></set-property>
+</add-item>
+<add-item item-descriptor="defaultCommunityRole">
+  <set-property name="roleName"><![CDATA[settings-manager]]></set-property>
+  <set-property name="category"><![CDATA[admin]]></set-property>
+</add-item>
+<add-item item-descriptor="defaultCommunityRole">
+  <set-property name="roleName"><![CDATA[user-manager]]></set-property>
+  <set-property name="category"><![CDATA[admin]]></set-property>
+</add-item>
+<add-item item-descriptor="defaultCommunityRole">
+  <set-property name="roleName"><![CDATA[page-manager]]></set-property>
+  <set-property name="category"><![CDATA[admin]]></set-property>
+</add-item>
+<add-item item-descriptor="defaultCommunityRole">
+  <set-property name="roleName"><![CDATA[gear-manager]]></set-property>
+  <set-property name="category"><![CDATA[admin]]></set-property>
+</add-item>
+
+</import-items>
+
+</gsa-template>
+<!-- @version $Id: //app/portal/version/10.0.3/install/minimal-data.xml#2 $$Change: 651448 $ -->

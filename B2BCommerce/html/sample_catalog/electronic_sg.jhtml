@@ -1,0 +1,21 @@
+<importbean bean="/atg/commerce/order/purchase/CreateElectronicShippingGroupFormHandler">
+<importbean bean="/atg/userprofiling/Profile">
+
+<hr>
+Enter new email address for ElectronicShippingGroup
+
+<form action="electronic_sg.jhtml" method="post">
+
+ShippingGroup NickName:<input type=text bean="CreateElectronicShippingGroupFormHandler.electronicShippingGroupName" size=30>
+<br>Email Address:<input type=text bean="CreateElectronicShippingGroupFormHandler.emailAddress" value="bean:Profile.email" size=30>
+
+<br>
+<input type="hidden" bean="CreateElectronicShippingGroupFormHandler.newElectronicShippingGroupSuccessURL" value="shipping.jhtml?init=false">
+<input type="hidden" bean="CreateElectronicShippingGroupFormHandler.newElectronicShippingGroupErrorURL" value="shipping.jhtml?init=false">
+<input type="submit" priority="-10" bean="CreateElectronicShippingGroupFormHandler.newElectronicShippingGroup" value="Create ElectronicShippingGroup">
+
+</form>
+</body>
+</html>
+<java>/* @version $Id: //product/B2BCommerce/version/10.0.3/release/B2BCommerce/html/sample_catalog/electronic_sg.jhtml#2 $$Change: 651448 $*/</java>
+

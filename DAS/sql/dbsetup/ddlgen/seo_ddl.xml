@@ -1,0 +1,54 @@
+<!DOCTYPE schema SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="seo_ddl"
+  description="Tables for the SEO repository">
+  <comment>
+    @version $Id: //product/DAS/version/10.0.3/templates/DAS/sql/seo_ddl.xml#2 $
+  </comment>
+
+  <comment>Table for seo-tag repository item</comment>
+  
+  <table name="das_seo_tag">
+    <!-- Id -->
+    <column name="seo_tag_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <!-- Display name  -->
+    <column name="display_name" description="Display name for seo-tag item">
+      <column-type db="generic" type="varchar" length="100"/>
+    </column>
+    <!-- Title -->
+    <column name="title" description="Page's title content">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+    <!-- Description -->
+    <column name="description" description="Page's meta description content">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+    <!-- keywords  -->
+    <column name="keywords"> 
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+     <!-- Content key -->
+    <column name="content_key" description="Content key to reference to seo-tag item">
+      <column-type db="generic" type="varchar" length="100"/>
+    </column>
+    <!--  Primary key -->
+    <primary-key name="das_seo_tag_pk">
+      <index-column column="seo_tag_id" order="asc" seq="1"/>
+    </primary-key>
+  </table> 
+  
+  <table name="das_seo_sites">
+    <column name="seo_tag_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="site_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <primary-key name="das_seo_site_pk">
+      <index-column column="seo_tag_id" order="asc" seq="1"/>
+      <index-column column="site_id" order="asc" seq="2"/>
+    </primary-key>
+  </table> 
+</schema>
+<!-- @version $Id: //product/DAS/version/10.0.3/templates/DAS/sql/seo_ddl.xml#2 $$Change: 651448 $-->

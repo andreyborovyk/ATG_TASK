@@ -1,0 +1,25 @@
+    <xa-datasource>
+          <jndi-name>${jndi-name}</jndi-name>
+          <isSameRM-override-value>false</isSameRM-override-value>
+          <min-pool-size>5</min-pool-size>
+          <max-pool-size>100</max-pool-size>
+          <blocking-timeout-millis>5000</blocking-timeout-millis>
+          <idle-timeout-minutes>15</idle-timeout-minutes>
+          <transaction-isolation>TRANSACTION_READ_COMMITTED</transaction-isolation>
+          <xa-datasource-class>${driver-class}</xa-datasource-class>
+          <xa-datasource-property name="ServerName">${hostname}</xa-datasource-property>
+          <xa-datasource-property name="DatabaseName">${databaseName}</xa-datasource-property>
+          <xa-datasource-property name="User">${username}</xa-datasource-property>
+          <xa-datasource-property name="Password">${password}</xa-datasource-property>
+          <xa-datasource-property name="Mode">71</xa-datasource-property>
+          <!-- sql to call when connection is created -->
+          <new-connection-sql>select 1</new-connection-sql>
+          <!-- sql to call on an existing pooled connection when it is obtained from pool -->
+          <check-valid-connection-sql>select 1</check-valid-connection-sql>
+      
+          <!-- corresponding type-mapping in the standardjbosscmp-jdbc.xml -->
+          <metadata>
+            <type-mapping>MS SQLSERVER2000</type-mapping>
+          </metadata>        
+    </xa-datasource>
+<!-- @version $Id: //product/CIM/version/10.0.3/plugins/Base/filetemplate/jboss-inet-xa-ds.xml#2 $$Change: 651448 $-->

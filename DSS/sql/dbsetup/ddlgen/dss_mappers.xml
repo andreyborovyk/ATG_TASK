@@ -1,0 +1,31 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="dss_mappers">
+<comment><![CDATA[ @version $Id: //product/DSS/version/10.0.3/templates/DSS/sql/dss_mappers.xml#2 $$Change: 651448 $]]></comment>
+   <table name="dss_audit_trail">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="32"/>
+      </column>
+      <column name="timestamp" nullable="y">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="label" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="profileid" nullable="y">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <column name="segmentName" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="processName" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="sessionid" nullable="y">
+         <column-type db="generic" type="varchar" length="100" /> 
+      </column>
+      <column name="parentsessionid" nullable="y">
+         <column-type db="generic" type="varchar" length="100" /> 
+      </column>
+   </table>
+</schema>
+<!-- @version $Id: //product/DSS/version/10.0.3/templates/DSS/sql/dss_mappers.xml#2 $$Change: 651448 $ -->

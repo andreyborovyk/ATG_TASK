@@ -1,0 +1,24 @@
+<project name="copy atg assets" default="copyFiles" basedir=".">
+<!--
+Please change the sourceDir and the targetDir according to your paths
+-->
+
+	<property name="sourceDir" value="C:\AE10\ATG10.0.3\MyStore\Storefront"/>
+	<property name="targetDir" value="C:\\AE10\\jboss-5.1.0.GA\\server\\atg_commprod\\deploy\\commprod.ear"/>
+		
+		<target name='copyFiles'>
+		<echo message="Start Copying ----" />
+			<copy todir="${targetDir}\\store.war">
+			<fileset dir="${sourceDir}\\j2ee-apps\\Storefront\\store.war"/>
+			</copy>
+<!--
+			<copy todir="${targetDir}\\atglib\\_testApp_slib">
+			<fileset dir="${sourceDir}\\lib"/>
+			</copy>
+	-->		
+	<echo message="Finish copying -----"/>
+			
+	</target>
+			
+			
+</project>

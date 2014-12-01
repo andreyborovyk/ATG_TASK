@@ -1,0 +1,19 @@
+<%--
+  This fragment will display success or error messages encountered during form
+  processing for a form handler stored in page variable "formHandler"
+--%>
+
+  <%-- list form handler errors --%>
+  <c:forEach items="${formHandler.formExceptions}" var="ex">
+    <script type="text/javascript" >
+      messages.addError('<c:out value="${ex.message}"/>');
+    </script>
+  </c:forEach>
+
+  <%-- list form handler success --%>
+  <c:if test="${not empty formHandler.successMessage}">
+    <script>
+      messages.addAlert('<c:out value="${formHandler.successMessage}"/>');
+    </script>
+  </c:if>
+<%-- @version $Id: //product/AssetUI/version/10.0.3/src/web-apps/AssetManager/components/formStatus.jspf#2 $$Change: 651448 $--%>

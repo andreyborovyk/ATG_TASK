@@ -1,0 +1,96 @@
+<nucleus type=import>
+  /atg/dynamo/admin/Configure
+  /atg/dynamo/admin/EnvironmentConfig
+  /atg/dynamo/droplet/ForEach
+</nucleus>
+
+<HTML>
+<HEAD>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+<TITLE>User Defined Environment Variables</TITLE>
+
+
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+<IMG SRC="images/config-banner.gif" ALT="Dynamo Configuration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a href="configure-server.jhtml">Configure</a>/<a href="configure-server-services.jhtml">Servers</a>/User_environment_variables<p>
+
+<blockquote>
+
+<h3>Server: <i><valueof property=EnvironmentConfig.serverName></valueof></i></h3>
+
+<H2>Add Environment Variables</H2>
+
+<blockquote>
+<form action="configure-user-env.jhtml" method="POST">
+
+<table border="1" cellpadding="6" cellspacing="0">
+  <tr>
+    <td>
+      Name:<br>
+      <input type="text" size ="15" property="EnvironmentConfig.userEnvVarName">
+    </td>
+    <td>
+      Value:<br>
+      <input type="text" size="15" property="EnvironmentConfig.userEnvVarValue">
+    </td>
+    <td valign="bottom">
+      <input type="submit" value="Add" property="EnvironmentConfig.addUserEnvVar">
+   </td>
+  </tr>
+</table>
+</form>
+</blockquote>
+
+<H2>Delete Environment Variables</H2>
+
+<blockquote>
+<form action="configure-user-env.jhtml" method="POST">
+
+<table border="1" cellpadding="6" cellspacing="0">
+  <tr>
+    <th width="112">Name</th>
+    <th width="112">Value</th>
+    <td width="50">&nbsp;</td>
+  </tr>
+
+<droplet name="ForEach">
+  <param name="array" value="property:EnvironmentConfig.userEnvVars">
+  <oparam name="output">
+  <tr>
+    <td><valueof param="key"></valueof></td>
+    <td><valueof param="element"></valueof></td>
+    <td><input type=submit property="EnvironmentConfig.deleteUserEnvVarName" submitvalue="param:key" value="Delete" name="param:key"></td>
+  </tr>
+  </oparam>
+     
+  <oparam name="empty">
+  <tr>
+    <td colspan="3"><i>No User Defined Environment Variables</i></td>
+  </tr>
+  </oparam>
+</droplet>
+
+</table>
+
+</form>
+</blockquote>
+
+<br>
+<hr>
+<b>Change Server</b>
+<p>
+<valueof property=Configure.serverConfiguredText></valueof>
+<p>
+<droplet src="SelectServer.jhtml">
+    <param name="returnURL" value="configure-env.jhtml">
+</droplet>
+<a href="configure-server-services.jhtml">Back</a><br>
+
+</blockquote>
+
+</BODY>
+</HTML>
+<java>/* Version:  $Change: 651448 $ $DateTime: 2011/06/07 13:55:45 $ */</java>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/configure-user-env.jhtml#2 $$Change: 651448 $*/</java>

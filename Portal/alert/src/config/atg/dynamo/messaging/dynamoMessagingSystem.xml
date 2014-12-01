@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<dynamo-message-system>
+
+  <!-- patch bay definitions -->
+  <patchbay>
+
+   <!-- PAF Sources -->
+    <message-source>
+      <nucleus-name>
+        /atg/portal/alert/AlertRouter
+      </nucleus-name>
+
+      <output-port>
+        <port-name>
+           DEFAULT
+        </port-name>
+        <output-destination>
+          <destination-name>
+            patchbay:/atg/portal/alert/AlertQueue
+          </destination-name>
+          <destination-type>
+            Queue
+          </destination-type>
+        </output-destination>
+      </output-port>
+    </message-source>
+ 
+    <!-- PAF Sinks -->
+    <message-sink>
+      <nucleus-name>
+        /atg/portal/alert/AlertMgr
+      </nucleus-name>
+      <input-port>
+        <port-name>
+          DEFAULT
+        </port-name>
+	<input-destination>
+	  <destination-name>
+	    patchbay:/atg/portal/alert/AlertQueue
+	  </destination-name>
+	  <destination-type>
+	    Queue
+	  </destination-type>
+	</input-destination>
+      </input-port>
+    </message-sink>
+
+  </patchbay>
+
+</dynamo-message-system>
+<!-- @version $Id: //app/portal/version/10.0.3/alert/config/atg/dynamo/messaging/dynamoMessagingSystem.xml#2 $$Change: 651448 $ -->

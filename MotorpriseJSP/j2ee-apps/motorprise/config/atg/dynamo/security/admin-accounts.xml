@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Motorprise privilege accounts.  These accounts are used to   -->
+<!-- control access to both certain parts of the DCC as well      -->
+<!-- as certain pieces of content within certain repositories.    -->
+<!-- The users listed here will only have access to the price     -->
+<!-- list and catalog menu options in the DCC.                    -->
+
+<!-- $Id: //product/B2BCommerce/version/10.0.3/release/MotorpriseJSP/j2ee-apps/motorprise/config/atg/dynamo/security/admin-accounts.xml#2 $$Change: 651448 $ -->
+
+<!DOCTYPE accounts
+        PUBLIC "-//Art Technology Group, Inc.//DTD Dynamo Accounts//EN"
+        "http://www.atg.com/dtds/security/accounts_1.0.dtd">
+
+<accounts>
+  
+
+
+  <!-- This group represents a bunch of super users who will have -->
+  <!-- read/write access to all catalogs and price lists.         -->
+  <group name="Super admin group">
+    <attribute name="description">Super Admin</attribute>
+  </group>
+
+  <!-- This group represents a bunch of users who will have       -->
+  <!-- read only access to all catalogs and price lists           -->
+  <group name="Content QA group">
+    <attribute name="description">Content QA</attribute>
+  </group>
+
+  <!-- This group represents a bunch of users who will have       -->
+  <!-- read/write access to NDAP specific catalogs/priceLists     -->
+  <group name="NDAP admin group">
+    <attribute name="description">NDAP Admin</attribute>
+  </group>
+
+  <!-- This group represents a bunch of users who will have       -->
+  <!-- read/write access to USMW specific catalogs/priceLists     -->
+  <group name="USMW admin group">
+    <attribute name="description">USMW Admin</attribute>
+  </group>
+
+  <!-- User that will have read only access                       -->
+  <login name="contentqa">
+    <attribute name="firstName">Eddie</attribute> 
+    <attribute name="lastName">Sherfuddin</attribute>
+    <attribute name="password">contentqa</attribute>
+    <member-of name="everyone-group"/>
+    <member-of name="Content QA group"/>
+    <member-of name="commerce-repositories-user-group"/>
+  </login>
+
+  <!-- User that will have all access                             -->
+  <login name="superadmin">
+    <attribute name="firstName">Manoj</attribute> 
+    <attribute name="lastName">Parrish</attribute>
+    <attribute name="password">superadmin</attribute>
+    <member-of name="everyone-group"/>
+    <member-of name="Super admin group"/>
+    <member-of name="commerce-repositories-user-group"/>
+  </login>
+
+  <!-- Account manager for NDAP account.  This gives them access  -->
+  <!-- to all NDAP specific account information.                  -->
+  <login name="ndapmanager">
+    <attribute name="firstName">Sam</attribute> 
+    <attribute name="lastName">Streb</attribute>
+    <attribute name="password">ndapmanager</attribute>
+    <member-of name="everyone-group"/>
+    <member-of name="NDAP admin group"/>
+    <member-of name="commerce-repositories-user-group"/>
+  </login>
+
+  <!-- Account manager for USMW account.  This gives them access  -->
+  <!-- to all USMW specific account information.                  -->
+  <login name="usmwmanager">
+    <attribute name="firstName">Manny</attribute> 
+    <attribute name="lastName">Shaw</attribute>
+    <attribute name="password">usmwmanager</attribute>
+    <member-of name="everyone-group"/>
+    <member-of name="USMW admin group"/>
+    <member-of name="commerce-repositories-user-group"/>
+  </login>
+
+  <!-- Admin to modify the Profile repository.  This gives them access  -->
+  <!-- to create/modify/delete users/organization..                     -->
+  <login name="profileadmin">
+    <attribute name="firstName">Samantha</attribute> 
+    <attribute name="lastName">Gresh</attribute>
+    <attribute name="password">profileadmin</attribute>
+    <member-of name="everyone-group"/>
+    <member-of name="content-repositories-user-group"/>
+    <member-of name="commerce-repositories-user-group"/>
+    <member-of name="Super admin group"/>
+  </login>
+
+</accounts>
+<!-- @version $Id: //product/B2BCommerce/version/10.0.3/release/MotorpriseJSP/j2ee-apps/motorprise/config/atg/dynamo/security/admin-accounts.xml#2 $$Change: 651448 $ -->

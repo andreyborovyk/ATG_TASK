@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE taglib
+        PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN"
+        "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template>
+
+  <header>
+    <name>Commerce Giftlists</name>
+    <author>DCS Team</author>
+    <version>$Id: //product/DCS/version/10.0.3/templates/DCS/config/atg/commerce/gifts/giftlists.xml#2 $$Change: 651448 $</version>
+  </header>
+
+  <!-- 
+  *************************************************************
+    GiftList (also gift registries)
+  *************************************************************
+  -->
+
+  <item-descriptor name="gift-list" item-cache-size="1000" query-cache-size="1000" display-name-resource="itemDescriptorGiftList">
+    <attribute name="resourceBundle" value="atg.commerce.GiftListsTemplateResources"/>
+    
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryShippingPriority" value="20"/>
+    <attribute name="categoryInfoPriority" value="30"/>
+
+    <table name="dcs_giftlist" type="primary" id-column-name="id">
+      <property name="id" writable="false" category-resource="categoryInfo" display-name-resource="id">
+        <attribute name="propertySortPriority" value="-10"/>
+      </property>
+      <property name="owner" item-type="user" repository="/atg/userprofiling/ProfileAdapterRepository" column-name="owner_id" category-resource="categoryBasics" display-name-resource="owner">
+        <attribute name="propertySortPriority" value="-11"/>
+      </property>
+      <property name="siteId" data-type="string" column-name="site_id" category-resource="categoryInfo" display-name-resource="siteId">
+        <attribute name="propertySortPriority" value="-10"/>
+      </property>
+      <property name="public" data-type="boolean" column-name="is_public" default="false" category-resource="categoryInfo" display-name-resource="public" required="true">
+        <attribute name="propertySortPriority" value="-8"/>
+      </property>
+      <property name="published" data-type="boolean" column-name="is_published" default="false" category-resource="categoryInfo" display-name-resource="published" required="true">
+        <attribute name="propertySortPriority" value="-7"/>
+      </property>
+      <property name="eventName" data-type="string" column-name="event_name" category-resource="categoryBasics" display-name-resource="eventName">
+        <attribute name="propertySortPriority" value="-10"/>
+      </property>
+      <property name="eventDate" data-type="timestamp" column-name="event_date" category-resource="categoryBasics" display-name-resource="eventDate">
+        <attribute name="propertySortPriority" value="-9"/>
+      </property>
+      <property name="eventType" data-type="enumerated" default="other" column-name="event_type" category-resource="categoryBasics" display-name-resource="eventType"> 
+        <attribute name="useCodeForValue" value="false"/>
+        <option resource="valentinesDay" code="0"/>
+        <option resource="wedding" code="1"/>
+        <option resource="bridalShower" code="2"/>
+        <option resource="babyShower" code="3"/>
+        <option resource="birthday" code="4"/>
+        <option resource="anniversary" code="5"/>
+        <option resource="christmas" code="6"/>
+        <option resource="chanukah" code="7"/>
+        <option resource="otherHoliday" code="8"/>
+        <option resource="iJustWantThisStuff" code="9"/>
+        <option resource="other" code="10"/>
+        <attribute name="propertySortPriority" value="-8"/>
+      </property>
+      <property name="comments" data-type="string" column-name="comments" category-resource="categoryBasics" display-name-resource="comments">
+        <attribute name="propertySortPriority" value="-10"/>
+      </property>
+      <property name="description" data-type="string" column-name="description" category-resource="categoryBasics" display-name-resource="description">
+        <attribute name="propertySortPriority" value="-10"/>
+      </property>
+      <property name="instructions" data-type="string" column-name="instructions" category-resource="categoryShipping" display-name-resource="instructions">
+        <attribute name="propertySortPriority" value="-5"/>
+      </property>
+      <property name="lastModifiedDate" data-type="timestamp" column-name="last_modified_date" category-resource="categoryInfo" display-name-resource="lastModifiedDate">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="-5"/>
+      </property>
+      <property name="creationDate" data-type="timestamp" column-name="creation_date" category-resource="categoryInfo" display-name-resource="creationDate">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="useNowForDefault" value="true"/>
+        <attribute name="propertySortPriority" value="-6"/>
+      </property>
+      <property name="shippingAddress" item-type="contactInfo" repository="/atg/userprofiling/ProfileAdapterRepository" column-name="shipping_addr_id" category-resource="categoryShipping" display-name-resource="shippingAddress">
+        <attribute name="propertySortPriority" value="-6"/>
+      </property>
+     </table>
+     <table name="dcs_giftinst" type="multi" id-column-name="giftlist_id" multi-column-name="tag">
+       <property name="specialInstructions" column-name="special_inst" component-data-type="string" data-type="map" category-resource="categoryShipping" display-name-resource="specialInstructions">
+        <attribute name="propertySortPriority" value="-4"/>
+      </property>
+     </table>
+     <table name="dcs_giftlist_item" type="multi" id-column-name="giftlist_id" multi-column-name="sequence_num">
+       <property name="giftlistItems" data-type="list" component-item-type="gift-item" column-name="giftitem_id" cascade="delete" category-resource="categoryBasics" display-name-resource="giftlistItems">
+        <attribute name="propertySortPriority" value="-7"/>
+      </property>
+     </table>
+  </item-descriptor>
+
+  <item-descriptor name="gift-item" display-property="displayName" item-cache-size="1000" query-cache-size="1000" display-name-resource="itemDescriptorGiftItem">
+    <attribute name="resourceBundle" value="atg.commerce.GiftListsTemplateResources"/>
+    
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="dcs_giftitem" type="primary" id-column-name="id">
+      
+      <property name="id" column-name="id" writable="false" category-resource="categoryInfo" display-name-resource="id">
+        <attribute name="propertySortPriority" value="-10"/>
+      </property>
+      <property name="catalogRefId" data-type="string" column-name="catalog_ref_id" editor-class="atg.ui.commerce.SkuItemStringEditor" 
+              category-resource="categoryInfo" display-name-resource="catalogRefId">
+        <attribute name="propertySortPriority" value="-9"/>
+      </property>
+      <property name="productId" data-type="string" column-name="product_id" editor-class="atg.ui.commerce.ProductItemStringEditor" 
+              category-resource="categoryInfo" display-name-resource="productId">
+        <attribute name="propertySortPriority" value="-8"/>
+      </property>
+      <property name="siteId" data-type="string" column-name="site_id" category-resource="categoryInfo" display-name-resource="siteId">
+        <attribute name="propertySortPriority" value="-7"/>
+      </property>
+      
+      <property name="displayName" data-type="string" column-name="display_name" category-resource="categoryBasics" display-name-resource="displayName">
+        <attribute name="propertySortPriority" value="-10"/>
+      </property>
+      <property name="description" data-type="string" column-name="description" category-resource="categoryBasics" display-name-resource="description">
+        <attribute name="propertySortPriority" value="-9"/>
+      </property>
+      <property name="quantityDesired" data-type="long" column-name="quantity_desired" category-resource="categoryBasics" display-name-resource="quantityDesired">
+        <attribute name="propertySortPriority" value="-8"/>
+      </property>
+      <property name="quantityPurchased" data-type="long" column-name="quantity_purchased" category-resource="categoryBasics" display-name-resource="quantityPurchased">
+        <attribute name="propertySortPriority" value="-7"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //product/DCS/version/10.0.3/templates/DCS/config/atg/commerce/gifts/giftlists.xml#2 $$Change: 651448 $ -->

@@ -1,0 +1,166 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="docexch_ddl">
+<comment><![CDATA[ @version $Id: //app/portal/version/10.0.3/docexch/sql/docexch_ddl.xml#2 $$Change: 651448 $]]></comment>
+   <table name="dex_document">
+      <column name="document_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="n" default="0">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="title" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="400"/>
+         <column-type db="mssql" type="varchar" length="400" scale=""/>
+      </column>
+      <column name="filename" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="author" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="400"/>
+         <column-type db="mssql" type="varchar" length="400" scale=""/>
+      </column>
+      <column name="filedatasize" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="mimetype" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="100"/>
+      </column>
+      <column name="creation_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="gear_instance_ref" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="annotation_ref" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="status" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="file_data" nullable="y">
+         <column-type db="generic" type="long-varbinary"/>
+         <column-type db="db2" type="blob" length="2097152" scale=""/>
+      </column>
+      <primary-key name="dex_documentpk">
+         <index-column column="document_id" order="asc" seq="1"/>
+      </primary-key>
+      <index name="gear_inst_ref_idx" table="dex_document">
+         <index-column column="gear_instance_ref" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dex_viewed_mapper">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="32"/>
+         <column-type db="oracle" type="varchar2" length="40" scale=""/>
+         <column-type db="db2" type="varchar" length="40" scale=""/>
+         <column-type db="mssql" type="varchar" length="40" scale=""/>
+      <column-type db="sybase" type="varchar" length="40"/>
+</column>
+      <column name="tstamp" nullable="y">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="doc_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="author_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="gear_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="32"/>
+         <column-type db="oracle" type="varchar2" length="40" scale=""/>
+         <column-type db="db2" type="varchar" length="40" scale=""/>
+         <column-type db="mssql" type="varchar" length="40" scale=""/>
+      <column-type db="sybase" type="varchar" length="40"/>
+</column>
+      <column name="community_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="32"/>
+         <column-type db="oracle" type="varchar2" length="40" scale=""/>
+         <column-type db="db2" type="varchar" length="40" scale=""/>
+         <column-type db="mssql" type="varchar" length="40" scale=""/>
+      <column-type db="sybase" type="varchar" length="40"/>
+</column>
+      <column name="user_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="32"/>
+         <column-type db="oracle" type="varchar2" length="40" scale=""/>
+         <column-type db="db2" type="varchar" length="40" scale=""/>
+         <column-type db="mssql" type="varchar" length="40" scale=""/>
+      <column-type db="sybase" type="varchar" length="40"/>
+</column>
+      <column name="msg_type" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <index name="dex_vewmap_comid" table="dex_viewed_mapper">
+         <index-column column="community_id" order="asc" seq="1"/>
+      </index>
+      <index name="dex_vewmap_gearid" table="dex_viewed_mapper">
+         <index-column column="gear_id" order="asc" seq="1"/>
+      </index>
+      <index name="dex_vewmap_usrid" table="dex_viewed_mapper">
+         <index-column column="user_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dex_split_doc">
+      <column name="document_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="title" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="400"/>
+         <column-type db="mssql" type="varchar" length="400" scale=""/>
+      </column>
+      <column name="filename" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="author" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="400"/>
+         <column-type db="mssql" type="varchar" length="400" scale=""/>
+      </column>
+      <column name="filedatasize" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="mimetype" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="100"/>
+      </column>
+      <column name="creation_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="gear_instance_ref" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="annotation_ref" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="status" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <primary-key name="dex_split_doc_pk">
+         <index-column column="document_id" order="asc" seq="1"/>
+      </primary-key>
+      <index name="gear_spl_ref_idx" table="dex_split_doc">
+         <index-column column="gear_instance_ref" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dex_split_file">
+      <column name="document_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="file_data" nullable="y">
+         <column-type db="generic" type="long-varbinary"/>
+         <column-type db="db2" type="blob" length="2097152" scale=""/>
+      </column>
+      <primary-key name="dex_split_file_pk">
+         <index-column column="document_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+</schema>
+<!-- @version $Id: //app/portal/version/10.0.3/docexch/sql/docexch_ddl.xml#2 $$Change: 651448 $ -->

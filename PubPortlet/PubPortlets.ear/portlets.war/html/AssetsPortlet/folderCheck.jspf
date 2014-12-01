@@ -1,0 +1,29 @@
+<%--
+  Include sub folders checkbox. Used by AssetSearchFormHandler.
+
+  @version $Id: //product/PubPortlet/version/10.0.3/portlets.war/html/AssetsPortlet/folderCheck.jspf#2 $$Change: 651448 $
+  @updated $DateTime: 2011/06/07 13:55:45 $$Author: rbarbier $
+  --%>
+
+<!-- Begin AssetPortlet's detail.jsp -->
+
+<fmt:setBundle var="assetsBundle" 
+  basename="atg.epub.portlet.AssetsPortlet.Resources"/>
+
+<div id="assetBrowserCheck">
+  <table cellpadding="0" cellspacing="0" border="0" style="margin-top: 0px; padding-top: 0px;font-size: 1em;">
+    <tr>
+      <td class="tableInfo">
+        <label class="formLabelNoBorderGray">
+          <dspel:input type="checkbox" checked="true"
+            bean="${assetSearchHandlerPath}.includeSubFolders" /> 
+          &nbsp; 
+          <fmt:message key="fc-include-subfolders" bundle="${assetsBundle}"/>
+        </label>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<!-- End AssetPortlet's detail.jsp -->
+<%-- @version $Id: //product/PubPortlet/version/10.0.3/portlets.war/html/AssetsPortlet/folderCheck.jspf#2 $$Change: 651448 $--%>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE database-initializer SYSTEM "http://www.atg.com/dtds/dbinit_1_0.dtd">
+<database-initializer>
+
+	<schema id="productionSchema">
+	
+		<sql>
+			<path>
+				<create>
+				  sql/db_components/${database}/arf_loader_ddl.sql
+				</create>
+				<drop>
+					sql/uninstall/${database}/drop_arf_loader_ddl.sql
+				</drop>
+			</path>
+		</sql>
+
+		<sql>
+			<path>
+				<create>
+				  sql/db_components/${database}/arf_id_generator.sql
+				</create>
+				<drop>
+					sql/uninstall/${database}/drop_arf_id_generator.sql
+				</drop>
+			</path>
+		</sql>
+		
+	</schema>
+	
+	
+
+	<server-instance-type id="production">
+	
+		<datasource id="all">
+			<schema id="productionSchema"/>
+		</datasource>	
+		
+	</server-instance-type>
+	
+	<server-instance-type id="staging">
+	
+		<datasource id="all">
+			<schema id="productionSchema"/>
+		</datasource>	
+		
+	</server-instance-type>
+
+</database-initializer>
+<!-- @version $Id: //product/ARF/version/10.0.3/ARF/base/cim/dbinit.xml#2 $$Change: 651448 $-->

@@ -1,0 +1,2163 @@
+<!DOCTYPE schema  SYSTEM "http://road.atg.com/dtds/ddlgen/schema.dtd">
+<schema name="portal_ddl">
+<comment><![CDATA[ @version $Id: //app/portal/version/10.0.3/paf/sql/portal_ddl.xml#2 $$Change: 651448 $]]></comment>
+   <table name="paf_folder">
+      <column name="folder_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="internal_version" nullable="n" default="0">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="type" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="parent" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="url_name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="paf_folderpk">
+         <index-column column="folder_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="paf_folder1_f" referenced-table="paf_folder">
+         <fkey-column referencing-column="parent" referenced-column="folder_id"/>
+      </foreign-key>
+      <check name="type_enum">
+         <check-expr expression="type in (0,1,2)" db="generic"/>
+      </check>
+      <!-- Ensure that there is only one child folder with a given name -->
+      <index name="paf_folderpnidx" table="paf_folder">
+         <index-column column="parent" order="asc" seq="1"/>
+         <index-column column="name" order="asc" seq="2"/>
+      </index>
+   </table>
+   <table name="paf_folder_acl" description="folder ACLs">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="indx" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="acl" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+   </table>
+   <table name="paf_child_folder">
+      <column name="folder_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="child_folder_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="paf_childfolderpk">
+         <index-column column="folder_id" order="asc" seq="1"/>
+         <index-column column="child_folder_id" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="paf_childfolder1_f" referenced-table="paf_folder">
+         <fkey-column referencing-column="folder_id" referenced-column="folder_id"/>
+      </foreign-key>
+      <foreign-key name="paf_childfolder2_f" referenced-table="paf_folder" index-name="paf_cfchldflddlix">
+         <fkey-column referencing-column="child_folder_id" referenced-column="folder_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_fldr_ln_names">
+      <column name="folder_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="locale" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="30"/>
+      </column>
+      <column name="localized_name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <primary-key name="paf_fldr_lnnamespk">
+         <index-column column="folder_id" order="asc" seq="1"/>
+         <index-column column="locale" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="paf_fldrlnnames1_f" referenced-table="paf_folder">
+         <fkey-column referencing-column="folder_id" referenced-column="folder_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_fldr_ln_descs">
+      <column name="folder_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="locale" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="30"/>
+      </column>
+      <column name="localized_desc" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <primary-key name="paf_fldr_lndescspk">
+         <index-column column="folder_id" order="asc" seq="1"/>
+         <index-column column="locale" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="paf_fldrlndescs1_f" referenced-table="paf_folder">
+         <fkey-column referencing-column="folder_id" referenced-column="folder_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_gear_param">
+      <column name="gear_param_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="internal_version" nullable="n" default="0">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="default_value" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="required" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="isreadonly" nullable="n" default="0">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <primary-key name="paf_gearparampk">
+         <index-column column="gear_param_id" order="asc" seq="1"/>
+      </primary-key>
+      <check name="required_bool">
+         <check-expr expression="required in (0,1)" db="generic"/>
+      </check>
+      <check name="isreadonly_bool">
+         <check-expr expression="isreadonly in (0,1)" db="generic"/>
+      </check>
+   </table>
+      <table name="paf_gear_prmvals">
+      <column name="gear_param_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="param_value" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="paf_gprmvalspk">
+         <index-column column="gear_param_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="paf_gprmvals1_f" referenced-table="paf_gear_param">
+         <fkey-column referencing-column="gear_param_id" referenced-column="gear_param_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_device_outputs">
+      <column name="device_outputs_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="internal_version" nullable="n" default="0">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <primary-key name="paf_deviceoutspk">
+         <index-column column="device_outputs_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="paf_device_output">
+      <column name="device_output_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="type" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="10"/>
+      </column>
+      <column name="url" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="paf_deviceoutpk">
+         <index-column column="device_output_id" order="asc" seq="1"/>
+         <index-column column="type" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="paf_device_out1_f" referenced-table="paf_device_outputs">
+         <fkey-column referencing-column="device_output_id" referenced-column="device_outputs_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_display_modes">
+      <column name="display_modes_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="internal_version" nullable="n" default="0">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="shared_mode" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="full_mode" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="popup_mode" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="paf_displaymodespk">
+         <index-column column="display_modes_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="paf_displaymode1_f" referenced-table="paf_device_outputs" index-name="paf_dmsmdlix">
+         <fkey-column referencing-column="shared_mode" referenced-column="device_outputs_id"/>
+      </foreign-key>
+      <foreign-key name="paf_displaymode2_f" referenced-table="paf_device_outputs" index-name="paf_dmfmdlix">
+         <fkey-column referencing-column="full_mode" referenced-column="device_outputs_id"/>
+      </foreign-key>
+      <foreign-key name="paf_displaymode3_f" referenced-table="paf_device_outputs" index-name="paf_dmpmdlix">
+         <fkey-column referencing-column="popup_mode" referenced-column="device_outputs_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_title_template">
+      <column name="title_template_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="creation_date" nullable="n">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="last_modified" nullable="y">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="internal_version" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="author" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="version" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="servlet_context" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="template_dm" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="pre_template_dm" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="post_template_dm" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="small_image_url" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="small_image_alt" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="large_image_url" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="large_image_alt" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="paf_titletmplpk">
+         <index-column column="title_template_id" order="asc" seq="1"/>
+      </primary-key>
+      <unique name="paf_title_templ1_u">
+         <index-column column="name" order="asc" seq="1"/>
+      </unique>
+      <foreign-key name="paf_title_templ1_f" referenced-table="paf_display_modes" index-name="paf_ttmptmpldlix">
+         <fkey-column referencing-column="template_dm" referenced-column="display_modes_id"/>
+      </foreign-key>
+      <foreign-key name="paf_title_templ2_f" referenced-table="paf_display_modes" index-name="paf_ttmppredlix">
+         <fkey-column referencing-column="pre_template_dm" referenced-column="display_modes_id"/>
+      </foreign-key>
+      <foreign-key name="paf_title_templ3_f" referenced-table="paf_display_modes" index-name="paf_ttmppstdlix">
+         <fkey-column referencing-column="post_template_dm" referenced-column="display_modes_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_gear_modes">
+      <column name="gear_modes_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="internal_version" nullable="n" default="0">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="content_mode" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="help_mode" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="about_mode" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="preview_mode" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="user_cfg_mode" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="instance_cfg_mode" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="initial_cfg_mode" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="install_cfg_mode" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="paf_gearmodespk">
+         <index-column column="gear_modes_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="paf_gear_modes1_f" referenced-table="paf_display_modes" index-name="paf_gdcmdlix">
+         <fkey-column referencing-column="content_mode" referenced-column="display_modes_id"/>
+      </foreign-key>
+      <foreign-key name="paf_gear_modes2_f" referenced-table="paf_display_modes" index-name="paf_gdhmdlix">
+         <fkey-column referencing-column="help_mode" referenced-column="display_modes_id"/>
+      </foreign-key>
+      <foreign-key name="paf_gear_modes3_f" referenced-table="paf_display_modes" index-name="paf_gdamdlix">
+         <fkey-column referencing-column="about_mode" referenced-column="display_modes_id"/>
+      </foreign-key>
+      <foreign-key name="paf_gear_modes4_f" referenced-table="paf_display_modes" index-name="paf_gmpredlix">
+         <fkey-column referencing-column="preview_mode" referenced-column="display_modes_id"/>
+      </foreign-key>
+      <foreign-key name="paf_gear_modes5_f" referenced-table="paf_display_modes" index-name="paf_gmusercmdlix">
+         <fkey-column referencing-column="user_cfg_mode" referenced-column="display_modes_id"/>
+      </foreign-key>
+      <foreign-key name="paf_gear_modes6_f" referenced-table="paf_display_modes" index-name="paf_gmancecmdlix">
+         <fkey-column referencing-column="instance_cfg_mode" referenced-column="display_modes_id"/>
+      </foreign-key>
+      <foreign-key name="paf_gear_modes7_f" referenced-table="paf_display_modes" index-name="paf_gminitcmdlix">
+         <fkey-column referencing-column="initial_cfg_mode" referenced-column="display_modes_id"/>
+      </foreign-key>
+      <foreign-key name="paf_gear_modes8_f" referenced-table="paf_display_modes" index-name="paf_gminstcmdlix">
+         <fkey-column referencing-column="install_cfg_mode" referenced-column="display_modes_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_gear_def">
+      <column name="gear_def_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="creation_date" nullable="n">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="last_modified" nullable="y">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="internal_version" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="parent_folder" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="author" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="version" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="hide" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="timeout" nullable="n">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+         <column-type db="mysql" type="bigint" />		 
+      </column>
+      <column name="jsr168" nullable="n" default="0">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mssql" type="tinyint" />
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />         
+      </column>
+      <column name="portlet_guid" nullable="y">
+      	  <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="render_async" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="should_cache" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="cache_timeout" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+         <column-type db="mysql" type="bigint" />
+      </column>
+      <column name="intercept_errors" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="cover_err_cache" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="servlet_context" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="sharable" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="width" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="height" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="small_image_url" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="small_image_alt" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="large_image_url" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="large_image_alt" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="gear_modes" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="paf_geardefpk">
+         <index-column column="gear_def_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="paf_gear_def1_f" referenced-table="paf_folder" index-name="paf_gdpfdlix">
+         <fkey-column referencing-column="parent_folder" referenced-column="folder_id"/>
+      </foreign-key>
+      <foreign-key name="paf_gear_def2_f" referenced-table="paf_gear_modes" index-name="paf_gdgmdlix">
+         <fkey-column referencing-column="gear_modes" referenced-column="gear_modes_id"/>
+      </foreign-key>
+      <check name="gear_asyncbool">
+         <check-expr expression="render_async in (0,1)" db="generic"/>
+      </check>
+      <check name="gear_cachebool">
+         <check-expr expression="should_cache in (0,1)" db="generic"/>
+      </check>
+      <check name="gear_errcachebool">
+         <check-expr expression="cover_err_cache in (0,1)" db="generic"/>
+      </check>
+      <check name="gear_errorsbool">
+         <check-expr expression="intercept_errors in (0,1)" db="generic"/>
+      </check>
+      <check name="gear_heightenum">
+         <check-expr expression="height in (0,1,2)" db="generic"/>
+      </check>
+      <check name="gear_hidebool">
+         <check-expr expression="hide in (0,1)" db="generic"/>
+      </check>
+      <check name="gear_widthenum">
+         <check-expr expression="width in (0,1,2)" db="generic"/>
+      </check>
+   </table>
+   <table name="paf_gd_cprops">
+      <column name="gear_def_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="paf_gdcpropspk">
+         <index-column column="gear_def_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="paf_gd_cprops1_f" referenced-table="paf_gear_def">
+         <fkey-column referencing-column="gear_def_id" referenced-column="gear_def_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_gd_iparams">
+      <column name="gear_def_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="gear_param_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="paf_gdiparamspk">
+         <index-column column="gear_def_id" order="asc" seq="1"/>
+         <index-column column="gear_param_id" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="paf_gd_iparams1_f" referenced-table="paf_gear_def">
+         <fkey-column referencing-column="gear_def_id" referenced-column="gear_def_id"/>
+      </foreign-key>
+      <foreign-key name="paf_gd_iparams2_f" referenced-table="paf_gear_param" index-name="paf_gdipiddlix">
+         <fkey-column referencing-column="gear_param_id" referenced-column="gear_param_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_gd_uparams">
+      <column name="gear_def_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="gear_param_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="paf_gduparamspk">
+         <index-column column="gear_def_id" order="asc" seq="1"/>
+         <index-column column="gear_param_id" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="paf_gd_uparams1_f" referenced-table="paf_gear_def">
+         <fkey-column referencing-column="gear_def_id" referenced-column="gear_def_id"/>
+      </foreign-key>
+      <foreign-key name="paf_gd_uparams2_f" referenced-table="paf_gear_param" index-name="paf_gdupiddlix">
+         <fkey-column referencing-column="gear_param_id" referenced-column="gear_param_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_gd_l10n_names">
+      <column name="gear_def_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="locale" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="30"/>
+      </column>
+      <column name="localized_name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <primary-key name="paf_gd_l10nnamespk">
+         <index-column column="gear_def_id" order="asc" seq="1"/>
+         <index-column column="locale" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="paf_gd_l10nname1_f" referenced-table="paf_gear_def">
+         <fkey-column referencing-column="gear_def_id" referenced-column="gear_def_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_gd_l10n_descs">
+      <column name="gear_def_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="locale" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="30"/>
+      </column>
+      <column name="localized_desc" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <primary-key name="paf_gd_l10ndescspk">
+         <index-column column="gear_def_id" order="asc" seq="1"/>
+         <index-column column="locale" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="paf_gd_l10ndesc1_f" referenced-table="paf_gear_def">
+         <fkey-column referencing-column="gear_def_id" referenced-column="gear_def_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_gear">
+      <column name="gear_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="internal_version" nullable="n" default="0">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="gear_definition" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="access_level" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="number" length="1" scale="0"/>
+         <column-type db="db2" type="numeric" length="1" scale="0"/>
+         <column-type db="mssql" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="show_title_bars" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="parent_comm_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="is_shared" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <primary-key name="paf_gearpk">
+         <index-column column="gear_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="paf_gear1_f" referenced-table="paf_gear_def" index-name="paf_geargddlix">
+         <fkey-column referencing-column="gear_definition" referenced-column="gear_def_id"/>
+      </foreign-key>
+      <check name="gear_titlebarsbool">
+         <check-expr expression="show_title_bars in (0,1)" db="generic"/>
+      </check>
+   </table>
+   <table name="paf_gear_acl" description="gear ACLs">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="indx" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="acl" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+   </table>
+   <table name="paf_gear_iparams">
+      <column name="gear_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="tag" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="42"/>
+      </column>
+      <column name="iparam_value" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="paf_geariparamspk">
+         <index-column column="gear_id" order="asc" seq="1"/>
+         <index-column column="tag" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="paf_geariparams1_f" referenced-table="paf_gear">
+         <fkey-column referencing-column="gear_id" referenced-column="gear_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_gear_ln_names">
+      <column name="gear_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="locale" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="30"/>
+      </column>
+      <column name="localized_name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <primary-key name="paf_gear_lnnamespk">
+         <index-column column="gear_id" order="asc" seq="1"/>
+         <index-column column="locale" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="paf_gearlnnames1_f" referenced-table="paf_gear">
+         <fkey-column referencing-column="gear_id" referenced-column="gear_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_gear_ln_descs">
+      <column name="gear_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="locale" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="30"/>
+      </column>
+      <column name="localized_desc" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <primary-key name="paf_gear_lndescspk">
+         <index-column column="gear_id" order="asc" seq="1"/>
+         <index-column column="locale" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="paf_gearlndescs1_f" referenced-table="paf_gear">
+         <fkey-column referencing-column="gear_id" referenced-column="gear_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_region_def">
+      <column name="region_def_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="internal_version" nullable="n" default="0">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="width" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="height" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <primary-key name="paf_regiondefpk">
+         <index-column column="region_def_id" order="asc" seq="1"/>
+      </primary-key>
+      <unique name="paf_regiondefuk">
+         <index-column column="name" order="asc" seq="1"/>
+      </unique>
+      <check name="paf_regionhtbool">
+         <check-expr expression="height in (0,1)" db="generic"/>
+      </check>
+      <check name="paf_regionwithbool">
+         <check-expr expression="width in (0,1)" db="generic"/>
+      </check>
+   </table>
+<comment><![CDATA[
+Do not use REFERENCES paf_page(page_id) here because of circular references
+]]></comment>
+   <table name="paf_region">
+      <column name="region_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="internal_version" nullable="n" default="0">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="definition" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="parent_page_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="fixed" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <primary-key name="paf_regionpk">
+         <index-column column="region_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="paf_region1_f" referenced-table="paf_region_def" index-name="paf_regdefdlix">
+         <fkey-column referencing-column="definition" referenced-column="region_def_id"/>
+      </foreign-key>
+      <check name="regionfixedbool">
+         <check-expr expression="fixed in (0,1)" db="generic"/>
+      </check>
+   </table>
+   <table name="paf_region_gears">
+      <column name="region_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="gear_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="paf_regiongearspk">
+         <index-column column="region_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="paf_regiongears2_f" referenced-table="paf_gear" index-name="paf_reggriddlix">
+         <fkey-column referencing-column="gear_id" referenced-column="gear_id"/>
+      </foreign-key>
+      <foreign-key name="paf_regiongears1_f" referenced-table="paf_region">
+         <fkey-column referencing-column="region_id" referenced-column="region_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_style">
+      <column name="style_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="creation_date" nullable="n">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="last_modified" nullable="y">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="internal_version" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="author" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="version" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="servlet_context" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="css_url" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="paf_stylepk">
+         <index-column column="style_id" order="asc" seq="1"/>
+      </primary-key>
+      <unique name="paf_style1_u">
+         <index-column column="name" order="asc" seq="1"/>
+      </unique>
+   </table>
+   <table name="paf_styl_ln_names">
+      <column name="style_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="locale" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="30"/>
+      </column>
+      <column name="localized_name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <primary-key name="paf_styl_lnnamespk">
+         <index-column column="style_id" order="asc" seq="1"/>
+         <index-column column="locale" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="paf_styllnnames1_f" referenced-table="paf_style">
+         <fkey-column referencing-column="style_id" referenced-column="style_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_styl_ln_descs">
+      <column name="style_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="locale" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="30"/>
+      </column>
+      <column name="localized_desc" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <primary-key name="paf_styl_lndescspk">
+         <index-column column="style_id" order="asc" seq="1"/>
+         <index-column column="locale" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="paf_styllndescs1_f" referenced-table="paf_style">
+         <fkey-column referencing-column="style_id" referenced-column="style_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_col_palette">
+      <column name="palette_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="creation_date" nullable="n">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="last_modified" nullable="y">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="internal_version" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="author" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="version" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="servlet_context" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="small_image_url" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="small_image_alt" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="large_image_url" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="large_image_alt" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="pg_bg_image_url" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="pg_bg_color" nullable="y">
+         <column-type db="generic" type="char" length="6"/>
+      </column>
+      <column name="pg_text_color" nullable="y">
+         <column-type db="generic" type="char" length="6"/>
+      </column>
+      <column name="pg_link_color" nullable="y">
+         <column-type db="generic" type="char" length="6"/>
+      </column>
+      <column name="pg_alink_color" nullable="y">
+         <column-type db="generic" type="char" length="6"/>
+      </column>
+      <column name="pg_vlink_color" nullable="y">
+         <column-type db="generic" type="char" length="6"/>
+      </column>
+      <column name="gt_bg_color" nullable="y">
+         <column-type db="generic" type="char" length="6"/>
+      </column>
+      <column name="gt_text_color" nullable="y">
+         <column-type db="generic" type="char" length="6"/>
+      </column>
+      <column name="gear_bg_color" nullable="y">
+         <column-type db="generic" type="char" length="6"/>
+      </column>
+      <column name="gear_text_color" nullable="y">
+         <column-type db="generic" type="char" length="6"/>
+      </column>
+      <column name="hl_bg_color" nullable="y">
+         <column-type db="generic" type="char" length="6"/>
+      </column>
+      <column name="hl_text_color" nullable="y">
+         <column-type db="generic" type="char" length="6"/>
+      </column>
+      <primary-key name="paf_colpalettepk">
+         <index-column column="palette_id" order="asc" seq="1"/>
+      </primary-key>
+      <unique name="paf_col_palette1_u">
+         <index-column column="name" order="asc" seq="1"/>
+      </unique>
+   </table>
+   <table name="paf_cpal_ln_names">
+      <column name="palette_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="locale" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="30"/>
+      </column>
+      <column name="localized_name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <primary-key name="paf_cpal_lnnamespk">
+         <index-column column="palette_id" order="asc" seq="1"/>
+         <index-column column="locale" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="paf_cpallnnames1_f" referenced-table="paf_col_palette">
+         <fkey-column referencing-column="palette_id" referenced-column="palette_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_cpal_ln_descs">
+      <column name="palette_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="locale" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="30"/>
+      </column>
+      <column name="localized_desc" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <primary-key name="paf_cpal_lndescspk">
+         <index-column column="palette_id" order="asc" seq="1"/>
+         <index-column column="locale" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="paf_cpallndescs1_f" referenced-table="paf_col_palette">
+         <fkey-column referencing-column="palette_id" referenced-column="palette_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_layout">
+      <column name="layout_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="creation_date" nullable="n">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="last_modified" nullable="n">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="internal_version" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="author" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="version" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="small_image_url" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="small_image_alt" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="large_image_url" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="large_image_alt" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="servlet_context" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="display_modes" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="paf_layoutpk">
+         <index-column column="layout_id" order="asc" seq="1"/>
+      </primary-key>
+      <unique name="paf_layout1_u">
+         <index-column column="name" order="asc" seq="1"/>
+      </unique>
+      <foreign-key name="paf_layout1_f" referenced-table="paf_display_modes" index-name="paf_lytdmdlix">
+         <fkey-column referencing-column="display_modes" referenced-column="display_modes_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_layout_regdefs">
+      <column name="layout_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="region_def_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="paf_layoutregdfpk">
+         <index-column column="layout_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="paf_layoutregdf1_f" referenced-table="paf_layout">
+         <fkey-column referencing-column="layout_id" referenced-column="layout_id"/>
+      </foreign-key>
+      <foreign-key name="paf_layoutregdf2_f" referenced-table="paf_region_def" index-name="paf_lytregddlix">
+         <fkey-column referencing-column="region_def_id" referenced-column="region_def_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_page_template">
+      <column name="page_template_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="creation_date" nullable="n">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="last_modified" nullable="y">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="internal_version" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="author" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="version" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="small_image_url" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="small_image_alt" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="large_image_url" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="large_image_alt" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="servlet_context" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="display_modes" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="paf_pagetmplpk">
+         <index-column column="page_template_id" order="asc" seq="1"/>
+      </primary-key>
+      <unique name="paf_pagetmplate1_u">
+         <index-column column="name" order="asc" seq="1"/>
+      </unique>
+      <foreign-key name="paf_pagetmplate1_f" referenced-table="paf_display_modes" index-name="paf_pagetmdmdlix">
+         <fkey-column referencing-column="display_modes" referenced-column="display_modes_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_ptpl_ln_names">
+      <column name="page_template_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="locale" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="30"/>
+      </column>
+      <column name="localized_name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <primary-key name="paf_ptpl_lnnamespk">
+         <index-column column="page_template_id" order="asc" seq="1"/>
+         <index-column column="locale" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="paf_ptpllnnames1_f" referenced-table="paf_page_template">
+         <fkey-column referencing-column="page_template_id" referenced-column="page_template_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_ptpl_ln_descs">
+      <column name="page_template_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="locale" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="30"/>
+      </column>
+      <column name="localized_desc" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <primary-key name="paf_ptpl_lndescspk">
+         <index-column column="page_template_id" order="asc" seq="1"/>
+         <index-column column="locale" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="paf_ptpllndescs1_f" referenced-table="paf_page_template">
+         <fkey-column referencing-column="page_template_id" referenced-column="page_template_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_template">
+      <column name="template_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="creation_date" nullable="n">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="last_modified" nullable="y">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="internal_version" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="author" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="version" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="small_image_url" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="small_image_alt" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="large_image_url" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="large_image_alt" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="servlet_context" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="device_outputs" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="paf_tmplpk">
+         <index-column column="template_id" order="asc" seq="1"/>
+      </primary-key>
+      <unique name="paf_tmplate1_u">
+         <index-column column="name" order="asc" seq="1"/>
+      </unique>
+      <foreign-key name="paf_tmplate1_f" referenced-table="paf_device_outputs" index-name="paf_tmpdodlix">
+         <fkey-column referencing-column="device_outputs" referenced-column="device_outputs_id"/>
+      </foreign-key>
+   </table>
+<comment><![CDATA[
+Cannot have default_page REFERENCES paf_page(page_id) because this is circular
+]]></comment>
+   <table name="paf_community">
+      <column name="community_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="url_name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="creation_date" nullable="n">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="last_modified" nullable="y">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="internal_version" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="enabled" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="access_level" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="number" length="1" scale="0"/>
+         <column-type db="db2" type="numeric" length="1" scale="0"/>
+         <column-type db="mssql" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="parent_folder" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="page_folder" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="default_page" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="personalization" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="membership_req" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="page_template" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="title_template" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="li_template" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="lo_template" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="ad_template" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="rg_template" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="up_template" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="ia_template" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="page_style" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="paf_communitypk">
+         <index-column column="community_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="paf_community1_f" referenced-table="paf_folder" index-name="paf_commpfdlix">
+         <fkey-column referencing-column="parent_folder" referenced-column="folder_id"/>
+      </foreign-key>
+      <foreign-key name="paf_community2_f" referenced-table="paf_folder" index-name="paf_commpgfdlix">
+         <fkey-column referencing-column="page_folder" referenced-column="folder_id"/>
+      </foreign-key>
+      <foreign-key name="paf_community3_f" referenced-table="paf_page_template" index-name="paf_commtmpldlix">
+         <fkey-column referencing-column="page_template" referenced-column="page_template_id"/>
+      </foreign-key>
+      <foreign-key name="paf_community5_f" referenced-table="paf_style" index-name="paf_commstydlix">
+         <fkey-column referencing-column="page_style" referenced-column="style_id"/>
+      </foreign-key>
+      <foreign-key name="paf_community10_f" referenced-table="paf_template" index-name="paf_comntuptmpl_ix">
+         <fkey-column referencing-column="up_template" referenced-column="template_id"/>
+      </foreign-key>
+      <foreign-key name="paf_community8_f" referenced-table="paf_template" index-name="paf_comntadtmpl_ix">
+         <fkey-column referencing-column="ad_template" referenced-column="template_id"/>
+      </foreign-key>
+      <foreign-key name="paf_community9_f" referenced-table="paf_template" index-name="paf_comntrgtmpl_ix">
+         <fkey-column referencing-column="rg_template" referenced-column="template_id"/>
+      </foreign-key>
+      <foreign-key name="paf_community7_f" referenced-table="paf_template" index-name="paf_comntlotmpl_ix">
+         <fkey-column referencing-column="lo_template" referenced-column="template_id"/>
+      </foreign-key>
+      <foreign-key name="paf_community11_f" referenced-table="paf_template" index-name="paf_comntiatmpl_ix">
+         <fkey-column referencing-column="ia_template" referenced-column="template_id"/>
+      </foreign-key>
+      <foreign-key name="paf_community6_f" referenced-table="paf_template" index-name="paf_comntlitmpl_ix">
+         <fkey-column referencing-column="li_template" referenced-column="template_id"/>
+      </foreign-key>
+      <foreign-key name="paf_community4_f" referenced-table="paf_title_template" index-name="paf_commttmpldlix">
+         <fkey-column referencing-column="title_template" referenced-column="title_template_id"/>
+      </foreign-key>
+      <check name="commenabledbool">
+         <check-expr expression="enabled in (0,1)" db="generic"/>
+      </check>
+      <check name="membershipreqenum">
+         <check-expr expression="membership_req in (0,1,2)" db="generic"/>
+      </check>
+      <check name="pers_enum">
+         <check-expr expression="personalization in (0,1,2)" db="generic"/>
+      </check>
+   </table>
+   <table name="paf_comm_gears">
+      <column name="community_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="gear_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="paf_commgearspk">
+         <index-column column="community_id" order="asc" seq="1"/>
+         <index-column column="gear_id" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="paf_comm_gears1_f" referenced-table="paf_community">
+         <fkey-column referencing-column="community_id" referenced-column="community_id"/>
+      </foreign-key>
+      <foreign-key name="paf_comm_gears2_f" referenced-table="paf_gear" index-name="paf_commgriddlix">
+         <fkey-column referencing-column="gear_id" referenced-column="gear_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_comm_gfldrs">
+      <column name="community_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="gear_def_fldr_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="paf_commgfldrpk">
+         <index-column column="community_id" order="asc" seq="1"/>
+         <index-column column="gear_def_fldr_id" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="paf_comm_gfldrs1_f" referenced-table="paf_community">
+         <fkey-column referencing-column="community_id" referenced-column="community_id"/>
+      </foreign-key>
+      <foreign-key name="paf_comm_gfldrs2_f" referenced-table="paf_folder" index-name="paf_comm_gfldrs1_i">
+         <fkey-column referencing-column="gear_def_fldr_id" referenced-column="folder_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_comm_roles">
+      <column name="community_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="role_name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="role_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="paf_comm_roles_pk">
+         <index-column column="community_id" order="asc" seq="1"/>
+         <index-column column="role_name" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="paf_comm_roles_fk" referenced-table="paf_community">
+         <fkey-column referencing-column="community_id" referenced-column="community_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_base_comm_role">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="role_name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="category" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="paf_basecomrole_pk">
+         <index-column column="role_name" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="paf_gear_roles">
+      <column name="gear_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="role_name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="role_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="paf_gear_roles_pk">
+         <index-column column="gear_id" order="asc" seq="1"/>
+         <index-column column="role_name" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="paf_gear_roles_fk" referenced-table="paf_gear">
+         <fkey-column referencing-column="gear_id" referenced-column="gear_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_base_gear_role">
+      <column name="gear_def_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="role_name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="paf_basegearrolepk">
+         <index-column column="gear_def_id" order="asc" seq="1"/>
+         <index-column column="role_name" order="asc" seq="2"/>
+      </primary-key>
+   </table>
+   <table name="paf_community_acl">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="indx" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="acl" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+   </table>
+   <table name="paf_comm_lnames">
+      <column name="community_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="locale" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="30"/>
+      </column>
+      <column name="localized_name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <primary-key name="paf_commlnamespk">
+         <index-column column="community_id" order="asc" seq="1"/>
+         <index-column column="locale" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="paf_comm_lnames1_f" referenced-table="paf_community">
+         <fkey-column referencing-column="community_id" referenced-column="community_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_comm_ldescs">
+      <column name="community_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="locale" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="30"/>
+      </column>
+      <column name="localized_desc" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <primary-key name="paf_commldescspk">
+         <index-column column="community_id" order="asc" seq="1"/>
+         <index-column column="locale" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="paf_comm_ldescs1_f" referenced-table="paf_community">
+         <fkey-column referencing-column="community_id" referenced-column="community_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_page">
+      <column name="page_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="url_name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="creation_date" nullable="n">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="last_modified" nullable="n">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="internal_version" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="access_level" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="number" length="1" scale="0"/>
+         <column-type db="db2" type="numeric" length="1" scale="0"/>
+         <column-type db="mssql" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="parent_folder" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="parent_comm_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="layout_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="allow_layout_chgs" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="palette_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="fixed" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="wireless_enabled" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <primary-key name="paf_pagepk">
+         <index-column column="page_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="paf_page3_f" referenced-table="paf_col_palette" index-name="paf_pagepaldlix">
+         <fkey-column referencing-column="palette_id" referenced-column="palette_id"/>
+      </foreign-key>
+      <foreign-key name="paf_page2_f" referenced-table="paf_community" index-name="paf_pagecommdlix">
+         <fkey-column referencing-column="parent_comm_id" referenced-column="community_id"/>
+      </foreign-key>
+      <foreign-key name="paf_page1_f" referenced-table="paf_folder" index-name="paf_pagepfdlix">
+         <fkey-column referencing-column="parent_folder" referenced-column="folder_id"/>
+      </foreign-key>
+      <foreign-key name="paf_page4_f" referenced-table="paf_layout" index-name="paf_pagelytdlix">
+         <fkey-column referencing-column="layout_id" referenced-column="layout_id"/>
+      </foreign-key>
+      <check name="allowchgsbool">
+         <check-expr expression="allow_layout_chgs in (0,1)" db="generic"/>
+      </check>
+      <check name="fixedisbool">
+         <check-expr expression="fixed in (0,1)" db="generic"/>
+      </check>
+      <check name="wirelessisbool">
+         <check-expr expression="wireless_enabled in (0,1)" db="generic"/>
+      </check>
+   </table>
+   <table name="paf_page_ln_names">
+      <column name="page_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="locale" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="30"/>
+      </column>
+      <column name="localized_name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <primary-key name="paf_page_lnnamespk">
+         <index-column column="page_id" order="asc" seq="1"/>
+         <index-column column="locale" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="paf_pagelnnames1_f" referenced-table="paf_page">
+         <fkey-column referencing-column="page_id" referenced-column="page_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_page_ln_descs">
+      <column name="page_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="locale" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="30"/>
+      </column>
+      <column name="localized_desc" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <primary-key name="paf_page_lndescspk">
+         <index-column column="page_id" order="asc" seq="1"/>
+         <index-column column="locale" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="paf_pagelndescs1_f" referenced-table="paf_page">
+         <fkey-column referencing-column="page_id" referenced-column="page_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_page_acl" description="page ACLs">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="indx" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="acl" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+   </table>
+   <table name="paf_page_regions">
+      <column name="page_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="tag" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="42"/>
+      </column>
+      <column name="region_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="paf_pageregionspk">
+         <index-column column="page_id" order="asc" seq="1"/>
+         <index-column column="tag" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="paf_pageregions1_f" referenced-table="paf_page">
+         <fkey-column referencing-column="page_id" referenced-column="page_id"/>
+      </foreign-key>
+      <foreign-key name="paf_pageregions2_f" referenced-table="paf_region" index-name="paf_pageriddlix">
+         <fkey-column referencing-column="region_id" referenced-column="region_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_cf_child_item">
+      <column name="folder_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="child_item_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="paf_cfchilditempk">
+         <index-column column="folder_id" order="asc" seq="1"/>
+         <index-column column="child_item_id" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="paf_cfchilditem2_f" referenced-table="paf_community" index-name="paf_cfchlddlix">
+         <fkey-column referencing-column="child_item_id" referenced-column="community_id"/>
+      </foreign-key>
+      <foreign-key name="paf_cfchilditem1_f" referenced-table="paf_folder">
+         <fkey-column referencing-column="folder_id" referenced-column="folder_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_cf_gfldrs">
+      <column name="comm_folder_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="gear_def_fldr_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="paf_cfgfldrspk">
+         <index-column column="comm_folder_id" order="asc" seq="1"/>
+         <index-column column="gear_def_fldr_id" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="paf_cf_gfldrs1_f" referenced-table="paf_folder">
+         <fkey-column referencing-column="comm_folder_id" referenced-column="folder_id"/>
+      </foreign-key>
+      <foreign-key name="paf_cf_gfldrs2_f" referenced-table="paf_folder" index-name="paf_cfgfldrs1_i">
+         <fkey-column referencing-column="gear_def_fldr_id" referenced-column="folder_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_pf_child_item">
+      <column name="folder_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="child_item_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="paf_pfchilditempk">
+         <index-column column="folder_id" order="asc" seq="1"/>
+         <index-column column="child_item_id" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="paf_pfchilditem1_f" referenced-table="paf_folder">
+         <fkey-column referencing-column="folder_id" referenced-column="folder_id"/>
+      </foreign-key>
+      <foreign-key name="paf_pfchilditem2_f" referenced-table="paf_page" index-name="paf_pfcitemiddlix">
+         <fkey-column referencing-column="child_item_id" referenced-column="page_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_gdf_child_item">
+      <column name="folder_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="child_item_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="paf_gdfchilditempk">
+         <index-column column="folder_id" order="asc" seq="1"/>
+         <index-column column="child_item_id" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="paf_gdfchlditem1_f" referenced-table="paf_folder">
+         <fkey-column referencing-column="folder_id" referenced-column="folder_id"/>
+      </foreign-key>
+      <foreign-key name="paf_gdfchlditem2_f" referenced-table="paf_gear_def" index-name="paf_gdfciiddlix">
+         <fkey-column referencing-column="child_item_id" referenced-column="gear_def_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_comm_template">
+      <column name="template_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="creation_date" nullable="n">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="internal_version" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="db2" type="numeric" length="10" scale="0"/>
+      </column>
+      <column name="enabled" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mssql" type="tinyint"/>         
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint"/>
+      </column>
+      <column name="access_level" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="db2" type="numeric" length="10" scale="0"/>
+      </column>
+      <column name="parent_folder" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="page_folder" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="default_page" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="personalization" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mssql" type="tinyint"/>         
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint"/>
+      </column>
+      <column name="membership_req" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mssql" type="tinyint"/>         
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint"/>
+      </column>
+      <column name="page_template" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="title_template" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="style" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="paf_comtemplate_p">
+         <index-column column="template_id" order="asc" seq="1"/>
+      </primary-key>
+      <check name="paf_comtemplate_c1">
+         <check-expr expression="enabled in (0,1)" db="generic"/>
+      </check>
+      <check name="paf_comtemplate_c2">
+         <check-expr expression="personalization in (0,1,2)" db="generic"/>
+      </check>
+      <check name="paf_comtemplate_c3">
+         <check-expr expression="membership_req in (0,1,2)" db="generic"/>
+      </check>
+   </table>
+   <table name="paf_ct_folder">
+      <column name="folder_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="internal_version" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="parent" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="url_name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="paf_ct_folder_p">
+         <index-column column="folder_id" order="asc" seq="1"/>
+      </primary-key>
+      <unique name="paf_ct_folder_u">
+         <index-column column="name" order="asc" seq="1"/>
+      </unique>
+      <!-- Ensure that there is only one child folder with a given name
+           This is now handled by the UNIQUE above.  Left the index alone for compatibility
+        -->
+      <index name="paf_ct_fldrpnidx" table="paf_ct_folder">
+         <index-column column="parent" order="asc" seq="1"/>
+         <index-column column="name" order="asc" seq="2"/>
+      </index>
+   </table>
+   <table name="paf_ct_child_fldr">
+      <column name="folder_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="child_folder_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="paf_ctchild_fldr_p">
+         <index-column column="folder_id" order="asc" seq="1"/>
+         <index-column column="child_folder_id" order="asc" seq="2"/>
+      </primary-key>
+   </table>
+   <table name="paf_ct_pagefolder">
+      <column name="folder_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="child_item_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="paf_ctpagefolder_p">
+         <index-column column="folder_id" order="asc" seq="1"/>
+         <index-column column="child_item_id" order="asc" seq="2"/>
+      </primary-key>
+   </table>
+   <table name="paf_ct_page">
+      <column name="page_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="url_name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="creation_date" nullable="n">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="last_modified" nullable="n">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="internal_version" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="access_level" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="parent_folder" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="layout_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="allow_layout_chgs" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mssql" type="tinyint"/>         
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint"/>
+      </column>
+      <column name="palette_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="fixed" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mssql" type="tinyint"/>         
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint"/>
+      </column>
+      <column name="wireless_enabled" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mssql" type="tinyint"/>         
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint"/>
+      </column>
+      <primary-key name="paf_ct_page_p">
+         <index-column column="page_id" order="asc" seq="1"/>
+      </primary-key>
+      <check name="paf_ct_page_c1">
+         <check-expr expression="allow_layout_chgs in (0,1)" db="generic"/>
+      </check>
+      <check name="paf_ct_page_c2">
+         <check-expr expression="fixed in (0,1)" db="generic"/>
+      </check>
+      <check name="paf_ct_page_c3">
+         <check-expr expression="wireless_enabled in (0,1)" db="generic"/>
+      </check>
+   </table>
+   <table name="paf_ct_region">
+      <column name="region_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="internal_version" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="definition" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="fixed" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mssql" type="tinyint"/>         
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint"/>
+      </column>
+      <primary-key name="paf_ct_region_p">
+         <index-column column="region_id" order="asc" seq="1"/>
+      </primary-key>
+      <check name="paf_ct_region_c1">
+         <check-expr expression="fixed in (0,1)" db="generic"/>
+      </check>
+   </table>
+   <table name="paf_ct_pg_regions">
+      <column name="page_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="tag" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="42"/>
+      </column>
+      <column name="region_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="paf_ctpg_regions_p">
+         <index-column column="page_id" order="asc" seq="1"/>
+         <index-column column="tag" order="asc" seq="2"/>
+      </primary-key>
+   </table>
+   <table name="paf_ct_region_grs">
+      <column name="region_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="gear_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="paf_ctregion_grs_p">
+         <index-column column="region_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+   </table>
+   <table name="paf_ct_gear">
+      <column name="gear_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="internal_version" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="gear_definition" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="access_level" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="show_title_bars" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mssql" type="tinyint"/>      
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint"/>
+      </column>
+      <column name="is_shared" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mssql" type="tinyint"/>         
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint"/>
+      </column>
+      <column name="orig_gear_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="paf_ct_gear_p">
+         <index-column column="gear_id" order="asc" seq="1"/>
+      </primary-key>
+      <check name="paf_ct_gear_c1">
+         <check-expr expression="show_title_bars in (0,1)" db="generic"/>
+      </check>
+   </table>
+   <table name="paf_ct_gr_iparams">
+      <column name="gear_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="tag" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="42"/>
+      </column>
+      <column name="iparam_value" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="paf_ctgr_iparams_p">
+         <index-column column="gear_id" order="asc" seq="1"/>
+         <index-column column="tag" order="asc" seq="2"/>
+      </primary-key>
+   </table>
+   <table name="paf_ct_gr_ln_names">
+      <column name="gear_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="locale" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="30"/>
+      </column>
+      <column name="localized_name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <primary-key name="paf_ctgrln_names_p">
+         <index-column column="gear_id" order="asc" seq="1"/>
+         <index-column column="locale" order="asc" seq="2"/>
+      </primary-key>
+   </table>
+   <table name="paf_ct_gr_ln_descs">
+      <column name="gear_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="locale" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="30"/>
+      </column>
+      <column name="localized_desc" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <primary-key name="paf_ctgrln_descs_p">
+         <index-column column="gear_id" order="asc" seq="1"/>
+         <index-column column="locale" order="asc" seq="2"/>
+      </primary-key>
+   </table>
+   <table name="paf_ct_gr_fldrs">
+      <column name="template_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="gear_def_folder_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="paf_ct_gr_fldrs_p">
+         <index-column column="template_id" order="asc" seq="1"/>
+         <index-column column="gear_def_folder_id" order="asc" seq="2"/>
+      </primary-key>
+   </table>
+   <table name="paf_ct_gears">
+      <column name="template_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="gear_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="paf_ct_gears_p">
+         <index-column column="template_id" order="asc" seq="1"/>
+         <index-column column="gear_id" order="asc" seq="2"/>
+      </primary-key>
+   </table>
+   <table name="paf_ct_alt_gear">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="source_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="source_type" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="message_type" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="value" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="resource_bundle" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <primary-key name="paf_ct_alt_gear_p">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="paf_ct_alt_gr_rel">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="gear_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="paf_ctalt_gr_rel_p">
+         <index-column column="id" order="asc" seq="1"/>
+         <index-column column="gear_id" order="asc" seq="2"/>
+      </primary-key>
+   </table>
+   <table name="paf_ct_roles">
+      <column name="template_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="role_name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="role_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="paf_ct_roles_pk">
+         <index-column column="template_id" order="asc" seq="1"/>
+         <index-column column="role_name" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="paf_ct_roles_fk" referenced-table="paf_comm_template">
+         <fkey-column referencing-column="template_id" referenced-column="template_id"/>
+      </foreign-key>
+   </table>
+   <table name="paf_ct_gr_acl">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="indx" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="acl" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+         <column-type db="oracle" type="varchar2" length="254" scale=""/>
+         <column-type db="db2" type="varchar" length="254" scale=""/>
+         <column-type db="mssql" type="varchar" length="254" scale=""/>
+      </column>
+   </table>
+   <table name="paf_ct_gr_roles">
+      <column name="gear_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="role_name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="role_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="paf_ct_gr_roles_pk">
+         <index-column column="gear_id" order="asc" seq="1"/>
+         <index-column column="role_name" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="paf_ct_gr_roles_fk" referenced-table="paf_ct_gear">
+         <fkey-column referencing-column="gear_id" referenced-column="gear_id"/>
+      </foreign-key>
+   </table>
+</schema>
+<!-- @version $Id: //app/portal/version/10.0.3/paf/sql/portal_ddl.xml#2 $$Change: 651448 $ -->

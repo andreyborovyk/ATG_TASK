@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- CRS customizations for merchandising find configuration -->
+
+<find-configuration site-filtering="true">
+  <!-- Catalogs Custom Find view -->
+  <asset-family id="catalogs">
+    <asset-type
+      id="furniture-sku"
+      site-filtering="true">
+      <enable-default-query>true</enable-default-query>
+      <enable-filter-as-you-type>true</enable-filter-as-you-type>
+      <repository-path>/atg/commerce/catalog/MerchandisingProductCatalog</repository-path>
+      <repository-item-type>furniture-sku</repository-item-type>
+    </asset-type>
+
+    <asset-type
+      id="clothing-sku"
+      site-filtering="true">
+      <enable-default-query>true</enable-default-query>
+      <enable-filter-as-you-type>true</enable-filter-as-you-type>
+      <repository-path>/atg/commerce/catalog/MerchandisingProductCatalog</repository-path>
+      <repository-item-type>clothing-sku</repository-item-type>
+    </asset-type>
+  </asset-family>
+
+  <!-- Store Locations Find View-->
+  <asset-family id="storeLocations" site-filtering="false">
+
+    <display-name-resource>node.storeLocations.label</display-name-resource>
+    <enable-default-query>true</enable-default-query>
+    <enable-filter-as-you-type>true</enable-filter-as-you-type>
+    <result-list page-size="100"/>
+    <default-asset-type>storeLocations</default-asset-type>
+
+    <asset-type id="storeLocations" site-filtering="false">
+      <enable-default-query>true</enable-default-query>
+      <enable-filter-as-you-type>true</enable-filter-as-you-type>
+      <repository-path>/atg/store/stores/StoreRepository</repository-path>
+      <repository-item-type>store</repository-item-type>
+    </asset-type>
+
+  </asset-family>
+
+  <!-- Promotional Content Find View -->
+  <asset-family id="media" site-filtering="false">
+
+    <asset-type id="promotionalContent" site-filtering="false">
+      <enable-default-query>true</enable-default-query>
+      <enable-filter-as-you-type>true</enable-filter-as-you-type>
+      <repository-path>/atg/commerce/catalog/ProductCatalog</repository-path>
+      <repository-item-type>promotionalContent</repository-item-type>
+    </asset-type>
+
+  </asset-family>
+
+  <!-- Site Content Find View -->
+  <asset-family id="siteContent" site-filtering="false">
+
+    <display-name-resource>node.siteContent.label</display-name-resource>
+    <enable-default-query>true</enable-default-query>
+    <enable-filter-as-you-type>true</enable-filter-as-you-type>
+    <result-list page-size="100"/>
+    <default-asset-type>storeText</default-asset-type>
+
+    <asset-type id="storeText" site-filtering="false">
+      <enable-default-query>true</enable-default-query>
+      <enable-filter-as-you-type>true</enable-filter-as-you-type>
+      <repository-path>/atg/store/stores/StoreRepository</repository-path>
+      <repository-item-type>storeText</repository-item-type>
+    </asset-type>
+
+    <asset-type id="storeLongText" site-filtering="false">
+      <enable-default-query>true</enable-default-query>
+      <enable-filter-as-you-type>true</enable-filter-as-you-type>
+      <repository-path>/atg/store/stores/StoreRepository</repository-path>
+      <repository-item-type>storeLongText</repository-item-type>
+    </asset-type>
+
+  </asset-family>
+
+</find-configuration>
+<!-- @version $Id: //hosting-blueprint/B2CBlueprint/version/10.0.3/EStore/Versioned/config/atg/remote/commerce/find/MerchandisingFindConfiguration.xml#1 $$Change: 651360 $-->

@@ -1,0 +1,63 @@
+<!-- Title: OrderRejectedEmail -->
+<importbean bean="/atg/dynamo/droplet/ForEach">
+
+<setvalue param="order" value="param:message.order">
+<setvalue param="profile" value="param:message.profile">
+<setvalue param="orderOwnerProfile" value="param:message.orderOwnerProfile">
+
+<setvalue param="messageTo" value="param:orderOwnerProfile.email">    
+<setvalue param="messageFrom" value="DCS5Team@example.com">
+<setvalue param="messageReplyTo" value="DCS5Team@example.com">
+<setvalue param="messageSubject" value="Order Rejected">
+<setvalue param="mailingName" value="OrderRejected">
+
+<p>Dear <valueof param="orderOwnerProfile.firstName">Valued Customer</valueof>
+ <valueof param="orderOwnerProfile.lastName"></valueof>,<br>
+
+<p>The order you submitted for approval, #<valueof param="order.id">No order id</valueof>, has been rejected.<br> 
+
+<b>Approver Messages</b>
+<droplet name="ForEach">
+  <param name="array" value="param:order.approverMessages">
+  <param name="elementName" value="message">
+  <oparam name="output">
+    - <valueof param="message">No reasons</valueof><br>
+  </oparam>
+  <oparam name="empty">
+    No messages
+  </oparam>
+</droplet>
+
+<br>
+
+<b>Reason order required approval:</b>
+<droplet name="ForEach">
+  <param name="array" value="param:order.approvalSystemMessages">
+  <param name="elementName" value="message">
+  <oparam name="output">
+    - <valueof param="message">No reasons</valueof><br>
+  </oparam>
+  <oparam name="empty">
+    No system messages
+  </oparam>
+</droplet>
+
+<br>
+
+<!-- Itemized order -->
+<br>
+<droplet src="/Dynamo/commerce/en/email_templates/DisplayOrderSummary.jhtml">
+  <param name="order" value="param:order">
+  <param name="displayStockStatus" value="false">
+</droplet>
+
+<!-- Shipping information -->
+<droplet src="/Dynamo/commerce/en/email_templates/DisplayShippingInfo.jhtml">
+  <param name="order" value="param:order">
+</droplet>
+
+<!-- Payment information -->
+<droplet src="/Dynamo/commerce/en/email_templates/DisplayPaymentInfo.jhtml">
+  <param name="order" value="param:order">
+</droplet>
+<java>/* @version $Id: //product/B2BCommerce/version/10.0.3/release/B2BCommerce/html/en/email_templates/order_rejected.jhtml#2 $$Change: 651448 $*/</java>

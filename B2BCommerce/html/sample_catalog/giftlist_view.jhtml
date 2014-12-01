@@ -1,0 +1,118 @@
+<DECLAREPARAM NAME="giftlistId" CLASS="String" DESCRIPTION="The giftlist Id to retrieve from the repository">
+<importbean bean="/atg/userprofiling/Profile">
+<importbean bean="/atg/dynamo/droplet/IsEmpty">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/Switch">
+
+<span class=storelittle>
+<b><a href="index.jhtml">Catalog Home</a></b> >
+<b><a href="giftlist_search.jhtml">Giftlist Search</a></b> >
+View Giftlist
+</span>
+
+<p>
+
+<!-- check if parameter giftlistId has been passed into page.  if
+     it has, then call GiftlistDroplet to do something -->
+<droplet bean="IsEmpty">
+<param name="value" value="param:giftlistId">
+<oparam name="false">
+  <droplet name="/atg/commerce/gifts/GiftlistLookupDroplet">
+    <param name="id" value="param:giftlistId">
+    <oparam name="output">
+      <droplet bean="IsEmpty">
+        <oparam name="false">
+        <setvalue param="giftlist" value="param:element">
+        <span class=storebig>Gift List for 
+        <valueof param="giftlist.owner.firstName"></valueof>
+        <valueof param="giftlist.owner.middleName"></valueof>
+        <valueof param="giftlist.owner.lastName"></valueof>
+        </span>
+        <br>
+        <p>
+        <blockquote>
+        <b>Event name:</b><valueof param="giftlist.eventName"></valueof>
+        <br>
+        <b>Event date:</b><valueof param="giftlist.eventDate" date="d-MMM-yyyy"></valueof>
+        <p>
+
+        <table cellspacing=0 cellpadding=0 border=0>
+      	<tr valign=bottom>
+     		<td><b>Quantity<br>wanted</b></td>
+     		<td>&nbsp;</td>
+    		<td><b>Quantity<br>bought</b></td>
+    		<td>&nbsp;&nbsp;&nbsp;</td>
+    		<td><b>Product</b></td>
+      	</tr>
+        <tr><td colspan=5><hr size=0></td></tr>
+      	<tr valign=top>
+        <droplet bean="/atg/dynamo/droplet/ForEach">
+          <param name="array" value="param:giftlist.giftlistItems">
+          <oparam name="output">
+            <setvalue param="item" value="param:element">
+            <droplet bean="/atg/commerce/catalog/ProductLookup">
+              <param name="elementName" value="product">
+              <param name="id" value="param:item.productId">
+              <oparam name="output">
+              <td><valueof param="item.quantityDesired">quantity desired</valueof></td><td></td>
+              <td><valueof param="item.quantityPurchased">quantity purchased</valueof></td><td></td>
+              <td>
+              
+              	<droplet bean="/atg/dynamo/droplet/IsNull">
+				  <param name="value" value="param:product.template">
+				  <oparam name="true">
+				    <valueof param="product.displayName">ERROR:no product name</valueof> 
+				  </oparam>
+				  <oparam name="false">
+				    <a href="param:product.template.url">
+				      <param name="id" value="param:product.repositoryId">
+				      <param name="giftId" value="param:item.id">
+				      <param name="giftlistId" value="param:giftlistId">
+				      <param name="gift" value="true">
+				      <param name="navAction" value="jump">
+				      <valueof param="product.displayName">ERROR:no product name</valueof> 
+				    </a>
+				  </oparam>
+				</droplet>
+              
+              </td>
+              </tr>
+              </oparam>
+            </droplet>
+          </oparam>
+          <oparam name="unset">
+            Your giftlist is empty
+          </oparam>
+        </droplet>
+      	</tr>
+        </table>
+        <p>
+        <b>Event description:</b><br>
+        <valueof param="giftlist.description"></valueof><br>
+        <p>
+        <b>Ship to:</b>
+        <blockquote>
+        </blockquote>
+        <p>
+        </span>
+        <valueof param="giftlist.owner.firstName"></valueof>
+        <valueof param="giftlist.owner.middleName"></valueof>
+        <valueof param="giftlist.owner.lastName"></valueof><br>
+        <valueof param="giftlist.owner.shippingAddress.city"></valueof>
+        <valueof param="giftlist.owner.shippingAddress.state"></valueof><br>
+        </blockquote>
+        <p>
+        </oparam>
+        <oparam name="true">
+         Nothing to look at here.
+        </oparam>
+      </droplet>
+    </oparam>
+  </droplet>
+</oparam>
+</droplet>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/B2BCommerce/version/10.0.3/release/B2BCommerce/html/sample_catalog/giftlist_view.jhtml#2 $$Change: 651448 $*/</java>
+

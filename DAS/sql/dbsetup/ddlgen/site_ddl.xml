@@ -1,0 +1,208 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="site_ddl">
+<comment><![CDATA[ @version $Id: //product/DAS/version/10.0.3/templates/DAS/sql/site_ddl.xml#2 $$Change: 651448 $]]></comment>
+<comment><![CDATA[
+This file contains create table statements, which will configure
+your database for use MultiSite
+]]></comment>
+
+  <table name="site_template">
+    <column name="id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    <column name="name" nullable="n" i18n="y">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+    
+    <column name="description" nullable="n" i18n="y">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+
+    <column name="item_mapping_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+   
+    <primary-key name="site_template1_p">
+      <index-column column="id" order="asc" seq="1"/>
+    </primary-key>
+  </table>
+  
+  <table name="site_configuration">
+    <column name="id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    <column name="name" nullable="n" i18n="y">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+
+    <column name="description" nullable="y" i18n="y">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+
+    <column name="template" nullable="y">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    <column name="production_url" nullable="y" i18n="y">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+
+    <column name="enabled" nullable="n">
+      <column-type db="generic" type="one-digit"/>
+    </column>
+
+    <column name="site_down_url" nullable="y" i18n="y">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+
+    <column name="open_date" nullable="y">
+    <column-type db="generic" type="datetime"/>
+    </column>
+
+    <column name="pre_opening_url" nullable="y" i18n="y">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+
+    <column name="closing_date" nullable="y">
+    <column-type db="generic" type="datetime"/>
+    </column>
+
+    <column name="post_closing_url" nullable="y" i18n="y">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+
+    <column name="modification_time" nullable="y">
+    <column-type db="generic" type="datetime"/>
+    </column>
+
+    <column name="creation_time" nullable="y">
+    <column-type db="generic" type="datetime"/>
+    </column>
+
+    <column name="author" nullable="y" i18n="y">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+
+    <column name="last_modified_by" nullable="y" i18n="y">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+
+    <column name="site_icon" nullable="y" i18n="y">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+
+    <column name="favicon" nullable="y" i18n="y">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+
+    <column name="site_priority" nullable="y">
+      <column-type db="generic" type="integer"/>
+    </column>
+
+    <column name="context_root" nullable="y" i18n="y">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+
+    <primary-key name="site_configurat1_p">
+      <index-column column="id" order="asc" seq="1"/>
+    </primary-key>
+
+  </table>
+
+  <table name="site_additional_urls">
+    <column name="id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    <column name="additional_production_url" nullable="y" i18n="y">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+    
+    <column name="idx" nullable="n">
+      <column-type db="generic" type="integer"/>
+    </column>
+    
+    <primary-key name="siteadditio_url1_p">
+      <index-column column="id" order="asc" seq="1"/>
+      <index-column column="idx" order="asc" seq="2"/>
+    </primary-key>
+
+  </table>
+
+  <table name="site_types">
+    <column name="id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    <column name="site_type" nullable="n" i18n="y">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+    
+    <primary-key name="site_types1_p">
+      <index-column column="id" order="asc" seq="1"/>
+      <index-column column="site_type" order="asc" seq="2"/>
+    </primary-key>
+  </table>
+  
+  <table name="site_group">
+    <column name="id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    <column name="display_name" nullable="n" i18n="y">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+            
+    <primary-key name="site_group1_p">
+      <index-column column="id" order="asc" seq="1"/>
+    </primary-key>
+
+  </table>
+  
+  <table name="site_group_sites">    
+    
+    <column name="site_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+    <column name="site_group_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+    <primary-key name="site_group_sites_p">
+      <index-column column="site_id" order="asc" seq="1"/>
+      <index-column column="site_group_id" order="asc" seq="2"/>
+    </primary-key>
+
+    <foreign-key name="site_group_site1_f" referenced-table="site_configuration" index-name="site_group_site1_x">
+      <fkey-column referencing-column="site_id" referenced-column="id"/>
+    </foreign-key>
+    
+    <foreign-key name="site_group_site2_f" referenced-table="site_group" index-name="site_group_site2_x">
+      <fkey-column referencing-column="site_group_id" referenced-column="id"/>
+    </foreign-key>
+  </table>
+  
+  <table name="site_group_shareable_types">    
+    
+    <column name="shareable_types" nullable="n" i18n="y">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+    
+    <column name="site_group_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+    <primary-key name="site_group_share_p">
+      <index-column column="shareable_types" order="asc" seq="1"/>
+      <index-column column="site_group_id" order="asc" seq="2"/>
+    </primary-key>
+
+    <foreign-key name="site_group_shar1_f" referenced-table="site_group" index-name="site_group_shar1_x">
+      <fkey-column referencing-column="site_group_id" referenced-column="id"/>
+    </foreign-key>
+  </table>
+</schema>
+<!-- @version $Id: //product/DAS/version/10.0.3/templates/DAS/sql/site_ddl.xml#2 $$Change: 651448 $-->

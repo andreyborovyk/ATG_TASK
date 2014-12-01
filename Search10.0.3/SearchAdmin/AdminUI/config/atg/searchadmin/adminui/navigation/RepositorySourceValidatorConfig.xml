@@ -1,0 +1,50 @@
+<!DOCTYPE form-validation PUBLIC
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1//EN"
+    "http://www.atg.com/dtds/searchadmin/validator_1_3_0.dtd">
+
+<form-validation>
+  <formset>
+
+    <form name="ManageContentFormHandler">
+      <field property="settings.indexingOutputConfigPath" depends="required">
+        <arg key="error_field.content_add_content.path" position="0"/>
+        <var>
+          <var-name>need2Validate</var-name>
+          <var-value>contentSourceType=repository</var-value>
+        </var>
+      </field>
+
+      <field property="settings.hostMachine" depends="required">
+        <arg key="error_field.content_add_content.host_machine" position="0"/>
+        <var>
+          <var-name>need2Validate</var-name>
+          <var-value>contentSourceType=repository;settings.local=false</var-value>
+        </var>
+      </field>
+
+      <field property="settings.rmiPort" depends="required,integer,intRange">
+        <arg key="error_field.content_add_content.port" position="0"/>
+        <arg name="intRange" key="${var:min}" resource="false" position="1"/>
+        <arg name="intRange" key="${var:max}" resource="false" position="2"/>
+        <var>
+          <var-name>need2Validate</var-name>
+          <var-value>contentSourceType=repository;settings.local=false</var-value>
+        </var>
+         <var>
+          <var-name>intRange</var-name>
+          <var-value>1,65535</var-value>
+        </var>
+        <var>
+          <var-name>min</var-name>
+          <var-value>1</var-value>
+        </var>
+        <var>
+          <var-name>max</var-name>
+          <var-value>65535</var-value>
+        </var>
+      </field>
+    </form>
+
+  </formset>
+</form-validation>
+<!-- @version $Id: //application/SearchAdmin/version/10.0.3/admin-ui/src/config/atg/searchadmin/adminui/navigation/RepositorySourceValidatorConfig.xml#2 $$Change: 651448 $-->

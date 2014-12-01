@@ -1,0 +1,72 @@
+<%-- 
+assumed to be included from file that sets up an evioroment and import i18 properties file 
+--%>
+
+<dsp:importbean bean="/atg/portal/gear/search/RepositoryPortalSearchFormHandler"/>
+<table border=0 cellpadding=1 cellspacing=0>
+
+<dsp:form method="POST" action="<%= gearEnv.getOriginalRequestURI() %>">
+
+<dsp:input type="hidden" bean="RepositoryPortalSearchFormHandler.communityId"    value="<%= commId %>" />
+<dsp:input type="hidden" bean="RepositoryPortalSearchFormHandler.pageId"         value="<%= pageId %>" />
+<dsp:input type="hidden" bean="RepositoryPortalSearchFormHandler.resultsPerPage" value="<%= resultsPerPage %>" />
+<dsp:input type="hidden" bean="RepositoryPortalSearchFormHandler.maxResults" value="<%= maxResults %>" />
+<dsp:input type="hidden" bean="RepositoryPortalSearchFormHandler.maxResultsPerRepository" value="<%= maxResultsPerRep %>" />
+<dsp:input type="hidden" bean="RepositoryPortalSearchFormHandler.maxGearsPerRepository" value="<%= maxGearsPerRep %>" />
+
+
+<core:CreateUrl  id="searchResultsURL" url="<%= gearEnv.getOriginalRequestURI() %>">
+     <core:UrlParam param="paf_gear_id" value="<%= gearEnv.getGear().getId() %>"/>
+     <core:UrlParam param="paf_dm" value="full"/>
+     <core:UrlParam param="gear_hasSearched" value="true"/>
+     <dsp:input type="hidden" bean="RepositoryPortalSearchFormHandler.successURL"  value="<%=searchResultsURL.getNewUrl()%>" />
+     <dsp:input type="hidden" bean="RepositoryPortalSearchFormHandler.errorURL"  value="<%=searchResultsURL.getNewUrl()%>" />
+</core:CreateUrl> 
+
+<tr><td nowrap><font class="smaller" color="<%=gearTextColor%>" >&nbsp;&nbsp;&nbsp;
+<dsp:getvalueof id='searchedValueStr'  bean="RepositoryPortalSearchFormHandler.keywords">
+<% searchedValueStr = ( request.getParameter("gear_hasSearched") == null ) ? ""  : searchedValueStr;%>
+<dsp:input type="text" bean="RepositoryPortalSearchFormHandler.keywords" value="<%=searchedValueStr%>"  />
+</dsp:getvalueof>
+</font></td><td><font class="smaller" color="<%=gearTextColor%>" >
+<i18n:message id="submitLabelSearch" key="submitLabelSearch"/>
+<dsp:input type="submit" bean="RepositoryPortalSearchFormHandler.search" value="<%=submitLabelSearch%>"/>
+
+</font></td>
+</tr>
+
+</table>
+<br/>
+<table border=0 cellpadding=0 cellspacing=2>
+
+ <tr>
+ <td align="right" NOWRAP><nobr><font class="smaller" color="<%=gearTextColor%>" >&nbsp;&nbsp;<i18n:message key="selection_label"/></font></nobr></td>
+
+<td align="right"><dsp:input type="radio" bean="RepositoryPortalSearchFormHandler.searchScope" value="portal" /></td>
+<td ><font class="smaller" color="<%=gearTextColor%>" >
+     <i18n:message key="selection_item_portal"/>
+   </font></td>
+</tr>
+
+<tr>
+ <td></td>
+ <td  align="right" ><font class="smaller" color="<%=gearTextColor%>" ><dsp:input type="radio" bean="RepositoryPortalSearchFormHandler.searchScope" value="community" /></font></td>
+ <td ><font class="smaller" color="<%=gearTextColor%>" >
+    <i18n:message key="selection_item_community_param">
+     <i18n:messageArg value="<%=commName%>"/>
+   </i18n:message>
+   </font></td>
+</tr>
+
+<tr>
+  <td></td>
+  <td  align="right"><font class="smaller" color="<%=gearTextColor%>" ><dsp:input type="radio" bean="RepositoryPortalSearchFormHandler.searchScope" value="page" /></font></td>
+  <td ><font class="smaller" color="<%=gearTextColor%>" >
+   <i18n:message key="selection_item_page_param">
+    <i18n:messageArg value="<%=pageName%>"/>
+   </i18n:message>
+  </font></td>
+</tr>
+</dsp:form>
+</table>
+<%-- @version $Id: //app/portal/version/10.0.3/search/search.war/html/searchBox.jspf#2 $$Change: 651448 $--%>

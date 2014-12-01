@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE gsa-template
+        PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN"
+        "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template xml-combine="append">
+  <header>
+    <name>Data Warehouse Repository</name>
+  </header>
+
+  <!-- LineItemQuery dimension -->
+  <item-descriptor name="lineItemQuery" id-space-name="arf_line_item_query">
+    <attribute name="BasicsPriority" value="10"/>
+    <attribute name="InfoPriority" value="20"/>
+    <table name="ARF_LINE_ITEM_QUERY" id-column-names="ID" type="primary">
+      <property name="id" column-name="ID" data-type="long" required="true" category="Info">
+        <attribute name="propertySortPriority" value="1"/>
+      </property>
+      <property name="lineItem" column-name="LINE_ITEM_ID" item-type="lineItem" required="true" category="Info">
+        <attribute name="propertySortPriority" value="2"/>
+      </property>
+      <property name="query" column-name="QUERY_ID" item-type="queryFact" required="true" category="Info">
+        <attribute name="propertySortPriority" value="3"/>
+      </property>
+      <property name="naturalLineItemId" column-name="NLINE_ITEM_ID" data-type="string" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="1"/>
+      </property>
+      <property name="naturalQueryId" column-name="NQUERY_ID" data-type="string" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="2"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+</gsa-template>
+
+<!-- @version $Id: //product/DCS/version/10.0.3/DW/Search/config/atg/reporting/datawarehouse/dataWarehouseRepository.xml#2 $$Change: 651448 $ -->

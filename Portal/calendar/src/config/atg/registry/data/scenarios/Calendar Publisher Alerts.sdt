@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE scenario
+  SYSTEM
+  "dynamosystemresource:/atg/scenario/definition/sdl.dtd">
+
+<scenario author="admin" creation-time="999469269775" enabled="false" last-modified-by="admin" modification-time="1005954407427">
+  <segment migrate-users="true">
+    <segment-name>New Event Alert</segment-name>
+    <!--================================-->
+    <!--== Calendar Event Created  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.portal.gear.calendar.EventCreatedMessage</event-name>
+    </event>
+    <!--================================-->
+    <!--== Send alert (Calendar Event Created Alert Recipients)  -->
+    <!--================================-->
+    <action id="2">
+      <action-name>sendAlert</action-name>
+      <action-param construct="sendAlert-to-event-community" name="recipientType">
+        <constant>alert_community</constant>
+      </action-param>
+      <action-param name="recipientID" placeholder-name="Calendar Event Created Alert Recipients">
+        <event-property construct="event-property">
+          <property-name>communityId</property-name>
+        </event-property>
+      </action-param>
+    </action>
+  </segment>
+  <segment migrate-users="true">
+    <segment-name>Edit Event Alert</segment-name>
+    <!--================================-->
+    <!--== Calendar Event Edited  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.portal.gear.calendar.EventEditedMessage</event-name>
+    </event>
+    <!--================================-->
+    <!--== Send alert (Calendar Event Edited Alert Recipients)  -->
+    <!--================================-->
+    <action id="2">
+      <action-name>sendAlert</action-name>
+      <action-param construct="sendAlert-to-event-community" name="recipientType">
+        <constant>alert_community</constant>
+      </action-param>
+      <action-param name="recipientID" placeholder-name="Calendar Event Edited Alert Recipients">
+        <event-property construct="event-property">
+          <property-name>communityId</property-name>
+        </event-property>
+      </action-param>
+    </action>
+  </segment>
+  <segment migrate-users="true">
+    <segment-name>Delete Event Alert</segment-name>
+    <!--================================-->
+    <!--== Calendar Event Deleted  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.portal.gear.calendar.EventDeletedMessage</event-name>
+    </event>
+    <!--================================-->
+    <!--== Send alert (Celendar Event Deleted Alert Recipients)  -->
+    <!--================================-->
+    <action id="2">
+      <action-name>sendAlert</action-name>
+      <action-param construct="sendAlert-to-event-community" name="recipientType">
+        <constant>alert_community</constant>
+      </action-param>
+      <action-param name="recipientID" placeholder-name="Celendar Event Deleted Alert Recipients">
+        <event-property construct="event-property">
+          <property-name>communityId</property-name>
+        </event-property>
+      </action-param>
+    </action>
+  </segment>
+</scenario>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tree PUBLIC "-//Art Technology Group, Inc.//DTD Repository
+Ouput Specifier 1.0//EN"
+"http://www.atg.com/dtds/searchadmin/index-audit-schema.dtd">
+
+<audit>
+
+  <group name="items">
+    <element name="items_total" type="content" />
+    <element name="items_structured" type="content" />
+    <element name="items_unstructured" type="content" />
+    <elementSet name="lang" type="lang" class="atg.searchadmin.audit.LanguagesElementSet" />
+  </group>
+  <group name="format">
+    <element name="items_XHTML" type="content" />
+    <element name="items_HTML" type="content" />
+    <element name="items_PDF" type="content" />
+    <element name="items_XML" type="content" />
+    <element name="items_OTHER" type="content" />
+    <element name="items_TEXT" type="content" />
+  </group>
+  <group name="meta">
+    <element name="content_properties" type="content" />
+    <element name="content_metasets" type="content" />
+    <element name="content_docsets" type="content" />
+    <element name="content_collections" type="content" />
+  </group>
+  <group name="data">
+    <element name="data_rankConfigs" type="data" />
+    <element name="data_refineConfigs" type="data" />
+    <element name="data_queryRule" type="data" />
+    <element name="data_termWeights" type="data" />
+    <element name="data_customTerms" type="data" />
+    <element name="data_topics" type="data" />
+    <element name="content_topicAssign" type="content" />
+  </group>
+  <group name="text">
+    <element name="content_size" type="content" />
+    <element name="content_text" type="content" />
+    <element name="content_words" type="content" />
+    <element name="content_sentences" type="content" /> <!-- statements ??? -->
+  </group>
+
+  <!-- The following elements are not used on Index Audit page, but they are here to be stored into DB
+        and they can be displayed on Index Audit page by moving them into any group.
+  <element name="items_UNKNOWN" type="content" />
+  <element name="items_preferredanswer" type="content" />
+  -->
+</audit>
+<!-- @version $Id: //application/SearchAdmin/version/10.0.3/common/src/config/atg/searchadmin/audit/IndexAudit.xml#2 $$Change: 651448 $-->

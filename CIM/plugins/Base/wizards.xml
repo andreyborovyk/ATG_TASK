@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE wizards SYSTEM "http://www.atg.com/dtds/wizard_1_0.dtd">
+<wizards>
+
+  <!-- This wizard is always executed when cim is started -->
+	<wizard id="MainMenu" wizard-type="base">
+
+		<title>Main Menu</title>
+		<detail></detail>
+
+	  <process id="precheck">
+		
+    	<step id="ProductionSelectionPersistenceCheckStep">
+      	<title/>
+      	<detail/>
+
+			<task id="ProductionSelectionPersistenceCheckTask"/>
+			
+      <validator id="AlwaysTrueValidator" phase="PRENAVIGATION">
+        <if-true>
+        	<command type="EXECUTE_STEP_TASKS"  />
+          <command type="NEXT_STEP" />
+        </if-true>
+      </validator>
+      
+				<error>
+					<step id="ProductionSelectionPersistenceCheckErrorStep">
+						<title>Product Selection Model Update</title>
+						<detail>
+<![CDATA[
+The CIM Product object model has been updated.  
+
+
+REQUIRED ACTION: Re-Execute the Product Selection wizard.  Select [p] from the Main Menu.
+]]>
+						</detail>
+						<navoption id="continue">
+							<label>Continue</label>
+							<command type="NEXT_STEP" />
+						</navoption>
+					</step>
+				</error>
+    	</step>
+
+    	<step id="AppServerSelectionPersistenceCheckStep">
+      	<title/>
+      	<detail/>
+
+			<task id="AppServerSelectionPersistenceCheckTask"/>
+			
+      <validator id="AlwaysTrueValidator" phase="PRENAVIGATION">
+        <if-true>
+        	<command type="EXECUTE_STEP_TASKS"  />
+          <command type="NEXT_STEP" />
+        </if-true>
+      </validator>
+      
+				<error>
+					<step id="AppServerSelectionPersistenceCheckErrorStep">
+						<title>Application Server Selection Model Update</title>
+						<detail>
+<![CDATA[
+The CIM Application Server Selection object model has been updated.  
+
+
+REQUIRED ACTION: Re-Execute the Application Server Selection wizard.  Select [a] from the Main Menu.
+]]>
+						</detail>
+						<navoption id="continue">
+							<label>Continue</label>
+							<command type="NEXT_STEP" />
+						</navoption>
+					</step>
+				</error>
+    	</step>
+
+    	<step id="AppAssemblyOptionsSelectionPersistenceCheckStep">
+      	<title/>
+      	<detail/>
+
+			<task id="AppAssemblyOptionsSelectionPersistenceCheckTask"/>
+			
+      <validator id="AlwaysTrueValidator" phase="PRENAVIGATION">
+        <if-true>
+        	<command type="EXECUTE_STEP_TASKS"  />
+          <command type="NEXT_STEP" />
+        </if-true>
+      </validator>
+      
+				<error>
+					<step id="AppAssemblyOptionsSelectionPersistenceCheckErrorStep">
+						<title>AppAssembly Options Selection Model Update</title>
+						<detail>
+<![CDATA[
+The CIM AppAssembly Options Selection object model has been updated.  
+
+
+SUGGESTED ACTION: Update the App Assembly options before the next deploy option.
+]]>
+						</detail>
+						<navoption id="continue">
+							<label>Continue</label>
+							<command type="NEXT_STEP" />
+						</navoption>
+					</step>
+				</error>
+    	</step>
+
+	  </process>
+	  		
+	  <process id="mainmenu">
+		
+    	<step id="DisplayMainMenu">
+      	<title resource-key="MainMenu.title" >CIM MAIN MENU</title>
+      	<detail resource-key="MainMenu.detail">Choose the task you want to perform:</detail>
+
+				<navoptionprovider class="atg.cim.worker.base.MainMenuNavigation" />
+
+				<error>
+					<step id="MainMenuErrorStep">
+						<title resource-key="MainMenu.error.title">Unexpected Error</title>
+						<detail>An unexpected error has occurred. ${error.message}</detail>
+						<navoption id="continue">
+							<label>Continue</label>
+							<command type="GOTO_STEP" value="DisplayMainMenu"/>
+						</navoption>
+					</step>
+				</error>
+    	</step>
+
+    	<step id="MainMenuInfiniteLoop">
+
+      	<validator id="AlwaysTrueValidator" phase="PRESTEP">
+        	<if-true>
+          	<command type="GOTO_STEP" value="DisplayMainMenu" />
+        	</if-true>
+      	</validator>      	
+
+    	</step>
+	  </process>
+
+	</wizard>
+
+
+
+	
+			<!-- CustomPluginLauncher -->
+	<wizard id="CustomPluginLauncherWizard" wizard-type="base">
+
+		<title>Custom Plugin Launcher</title>
+		<detail></detail>
+		
+	  <process id="custompluginlauncher">
+
+			<step id="CustomPluginSelectionStep" type="template" class="atg.cim.worker.base.CustomPluginSelectTemplate"/>
+
+	  </process>
+	</wizard>
+
+
+		<!-- BatchFileWizard -->
+	<wizard id="BatchFileSaveWizard" wizard-type="base">
+
+		<title>Batch File Wizard</title>
+		<detail></detail>
+		
+	  <process id="batchfile">
+
+    	<step id="BatchFileSaveStep">
+
+      	<title>Save Batch File</title>
+      	<detail/>
+				<task id="WriteBatchFileTask"/>
+				<navoption id="save" default="true">
+					<label>Save File</label>
+					<command type="EXECUTE_NEXT" />
+				</navoption>
+				<navoption id="cancel">
+					<label>Cancel</label>
+					<command type="DROP_STEP_TASKS"/>
+					<command type="NEXT_STEP"/>
+				</navoption>
+
+    	</step>
+
+	  </process>
+	</wizard>
+	
+	
+	
+</wizards>
+<!-- @version $Id: //product/CIM/version/10.0.3/plugins/Base/wizards.xml#2 $$Change: 651448 $-->

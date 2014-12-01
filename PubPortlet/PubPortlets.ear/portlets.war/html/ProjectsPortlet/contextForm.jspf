@@ -1,0 +1,81 @@
+<%--
+ 
+  Values which must be defined by the including page:
+
+    assetInfo
+    assetInfoPath
+--%>
+
+<!-- Begin contextForm.jspf -->
+
+<c:set var="contextFormHandlerPath" value="/atg/epub/servlet/ContextFormHandler"/>
+<dspel:importbean var="contextFormHandler" bean="${contextFormHandlerPath}"/>
+
+<script language="JavaScript">
+
+  function getContextForm() { return document.getElementById("contextForm"); }
+
+  function popContext() {
+    var form = getContextForm();
+    form.elements[ "<c:out value="${contextFormHandlerPath}.contextOp"/>" ].value = 
+      <c:out value="${assetInfo.CONTEXT_POP}"/>;
+    form.submit();
+  }
+
+  function updateNewAssetInfo() {
+    var form = getContextForm();
+    form.elements[ "<c:out value="${contextFormHandlerPath}.contextOp"/>" ].value = 
+      <c:out value="${assetInfo.CONTEXT_UPDATE_NEW_ASSET}"/>;
+    form.submit();
+  }
+
+  function pushContext( assetURI, attributes ) {
+    // If we're drilling down from the asset history diff page then the next page must be edit
+    <c:if test="${assetInfo.context.attributes.pageView eq ASSET_DIFF_VIEW}">
+      <c:set target="${atgSession}" property="assetContextPageView" value="asset_edit_view"/>
+    </c:if>
+
+    var form = getContextForm();
+    if ( attributes != undefined ) {
+      if ( attributes['onSelect'] ) {
+        form.elements[ '<c:out value="${assetInfoPath}.context.attributes.onSelect"/>' ].value = 
+          attributes.onSelect;
+      }
+      if ( attributes['callerData'] ) {
+        form.elements[ '<c:out value="${assetInfoPath}.context.attributes.assetPickerCallerData"/>' ].value = 
+          attributes.callerData;
+      }
+    }
+    form.elements[ "<c:out value="${contextFormHandlerPath}.assetURI"/>" ].value = 
+      assetURI;
+    form.elements[ "<c:out value="${contextFormHandlerPath}.contextOp"/>" ].value = 
+      <c:out value="${assetInfo.CONTEXT_PUSH}"/>;
+    form.submit();
+  }
+
+</script>
+
+<c:if test="${ empty contextActionURL }">
+  <portlet:actionURL var="contextActionURL"/>
+</c:if>
+
+<dspel:form id="contextForm" formid="contextForm" method="post"
+  action="${contextActionURL}">
+  <dspel:input type="hidden" value="false" priority="100"
+    bean="${contextFormHandlerPath}.loggingDebug"/>
+  <dspel:input type="hidden" value="${assetInfoPath}" priority="100"
+    bean="${contextFormHandlerPath}.assetInfoPath"/>
+  <dspel:input type="hidden" value="" id="onSelect"
+    bean="${assetInfoPath}.context.attributes.onSelect"/>
+  <dspel:input type="hidden" value="" id="callerData"
+    bean="${assetInfoPath}.context.attributes.assetPickerCallerData"/>
+  <dspel:input type="hidden" value="${assetInfo.CONTEXT_POP}" 
+    priority="-1" bean="${contextFormHandlerPath}.contextOp"/>
+  <dspel:input type="hidden" value="1"
+    bean="${contextFormHandlerPath}.assetURI"/>
+  <dspel:input type="hidden" priority="-10" value="1"
+    bean="${contextFormHandlerPath}.contextAction"/>
+</dspel:form>
+
+<!-- End contextForm.jspf -->
+<%-- @version $Id: //product/PubPortlet/version/10.0.3/portlets.war/html/ProjectsPortlet/contextForm.jspf#2 $$Change: 651448 $--%>

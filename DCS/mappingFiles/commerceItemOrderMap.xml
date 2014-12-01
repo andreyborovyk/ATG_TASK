@@ -1,0 +1,14 @@
+<!DOCTYPE item-descriptor PUBLIC "-//Art Technology Group, Inc.//DTD DATA BINDING//EN" "http://www.atg.com/dtds/databinding/itemDescriptorMapping_1.0.dtd">
+<item-descriptor repository-path="/atg/commerce/order/OrderRepository" name="order" default-include="true">
+  <property name="relationships" include="true">
+    <item-descriptor repository-path="/atg/commerce/order/OrderRepository" name="payOrderRel" default-include="true">
+      <property name="order" include="true"/>
+      <property name="paymentGroup" include="true"/>
+    </item-descriptor>
+    <item-descriptor repository-path="/atg/commerce/order/OrderRepository" name="shipItemRel" default-include="true">
+      <property name="shippingGroup" include="true"/>
+      <property name="commerceItem" include="true"/>
+    </item-descriptor>
+  </property>
+</item-descriptor>
+<!-- @version $Id: //product/DCS/version/10.0.3/release/DCS/mappingFiles/commerceItemOrderMap.xml#2 $$Change: 651448 $ -->

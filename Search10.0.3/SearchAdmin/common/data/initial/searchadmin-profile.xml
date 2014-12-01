@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE gsa-template SYSTEM "dynamosystemresource:/atg/dtds/gsa/gsa_1.0.dtd">
+<gsa-template>
+
+  <import-items>
+
+    <!-- 2 items of type roleFolder -->
+    <add-item item-descriptor="roleFolder" id="root">
+      <set-property name="name"><![CDATA[root folder]]></set-property>
+      <set-property name="description"><![CDATA[folder : rootFolder]]></set-property>
+    </add-item>
+    <add-item item-descriptor="roleFolder" id="srchSearchAdminRoleFolder">
+      <set-property name="name"><![CDATA[SearchAdminRoles]]></set-property>
+      <set-property name="parent"><![CDATA[root]]></set-property>
+      <set-property name="description"><![CDATA[All SearchAdmin roles]]></set-property>
+    </add-item>
+    
+    <add-item item-descriptor="accessRight" id="srchUIAccess">
+			<set-property name="type">generic</set-property>
+			<set-property name="name"><![CDATA[Generic Access to the ATG Search]]></set-property>
+			<set-property name="description"><![CDATA[Generic Access to the ATG Search]]></set-property>
+			<set-property name="scope">organization</set-property>
+		</add-item>
+
+    <add-item item-descriptor="role" id="srchSearchAdminRole">
+			<set-property name="accessRights"><![CDATA[srchUIAccess]]></set-property>
+			<set-property name="name"><![CDATA[Search Access]]></set-property>
+		</add-item>
+
+  </import-items>
+
+  <update-item item-descriptor="roleFolder" id="root">
+    <set-property name="childFolders" add="true"><![CDATA[srchSearchAdminRoleFolder]]></set-property>
+  </update-item>
+
+  <update-item item-descriptor="roleFolder" id="srchSearchAdminRoleFolder">
+    <set-property name="childItems" add="true"><![CDATA[srchSearchAdminRole]]></set-property>
+  </update-item>  
+  
+  <update-item item-descriptor="user" id="portal-admin">
+    <set-property name="roles"><![CDATA[portal-admin,epubSuperAdmin,srchSearchAdminRole]]></set-property>
+  </update-item>
+
+
+</gsa-template>
+<!-- @version $Id: //application/SearchAdmin/version/10.0.3/common/src/data/initial/searchadmin-profile.xml#2 $$Change: 651448 $-->

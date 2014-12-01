@@ -1,0 +1,130 @@
+<!DOCTYPE schema SYSTEM "http://road.atg.com/dtds/ddlgen/schema.dtd">
+<schema name="crs_profile_ddl" description="Tables for the estore profile repository extensions">
+  <comment><![CDATA[ @version $Id: //hosting-blueprint/B2CBlueprint/version/10.0.3/EStore/sql/ddlgen/crs_profile_ddl.xml#4 $$Change: 659110 $]]></comment>
+
+  <!-- Expand phone numbers from 15 characters -->
+  <sql>
+    <sql-db db="oracle">
+      alter table dps_contact_info modify (phone_number varchar2(40));
+    </sql-db>
+  </sql>
+
+  <table name="crs_user">
+    <column name="user_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="external_id" nullable="y">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="number_of_orders" nullable="y">
+      <column-type db="generic" type="integer"/>
+      <column-type db="oracle" type="number" length="19" scale="0"/>
+      <column-type db="db2" type="numeric" length="19" scale="0"/>
+      <column-type db="mssql" type="numeric" length="19" scale="0"/>
+      <column-type db="sybase" type="numeric" length="19"/>
+    </column>
+    <column name="last_purchase_date" nullable="y">
+      <column-type db="generic" type="date"/>
+    </column>
+    <column name="referral_source" nullable="y">
+      <column-type db="generic" type="integer"/>
+      <column-type db="oracle" type="integer"/>
+    </column>
+    <column name="receive_promo_email" nullable="y">
+      <column-type db="generic" type="integer"/>
+      <column-type db="oracle" type="integer"/>
+    </column>
+    <column name="store_id" nullable="y">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <primary-key name="crs_user_p">
+      <index-column column="user_id"/>
+    </primary-key>
+    <foreign-key name="crs_user_fk" referenced-table="dps_user">
+      <fkey-column referencing-column="user_id" referenced-column="id"/>
+    </foreign-key>
+  </table>
+
+  <table name="crs_items_bought">
+    <column name="user_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="sequence_id" nullable="n">
+      <column-type db="generic" type="integer"/>
+      <column-type db="oracle" type="integer"/>
+    </column>
+    <column name="item" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <primary-key name="crs_item_bought_p">
+      <index-column column="user_id" seq="1"/>
+      <index-column column="sequence_id" seq="2"/>
+    </primary-key>
+  </table>
+
+  <table name="crs_email_recpient">
+    <column name="email_recipient_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="email" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="user_id" nullable="y">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="source_code" nullable="y">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <primary-key name="crs_email_recpnt_p">
+      <index-column column="email_recipient_id"/>
+    </primary-key>
+  </table>
+
+  <table name="crs_user_shipping">
+    <column name="user_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="tag" nullable="n">
+      <column-type db="generic" type="varchar" length="42"/>
+    </column>
+    <column name="addr_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <primary-key name="crs_user_shpping_p">
+      <index-column column="user_id" seq="1"/>
+      <index-column column="tag" seq="2"/>
+    </primary-key>
+    <foreign-key name="crs_user_shppng_fk" referenced-table="dps_user">
+      <fkey-column referencing-column="user_id" referenced-column="id"/>
+    </foreign-key>
+    <index name="crs_u_shipaddr_idx" table="crs_user_shipping">
+      <index-column column="addr_id"/>
+    </index>
+  </table>
+
+  <table name="crs_back_in_stock">
+    <column name="id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="email" nullable="y">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="catalog_ref_id" nullable="y">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="product_id" nullable="y">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="site_id" nullable="y">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="locale" nullable="y">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <primary-key name="crs_back_in_ntfy_p">
+      <index-column column="id"/>
+    </primary-key>
+  </table>  
+
+</schema>
+<!-- @version $Id: //hosting-blueprint/B2CBlueprint/version/10.0.3/EStore/sql/ddlgen/crs_profile_ddl.xml#4 $$Change: 659110 $-->

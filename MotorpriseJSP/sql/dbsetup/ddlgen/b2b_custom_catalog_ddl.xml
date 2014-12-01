@@ -1,0 +1,122 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="b2b_custom_catalog_ddl">
+<comment><![CDATA[ @version $Id: //product/B2BCommerce/version/10.0.3/templates/MotorpriseJSP/sql/b2b_custom_catalog_ddl.xml#2 $$Change: 651448 $]]></comment>
+   <table name="b2b_belt_sku">
+      <column name="sku_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="length" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="top_width" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="angle" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="notched" nullable="y">
+         <column-type db="generic" type="tinyint"/>
+         <column-type db="oracle" type="integer"/>
+         <column-type db="db2" type="numeric" length="4" scale="0"/>
+         <column-type db="mssql" type="numeric" length="1" scale="0"/>
+      </column>
+      <primary-key name="b2b_belt_sku_p">
+         <index-column column="sku_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="b2b_beltsksku_d_f" referenced-table="dcs_sku">
+         <fkey-column referencing-column="sku_id" referenced-column="sku_id"/>
+      </foreign-key>
+   </table>
+   <table name="b2b_hose_sku">
+      <column name="sku_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="inner_diameter" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="length" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="b2b_hose_sku_p">
+         <index-column column="sku_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="b2b_hossksku_d_f" referenced-table="dcs_sku">
+         <fkey-column referencing-column="sku_id" referenced-column="sku_id"/>
+      </foreign-key>
+   </table>
+   <table name="b2b_sprkplg_sku">
+      <column name="sku_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="plug_number" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="thread" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="b2b_sprkplg_sku_p">
+         <index-column column="sku_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="b2b_sprksku_d_f" referenced-table="dcs_sku">
+         <fkey-column referencing-column="sku_id" referenced-column="sku_id"/>
+      </foreign-key>
+   </table>
+   <table name="b2b_oilfltr_sku">
+      <column name="sku_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="thread_type" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="length" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="outer_diameter" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="b2b_oilfltr_sku_p">
+         <index-column column="sku_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="b2b_olflsku_d_f" referenced-table="dcs_sku">
+         <fkey-column referencing-column="sku_id" referenced-column="sku_id"/>
+      </foreign-key>
+   </table>
+   <table name="b2b_cylinder_sku">
+      <column name="sku_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="diameter" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="height" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="b2b_cylinder_sku_p">
+         <index-column column="sku_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="b2b_cylisku_d_f" referenced-table="dcs_sku">
+         <fkey-column referencing-column="sku_id" referenced-column="sku_id"/>
+      </foreign-key>
+   </table>
+   <table name="b2b_cube_sku">
+      <column name="sku_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="height" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="width" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="depth" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="b2b_cube_sku_p">
+         <index-column column="sku_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="b2b_cubsksku_d_f" referenced-table="dcs_sku">
+         <fkey-column referencing-column="sku_id" referenced-column="sku_id"/>
+      </foreign-key>
+   </table>
+</schema>
+<!-- @version $Id: //product/B2BCommerce/version/10.0.3/templates/MotorpriseJSP/sql/b2b_custom_catalog_ddl.xml#2 $$Change: 651448 $ -->

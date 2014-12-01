@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- ==================================================================== -->
+<!-- Scenario UI grammar extension for the Alert gear.                    -->
+<!-- ==================================================================== -->
+
+<?xcl-stylesheet resource="atg/ui/expreditor/xcl/grammar.xsl"?>
+
+<context>
+
+  <!-- ================================================================== -->
+  <!-- Standard event filters                                             -->
+  <!-- ================================================================== -->
+  
+  <!-- Filters for document events (except DocumentCreated) -->
+
+  <choice id="document-condition-filter">
+    <rule name="document-event-with-document"/>
+    <rule name="portal-event-with-community"/>
+    <rule name="portal-event-with-gear"/>
+    <rule name="portal-event-with-profile"/>
+  </choice>
+
+  <sequence id="document-event-filter">
+    <placeholder>
+      <choice>
+        <rule name="with-any-attributes"/>
+        <rule name="document-condition-filter"/>
+      </choice>
+    </placeholder>
+  </sequence>
+
+  <!-- ==================================================================== -->
+  <!-- Custom expression for the DocumentCreated event.                     -->
+  <!-- ==================================================================== -->
+
+  <sequence id="event-message-atg.portal.gear.docexch.DocumentCreatedMessage">    <attribute name="icon"><icon path="atg/ui/process/images/generic-event.gif"/></attribute>
+    <attribute name="eventType" value="atg.portal.gear.docexch.DocumentCreatedMessage"/>
+    <attribute name="eventContext" value="request"/>
+
+    <xml-template>
+      <event-name>atg.portal.gear.docexch.DocumentCreatedMessage</event-name>
+    </xml-template>
+
+    <token><description>Document Created</description></token>
+    <rule name="portal-event-filter"/>
+  </sequence>
+
+  <sequence id="condition-message-atg.portal.gear.docexch.DocumentCreatedMessage">
+    <expression-class>atg.ui.process.expression.EventConditionExpression</expression-class>
+    <attribute name="icon"><icon path="atg/ui/process/images/generic-condition.gif"/></attribute>
+    <attribute name="checkedEventName" value="atg.portal.gear.docexch.DocumentCreatedMessage"/>
+
+    <token><description>Document event</description></token>
+    <rule name="portal-condition-filter"/>
+  </sequence>
+
+  <!-- ==================================================================== -->
+  <!-- Custom expression for the DocumentUpdated event.                     -->
+  <!-- ==================================================================== -->
+
+  <sequence id="event-message-atg.portal.gear.docexch.DocumentUpdatedMessage">    <attribute name="icon"><icon path="atg/ui/process/images/generic-event.gif"/></attribute>
+    <attribute name="eventType" value="atg.portal.gear.docexch.DocumentUpdatedMessage"/>
+    <attribute name="eventContext" value="request"/>
+
+    <xml-template>
+      <event-name>atg.portal.gear.docexch.DocumentUpdatedMessage</event-name>
+    </xml-template>
+
+    <token><description>Document Updated</description></token>
+    <rule name="document-event-filter"/>
+  </sequence>
+
+  <sequence id="condition-message-atg.portal.gear.docexch.DocumentUpdatedMessage">
+    <expression-class>atg.ui.process.expression.EventConditionExpression</expression-class>
+    <attribute name="icon"><icon path="atg/ui/process/images/generic-condition.gif"/></attribute>
+    <attribute name="checkedEventName" value="atg.portal.gear.docexch.DocumentUpdatedMessage"/>
+
+    <token><description>Document event</description></token>
+    <rule name="document-condition-filter"/>
+  </sequence>
+
+  <!-- ==================================================================== -->
+  <!-- Custom expression for the DocumentDeleted event.                     -->
+  <!-- ==================================================================== -->
+
+  <sequence id="event-message-atg.portal.gear.docexch.DocumentDeletedMessage">    <attribute name="icon"><icon path="atg/ui/process/images/generic-event.gif"/></attribute>
+    <attribute name="eventType" value="atg.portal.gear.docexch.DocumentDeletedMessage"/>
+    <attribute name="eventContext" value="request"/>
+
+    <xml-template>
+      <event-name>atg.portal.gear.docexch.DocumentDeletedMessage</event-name>
+    </xml-template>
+
+    <token><description>Document Deleted</description></token>
+    <rule name="document-event-filter"/>
+  </sequence>
+
+  <sequence id="condition-message-atg.portal.gear.docexch.DocumentDeletedMessage">
+    <expression-class>atg.ui.process.expression.EventConditionExpression</expression-class>
+    <attribute name="icon"><icon path="atg/ui/process/images/generic-condition.gif"/></attribute>
+    <attribute name="checkedEventName" value="atg.portal.gear.docexch.DocumentDeletedMessage"/>
+
+    <token><description>Document event</description></token>
+    <rule name="document-condition-filter"/>
+  </sequence>
+
+  <!-- ==================================================================== -->
+  <!-- Custom expression for the DocumentViewed event.                      -->
+  <!-- ==================================================================== -->
+
+  <sequence id="event-message-atg.portal.gear.docexch.DocumentViewedMessage">
+    <attribute name="icon"><icon path="atg/ui/process/images/generic-event.gif"/></attribute>
+    <attribute name="eventType" value="atg.portal.gear.docexch.DocumentViewedMessage"/>
+    <attribute name="eventContext" value="request"/>
+
+    <xml-template>
+      <event-name>atg.portal.gear.docexch.DocumentViewedMessage</event-name>
+    </xml-template>
+
+    <token><description>Document Viewed</description></token>
+    <rule name="document-event-filter"/>
+  </sequence>
+  
+  <sequence id="condition-message-atg.portal.gear.docexch.DocumentViewedMessage">
+    <expression-class>atg.ui.process.expression.EventConditionExpression</expression-class>
+    <attribute name="icon"><icon path="atg/ui/process/images/generic-condition.gif"/></attribute>
+    <attribute name="checkedEventName" value="atg.portal.gear.docexch.DocumentViewedMessage"/>
+
+    <token><description>Document event</description></token>
+    <rule name="document-condition-filter"/>
+  </sequence>
+
+
+  <!-- Expression for specifying the "document" property of a document event. -->
+
+  <sequence id="document-event-with-document">
+    <expression-class>atg.ui.expreditor.LeftCoercedExpression</expression-class>
+      
+    <xml-template>
+      <filter construct="document-event-with-document" operator="eq">
+        <event-property>
+          <property-name>documentId</property-name>
+        </event-property>
+        <constant><apply-xml-templates/></constant>
+      </filter>
+    </xml-template>
+    <sequence>
+      <expression-class>atg.ui.expreditor.TypedSequenceExpression</expression-class>
+      <attribute name="typeClassName" value="java.lang.String"/>
+      <token><description>where document is</description></token>
+    </sequence>
+
+    <token>
+      <expression-class>atg.ui.expreditor.targeting.RepositoryItemSetExpression</expression-class>
+      <assistant-class>atg.ui.expreditor.targeting.RepositoryItemSetAssistant</assistant-class>
+      <attribute name="repositoryName" value="/atg/portal/gear/docexch/SplitDocumentRepository"/>
+      <attribute name="repositoryItemType" value="document"/>
+      <required/>
+      <description>Choose document...</description>
+    </token>
+  </sequence>
+
+</context>
+<!-- @version $Id: //app/portal/version/10.0.3/docexch/classes.jar/src/atg/portal/gear/docexch/docexch-expression-grammar.xml#2 $$Change: 651448 $ -->

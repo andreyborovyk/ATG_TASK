@@ -1,0 +1,1639 @@
+<!DOCTYPE form-validation PUBLIC
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1//EN"
+    "http://www.atg.com/dtds/searchadmin/validator_1_3_0.dtd">
+
+<form-validation>
+  <global>
+
+    <!-- typical validation rules we indicate class and method that will
+perform server validation. We also indicate parameters of method.
+And finally the common error message key for that rule. The key is the
+resource bundle key. Error messages can be set individually for any field.
+If individual error message exist it will appear instead of common. -->
+    <validator name="required"
+               classname="atg.searchadmin.adminui.validator.FieldChecks"
+               method="validateRequired"
+               methodParams="org.apache.commons.validator.Validator,
+                             org.apache.commons.validator.ValidatorAction,
+                             org.apache.commons.validator.Field,
+                             atg.searchadmin.adminui.validator.ValidationContext"
+               msg="error_message.0.required.string.not.provided"/>
+
+    <validator name="mask"
+               classname="atg.searchadmin.adminui.validator.FieldChecks"
+               method="validateMask"
+               methodParams="org.apache.commons.validator.Validator,
+                             org.apache.commons.validator.ValidatorAction,
+                             org.apache.commons.validator.Field,
+                             atg.searchadmin.adminui.validator.ValidationContext"
+               msg="error_message.2.text.string.contains.invalid.characters"/>
+
+    <validator name="maxlength"
+               classname="atg.searchadmin.adminui.validator.FieldChecks"
+               method="validateMaxlength"
+               methodParams="org.apache.commons.validator.Validator,
+                             org.apache.commons.validator.ValidatorAction,
+                             org.apache.commons.validator.Field,
+                             atg.searchadmin.adminui.validator.ValidationContext"
+               msg="error_message.1.text.string.too.long"/>
+
+    <validator name="integer"
+               classname="atg.searchadmin.adminui.validator.FieldChecks"
+               method="validateInteger"
+               methodParams="org.apache.commons.validator.Validator,
+                             org.apache.commons.validator.ValidatorAction,
+                             org.apache.commons.validator.Field,
+                             atg.searchadmin.adminui.validator.ValidationContext"
+               msg="error_message.3.text.string.integer"/>
+
+    <validator name="boolean"
+               classname="atg.searchadmin.adminui.validator.FieldChecks"
+               method="validateBoolean"
+               methodParams="org.apache.commons.validator.Validator,
+                             org.apache.commons.validator.ValidatorAction,
+                             org.apache.commons.validator.Field,
+                             atg.searchadmin.adminui.validator.ValidationContext"
+               msg="error_message.text.string.boolean"/>
+
+    <validator name="double"
+               classname="atg.searchadmin.adminui.validator.FieldChecks"
+               method="validateDouble"
+               methodParams="org.apache.commons.validator.Validator,
+                             org.apache.commons.validator.ValidatorAction,
+                             org.apache.commons.validator.Field,
+                             atg.searchadmin.adminui.validator.ValidationContext"
+               msg="error_message.text.string.double"/>
+
+    <validator name="intRange"
+               classname="atg.searchadmin.adminui.validator.FieldChecks"
+               method="validateIntRange"
+               methodParams="org.apache.commons.validator.Validator,
+                             org.apache.commons.validator.ValidatorAction,
+                             org.apache.commons.validator.Field,
+                             atg.searchadmin.adminui.validator.ValidationContext"
+               msg="error_message.4.text.string.integer_range"/>
+
+    <validator name="max"
+               classname="atg.searchadmin.adminui.validator.FieldChecks"
+               method="validateMax"
+               methodParams="org.apache.commons.validator.Validator,
+                             org.apache.commons.validator.ValidatorAction,
+                             org.apache.commons.validator.Field,
+                             atg.searchadmin.adminui.validator.ValidationContext"
+               msg="error_message.text.string.max"/>
+
+    <validator name="min"
+               classname="atg.searchadmin.adminui.validator.FieldChecks"
+               method="validateMin"
+               methodParams="org.apache.commons.validator.Validator,
+                             org.apache.commons.validator.ValidatorAction,
+                             org.apache.commons.validator.Field,
+                             atg.searchadmin.adminui.validator.ValidationContext"
+               msg="error_message.text.string.min"/>
+
+    <validator name="date"
+               classname="atg.searchadmin.adminui.validator.FieldChecks"
+               method="validateDate"
+               methodParams="org.apache.commons.validator.Validator,
+                             org.apache.commons.validator.ValidatorAction,
+                             org.apache.commons.validator.Field,
+                             atg.searchadmin.adminui.validator.ValidationContext"
+               msg="error_message.5.text.string.date"/>
+
+    <validator name="dateTime"
+               classname="atg.searchadmin.adminui.validator.FieldChecks"
+               method="validateDateTime"
+               methodParams="org.apache.commons.validator.Validator,
+                             org.apache.commons.validator.ValidatorAction,
+                             org.apache.commons.validator.Field,
+                             atg.searchadmin.adminui.validator.ValidationContext"
+               msg="error_message.5.text.string.date"/>
+
+    <validator name="time"
+               classname="atg.searchadmin.adminui.validator.FieldChecks"
+               method="validateTime"
+               methodParams="org.apache.commons.validator.Validator,
+                             org.apache.commons.validator.ValidatorAction,
+                             org.apache.commons.validator.Field,
+                             atg.searchadmin.adminui.validator.ValidationContext"
+               msg="error_message.5.text.string.time"/>
+
+    <validator name="compareInt"
+               classname="atg.searchadmin.adminui.validator.FieldChecks"
+               method="validateCompareInt"
+               methodParams="org.apache.commons.validator.Validator,
+                             org.apache.commons.validator.ValidatorAction,
+                             org.apache.commons.validator.Field,
+                             atg.searchadmin.adminui.validator.ValidationContext"
+               msg="error_message.text.string.compareInt"/>
+               
+    <validator name="compareBlank"
+               classname="atg.searchadmin.adminui.validator.FieldChecks"
+               method="validateCompareBlank"
+               methodParams="org.apache.commons.validator.Validator,
+                             org.apache.commons.validator.ValidatorAction,
+                             org.apache.commons.validator.Field,
+                             atg.searchadmin.adminui.validator.ValidationContext"
+               msg="error_message.0.required.string.not.provided"/>
+
+    <validator name="compareDate"
+               classname="atg.searchadmin.adminui.validator.FieldChecks"
+               method="validateCompareDate"
+               methodParams="org.apache.commons.validator.Validator,
+                             org.apache.commons.validator.ValidatorAction,
+                             org.apache.commons.validator.Field,
+                             atg.searchadmin.adminui.validator.ValidationContext"
+               msg="error_message.text.string.compareDate"/>
+  </global>
+
+  <formset>
+
+    <!-- Description of the form. The name of appropriate handler are
+    indicated as form name -->
+    <form name="ManageProjectFormHandler">
+
+      <!-- Description of the field. The name of field are to be equals
+      the appropriate field in form handler. Depends attribute show what
+      validation rules will be applied for the field. Message argument is
+      indicated in Arg element. -->
+      <field property="projectName" depends="required,maxlength,mask">
+        <msg key="error_message.mask.special.symbols" name="mask"/>
+        <arg key="error_field.project_general.project_name_field" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+        <var>
+          <var-name>mask</var-name>
+          <var-value><![CDATA[^[^\\/:*?"<>|]*$]]></var-value>
+        </var>
+      </field>
+      
+      <field property="projectDescription" depends="maxlength">
+        <arg key="error_field.project_general.description" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+      <field property="targetType" depends="required">
+        <arg key="error_field.project_general.target_type" position="0"/>
+      </field>
+    </form>
+
+    <form name="ManageContentFormHandler">
+      <field property="contentName" depends="required,maxlength">
+        <arg key="error_field.content_name" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+      <field property="documentSetName" depends="maxlength">
+        <arg key="error_field.document_set_name" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+      <field property="contentSourceType" depends="required">
+        <msg key="error_message.0.required.string.not.provided" name="required"/>
+        <arg key="error_field.content_add_content.type" position="0"/>
+      </field>
+      <!--
+        Note: All additional setting fields are added dynamically (see SourceTypeComponent for more info)
+      -->
+    </form>
+
+    <form name="GlobalSettingsFormHandler">
+      <field property="contentLabel" depends="required,maxlength,mask">
+        <arg key="error_field.content_label" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <msg key="error_message.mask.global_settings" name="mask"/>
+        <var>
+          <var-name>required</var-name>
+          <var-value>all_without_last</var-value>
+        </var>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>40</var-value>
+        </var>
+        <var>
+          <var-name>mask</var-name>
+          <var-value><![CDATA[^[^\\/:*?"<>|,=]*$]]></var-value>
+        </var>
+      </field>
+      <field property="targetType" depends="required,maxlength,mask">
+        <arg key="error_field.target_type" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <msg key="error_message.mask.global_settings" name="mask"/>
+        <var>
+          <var-name>required</var-name>
+          <var-value>all_without_last</var-value>
+        </var>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>40</var-value>
+        </var>
+        <var>
+          <var-name>mask</var-name>
+          <var-value><![CDATA[^[^\\/:*?"<>|,=]*$]]></var-value>
+        </var>
+      </field>
+    </form>
+
+    <form name="SearchEnvironmentFormHandler">
+      <field property="searchEnvironmentName" depends="required,maxlength">
+        <arg key="error_field.project_search_envs_new_search_env.search_env_name_field" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+      <field property="hostName" depends="required,maxlength">
+        <arg key="error_field.project_search_envs_new_search_env.search_env_host_name_field" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>required</var-name>
+          <var-value>all</var-value>
+        </var>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+      <field property="numEngine" depends="required,integer,intRange">
+        <arg key="error_field.project_search_envs_new_search_env.search_engines_for_env" position="0"/>
+        <arg name="intRange" key="${var:min}" resource="false" position="1"/>
+        <arg name="intRange" key="${var:max}" resource="false" position="2"/>
+        <var>
+          <var-name>required</var-name>
+          <var-value>all_without_last</var-value>
+        </var>
+        <var>
+          <var-name>intRange</var-name>
+          <var-value>1,65535</var-value>
+        </var>
+        <var>
+          <var-name>min</var-name>
+          <var-value>1</var-value>
+        </var>
+        <var>
+          <var-name>max</var-name>
+          <var-value>65535</var-value>
+        </var>
+      </field>
+      <field property="cpuCount" depends="integer,intRange">
+        <arg key="error_field.project_search_envs_new_search_env.cpu_on_machine" position="0"/>
+        <arg name="intRange" key="${var:min}" resource="false" position="1"/>
+        <arg name="intRange" key="${var:max}" resource="false" position="2"/>
+        <var>
+          <var-name>intRange</var-name>
+          <var-value>0,65535</var-value>
+        </var>
+        <var>
+          <var-name>min</var-name>
+          <var-value>0</var-value>
+        </var>
+        <var>
+          <var-name>max</var-name>
+          <var-value>65535</var-value>
+        </var>
+      </field>
+    </form>
+
+    <form name="SearchHostFormHandler">
+
+      <!-- Description of the field. The name of field are to be equals
+      the appropriate field in form handler. Depends attribute show what
+      validation rules will be applied for the field. Message argument is
+      indicated in Arg element. -->
+      <field property="workingDirectoryPath" depends="required,maxlength">
+        <arg key="error_field.search_env_host_machine_config.working_directory_field" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>need2Validate</var-name>
+          <var-value>defaultWorkingDirectory=false</var-value>
+        </var>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+
+      <field property="portRangeFrom" depends="required,integer,intRange">
+        <arg key="error_field.content_add_content.port" position="0"/>
+        <arg name="intRange" key="${var:min}" resource="false" position="1"/>
+        <arg name="intRange" key="${var:max}" resource="false" position="2"/>
+        <var>
+          <var-name>need2Validate</var-name>
+          <var-value>defaultPortNumbers=false</var-value>
+        </var>
+        <var>
+          <var-name>intRange</var-name>
+          <var-value>1,65535</var-value>
+        </var>
+        <var>
+          <var-name>min</var-name>
+          <var-value>1</var-value>
+        </var>
+        <var>
+          <var-name>max</var-name>
+          <var-value>65535</var-value>
+        </var>
+      </field>
+
+      <field property="portRangeTo" depends="required,integer,intRange,compareInt">
+        <arg name="required" key="error_field.content_add_content.port" position="0"/>
+        <arg name="integer" key="error_field.content_add_content.port" position="0"/>
+
+        <arg name="intRange" key="error_field.content_add_content.port" position="0"/>
+        <arg name="intRange" key="${var:min}" resource="false" position="1"/>
+        <arg name="intRange" key="${var:max}" resource="false" position="2"/>
+
+        <arg name="compareInt" key="error_field.range.to" position="0"/>
+        <arg name="compareInt" key="error_field.range.from" position="1"/>
+
+        <var>
+          <var-name>need2Validate</var-name>
+          <var-value>defaultPortNumbers=false</var-value>
+        </var>
+        <var>
+          <var-name>compareInt</var-name>
+          <var-value>portRangeFrom,GE</var-value>
+        </var>
+        <var>
+          <var-name>intRange</var-name>
+          <var-value>1,65535</var-value>
+        </var>
+        <var>
+          <var-name>min</var-name>
+          <var-value>1</var-value>
+        </var>
+        <var>
+          <var-name>max</var-name>
+          <var-value>65535</var-value>
+        </var>
+      </field>
+
+      <field property="launchServicePort" depends="required,integer,intRange">
+        <arg key="error_field.content_add_content.port" position="0"/>
+        <arg name="intRange" key="${var:min}" resource="false" position="1"/>
+        <arg name="intRange" key="${var:max}" resource="false" position="2"/>
+        <var>
+          <var-name>need2Validate</var-name>
+          <var-value>defaultLaunchServicePort=false</var-value>
+        </var>
+        <var>
+          <var-name>intRange</var-name>
+          <var-value>1,65535</var-value>
+        </var>
+        <var>
+          <var-name>min</var-name>
+          <var-value>1</var-value>
+        </var>
+        <var>
+          <var-name>max</var-name>
+          <var-value>65535</var-value>
+        </var>
+      </field>
+
+      <field property="maximumSearchEngines" depends="integer,intRange">
+        <arg key="error_field.search_env_host_machine_config.search_engines_max" position="0"/>
+        <arg name="intRange" key="${var:min}" resource="false" position="1"/>
+        <arg name="intRange" key="${var:max}" resource="false" position="2"/>
+        <var>
+          <var-name>intRange</var-name>
+          <var-value>1,65535</var-value>
+        </var>
+        <var>
+          <var-name>min</var-name>
+          <var-value>1</var-value>
+        </var>
+        <var>
+          <var-name>max</var-name>
+          <var-value>65535</var-value>
+        </var>
+      </field>
+
+    </form>
+
+    <form name="SynchronizationRollbackIndex">
+      <field property="searchEnvironmentsList" depends="required">
+        <arg key="error_field.synchronization_rollback_index.environment" position="0"/>
+        <msg key="error_field.synchronization_rollback_index.message" name="required"/>
+      </field>
+    </form>
+
+    <form name="SynchronizationRuleFormHandler">
+      <field property="subName" depends="required,maxlength">
+        <arg key="error_field.syncronization_add_rule.synctask.subname" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+
+      <field property="deploymentTarget" depends="required,maxlength">
+        <arg key="error_field.syncronization_add_rule.deployment_target" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>need2Validate</var-name>
+          <var-value>syncBy=2</var-value>
+        </var>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+
+      <field property="syncTaskScheduleBean.startDateTime" depends="required,dateTime">
+        <arg key="error_field.syncronization_add_rule.start_date" position="0"/>
+        <arg name="dateTime" key="timeFormat" position="1"/>
+        <var>
+          <var-name>need2Validate</var-name>
+          <var-value>syncBy=0</var-value>
+        </var>
+        <var resource="true">
+          <var-name>dateTime</var-name>
+          <var-value>validator.datetime_pattern</var-value>
+        </var>
+      </field>
+
+      <field property="syncTaskScheduleBean.betweenStart" depends="required,time">
+        <arg key="error_field.syncronization_add_rule.start_beteween_time" position="0"/>
+        <arg name="time" key="timeOnlyFormat" position="1"/>
+        <var>
+          <var-name>need2Validate</var-name>
+          <var-value>syncBy=0;syncTaskScheduleBean.scheduleValue=2;syncTaskScheduleBean.timePeriod!3</var-value>
+        </var>
+        <var resource="true">
+          <var-name>time</var-name>
+          <var-value>validator.time_pattern</var-value>
+        </var>
+      </field>
+
+      <field property="syncTaskScheduleBean.betweenEnd" depends="required,time">
+        <arg key="error_field.syncronization_add_rule.end_beteween_time" position="0"/>
+        <arg name="time" key="timeOnlyFormat" position="1"/>
+        <var>
+          <var-name>need2Validate</var-name>
+          <var-value>syncBy=0;syncTaskScheduleBean.scheduleValue=2;syncTaskScheduleBean.timePeriod!3</var-value>
+        </var>
+        <var resource="true">
+          <var-name>time</var-name>
+          <var-value>validator.time_pattern</var-value>
+        </var>
+      </field>
+
+      <field property="syncTaskScheduleBean.daysOfWeek" depends="required">
+        <arg key="error_field.syncronization_add_rule.day_of_week" position="0"/>
+        <var>
+          <var-name>need2Validate</var-name>
+          <var-value>syncBy=0;syncTaskScheduleBean.scheduleValue=3</var-value>
+        </var>
+      </field>
+
+      <field property="period" depends="required,integer,min">
+        <arg key="error_field.syncronization_add_rule.recurring_every" position="0"/>
+        <arg name="min" key="${var:min}" resource="false" position="1"/>
+        <var>
+          <var-name>need2Validate</var-name>
+          <var-value>syncBy=0;syncTaskScheduleBean.scheduleValue=2</var-value>
+        </var>
+        <var>
+          <var-name>min</var-name>
+          <var-value>1</var-value>
+        </var>
+      </field>
+
+      <field property="afterNOccurrences" depends="required,integer,min">
+        <arg key="error_field.syncronization_add_rule.after_occurences" position="0"/>
+        <arg name="min" key="${var:min}" resource="false" position="1"/>
+        <var>
+          <var-name>need2Validate</var-name>
+          <var-value>syncBy=0;syncTaskScheduleBean.endSchedule=1;syncTaskScheduleBean.scheduleMoreThenOnce=true</var-value>
+        </var>
+        <var>
+          <var-name>min</var-name>
+          <var-value>1</var-value>
+        </var>
+      </field>
+
+      <field property="syncTaskScheduleBean.afterEndDateTime" depends="required,dateTime,compareDate">
+        <arg key="error_field.syncronization_add_rule.end_date" position="0"/>
+        <arg name="compareDate" key="error_field.syncronization_add_rule.start_date" position="1"/>
+        <arg name="dateTime" key="timeFormat" position="1"/>
+        <var>
+          <var-name>need2Validate</var-name>
+          <var-value>syncBy=0;syncTaskScheduleBean.endSchedule=2;syncTaskScheduleBean.scheduleMoreThenOnce=true</var-value>
+        </var>
+        <var resource="true">
+          <var-name>dateTime</var-name>
+          <var-value >validator.datetime_pattern</var-value>
+        </var>
+        <var>
+          <var-name>compareDate</var-name>
+          <var-value>syncTaskScheduleBean.startDateTime,GT</var-value>
+        </var>
+        <var resource="true">
+          <var-name>compareDate:pattern</var-name>
+          <var-value>validator.datetime_pattern</var-value>
+        </var>
+      </field>
+
+    </form>
+
+    <form name="SynchronizationManualFormHandler">
+      <field property="selectedContentAndContentSetsCount" depends="min">
+        <msg key="error_field.syncronization_add_rule.content_sets_content" name="min"/>
+        <var>
+          <var-name>need2Validate</var-name>
+          <var-value>allContentSets=false</var-value>
+        </var>
+        <var>
+          <var-name>min</var-name>
+          <var-value>1</var-value>
+        </var>
+      </field>
+      <field property="searchEnvironmentsList" depends="required">
+        <arg key="error_field.syncronization_add_rule.staging_environment" position="0"/>
+        <var>
+          <var-name>need2Validate</var-name>
+          <var-value>
+            deploymentStep=Deployment_DeployIndex
+          </var-value>
+        </var>
+      </field>
+      <field property="postCustomizationsList" depends="required">
+        <arg key="error_field.syncronization_add_rule.customizations" position="0"/>
+        <var>
+          <var-name>need2Validate</var-name>
+          <var-value>allPostCustomizationItems=false</var-value>
+        </var>
+      </field>
+      
+    </form>
+
+    <form name="SynchronizationStatusMonitorFormHandler">
+      <field property="physicalPartition" depends="integer,min">
+        <msg key="error_field.synchronization_status_monitor.physical_partition.message" name="min"/>
+        <arg name="integer" key="error_field.synchronization_status_monitor.physical_partition" resource="true" position="0"/>
+        <arg name="min" key="${var:min}" resource="false" position="0"/>
+        <var>
+          <var-name>min</var-name>
+          <var-value>1</var-value>
+        </var>
+      </field>
+    </form>
+
+
+    <form name="SynchronizationHistoryFormHandler">
+
+      <field property="minInactiveIndexes" depends="integer,intRange">
+        <arg key="error_field.syncronization_history.min_indexes" position="0"/>
+        <arg name="intRange" key="${var:min}" resource="false" position="1"/>
+        <arg name="intRange" key="${var:max}" resource="false" position="2"/>
+        <var>
+          <var-name>intRange</var-name>
+          <var-value>0,65535</var-value>
+        </var>
+        <var>
+          <var-name>min</var-name>
+          <var-value>0</var-value>
+        </var>
+        <var>
+          <var-name>max</var-name>
+          <var-value>65535</var-value>
+        </var>
+      </field>
+
+      <field property="nMostRecentlySync" depends="integer,intRange">
+        <arg key="error_field.syncronization_history.res_indexes" position="0"/>
+        <arg name="intRange" key="${var:min}" resource="false" position="1"/>
+        <arg name="intRange" key="${var:max}" resource="false" position="2"/>
+        <var>
+          <var-name>intRange</var-name>
+          <var-value>0,65535</var-value>
+        </var>
+        <var>
+          <var-name>min</var-name>
+          <var-value>0</var-value>
+        </var>
+        <var>
+          <var-name>max</var-name>
+          <var-value>65535</var-value>
+        </var>
+      </field>
+
+      <field property="syncLastnDays" depends="integer,intRange">
+        <arg key="error_field.syncronization_history.last_indexes" position="0"/>
+        <arg name="intRange" key="${var:min}" resource="false" position="1"/>
+        <arg name="intRange" key="${var:max}" resource="false" position="2"/>
+        <var>
+          <var-name>intRange</var-name>
+          <var-value>0,65535</var-value>
+        </var>
+        <var>
+          <var-name>min</var-name>
+          <var-value>0</var-value>
+        </var>
+        <var>
+          <var-name>max</var-name>
+          <var-value>65535</var-value>
+        </var>
+      </field>
+
+    </form>
+
+    <form name="ManageTopicSetFormHandler">
+      <field property="topicSetName" depends="required,maxlength">
+        <arg key="error_field.topic_set.topic_set_name_field" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>200</var-value>
+        </var>
+      </field>
+      <field property="topicSetDescription" depends="maxlength">
+        <arg key="error_field.topic_set.topic_set_description_field" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+    </form>
+
+    <form name="ImportTopicSetFormHandler">
+      <field property="topicSetName" depends="required,maxlength">
+        <arg key="error_field.topic_set.topic_set_name_field" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+      <field property="topicSetDescription" depends="maxlength">
+        <arg key="error_field.topic_set.topic_set_description_field" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+    </form>
+
+    <form name="GlobalMacrosFormHandler">
+      <field property="macroName" depends="required,maxlength">
+        <arg key="error_global.macros.name" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>required</var-name>
+          <var-value>all_without_last</var-value>
+        </var>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>80</var-value>
+        </var>
+      </field>
+      <field property="macroDefinition" depends="required,maxlength">
+        <arg key="error_global.macros.definitions" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>required</var-name>
+          <var-value>all_without_last</var-value>
+        </var>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>1666</var-value>
+        </var>
+      </field>
+    </form>
+
+    <form name="TopicMacrosFormHandler">
+      <field property="macroName" depends="required,maxlength">
+        <arg key="error_global.macros.name" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>required</var-name>
+          <var-value>all_without_last</var-value>
+        </var>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>80</var-value>
+        </var>
+      </field>
+      <field property="macroDefinition" depends="required,maxlength">
+        <arg key="error_global.macros.definitions" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>required</var-name>
+          <var-value>all_without_last</var-value>
+        </var>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>1666</var-value>
+        </var>
+      </field>
+    </form>
+
+    <form name="QueryRulePatternMacrosFormHandler">
+      <field property="macroName" depends="required">
+        <arg key="querysets_macros.macros.name" position="0"/>
+        <var>
+          <var-name>required</var-name>
+          <var-value>all_without_last</var-value>
+        </var>
+      </field>
+      <field property="macroDefinition" depends="required">
+        <arg key="querysets_macros.macros.definitions" position="0"/>
+        <var>
+          <var-name>required</var-name>
+          <var-value>all_without_last</var-value>
+        </var>
+      </field>
+    </form>
+
+    <form name="ManageTopicFormHandler">
+      <field property="topicName" depends="required,maxlength,mask">
+        <msg key="error_message.15.topic.names" name="mask"/>
+        <arg key="error_field.topic_set.topic_name_field" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>mask</var-name>
+          <var-value>^[^/]*$</var-value>
+        </var>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+      <field property="topicDisplayName" depends="maxlength">
+        <arg key="error_global.topic.display_name" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+      <field property="topicDescription" depends="maxlength">
+        <arg key="error_global.topic.description" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+      <field property="patterns" depends="required,maxlength">
+        <arg key="topic_rules.error.patterns" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+        <var>
+          <var-name>required</var-name>
+          <var-value>all_without_last</var-value>
+        </var>
+      </field>
+      <field property="groups" depends="maxlength">
+        <arg key="topic_rules.error.groups" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>200</var-value>
+        </var>
+      </field>
+      <field property="weights" depends="required,integer,intRange">
+        <msg key="error_message.14.pattern_weight.range" name="intRange"/>
+        <arg key="topic_rules.error.weights" position="0"/>
+        <arg name="intRange" key="${var:min}" resource="false" position="1"/>
+        <arg name="intRange" key="${var:max}" resource="false" position="2"/>
+        <var>
+          <var-name>required</var-name>
+          <var-value>all_without_last</var-value>
+        </var>
+        <var>
+          <var-name>intRange</var-name>
+          <var-value>-101,101</var-value>
+        </var>
+        <var>
+          <var-name>min</var-name>
+          <var-value>-101</var-value>
+        </var>
+        <var>
+          <var-name>max</var-name>
+          <var-value>101</var-value>
+        </var>
+      </field>
+    </form>
+
+    <form name="ManageTermWeightSetFormHandler">
+      <field property="termName" depends="required,maxlength">
+        <arg key="error_field.topic_set.term_weight_set_name_field" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+      <field property="termDescription" depends="maxlength">
+        <arg key="error_field.topic_set.term_weight_set_description_field" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+      <field property="terms" depends="required,maxlength">
+        <arg key="term_weight_set_weights.term.error" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+        <var>
+          <var-name>required</var-name>
+          <var-value>all_without_last</var-value>
+        </var>
+      </field>
+      <field property="weights" depends="required,integer,intRange">
+        <msg key="error_message.17.term_weights.range" name="intRange"/>
+        <arg key="term_weight_set_weights.weight.error" position="0"/>
+        <arg name="intRange" key="${var:min}" resource="false" position="1"/>
+        <arg name="intRange" key="${var:max}" resource="false" position="2"/>
+        <var>
+          <var-name>required</var-name>
+          <var-value>all_without_last</var-value>
+        </var>
+        <var>
+          <var-name>intRange</var-name>
+          <var-value>0,100</var-value>
+        </var>
+        <var>
+          <var-name>min</var-name>
+          <var-value>0</var-value>
+        </var>
+        <var>
+          <var-name>max</var-name>
+          <var-value>100</var-value>
+        </var>
+      </field>
+    </form>
+
+    <form name="TermDictsFormHandler">
+      <field property="dictionaryName" depends="required,maxlength">
+        <arg key="error_global.term.dictionary.name" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+      <field property="description" depends="maxlength">
+        <arg key="error_global.term.dictionary.description" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+      <field property="adapterName" depends="maxlength">
+        <arg key="error_global.term.dictionary.adaptorName" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>200</var-value>
+        </var>
+      </field>
+      <field property="termExpansion" depends="integer,intRange">
+        <arg key="error_global.term.dictionary.expansion" position="0"/>
+        <arg name="intRange" key="${var:min}" resource="false" position="1"/>
+        <arg name="intRange" key="${var:max}" resource="false" position="2"/>
+        <var>
+          <var-name>intRange</var-name>
+          <var-value>1,1000</var-value>
+        </var>
+        <var>
+          <var-name>min</var-name>
+          <var-value>1</var-value>
+        </var>
+        <var>
+          <var-name>max</var-name>
+          <var-value>1000</var-value>
+        </var>
+      </field>
+    </form>
+
+    <form name="ManageFacetSetFormHandler">
+      <field property="facetSetName" depends="required,maxlength">
+        <arg key="error_global.facetset.name" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+      <field property="facetSetDescription" depends="maxlength">
+        <arg key="error_global.facetset.description" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+    </form>
+
+    <form name="FacetFormHandler">
+      <field property="facetName" depends="required,maxlength">
+        <arg key="error_global.facet.name" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+      <field property="facetProperty" depends="required,maxlength">
+        <arg key="error_global.facet.property" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+      <field property="selectionOption" depends="required">
+        <arg key="error_global.facet.selection_option" position="0"/>
+        <var>
+          <var-name>need2Validate</var-name>
+          <var-value>facetDisplayMethod=ranges</var-value>
+        </var>
+      </field>
+      <field property="facetSorting" depends="required">
+        <arg key="error_global.facet.sorting" position="0"/>
+      </field>
+      <field property="facetDecimalPrecision" depends="integer,intRange">
+        <arg key="error_global.facet.dicimal_precision" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <arg name="intRange" key="${var:min}" resource="false" position="1"/>
+        <arg name="intRange" key="${var:max}" resource="false" position="2"/>
+        <var>
+          <var-name>intRange</var-name>
+          <var-value>0,65535</var-value>
+        </var>
+        <var>
+          <var-name>min</var-name>
+          <var-value>0</var-value>
+        </var>
+        <var>
+          <var-name>max</var-name>
+          <var-value>65535</var-value>
+        </var>
+      </field>
+      <field property="specifiedFacetRanges" depends="required,double,integer,dateTime,boolean">
+        <msg key="error_message.text.string.float" name="double"/>
+        <arg key="error_global.facet.specified.selection.ranges" position="0"/>
+        <arg name="dateTime" key="dateFormat" position="1"/>
+        <var>
+          <var-name>need2Validate</var-name>
+          <var-value>facetDisplayMethod=ranges;selectionOption=explicit</var-value>
+        </var>
+        <var>
+          <var-name>double:need2Validate</var-name>
+          <var-value>facetPropertyType=float</var-value>
+        </var>
+        <var>
+          <var-name>integer:need2Validate</var-name>
+          <var-value>facetPropertyType=integer</var-value>
+        </var>
+        <var>
+          <var-name>dateTime:need2Validate</var-name>
+          <var-value>facetPropertyType=date</var-value>
+        </var>
+        <var resource="true">
+          <var-name>dateTime</var-name>
+          <var-value>validator.date_pattern</var-value>
+        </var>
+        <var>
+          <var-name>boolean:need2Validate</var-name>
+          <var-value>facetPropertyType=boolean</var-value>
+        </var>
+      </field>
+      <field property="evaluationLevels" depends="integer,intRange">
+        <arg key="error_global.facet.evaluation_levels" position="0"/>
+        <arg name="intRange" key="${var:min}" resource="false" position="1"/>
+        <arg name="intRange" key="${var:max}" resource="false" position="2"/>
+        <var>
+          <var-name>intRange</var-name>
+          <var-value>1,65535</var-value>
+        </var>
+        <var>
+          <var-name>min</var-name>
+          <var-value>1</var-value>
+        </var>
+        <var>
+          <var-name>max</var-name>
+          <var-value>65535</var-value>
+        </var>
+      </field>
+      <field property="maxNumberSelections" depends="integer,intRange">
+        <arg key="error_global.facet.dynamic.max_selections" position="0"/>
+        <arg name="intRange" key="${var:min}" resource="false" position="1"/>
+        <arg name="intRange" key="${var:max}" resource="false" position="2"/>
+        <var>
+          <var-name>need2Validate</var-name>
+          <var-value>facetDisplayMethod=ranges;selectionOption=free</var-value>
+        </var>
+        <var>
+          <var-name>intRange</var-name>
+          <var-value>0,65535</var-value>
+        </var>
+        <var>
+          <var-name>min</var-name>
+          <var-value>0</var-value>
+        </var>
+        <var>
+          <var-name>max</var-name>
+          <var-value>65535</var-value>
+        </var>
+      </field>
+      <field property="minFacetProperty" depends="integer,intRange">
+        <arg key="error_global.facet.dynamic.min_property" position="0"/>
+        <arg name="intRange" key="${var:min}" resource="false" position="1"/>
+        <arg name="intRange" key="${var:max}" resource="false" position="2"/>
+        <var>
+          <var-name>need2Validate</var-name>
+          <var-value>facetDisplayMethod=ranges;selectionOption=free</var-value>
+        </var>
+        <var>
+          <var-name>intRange</var-name>
+          <var-value>0,65535</var-value>
+        </var>
+        <var>
+          <var-name>min</var-name>
+          <var-value>0</var-value>
+        </var>
+        <var>
+          <var-name>max</var-name>
+          <var-value>65535</var-value>
+        </var>
+      </field>
+      <field property="minNumericalSpan" depends="integer,intRange">
+        <arg key="error_global.facet.dynamic.min_span" position="0"/>
+        <arg name="intRange" key="${var:min}" resource="false" position="1"/>
+        <arg name="intRange" key="${var:max}" resource="false" position="2"/>
+        <var>
+          <var-name>need2Validate</var-name>
+          <var-value>facetDisplayMethod=ranges;selectionOption=free</var-value>
+        </var>
+        <var>
+          <var-name>intRange</var-name>
+          <var-value>1,65535</var-value>
+        </var>
+        <var>
+          <var-name>min</var-name>
+          <var-value>1</var-value>
+        </var>
+        <var>
+          <var-name>max</var-name>
+          <var-value>65535</var-value>
+        </var>
+      </field>
+      <field property="roundSelection" depends="integer,intRange">
+        <arg key="error_global.facet.dynamic.round" position="0"/>
+        <arg name="intRange" key="${var:min}" resource="false" position="1"/>
+        <arg name="intRange" key="${var:max}" resource="false" position="2"/>
+        <var>
+          <var-name>need2Validate</var-name>
+          <var-value>facetDisplayMethod=ranges;selectionOption=free</var-value>
+        </var>
+        <var>
+          <var-name>intRange</var-name>
+          <var-value>0,65535</var-value>
+        </var>
+        <var>
+          <var-name>min</var-name>
+          <var-value>0</var-value>
+        </var>
+        <var>
+          <var-name>max</var-name>
+          <var-value>65535</var-value>
+        </var>
+      </field>
+      <field property="numberSelections" depends="integer,intRange">
+        <arg key="error_global.facet.dynamic.selections" position="0"/>
+        <arg name="intRange" key="${var:min}" resource="false" position="1"/>
+        <arg name="intRange" key="${var:max}" resource="false" position="2"/>
+        <var>
+          <var-name>need2Validate</var-name>
+          <var-value>facetDisplayMethod=ranges;selectionOption=fixed</var-value>
+        </var>
+        <var>
+          <var-name>intRange</var-name>
+          <var-value>0,65535</var-value>
+        </var>
+        <var>
+          <var-name>min</var-name>
+          <var-value>0</var-value>
+        </var>
+        <var>
+          <var-name>max</var-name>
+          <var-value>65535</var-value>
+        </var>
+      </field>
+      <field property="numericalSpan" depends="integer,intRange">
+        <arg key="error_global.facet.dynamic.span" position="0"/>
+        <arg name="intRange" key="${var:min}" resource="false" position="1"/>
+        <arg name="intRange" key="${var:max}" resource="false" position="2"/>
+        <var>
+          <var-name>need2Validate</var-name>
+          <var-value>facetDisplayMethod=ranges;selectionOption=fixed</var-value>
+        </var>
+        <var>
+          <var-name>intRange</var-name>
+          <var-value>1,65535</var-value>
+        </var>
+        <var>
+          <var-name>min</var-name>
+          <var-value>1</var-value>
+        </var>
+        <var>
+          <var-name>max</var-name>
+          <var-value>65535</var-value>
+        </var>
+      </field>
+      <field property="specifiedFacetValue" depends="required,double,integer,dateTime,maxlength,boolean">
+        <msg key="error_message.text.string.float" name="double"/>
+        <arg key="error_global.facet.specified_facet_value" position="0"/>
+        <arg name="dateTime" key="dateFormat" position="1"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>need2Validate</var-name>
+          <var-value>facetDisplayMethod=oneSelection;facetSorting=explicitOrder</var-value>
+        </var>
+        <var>
+          <var-name>required</var-name>
+          <var-value>all_without_last</var-value>
+        </var>
+        <var>
+          <var-name>double:need2Validate</var-name>
+          <var-value>facetPropertyType=float</var-value>
+        </var>
+        <var>
+          <var-name>integer:need2Validate</var-name>
+          <var-value>facetPropertyType=integer</var-value>
+        </var>
+        <var>
+          <var-name>dateTime:need2Validate</var-name>
+          <var-value>facetPropertyType=date</var-value>
+        </var>
+        <var resource="true">
+          <var-name>dateTime</var-name>
+          <var-value>validator.date_pattern</var-value>
+        </var>
+        <var>
+          <var-name>maxlength:need2Validate</var-name>
+          <var-value>facetPropertyType=string|facetPropertyType=enum</var-value>
+        </var>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+        <var>
+          <var-name>boolean:need2Validate</var-name>
+          <var-value>facetPropertyType=boolean</var-value>
+        </var>
+      </field>
+
+      <field property="excludedFacetValue" depends="double,integer,dateTime,maxlength,boolean">
+        <msg key="error_message.text.string.float" name="double"/>
+        <arg key="error_global.facet.excluded_facet_value" position="0"/>
+        <arg name="dateTime" key="dateFormat" position="1"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>need2Validate</var-name>
+          <var-value>facetDisplayMethod=oneSelection;facetSorting=explicitOrder</var-value>
+        </var>
+        <var>
+          <var-name>double:need2Validate</var-name>
+          <var-value>facetPropertyType=float</var-value>
+        </var>
+        <var>
+          <var-name>integer:need2Validate</var-name>
+          <var-value>facetPropertyType=integer</var-value>
+        </var>
+        <var>
+          <var-name>dateTime:need2Validate</var-name>
+          <var-value>facetPropertyType=date</var-value>
+        </var>
+        <var resource="true">
+          <var-name>dateTime</var-name>
+          <var-value>validator.date_pattern</var-value>
+        </var>
+        <var>
+          <var-name>maxlength:need2Validate</var-name>
+          <var-value>facetPropertyType=string|facetPropertyType=enum</var-value>
+        </var>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+        <var>
+          <var-name>boolean:need2Validate</var-name>
+          <var-value>facetPropertyType=boolean</var-value>
+        </var>
+      </field>
+    </form>
+    <form name="TermFormHandler">
+      <field property="term" depends="required,maxlength">
+        <arg key="error_global.term.name" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+      <field property="synonymName" depends="required,maxlength">
+        <arg key="error_field.synonym" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>required</var-name>
+          <var-value>all_without_last</var-value>
+        </var>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+      <field property="termWeight" depends="integer,intRange">
+        <arg key="error_field.weight" position="0"/>
+        <arg name="intRange" key="${var:min}" resource="false" position="1"/>
+        <arg name="intRange" key="${var:max}" resource="false" position="2"/>
+        <var>
+          <var-name>intRange</var-name>
+          <var-value>0,100</var-value>
+        </var>
+        <var>
+          <var-name>min</var-name>
+          <var-value>0</var-value>
+        </var>
+        <var>
+          <var-name>max</var-name>
+          <var-value>100</var-value>
+        </var>
+      </field>
+      <field property="weight" depends="integer,intRange">
+        <msg key="error_message.14.pattern_weight.range" name="intRange"/>
+        <arg key="error_field.synonym_weight" position="0"/>
+        <arg name="intRange" key="${var:min}" resource="false" position="1"/>
+        <arg name="intRange" key="${var:max}" resource="false" position="2"/>
+        <var>
+          <var-name>intRange</var-name>
+          <var-value>0,100</var-value>
+        </var>
+        <var>
+          <var-name>min</var-name>
+          <var-value>0</var-value>
+        </var>
+        <var>
+          <var-name>max</var-name>
+          <var-value>100</var-value>
+        </var>
+      </field>
+    </form>
+
+    <form name="ImportTermWeightSetFormHandler">
+      <field property="termWeightName" depends="required,maxlength">
+        <arg key="error_field.topic_set.term_weight_set_name_field" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+      <field property="termWeightDescription" depends="maxlength">
+        <arg key="error_field.topic_set.term_weight_set_description_field" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+      <field property="termWeightFile" depends="required">
+        <arg key="error_field.filepath" position="0"/>
+      </field>
+    </form>
+
+    <form name="TopicsFormHandler">
+      <field property="topicName" depends="required,maxlength,mask">
+        <msg key="error_message.15.topic.names" name="mask"/>
+        <arg key="error_global.topic.name" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>mask</var-name>
+          <var-value>^[^/]*$</var-value>
+        </var>
+        <var>
+          <var-name>required</var-name>
+          <var-value>all_without_last</var-value>
+        </var>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>200</var-value>
+        </var>
+      </field>
+      <field property="displayName" depends="maxlength">
+        <arg key="error_global.topic.display_name" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>200</var-value>
+        </var>
+      </field>
+      <field property="description" depends="maxlength">
+        <arg key="error_global.topic.description" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+    </form>
+
+    <form name="QueryRuleSetFormHandler">
+      <field property="querySetName" depends="required,maxlength">
+        <arg key="error_global.query.name" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+      <field property="querySetDescription" depends="maxlength">
+        <arg key="error_global.query.description" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+    </form>
+
+    <form name="EditQueryRuleGroupFormHandler">
+      <field property="queryRuleGroupName" depends="required,maxlength">
+        <arg key="error_global.query_group.name" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+    </form>
+
+    <form name="QueryRuleGroupFormHandler">
+      <field property="groupName" depends="required,maxlength">
+        <arg key="error_global.query_group.name" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>required</var-name>
+          <var-value>all_without_last</var-value>
+        </var>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+    </form>
+
+    <form name="QueryRuleFormHandler">
+      <field property="queryRuleName" depends="required,maxlength">
+        <arg key="error_field.query_name" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+      <field property="pattern" depends="required,maxlength">
+        <arg key="error_field.pattern" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>required</var-name>
+          <var-value>all_without_last</var-value>
+        </var>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+      <field property="patternGroup" depends="maxlength">
+        <arg key="error_field.pattern_group" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>required</var-name>
+          <var-value>all_without_last</var-value>
+        </var>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+      <field property="action" depends="required,maxlength">
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <arg key="error_field.action" position="0"/>
+        <var>
+          <var-name>required</var-name>
+          <var-value>all_without_last</var-value>
+        </var>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+      <field property="patternWeight" depends="integer,intRange">
+        <msg key="error_message.14.pattern_weight.range" name="intRange"/>
+        <arg key="error_field.pattern_weight" position="0"/>
+        <arg name="intRange" key="${var:min}" resource="false" position="1"/>
+        <arg name="intRange" key="${var:max}" resource="false" position="2"/>
+        <var>
+          <var-name>required</var-name>
+          <var-value>all_without_last</var-value>
+        </var>
+        <var>
+          <var-name>intRange</var-name>
+          <var-value>0,100</var-value>
+        </var>
+        <var>
+          <var-name>min</var-name>
+          <var-value>0</var-value>
+        </var>
+        <var>
+          <var-name>max</var-name>
+          <var-value>100</var-value>
+        </var>
+      </field>
+    </form>
+
+    <form name="ImportDictionaryFormHandler">
+      <field property="dictionaryName" depends="required,maxlength">
+        <arg key="error_global.term.dictionary.name" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+      <field property="dictionaryDescription" depends="maxlength">
+        <arg key="error_global.term.dictionary.description" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+    </form>
+
+    <form name="ImportFacetSetFormHandler">
+      <field property="facetSetName" depends="required,maxlength">
+        <arg key="error_global.facetset.name" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+    </form>
+
+    <form name="ImportQuerySetFormHandler">
+      <field property="querySetName" depends="required,maxlength">
+        <arg key="error_global.query.name" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+      <field property="querySetDescription" depends="maxlength">
+        <arg key="error_global.query.description" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+    </form>
+
+    <form name="TPOSetIndexFormHandler">
+      <field property="TPOSetName" depends="required,maxlength">
+        <arg key="error_global.tpo_set.name" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+      <field property="options.indexTermThresh.indexValues" depends="integer,compareInt">
+        <arg key="error_global.index.term.thresholds" position="0"/>
+        <arg key="error_global.index.stop.thresholds" position="1"/>
+        <var>
+          <var-name>compareInt</var-name>
+          <var-value>options.indexStopThresh.indexValues,GE</var-value>
+        </var>
+      </field>
+    </form>
+
+    <form name="TPOSetSaoFormHandler">
+      <field property="TPOSetName" depends="required,maxlength">
+        <arg key="error_global.sao_set.name" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+    </form>
+    
+    <form name="TPOSetContentFormHandler">
+      <field property="TPOSetName" depends="required,maxlength">
+        <arg key="error_global.tpo_set.name" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+      <field property="options.indexTermThresh.indexValues" depends="integer,compareInt">
+        <arg key="error_global.index.term.thresholds" position="0"/>
+        <arg key="error_global.index.stop.thresholds" position="1"/>
+        <var>
+          <var-name>compareInt</var-name>
+          <var-value>options.indexStopThresh.indexValues,GE</var-value>
+        </var>
+        <var>
+          <var-name>need2Validate</var-name>
+          <var-value>projectActive=true</var-value>
+        </var>
+      </field>
+      <field property="options.indexStopThresh.indexValues" depends="integer">
+        <arg key="error_global.index.stop.thresholds" position="0"/>
+      </field>
+    </form>
+
+    <form name="ImportTPOFormHandler">
+      <field property="tpoName" depends="required">
+        <arg key="error_global.tpo_set.name" position="0"/>
+      </field>
+    </form>
+
+    <form name="ManagePartitionFormHandler">
+      <field property="partitionName" depends="required,mask,maxlength">
+        <msg key="error_message.mask.special.symbols" name="mask"/>
+        <arg key="error_field.rename_content_set.content_set_name_field" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>mask</var-name>
+          <var-value><![CDATA[^[^\\/:*?"<>|]*$]]></var-value>
+        </var>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>40</var-value>
+        </var>
+      </field>
+      <field property="partitionDescription" depends="maxlength">
+        <arg key="error_field.rename_content_set.content_set_description_field" position="0"/>
+        <arg name="maxlength" key="${var:maxlength}" resource="false" position="1"/>
+        <var>
+          <var-name>maxlength</var-name>
+          <var-value>254</var-value>
+        </var>
+      </field>
+      <field property="contentLabel" depends="required">
+        <msg key="error_field.rename_content_set.no_content_labels" name="required"/>
+      </field>
+    </form>
+    
+    <form name="QueryRuleTreeFormHandler">
+      <field property="queryGroupName" depends="required">
+        <arg key="error_global.query_group.name" position="0"/>
+      </field>
+      <field property="queryRuleName" depends="required">
+        <arg key="error_global.query_rule.name" position="0"/>
+      </field>
+    </form>
+
+    <form name="TPOSetBaseFormHandler">
+      <field property="TPOSetName" depends="required">
+        <arg key="error_global.tpo_set.name" position="0"/>
+      </field>
+    </form>
+
+  </formset>
+
+</form-validation>
+<!-- @version $Id: //application/SearchAdmin/version/10.0.3/admin-ui/src/config/atg/searchadmin/adminui/validator/validator-config.xml#2 $$Change: 651448 $-->

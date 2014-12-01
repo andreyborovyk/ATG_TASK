@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE database-initializer SYSTEM "http://www.atg.com/dtds/dbinit_1_0.dtd">
+<database-initializer>
+
+	<schema id="versionedSchema">
+	
+		<data-import>
+			<repository-path>/atg/userprofiling/InternalProfileRepository</repository-path>
+			<import-file-path>/DCS-UI/Versioned/install/data/users.xml</import-file-path>
+			<user>publishing</user>
+			<workspace>workspace</workspace>
+			<comment>initial_data_import1</comment>			
+		</data-import>		
+		
+		<data-import>
+			<repository-path>/atg/web/viewmapping/ViewMappingRepository</repository-path>
+			<import-file-path>/DCS-UI/Versioned/install/data/viewmapping.xml</import-file-path>
+			<user>publishing</user>
+			<workspace>workspace</workspace>
+			<comment>initial_data_import2</comment>			
+		</data-import>		
+	
+	</schema>
+
+	<server-instance-type id="management">
+	
+		<datasource id="management">
+			<schema id="versionedSchema"/>
+		</datasource>	
+		
+	</server-instance-type>
+
+</database-initializer>
+<!-- @version $Id: //product/DCS-UI/version/10.0.3/Versioned/src/cim/dbinit.xml#2 $$Change: 651448 $-->

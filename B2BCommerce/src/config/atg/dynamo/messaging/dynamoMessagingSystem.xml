@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dynamo-message-system>
+
+  <!-- Begin PatchBay entries: message sources and sinks -->
+  <patchbay>
+
+  <message-source>
+    <nucleus-name>/atg/commerce/approval/processor/SendApprovalRequiredMessage</nucleus-name>
+
+    <output-port>
+      <port-name>DEFAULT</port-name>
+    </output-port>
+
+    <output-port>
+      <port-name>ApprovalRequired</port-name>
+      <output-destination>
+        <provider-name>local</provider-name>
+        <destination-name>localdms:/local/Approval/Scenarios</destination-name>
+        <destination-type>Topic</destination-type>
+      </output-destination>
+    </output-port>
+  </message-source>
+
+  <message-source>
+    <nucleus-name>/atg/commerce/approval/processor/SendApprovalUpdateMessage</nucleus-name>
+
+    <output-port>
+      <port-name>DEFAULT</port-name>
+    </output-port>
+
+    <output-port>
+      <port-name>ApprovalUpdate</port-name>
+      <output-destination>
+        <destination-name>patchbay:/Approval/ApprovalUpdate</destination-name>
+        <destination-type>Queue</destination-type>
+      </output-destination>
+
+      <output-destination>
+        <provider-name>local</provider-name>
+        <destination-name>localdms:/local/Approval/Scenarios</destination-name>
+        <destination-type>Topic</destination-type>
+      </output-destination>
+    </output-port>
+  </message-source>
+
+  <message-source>
+    <nucleus-name>/atg/commerce/approval/processor/SendApprovalCompleteMessage</nucleus-name>
+
+    <output-port>
+      <port-name>DEFAULT</port-name>
+    </output-port>
+
+    <output-port>
+      <port-name>ApprovalComplete</port-name>
+      <output-destination>
+        <provider-name>local</provider-name>
+        <destination-name>localdms:/local/Approval/Scenarios</destination-name>
+        <destination-type>Topic</destination-type>
+      </output-destination>
+    </output-port>
+  </message-source>
+
+  <!-- Register message sources for DSS event generation pipeline processors -->
+
+  <message-source>
+    <nucleus-name>
+      /atg/commerce/invoice/pipeline/GenerateScenarioCreateEvent
+    </nucleus-name>
+    <output-port>
+      <port-name>IndividualEvents</port-name>
+      <output-destination>
+        <provider-name>local</provider-name>
+	<destination-name>localdms:/local/Invoice/Scenario/CreateInvoice</destination-name>
+	<destination-type>Topic</destination-type>
+      </output-destination>
+    </output-port>
+  </message-source>
+
+  <message-source>
+    <nucleus-name>
+      /atg/commerce/invoice/pipeline/GenerateScenarioUpdateEvent
+    </nucleus-name>
+    <output-port>
+      <port-name>IndividualEvents</port-name>
+      <output-destination>
+        <provider-name>local</provider-name>
+	<destination-name>localdms:/local/Invoice/Scenario/UpdateInvoice</destination-name>
+	<destination-type>Topic</destination-type>
+      </output-destination>
+    </output-port>
+  </message-source>
+
+  <message-source>
+    <nucleus-name>
+      /atg/commerce/invoice/pipeline/GenerateScenarioRemoveEvent
+    </nucleus-name>
+    <output-port>
+      <port-name>IndividualEvents</port-name>
+      <output-destination>
+        <provider-name>local</provider-name>
+	      <destination-name>localdms:/local/Invoice/Scenario/RemoveInvoice</destination-name>
+	      <destination-type>Topic</destination-type>
+      </output-destination>
+    </output-port>
+  </message-source>
+
+  <!-- Register Scenario Server as a message sink for invoice event messages -->
+  
+  <message-sink>
+    <nucleus-name>
+      /atg/scenario/ScenarioManager
+    </nucleus-name>
+    <input-port>
+      <port-name>IndividualEvents</port-name>
+      <input-destination>
+        <provider-name>local</provider-name>
+	      <destination-name>localdms:/local/Invoice/Scenario/CreateInvoice</destination-name>
+	      <destination-type>Topic</destination-type>
+      </input-destination>
+      <input-destination>
+        <provider-name>local</provider-name>
+	      <destination-name>localdms:/local/Invoice/Scenario/UpdateInvoice</destination-name>
+	      <destination-type>Topic</destination-type>
+      </input-destination>
+      <input-destination>
+        <provider-name>local</provider-name>
+	      <destination-name>localdms:/local/Invoice/Scenario/RemoveInvoice</destination-name>
+	      <destination-type>Topic</destination-type>
+      </input-destination>
+    </input-port>
+  </message-sink>
+
+  <message-sink>
+    <nucleus-name>/atg/commerce/approval/ApprovalCompleteService</nucleus-name>
+
+    <input-port>
+      <port-name>ApprovalUpdate</port-name>
+      <input-destination>
+	      <destination-name>patchbay:/Approval/ApprovalUpdate</destination-name>
+	      <destination-type>Queue</destination-type>
+      </input-destination>
+    </input-port>
+  </message-sink>
+
+  <message-sink>
+    <nucleus-name>/atg/scenario/ScenarioManager</nucleus-name>
+
+    <input-port>
+      <port-name>IndividualEvents</port-name>
+        
+    	<input-destination>
+	      <provider-name>local</provider-name>
+	      <destination-name>localdms:/local/Approval/Scenarios</destination-name>
+        <destination-type>Topic</destination-type>
+    	</input-destination>
+    </input-port>
+  </message-sink>
+
+  </patchbay>
+
+  <!-- Begin Local JMS topic registry -->
+  <local-jms>
+    <topic-name>/Invoice/Scenario/CreateInvoice</topic-name>
+    <topic-name>/Invoice/Scenario/UpdateInvoice</topic-name>
+    <topic-name>/Invoice/Scenario/RemoveInvoice</topic-name>
+    <topic-name>/Approval/Scenarios</topic-name>
+  </local-jms>
+
+  <!-- Begin MessageRegistry entries: message families and classes -->
+  <message-registry>
+    <message-family>
+      <message-family-name>
+        atgB2BCommerce
+      </message-family-name>
+      
+      <message-family>
+        <message-family-name>
+          Approval Process
+        </message-family-name>
+        <message-type>
+          <jms-type>
+            atg.b2bcommerce.approval.ApprovalRequired
+          </jms-type>
+          <message-class>
+            atg.b2bcommerce.approval.ApprovalRequiredMessage
+          </message-class>
+	        <message-context>
+	          session	
+	        </message-context>
+	        <display-name-resource>
+	          approvalRequiredDisplayName
+	        </display-name-resource>
+	        <description-resource>
+	          approvalRequiredDescription
+	        </description-resource>
+	        <resource-bundle>
+	          atg.b2bcommerce.MessagingSystemResources
+	        </resource-bundle>
+        </message-type>
+
+        <message-type>
+          <jms-type>
+            atg.b2bcommerce.approval.ApprovalUpdate
+          </jms-type>
+          <message-class>
+            atg.b2bcommerce.approval.ApprovalMessage
+          </message-class>
+	        <message-context>
+	          session	
+	        </message-context>
+	        <display-name-resource>
+	          approvalUpdateDisplayName
+	        </display-name-resource>
+	        <description-resource>
+            approvalUpdateDescription
+	        </description-resource>
+	        <resource-bundle>
+	          atg.b2bcommerce.MessagingSystemResources
+	        </resource-bundle>
+        </message-type>
+
+        <message-type>
+          <jms-type>
+            atg.b2bcommerce.approval.ApprovalComplete
+          </jms-type>
+          <message-class>
+            atg.b2bcommerce.approval.ApprovalMessage
+          </message-class>
+	        <message-context>
+	          session	
+	        </message-context>
+	        <display-name-resource>
+	          approvalCompleteDisplayName
+	        </display-name-resource>
+	        <description-resource>
+            approvalCompleteDescription
+	        </description-resource>
+	        <resource-bundle>
+	          atg.b2bcommerce.MessagingSystemResources
+	        </resource-bundle>
+        </message-type>
+
+      </message-family>
+    </message-family>
+
+    <message-family>
+      <message-family-name>atgInvoiceScenario</message-family-name>
+      
+      <message-type>
+        <jms-type>atg.b2bcommerce.invoice.scenario.CreateInvoice</jms-type>
+	      <message-class>atg.b2bcommerce.invoice.messaging.InvoiceMessage</message-class>
+	      <message-context>session</message-context>
+	      <display-name-resource>
+          createInvoiceDisplayName
+        </display-name-resource>
+	      <description-resource>
+	        createInvoiceDescription
+	      </description-resource>
+	      <resource-bundle>
+	        atg.b2bcommerce.MessagingSystemResources
+	      </resource-bundle>
+      </message-type>
+
+      <message-type>
+        <jms-type>atg.b2bcommerce.invoice.scenario.UpdateInvoice</jms-type>
+	      <message-class>atg.b2bcommerce.invoice.messaging.InvoiceMessage</message-class>
+	      <message-context>session</message-context>
+	      <display-name-resource>
+          updateInvoiceDisplayName
+        </display-name-resource>
+	      <description-resource>
+	        updateInvoiceDescription
+	      </description-resource>
+	      <resource-bundle>
+	        atg.b2bcommerce.MessagingSystemResources
+	      </resource-bundle>
+      </message-type>
+      
+      <message-type>
+        <jms-type>atg.b2bcommerce.invoice.scenario.RemoveInvoice</jms-type>
+	      <message-class>atg.b2bcommerce.invoice.messaging.InvoiceMessage</message-class>
+	      <message-context>session</message-context>
+	      <display-name-resource>
+          removeInvoiceDisplayName
+        </display-name-resource>
+	      <description-resource>
+	        removeInvoiceDescription
+	      </description-resource>
+	      <resource-bundle>
+	        atg.b2bcommerce.MessagingSystemResources
+	      </resource-bundle>
+      </message-type>
+    </message-family>
+
+  </message-registry>
+
+</dynamo-message-system>
+<!-- @version $Id: //product/B2BCommerce/version/10.0.3/templates/B2BCommerce/config/atg/dynamo/messaging/dynamoMessagingSystem.xml#2 $$Change: 651448 $ -->

@@ -1,0 +1,37 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="dss_ddl">
+<comment><![CDATA[ @version $ $]]></comment>
+  <table name="dss_user_bpmarkers">
+    <column name="marker_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="profile_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="marker_key" nullable="n" i18n="n">
+      <column-type db="generic" type="varchar" length="100"/>
+    </column>
+    <column name="marker_value" nullable="y" i18n="n">
+      <column-type db="generic" type="varchar" length="100"/>
+    </column>
+    <column name="marker_data" nullable="y" i18n="n">
+      <column-type db="generic" type="varchar" length="100"/>
+    </column>
+    <column name="creation_date" nullable="y">
+      <column-type db="generic" type="timestamp"/>
+    </column>
+    <column name="version" nullable="n">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <column name="marker_type" nullable="y">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <primary-key name="dssprofilebp_p">
+      <index-column column="marker_id" order="asc" seq="1"/>
+      <index-column column="profile_id" order="asc" seq="2"/>
+    </primary-key>
+  </table>
+
+
+</schema>
+<!-- @version $Id: //product/DSS/version/10.0.3/templates/DSS/sql/profile_bp_markers_ddl.xml#2 $$Change: 651448 $-->

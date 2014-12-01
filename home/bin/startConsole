@@ -1,0 +1,17 @@
+#!/bin/sh
+
+#
+# Check that DYNAMO_HOME and DAS_ROOT are set
+#
+PROGRAM_DIR=`dirname $0`
+. $PROGRAM_DIR/checkDynamoHome.sh
+
+DYNAMO_MODULES="DAS:DAS-UI"
+
+#
+# Load in default environment values
+#
+. bin/dynamoEnv.sh
+
+java atg.dynamometer.Dynamometer $*
+

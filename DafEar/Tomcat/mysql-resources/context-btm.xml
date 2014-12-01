@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This file is for use with runAssembler in -tomcat mode 
+     for use as an argument for the -tomcat-additional-resources-file
+     option. 
+  -->
+
+<Context>
+    <Resource name="ATGMySQLDS" auth="Container"
+	      type="javax.sql.DataSource"
+              factory="bitronix.tm.resource.ResourceObjectFactory"
+	      uniqueName="ATGMySQLDS" />
+    
+    <Resource name="ATGMotorpriseDS" auth="Container"
+	      type="javax.sql.DataSource"
+              factory="bitronix.tm.resource.ResourceObjectFactory"
+	      uniqueName="ATGMotorpriseDS" />
+    
+    <Resource name="ATGPublishingDS" auth="Container"
+	      type="javax.sql.DataSource"
+              factory="bitronix.tm.resource.ResourceObjectFactory"
+	      uniqueName="ATGPublishingDS" />
+</Context>
+<!-- @version $Id: //product/DAF/version/10.0.3/DafEar/Tomcat/src/mysql-resources/context-btm.xml#1 $$Change: 655540 $-->

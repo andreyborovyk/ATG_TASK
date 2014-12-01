@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE process-manager-configuration
+        PUBLIC "-//Art Technology Group, Inc.//DTD Process Manager//EN"
+        'http://www.atg.com/dtds/processmanager/processmanager_1.0.dtd'>
+
+<!-- Scenario manager customization file that illustrates custom actions and
+     scenario grammar extensions. -->
+     
+<process-manager-configuration>
+
+  <!-- Add a custom scenario grammar extension file. -->
+  <grammar-registry>
+    <grammar-extension-file>atg.portal.gear.poll.poll-expression-grammar</grammar-extension-file>
+  </grammar-registry>
+
+  <!-- Add all new JMS messages to the event registry -->
+  <event-registry>
+    <event>
+      <jms-type>
+        atg.portal.gear.poll.PollVoteMessage
+      </jms-type>
+      <message-class>
+        atg.portal.gear.poll.PollVoteMessage
+      </message-class>
+      <message-context>
+        session
+      </message-context>
+      <message-scope>
+        individual
+      </message-scope>
+      <display-name>
+        Poll Vote
+      </display-name>
+      <description>
+        Generated when a user votes on a poll.
+      </description>
+    </event>
+  </event-registry>
+
+</process-manager-configuration>
+<!-- @version $Id: //app/portal/version/10.0.3/poll/config/atg/scenario/scenarioManager.xml#2 $$Change: 651448 $ -->

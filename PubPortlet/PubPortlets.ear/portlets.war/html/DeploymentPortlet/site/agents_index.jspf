@@ -1,0 +1,14 @@
+<!-- BEGIN FILE agent_index.jspf -->
+<c:choose>
+  <c:when test="${agentTabletName == 'overview'}">
+    <dspel:include page="site_agents.jsp" />
+  </c:when>
+  <c:when test="${agentTabletName == 'switchables'}">
+    <dspel:include page="site_agents_switchables.jsp" />
+  </c:when>
+  <c:otherwise>
+    <dspel:include page="site_agents.jsp" />
+  </c:otherwise>
+</c:choose>
+<!-- END FILE agent_index.jspf -->
+<%-- @version $Id: //product/PubPortlet/version/10.0.3/portlets.war/html/DeploymentPortlet/site/agents_index.jspf#2 $$Change: 651448 $--%>

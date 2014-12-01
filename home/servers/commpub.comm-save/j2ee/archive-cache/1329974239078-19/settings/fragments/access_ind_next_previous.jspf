@@ -1,0 +1,126 @@
+
+ <core:createUrl  id="aclSearchURL" url="<%=urlTargetJsp%>">
+   <core:UrlParam param="mode"              value='<%=mode%>'/>
+   <core:UrlParam param="userGroupType"     value='<%= request.getParameter("userGroupType")%>'/>
+   <core:UrlParam param="paf_community_id"  value='<%=dsp_community_id%>'/>
+   <core:UrlParam param="paf_page_id"       value="<%=dsp_page_id%>"/>
+   <core:UrlParam param="paf_gear_id"       value="<%=dsp_gear_id  %>"/>
+   <paf:encodeUrlParam param="paf_page_url" value="<%=dsp_page_url%>"/>
+   <core:UrlParam param="hasSearched"       value="true"/> 
+   <core:UrlParam param="organizationId"    value="<%=orgId%>" /> 
+   <core:UrlParam param="firstName"         value="<%=userFname%>" />
+   <core:UrlParam param="lastName"          value="<%=userLname%>" />
+   <core:UrlParam param="login"             value="<%=userLogin%>" />
+   <core:UrlParam param="email"             value="<%=userEmail%>" />
+     <dsp:setvalue bean="PagingFormHandler.searchUsersURL"  value="<%=aclSearchURL.getNewUrl()%>" />
+ </core:createUrl>       
+
+ <dsp:setvalue bean="PagingFormHandler.showAtATime"  value="25" />
+
+<%--
+ // Target renderings of messages include...
+ // ( no indivuals )
+ // ( no indivuals starting with the letter <b>X</b> )
+ //  1 individual    showing 1
+ //  3 individuals   showing 3
+ //  500 indivuals   showing 26 - 50    Previous 25   Next 25
+ //  500 indivuals   showing 1 - 25     Next 25
+ //  31 indivuals   showing 1 - 25     Next 6
+ //  500 indivuals   showing 475 - 500    Previous 25
+ //  516 indivuals   showing 475 - 500    Previous 25   Next 16
+ //  1 indivual starting with <b>nam</b>   showing 1
+ //  3 indivuals starting with <b>nam</b>  showing 3
+ //  500 indivuals  starting with <b>nam</b>   showing 26 - 50    Previous 25   Next 25
+--%>
+<i18n:message id="i18n_single_guest"  key="community_members_guest"/>
+<i18n:message id="i18n_plural_guest"  key="community_members_guests"/>
+<i18n:message id="i18n_single_member" key="community_members_member"/>
+<i18n:message id="i18n_plural_member" key="community_members_members"/>
+<i18n:message id="i18n_single_leader" key="community_members_leader"/>
+<i18n:message id="i18n_plural_leader" key="community_members_leaders"/>
+<i18n:message id="i18n_single_individual" key="community_members_individual_search"/>
+<i18n:message id="i18n_plural_individual" key="community_members_individuals_search"/>
+
+<%
+   boolean isOnFirstPage          = false;
+   boolean isOnLastPage           = false;
+   int numberOnNextPage           = 0;
+    String userTypeString          = "";
+    isOnFirstPage = ( startRange > 0 )          ? false :true;
+    isOnLastPage  = ( numberOfUsers > endRange) ? false :true;
+    if (! isOnLastPage ) {
+       // if not on last page then determine number of user to display on next page
+       numberOnNextPage = (( endRange   + ((Integer) usersPerPage).intValue() ) > numberOfUsers) ?
+                           ( numberOfUsers - endRange ) :  ((Integer) usersPerPage).intValue();
+    }
+    userTypeString =  ( numberOfUsers == 1) ?  i18n_single_individual  :  i18n_plural_individual ;
+%>
+
+<font class="smaller"><b><i18n:message key="community_members_addidividuals_searchresults"/></b></font>&nbsp;&nbsp;<font class="smaller"><nobr>
+<% 
+  if  ( numberOfUsers == 0 )  { 
+%>
+     <i18n:message key="community_users_no_ind"/>
+<%
+  } else {
+      if (numberOfUsers < endRange) {
+%>
+   <i18n:message key="community_users_number_of_x">
+    <i18n:messageArg value="<%=new Integer(numberOfUsers).toString()%>"/>
+    <i18n:messageArg value="<%=userTypeString%>"/>
+   </i18n:message>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+   <i18n:message key="community_users_showing_x_thru_y">
+    <i18n:messageArg value="<%=new Integer(startRange+1).toString()%>"/>
+    <i18n:messageArg value="<%=new Integer(numberOfUsers).toString()%>"/>
+   </i18n:message>
+<%
+      } else { 
+%>
+   <i18n:message key="community_users_number_of_x">
+    <i18n:messageArg value="<%=new Integer(numberOfUsers).toString()%>"/>
+    <i18n:messageArg value="<%=userTypeString%>"/>
+   </i18n:message>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+   <i18n:message key="community_users_showing_x_thru_y">
+    <i18n:messageArg value="<%=new Integer(startRange+1).toString()%>"/>
+    <i18n:messageArg value="<%=new Integer(endRange).toString()%>"/>
+   </i18n:message>
+<%  
+   }
+  }
+%>
+
+<core:CreateUrl id="basePageUrl" url="community_settings.jsp">
+ <core:UrlParam param="mode" value='<%=request.getParameter("mode")%>'/>
+ <core:UrlParam param="paf_community_id" value='<%=request.getParameter("paf_community_id")%>'/>
+ <paf:encodeUrlParam param="paf_page_url" value="<%=dsp_page_url%>"/>
+<%
+ if ( !isOnFirstPage && (startRange > 0 ) && (numberOfUsers > 0)) { 
+%>
+
+   <i18n:message id="prevLink" key="community_users_previous_x">
+    <i18n:messageArg value="<%=usersPerPage.toString()%>"/>
+   </i18n:message>
+
+&nbsp;&nbsp;&nbsp;<dsp:a href="<%=basePageUrl.getNewUrl()%>" bean="PagingFormHandler.prevMembersSearchPage" value=""><font class="small"><%=prevLink%></font></dsp:a>
+
+<%
+ }
+ if (( !isOnLastPage ) && (numberOfUsers > 0)) {
+%>
+   <i18n:message id="nextLink" key="community_users_next_x">
+    <i18n:messageArg value="<%=new Integer(numberOnNextPage).toString()%>" />
+   </i18n:message>
+
+&nbsp;&nbsp;&nbsp;<dsp:a href="<%=basePageUrl.getNewUrl()%>" bean="PagingFormHandler.nextMembersSearchPage" value=""><font class="small" ><%=nextLink%></font></dsp:a>
+
+<% 
+ }
+%>
+</core:CreateUrl>
+</nobr>
+</font>
+<br>
+<%-- @version $Id: //app/portal/version/10.0.3/paf/settings.war/fragments/access_ind_next_previous.jspf#2 $$Change: 651448 $--%>
+

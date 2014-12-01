@@ -1,0 +1,126 @@
+<nucleus type=import>
+	/atg/dynamo/admin/DefaultConfigure
+	/atg/dynamo/admin/NSAPIConfigure
+</nucleus>
+
+<java>
+  atg.service.dynamo.NSAPIConfig NSAPIConfigure = (atg.service.dynamo.NSAPIConfig)
+  	request.resolveName("/atg/dynamo/admin/NSAPIConfigure");
+</java>
+
+<HTML>
+<HEAD>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+<TITLE>Install Connection Modules: Confirm</TITLE>
+
+
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="images/config-banner.gif" ALT="Dynamo Configuration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a
+href="configure-server.jhtml">Configure</a>/<a
+href="configure-server.jhtml#CM">Connection_Modules</a>/<a
+href="config-cms-path.jhtml">version_path</a>/<a
+href="config-cms-serverlist.jhtml">server</a>/<a
+href="config-cms-texthandle.jhtml">text_HTML</a>/<a
+href="config-cms-properties.jhtml">load_manager</a>/<a
+href="config-cms-ref-apps.jhtml">ref_apps</a>/confirm
+<p>
+
+<blockquote>
+
+<h2>Install Connection Modules: Confirm</h2>
+
+You are now ready to configure a Dynamo Connection Module for a Sun ONE
+HTTP server. Please be sure the information below is correct, then click
+the "Install" button at the bottom of the page to complete the
+Connection Module setup.
+<p>
+
+<FORM ACTION="config-cms-result.jhtml" METHOD=GET>
+
+
+<ul>
+
+<b>Sun ONE Server Configuration Directory:</b><p>
+   <code><valueof property=NSAPIConfigure.netscapeServerPath></valueof></code>
+<p>
+
+<b>Text/HTML Handling:</b><p>
+<java>
+switch( NSAPIConfigure.getTextHtmlHandling() )
+{
+	case atg.service.dynamo.NSAPIConfig.DYNAMO_NO_TEXT_HTML:
+		out.println( "Text/HTML is served by the Sun ONE server." );
+		break;
+	case atg.service.dynamo.NSAPIConfig.DYNAMO_SERVING_TEXT_HTML:
+		out.println( "Text/HTML is served by the Dynamo server." );
+		break;
+	case atg.service.dynamo.NSAPIConfig.DYNAMO_LOGGING_TEXT_HTML:
+		out.println( "Text/HTML is served by the Sun ONE server and logged by Dynamo." );
+		break;
+	default:
+		out.println( "No setting" );
+		break;
+}
+</java>
+<p>
+
+<b>Dynamo Load Managers:</b><p>
+
+<TABLE BORDER="1" CELLPADDING="6" CELLSPACING="0">
+	<TR>
+		<TH ALIGN=LEFT VALIGN=TOP>
+			Hostname or IP Address
+		</TH>
+		<TH ALIGN=LEFT VALIGN=TOP>
+			Port
+		</TH>
+	</TR>
+
+<java>
+
+Enumeration e = NSAPIConfigure.getDynamoLoadManagers().elements();
+
+while( e.hasMoreElements() )
+{
+    atg.service.dynamo.LoadManager lm =
+        (atg.service.dynamo.LoadManager) e.nextElement();
+
+	</java>
+	<TR>
+	<TD ALIGN=LEFT VALIGN=TOP>
+	<code><java> out.print( lm.getName() ); </java></code>
+	</TD>
+	<TD ALIGN=LEFT VALIGN=TOP>
+	<code><java> out.print( lm.getPort() ); </java></code>
+	</TD>
+	</TR>
+	<java>
+}
+
+</java>
+
+</TABLE>
+</ul>
+<br>
+
+<input name="currentProperties" property="DefaultConfigure.currentProperties" type=hidden value="httpEnabled">
+<input name="currentProperties" property="DefaultConfigure.currentProperties" type=hidden value="documentRoot">
+<input name="currentProperties" property="DefaultConfigure.currentProperties" type=hidden value="drpEnabled">
+
+<input type="hidden" property=DefaultConfigure.httpEnabled value=true>
+<input type="hidden" property=DefaultConfigure.drpEnabled value=true>
+
+<INPUT TYPE="submit" property=NSAPIConfigure.install VALUE="Install">
+<p>
+<a href="config-cms-serverlist.jhtml">Back</a>
+</FORM>
+
+</blockquote>
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/config-cms-final.jhtml#2 $$Change: 651448 $ */</java>
+

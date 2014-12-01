@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE gsa-template
+	PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN"
+	"http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template>
+
+  <header>
+    <name>Alert Channel Preference Profile Changes</name>
+    <author>Portal Group</author>
+    <version>$Id: //app/portal/version/10.0.3/alert/config/atg/userprofiling/userProfile.xml#2 $$Change: 651448 $</version>
+  </header>
+  
+  <item-descriptor name="user">
+    <table name="alt_userpref_rel" type="multi" id-column-name="alert_user_pref_id">
+      <property category-resource="categoryAlerts" name="alertNotifyPreferences" display-name-resource="alertNotifyPreferences" data-type="set" column-name="id" repository="/atg/portal/alert/AlertRepository"
+          component-item-type="alert_user_pref" expert="true" hidden="false">
+        <attribute name="resourceBundle" value="atg.portal.gear.alert.UserProfileTemplateResources"/>
+      </property>
+    </table>
+
+    <table name="alt_user_alert_rel" type="multi" id-column-name="alert_id">
+      <property category-resource="categoryAlerts" name="alerts" display-name-resource="alerts" data-type="set" column-name="id" repository="/atg/portal/alert/AlertRepository" component-item-type="alert_group" expert="true" cascade="update,delete" hidden="false">
+        <attribute name="resourceBundle" value="atg.portal.gear.alert.UserProfileTemplateResources"/>
+      </property>
+
+    </table>
+
+  </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //app/portal/version/10.0.3/alert/config/atg/userprofiling/userProfile.xml#2 $$Change: 651448 $ -->

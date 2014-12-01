@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+
+
+    <title>Internet Explorer Fixes</title>
+  </head>
+
+<body background="../images/grid.gif" bgcolor="#00123f"
+  TEXT="#FFFFFF">
+<div align=center>
+
+<table border=0 width=474 cellpadding=10 cellspacing=0>
+  <tr>
+    <td><img src="../images/dynamobanner.gif" width="473" height="68" alt="Dynamo Application Server"></td>
+  </tr>
+</table><img src="images/clear.gif" width="1" height="10"><br>
+
+
+
+<table border=0 width=474 cellpadding=14 cellspacing=0 bgcolor="#3366BB">
+  <tr>
+    <td><font face="verdana,helvetica,arial,sans">
+
+<h3><font size="+2" face="verdana,helvetica,arial,sans">Internet Explorer Fixes</font></h3>
+
+<hr>
+<h4><font size="+1" face="verdana,helvetica,arial,sans">Fix #1</font></h4>
+
+    Internet Explorer 5.5sp2 through Internet Explorer 6.x (as of 
+    July 2005) cause improperly formatted form posts in some
+    cases. These form posts result in a "This page cannot be
+    displayed" error.<p>
+
+    Microsoft has documented the following bugs for this issue:
+    <ul>
+      <li>  <a
+		  href="http://support.microsoft.com/default.aspx?scid=kb;en-us;823099&Product=ie600"><font color="#000000">http://support.microsoft.com/default.aspx?scid=kb;en-us;823099&Product=ie600</font></a>
+      <li><a href="http://support.microsoft.com/default.aspx?scid=kb;EN-US;Q816405"><font color="#000000">http://support.microsoft.com/default.aspx?scid=kb;EN-US;Q816405</font></a>
+    </ul>
+
+    <p>
+    There is a Windows registry setting which corrects this
+    problem. You may either download and launch <a href="fixcrlf.reg">this 
+    registry file</a>, and then answer "Yes" to "Do you want to add 
+    the information in ... to the registry?" dialog. You may also
+    add the information manually by following the directions below:<p>
+   
+   <ol>
+     <li>Click "Start", click "Run", type "regedit" (without the quotation marks), and then click "OK".
+
+     <li>Locate and then click the following key in the registry:
+       HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\
+
+     <li>On the "Edit" menu, point to "New", and then click "REG_DWORD" or "DWORD Value".
+
+     <li>Type "SendExtraCRLF" (without the quotation marks), and then press ENTER. The default value is 0, that is OK.
+
+     <li>Close all IE windows and open IE again.
+  </ol>
+
+<p>
+</font>
+</td>
+</tr>
+<tr>
+<td>
+<hr>
+<h4><font size="+1" face="verdana,helvetica,arial,sans">Fix #2</font></h4>
+  <font face="verdana,helvetica,arial,sans">
+    Internet Explorer will sometimes report error messages when no error has occurred. This behavior can be corrected by following these steps to adjust your error messages setting:
+    <ol>
+      <li>Launch Internet Explorer.
+      <li>From the Tools menu, select <i>Internet Options</i>.
+      <li>Click the <i>Advanced</i> tab.
+      <li>Under Browsing, find <i>Show friendly HTTP error messages</i> and deselect the checkbox beside it, if it selected.
+      <li>Click Save.
+    </ol>
+  </font>
+</td>
+</tr>
+</table>
+</div>
+  </body>
+</html>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/home/doc/iefix/index.jhtml#2 $$Change: 651448 $*/</java>

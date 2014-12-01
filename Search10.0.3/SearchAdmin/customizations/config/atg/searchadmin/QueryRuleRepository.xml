@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE gsa-template
+        PUBLIC "-//Art Technology Group, Inc.//DTD Dynamo Security//EN"
+        "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+<!--
+$Id: //application/SearchAdmin/version/10.0.3/customizations/src/config/atg/searchadmin/QueryRuleRepository.xml#2 $$Change: 651448 $
+$Change: 651448 $$DateTime: 2011/06/07 13:55:45 $
+-->
+
+<gsa-template>
+  <header>
+    <name>QueryRuleRepository</name>
+    <author>Andrei_Tsishkouski</author>
+    <description>This file defines the query rule set repository</description>
+  </header>
+
+  <item-descriptor name="queryParentNode" sub-type-property="nodeType" display-property="nodeType">
+    <table name="srch_qr_pt_node" type="primary" id-column-name="qr_pt_id">
+      <property name="id" column-name="qr_pt_id" required="true" data-type="string"/>
+      <property name="nodeType" column-name="qr_pt_type" data-type="enumerated">
+        <option value="queryRuleSet" code="13120"/>
+        <option value="queryRuleGroup" code="13121"/>
+      </property>
+    </table>
+    <table name="srch_qr_groups" type="multi" id-column-name="qr_grp_pt_id" multi-column-name="qr_grp_seq">
+      <property name="childQueryRuleGroups" column-name="qr_grp_id" cascade="delete"
+          data-type="list" component-item-type="queryRuleGroup" />
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="queryRuleSet" default="true" super-type="queryParentNode" sub-type-value="queryRuleSet" display-property="name">
+    <table name="srch_qr_sets" type="auxiliary" id-column-name="qr_set_id">
+      <property name="id" column-name="qr_set_id" required="true" data-type="string"/>
+      <property name="name" column-name="qr_set_name" required="true" data-type="string"/>
+      <property name="description" column-name="qr_set_dsc" required="false" data-type="string"/>
+      <property name="lastModified" column-name="qr_set_lst_mdf" required="false" data-type="date"/>
+    </table>
+  </item-descriptor>
+
+
+  <item-descriptor name="queryRuleGroup" super-type="queryParentNode" sub-type-value="queryRuleGroup" display-property="name">
+    <table name="srch_qr_groups" type="auxiliary" id-column-name="qr_grp_id">
+      <property name="id" column-name="qr_grp_id" required="true" data-type="string"/>
+      <property name="name" column-name="qr_grp_name" required="true" data-type="string"/>
+      <property name="parentNode" column-name="qr_grp_pt_id" item-type="queryParentNode"/>
+      <property name="seq" column-name="qr_grp_seq" data-type="int"/>
+    </table>
+
+    <table name="srch_qr" type="multi" id-column-name="qr_prn_grp_id" multi-column-name="qr_seq">
+      <property name="childQueryRules" column-name="qr_id" cascade="delete"
+          data-type="list" component-item-type="queryRule"/>
+    </table>
+  </item-descriptor>
+
+
+  <item-descriptor name="queryRule" display-property="name">
+    <table name="srch_qr" type="primary" id-column-name="qr_id">
+      <property name="id" column-name="qr_id" required="true" data-type="string"/>
+      <property name="name" column-name="qr_name" required="true" data-type="string"/>
+      <property name="queryRuleGroup" column-name="qr_prn_grp_id" item-type="queryRuleGroup"/>
+      <property name="seq" column-name="qr_seq" data-type="int"/>
+    </table>
+
+    <table name="srch_qr_patterns" type="multi" id-column-name="qr_ptrn_qr_id">
+      <property name="rulePatterns" column-name="qr_ptrn_id" cascade="delete" data-type="set"
+                component-item-type="queryRulePattern"/>
+    </table>
+
+    <table name="srch_qr_actions" type="multi" id-column-name="qr_act_qr_id">
+      <property name="ruleActions" column-name="qr_act_id" cascade="delete" data-type="set"
+                component-item-type="queryRuleAction"/>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="queryRulePattern" display-property="pattern">
+    <table name="srch_qr_patterns" type="primary" id-column-name="qr_ptrn_id">
+      <property name="id" column-name="qr_ptrn_id" required="true" data-type="string"/>
+      <property name="parentRule" column-name="qr_ptrn_qr_id" item-type="queryRule"/>
+      <property name="enabled" column-name="qr_ptrn_is_enbl" required="true" data-type="boolean"/>
+      <property name="pattern" column-name="qr_ptrn_name" required="true" data-type="string"/>
+      <property name="weight" column-name="qr_ptrn_weight" required="false" data-type="int"/>
+      <property name="group" column-name="qr_ptrn_grp" required="false" data-type="string"/>
+      <property name="language" column-name="qr_ptrn_lang" required="true" data-type="string"/>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="queryRuleAction" display-property="action">
+    <table name="srch_qr_actions" type="primary" id-column-name="qr_act_id">
+      <property name="id" column-name="qr_act_id" required="true" data-type="string"/>
+      <property name="parentRule" column-name="qr_act_qr_id" item-type="queryRule"/>
+      <property name="enabled" column-name="qr_act_is_enbl" required="true" data-type="boolean"/>
+      <property name="action" column-name="qr_act_name" required="true" data-type="string"/>
+      <property name="language" column-name="qr_act_lang" required="true" data-type="string"/>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="globalQueryRuleSetMacro"  display-property="name">
+    <table name="srch_qr_gl_ms" type="primary" id-column-name="qr_gl_m_id">
+      <property name="id" column-name="qr_gl_m_id" required="true" data-type="string"/>
+      <property name="name" column-name="qr_gl_m_name" required="true" data-type="string"/>
+      <property name="definition" column-name="qr_gl_m_def" required="true" data-type="string"/>
+      <property name="macroType" column-name="qr_gl_m_type" data-type="enumerated">
+        <option value="globalQueryRuleSetMacro" code="13125"/>
+        <option value="queryRuleMacro" code="13126"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //application/SearchAdmin/version/10.0.3/customizations/src/config/atg/searchadmin/QueryRuleRepository.xml#2 $$Change: 651448 $-->

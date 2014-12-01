@@ -1,0 +1,115 @@
+<importbean bean="/atg/userprofiling/servlet/ProfileRepositoryItemServlet">
+<importbean bean="/atg/userprofiling/servlet/ProfileRepositoryItemPropertyValueServlet">
+<importbean bean="/atg/userprofiling/ProfileAdminFormHandler">
+<importbean bean="/atg/dynamo/droplet/BeanPropertyServlet">
+<importbean bean="/atg/dynamo/droplet/Switch">
+
+<declareparam name="propertyDesc" value="atg.beans.DynamicPropertyDescriptor" description="The DynamicPropertyDescriptor of the cell we want to output">
+<declareparam name="id" value="java.lang.String" description="The RepositoryId of the Profile to View">
+<declareparam name="passwordProperty" value="java.lang.String" description="The name of the passwordProperty">
+
+<droplet bean="Switch">
+ <param name="value" value="param:id">
+ <oparam name="null">
+   
+<java type=import>
+atg.beans.*
+</java>  
+<java>
+    DynamicPropertyDescriptor propertyDesc = null;
+    String passwordProperty = null;
+    Object value;
+
+    if((value = request.getObjectParameter("passwordProperty")) != null) {
+      if(value instanceof String)
+        passwordProperty = (String) value;
+    }	
+    if((value = request.getObjectParameter("propertyDesc")) != null) {
+      if(value instanceof DynamicPropertyDescriptor)
+        propertyDesc = (DynamicPropertyDescriptor) value;
+    }
+    
+    if((propertyDesc != null) && (passwordProperty != null)) {
+       if(passwordProperty.equalsIgnoreCase(propertyDesc.getName())) {
+</java>
+     <input name="_processPropertyName" type="hidden" value="param:propertyDesc.name">
+     <input name="param:propertyDesc.name" type="password" value="">	 	
+<java>
+       } else {
+</java>     
+       <droplet bean="BeanPropertyServlet">
+	  <param name="bean" value="bean:ProfileAdminFormHandler.value">
+          <param name="propertyName" value="param:propertyDesc.name">	
+          <oparam name="output">
+		  
+        	   <droplet src="profiletableform_valuecellinput.jhtml">
+        	    <param name="propertyValue" value="param:propertyValue">
+        	   </droplet>	   
+
+          </oparam>
+      </droplet>
+<java>
+      }
+   }
+</java>       
+	
+         
+       
+ </oparam>
+ <oparam name="default">
+    
+
+<java type=import>
+atg.beans.*
+</java>  
+<java>
+    DynamicPropertyDescriptor propertyDesc = null;
+    String passwordProperty = null;
+    Object value;
+
+    if((value = request.getObjectParameter("passwordProperty")) != null) {
+      if(value instanceof String)
+        passwordProperty = (String) value;
+    }	
+    if((value = request.getObjectParameter("propertyDesc")) != null) {
+      if(value instanceof DynamicPropertyDescriptor)
+        propertyDesc = (DynamicPropertyDescriptor) value;
+    }
+    
+    if((propertyDesc != null) && (passwordProperty != null)) {
+       if(passwordProperty.equalsIgnoreCase(propertyDesc.getName())) {
+</java>
+           <a href="changepassword.jhtml">Change Password
+	     <param name="id" value="param:id">
+           </a>
+<java>
+       } else {
+</java>       
+           <droplet bean="ProfileRepositoryItemServlet">
+            <param name="id" value="param:id">
+            <oparam name="output">
+        
+         	<droplet bean="BeanPropertyServlet">
+	         <param name="bean" value="bean:ProfileAdminFormHandler.value">
+        	 <param name="propertyName" value="param:propertyDesc.name">	
+        	 <oparam name="output">
+		  
+        	   <droplet src="profiletableform_valuecellinput.jhtml">
+        	    <param name="propertyValue" value="param:propertyValue">
+        	   </droplet>	   
+
+        	 </oparam>
+	        </droplet>
+       
+	
+            </oparam>
+          </droplet> <!-- End ProfileRepositoryItemServlet -->
+<java>
+      }
+   }
+</java>
+
+ </oparam>
+</droplet>
+<java>/* @version $Id: //product/DPS/version/10.0.3/release/DPS/admin/atg/userprofiling/admin/en/profiletableform_valuecell.jhtml#2 $$Change: 651448 $ */</java>
+

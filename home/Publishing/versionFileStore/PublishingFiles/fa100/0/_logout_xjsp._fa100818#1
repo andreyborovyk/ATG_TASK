@@ -1,0 +1,60 @@
+<%@ taglib uri="http://www.atg.com/taglibs/daf/dspjspELTaglib1_0" prefix="dspel" %>
+<%@ taglib prefix="c"       uri="http://java.sun.com/jstl/core" %>
+<dspel:page>
+
+<html>
+<head>
+  <title>Logout Form</title>
+</head>
+
+<dspel:importbean bean="/atg/userprofiling/Profile"/>
+<dspel:importbean bean="/atg/userprofiling/ProfileFormHandler"/>
+<dspel:importbean bean="/atg/userprofiling/ProfileErrorMessageForEach"/>
+<dspel:importbean bean="/atg/dynamo/droplet/Switch"/>
+
+<body>
+
+<c:set var="successURL" value="${param.successURL}"/>
+
+  <dspel:form action="logout.jsp" method="post">
+
+    <dspel:input bean="ProfileFormHandler.logoutSuccessURL" type="hidden" value="${successURL}"/>
+
+    <strong><font size="+1">
+      <dspel:droplet name="Switch">
+        <dspel:param bean="Profile.transient" name="value"/>
+        <dspel:oparam name="false">
+          Thank you for visiting <dspel:valueof bean="Profile.Login"/>
+        </dspel:oparam>
+        <dspel:oparam name="default">
+          Thank you for visiting!
+        </dspel:oparam>
+      </dspel:droplet>
+    </font></strong>
+
+    <br>Click on the button below to logout.<p>
+
+    <dspel:droplet name="Switch">
+      <dspel:param bean="ProfileFormHandler.formError" name="value"/>
+      <dspel:oparam name="true">
+        <font color="cc0000"><strong><ul>
+          <dspel:droplet name="ProfileErrorMessageForEach">
+            <dspel:param bean="ProfileFormHandler.formExceptions" name="exceptions"/>
+            <dspel:oparam name="output">
+              <li> <dspel:valueof param="message"/>
+            </dspel:oparam>
+          </dspel:droplet>
+        </ul></strong></font>
+      </dspel:oparam>
+    </dspel:droplet>
+
+    <dspel:input bean="ProfileFormHandler.logout" type="submit" value="logout"/>
+
+  </dspel:form>
+
+</body>
+</html>
+
+
+</dspel:page>
+<%-- @version $Id: //application/campaigns/version/10.0/communication/common/src/web-apps/Outreach/optInOut/logout.jsp#1 $$Change: 610294 $--%>

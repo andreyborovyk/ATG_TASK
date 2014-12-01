@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE taglib
+	PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN"
+	"http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
+
+<taglib>
+  <tlib-version>1.0</tlib-version>
+  <jsp-version>1.1</jsp-version>
+  <short-name>rpv</short-name>
+  <uri>http://www.atg.com/taglibs/gear/repviewTaglib1_0</uri>
+  <description>The tag library containing the Repository View Gear tags</description>
+
+  <!-- GetItemTag -->
+  <tag>
+    <name>getItem</name>
+    <tag-class>atg.portal.gear.repview.taglib.GetItemTag</tag-class>
+    <tei-class>atg.portal.gear.repview.taglib.GetItemTEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Given a repository, item descriptor name, and an id, get the item out of the db.
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>repositoryPath</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>itemDescriptorName</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>itemId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>propertyInfo</name>
+    <tag-class>atg.portal.gear.repview.taglib.PropertyInfoTag</tag-class>
+    <tei-class>atg.portal.gear.repview.taglib.PropertyInfoTEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Given a repository item and a property name, return value and property descriptor.
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>item</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>propertyName</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>propertyList</name>
+    <tag-class>atg.portal.gear.repview.taglib.GetPropertyListTag</tag-class>
+    <tei-class>atg.portal.gear.repview.taglib.GetPropertyListTEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Get the list of properties to display for the given item. 
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>item</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>gearEnv</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>displayType</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>itemDescriptorName</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>repositoryInfo</name>
+    <tag-class>atg.portal.gear.repview.taglib.RepositoryInfoTag</tag-class>
+    <tei-class>atg.portal.gear.repview.taglib.RepositoryInfoTEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Given a repository path and an item descriptor, get information about that repository.
+	Specifically, the repository object, item descriptor object, and the targeters 
+        registered for that item descriptor.  
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>repositoryPath</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>itemDescriptorName</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+  </tag>
+
+  <tag>
+    <name>repViewPage</name>
+    <tag-class>atg.portal.gear.repview.taglib.RepViewPageTag</tag-class>
+    <tei-class>atg.portal.gear.repview.taglib.RepViewPageTEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Supply convenience mehtods for getting gear parameters and that sort of thing. 
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>gearEnv</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+</taglib>

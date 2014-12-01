@@ -1,0 +1,78 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="create_sql_jms_ddl">
+   <procedure name="dms_topic_flag">
+      <proc-db db="db2">
+         <proc-params>
+            <proc-param spec="IN Pbatch_size    bigint"/>
+            <proc-param spec="IN Pread_lock     bigint"/>
+            <proc-param spec="IN Pdelivery_date int"/>
+            <proc-param spec="IN Psubscriber_id     bigint"/>
+            <proc-param spec="OUT Pupdate_count int"/>
+         </proc-params>
+         <proc-body>
+  LANGUAGE SQL
+  BEGIN
+     DECLARE SQLSTATE CHAR(5);
+     UPDATE dms_topic_entry te 
+       SET te.read_state = Pread_lock 
+       WHERE te.delivery_date &lt; Pdelivery_date 
+         AND te.read_state = 0 
+         AND te.subscriber_id = Psubscriber_id
+         and te.subscriber_id in (select k1.subscriber_id from dms_topic_entry k1
+            where k1.delivery_date &lt; Pdelivery_date
+              AND k1.read_state = 0 
+              AND k1.subscriber_id = Psubscriber_id
+              and k1.subscriber_id = te.subscriber_id
+              and k1.msg_id = te.msg_id fetch first 5000 rows only)
+         and te.msg_id in (select k2.msg_id from dms_topic_entry k2
+            where k2.delivery_date &lt; Pdelivery_date
+              AND k2.read_state = 0 
+              AND k2.subscriber_id = Psubscriber_id
+              and k2.subscriber_id = te.subscriber_id
+              and k2.msg_id = te.msg_id fetch first 5000 rows only);
+     GET DIAGNOSTICS Pupdate_count = ROW_COUNT;
+  END
+         </proc-body> 
+      </proc-db>
+   </procedure>
+   <procedure name="dms_queue_flag">
+      <proc-db db="db2">
+         <proc-params>
+            <proc-param spec="IN Pbatch_size    bigint"/>
+            <proc-param spec="IN Pread_lock     bigint"/>
+            <proc-param spec="IN Pdelivery_date int"/>
+            <proc-param spec="IN Pclient_id       bigint"/>
+            <proc-param spec="IN Pqueue_id        bigint"/>
+            <proc-param spec="OUT Pupdate_count   int"/>
+         </proc-params>
+         <proc-body>
+ LANGUAGE SQL
+BEGIN
+    DECLARE SQLSTATE CHAR(5);
+    UPDATE dms_queue_entry qe 
+    SET qe.handling_client_id = Pclient_id, 
+        qe.read_state = Pread_lock 
+    WHERE qe.handling_client_id &lt; 0  
+         AND qe.delivery_date &lt; Pdelivery_date
+         AND qe.queue_id = Pqueue_id
+         and qe.queue_id in 
+             (select k1.queue_id from dms_queue_entry k1
+                 where k1.handling_client_id &lt; 0
+AND k1.delivery_date &lt; Pdelivery_date
+AND k1.queue_id = Pqueue_id
+and k1.queue_id = qe.queue_id
+and k1.msg_id = qe.msg_id fetch first 5000 rows only)
+         and qe.msg_id in 
+             (select k2.msg_id from dms_queue_entry k2
+                 where k2.handling_client_id &lt; 0
+AND k2.delivery_date &lt; Pdelivery_date
+AND k2.queue_id = Pqueue_id
+and k2.queue_id = qe.queue_id
+and k2.msg_id = qe.msg_id fetch first 5000 rows only);
+     GET DIAGNOSTICS Pupdate_count = ROW_COUNT;
+END
+         </proc-body> 
+      </proc-db>
+   </procedure>
+</schema>
+<!-- @version $Id: //product/DAS/version/10.0.3/templates/DAS/sql/db2_jms_procedures_ddl.xml#2 $$Change: 651448 $-->

@@ -1,0 +1,51 @@
+<importbean bean="/atg/commerce/catalog/CategoryBrowsed">
+<importbean bean="/atg/userprofiling/Profile">
+<importbean bean="/atg/dynamo/droplet/Switch">
+
+<setvalue bean="Profile.currentLocation" value="catalog_category">
+
+
+<droplet bean="/atg/commerce/catalog/CategoryLookup">
+   <param name="elementName" value="category">
+   <!-- id would also be a param here but it was passed in -->
+   <oparam name="output">
+
+     <html>
+     <head>
+     <title><valueof param="category.displayName"></valueof></title>
+     </head>
+
+     <body>
+
+     <droplet name="CategoryBrowsed">
+       <param name="eventobject" value="param:category">
+     </droplet>
+
+<a href="index.jhtml">Catalog Home</a> - 
+<a href="product_search.jhtml">Product Search</a> - 
+<a href="shoppingcart.jhtml">Shopping Cart</a> - 
+<a href="lists.jhtml">My Lists</a> - 
+<a href="comparison.jhtml">Product Comparison</a> -
+<a href="giftlist_search.jhtml">Gift List Search</a> - 
+<droplet bean="Switch">
+  <param name="value" value="bean:Profile.transient">
+  <oparam name="false">
+    <a href="logout.jhtml">Logout</a>
+  </oparam>
+  <oparam name="true">
+    <a href="login.jhtml">Login</a> or <a href="register.jhtml">Register</a>
+  </oparam>
+</droplet>
+<BR>
+<i>location: <valueof bean="Profile.currentLocation"></valueof></i>
+
+     <P>
+
+     <droplet src="category_navigation.jhtml"></droplet>
+
+     </body>
+     </html>
+
+  </oparam>
+</droplet>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/B2CCommerce/html/sample_catalog/display_category.jhtml#2 $$Change: 651448 $*/</java>

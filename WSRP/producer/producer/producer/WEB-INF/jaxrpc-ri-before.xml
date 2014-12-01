@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<webServices
+    xmlns="http://java.sun.com/xml/ns/jax-rpc/ri/dd"
+    version="1.0"
+    targetNamespaceBase="urn:oasis:names:tc:wsrp:v1:wsdl"
+    typeNamespaceBase="urn:oasis:names:tc:wsrp:v1:types"
+    urlPatternBase="/producer">
+
+    <endpoint name="ServiceDescription"
+        displayName="Service Description"
+        description="WSRP Service Description Service"
+        interface="oasis.names.tc.wsrp.v1.wsdl.WSRP_v1_ServiceDescription_PortType"
+        implementation="atg.wsrp.producer.webservice.ServiceDescriptionWebService"
+        model="/WEB-INF/model.gz"
+        wsdl="/WEB-INF/wsrp_service.wsdl">
+    </endpoint>
+    <endpoint name="Markup"
+        displayName="Markup"
+        description="WSRP Markup Service"
+        interface="oasis.names.tc.wsrp.v1.wsdl.WSRP_v1_Markup_PortType"
+        implementation="atg.wsrp.producer.webservice.MarkupWebService"
+        model="/WEB-INF/model.gz"
+        wsdl="/WEB-INF/wsrp_service.wsdl">
+    </endpoint>
+    <endpoint name="PortletManagement"
+        displayName="Portlet Management"
+        description="WSRP Portlet Management Service"
+        interface="oasis.names.tc.wsrp.v1.wsdl.WSRP_v1_PortletManagement_PortType"
+        implementation="atg.wsrp.producer.webservice.PortletManagementWebService"
+        model="/WEB-INF/model.gz"
+        wsdl="/WEB-INF/wsrp_service.wsdl">
+    </endpoint>
+    <endpoint name="Registration"
+        displayName="Registration"
+        description="WSRP Registration Service"
+        interface="oasis.names.tc.wsrp.v1.wsdl.WSRP_v1_Registration_PortType"
+        implementation="atg.wsrp.producer.webservice.RegistrationWebService"
+        model="/WEB-INF/model.gz"
+        wsdl="/WEB-INF/wsrp_service.wsdl">
+    </endpoint>
+
+    <endpointMapping
+        endpointName="ServiceDescription"
+        urlPattern="/producer/ServiceDescription"/>
+    <endpointMapping
+        endpointName="Markup"
+        urlPattern="/producer/Markup"/>
+    <endpointMapping
+        endpointName="PortletManagement"
+        urlPattern="/producer/PortletManagement"/>
+    <endpointMapping
+        endpointName="Registration"
+        urlPattern="/producer/Registration"/>
+
+
+</webServices>
+<!-- @version $Id: //product/WSRP/version/10.0.3/producer/producer/producer/WEB-INF/jaxrpc-ri-before.xml#2 $$Change: 651448 $-->

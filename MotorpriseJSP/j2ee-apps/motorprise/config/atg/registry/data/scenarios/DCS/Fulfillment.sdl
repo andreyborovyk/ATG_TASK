@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE process SYSTEM "dynamosystemresource:/atg/dtds/pdl/pdl_1.0.dtd">
+<process author="admin" creation-time="988915675628" enabled="false" last-modified-by="admin" modification-time="1045003732563">
+  <segment migrate-subjects="false">
+    <segment-name>OrderFinished</segment-name>
+    <!--================================-->
+    <!--== Order changes subType is OrderFinished  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.commerce.fulfillment.scenario.OrderModified</event-name>
+      <filter construct="event-property-filter" operator="eq">
+        <event-property construct="event-property">
+          <property-name>subType</property-name>
+        </event-property>
+        <constant>OrderFinished</constant>
+      </filter>
+    </event>
+    <fork id="2">
+      <branch id="2.1">
+        <!--================================-->
+        <!--== Order where Customer's Locale is en_US  -->
+        <!--================================-->
+        <condition id="2.1.1">
+          <filter operator="orderCondition">
+            <constant>&lt;qualifier&gt;&lt;equals&gt;&lt;value&gt;profile.locale&lt;/value&gt;&lt;constant&gt;&lt;data-type&gt;java.lang.String&lt;/data-type&gt;&lt;string-value&gt;en_US&lt;/string-value&gt;&lt;/constant&gt;&lt;/equals&gt;&lt;/qualifier&gt;</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Send email with path MotorpriseJSP:/en/email/fulfillment/OrderFinished.jsp  -->
+        <!--================================-->
+        <action id="2.1.2">
+          <action-name>sendEmail</action-name>
+          <action-param name="scenarioPathInfo">
+            <constant>MotorpriseJSP:/en/email/fulfillment/OrderFinished.jsp</constant>
+          </action-param>
+        </action>
+      </branch>
+      <branch id="2.2">
+        <!--================================-->
+        <!--== Order where Customer's Locale is de_DE  -->
+        <!--================================-->
+        <condition id="2.2.1">
+          <filter operator="orderCondition">
+            <constant>&lt;qualifier&gt;&lt;equals&gt;&lt;value&gt;profile.locale&lt;/value&gt;&lt;constant&gt;&lt;data-type&gt;java.lang.String&lt;/data-type&gt;&lt;string-value&gt;de_DE&lt;/string-value&gt;&lt;/constant&gt;&lt;/equals&gt;&lt;/qualifier&gt;</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Send email with path MotorpriseJSP:/de/email/fulfillment/OrderFinished.jsp  -->
+        <!--================================-->
+        <action id="2.2.2">
+          <action-name>sendEmail</action-name>
+          <action-param name="scenarioPathInfo">
+            <constant>MotorpriseJSP:/de/email/fulfillment/OrderFinished.jsp</constant>
+          </action-param>
+        </action>
+      </branch>
+      <branch id="2.3">
+        <!--================================-->
+        <!--== Order where Customer's Locale is ja_JP  -->
+        <!--================================-->
+        <condition id="2.3.1">
+          <filter operator="orderCondition">
+            <constant>&lt;qualifier&gt;&lt;equals&gt;&lt;value&gt;profile.locale&lt;/value&gt;&lt;constant&gt;&lt;data-type&gt;java.lang.String&lt;/data-type&gt;&lt;string-value&gt;ja_JP&lt;/string-value&gt;&lt;/constant&gt;&lt;/equals&gt;&lt;/qualifier&gt;</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Send email with path MotorpriseJSP:/ja/email/fulfillment/OrderFinished.jsp  -->
+        <!--================================-->
+        <action id="2.3.2">
+          <action-name>sendEmail</action-name>
+          <action-param name="scenarioPathInfo">
+            <constant>MotorpriseJSP:/ja/email/fulfillment/OrderFinished.jsp</constant>
+          </action-param>
+        </action>
+      </branch>
+    </fork>
+  </segment>
+  <segment migrate-subjects="false">
+    <segment-name>ShippingGroupShipped</segment-name>
+    <!--================================-->
+    <!--== Shipping group changes subType is ShippingGroupShipped  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.commerce.fulfillment.scenario.ShippingGroupModified</event-name>
+      <filter construct="event-property-filter" operator="eq">
+        <event-property construct="event-property">
+          <property-name>subType</property-name>
+        </event-property>
+        <constant>ShippingGroupShipped</constant>
+      </filter>
+    </event>
+    <fork id="2">
+      <branch id="2.1">
+        <!--================================-->
+        <!--== Order where Customer's Locale is en_US  -->
+        <!--================================-->
+        <condition id="2.1.1">
+          <filter operator="orderCondition">
+            <constant>&lt;qualifier&gt;&lt;equals&gt;&lt;value&gt;profile.locale&lt;/value&gt;&lt;constant&gt;&lt;data-type&gt;java.lang.String&lt;/data-type&gt;&lt;string-value&gt;en_US&lt;/string-value&gt;&lt;/constant&gt;&lt;/equals&gt;&lt;/qualifier&gt;</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Send email with path MotorpriseJSP:/en/email/fulfillment/ShippingGroupShipped.jsp  -->
+        <!--================================-->
+        <action id="2.1.2">
+          <action-name>sendEmail</action-name>
+          <action-param name="scenarioPathInfo">
+            <constant>MotorpriseJSP:/en/email/fulfillment/ShippingGroupShipped.jsp</constant>
+          </action-param>
+        </action>
+      </branch>
+      <branch id="2.2">
+        <!--================================-->
+        <!--== Order where Customer's Locale is de_DE  -->
+        <!--================================-->
+        <condition id="2.2.1">
+          <filter operator="orderCondition">
+            <constant>&lt;qualifier&gt;&lt;equals&gt;&lt;value&gt;profile.locale&lt;/value&gt;&lt;constant&gt;&lt;data-type&gt;java.lang.String&lt;/data-type&gt;&lt;string-value&gt;de_DE&lt;/string-value&gt;&lt;/constant&gt;&lt;/equals&gt;&lt;/qualifier&gt;</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Send email with path MotorpriseJSP:/de/email/fulfillment/ShippingGroupShipped.jsp  -->
+        <!--================================-->
+        <action id="2.2.2">
+          <action-name>sendEmail</action-name>
+          <action-param name="scenarioPathInfo">
+            <constant>MotorpriseJSP:/de/email/fulfillment/ShippingGroupShipped.jsp</constant>
+          </action-param>
+        </action>
+      </branch>
+      <branch id="2.3">
+        <!--================================-->
+        <!--== Order where Customer's Locale is ja_JP  -->
+        <!--================================-->
+        <condition id="2.3.1">
+          <filter operator="orderCondition">
+            <constant>&lt;qualifier&gt;&lt;equals&gt;&lt;value&gt;profile.locale&lt;/value&gt;&lt;constant&gt;&lt;data-type&gt;java.lang.String&lt;/data-type&gt;&lt;string-value&gt;ja_JP&lt;/string-value&gt;&lt;/constant&gt;&lt;/equals&gt;&lt;/qualifier&gt;</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Send email with path MotorpriseJSP:/ja/email/fulfillment/ShippingGroupShipped.jsp  -->
+        <!--================================-->
+        <action id="2.3.2">
+          <action-name>sendEmail</action-name>
+          <action-param name="scenarioPathInfo">
+            <constant>MotorpriseJSP:/ja/email/fulfillment/ShippingGroupShipped.jsp</constant>
+          </action-param>
+        </action>
+      </branch>
+    </fork>
+  </segment>
+  <segment migrate-subjects="false">
+    <segment-name>UnavailableItems</segment-name>
+    <!--================================-->
+    <!--== Order changes subType is OrderHasUnavailableItems  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.commerce.fulfillment.scenario.OrderModified</event-name>
+      <filter construct="event-property-filter" operator="eq">
+        <event-property construct="event-property">
+          <property-name>subType</property-name>
+        </event-property>
+        <constant>OrderHasUnavailableItems</constant>
+      </filter>
+    </event>
+    <fork id="2">
+      <branch id="2.1">
+        <!--================================-->
+        <!--== Order where Customer's Locale is en_US  -->
+        <!--================================-->
+        <condition id="2.1.1">
+          <filter operator="orderCondition">
+            <constant>&lt;qualifier&gt;&lt;equals&gt;&lt;value&gt;profile.locale&lt;/value&gt;&lt;constant&gt;&lt;data-type&gt;java.lang.String&lt;/data-type&gt;&lt;string-value&gt;en_US&lt;/string-value&gt;&lt;/constant&gt;&lt;/equals&gt;&lt;/qualifier&gt;</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Send email with path MotorpriseJSP:/en/email/fulfillment/OrderHasUnavailableItems.jsp  -->
+        <!--================================-->
+        <action id="2.1.2">
+          <action-name>sendEmail</action-name>
+          <action-param name="scenarioPathInfo">
+            <constant>MotorpriseJSP:/en/email/fulfillment/OrderHasUnavailableItems.jsp</constant>
+          </action-param>
+        </action>
+      </branch>
+      <branch id="2.2">
+        <!--================================-->
+        <!--== Order where Customer's Locale is de_DE  -->
+        <!--================================-->
+        <condition id="2.2.1">
+          <filter operator="orderCondition">
+            <constant>&lt;qualifier&gt;&lt;equals&gt;&lt;value&gt;profile.locale&lt;/value&gt;&lt;constant&gt;&lt;data-type&gt;java.lang.String&lt;/data-type&gt;&lt;string-value&gt;de_DE&lt;/string-value&gt;&lt;/constant&gt;&lt;/equals&gt;&lt;/qualifier&gt;</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Send email with path MotorpriseJSP:/de/email/fulfillment/OrderHasUnavailableItems.jsp  -->
+        <!--================================-->
+        <action id="2.2.2">
+          <action-name>sendEmail</action-name>
+          <action-param name="scenarioPathInfo">
+            <constant>MotorpriseJSP:/de/email/fulfillment/OrderHasUnavailableItems.jsp</constant>
+          </action-param>
+        </action>
+      </branch>
+      <branch id="2.3">
+        <!--================================-->
+        <!--== Order where Customer's Locale is ja_JP  -->
+        <!--================================-->
+        <condition id="2.3.1">
+          <filter operator="orderCondition">
+            <constant>&lt;qualifier&gt;&lt;equals&gt;&lt;value&gt;profile.locale&lt;/value&gt;&lt;constant&gt;&lt;data-type&gt;java.lang.String&lt;/data-type&gt;&lt;string-value&gt;ja_JP&lt;/string-value&gt;&lt;/constant&gt;&lt;/equals&gt;&lt;/qualifier&gt;</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Send email with path MotorpriseJSP:/ja/email/fulfillment/OrderHasUnavailableItems.jsp  -->
+        <!--================================-->
+        <action id="2.3.2">
+          <action-name>sendEmail</action-name>
+          <action-param name="scenarioPathInfo">
+            <constant>MotorpriseJSP:/ja/email/fulfillment/OrderHasUnavailableItems.jsp</constant>
+          </action-param>
+        </action>
+      </branch>
+    </fork>
+  </segment>
+  <segment migrate-subjects="false">
+    <segment-name>OrderCancelled</segment-name>
+    <!--================================-->
+    <!--== Order changes subType is OrderRemoved  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.commerce.fulfillment.scenario.OrderModified</event-name>
+      <filter construct="event-property-filter" operator="eq">
+        <event-property construct="event-property">
+          <property-name>subType</property-name>
+        </event-property>
+        <constant>OrderRemoved</constant>
+      </filter>
+    </event>
+    <fork id="2">
+      <branch id="2.1">
+        <!--================================-->
+        <!--== Order where Customer's Locale is en_US  -->
+        <!--================================-->
+        <condition id="2.1.1">
+          <filter operator="orderCondition">
+            <constant>&lt;qualifier&gt;&lt;equals&gt;&lt;value&gt;profile.locale&lt;/value&gt;&lt;constant&gt;&lt;data-type&gt;java.lang.String&lt;/data-type&gt;&lt;string-value&gt;en_US&lt;/string-value&gt;&lt;/constant&gt;&lt;/equals&gt;&lt;/qualifier&gt;</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Send email with path MotorpriseJSP:/en/email/fulfillment/OrderCancelled.jsp  -->
+        <!--================================-->
+        <action id="2.1.2">
+          <action-name>sendEmail</action-name>
+          <action-param name="scenarioPathInfo">
+            <constant>MotorpriseJSP:/en/email/fulfillment/OrderCancelled.jsp</constant>
+          </action-param>
+        </action>
+      </branch>
+      <branch id="2.2">
+        <!--================================-->
+        <!--== Order where Customer's Locale is de_DE  -->
+        <!--================================-->
+        <condition id="2.2.1">
+          <filter operator="orderCondition">
+            <constant>&lt;qualifier&gt;&lt;equals&gt;&lt;value&gt;profile.locale&lt;/value&gt;&lt;constant&gt;&lt;data-type&gt;java.lang.String&lt;/data-type&gt;&lt;string-value&gt;de_DE&lt;/string-value&gt;&lt;/constant&gt;&lt;/equals&gt;&lt;/qualifier&gt;</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Send email with path MotorpriseJSP:/de/email/fulfillment/OrderCancelled.jsp  -->
+        <!--================================-->
+        <action id="2.2.2">
+          <action-name>sendEmail</action-name>
+          <action-param name="scenarioPathInfo">
+            <constant>MotorpriseJSP:/de/email/fulfillment/OrderCancelled.jsp</constant>
+          </action-param>
+        </action>
+      </branch>
+      <branch id="2.3">
+        <!--================================-->
+        <!--== Order where Customer's Locale is ja_JP  -->
+        <!--================================-->
+        <condition id="2.3.1">
+          <filter operator="orderCondition">
+            <constant>&lt;qualifier&gt;&lt;equals&gt;&lt;value&gt;profile.locale&lt;/value&gt;&lt;constant&gt;&lt;data-type&gt;java.lang.String&lt;/data-type&gt;&lt;string-value&gt;ja_JP&lt;/string-value&gt;&lt;/constant&gt;&lt;/equals&gt;&lt;/qualifier&gt;</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Send email with path MotorpriseJSP:/ja/email/fulfillment/OrderCancelled.jsp  -->
+        <!--================================-->
+        <action id="2.3.2">
+          <action-name>sendEmail</action-name>
+          <action-param name="scenarioPathInfo">
+            <constant>MotorpriseJSP:/ja/email/fulfillment/OrderCancelled.jsp</constant>
+          </action-param>
+        </action>
+      </branch>
+    </fork>
+  </segment>
+  <segment migrate-subjects="false">
+    <segment-name>ItemRemoved</segment-name>
+    <!--================================-->
+    <!--== Item removed from order and Order's state is not 0  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.commerce.order.ItemRemovedFromOrder</event-name>
+      <filter operator="orderCondition">
+        <constant>&lt;qualifier&gt;&lt;not-equals&gt;&lt;value&gt;order.state&lt;/value&gt;&lt;constant&gt;&lt;data-type&gt;java.lang.Integer&lt;/data-type&gt;&lt;string-value&gt;0&lt;/string-value&gt;&lt;/constant&gt;&lt;/not-equals&gt;&lt;/qualifier&gt;</constant>
+      </filter>
+    </event>
+    <fork id="2">
+      <branch id="2.1">
+        <!--================================-->
+        <!--== Order where Customer's Locale is en_US  -->
+        <!--================================-->
+        <condition id="2.1.1">
+          <filter operator="orderCondition">
+            <constant>&lt;qualifier&gt;&lt;equals&gt;&lt;value&gt;profile.locale&lt;/value&gt;&lt;constant&gt;&lt;data-type&gt;java.lang.String&lt;/data-type&gt;&lt;string-value&gt;en_US&lt;/string-value&gt;&lt;/constant&gt;&lt;/equals&gt;&lt;/qualifier&gt;</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Send email with path MotorpriseJSP:/en/email/fulfillment/ItemRemovedFromOrder.jsp  -->
+        <!--================================-->
+        <action id="2.1.2">
+          <action-name>sendEmail</action-name>
+          <action-param name="scenarioPathInfo">
+            <constant>MotorpriseJSP:/en/email/fulfillment/ItemRemovedFromOrder.jsp</constant>
+          </action-param>
+        </action>
+      </branch>
+      <branch id="2.2">
+        <!--================================-->
+        <!--== Order where Customer's Locale is de_DE  -->
+        <!--================================-->
+        <condition id="2.2.1">
+          <filter operator="orderCondition">
+            <constant>&lt;qualifier&gt;&lt;equals&gt;&lt;value&gt;profile.locale&lt;/value&gt;&lt;constant&gt;&lt;data-type&gt;java.lang.String&lt;/data-type&gt;&lt;string-value&gt;de_DE&lt;/string-value&gt;&lt;/constant&gt;&lt;/equals&gt;&lt;/qualifier&gt;</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Send email with path MotorpriseJSP:/de/email/fulfillment/ItemRemovedFromOrder.jsp  -->
+        <!--================================-->
+        <action id="2.2.2">
+          <action-name>sendEmail</action-name>
+          <action-param name="scenarioPathInfo">
+            <constant>MotorpriseJSP:/de/email/fulfillment/ItemRemovedFromOrder.jsp</constant>
+          </action-param>
+        </action>
+      </branch>
+      <branch id="2.3">
+        <!--================================-->
+        <!--== Order where Customer's Locale is ja_JP  -->
+        <!--================================-->
+        <condition id="2.3.1">
+          <filter operator="orderCondition">
+            <constant>&lt;qualifier&gt;&lt;equals&gt;&lt;value&gt;profile.locale&lt;/value&gt;&lt;constant&gt;&lt;data-type&gt;java.lang.String&lt;/data-type&gt;&lt;string-value&gt;ja_JP&lt;/string-value&gt;&lt;/constant&gt;&lt;/equals&gt;&lt;/qualifier&gt;</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Send email with path MotorpriseJSP:/ja/email/fulfillment/ItemRemovedFromOrder.jsp  -->
+        <!--================================-->
+        <action id="2.3.2">
+          <action-name>sendEmail</action-name>
+          <action-param name="scenarioPathInfo">
+            <constant>MotorpriseJSP:/ja/email/fulfillment/ItemRemovedFromOrder.jsp</constant>
+          </action-param>
+        </action>
+      </branch>
+    </fork>
+  </segment>
+  <segment migrate-subjects="false">
+    <segment-name>PaymentGroupChanged</segment-name>
+    <!--================================-->
+    <!--== Payment group changes  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.commerce.fulfillment.scenario.PaymentGroupModified</event-name>
+    </event>
+    <fork id="2">
+      <branch id="2.1">
+        <!--================================-->
+        <!--== Order where Customer's Locale is en_US  -->
+        <!--================================-->
+        <condition id="2.1.1">
+          <filter operator="orderCondition">
+            <constant>&lt;qualifier&gt;&lt;equals&gt;&lt;value&gt;profile.locale&lt;/value&gt;&lt;constant&gt;&lt;data-type&gt;java.lang.String&lt;/data-type&gt;&lt;string-value&gt;en_US&lt;/string-value&gt;&lt;/constant&gt;&lt;/equals&gt;&lt;/qualifier&gt;</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Send email with path MotorpriseJSP:/en/email/fulfillment/PaymentGroupChanged.jsp  -->
+        <!--================================-->
+        <action id="2.1.2">
+          <action-name>sendEmail</action-name>
+          <action-param name="scenarioPathInfo">
+            <constant>MotorpriseJSP:/en/email/fulfillment/PaymentGroupChanged.jsp</constant>
+          </action-param>
+        </action>
+      </branch>
+      <branch id="2.2">
+        <!--================================-->
+        <!--== Order where Customer's Locale is de_DE  -->
+        <!--================================-->
+        <condition id="2.2.1">
+          <filter operator="orderCondition">
+            <constant>&lt;qualifier&gt;&lt;equals&gt;&lt;value&gt;profile.locale&lt;/value&gt;&lt;constant&gt;&lt;data-type&gt;java.lang.String&lt;/data-type&gt;&lt;string-value&gt;de_DE&lt;/string-value&gt;&lt;/constant&gt;&lt;/equals&gt;&lt;/qualifier&gt;</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Send email with path MotorpriseJSP:/de/email/fulfillment/PaymentGroupChanged.jsp  -->
+        <!--================================-->
+        <action id="2.2.2">
+          <action-name>sendEmail</action-name>
+          <action-param name="scenarioPathInfo">
+            <constant>MotorpriseJSP:/de/email/fulfillment/PaymentGroupChanged.jsp</constant>
+          </action-param>
+        </action>
+      </branch>
+      <branch id="2.3">
+        <!--================================-->
+        <!--== Order where Customer's Locale is ja_JP  -->
+        <!--================================-->
+        <condition id="2.3.1">
+          <filter operator="orderCondition">
+            <constant>&lt;qualifier&gt;&lt;equals&gt;&lt;value&gt;profile.locale&lt;/value&gt;&lt;constant&gt;&lt;data-type&gt;java.lang.String&lt;/data-type&gt;&lt;string-value&gt;ja_JP&lt;/string-value&gt;&lt;/constant&gt;&lt;/equals&gt;&lt;/qualifier&gt;</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Send email with path MotorpriseJSP:/ja/email/fulfillment/PaymentGroupChanged.jsp  -->
+        <!--================================-->
+        <action id="2.3.2">
+          <action-name>sendEmail</action-name>
+          <action-param name="scenarioPathInfo">
+            <constant>MotorpriseJSP:/ja/email/fulfillment/PaymentGroupChanged.jsp</constant>
+          </action-param>
+        </action>
+      </branch>
+    </fork>
+  </segment>
+</process>

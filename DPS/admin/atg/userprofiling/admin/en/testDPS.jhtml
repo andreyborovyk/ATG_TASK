@@ -1,0 +1,91 @@
+<!--
+  <ATGCOPYRIGHT>
+  Copyright</A> &copy; 2000-2010 Art Technology Group, Inc.
+  All Rights Reserved.  No use, copying or distribution of this
+  work may be made except in accordance with a valid license
+  agreement from Art Technology Group.  This notice must be
+  included on all copies, modifications and derivatives of this
+  work.
+ 
+  Art Technology Group (ATG) MAKES NO REPRESENTATIONS OR WARRANTIES
+  ABOUT THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT. ATG SHALL NOT BE
+  LIABLE FOR ANY DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING,
+  MODIFYING OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+ 
+  "Dynamo" is a trademark of Art Technology Group, Inc.
+  </ATGCOPYRIGHT>
+
+  This is a test page for DPS. It simply validates that a particular 
+  type of message is being properly sent and received. 
+
+  It should not be used as a style guide for writing new pages.
+  -->
+<java type="import">atg.nucleus.*</java>
+<java type="import">atg.nucleus.logging.*</java>
+<java type="implements">LogListener</java>
+<java type="class"> 
+  StringBuffer log = null;
+</java>
+<java type="class"> 
+  // This method will be called when events are logged. In particular,
+  // this class will register itself to received events from TestSink1,
+  // which is configured to receive page view messages.
+  public void logEvent (LogEvent pLogEvent) {
+    if (log == null)
+      log = new StringBuffer();
+    log.append("<li>" + pLogEvent);
+    System.out.println(log.toString());
+  }
+</java>
+<html>
+<title>Test of DPS</title>
+<h1>Test of DPS</h1>
+<body>
+This page registers itself to receive log events from 
+"atg/dynamo/messaging/TestSink1" which is configured to 
+receive page view events. 
+<java>
+  // Look up the TestSink1 component and register this servlet to 
+  // receive TestSink1's log events.
+  Object o = request.resolveName("/atg/dynamo/messaging/TestSink1");
+  if (o != null) {
+    // Make sure we're not already listening.
+    GenericService gs = (GenericService) o;
+    LogListener[] a = gs.getLogListeners();
+    int i;
+    for (i=0; i < a.length; i++) {
+      if (a[i] == this)
+        break;
+    }
+    if (i == a.length) {
+      // We're not listening. Start listening and ensure that debug
+      // logging is enabled.
+      gs.addLogListener(this);
+      gs.setLoggingDebug(true);
+    }
+  }
+</java>  
+
+<p>
+This page also contains the "/atg/userprofiling/SendPageEvent"
+droplet, which sends a page view event. It passes the 
+pageviewed property as "from droplet in testDPS".
+<DROPLET BEAN="/atg/userprofiling/SendPageEvent">
+<PARAM NAME="pageviewed" VALUE="from droplet in testDPS">
+</DROPLET>
+
+<p>
+So you should see at least one page view event for each loading of the page.
+If the PageEventTriggerPipelineServlet is configured to 
+broadcastPageViewedEvents, then you will see another event for each page load.
+<hr>
+<br>Listener received the following events:
+<ul>
+<java type="print">log == null ? "" : log.toString()</java>
+</ul>
+</body>
+</html>
+<java>/* @version $Id: //product/DPS/version/10.0.3/release/DPS/admin/atg/userprofiling/admin/en/testDPS.jhtml#2 $$Change: 651448 $*/</java>
+

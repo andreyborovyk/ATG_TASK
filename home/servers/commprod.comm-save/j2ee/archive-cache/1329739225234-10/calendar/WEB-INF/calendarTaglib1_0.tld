@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE taglib
+        PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.1//EN"
+        "http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_1.dtd">
+
+<taglib>
+  <tlibversion>1.0</tlibversion>
+  <jspversion>1.1</jspversion>
+  <shortname>contacts</shortname>
+
+  <info>The taglib containing the support tags for the Contacts gear</info>
+
+  <!-- SelectMonthTag -->
+  <tag>
+    <name>SelectMonth</name>
+    <tagclass>atg.portal.gear.calendar.taglib.SelectMonthTag</tagclass>
+    <teiclass>atg.portal.gear.calendar.taglib.SelectMonthTEI</teiclass>    
+    <bodycontent>JSP</bodycontent>
+    <info>
+      Tag used to select a month for which to view a calendar
+    </info>
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>endYear</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- MonthTag -->
+  <tag>
+    <name>Month</name>
+    <tagclass>atg.portal.gear.calendar.taglib.MonthTag</tagclass>
+    <teiclass>atg.portal.gear.calendar.taglib.MonthTEI</teiclass>    
+    <bodycontent>JSP</bodycontent>
+    <info>
+      Tag used to start a monthly calendar view
+    </info>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    <attribute>
+       <name>monthRequested</name>
+       <required>true</required>
+       <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- WeekTag -->
+  <tag>
+    <name>Week</name>
+    <tagclass>atg.portal.gear.calendar.taglib.WeekTag</tagclass>
+    <teiclass>atg.portal.gear.calendar.taglib.WeekTEI</teiclass>    
+    <bodycontent>JSP</bodycontent>
+    <info>
+      Tag used to start a calendar week
+    </info>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    <attribute>
+       <name>startDate</name>
+       <required>true</required>
+       <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- DateTag -->
+  <tag>
+    <name>Date</name>
+    <tagclass>atg.portal.gear.calendar.taglib.DateTag</tagclass>
+    <teiclass>atg.portal.gear.calendar.taglib.DateTEI</teiclass>    
+    <bodycontent>JSP</bodycontent>
+    <info>
+      Tag used to start a calendar date view
+    </info>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    <attribute>
+       <name>date</name>
+       <required>true</required>
+       <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- EventsTag -->
+  <tag>
+    <name>Events</name>
+    <tagclass>atg.portal.gear.calendar.taglib.EventsTag</tagclass>
+    <teiclass>atg.portal.gear.calendar.taglib.EventsTEI</teiclass>    
+    <bodycontent>JSP</bodycontent>
+    <info>
+      Tag used to obtain events to display on a calendar
+    </info>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    <attribute>
+       <name>startTime</name>
+       <required>true</required>
+       <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+       <name>endTime</name>
+       <required>true</required>
+       <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+       <name>userId</name>
+       <required>false</required>
+       <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+       <name>gearId</name>
+       <required>false</required>
+       <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+       <name>eventSource</name>
+       <required>true</required>
+       <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+<!-- EventsTag -->
+<tag>
+  <name>hasAccess</name>
+  <tagclass>atg.portal.gear.calendar.taglib.HasAccessTag</tagclass>
+  <bodycontent>JSP</bodycontent>
+  <info>
+    Tag used to determine whether a user has access to create/edit calendar events
+  </info>
+
+  <attribute>
+     <name>gearEnv</name>
+     <required>true</required>
+     <rtexprvalue>true</rtexprvalue>
+  </attribute>
+  <attribute>
+     <name>isPublic</name>
+     <required>false</required>
+     <rtexprvalue>true</rtexprvalue>
+  </attribute>
+</tag>
+
+  <!-- SendViewedMessage -->
+  <tag>
+    <name>sendViewedMessage</name>
+    <tagclass>atg.portal.gear.calendar.taglib.SendViewedMessageTag</tagclass>
+    <bodycontent>JSP</bodycontent>
+    <info>
+      Tag used to send an EventViewedMessage
+    </info>
+
+    <attribute>
+       <name>env</name>
+       <required>true</required>
+       <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+       <name>eventId</name>
+       <required>true</required>
+       <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+       <name>eventName</name>
+       <required>true</required>
+       <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+       <name>startDate</name>
+       <required>true</required>
+       <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+       <name>ignoreTime</name>
+       <required>false</required>
+       <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+</taglib>

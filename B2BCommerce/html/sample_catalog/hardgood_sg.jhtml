@@ -1,0 +1,36 @@
+<importbean bean="/atg/commerce/order/purchase/CreateHardgoodShippingGroupFormHandler">
+<importbean bean="/atg/userprofiling/Profile">
+
+<hr>
+Enter new shipping address for HardgoodShippingGroup
+
+<form action="hardgood_sg.jhtml" method="post">
+
+ShippingGroup NickName:<input type=text bean="CreateHardgoodShippingGroupFormHandler.hardgoodShippingGroupName" size=30 value="">
+
+<br>First:<input type=text bean="CreateHardgoodShippingGroupFormHandler.HardgoodShippingGroup.ShippingAddress.firstName" value="bean:Profile.firstName" size=30>
+
+Middle:<input type=text bean="CreateHardgoodShippingGroupFormHandler.HardgoodShippingGroup.ShippingAddress.middleName" value="bean:Profile.middleName" size=30>
+
+Last:<input type=text bean="CreateHardgoodShippingGroupFormHandler.HardgoodShippingGroup.ShippingAddress.lastName" value="bean:Profile.lastName" size=30>
+
+<br>Address:<input type=text bean="CreateHardgoodShippingGroupFormHandler.HardgoodShippingGroup.ShippingAddress.address1" value="bean:Profile.defaultShippingAddress.address1" size=30>
+
+Address (line 2):<input type=text bean="CreateHardgoodShippingGroupFormHandler.HardgoodShippingGroup.ShippingAddress.address2" value="bean:Profile.defaultShippingAddress.address2" size=30>
+
+<br>City:<input type=text required bean="CreateHardgoodShippingGroupFormHandler.HardgoodShippingGroup.ShippingAddress.city" value="bean:Profile.defaultShippingAddress.city" size=30>
+
+State:<input type=text required bean="CreateHardgoodShippingGroupFormHandler.HardgoodShippingGroup.ShippingAddress.state" value="bean:Profile.defaultShippingAddress.state" size=2 maxsize=2>
+
+Postal Code:<input type=text required bean="CreateHardgoodShippingGroupFormHandler.HardgoodShippingGroup.ShippingAddress.postalCode" value="bean:Profile.defaultShippingAddress.postalCode" size=10>
+
+Country:<input type=text bean="CreateHardgoodShippingGroupFormHandler.HardgoodShippingGroup.ShippingAddress.country" value="bean:Profile.defaultShippingAddress.country" size=10>
+
+<br>
+<input type="hidden" bean="CreateHardgoodShippingGroupFormHandler.newHardgoodShippingGroupSuccessURL" value="shipping.jhtml?init=false">
+<input type="hidden" bean="CreateHardgoodShippingGroupFormHandler.newHardgoodShippingGroupErrorURL" value="shipping.jhtml?init=false">
+<input type="submit" priority="-10" bean="CreateHardgoodShippingGroupFormHandler.newHardgoodShippingGroup" value="Create HardgoodShippingGroup">
+
+</form>
+<java>/* @version $Id: //product/B2BCommerce/version/10.0.3/release/B2BCommerce/html/sample_catalog/hardgood_sg.jhtml#2 $$Change: 651448 $*/</java>
+

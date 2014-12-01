@@ -1,0 +1,50 @@
+<nucleus type=import>
+	/atg/dynamo/admin/ISAPIConfigure
+</nucleus>
+
+<java>
+  atg.service.dynamo.ISAPIConfig ISAPIConfigure = (atg.service.dynamo.ISAPIConfig)
+  	request.resolveName("/atg/dynamo/admin/ISAPIConfigure");
+ 
+</java>
+
+<HTML>
+<HEAD>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+<TITLE>Configure IIS Connection Module</TITLE>
+
+
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="images/config-banner.gif" ALT="Dynamo Configuration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a
+href="configure-server.jhtml">Configure</a>/<a
+href="configure-server.jhtml#CM">Connection_Modules</a>/<a
+href="config-iis-scriptdir.jhtml">script_dir</a>/install_or_uninstall
+<p>
+
+<blockquote>
+
+<H2>Configure Dynamo Connection Modules for an IIS HTTP Server</H2><p>
+
+<font color=red><valueof property=ISAPIConfigure.errorMessage valueishtml></valueof></font><p>
+
+
+Please choose here whether you'd like to Install or Uninstall the IIS Connection Module.
+
+<p>
+<a href="config-iis-texthandle.jhtml">Proceed to install</a>
+
+
+<FORM ACTION="configure-server.jhtml#CM" METHOD=POST>
+	
+	
+<INPUT TYPE="submit" property=ISAPIConfigure.remove VALUE="Uninstall"></FORM>
+
+
+</blockquote>
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/config-iis-decide.jhtml#2 $$Change: 651448 $*/</java>

@@ -1,0 +1,162 @@
+<html>
+  <head>
+    <title>Store E-mail Template Tester</title>
+  </head>
+  
+  <body BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+    <a href="/">admin</a>/<a href="index.jhtml">Store</a>/Email Tester
+    <p>
+    <importbean bean="/atg/store/email/TemplateTesterFormHandler"/><h2>Store E-mail Template Tester</h2>
+    
+    This form will send an e-mail using the specified template and using the other provided meta data.
+
+    <form action="email.jhtml" method=POST>
+      <input type="hidden" bean="TemplateTesterFormHandler.errorURL" value="email.jhtml">
+      <input type="hidden" bean="TemplateTesterFormHandler.successURL" value="email.jhtml"/>
+      <input type="hidden" bean="TemplateTesterFormHandler.senderName" value="ATG Email Tester"/>
+      <input type="hidden" bean="TemplateTesterFormHandler.senderEmail" value="ATGEmail@atg.com"/>
+      
+      <valueof bean="TemplateTesterFormHandler.actionResult"></valueof><p>
+      
+      <h3>Required Properties</h3>
+      <blockquote>
+        <p>
+        These properties are required to successfully send an e-mail.
+        <p>
+        <table border=0 cellspadding=0>
+          <tr>
+            <td>
+              E-mail Template URL: 
+            </td>
+            <td>
+              <select bean="TemplateTesterFormHandler.templateUrl">
+                <option value="/crs/emailtemplates/newPassword.jsp">New Password</option>              
+                <option value="/crs/emailtemplates/emailAFriend.jsp">Email a Friend</option>
+                <option value="/crs/emailtemplates/orderConfirmation.jsp">Order Confirmation</option>
+                <option value="/crs/emailtemplates/orderShipped.jsp">Order Shipped</option>
+                <option value="/crs/emailtemplates/backInStockNotify.jsp">Back In Stock Notification</option>
+                <option value="/crs/emailtemplates/abandonedOrderPromo.jsp">Abandoned Order Promotion</option>
+              </select>  
+              
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Recipient's E-mail Address:
+            </td>
+            <td>
+              <input type="text" bean="TemplateTesterFormHandler.recipientEmail" value=""/>
+            </td>
+          </tr>
+           <tr>
+            <td>
+              Site ID:
+            </td>
+            <td>
+              <input type="text" bean="TemplateTesterFormHandler.siteId" value=""/>
+            </td>
+          </tr>
+        </table>
+      </blockquote>
+      
+      <h3>Optional E-mail Template Properties</h3>
+      <blockquote>
+        <p>
+        Some of the common properties that may be used with e-mail templates. Which properties are needed will depend on the template being used.
+        Please refer to the email template if you are unsure of which properties are needed.
+        <p>
+        
+        <table border=0 cellspadding=0>
+          <tr>
+            <td>
+              Email locale
+            </td>
+            <td>
+              <select bean="TemplateTesterFormHandler.emailLocale">
+                <option value="en_US">English (U.S.)</option>
+                <option value="es_US">Spanish (U.S.)</option>
+                <option value="de_DE">Deutsch (Germany)</option>
+              </select>
+            </td>
+          </tr>	
+          <tr>
+            <td>
+              Subject
+            </td>
+            <td>
+              <input type="text" bean="TemplateTesterFormHandler.subject" value=""/>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Recipient's Name:
+            </td>
+            <td>
+              <input type="text" bean="TemplateTesterFormHandler.recipientName" value=""/>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Product Id:
+            </td>
+            <td>
+              <input type="text" bean="TemplateTesterFormHandler.productId" value=""/>
+            </td>
+          </tr>
+          <tr>
+           <tr>
+            <td>
+              SKU Id:
+            </td>
+            <td>
+              <input type="text" bean="TemplateTesterFormHandler.skuId" value=""/>
+            </td>
+          </tr>
+          <tr>
+          <td>
+            New Password:
+          </td>
+          <td>
+            <input type="text" bean="TemplateTesterFormHandler.newPassword" value=""/>
+          </td>
+          <tr>
+            <td>
+              User e-mail:
+            </td>
+            <td>
+              <input type="text" bean="TemplateTesterFormHandler.login" value=""/>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              User password:
+            </td>
+            <td>
+              <input type="text" bean="TemplateTesterFormHandler.password" value=""/>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Shipping group id:
+            </td>
+            <td>
+              <input type="text" bean="TemplateTesterFormHandler.shippingGroupId" value=""/>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Order id:
+            </td>
+            <td>
+              <input type="text" bean="TemplateTesterFormHandler.orderId" value=""/>
+            </td>
+          </tr>
+        </table>
+        </blockquote>
+        
+      <input type="submit" bean="TemplateTesterFormHandler.send" value="Send E-mail"/>
+    </form>
+  </body>
+</html>
+<java>/* @version $Id: //hosting-blueprint/B2CBlueprint/version/10.0.1/EStore/admin/atg/store/admin/en/email.jhtml#1 $$Change: 623719 $*/</java>
+

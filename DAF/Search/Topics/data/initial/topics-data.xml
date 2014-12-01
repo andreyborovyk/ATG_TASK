@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE gsa-template SYSTEM "dynamosystemresource:/atg/dtds/gsa/gsa_1.0.dtd">
+<gsa-template>
+  <import-items>
+
+    <!-- Using id 2 and 3 to preserve the topic id these topics as defined in Service 2006.3
+         to prevent migration issues for Service 2006.3.x customers -->
+    <add-item item-descriptor="TopicSet" id="2">
+      <set-property name="name" value="System Taxonomy"/>
+      <set-property name="displayName" value="System Taxonomy"/>
+      <set-property name="description" value="Defines the intrinsic 'Other' topic"/>
+      <set-property name="children" value="3"/>
+      <set-property name="lastModified"><![CDATA[03/09/2006 00:00:00]]></set-property>
+    </add-item>
+
+    <add-item item-descriptor="Topic" id="3">
+      <set-property name="name" value="Other"/>
+      <set-property name="displayName" value="Other"/>
+      <set-property name="description" value="Documents are auto-categorized to Other if no other matching topics are found in the document."/>
+      <set-property name="parent" value="2"/>
+    </add-item>
+
+  </import-items>
+</gsa-template>
+<!-- @version $Id: //product/DAF/version/10.0.3/Search/Topics/src/data/initial/topics-data.xml#2 $$Change: 651448 $-->

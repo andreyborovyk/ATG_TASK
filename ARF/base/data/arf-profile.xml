@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE gsa-template
+        PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN"
+        "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+<gsa-template>
+
+  <import-items>
+
+    <add-item item-descriptor="role" id="report-viewer" tag="report-viewer">
+      <set-property name="name"><![CDATA[Report Viewer]]></set-property>
+      <set-property name="description"><![CDATA[This role allows a user to view a report]]></set-property>
+    </add-item>
+    <add-item item-descriptor="role" id="advanced-report-viewer" tag="advanced-report-viewer">
+      <set-property name="name"><![CDATA[Advanced Report Viewer]]></set-property>
+      <set-property name="description"><![CDATA[This role allows a user to view and interact with a report]]></set-property>
+    </add-item>
+    <add-item item-descriptor="role" id="business-report-designer" tag="business-report-designer">
+      <set-property name="name"><![CDATA[Business Report Designer]]></set-property>
+      <set-property name="description"><![CDATA[This role allows a user to create or modify business reports using Query Studio]]></set-property>
+    </add-item>
+    <add-item item-descriptor="role" id="professional-report-designer" tag="professional-report-designer">
+      <set-property name="name"><![CDATA[Professional Report Designer]]></set-property>
+      <set-property name="description"><![CDATA[This role allows a user to create or modify professional reports using Report Studio]]></set-property>
+    </add-item>
+    <add-item item-descriptor="role" id="reporting-metadata-designer" tag="reporting-metadata-designer">
+      <set-property name="name"><![CDATA[Reporting Metadata Designer]]></set-property>
+      <set-property name="description"><![CDATA[This role allows a user to create or modify reporting metadata using Framework Manager]]></set-property>
+    </add-item>
+    <add-item item-descriptor="role" id="reporting-administrator" tag="reporting-administrator">
+      <set-property name="name"><![CDATA[Reporting Administrator]]></set-property>
+      <set-property name="description"><![CDATA[This role allows a user to administer the reporting server]]></set-property>
+    </add-item>
+   
+  </import-items>
+
+  <update-item item-descriptor="roleFolder" id="root">
+    <set-property name="childItems" add="true" value="$tag:report-viewer$,$tag:advanced-report-viewer$,$tag:business-report-designer$,$tag:professional-report-designer$,$tag:reporting-metadata-designer$,$tag:reporting-administrator$" />
+  </update-item>
+
+</gsa-template>
+<!-- @version $Id: //product/ARF/version/10.0.3/ARF/base/data/arf-profile.xml#2 $$Change: 651448 $-->

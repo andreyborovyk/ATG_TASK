@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE process-manager-configuration
+        PUBLIC "-//Art Technology Group, Inc.//DTD Process Manager//EN"
+        'http://www.atg.com/dtds/processmanager/processmanager_1.0.dtd'>
+
+<!--
+  Workflow process manager configuration file, used to configure the
+  global/process editor servers, plus all the custom workflow events,
+  conditions, expressions, and actions.
+-->
+
+<process-manager-configuration>
+
+  <!-- Info for the ACC task containing this process manager's editor -->
+
+  <process-editor-configuration>
+    <resource-bundle>
+      atg.portal.process.ProcessWorkflowResources
+    </resource-bundle>
+    <display-name-resource>
+      communityProposal.workflowEditorTask.displayName
+    </display-name-resource>
+    <description-resource>
+      communityProposal.workflowEditorTask.description
+    </description-resource>
+    <privilege>
+      workflow-portal-privilege
+    </privilege>
+    <subject-name-resource>
+      communityProposal.workflowEditor.subjectName
+    </subject-name-resource>
+  </process-editor-configuration>
+
+  <event-registry>
+
+    <!-- The following events are standard for all workflows -->
+
+    <event>
+      <jms-type>
+	atg.workflow.StartWorkflow
+      </jms-type>
+      <message-class>
+	atg.workflow.StartWorkflowMessage
+      </message-class>
+      <message-context>
+	request
+      </message-context>
+      <message-scope>
+	individual
+      </message-scope>
+      <hidden>
+	true
+      </hidden>
+    </event>
+
+    <event>
+      <jms-type>
+	atg.workflow.TaskOutcome
+      </jms-type>
+      <message-class>
+	atg.workflow.TaskOutcomeMessage
+      </message-class>
+      <message-context>
+	request
+      </message-context>
+      <message-scope>
+	individual
+      </message-scope>
+      <hidden>
+	true
+      </hidden>
+    </event>
+    
+    <!-- Add workflow type-specific events here -->   
+    
+  </event-registry>
+
+  <action-registry>
+
+    <!-- The following actions are standard for all workflows -->
+
+    <action>
+      <action-name>
+        modify
+      </action-name>
+      <action-class>
+        atg.process.action.ModifyExpression
+      </action-class>
+      <resource-bundle>
+        atg.ui.process.common.ProcessResources
+      </resource-bundle>
+      <display-name-resource>
+        modify.displayName
+      </display-name-resource>
+      <icon-resource>
+        modify.icon
+      </icon-resource>
+      <description-resource>
+        modify.description
+      </description-resource>
+      <action-execution-policy>
+        individual
+      </action-execution-policy>
+      <action-error-response>
+	delete
+      </action-error-response>
+
+      <action-parameter>
+        <action-parameter-name>
+	  modified
+	</action-parameter-name>
+	<required>
+	  true
+	</required>
+        <description-resource>
+	  modify.modified.description
+	</description-resource>
+      </action-parameter>
+
+      <action-parameter>
+        <action-parameter-name>
+	  modifier
+	</action-parameter-name>
+	<required>
+	  true
+	</required>
+        <description-resource>
+	  modify.modifier.description
+	</description-resource>
+      </action-parameter>
+
+      <action-parameter>
+        <action-parameter-name>
+	  operator
+	</action-parameter-name>
+	<required>
+	  true
+	</required>
+        <description-resource>
+	  modify.operator.description
+	</description-resource>
+      </action-parameter>
+    </action>
+
+    <action>
+      <action-name>
+        recordEvent
+      </action-name>
+      <action-class>
+        atg.process.action.RecordEvent
+      </action-class>
+      <action-configuration>
+        /atg/workflow/process/configuration/RecordActionConfiguration
+      </action-configuration>      
+      <resource-bundle>
+        atg.ui.process.common.ProcessResources
+      </resource-bundle>
+      <display-name-resource>
+        recordEvent.displayName
+      </display-name-resource>
+      <icon-resource>
+        recordEvent.icon
+      </icon-resource>
+      <description-resource>
+        recordEvent.description
+      </description-resource>
+      <action-execution-policy>
+        collective
+      </action-execution-policy>
+      <action-error-response>
+	continue
+      </action-error-response>
+
+      <action-parameter>
+        <action-parameter-name>
+	  dataset
+	</action-parameter-name>
+	<required>
+	  true
+	</required>
+        <description-resource>
+	  recordEvent.dataset.description
+	</description-resource>
+      </action-parameter>
+    </action>
+
+    <action>
+      <action-name>
+        recordAuditTrail
+      </action-name>
+      <action-class>
+        atg.process.action.RecordAuditTrail
+      </action-class>
+      <action-configuration>
+        /atg/workflow/process/configuration/RecordActionConfiguration
+      </action-configuration>      
+      <resource-bundle>
+        atg.ui.process.common.ProcessResources
+      </resource-bundle>
+      <display-name-resource>
+        recordAuditTrail.displayName
+      </display-name-resource>
+      <icon-resource>
+        recordAuditTrail.icon
+      </icon-resource>
+      <description-resource>
+        recordAuditTrail.description
+      </description-resource>
+      <action-execution-policy>
+        collective
+      </action-execution-policy>
+      <action-error-response>
+	continue
+      </action-error-response>
+
+      <action-parameter>
+        <action-parameter-name>
+	  label
+	</action-parameter-name>
+	<required>
+	  true
+	</required>
+        <description-resource>
+	  recordAuditTrail.label.description
+	</description-resource>
+      </action-parameter>
+
+      <action-parameter>
+        <action-parameter-name>
+	  dataset
+	</action-parameter-name>
+	<required>
+	  true
+	</required>
+        <description-resource>
+	  recordAuditTrail.dataset.description
+	</description-resource>
+      </action-parameter>
+    </action>
+
+    <action>
+      <action-name>
+        emailNotify
+      </action-name>
+      <action-class>
+        atg.process.action.EmailNotify
+      </action-class>
+      <action-configuration>
+        /atg/workflow/process/configuration/EmailNotifyConfiguration
+      </action-configuration>      
+      <resource-bundle>
+        atg.ui.process.common.ProcessResources
+      </resource-bundle>
+      <display-name-resource>
+        emailNotify.displayName
+      </display-name-resource>
+      <icon-resource>
+        emailNotify.icon
+      </icon-resource>
+      <description-resource>
+        emailNotify.description
+      </description-resource>
+      <action-execution-policy>
+        collective
+      </action-execution-policy>
+      <action-error-response>
+	delete
+      </action-error-response>
+
+      <action-parameter>
+        <action-parameter-name>
+	  recipientIds
+	</action-parameter-name>
+	<required>
+	  false
+	</required>
+        <description-resource>
+	  emailNotify.recipientIds.description
+	</description-resource>
+      </action-parameter>
+
+      <action-parameter>
+        <action-parameter-name>
+	  recipientAddresses
+	</action-parameter-name>
+	<required>
+	  false
+	</required>
+        <description-resource>
+	  emailNotify.recipientAddresses.description
+	</description-resource>
+      </action-parameter>
+
+      <action-parameter>
+        <action-parameter-name>
+	  recipientAddress
+	</action-parameter-name>
+	<required>
+	  false
+	</required>
+        <description-resource>
+	  emailNotify.recipientAddress.description
+	</description-resource>
+      </action-parameter>
+
+      <action-parameter>
+        <action-parameter-name>
+	  template
+	</action-parameter-name>
+	<required>
+	  true
+	</required>
+        <description-resource>
+	  emailNotify.template.description
+	</description-resource>
+      </action-parameter>
+
+      <action-parameter>
+        <action-parameter-name>
+	  applicationName
+	</action-parameter-name>
+	<required>
+	  false
+	</required>
+        <description-resource>
+	  emailNotify.applicationName.description
+	</description-resource>
+      </action-parameter>
+    </action>
+
+    <action>
+      <action-name>spawnCommunity</action-name>
+      <action-class>atg.portal.process.action.SpawnCommunity</action-class>
+      <resource-bundle>atg.portal.process.action.Resources</resource-bundle>
+      <display-name>Create Community from Template</display-name>
+      <display-name-resource>spawnCommunity.displayName</display-name-resource>
+      <description>This action can be used to create a community from a community template.</description>
+      <description-resource>spawnCommunty.description</description-resource>
+      <icon-resource>spawnCommunity.icon</icon-resource>
+      <expert>false</expert>
+      <hidden>false</hidden>
+      <action-terminal>false</action-terminal>
+      <action-execution-policy>collective</action-execution-policy>
+      <action-error-response>continue</action-error-response>
+      <action-configuration>/atg/workflow/portal/communityproposal/process/action/SpawnCommunityConfiguration</action-configuration>
+      <action-parameter>
+	<action-parameter-name>communityTemplate</action-parameter-name>
+	<action-parameter-repository-name>/atg/portal/framework/PortalRepository</action-parameter-repository-name>
+	<action-parameter-repository-item-type>communityTemplate</action-parameter-repository-item-type>
+	<action-parameter-expression-construct>communityTemplate-item-expr</action-parameter-expression-construct>
+	<display-name>Community Template</display-name>
+	<display-name-resource>spawnCommunity.communityTemplate.displayName</display-name-resource>
+	<description>The community template used to create the new community.</description>
+	<description-resource>spawnCommunity.communityTemplate.description</description-resource>
+	<expert>false</expert>
+	<hidden>false</hidden>
+	<required>true</required>
+      </action-parameter>
+      <action-parameter>
+	<action-parameter-name>communityName</action-parameter-name>
+	<action-parameter-class>java.lang.String</action-parameter-class>
+	<display-name>Community Name</display-name>
+	<display-name-resource>spawnCommunity.communityName.displayName</display-name-resource>
+	<description>The name of the new community.</description>
+	<description-resource>spawnCommunity.communityName.description</description-resource>
+	<expert>false</expert>
+	<hidden>false</hidden>
+	<required>true</required>
+      </action-parameter>
+      <action-parameter>
+	<action-parameter-name>communityURL</action-parameter-name>
+	<action-parameter-class>java.lang.String</action-parameter-class>
+	<display-name>Community Web Friendly URL</display-name>
+	<display-name-resource>spawnCommunity.communityURL.displayName</display-name-resource>
+	<description>The web friendly name of the new community.</description>
+	<description-resource>spawnCommunity.communityURL.description</description-resource>
+	<expert>false</expert>
+	<hidden>false</hidden>
+	<required>true</required>
+      </action-parameter>
+      <action-parameter>
+	<action-parameter-name>communityFolder</action-parameter-name>
+	<action-parameter-repository-name>/atg/portal/framework/PortalRepository</action-parameter-repository-name>
+	<action-parameter-repository-item-type>communityFolder</action-parameter-repository-item-type>
+	<action-parameter-expression-construct>communityFolder-item-expr</action-parameter-expression-construct>
+	<display-name>Community Folder</display-name>
+	<display-name-resource>spawnCommunity.communityFolder.displayName</display-name-resource>
+	<description>The folder name of the new community.</description>
+	<description-resource>spawnCommunity.communityFolder.description</description-resource>
+	<expert>false</expert>
+	<hidden>false</hidden>
+	<required>true</required>
+      </action-parameter>
+      <action-parameter>
+	<action-parameter-name>communityCloneSharedGears</action-parameter-name>
+	<action-parameter-class>java.lang.Boolean</action-parameter-class>
+	<display-name>Clone Shared Gears</display-name>
+	<display-name-resource>spawnCommunity.communityCloneSharedGears.displayName</display-name-resource>
+	<description>Flag to indicate wheather shared gears should be cloned.</description>
+	<description-resource>spawnCommunity.communityCloneSharedGears.description</description-resource>
+	<expert>false</expert>
+	<hidden>false</hidden>
+	<required>false</required>
+      </action-parameter>
+    </action>
+
+    <action>
+      <action-name>assignCommunityRole</action-name>
+      <action-class>atg.portal.process.action.AssignCommunityRole</action-class>
+      <resource-bundle>atg.portal.process.action.Resources</resource-bundle>
+      <display-name>Assign Community Role</display-name>
+      <display-name-resource>assignCommunityRole.displayName</display-name-resource>
+      <description>This action can be used to assign a community role to a user.</description>
+      <description-resource>assignCommunityRole.description</description-resource>
+      <icon-resource>assignCommunityRole.icon</icon-resource>
+      <expert>false</expert>
+      <hidden>false</hidden>
+      <action-terminal>false</action-terminal>
+      <action-execution-policy>collective</action-execution-policy>
+      <action-error-response>continue</action-error-response>
+      <action-configuration>/atg/workflow/portal/communityproposal/process/action/AssignCommunityRoleConfiguration</action-configuration>
+      <action-parameter>
+	<action-parameter-name>communityId</action-parameter-name>
+	<display-name>Community Id</display-name>
+	<display-name-resource>assignCommunityRole.communityId.displayName</display-name-resource>
+	<description>The id of the community.</description>
+	<description-resource>assignCommunityRole.communityId.description</description-resource>
+	<expert>false</expert>
+	<hidden>false</hidden>
+	<required>true</required>
+      </action-parameter>
+      <action-parameter>
+	<action-parameter-name>userId</action-parameter-name>
+	<display-name>User Id</display-name>
+	<display-name-resource>assignCommunityRole.userId.displayName</display-name-resource>
+	<description>The id of the user.</description>
+	<description-resource>assignCommunityRole.userId.description</description-resource>
+	<expert>false</expert>
+	<hidden>false</hidden>
+	<required>true</required>
+      </action-parameter>
+      <action-parameter>
+	<action-parameter-name>roleName</action-parameter-name>
+	<display-name>Role Name</display-name>
+	<display-name-resource>assignCommunityRole.roleName.displayName</display-name-resource>
+	<description>The name of the role.</description>
+	<description-resource>assignCommunityRole.roleName.description</description-resource>
+	<expert>false</expert>
+	<hidden>false</hidden>
+	<required>true</required>
+      </action-parameter>     
+    </action>
+
+  </action-registry>
+
+</process-manager-configuration>
+<!-- @version $Id: //app/portal/version/10.0.3/ppa/config/atg/workflow/portal/communityproposal/process/workflowProcessManager.xml#2 $$Change: 651448 $ -->

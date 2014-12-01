@@ -1,0 +1,227 @@
+<nucleus type=import>
+	/atg/dynamo/admin/Configure
+	/atg/dynamo/admin/EnvironmentConfig
+	/atg/dynamo/droplet/ForEach
+</nucleus>
+<java type=import>
+atg.servlet.ServletUtil;
+</java>
+<java>
+  atg.service.dynamo.EnvironmentConfig envConfigure = (atg.service.dynamo.EnvironmentConfig) request.resolveName("/atg/dynamo/admin/EnvironmentConfig");
+</java>
+
+<HTML>
+<HEAD>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+<TITLE>System Paths</TITLE>
+
+
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+<IMG SRC="images/config-banner.gif" ALT="Dynamo Configuration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a href="configure-server.jhtml">Configure</a>/<a href="configure-server-services.jhtml">Servers</a>/System_paths<p>
+
+<blockquote>
+
+<h3>Server: <i><valueof property=EnvironmentConfig.serverName></valueof></i></h3>
+
+
+<H2>Configure System Paths</H2>
+<FORM ACTION="configure-env.jhtml" METHOD=POST>
+
+<p>
+<java>
+  if (!ServletUtil.isWebSphere())
+  {
+</java>
+<b>Add your classes to Dynamo's Java CLASSPATH</b><br>
+<blockquote>
+  Extend Dynamo's CLASSPATH (append)
+  <table border=1 cellpadding=6 cellspacing=0>
+    <tr>
+      <td>Classpath Value</td>
+      <td>&nbsp;</td>
+    </tr>
+    <droplet name="ForEach">
+      <param name="array" value="property:EnvironmentConfig.postClassPath">
+      <oparam name="output">
+        <tr>
+          <td><valueof param="element"></valueof></td>
+          <td><input type=submit property="EnvironmentConfig.deletePostClassPath" submitvalue="param:index" value="Delete" name="deletePostClass`request.getParameter("index")`">
+        </tr>
+      </oparam>
+      <oparam name="empty">
+        <tr>
+          <td colspan=2><i>No entries appended onto the CLASSPATH</i></td>
+        </tr>
+      </oparam>
+    </droplet>
+    <tr>
+      <td>
+        New classpath value:<br>
+        <input type=text property="EnvironmentConfig.newPostClassPath">
+      </td>
+      <td>
+        new:<br>
+        <input type=submit value="Append to CLASSPATH" property="EnvironmentConfig.addPostClassPath">
+      </td>
+    </tr>
+  </table>
+  <p>
+  Override Dynamo's CLASSPATH (prepend)
+  <table border=1 cellpadding=6 cellspacing=0>
+    <tr>
+      <td>Classpath Value</td>
+      <td>&nbsp;</td>
+    </tr>
+    <droplet name="ForEach">
+      <param name="array" value="property:EnvironmentConfig.preClassPath">
+      <oparam name="output">
+        <tr>
+          <td><valueof param="element"></valueof></td>
+          <td><input type=submit property="EnvironmentConfig.deletePreClassPath" submitvalue="param:index" value="Delete" name="deletePreNative`request.getParameter("index")`">
+        </tr>
+      </oparam>
+      <oparam name="empty">
+        <tr>
+          <td colspan=2><i>No entries prepended onto the CLASSPATH</i></td>
+        </tr>
+      </oparam>
+    </droplet>
+    <tr>
+      <td>
+        New classpath value:<br>
+        <input type=text property="EnvironmentConfig.newPreClassPath">
+      </td>
+      <td>
+        new:<br>
+        <input type=submit value="Prepend to CLASSPATH" property="EnvironmentConfig.addPreClassPath">
+      </td>
+    </tr>
+  </table>
+</blockquote>
+<java>
+  }
+</java>
+<b>Set the Native Library environment variable</b><br>
+<blockquote>
+  Extend Dynamo's native libraries (append)
+  <table border=1 cellpadding=6 cellspacing=0>
+    <tr>
+      <td>Native Library Path Value</td>
+      <td>&nbsp;</td>
+    </tr>
+    <droplet name="ForEach">
+      <param name="array" value="property:EnvironmentConfig.postNativeLibraryPath">
+      <oparam name="output">
+        <tr>
+          <td><valueof param="element"></valueof></td>
+          <td><input type=submit property="EnvironmentConfig.deletePostNativeLibraryPath" submitvalue="param:index" value="Delete" name="deletePostNative`request.getParameter("index")`">
+        </tr>
+      </oparam>
+      <oparam name="empty">
+        <tr>
+          <td colspan=2><i>No entries appended onto the Native Library Path</i></td>
+        </tr>
+      </oparam>
+    </droplet>
+    <tr>
+      <td>
+        New native library path value:<br>
+        <input type=text property="EnvironmentConfig.newPostNativeLibraryPath">
+      </td>
+      <td>
+        new:<br>
+        <input type=submit value="Append to Native Library Path" property="EnvironmentConfig.addPostNativeLibraryPath">
+      </td>
+    </tr>
+  </table>
+  <p>
+  Override Dynamo's Native Library Path (prepend)
+  <table border=1 cellpadding=6 cellspacing=0>
+    <tr>
+      <td>Native Library Path Value</td>
+      <td>&nbsp;</td>
+    </tr>
+    <droplet name="ForEach">
+      <param name="array" value="property:EnvironmentConfig.preNativeLibraryPath">
+      <oparam name="output">
+        <tr>
+          <td><valueof param="element"></valueof></td>
+          <td><input type=submit property="EnvironmentConfig.deletePreNativeLibraryPath" submitvalue="param:index" value="Delete" name="deletePreClass`request.getParameter("index")`">
+        </tr>
+      </oparam>
+      <oparam name="empty">
+        <tr>
+          <td colspan=2><i>No entries prepended onto the Native Library Path</i></td>
+        </tr>
+      </oparam>
+    </droplet>
+    <tr>
+      <td>
+        New native library path value:<br>
+        <input type=text property="EnvironmentConfig.newPreNativeLibraryPath">
+      </td>
+      <td>
+        new:<br>
+        <input type=submit value="Prepend to Native Library Path" property="EnvironmentConfig.addPreNativeLibraryPath">
+      </td>
+    </tr>
+  </table>
+</blockquote>
+
+<b>Append to the CONFIGPATH used to find component configurations (.properties/.ser files)</b>
+<blockquote>
+  Extend Dynamo's CONFIGPATH (append)
+  <table border=1 cellpadding=6 cellspacing=0>
+    <tr>
+      <td>Configpath Value</td>
+      <td>&nbsp;</td>
+    </tr>
+    <droplet name="ForEach">
+      <param name="array" value="property:EnvironmentConfig.postConfigPath">
+      <oparam name="output">
+        <tr>
+          <td><valueof param="element"></valueof></td>
+          <td><input type=submit property="EnvironmentConfig.deletePostConfigPath" submitvalue="param:index" value="Delete" name="deletePostConfig`request.getParameter("index")`">
+        </tr>
+      </oparam>
+      <oparam name="empty">
+        <tr>
+          <td colspan=2><i>No entries appended onto the CONFIGPATH</i></td>
+        </tr>
+      </oparam>
+    </droplet>
+    <tr>
+      <td>
+        New configpath value:<br>
+        <input type=text property="EnvironmentConfig.newPostConfigPath">
+      </td>
+      <td>
+        new:<br>
+        <input type=submit value="Append to CONFIGPATH" property="EnvironmentConfig.addPostConfigPath">
+      </td>
+    </tr>
+  </table>
+  <p>
+</blockquote>
+
+</form>
+<p>
+<hr>
+<b>Change Server</b>
+<p>
+<valueof property=Configure.serverConfiguredText></valueof>
+<p>
+<droplet src="SelectServer.jhtml">
+    <param name="returnURL" value="configure-env.jhtml">
+</droplet>
+<a href="configure-server-services.jhtml">Back</a><br>
+
+</blockquote>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/configure-env.jhtml#2 $$Change: 651448 $ */</java>
+

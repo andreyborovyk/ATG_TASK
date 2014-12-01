@@ -1,0 +1,295 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="logging_ddl">
+<comment><![CDATA[ @version $Id: //product/DPS/version/10.0.3/templates/DPS/sql/logging_ddl.xml#2 $$Change: 651448 $]]></comment>
+<comment><![CDATA[
+This file contains create table statements needed to configure your 
+database for use with the DPS logging/reporting subsystem.
+
+This script will create tables and indexes associated with the new
+logging and reporting subsystem. To initialize these tables run the
+logging_init.sql script.
+]]></comment>
+
+<comment><![CDATA[
+Tables for storing logging data for reports
+]]></comment>
+
+   <table name="dps_event_type" description="types of events (new session, login, registration, etc)">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="name" nullable="n">
+         <column-type db="generic" type="varchar" length="32"/>
+      </column>
+      <primary-key name="dps_event_type_p">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+      <unique name="dps_event_type_u">
+         <index-column column="name" order="asc" seq="1"/>
+      </unique>
+   </table>
+   <table name="dps_user_event"  description="user events (new session, login, registration, etc)">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="timestamp" nullable="n">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="sessionid" nullable="y">
+         <column-type db="generic" type="varchar" length="100"/>
+      </column>
+      <column name="parentsessionid" nullable="y">
+         <column-type db="generic" type="varchar" length="100"/>
+      </column>
+      <column name="eventtype" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="profileid" nullable="y">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <column name="member" nullable="n" default="0">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="sybase" type="tinyint" />
+		 <column-type db="mysql" type="tinyint"/>
+      </column>
+      <primary-key name="dps_user_event_p">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dps_usrvevnttyp_f" referenced-table="dps_event_type" index-name="dps_user_event_ix">
+         <fkey-column referencing-column="eventtype" referenced-column="id"/>
+      </foreign-key>
+      <check name="dps_user_event_c">
+         <check-expr expression="member in (0,1)" db="generic"/>
+      </check>
+     <index name="dps_ue_ts" table="dps_user_event">
+         <index-column column="timestamp" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dps_user_event_sum" description="summarized user event types">
+      <column name="eventtype" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="summarycount" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="fromtime" nullable="n">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="totime" nullable="n">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <foreign-key name="dps_usrsuevnttyp_f" referenced-table="dps_event_type" index-name="dps_user_ev_sum_ix">
+         <fkey-column referencing-column="eventtype" referenced-column="id"/>
+      </foreign-key>
+      <index name="dps_ues_ft" table="dps_user_event_sum">
+         <index-column column="fromtime" order="asc" seq="1"/>
+         <index-column column="totime" order="asc" seq="2"/>
+         <index-column column="eventtype" order="asc" seq="3"/>
+      </index>
+   </table>
+   <table name="dps_request" description="requests log entries (e.g. page views)">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="timestamp" nullable="n">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="sessionid" nullable="y">
+         <column-type db="generic" type="varchar" length="100"/>
+      </column>
+      <column name="parentsessionid" nullable="y">
+         <column-type db="generic" type="varchar" length="100"/>
+      </column>
+      <column name="name" nullable="n">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="member" nullable="n" default="0">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="sybase" type="tinyint" />
+		 <column-type db="mysql" type="tinyint"/>
+      </column>
+      <primary-key name="dps_request_p">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+      <check name="dps_request_c">
+         <check-expr expression="member in (0,1)" db="generic"/>
+      </check>
+    <index name="dps_r_ts" table="dps_request">
+         <index-column column="timestamp" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dps_reqname_sum" description="summarized request names">
+      <column name="name" nullable="n">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="member" nullable="n" default="0">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="sybase" type="tinyint" />
+		 <column-type db="mysql" type="tinyint"/>
+      </column>
+      <column name="summarycount" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="fromtime" nullable="n">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="totime" nullable="n">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <check name="dps_reqname_sum_c">
+         <check-expr expression="member in (0,1)" db="generic"/>
+      </check>
+    <index name="dps_rns_ft" table="dps_reqname_sum">
+         <index-column column="fromtime" order="asc" seq="1"/>
+         <index-column column="totime" order="asc" seq="2"/>
+      </index>
+   </table>
+   <table name="dps_session_sum" description="summarized sessions">
+      <column name="sessionid" nullable="y">
+         <column-type db="generic" type="varchar" length="100"/>
+      </column>
+      <column name="parentsessionid" nullable="y">
+         <column-type db="generic" type="varchar" length="100"/>
+      </column>
+      <column name="member" nullable="n" default="0">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="sybase" type="tinyint" />
+		 <column-type db="mysql" type="tinyint"/>
+      </column>
+      <column name="summarycount" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="fromtime" nullable="n">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="totime" nullable="n">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <check name="dps_session_sum_c">
+         <check-expr expression="member in (0,1)" db="generic"/>
+      </check>
+      <index name="dps_rss_ft" table="dps_session_sum">
+         <index-column column="fromtime" order="asc" seq="1"/>
+         <index-column column="totime" order="asc" seq="2"/>
+         <index-column column="sessionid" order="asc" seq="3"/>
+      </index>
+   </table>
+   <table name="dps_con_req" description="content viewed requests (e.g., targeted content)">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="timestamp" nullable="n">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="requestid" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="contentid" nullable="n">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <primary-key name="dps_con_req_p">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+      <index name="dps_cr_ts" table="dps_con_req">
+         <index-column column="timestamp" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dps_con_req_sum" description="summarized content requests">
+      <column name="contentid" nullable="n">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="member" nullable="n" default="0">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="sybase" type="tinyint" />
+		 <column-type db="mysql" type="tinyint"/>
+      </column>
+      <column name="summarycount" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="fromtime" nullable="n">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="totime" nullable="n">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <check name="dps_con_req_sum_c">
+         <check-expr expression="member in (0,1)" db="generic"/>
+      </check>
+    <index name="dps_crs_ft" table="dps_con_req_sum">
+         <index-column column="fromtime" order="asc" seq="1"/>
+         <index-column column="totime" order="asc" seq="2"/>
+      </index>
+   </table>
+   <table name="dps_pgrp_req_sum" description="summarized profile groups vs. requests">
+      <column name="groupname" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="64"/>
+         <column-type db="mssql" type="nvarchar" length="64" scale=""/>
+      </column>
+      <column name="contentname" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+         <column-type db="mssql" type="nvarchar" length="255" scale=""/>
+      </column>
+      <column name="summarycount" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="fromtime" nullable="n">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="totime" nullable="n">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <index name="dps_prs_ft" table="dps_pgrp_req_sum">
+         <index-column column="fromtime" order="asc" seq="1"/>
+         <index-column column="totime" order="asc" seq="2"/>
+      </index>
+   </table>
+   <table name="dps_pgrp_con_sum" description="summarized profile vs. content groups">
+      <column name="groupname" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="64"/>
+         <column-type db="mssql" type="nvarchar" length="64" scale=""/>
+      </column>
+      <column name="contentname" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="64"/>
+         <column-type db="mssql" type="nvarchar" length="64" scale=""/>
+      </column>
+      <column name="summarycount" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="fromtime" nullable="n">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="totime" nullable="n">
+         <column-type db="generic" type="datetime"/>
+      </column>
+    <index name="dps_pcs_ft" table="dps_pgrp_con_sum">
+         <index-column column="fromtime" order="asc" seq="1"/>
+         <index-column column="totime" order="asc" seq="2"/>
+      </index>
+   </table>
+   <table name="dps_log_id" description="counters for primary keys of logging tables">
+      <column name="tablename" nullable="n">
+         <column-type db="generic" type="varchar" length="30"/>
+      </column>
+      <column name="nextid" nullable="n">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <primary-key name="dps_log_id_p">
+         <index-column column="tablename" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+</schema>
+<!-- @version $Id: //product/DPS/version/10.0.3/templates/DPS/sql/logging_ddl.xml#2 $$Change: 651448 $ -->

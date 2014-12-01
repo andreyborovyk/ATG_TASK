@@ -1,0 +1,33 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="membership_ddl">
+<comment><![CDATA[ @version $Id: //app/portal/version/10.0.3/paf/sql/membership_ddl.xml#2 $$Change: 651448 $]]></comment>
+   <table name="mem_membership_req">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="internal_version" nullable="n" default="0">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="user_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="community_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="request_type" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="number" length="1" scale="0"/>
+      </column>
+      <column name="creation_date" nullable="n">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <primary-key name="mem_membershiprq_p">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+      <check name="mem_membershiprq_c">
+         <check-expr expression="request_type in (0,1)" db="generic"/>
+      </check>
+   </table>
+</schema>
+<!-- @version $Id: //app/portal/version/10.0.3/paf/sql/membership_ddl.xml#2 $$Change: 651448 $ -->

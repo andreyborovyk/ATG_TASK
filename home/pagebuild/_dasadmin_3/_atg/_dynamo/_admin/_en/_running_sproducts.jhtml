@@ -1,0 +1,116 @@
+<java>
+
+String languages = request.getHeader("ACCEPT-LANGUAGE");
+String result = "en";
+if (languages != null) {
+    for (;;) {
+      String attempt = languages.substring(0,2);
+      // check attempt
+      String path = request.getRealPath("/atg/dynamo/admin/" + attempt);
+      if ( (new java.io.File (path)).isDirectory() ) {
+        // success
+        result = attempt;
+        break;
+      }
+      int index = languages.indexOf(",");
+      if (index == -1)
+        break;
+      languages = languages.substring(index+1);
+    }
+}
+
+request.setParameter( "adminLang", result );
+
+</java>
+
+<java type="import">
+  atg.applauncher.*
+  atg.core.util.*
+</java>
+
+<HTML>
+<HEAD>
+
+<TITLE>Running Products</TITLE>
+
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+<IMG SRC="images/admin-banner.gif" ALT="Running Products" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a></p><p>
+
+<blockquote>
+<h1>Running Products</h1>
+
+<table border="2" cellpadding="5">
+  <tr valign="top"> 
+    <th>Module Name</th>
+    <th>Product Name</th>
+    <th>Product Version</th>
+    <th>Build Number</th>
+  </tr>
+  <java>
+   AppLauncher launcher = 
+      AppLauncher.getAppLauncher(AppLauncher.class);
+   
+   if(launcher != null) {
+     List modules = launcher.getModules();
+     Collections.sort(modules, new Comparator<AppModule>() 
+    {
+      public int compare(AppModule o1, AppModule o2) {
+        return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
+      }
+      public boolean equals(Object o) {
+        return o == this;
+      }
+    }
+    );
+   
+    for(Object o : modules) {
+       AppModule module = (AppModule)o;
+       String prodName = module.getAttribute(AppModuleInterface.PRODUCT_NAME);
+       String modName = module.getName();
+
+       // See if there's a patch version. If not, use the product version
+       String prodVersion = module.getAttribute
+	(AppModuleInterface.PRODUCT_PATCH_VERSION);
+       if(StringUtils.isBlank(prodVersion))
+         prodVersion = module.getAttribute(AppModuleInterface.PRODUCT_VERSION);
+
+       // Same thing for build number
+       String buildNum =
+	 module.getAttribute(AppModuleInterface.PATCH_BUILD_NUMBER);
+       if(StringUtils.isBlank(buildNum)) 
+         buildNum = module.getAttribute(AppModuleInterface.BUILD_NUMBER);
+     
+       if(prodName == null)
+         prodName = modName;
+       if(prodVersion == null)
+         prodVersion = "";
+       if(buildNum == null || buildNum.equals("0"))
+         buildNum = "";
+     
+       out.println("<tr>");
+       out.println("<td>");
+       out.println(modName);
+       out.println("</td>");
+       out.println("<td>");
+       out.println(prodName);
+       out.println("</td>");
+       out.println("<td>");
+       out.println(prodVersion);
+       out.println("</td>");
+       out.println("<td>");
+       out.println(buildNum);
+       out.println("</td>");
+       out.println("</tr>");
+     }
+   }
+  </java>
+</table>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/running-products.jhtml#2 $$Change: 651448 $*/</java>

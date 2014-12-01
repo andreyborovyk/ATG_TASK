@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+ 
+	<script type="text/javascript" src="/dojo-1/dojo/dojo.js" djConfig="isDebug:true, parseOnLoad: true"></script>
+	
+	<script type="text/javascript" charset="utf-8">
+	  
+	  dojo.require("dijit._Widget");
+	  dojo.require("dijit._Templated");
+		dojo.require("dojo.parser");	// scan page for widgets and instantiate them
+	  
+    // Register the Embedded Assistance widget namespace
+    dojo.registerModulePath("atg.widget", "/WebUI/dijit");
+    dojo.require("atg.widget.progress.base");
+  </script>
+		
+  <script type="text/javascript" charset="utf-8">
+	
+		dojo.addOnLoad(function(){
+
+		 });		
+
+	</script>
+	
+	<style type="text/css" media="screen">
+	  .progressContainer{
+	    margin-bottom: 20px;
+	  }
+	</style>
+	
+	<link rel="stylesheet" href="/WebUI/dijit/progress/templates/progress.css" type="text/css" media="screen" title="no title" charset="utf-8" />
+	
+	<title>ATG Widget Library - Dojo 1.0 - Progress Bar Test (Width Options)</title>
+</head>
+
+<body>
+<h1>ATG Widget Library - Progress Bar Test (Width Options)</h1>
+<h3>Default - 100% Width</h3>
+<pre>
+  &lt;div id=&quot;progress1&quot; dojoType=&quot;progress&quot; pingUrl=&quot;ping2.jsp&quot; &gt;&lt;/div&gt;
+</pre>
+<div id="progress1" dojoType="atg.widget.progressBase" pingUrl="ping2.jsp" ></div>
+
+<h3>Specified Percentage (50%)</h3>
+<pre>
+  &lt;div id=&quot;progress2&quot; dojoType=&quot;progress&quot; pingUrl=&quot;ping2.jsp&quot; containerWidth=&quot;50%&quot;&gt;&lt;/div&gt;
+</pre>
+<div id="progress2" dojoType="atg.widget.progressBase" pingUrl="ping2.jsp" containerWidth="50%"></div>
+
+<h3>Specified Pixel (600px)</h3>
+<pre>
+  &lt;div id=&quot;progress3&quot; dojoType=&quot;progress&quot; pingUrl=&quot;ping2.jsp&quot; containerWidth=&quot;600px&quot;&gt;&lt;/div&gt;
+</pre>
+<div id="progress3" dojoType="atg.widget.progressBase" pingUrl="ping2.jsp" containerWidth="600px"></div>
+
+<h3>Specified Pixel (200px)</h3>
+<pre>
+  &lt;div id=&quot;progress4&quot; dojoType=&quot;progress&quot; pingUrl=&quot;ping2.jsp&quot; containerWidth=&quot;200px&quot;&gt;&lt;/div&gt;
+</pre>
+<div id="progress4" dojoType="atg.widget.progressBase" pingUrl="ping2.jsp" containerWidth="200px"></div>
+
+
+</body>
+</html>

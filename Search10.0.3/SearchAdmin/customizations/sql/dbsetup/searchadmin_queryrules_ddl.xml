@@ -1,0 +1,209 @@
+<?xml version="1.0" ?>
+<!DOCTYPE schema
+  SYSTEM 'http://road.atg.com/dtds/ddlgen/schema.dtd'>
+
+<schema name="create_service">
+
+  <!--
+    Query Rules Tables
+  -->
+
+  <table name="srch_qr_pt_node">
+    <!-- generated id.-->
+    <column name="qr_pt_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+
+    <column name="qr_pt_type" nullable="n">
+      <column-type db="generic" type="integer"/>
+    </column>
+
+    <primary-key name="srch_qr_pt_p">
+      <index-column column="qr_pt_id" order="asc" seq="1"/>
+    </primary-key>
+
+  </table>
+
+  <!--
+    srch_qr_set - a collection of query rules
+  -->
+  <table name="srch_qr_sets">
+    <!-- generated id.-->
+    <column name="qr_set_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <!-- The name of query rule set-->
+    <column name="qr_set_name" nullable="n" i18n="y">
+      <column-type db="generic" length="200" type="varchar"/>
+    </column>
+    <!-- The description of query rule set-->
+    <column name="qr_set_dsc" nullable="y" i18n="y">
+      <column-type db="generic" length="1000" type="varchar"/>
+    </column>
+    <!-- The last modified date of query rule set-->
+    <column name="qr_set_lst_mdf" nullable="y">
+      <column-type db="generic" type="date"/>
+    </column>
+    <!-- The primary key of the table--> 
+    <primary-key name="srch_qr_set_p">
+      <index-column column="qr_set_id" order="asc" seq="1"/>
+    </primary-key>
+
+   <!-- The name cannot be empty strings-->
+    <unique name="qr_set_name_u">
+      <index-column column="qr_set_name" seq="1"/>
+    </unique>
+    
+  </table>
+
+  <!--  
+     srch_qr_qroup - a collection of query rule groups 
+  -->
+  <table name="srch_qr_groups">
+    <!-- generated id.-->
+    <column name="qr_grp_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+
+    <column name="qr_grp_pt_id" nullable="y">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+
+    <column name="qr_grp_seq" nullable="y">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <!-- The name of query rule group -->
+    <column name="qr_grp_name" nullable="n" i18n="y">
+      <column-type db="generic" length="200" type="varchar"/>
+    </column>
+   
+    <primary-key name="srch_qr_grp_p">
+      <index-column column="qr_grp_id" order="asc" seq="1"/>
+    </primary-key>
+  </table>  
+
+  <!--
+     srch_qr - a collection of query rules 
+  -->
+  <table name="srch_qr">
+    <!-- generated id.-->
+    <column name="qr_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+
+    <column name="qr_prn_grp_id" nullable="y">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+
+    <column name="qr_seq" nullable="y">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <!-- The name of query rule -->
+    <column name="qr_name" nullable="n" i18n="y">
+      <column-type db="generic" length="200" type="varchar"/>
+    </column>
+
+    <primary-key name="srch_qr_p">
+      <index-column column="qr_id" order="asc" seq="1"/>
+    </primary-key>
+  </table>
+   
+  <!--  
+     srch_qr_pattern - a collection of query rule patterns 
+  -->
+  <table name="srch_qr_patterns">
+    <!-- generated id.-->
+    <column name="qr_ptrn_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="qr_ptrn_qr_id" nullable="y">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <!-- Is pattern enabled: 1 (true), 0 (false) -->
+    <column name="qr_ptrn_is_enbl" nullable="n">
+      <column-type db="generic" type="one-digit"/>
+    </column>
+
+    <column name="qr_ptrn_name" nullable="n" i18n="y">
+      <column-type db="generic" length="200" type="varchar"/>
+    </column>
+    <!-- relative weighting of the pattern - ? to ? -->
+    <column name="qr_ptrn_weight" nullable="y">
+      <column-type db="generic" type="integer"/>
+    </column>
+
+    <column name="qr_ptrn_grp" nullable="y" i18n="y">
+      <column-type db="generic" length="200" type="varchar"/>
+    </column>
+
+    <column name="qr_ptrn_lang" nullable="n">
+      <column-type db="generic" length="100" type="varchar"/>
+    </column>
+   
+    <primary-key name="srch_qr_ptrn_p">
+      <index-column column="qr_ptrn_id" order="asc" seq="1"/>
+    </primary-key>
+  </table>
+
+  <!--  
+     srch_qr_action - a collection of query rule actions 
+  -->
+  <table name="srch_qr_actions">
+    <!-- generated id.-->
+    <column name="qr_act_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+
+    <column name="qr_act_qr_id" nullable="y">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <!-- Is pattern enabled: 1 (true), 0 (false) -->
+    <column name="qr_act_is_enbl" nullable="n">
+      <column-type db="generic" type="one-digit"/>
+    </column>
+
+    <column name="qr_act_name" nullable="n" i18n="y">
+      <column-type db="generic" length="200" type="varchar"/>
+    </column>
+    
+    <column name="qr_act_lang" nullable="n">
+      <column-type db="generic" length="100" type="varchar"/>
+    </column>
+
+    <primary-key name="srch_qr_act_p">
+      <index-column column="qr_act_id" order="asc" seq="1"/>
+    </primary-key>
+  </table>
+
+
+  <table name="srch_qr_gl_ms">
+    <!-- generated id.-->
+    <column name="qr_gl_m_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <!-- name of the query rule sets global macro.-->
+    <column name="qr_gl_m_name" nullable="n" i18n="y">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <!-- definition of the query rule sets global macro.-->
+    <column name="qr_gl_m_def" nullable="n" i18n="y">
+      <column-type db="generic" length="900" type="varchar"/>
+    </column>
+
+    <column name="qr_gl_m_type" nullable="n">
+      <column-type db="generic" type="integer"/>
+    </column>
+
+    <primary-key name="srch_qr_gl_m_p">
+      <index-column column="qr_gl_m_id" order="asc" seq="1"/>
+    </primary-key>
+
+    <unique name="srch_qr_gl_m_u">
+      <index-column column="qr_gl_m_name" seq="1"/>
+      <index-column column="qr_gl_m_type" seq="2"/>      
+    </unique>
+
+  </table>
+
+</schema>
+<!-- @version $Id: //application/SearchAdmin/version/10.0.3/customizations/src/sql/searchadmin_queryrules_ddl.xml#2 $$Change: 651448 $-->

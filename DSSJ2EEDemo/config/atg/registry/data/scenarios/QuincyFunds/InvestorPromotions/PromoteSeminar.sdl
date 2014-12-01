@@ -1,0 +1,709 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE scenario
+  SYSTEM
+  "dynamosystemresource:/atg/scenario/definition/sdl.dtd">
+
+<scenario author="admin" creation-time="960937282000" enabled="true" last-modified-by="admin" modification-time="1028236404106">
+  <segment migrate-from="1028235842999,1028235842999,1028235842999,1028235842999" migrate-users="true">
+    <segment-name>Email Seminar Announcement</segment-name>
+    <!--================================-->
+    <!--== On Aug 15, 2001 at 12:00AM  -->
+    <!--================================-->
+    <time id="1">
+      <date-time-pattern>
+        <date>
+          <month>8</month>
+          <day>15</day>
+          <year>2001</year>
+        </date>
+        <time-of-day>
+          <hours>12</hours>
+          <minutes>00</minutes>
+          <meridian>AM</meridian>
+        </time-of-day>
+      </date-time-pattern>
+    </time>
+    <!--================================-->
+    <!--== in group investors  -->
+    <!--================================-->
+    <condition construct="people-element" id="2">
+      <filter construct="profile-group-filter" operator="eq">
+        <subject-property>
+          <property-name>investors</property-name>
+        </subject-property>
+        <constant type="boolean">true</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Receive email is yes  -->
+    <!--================================-->
+    <condition construct="people-element" id="3">
+      <filter construct="profile-property-filter" operator="eq">
+        <subject-property>
+          <property-name>receiveEmail</property-name>
+        </subject-property>
+        <constant>yes</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Locale is en_US  -->
+    <!--================================-->
+    <condition construct="people-element" id="4">
+      <filter construct="profile-property-filter" operator="eq">
+        <subject-property>
+          <property-name>locale</property-name>
+        </subject-property>
+        <constant>en_US</constant>
+      </filter>
+    </condition>
+    <fork id="5">
+      <branch id="5.1">
+        <!--================================-->
+        <!--== Home address's Postal code is 02471  -->
+        <!--================================-->
+        <condition construct="people-element" id="5.1.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>homeAddress</property-name>
+              <property-name>postalCode</property-name>
+            </subject-property>
+            <constant>02471</constant>
+          </filter>
+        </condition>
+      </branch>
+      <branch id="5.2">
+        <!--================================-->
+        <!--== Home address's Postal code is 02472  -->
+        <!--================================-->
+        <condition construct="people-element" id="5.2.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>homeAddress</property-name>
+              <property-name>postalCode</property-name>
+            </subject-property>
+            <constant>02472</constant>
+          </filter>
+        </condition>
+      </branch>
+    </fork>
+    <!--================================-->
+    <!--== Send email with Dynamo path /QuincyFunds/en/email/seminar.jsp  -->
+    <!--================================-->
+    <action id="6">
+      <action-name>sendEmail</action-name>
+      <action-param name="template">
+        <constant>/QuincyFunds/en/email/seminar.jsp</constant>
+      </action-param>
+    </action>
+  </segment>
+  <segment migrate-from="1028235842999,1028235842999,1028235842999,1028235842999" migrate-users="true">
+    <segment-name>Show Seminar Promotion</segment-name>
+    <!--================================-->
+    <!--== Between Jan 15, 2002 and Nov 25, 2006  -->
+    <!--================================-->
+    <time id="1">
+      <date-range>
+        <date>
+          <month>1</month>
+          <day>15</day>
+          <year>2002</year>
+        </date>
+        <date>
+          <month>11</month>
+          <day>25</day>
+          <year>2006</year>
+        </date>
+      </date-range>
+    </time>
+    <!--================================-->
+    <!--== Logs in  -->
+    <!--================================-->
+    <event id="2">
+      <event-name>atg.dps.Login</event-name>
+    </event>
+    <!--================================-->
+    <!--== Locale is en_US  -->
+    <!--================================-->
+    <condition construct="people-element" id="3">
+      <filter construct="profile-property-filter" operator="eq">
+        <subject-property>
+          <property-name>locale</property-name>
+        </subject-property>
+        <constant>en_US</constant>
+      </filter>
+    </condition>
+    <fork id="4">
+      <branch id="4.1">
+        <!--================================-->
+        <!--== Home address's Postal code is 02471  -->
+        <!--================================-->
+        <condition construct="people-element" id="4.1.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>homeAddress</property-name>
+              <property-name>postalCode</property-name>
+            </subject-property>
+            <constant>02471</constant>
+          </filter>
+        </condition>
+      </branch>
+      <branch id="4.2">
+        <!--================================-->
+        <!--== Home address's Postal code is 02472  -->
+        <!--================================-->
+        <condition construct="people-element" id="4.2.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>homeAddress</property-name>
+              <property-name>postalCode</property-name>
+            </subject-property>
+            <constant>02472</constant>
+          </filter>
+        </condition>
+      </branch>
+    </fork>
+    <!--================================-->
+    <!--== Add items to slot QFOfferSlot named Offers:offer:/repositories/Offers/en_US/seminar.html  -->
+    <!--================================-->
+    <action id="5">
+      <action-name>fillSlot</action-name>
+      <action-param name="slot">
+        <nucleus-property>
+          <nucleus-path>/atg/registry/Slots/QFOfferSlot</nucleus-path>
+        </nucleus-property>
+      </action-param>
+      <action-param name="ids">
+        <array type="java.lang.String[]">
+          <constant>/repositories/Offers/en_US/seminar.html</constant>
+        </array>
+      </action-param>
+    </action>
+  </segment>
+  <segment migrate-from="1028235842999,1028235842999,1028235842999,1028235842999" migrate-users="true">
+    <segment-name>Email Seminar Announcement FR</segment-name>
+    <!--================================-->
+    <!--== On Aug 15, 2001 at 12:00AM  -->
+    <!--================================-->
+    <time id="1">
+      <date-time-pattern>
+        <date>
+          <month>8</month>
+          <day>15</day>
+          <year>2001</year>
+        </date>
+        <time-of-day>
+          <hours>12</hours>
+          <minutes>00</minutes>
+          <meridian>AM</meridian>
+        </time-of-day>
+      </date-time-pattern>
+    </time>
+    <!--================================-->
+    <!--== in group investors  -->
+    <!--================================-->
+    <condition construct="people-element" id="2">
+      <filter construct="profile-group-filter" operator="eq">
+        <subject-property>
+          <property-name>investors</property-name>
+        </subject-property>
+        <constant type="boolean">true</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Receive email is yes  -->
+    <!--================================-->
+    <condition construct="people-element" id="3">
+      <filter construct="profile-property-filter" operator="eq">
+        <subject-property>
+          <property-name>receiveEmail</property-name>
+        </subject-property>
+        <constant>yes</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Locale is fr_FR  -->
+    <!--================================-->
+    <condition construct="people-element" id="4">
+      <filter construct="profile-property-filter" operator="eq">
+        <subject-property>
+          <property-name>locale</property-name>
+        </subject-property>
+        <constant>fr_FR</constant>
+      </filter>
+    </condition>
+    <fork id="5">
+      <branch id="5.1">
+        <!--================================-->
+        <!--== Home address's Postal code is 75008  -->
+        <!--================================-->
+        <condition construct="people-element" id="5.1.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>homeAddress</property-name>
+              <property-name>postalCode</property-name>
+            </subject-property>
+            <constant>75008</constant>
+          </filter>
+        </condition>
+      </branch>
+      <branch id="5.2">
+        <!--================================-->
+        <!--== Home address's Postal code is 75010  -->
+        <!--================================-->
+        <condition construct="people-element" id="5.2.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>homeAddress</property-name>
+              <property-name>postalCode</property-name>
+            </subject-property>
+            <constant>75010</constant>
+          </filter>
+        </condition>
+      </branch>
+    </fork>
+    <!--================================-->
+    <!--== Send email with Dynamo path /QuincyFunds/fr/email/seminar.jsp  -->
+    <!--================================-->
+    <action id="6">
+      <action-name>sendEmail</action-name>
+      <action-param name="template">
+        <constant>/QuincyFunds/fr/email/seminar.jsp</constant>
+      </action-param>
+    </action>
+  </segment>
+  <segment migrate-from="1028235842999,1028235842999,1028235842999,1028235842999" migrate-users="true">
+    <segment-name>Show Seminar Promotion FR</segment-name>
+    <!--================================-->
+    <!--== Between Jan 15, 2002 and Nov 25, 2006  -->
+    <!--================================-->
+    <time id="1">
+      <date-range>
+        <date>
+          <month>1</month>
+          <day>15</day>
+          <year>2002</year>
+        </date>
+        <date>
+          <month>11</month>
+          <day>25</day>
+          <year>2006</year>
+        </date>
+      </date-range>
+    </time>
+    <!--================================-->
+    <!--== Logs in  -->
+    <!--================================-->
+    <event id="2">
+      <event-name>atg.dps.Login</event-name>
+    </event>
+    <!--================================-->
+    <!--== Locale is fr_FR  -->
+    <!--================================-->
+    <condition construct="people-element" id="3">
+      <filter construct="profile-property-filter" operator="eq">
+        <subject-property>
+          <property-name>locale</property-name>
+        </subject-property>
+        <constant>fr_FR</constant>
+      </filter>
+    </condition>
+    <fork id="4">
+      <branch id="4.1">
+        <!--================================-->
+        <!--== Home address's Postal code is 75008  -->
+        <!--================================-->
+        <condition construct="people-element" id="4.1.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>homeAddress</property-name>
+              <property-name>postalCode</property-name>
+            </subject-property>
+            <constant>75008</constant>
+          </filter>
+        </condition>
+      </branch>
+      <branch id="4.2">
+        <!--================================-->
+        <!--== Home address's Postal code is 75010  -->
+        <!--================================-->
+        <condition construct="people-element" id="4.2.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>homeAddress</property-name>
+              <property-name>postalCode</property-name>
+            </subject-property>
+            <constant>75010</constant>
+          </filter>
+        </condition>
+      </branch>
+    </fork>
+    <!--================================-->
+    <!--== Add items to slot QFOfferSlot named Offers:offer:/repositories/Offers/fr_FR/seminar.html  -->
+    <!--================================-->
+    <action id="5">
+      <action-name>fillSlot</action-name>
+      <action-param name="slot">
+        <nucleus-property>
+          <nucleus-path>/atg/registry/Slots/QFOfferSlot</nucleus-path>
+        </nucleus-property>
+      </action-param>
+      <action-param name="ids">
+        <array type="java.lang.String[]">
+          <constant>/repositories/Offers/fr_FR/seminar.html</constant>
+        </array>
+      </action-param>
+    </action>
+  </segment>
+  <segment migrate-from="1028235842999,1028235842999,1028235842999,1028235842999" migrate-users="true">
+    <segment-name>Email Seminar Announcement JA</segment-name>
+    <!--================================-->
+    <!--== On Aug 15, 2001 at 12:00AM  -->
+    <!--================================-->
+    <time id="1">
+      <date-time-pattern>
+        <date>
+          <month>8</month>
+          <day>15</day>
+          <year>2001</year>
+        </date>
+        <time-of-day>
+          <hours>12</hours>
+          <minutes>00</minutes>
+          <meridian>AM</meridian>
+        </time-of-day>
+      </date-time-pattern>
+    </time>
+    <!--================================-->
+    <!--== in group investors  -->
+    <!--================================-->
+    <condition construct="people-element" id="2">
+      <filter construct="profile-group-filter" operator="eq">
+        <subject-property>
+          <property-name>investors</property-name>
+        </subject-property>
+        <constant type="boolean">true</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Receive email is yes  -->
+    <!--================================-->
+    <condition construct="people-element" id="3">
+      <filter construct="profile-property-filter" operator="eq">
+        <subject-property>
+          <property-name>receiveEmail</property-name>
+        </subject-property>
+        <constant>yes</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Locale is ja_JP  -->
+    <!--================================-->
+    <condition construct="people-element" id="4">
+      <filter construct="profile-property-filter" operator="eq">
+        <subject-property>
+          <property-name>locale</property-name>
+        </subject-property>
+        <constant>ja_JP</constant>
+      </filter>
+    </condition>
+    <fork id="5">
+      <branch id="5.1">
+        <!--================================-->
+        <!--== Home address's Postal code is 100-0011  -->
+        <!--================================-->
+        <condition construct="people-element" id="5.1.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>homeAddress</property-name>
+              <property-name>postalCode</property-name>
+            </subject-property>
+            <constant>100-0011</constant>
+          </filter>
+        </condition>
+      </branch>
+      <branch id="5.2">
+        <!--================================-->
+        <!--== Home address's Postal code is 260-0855  -->
+        <!--================================-->
+        <condition construct="people-element" id="5.2.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>homeAddress</property-name>
+              <property-name>postalCode</property-name>
+            </subject-property>
+            <constant>260-0855</constant>
+          </filter>
+        </condition>
+      </branch>
+    </fork>
+    <!--================================-->
+    <!--== Send email with Dynamo path /QuincyFunds/ja/email/seminar.jsp  -->
+    <!--================================-->
+    <action id="6">
+      <action-name>sendEmail</action-name>
+      <action-param name="template">
+        <constant>/QuincyFunds/ja/email/seminar.jsp</constant>
+      </action-param>
+    </action>
+  </segment>
+  <segment migrate-from="1028235842999,1028235842999,1028235842999,1028235842999" migrate-users="true">
+    <segment-name>Show Seminar Promotion JA</segment-name>
+    <!--================================-->
+    <!--== Between Jan 15, 2002 and Nov 25, 2006  -->
+    <!--================================-->
+    <time id="1">
+      <date-range>
+        <date>
+          <month>1</month>
+          <day>15</day>
+          <year>2002</year>
+        </date>
+        <date>
+          <month>11</month>
+          <day>25</day>
+          <year>2006</year>
+        </date>
+      </date-range>
+    </time>
+    <!--================================-->
+    <!--== Logs in  -->
+    <!--================================-->
+    <event id="2">
+      <event-name>atg.dps.Login</event-name>
+    </event>
+    <!--================================-->
+    <!--== Locale is ja_JP  -->
+    <!--================================-->
+    <condition construct="people-element" id="3">
+      <filter construct="profile-property-filter" operator="eq">
+        <subject-property>
+          <property-name>locale</property-name>
+        </subject-property>
+        <constant>ja_JP</constant>
+      </filter>
+    </condition>
+    <fork id="4">
+      <branch id="4.1">
+        <!--================================-->
+        <!--== Home address's Postal code is 100-0011  -->
+        <!--================================-->
+        <condition construct="people-element" id="4.1.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>homeAddress</property-name>
+              <property-name>postalCode</property-name>
+            </subject-property>
+            <constant>100-0011</constant>
+          </filter>
+        </condition>
+      </branch>
+      <branch id="4.2">
+        <!--================================-->
+        <!--== Home address's Postal code is 260-0855  -->
+        <!--================================-->
+        <condition construct="people-element" id="4.2.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>homeAddress</property-name>
+              <property-name>postalCode</property-name>
+            </subject-property>
+            <constant>260-0855</constant>
+          </filter>
+        </condition>
+      </branch>
+    </fork>
+    <!--================================-->
+    <!--== Add items to slot QFOfferSlot named Offers:offer:/repositories/Offers/ja_JP/seminar.html  -->
+    <!--================================-->
+    <action id="5">
+      <action-name>fillSlot</action-name>
+      <action-param name="slot">
+        <nucleus-property>
+          <nucleus-path>/atg/registry/Slots/QFOfferSlot</nucleus-path>
+        </nucleus-property>
+      </action-param>
+      <action-param name="ids">
+        <array type="java.lang.String[]">
+          <constant>/repositories/Offers/ja_JP/seminar.html</constant>
+        </array>
+      </action-param>
+    </action>
+  </segment>
+  <segment migrate-from="1028235842999,1028235842999,1028235842999,1028235842999" migrate-users="true">
+    <segment-name>Email Seminar Announcement DE</segment-name>
+    <!--================================-->
+    <!--== On Aug 15, 2001 at 12:00AM  -->
+    <!--================================-->
+    <time id="1">
+      <date-time-pattern>
+        <date>
+          <month>8</month>
+          <day>15</day>
+          <year>2001</year>
+        </date>
+        <time-of-day>
+          <hours>12</hours>
+          <minutes>00</minutes>
+          <meridian>AM</meridian>
+        </time-of-day>
+      </date-time-pattern>
+    </time>
+    <!--================================-->
+    <!--== in group investors  -->
+    <!--================================-->
+    <condition construct="people-element" id="2">
+      <filter construct="profile-group-filter" operator="eq">
+        <subject-property>
+          <property-name>investors</property-name>
+        </subject-property>
+        <constant type="boolean">true</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Receive email is yes  -->
+    <!--================================-->
+    <condition construct="people-element" id="3">
+      <filter construct="profile-property-filter" operator="eq">
+        <subject-property>
+          <property-name>receiveEmail</property-name>
+        </subject-property>
+        <constant>yes</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Locale is de_DE  -->
+    <!--================================-->
+    <condition construct="people-element" id="4">
+      <filter construct="profile-property-filter" operator="eq">
+        <subject-property>
+          <property-name>locale</property-name>
+        </subject-property>
+        <constant>de_DE</constant>
+      </filter>
+    </condition>
+    <fork id="5">
+      <branch id="5.1">
+        <!--================================-->
+        <!--== Home address's Postal code is 13086  -->
+        <!--================================-->
+        <condition construct="people-element" id="5.1.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>homeAddress</property-name>
+              <property-name>postalCode</property-name>
+            </subject-property>
+            <constant>13086</constant>
+          </filter>
+        </condition>
+      </branch>
+      <branch id="5.2">
+        <!--================================-->
+        <!--== Home address's Postal code is 60594  -->
+        <!--================================-->
+        <condition construct="people-element" id="5.2.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>homeAddress</property-name>
+              <property-name>postalCode</property-name>
+            </subject-property>
+            <constant>60594</constant>
+          </filter>
+        </condition>
+      </branch>
+    </fork>
+    <!--================================-->
+    <!--== Send email with Dynamo path /QuincyFunds/de/email/seminar.jsp  -->
+    <!--================================-->
+    <action id="6">
+      <action-name>sendEmail</action-name>
+      <action-param name="template">
+        <constant>/QuincyFunds/de/email/seminar.jsp</constant>
+      </action-param>
+    </action>
+  </segment>
+  <segment migrate-from="1028235842999,1028235842999,1028235842999,1028235842999" migrate-users="true">
+    <segment-name>Show Seminar Promotion DE</segment-name>
+    <!--================================-->
+    <!--== Between Jan 15, 2002 and Nov 25, 2006  -->
+    <!--================================-->
+    <time id="1">
+      <date-range>
+        <date>
+          <month>1</month>
+          <day>15</day>
+          <year>2002</year>
+        </date>
+        <date>
+          <month>11</month>
+          <day>25</day>
+          <year>2006</year>
+        </date>
+      </date-range>
+    </time>
+    <!--================================-->
+    <!--== Logs in  -->
+    <!--================================-->
+    <event id="2">
+      <event-name>atg.dps.Login</event-name>
+    </event>
+    <!--================================-->
+    <!--== Locale is de_DE  -->
+    <!--================================-->
+    <condition construct="people-element" id="3">
+      <filter construct="profile-property-filter" operator="eq">
+        <subject-property>
+          <property-name>locale</property-name>
+        </subject-property>
+        <constant>de_DE</constant>
+      </filter>
+    </condition>
+    <fork id="4">
+      <branch id="4.1">
+        <!--================================-->
+        <!--== Home address's Postal code is 13086  -->
+        <!--================================-->
+        <condition construct="people-element" id="4.1.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>homeAddress</property-name>
+              <property-name>postalCode</property-name>
+            </subject-property>
+            <constant>13086</constant>
+          </filter>
+        </condition>
+      </branch>
+      <branch id="4.2">
+        <!--================================-->
+        <!--== Home address's Postal code is 60594  -->
+        <!--================================-->
+        <condition construct="people-element" id="4.2.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>homeAddress</property-name>
+              <property-name>postalCode</property-name>
+            </subject-property>
+            <constant>60594</constant>
+          </filter>
+        </condition>
+      </branch>
+    </fork>
+    <!--================================-->
+    <!--== Add items to slot QFOfferSlot named Offers:offer:/repositories/Offers/de_DE/seminar.html  -->
+    <!--================================-->
+    <action id="5">
+      <action-name>fillSlot</action-name>
+      <action-param name="slot">
+        <nucleus-property>
+          <nucleus-path>/atg/registry/Slots/QFOfferSlot</nucleus-path>
+        </nucleus-property>
+      </action-param>
+      <action-param name="ids">
+        <array type="java.lang.String[]">
+          <constant>/repositories/Offers/de_DE/seminar.html</constant>
+        </array>
+      </action-param>
+    </action>
+  </segment>
+</scenario>

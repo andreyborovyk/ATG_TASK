@@ -1,0 +1,76 @@
+<%--
+  assetListHeader.jspf
+  Fragment for displaying the bar with the view selector and the create new button plus the javascript for changeMode
+  We expect several page parameters to be set: 
+     config 
+     requestScope.managerConfig
+     tabConfig
+     treeComponent
+--%>
+
+  <script type="text/javascript" > 
+
+    var oldView;
+
+    function rememberOriginalView() {
+      oldView =document.getElementById("formShow").value;
+    }
+
+    //
+    // Switch to the view indicated by the browseViewSelector
+    //
+    function changeMode() {
+      <c:out value="${uncheckAllFunction}"/>;
+      var selectInput = document.getElementById("formShow");
+      var selectedView = selectInput.value;
+      // set it back to the old value in case user cancels the save confirm dialog or there is an error
+      selectInput.value = oldView;
+      <c:url var="selectURL" value="${requestScope.managerConfig.page}"/>
+      var theurl = "<c:out value='${selectURL}'/>?browseView=" + selectedView;
+ 
+      atg.assetmanager.saveconfirm.saveBeforeLeaveParentFrame(theurl);
+
+     }
+
+
+  </script>
+
+
+            <%-- Top header contains browse view selector and create new asset button --%>
+            <div id="assetListHeader">
+              <div id="assetListHeaderRight">
+              </div>
+
+              <%-- Display a dropdown list for selecting the browse view --%>
+              <div id="assetListHeaderLeft">
+                <span class="subHeaderText">
+                  <label for="formShow">
+                    <fmt:message key="browseTab.show"/>:
+                  </label>
+                  <select id="formShow" onfocus="rememberOriginalView()" onchange="changeMode()">
+                    <c:forEach var="viewId" items="${requestScope.tabConfig.viewIds}">
+                      <c:set var="view" value="${requestScope.tabConfig.views[viewId]}"/>
+                      <c:choose>
+                        <c:when test="${viewId eq sessionInfo.browseView}">
+                          <option value="<c:out value='${viewId}'/>" selected>
+                        </c:when>
+                        <c:otherwise>
+                          <option value="<c:out value='${viewId}'/>">
+                        </c:otherwise>
+                      </c:choose>
+                      <c:choose>
+                        <c:when test="${view.displayNameResource ne null}">
+                          <fmt:setBundle var="viewBundle" basename="${view.resourceBundle}"/>
+                          <fmt:message key="${view.displayNameResource}" bundle="${viewBundle}"/>
+                        </c:when>
+                        <c:otherwise>
+                          <c:out value='${view.displayName}'/>
+                        </c:otherwise>
+                      </c:choose>
+                      </option>
+                    </c:forEach>
+                  </select>
+                </span>
+              </div>
+            </div>
+<%-- @version $Id: //product/AssetUI/version/10.0.3/src/web-apps/AssetManager/browse/assetListHeader.jspf#2 $$Change: 651448 $--%>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE application PUBLIC "-//Sun Microsystems, Inc.//DTD J2EE Application 1.3//EN" "http://java.sun.com/dtd/application_1_3.dtd">
+
+<!-- 
+  This definition of the application runs ATGDBSetup from an EAR file.
+  The web application files live in the web-app.war file.  Use this 
+  definition when building an EAR file for deployment in a 3rd party
+  application server.
+-->
+
+<application>
+  <display-name>
+    ATGDBSetup
+  </display-name>
+  <module>
+    <web>
+      <web-uri>
+        dbsetup.war
+      </web-uri>
+      <context-root>
+	ATGDBSetup
+      </context-root>
+    </web>
+  </module>
+</application>
+<!-- @version $Id: //product/ATGDBSetup/version/10.0.3/ATGDBSetupEar/src/j2ee-apps/ATGDBSetup/META-INF/application-ear.xml#2 $$Change: 651448 $ -->

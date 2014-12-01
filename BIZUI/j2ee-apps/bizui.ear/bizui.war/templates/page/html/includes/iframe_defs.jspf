@@ -1,0 +1,43 @@
+<%-- workflow action confirmation iframe --%>
+<div id="approveAction" class="confirmNoteAction">
+   <iframe src="/atg/templates/page/html/includes/noop.jsp" id="workflowIframe"  name="workflowIframe" scrolling="no" frameborder="0">
+     Workflow action confirmation iFrame.
+   </iframe>
+</div>
+
+<div id="actionAddNote" class="confirmNoteAction">
+   <iframe src="/atg/templates/page/html/includes/noop.jsp" id="processNoteIframe"  name="processNoteIframe" scrolling="no" frameborder="0">
+     Process Note iFrame.
+   </iframe>
+</div>
+
+<div id="actionOneOffDeploy" class="confirmNoteAction">
+   <iframe src="/atg/templates/page/html/includes/noop.jsp" id="oneOffDeployIframe"  name="oneOffDeployIframe" scrolling="no" frameborder="0">
+     One off deploy iFrame.
+   </iframe>
+</div>
+
+<div id="browser"> 
+  <div id="browserIframe">
+    <iframe src="/atg/templates/page/html/includes/noop.jsp" id="iFrame" frameborder="0" scrolling="no">
+    </iframe>
+  </div> 
+  <div id="browserBottom">
+  </div> 
+</div> 
+
+<%-- initialize the iframes --%>
+<script language="JavaScript" type="text/javascript">
+  <!--
+    function hideAssetBrowser(elementID) {
+      alert( document.getElementById(elementID).className );
+      if ( document.getElementById(elementID) ) {
+        document.getElementById(elementID).className = "panelClosed";
+        CurrentPopup = elementID;
+      }
+    }
+    
+    init("approveAction","actionAddNote", "actionOneOffDeploy");
+   -->
+</script>
+<%-- @version $Id: //product/BIZUI/version/10.0.3/web-apps/bizui/templates/page/html/includes/iframe_defs.jspf#2 $$Change: 651448 $--%>

@@ -1,0 +1,100 @@
+<JAVA>/*
+This template allows you to search for giftlists and choose
+which you will be shopping for.
+*/</JAVA>
+
+<DECLAREPARAM NAME="giftlistId" CLASS="String" DESCRIPTION="The giftlist Id to add or remove from profile">
+<DECLAREPARAM NAME="action" CLASS="String" DESCRIPTION="Whether to add or remove list. (add or remove)">
+
+<importbean bean="/atg/commerce/gifts/GiftlistSearch">
+<importbean bean="/atg/dynamo/droplet/IsEmpty">
+<importbean bean="/atg/dynamo/droplet/IsNull">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/Switch">
+<importbean bean="/atg/userprofiling/Profile">
+
+<html>
+<head>
+<title>Find a Gift List</title>
+</head>
+
+<body>
+<a href="index.jhtml">Catalog Home</a> - 
+<a href="product_search.jhtml">Product Search</a> - 
+<a href="shoppingcart.jhtml">Shopping Cart</a> - 
+<a href="lists.jhtml">My Lists</a> - 
+<a href="comparison.jhtml">Product Comparison</a> -
+Gift List Search - 
+<droplet bean="Switch">
+  <param name="value" value="bean:Profile.transient">
+  <oparam name="false">
+    <a href="logout.jhtml">Logout</a>
+  </oparam>
+  <oparam name="true">
+    <a href="login.jhtml">Login</a> or <a href="register.jhtml">Register</a>
+  </oparam>
+</droplet>
+<BR>
+
+<JAVA>/* If param:giftlistId is passed, then add or remove it from the profile. */</JAVA>
+
+<droplet bean="IsEmpty">
+<param name="value" value="param:giftlistId">
+<oparam name="false">
+  <droplet name="/atg/commerce/gifts/GiftlistDroplet">
+    <param name="giftlistId" value="param:giftlistId">
+    <param name="action" value="param:action">
+    <param name="profile" value="bean:/atg/userprofiling/Profile">
+  </droplet>
+</oparam>
+</droplet>
+
+<JAVA>/* Display the giftlists that customer is shopping for. */</JAVA>
+
+<droplet bean="IsEmpty">
+  <param name="value" value="bean:Profile.otherGiftlists">
+  <oparam name="false">
+    <strong>You are shopping for these people</strong><br>
+    <P>
+    <droplet bean="/atg/dynamo/droplet/ForEach">
+    <param name="array" value="bean:Profile.otherGiftlists">
+    <oparam name="output">
+      <p>
+      <b><valueof param="element.owner.firstName"></valueof>
+      <valueof param="element.owner.middleName"></valueof>
+      <valueof param="element.owner.lastName"></valueof></b></br>
+      <valueof param="element.eventName"></valueof>
+      <valueof param="element.eventDate" date="dd-MMM-yyyy"></valueof><br>
+      <b>Event Description</b><br>
+      <valueof param="element.description"></valueof><br>
+      <b>Extra Information</b><br>
+      <valueof param="element.instructions"></valueof><br>
+      &gt; <a href="giftlist_view.jhtml"> <param name="giftlistId" value="param:element.id">View the items in this gift list</a>
+      <br>
+      &gt; <a href="giftlist_search.jhtml">
+ 	     <param name="giftlistId" value="param:element.id">
+             <param name="action" value="remove">
+             Stop shopping for this person</a>
+    </oparam>
+    </droplet>
+    <hr size=0>
+</oparam>
+</droplet>
+
+<p>
+
+<droplet bean="IsNull">
+  <param name="value" value="param:searching">
+  <oparam name="false">
+    <droplet src="giftlist_search_results.jhtml"></droplet>
+  </oparam>
+</droplet>
+
+<P>
+
+<droplet src="giftlist_search_form.jhtml"></droplet>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/DCS/html/sample_catalog/giftlist_search.jhtml#2 $$Change: 651448 $*/</java>
+

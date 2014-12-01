@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC
+	"-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+	"http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app id="UserProfilingApplication">
+  <display-name>Community Proposal Workflow Portlet</display-name>
+  <description>This gear can be used to manage a community proposal workflow.</description>
+
+  <!-- Context Parameters                                             -->
+  <!--                                                                -->
+  <!--                                                                -->
+
+  <!-- DAF context name                                               -->
+  <!--                                                                -->
+  <!--                                                                -->
+  <context-param>
+    <param-name>atg.session.parentContextName</param-name>
+    <param-value>/dyn</param-value>
+    <description>The name of the DAF context.</description>
+  </context-param>
+
+  <context-param>
+    <param-name>atg.dafear.bootstrapContextName</param-name>
+    <param-value>/dyn</param-value>
+    <description>
+      The name of the DAF bootstrap WAR context.
+    </description>
+  </context-param>
+
+  <!-- Filters                                                        -->
+  <!--                                                                -->
+  <!--                                                                -->
+
+  <!-- Dynamo Server Page Filter                                      -->
+  <!--                                                                -->
+  <!-- This filter invokes the dynamo application framework           -->
+  <!-- servlet pipeline.                                              -->
+  <filter>
+    <filter-name>DynamoServerPageFilter</filter-name>
+    <display-name>DynamoServerPageFilter</display-name>
+    <description>This filter invokes the dynamo application framework servlet pipeline.</description>
+    <filter-class>atg.filter.dspjsp.PageFilter</filter-class>
+  </filter>
+
+  <!-- Filter Mappings                                                -->
+  <!--                                                                -->
+  <!--                                                                -->
+  <filter-mapping>
+    <filter-name>DynamoServerPageFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  
+  <!-- Servlets                                                       -->
+  <!--                                                                -->
+  <!--                                                                -->
+
+
+  <!-- NucleusServlet                                                 -->
+  <!--                                                                -->
+  <!-- This servlet initializes nucleus                               -->
+  <servlet id="NucleusServlet">
+    <servlet-name>NucleusServlet</servlet-name>
+    <display-name>NucleusServlet</display-name>
+    <description>Initializes nucleus in the current web application.</description>
+    <servlet-class>atg.nucleus.servlet.NucleusServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <!-- Servlet Mappings                                               -->
+  <!--                                                                -->
+  <!--                                                                -->
+  <servlet-mapping>
+    <servlet-name>NucleusServlet</servlet-name>
+    <url-pattern>/nucleus</url-pattern>
+  </servlet-mapping>
+
+  <!-- Error Pages                                                    -->
+  <!--                                                                -->
+  <!--                                                                -->
+  <error-page>
+    <exception-type>java.lang.Exception</exception-type>
+    <location>/error.jsp</location>
+  </error-page>
+  <error-page>
+    <error-code>500</error-code>
+    <location>/error.jsp</location>
+  </error-page>
+
+  <!-- Taglibs                                                    -->
+  <!--                                                            -->
+  <!--                                                            -->
+  <taglib>
+    <taglib-uri>/paf-taglib</taglib-uri>
+    <taglib-location>/WEB-INF/tld/pafTaglib1_2.tld</taglib-location>
+  </taglib>
+  <taglib>
+    <taglib-uri>dsp</taglib-uri>
+    <taglib-location>/WEB-INF/tld/dspjspTaglib1_0.tld</taglib-location>
+  </taglib>
+  <taglib>
+    <taglib-uri>atg-dspjspEL</taglib-uri>
+    <taglib-location>/WEB-INF/tld/dspjspELTaglib1_0.tld</taglib-location>
+  </taglib>
+
+</web-app>
+<!-- @version $Id: //app/portal/version/10.0.3/ppa/proposal/WEB-INF/web.xml#2 $$Change: 651448 $ -->

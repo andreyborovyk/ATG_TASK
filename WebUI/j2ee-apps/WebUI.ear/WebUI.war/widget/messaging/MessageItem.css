@@ -1,0 +1,91 @@
+span.atg_messaging_title{
+  display:block;
+  padding-bottom:0;
+  padding-left:-3px;
+  margin-left:-3px;
+}
+
+/* General icons for the message items */
+
+li.atg_messaging_error{
+  background:url(../../images/messaging-common/icon_msgError.gif) no-repeat 0 5px;    
+}
+li.atg_messaging_warning{
+  background:url(../../images/messaging-common/icon_msgWarning.gif) no-repeat 0px 5px;
+}
+li.atg_messaging_information{
+  background:url(../../images/messaging-common/icon_msgInformation.gif) no-repeat 0px 5px;  
+}
+li.atg_messaging_confirmation{
+  background:url(../../images/messaging-common/icon_msgSuccess.gif) no-repeat 0px 5px;
+}
+
+/* Specific Coloring for the current messages, recent ones retain the dafult text coloring */
+
+.atg_messaging_currentMessage li.atg_messaging_error .atg_messaging_title{
+	color:#CA0014;
+	font-weight: bold;
+}
+.atg_messaging_currentMessage li.atg_messaging_warning .atg_messaging_title{
+	color:#E9C30A;
+	font-weight: bold;
+}
+.atg_messaging_currentMessage li.atg_messaging_information .atg_messaging_title{
+	color:#5690D7;
+	font-weight: bold;
+}
+.atg_messaging_currentMessage li.atg_messaging_confirmation .atg_messaging_title{
+	color:#348532;
+	font-weight: bold;
+}
+
+/* overwrite color and weight for the sub bug details, because they use the same template we need to specify depth of LI's */
+
+.atg_messaging_currentMessage li li{
+	color: #545454;
+	font-weight: normal;
+}
+
+
+ol.atg_messaging_currentMessage{
+  margin-top:5px;
+}
+ol.atg_messaging_currentMessage,    
+ol.atg_messaging_recentMessages{
+  list-style-type:none;
+  list-style-position:outside;
+  padding-left:0;
+  margin-left:0;
+}
+ol.atg_messaging_currentMessage{
+  margin-top:0px;
+}
+
+li.atg_messaging_bullet span.atg_messaging_title{
+	margin-left:0px;
+}
+ol.atg_messaging_subMessages{
+  list-style-type:none;
+  list-style-position:outside;
+  padding-left:0;
+  margin-left:0;
+}
+ol.atg_messaging_subMessages li{
+  margin-left:-10px;
+  padding:6px 0 2px 23px;
+}
+ol.atg_messaging_recentMessages li{
+  padding:6px 0 2px 23px;
+  margin-left:7px;            
+}
+ol.atg_messaging_currentMessage li{
+  padding:6px 0 2px 23px;
+  margin-left:6px;
+}
+li.atg_messaging_bullet{
+  background:url(../../images/messaging-common/icon_bullet.png) no-repeat 10px 10px;
+}
+ol.atg_messaging_recentMessages li.atg_messaging_bullet{
+  background:url(../../images/messaging-common/icon_bullet.png) no-repeat 10px 10px;
+  border-bottom:none;
+}

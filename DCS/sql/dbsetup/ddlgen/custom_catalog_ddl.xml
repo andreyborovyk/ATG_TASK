@@ -1,0 +1,668 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="custom_catalog_ddl">
+<comment><![CDATA[ @version $Id: //product/DCS/version/10.0.3/templates/DCS/sql/custom_catalog_ddl.xml#1 $$Change: 651360 $]]></comment>
+   <table name="dcs_catalog" description="catalog table">
+      <column name="catalog_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="display_name" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="creation_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <column name="last_mod_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <column name="migration_status" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="number" length="3" scale="0"/>
+         <column-type db="db2" type="numeric" length="3" scale="0"/>
+      </column>
+      <column name="migration_index" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="db2" type="numeric" length="10" scale="0"/>
+      </column>
+      <column name="item_acl" nullable="y">
+         <column-type db="generic" type="long-varchar"/>
+         <column-type db="oracle" type="varchar2" length="1024" scale=""/>
+         <column-type db="db2" type="varchar" length="1024" scale=""/>
+      </column>
+      <primary-key name="dcs_catalog_p">
+         <index-column column="catalog_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dcs_root_cats" description="list of root categories">
+      <column name="catalog_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="root_cat_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcs_root_cats_p">
+         <index-column column="catalog_id" order="asc" seq="1"/>
+         <index-column column="root_cat_id" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcs_rotccatlg_d_f" referenced-table="dcs_catalog">
+         <fkey-column referencing-column="catalog_id" referenced-column="catalog_id"/>
+      </foreign-key>
+      <foreign-key name="dcs_rotcrot_ctd_f" referenced-table="dcs_category" index-name="dcs_rootcatscat_id" versioned-index="y">
+         <fkey-column referencing-column="root_cat_id" referenced-column="category_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcs_allroot_cats" description="list of root categories">
+      <column name="catalog_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="root_cat_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcs_allroot_cats_p">
+         <index-column column="catalog_id" order="asc" seq="1"/>
+         <index-column column="root_cat_id" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcs_allrcatlg_d_f" referenced-table="dcs_catalog">
+         <fkey-column referencing-column="catalog_id" referenced-column="catalog_id"/>
+      </foreign-key>
+      <foreign-key name="dcs_allrrot_ctd_f" referenced-table="dcs_category" index-name="dcs_allrt_cats_id">
+         <fkey-column referencing-column="root_cat_id" referenced-column="category_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcs_root_subcats" description="list of root sub-catalogs">
+      <column name="catalog_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sub_catalog_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcs_root_subcats_p">
+         <index-column column="catalog_id" order="asc" seq="1"/>
+         <index-column column="sub_catalog_id" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcs_rotscatlg_d_f" referenced-table="dcs_catalog">
+         <fkey-column referencing-column="catalog_id" referenced-column="catalog_id"/>
+      </foreign-key>
+      <foreign-key name="dcs_rotssub_ctlg_f" referenced-table="dcs_catalog" index-name="dcs_rtsubcats_id">
+         <fkey-column referencing-column="sub_catalog_id" referenced-column="catalog_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcs_category_info">
+      <column name="category_info_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="item_acl" nullable="y">
+         <column-type db="generic" type="long-varchar"/>
+         <column-type db="oracle" type="varchar2" length="1024" scale=""/>
+         <column-type db="db2" type="varchar" length="1024" scale=""/>
+      </column>
+      <primary-key name="dcs_category_inf_p">
+         <index-column column="category_info_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dcs_product_info">
+      <column name="product_info_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="parent_cat_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="item_acl" nullable="y">
+         <column-type db="generic" type="long-varchar"/>
+         <column-type db="oracle" type="varchar2" length="1024" scale=""/>
+         <column-type db="db2" type="varchar" length="1024" scale=""/>
+      </column>
+      <primary-key name="dcs_product_info_p">
+         <index-column column="product_info_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dcs_sku_info">
+      <column name="sku_info_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="item_acl" nullable="y">
+         <column-type db="generic" type="long-varchar"/>
+         <column-type db="oracle" type="varchar2" length="1024" scale=""/>
+         <column-type db="db2" type="varchar" length="1024" scale=""/>
+      </column>
+      <primary-key name="dcs_sku_info_p">
+         <index-column column="sku_info_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dcs_cat_subcats">
+      <column name="category_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="catalog_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcs_cat_subcats_p">
+         <index-column column="category_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcs_catscatlg_d_f" referenced-table="dcs_catalog" index-name="dcs_catsubcatlogid" versioned-index="y">
+         <fkey-column referencing-column="catalog_id" referenced-column="catalog_id"/>
+      </foreign-key>
+      <foreign-key name="dcs_catscatgry_d_f" referenced-table="dcs_category">
+         <fkey-column referencing-column="category_id" referenced-column="category_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcs_cat_subroots">
+      <column name="category_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="sub_category_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcs_cat_subroots_p">
+         <index-column column="category_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcs_subrtscatgry_f" referenced-table="dcs_category">
+         <fkey-column referencing-column="category_id" referenced-column="category_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcs_cat_catinfo">
+      <column name="category_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="catalog_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="category_info_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcs_cat_catinfo_p">
+         <index-column column="category_id" order="asc" seq="1"/>
+         <index-column column="catalog_id" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcs_infocatgry_d_f" referenced-table="dcs_category">
+         <fkey-column referencing-column="category_id" referenced-column="category_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcs_catinfo_anc">
+      <column name="category_info_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="anc_cat_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcs_catinfo_anc_p">
+         <index-column column="category_info_id" order="asc" seq="1"/>
+         <index-column column="anc_cat_id" order="asc" seq="2"/>
+      </primary-key>
+   </table>
+   <table name="dcs_prd_prdinfo">
+      <column name="product_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="catalog_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="product_info_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcs_prd_prdinfo_p">
+         <index-column column="product_id" order="asc" seq="1"/>
+         <index-column column="catalog_id" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcs_prdpprodct_d_f" referenced-table="dcs_product">
+         <fkey-column referencing-column="product_id" referenced-column="product_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcs_prdinfo_rdprd">
+      <column name="product_info_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="related_prd_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcs_prdinfo_rdpr_p">
+         <index-column column="product_info_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcs_prdireltd_pr_f" referenced-table="dcs_product" index-name="dcs_prdrelatedinfo">
+         <fkey-column referencing-column="related_prd_id" referenced-column="product_id"/>
+      </foreign-key>
+      <foreign-key name="dcs_prdiprodct_n_f" referenced-table="dcs_product_info">
+         <fkey-column referencing-column="product_info_id" referenced-column="product_info_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcs_prdinfo_anc">
+      <column name="product_info_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="anc_cat_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcs_prdinfo_anc_p">
+         <index-column column="product_info_id" order="asc" seq="1"/>
+         <index-column column="anc_cat_id" order="asc" seq="2"/>
+      </primary-key>
+   </table>
+   <table name="dcs_sku_skuinfo">
+      <column name="sku_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="catalog_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sku_info_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcs_sku_skuinfo_p">
+         <index-column column="sku_id" order="asc" seq="1"/>
+         <index-column column="catalog_id" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcs_skusknfsku_d_f" referenced-table="dcs_sku">
+         <fkey-column referencing-column="sku_id" referenced-column="sku_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcs_skuinfo_rplc">
+      <column name="sku_info_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="replacement" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcs_skuinfo_rplc_p">
+         <index-column column="sku_info_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcs_skunsku_nfd_f" referenced-table="dcs_sku_info">
+         <fkey-column referencing-column="sku_info_id" referenced-column="sku_info_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcs_gen_fol_cat" description="base folder class">
+      <column name="folder_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="type" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="name" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="parent" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="description" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="item_acl" nullable="y">
+         <column-type db="generic" type="long-varchar"/>
+         <column-type db="oracle" type="varchar2" length="1024" scale=""/>
+         <column-type db="db2" type="varchar" length="1024" scale=""/>
+      </column>
+      <primary-key name="dcs_gen_fol_cat_p">
+         <index-column column="folder_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dcs_child_fol_cat" description="child folders">
+      <column name="folder_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="child_folder_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcs_child_fol_ca_p">
+         <index-column column="folder_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcs_catlfoldr_d_f" referenced-table="dcs_gen_fol_cat">
+         <fkey-column referencing-column="folder_id" referenced-column="folder_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcs_catfol_chld" description="catalog folder class">
+      <column name="catfol_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="catalog_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcs_catfol_chld_p">
+         <index-column column="catfol_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcs_catfcatfl_d_f" referenced-table="dcs_gen_fol_cat">
+         <fkey-column referencing-column="catfol_id" referenced-column="folder_id"/>
+      </foreign-key>
+   </table>
+   
+   <table name="dcs_catfol_sites">
+     <column name="catfol_id" nullable="n">
+	   <column-type db="generic" type="varchar" length="40"/>
+	 </column>
+	 <column name="site_id" nullable="n">
+	   <column-type db="generic" type="varchar" length="40"/>
+	 </column>
+	 <primary-key name="dcs_catfl_sites_pk">
+	  <index-column column="catfol_id" order="asc" seq="1"/>
+	  <index-column column="site_id" order="asc" seq="2"/>
+	 </primary-key>
+   </table>
+   
+   
+   <table name="dcs_dir_anc_ctlgs">
+      <column name="catalog_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="anc_catalog_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcs_dirancctlgs_pk">
+         <index-column column="catalog_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcs_dirancctlgs_f1" referenced-table="dcs_catalog">
+         <fkey-column referencing-column="catalog_id" referenced-column="catalog_id"/>
+      </foreign-key>
+      <foreign-key name="dcs_dirancctlgs_f2" referenced-table="dcs_catalog" index-name="dcs_dirancctlg_idx">
+         <fkey-column referencing-column="anc_catalog_id" referenced-column="catalog_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcs_ind_anc_ctlgs">
+      <column name="catalog_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="anc_catalog_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcs_indancctlgs_pk">
+         <index-column column="catalog_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcs_indancctlgs_f1" referenced-table="dcs_catalog">
+         <fkey-column referencing-column="catalog_id" referenced-column="catalog_id"/>
+      </foreign-key>
+      <foreign-key name="dcs_indancctlgs_f2" referenced-table="dcs_catalog" index-name="dcs_indanctlg_idx">
+         <fkey-column referencing-column="anc_catalog_id" referenced-column="catalog_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcs_ctlg_anc_cats">
+      <column name="catalog_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="category_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcs_ctlganccats_pk">
+         <index-column column="catalog_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcs_ctlganccats_f1" referenced-table="dcs_catalog">
+         <fkey-column referencing-column="catalog_id" referenced-column="catalog_id"/>
+      </foreign-key>
+      <foreign-key name="dcs_ctlganccats_f2" referenced-table="dcs_category" index-name="dcs_ctlgancat_idx">
+         <fkey-column referencing-column="category_id" referenced-column="category_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcs_cat_anc_cats">
+      <column name="category_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="anc_category_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcs_cat_anccats_pk">
+         <index-column column="category_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcs_cat_anccats_f1" referenced-table="dcs_category">
+         <fkey-column referencing-column="category_id" referenced-column="category_id"/>
+      </foreign-key>
+      <foreign-key name="dcs_cat_anccats_f2" referenced-table="dcs_category" index-name="dcs_catanccat_idx">
+         <fkey-column referencing-column="anc_category_id" referenced-column="category_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcs_cat_prnt_cats">
+      <column name="category_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40" />
+      </column>
+      <column name="catalog_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40" />
+      </column>
+      <column name="parent_ctgy_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40" />
+      </column>
+      <primary-key name="dcs_catprntcats_pk">
+         <index-column column="category_id" order="asc" seq="1" />
+         <index-column column="catalog_id" order="asc" seq="2" />
+      </primary-key>
+      <foreign-key name="dcscatprntcats_fk1"
+         referenced-table="dcs_catalog" index-name="dcscatprntcats_ix1">
+         <fkey-column referencing-column="catalog_id"
+            referenced-column="catalog_id" />
+      </foreign-key>
+      <foreign-key name="dcscatprntcats_fk2"
+         referenced-table="dcs_category" index-name="dcscatprntcats_ix2">
+         <fkey-column referencing-column="category_id"
+            referenced-column="category_id" />
+      </foreign-key>
+      <foreign-key name="dcscatprntcats_fk3"
+         referenced-table="dcs_category" index-name="dcscatprntcats_ix3">
+         <fkey-column referencing-column="parent_ctgy_id"
+            referenced-column="category_id" />
+      </foreign-key>
+   </table>   
+   <table name="dcs_prd_prnt_cats">
+      <column name="product_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="catalog_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="category_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcs_prdprntcats_pk">
+         <index-column column="product_id" order="asc" seq="1"/>
+         <index-column column="catalog_id" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcs_prdprntcats_f2" referenced-table="dcs_catalog" index-name="pr_prnt_cat_pi_idx">
+         <fkey-column referencing-column="catalog_id" referenced-column="catalog_id"/>
+      </foreign-key>
+      <foreign-key name="dcs_prdprntcats_f3" referenced-table="dcs_category" index-name="pr_prnt_cat_ci_idx">
+         <fkey-column referencing-column="category_id" referenced-column="category_id"/>
+      </foreign-key>
+      <foreign-key name="dcs_prdprntcats_f1" referenced-table="dcs_product">
+         <fkey-column referencing-column="product_id" referenced-column="product_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcs_prd_anc_cats">
+      <column name="product_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="category_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcs_prdanc_cats_pk">
+         <index-column column="product_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcs_prdanc_cats_f2" referenced-table="dcs_category" index-name="dcs_prdanccat_idx">
+         <fkey-column referencing-column="category_id" referenced-column="category_id"/>
+      </foreign-key>
+      <foreign-key name="dcs_prdanc_cats_f1" referenced-table="dcs_product">
+         <fkey-column referencing-column="product_id" referenced-column="product_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcs_cat_catalogs">
+      <column name="category_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="catalog_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcs_cat_catalgs_pk">
+         <index-column column="category_id" order="asc" seq="1"/>
+         <index-column column="catalog_id" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcs_cat_catalgs_f2" referenced-table="dcs_catalog" index-name="dcs_catctlgs_idx">
+         <fkey-column referencing-column="catalog_id" referenced-column="catalog_id"/>
+      </foreign-key>
+      <foreign-key name="dcs_cat_catalgs_f1" referenced-table="dcs_category">
+         <fkey-column referencing-column="category_id" referenced-column="category_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcs_prd_catalogs">
+      <column name="product_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="catalog_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcs_prd_catalgs_pk">
+         <index-column column="product_id" order="asc" seq="1"/>
+         <index-column column="catalog_id" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcs_prd_catalgs_f2" referenced-table="dcs_catalog" index-name="dcs_prd_ctlgs_idx">
+         <fkey-column referencing-column="catalog_id" referenced-column="catalog_id"/>
+      </foreign-key>
+      <foreign-key name="dcs_prd_catalgs_f1" referenced-table="dcs_product">
+         <fkey-column referencing-column="product_id" referenced-column="product_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcs_sku_catalogs">
+      <column name="sku_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="catalog_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcs_sku_catalgs_pk">
+         <index-column column="sku_id" order="asc" seq="1"/>
+         <index-column column="catalog_id" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcs_sku_catalgs_f2" referenced-table="dcs_catalog" index-name="dcs_sku_ctlgs_idx">
+         <fkey-column referencing-column="catalog_id" referenced-column="catalog_id"/>
+      </foreign-key>
+      <foreign-key name="dcs_sku_catalgs_f1" referenced-table="dcs_sku">
+         <fkey-column referencing-column="sku_id" referenced-column="sku_id"/>
+      </foreign-key>
+   </table>
+  <table name="dcs_catalog_sites">
+    <column name="catalog_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="site_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <primary-key name="dcs_catlg_sites_pk">
+      <index-column column="catalog_id" order="asc" seq="1"/>
+      <index-column column="site_id" order="asc" seq="2"/>
+    </primary-key>
+    <index name="catlg_site_id_idx" table="dcs_catalog_sites">
+       <index-column column="site_id" order="asc" seq="1"/>
+    </index>
+  </table>
+  <table name="dcs_category_sites">
+    <column name="category_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="site_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <primary-key name="dcs_cat_sites_pk">
+      <index-column column="category_id" order="asc" seq="1"/>
+      <index-column column="site_id" order="asc" seq="2"/>
+    </primary-key>
+    <index name="cat_site_id_idx" table="dcs_category_sites">
+       <index-column column="site_id" order="asc" seq="1"/>
+    </index>
+  </table>
+  <table name="dcs_product_sites">
+    <column name="product_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="site_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <primary-key name="dcs_prod_sites_pk">
+      <index-column column="product_id" order="asc" seq="1"/>
+      <index-column column="site_id" order="asc" seq="2"/>
+    </primary-key>
+    <foreign-key name="dcs_prod_sites_f1" referenced-table="dcs_product">
+      <fkey-column referencing-column="product_id" referenced-column="product_id"/>
+    </foreign-key>	
+    <index name="prd_site_id_idx" table="dcs_product_sites">
+       <index-column column="site_id" order="asc" seq="1"/>
+    </index>
+  </table>
+  <table name="dcs_sku_sites">
+    <column name="sku_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="site_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <primary-key name="dcs_sku_sites_pk">
+      <index-column column="sku_id" order="asc" seq="1"/>
+      <index-column column="site_id" order="asc" seq="2"/>
+    </primary-key>
+    <foreign-key name="dcs_sku_sites_f1" referenced-table="dcs_sku">
+      <fkey-column referencing-column="sku_id" referenced-column="sku_id"/>
+    </foreign-key>
+    <index name="sku_site_id_idx" table="dcs_sku_sites">
+       <index-column column="site_id" order="asc" seq="1"/>
+    </index>
+  </table>
+</schema>
+<!-- @version $Id: //product/DCS/version/10.0.3/templates/DCS/sql/custom_catalog_ddl.xml#1 $$Change: 651360 $ -->

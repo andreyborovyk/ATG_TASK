@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<chart-template>
+  <registry-descriptor>
+    <type>chartTemplate</type>
+    <title>Gears Added Per Community and User</title>
+    <enabled>true</enabled>
+    <schedule>calendar * . * * * 1</schedule>
+  </registry-descriptor>
+  <section name="TypeEditor">
+    <type>verticalLegend</type>
+  </section>
+  <section expanded="false" name="ValuesEditor">
+    <value>
+      <dataset>/communitygearadd.xml</dataset>
+      <mapping>Comm_Gear_Add_id</mapping>
+      <function>extrapolatedTotal</function>
+      <label>Count</label>
+      <filter-expression>All Data</filter-expression>
+    </value>
+  </section>
+  <section name="TimeEditor">
+    <enabled>true</enabled>
+    <value type="frequency">
+      <name>hour</name>
+      <schedule>calendar * . * * * 1</schedule>
+    </value>
+    <value type="time-period">
+      <name>entireDataset</name>
+      <field>-1</field>
+      <amount>-1</amount>
+      <default-function/>
+      <type>3</type>
+    </value>
+  </section>
+  <section name="AxisEditor">
+    <value type="mapping">
+      <dataset>/communitygearadd.xml</dataset>
+      <type>java.lang.String</type>
+      <property>context.message.communityId</property>
+      <id>Comm_Gear_Add_community_id</id>
+      <mapper>/gearsqlmapper.xml</mapper>
+    </value>
+  </section>
+  <section name="LegendEditor">
+    <value type="mapping">
+      <dataset>/communitygearadd.xml</dataset>
+      <type>java.lang.String</type>
+      <property>context.message.profileId</property>
+      <id>Comm_Gear_Add_user_id</id>
+      <mapper>/gearsqlmapper.xml</mapper>
+    </value>
+  </section>
+  <section name="TitleEditor">
+    <title>Gears Added Per Community and User</title>
+  </section>
+  <section name="GenerateEditor"/>
+</chart-template>
+<!-- @version $Id: //app/portal/version/10.0.3/paf/config/framework/atg/registry/data/chartTemplates/Portal Usage/Community Usage/Gears Added Per Community and User.xml#2 $$Change: 651448 $ -->

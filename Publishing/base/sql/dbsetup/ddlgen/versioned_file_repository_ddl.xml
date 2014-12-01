@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This is a generated file -->
+
+<!DOCTYPE schema SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="versioned_file_repository_ddl" description="tables for the publishing file repository">
+
+  <comment> @version $Id: //product/Publishing/version/10.0.3/pws/sql/xml/file_repository_ddl.xml#2 $</comment>
+
+  <comment>
+    These tables are for the storing versioned files for Publishing
+  </comment>
+
+  <!-- table definition for the fileFolder item descriptor -->
+  
+	 <table name="epub_file_folder" description="information about file folders">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="the id of the workspace that the asset exists on" nullable="n" name="workspace_id">
+				 <column-type length="40" type="varchar" db="generic"/>
+			</column>
+			<column description="the id of the branch that the asset exists on" nullable="n" name="branch_id">
+				 <column-type length="40" type="varchar" db="generic"/>
+			</column>
+			<column description="is this version the head of branch" nullable="n" name="is_head">
+				 <column-type type="one-digit" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="flag indicating that the version is deleted" nullable="n" name="version_deleted">
+				 <column-type length="1" type="numeric" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="flag indicating that version is editable" nullable="n" name="version_editable">
+				 <column-type length="1" type="numeric" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="the predecessor version number" nullable="y" name="pred_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="date the asset was checked in if not a working version" nullable="y" name="checkin_date">
+				 <column-type type="datetime" db="generic"/>
+				 <column-type type="timestamp" db="oracle"/>
+			</column>
+
+			<!-- Data Columns -->
+    <column name="folder_id" nullable="n" description="each folder has a unique id" default="" i18n="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="acl" nullable="y" description="the access control list for this object" default="" i18n="n">
+      <column-type db="generic" type="varchar" length="2048"/>
+      <column-type db="mssql" type="text"/>
+    </column>
+    
+    <column name="folder_name" i18n="y" nullable="n" description="the name of the folder" default="">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="parent_folder" nullable="y" description="a reference to the parent folder of this folder" default="" i18n="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    
+
+    
+  
+			<primary-key name="content_folder_pk">
+      <index-column column="folder_id" seq="1" order="asc"/>
+    	 <index-column seq="2" order="asc" column="asset_version"/>
+			</primary-key>
+			<index name="ff_folder_name_idx" table="epub_file_folder" description="makes searching on the names of folders faster">
+      <index-column column="folder_name" seq="1" order="asc"/>
+    </index>
+			<index table="epub_file_folder" name="epub_file_fold_wsx">
+				 <index-column seq="1" order="asc" column="workspace_id"/>
+			</index>
+			<index table="epub_file_folder" name="epub_file_fold_cix">
+				 <index-column seq="1" order="asc" column="checkin_date"/>
+			</index>
+	 </table>
+
+  <!-- table definition for the fileAsset item descriptor -->
+  
+	 <table name="epub_file_asset" description="information about file assets">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="the id of the workspace that the asset exists on" nullable="n" name="workspace_id">
+				 <column-type length="40" type="varchar" db="generic"/>
+			</column>
+			<column description="the id of the branch that the asset exists on" nullable="n" name="branch_id">
+				 <column-type length="40" type="varchar" db="generic"/>
+			</column>
+			<column description="is this version the head of branch" nullable="n" name="is_head">
+				 <column-type type="one-digit" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="flag indicating that the version is deleted" nullable="n" name="version_deleted">
+				 <column-type length="1" type="numeric" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="flag indicating that version is editable" nullable="n" name="version_editable">
+				 <column-type length="1" type="numeric" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="the predecessor version number" nullable="y" name="pred_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="date the asset was checked in if not a working version" nullable="y" name="checkin_date">
+				 <column-type type="datetime" db="generic"/>
+				 <column-type type="timestamp" db="oracle"/>
+			</column>
+
+			<!-- Data Columns -->
+    <column name="file_asset_id" nullable="n" description="each file asset has a unique id" default="" i18n="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="type" nullable="n" description="the type of the file asset object" default="" i18n="n">
+      <column-type db="generic" type="numeric" length="19"/>
+	  <column-type db="mysql" type="bigint"/>
+    </column>
+    <column name="acl" nullable="y" description="the access control list for this object" default="" i18n="n">
+      <column-type db="generic" type="varchar" length="2048"/>
+      <column-type db="mssql" type="text"/>
+    </column>
+
+    <column name="filename" i18n="y" nullable="n" description="the name of the file asset object" default="">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="last_modified" nullable="y" description="the last modified time of the file asset object" default="" i18n="n">
+      <column-type db="generic" type="datetime"/>
+      <column-type db="oracle" type="timestamp"/>
+    </column>
+    <column name="size_bytes" nullable="y" description="the size in bytes of the file asset object" default="" i18n="n">
+      <column-type db="generic" type="numeric" length="19"/>
+	  <column-type db="mysql" type="bigint"/>
+    </column>
+    <column name="checksum" nullable="y" description="the checksum of the binary file data" default="" i18n="n">
+	  <column-type db="generic" type="bigint"/>
+    </column>
+    <column name="parent_folder" nullable="y" description="a reference to the parent folder of this file asset" default="" i18n="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    
+    
+
+    
+    
+    
+    
+  
+			<primary-key name="file_asset_pk">
+      <index-column column="file_asset_id" seq="1" order="asc"/>
+    	 <index-column seq="2" order="asc" column="asset_version"/>
+			</primary-key>
+			<index name="fa_folder_name_idx" table="epub_file_asset" description="makes searching on the names of file assets faster">
+      <index-column column="filename" seq="1" order="asc"/>
+    </index>
+			<index name="fa_parent_fldr_idx" table="epub_file_asset" description="makes searching on the parent folders of file assets faster">
+      <index-column column="parent_folder" seq="1" order="asc"/>
+    </index>
+			<index name="fa_size_idx" table="epub_file_asset" description="makes searching on the size of file assets faster">
+       <index-column column="size_bytes" seq="1" order="asc"/>
+    </index>
+			<index name="fa_last_mod_idx" table="epub_file_asset" description="makes searching on the last modified time of file assets faster">
+      <index-column column="last_modified" seq="1" order="asc"/>
+    </index>
+			<index table="epub_file_asset" name="epub_file_asse_wsx">
+				 <index-column seq="1" order="asc" column="workspace_id"/>
+			</index>
+			<index table="epub_file_asset" name="epub_file_asse_cix">
+				 <index-column seq="1" order="asc" column="checkin_date"/>
+			</index>
+	 </table>
+
+  <!-- table definition for the textFileAsset item descriptor -->
+  
+	 <table name="epub_text_file" description="information about text file assets">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+    <column name="text_file_id" nullable="n" description="each text file asset has a unique id" default="" i18n="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    <column name="text_content" nullable="y" description="the contents of the text file asset object" default="" i18n="n">
+      <column-type db="generic" type="long-varchar"/>
+      <column-type db="db2" type="varchar" length="20480"/>
+    </column>
+
+    
+    
+  
+			<primary-key name="tf_file_id_pk">
+      <index-column column="text_file_id" seq="1" order="asc"/>
+    	 <index-column seq="2" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table>
+
+  <!-- table definition for the binaryFileAsset item descriptor -->
+  
+	 <table name="epub_binary_file" description="information about binary file assets">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+    <column name="binary_file_id" nullable="n" description="each binary file asset has a unique id" default="" i18n="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    <column name="binary_content" nullable="y" description="the contents of the binary file asset object" default="" i18n="n">
+      <column-type db="generic" type="long-varbinary"/>
+      <column-type db="db2" type="blob" length="1048576"/>
+    </column>
+
+    
+    
+  
+			<primary-key name="bf_file_id_pk">
+      <index-column column="binary_file_id" seq="1" order="asc"/>
+    	 <index-column seq="2" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table>
+
+</schema>
+<!-- @version $Id: //product/Publishing/version/10.0.3/pws/sql/xml/file_repository_ddl.xml#2 $$Change: 651448 $ -->

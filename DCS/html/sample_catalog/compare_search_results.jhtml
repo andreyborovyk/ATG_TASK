@@ -1,0 +1,80 @@
+<importbean bean="/atg/dynamo/droplet/Switch">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/IsEmpty">
+<importbean bean="/atg/dynamo/droplet/ErrorMessageForEach">
+<importbean bean="/atg/commerce/catalog/AdvProductSearch">
+<importbean bean="/atg/commerce/catalog/RepositoryValues">
+<importbean bean="/atg/commerce/catalog/comparison/ProductList">
+<importbean bean="/atg/commerce/catalog/comparison/ProductListHandler">
+<importbean bean="/atg/userprofiling/Profile">
+
+<html>
+<head>
+<title>Product Comparison: Search Results</title>
+</head>
+
+<body>
+<a href="index.jhtml">Catalog Home</a> - 
+<a href="product_search.jhtml">Product Search</a> - 
+<a href="shoppingcart.jhtml">Shopping Cart</a> - 
+<a href="lists.jhtml">My Lists</a> - 
+Product Comparison -
+<a href="giftlist_search.jhtml">Gift List Search</a> - 
+<droplet bean="/atg/dynamo/droplet/Switch">
+  <param name="value" value="bean:/atg/userprofiling/Profile.transient">
+  <oparam name="false">
+    <a href="logout.jhtml">Logout</a>
+  </oparam>
+  <oparam name="true">
+    <a href="login.jhtml">Login</a> or <a href="register.jhtml">Register</a>
+  </oparam>
+</droplet>
+<BR>
+<i>location: <valueof bean="Profile.currentLocation"></valueof></i>
+
+<P>
+<h3>Search Results</h3>
+
+<P>
+
+Here we present the results of a product search, and allow the user
+to select the ones he or she would like added to the product comparison
+list.
+
+<P>
+
+<form action="comparison.jhtml" method="POST">
+<droplet bean="ForEach">
+  <param name="array" value="bean:AdvProductSearch.searchResults">
+  <param name="sortProperties" value="+displayName,+description">
+
+  <oparam name="empty">
+    <blockquote><strong>No matching products were found.</strong></blockquote>
+  </oparam>
+
+  <oparam name="outputStart">
+    <blockquote>
+    <strong>Select items to add to your product comparison list:</strong>
+    <P>
+    <table border=0 cellpadding=0 cellspacing=0>
+  </oparam>
+
+  <oparam name="output">
+    <tr>
+    <td>
+      <input type="checkbox" bean="ProductListHandler.productIdList" value="param:element.repositoryId">
+      <valueof param="element.displayName"/>
+    </td>
+    </tr>
+  </oparam>
+
+  <oparam name="outputEnd">
+    </table></br>
+    <input type="submit" bean="ProductListHandler.addProductList" value="Add to list">
+    </blockquote>
+  </oparam>
+
+</droplet>
+</form>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/DCS/html/sample_catalog/compare_search_results.jhtml#2 $$Change: 651448 $*/</java>
+

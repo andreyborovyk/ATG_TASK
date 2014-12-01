@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<dynamo-message-system>
+  <patchbay>
+    <message-sink>
+      <nucleus-name>
+        /atg/reporting/datawarehouse/loaders/LogRotationSink
+      </nucleus-name>
+      <input-port>
+        <port-name>
+          DEFAULT
+        </port-name>
+        <input-destination>
+          <provider-name>
+       	    local
+          </provider-name>
+          <destination-name>
+            localdms:/local/Reporting/LogRotation
+          </destination-name>
+          <destination-type>
+            Queue
+          </destination-type>
+        </input-destination>
+      </input-port>
+    </message-sink>
+  </patchbay>
+</dynamo-message-system>
+<!-- @version $Id: //product/ARF/version/10.0.3/ARF/base/config/atg/dynamo/messaging/dynamoMessagingSystem.xml#2 $$Change: 651448 $-->

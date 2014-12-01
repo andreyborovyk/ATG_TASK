@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This is a generated file -->
+
+<!DOCTYPE schema SYSTEM "http://road.atg.com/dtds/ddlgen/schema.dtd">
+<schema name="versioned_multisite_i18n_ddl" description="Tables for i18n multisite application">
+  <comment>
+     @version $Id: //hosting-blueprint/B2CBlueprint/version/10.0.3/EStore/International/sql/ddlgen/multisite_i18n_ddl.xml#1 $$Change: 651360 $
+  </comment>
+  
+	 <table name="crs_i18n_site_attr" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+			</column>
+
+			<!-- Data Columns -->
+    <column name="id" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="default_lang" nullable="y" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="2"/>
+    </column>
+    
+     
+  <primary-key name="crs_i18nsite_pattr">
+      <index-column column="id" seq="1" order="asc"/>
+    
+				 <index-column seq="2" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table>
+</schema>
+<!-- @version $Id: //hosting-blueprint/B2CBlueprint/version/10.0.3/EStore/International/sql/ddlgen/multisite_i18n_ddl.xml#1 $$Change: 651360 $-->

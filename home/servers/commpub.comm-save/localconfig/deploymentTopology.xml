@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE publishing-deployment-topology SYSTEM
+          "http://www.atg.com/dtds/publishing_deployment/publishing_deployment_1.0.dtd">
+
+<!-- The deployment heirarchy consisting of targets, and   -->
+<!-- individual agents.  -->
+<publishing-deployment-topology>
+
+  <!-- A target is required to deploy to, a target being a -->
+  <!-- collective of agents that will all receive the same -->
+  <!-- deployment.                                         -->
+
+  
+  <target>
+  
+    <!-- Simple identifier for this target. -->
+    <target-name>
+      Production
+    </target-name>
+
+    <!-- A single deployment agent in the target. -->
+    <agent>
+      <!-- Simple identifier for this agent. -->
+      <agent-name>
+        production-local
+      </agent-name>
+
+      <!-- Makes this agent responsible for deploying assets to  -->
+      <!-- the specified asset destination/source.  This tag is  -->
+      <!-- only useful for agents that do not have ALL defined   -->
+      <!-- in their principal-asset tag.  It is useful for       -->
+      <!-- specifying local non-shared asset data stores and     -->
+      <!-- data stores excluded from an asset principal.         -->
+      <!-- This tag may be listed multiple times to include      -->
+      <!-- multiple asset destinations.                          -->
+
+      <include-asset-destination>
+        /atg/epub/file/ConfigFileSystem
+      </include-asset-destination>
+
+      <include-asset-destination>
+        /atg/epub/file/WWWFileSystem
+      </include-asset-destination>
+      
+      <!-- Each deployment agent must have a transport agent for -->
+      <!-- for the server to communicate with that agent over.   -->
+      <transport>
+        <!-- Denotes the type of the transport, currently either -->
+        <!-- RMI or JNDI lookup of the transport agent.          -->
+        <transport-type>
+          RMI
+        </transport-type>
+        <!-- If transport type is JNDI, then the tag 'jndi-name' -->
+        <!-- should specifiy the JNDI path of the transport.     -->
+        <!-- If transport type is RMI, then the tag 'rmi-uri'    -->
+        <!-- should specifiy the URI of the agent RMI client.    -->
+        <rmi-uri>
+          rmi://localhost:8160/atg/epub/AgentTransport
+        </rmi-uri>
+      </transport>
+    </agent>
+
+    <repository-mapping>
+      <source-repository>/atg/commerce/catalog/ProductCatalog</source-repository>
+      <destination-repository>/atg/commerce/catalog/ProductCatalog_production
+      </destination-repository>
+    </repository-mapping>
+
+    <repository-mapping>
+      <source-repository>/atg/store/stores/StoreRepository</source-repository>
+      <destination-repository>/atg/store/stores/StoreRepository_production
+      </destination-repository>
+    </repository-mapping>
+
+    <repository-mapping>
+      <source-repository>/atg/commerce/claimable/ClaimableRepository</source-repository>
+      <destination-repository>/atg/commerce/claimable/ClaimableRepository_production
+      </destination-repository>
+    </repository-mapping>
+
+    <repository-mapping>
+      <source-repository>/atg/commerce/pricing/priceLists/SecurePriceLists</source-repository>
+      <destination-repository>/atg/commerce/pricing/priceLists/PriceLists_production
+      </destination-repository>
+    </repository-mapping>
+
+    <repository-mapping>
+      <source-repository>/atg/userprofiling/PersonalizationRepository</source-repository>
+      <destination-repository>/atg/userprofiling/PersonalizationRepository_production
+      </destination-repository>
+    </repository-mapping>
+
+      <repository-mapping>
+      <source-repository>/atg/seo/SEORepository</source-repository>
+      <destination-repository>/atg/seo/SEORepository_production</destination-repository>
+    </repository-mapping>
+
+    <repository-mapping>
+      <source-repository>/atg/multisite/SiteRepository</source-repository>
+      <destination-repository>/atg/multisite/SiteRepository_production
+      </destination-repository>
+    </repository-mapping>
+  
+  </target>
+
+
+</publishing-deployment-topology>

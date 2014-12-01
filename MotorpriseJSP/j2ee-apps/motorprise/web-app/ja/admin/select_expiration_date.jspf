@@ -1,0 +1,40 @@
+<%@ taglib uri="dsp" prefix="dsp" %>
+<dsp:page>
+
+<dsp:importbean bean="/atg/dynamo/droplet/Switch"/>
+<dsp:importbean bean="/atg/projects/b2bstore/repository/B2BRepositoryFormHandler"/>
+
+<dsp:setvalue bean="B2BRepositoryFormHandler.value.expirationYear" paramvalue="Year"/>
+<dsp:setvalue bean="B2BRepositoryFormHandler.value.expirationMonth" paramvalue="Month"/>
+
+<dsp:select bean="B2BRepositoryFormHandler.value.expirationYear">
+  <dsp:option value="2004"/>2004
+  <dsp:option value="2005"/>2005
+  <dsp:option value="2006"/>2006 
+  <dsp:option value="2007"/>2007
+  <dsp:option value="2008"/>2008
+  <dsp:option value="2009"/>2009
+  <dsp:option value="2010"/>2010
+  <dsp:option value="2011"/>2011
+  <dsp:option value="2012"/>2012
+</dsp:select>
+”N
+
+<dsp:select bean="B2BRepositoryFormHandler.value.expirationMonth">
+  <dsp:option value="01"/>01 
+  <dsp:option value="02"/>02
+  <dsp:option value="03"/>03
+  <dsp:option value="04"/>04
+  <dsp:option value="05"/>05
+  <dsp:option value="06"/>06 
+  <dsp:option value="07"/>07
+  <dsp:option value="08"/>08
+  <dsp:option value="09"/>09
+  <dsp:option value="10"/>10
+  <dsp:option value="11"/>11
+  <dsp:option value="12"/>12
+</dsp:select>
+ŒŽ
+
+</dsp:page>
+<%-- @version $Id: //product/B2BCommerce/version/10.0.3/release/MotorpriseJSP/j2ee-apps/motorprise/web-app/ja/admin/select_expiration_date.jspf#2 $$Change: 651448 $--%>

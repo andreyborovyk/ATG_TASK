@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE process-manager-configuration 
+        PUBLIC "-//Art Technology Group, Inc.//DTD Process Manager//EN" 
+        'http://www.atg.com/dtds/processmanager/processmanager_1.0.dtd'>
+
+<process-manager-configuration>
+
+  <grammar-registry>
+    <grammar-extension-class>
+      atg.projects.store.ui.StoreGrammarExtension
+    </grammar-extension-class>
+  </grammar-registry>
+
+  <action-registry>
+    <action>
+      <action-name>
+        fillRelatedItemsSlotAction
+      </action-name>
+      <action-class>
+        atg.projects.store.scenario.action.StoreFillRelatedItemsSlotAction
+      </action-class>
+    </action>
+    
+    <action>
+      <action-name>
+        Generate Email List
+      </action-name>
+      <action-class>
+        atg.projects.store.scenario.action.GenerateEmailList
+      </action-class>
+      <action-configuration>
+        /atg/scenario/configuration/GenerateEmailListConfiguration
+      </action-configuration>
+      <description>
+        Generates an email distribution list.
+      </description>
+      <action-execution-policy>
+        collective
+      </action-execution-policy>
+      <action-error-response>
+        retry
+      </action-error-response>
+      <action-parameter>
+        <action-parameter-name>
+          fileName
+        </action-parameter-name>
+        <action-parameter-class>
+          java.lang.String
+        </action-parameter-class>
+        <required>
+          true
+        </required>
+        <description>
+          Name of output file.
+        </description>
+      </action-parameter>
+    </action>
+    
+  </action-registry>
+  
+  
+  <condition-registry>
+    <condition>
+      <condition-name>
+        merchandiseTotalCondition
+      </condition-name>
+      <filter-class>
+        atg.projects.store.scenario.MerchandiseTotalCondition
+      </filter-class>
+      <filter-configuration>
+        /atg/scenario/configuration/PMDLExpressionFilterConfiguration
+      </filter-configuration>
+    </condition>
+  </condition-registry>
+  
+
+</process-manager-configuration>
+<!-- @version $Id: //hosting-blueprint/B2CBlueprint/version/10.0.3/EStore/config/atg/scenario/scenarioManager.xml#2 $$Change: 651448 $-->

@@ -1,0 +1,92 @@
+<nucleus type=import>
+  /atg/dynamo/admin/Configure
+</nucleus>
+
+<java>
+  atg.service.dynamo.ServerConfig configure = (atg.service.dynamo.ServerConfig) request.resolveName("/atg/dynamo/admin/Configure");
+  atg.service.dynamo.ServerConfig defaultCfg = (atg.service.dynamo.ServerConfig) request.resolveName("/atg/dynamo/admin/DefaultConfigure");
+</java>
+
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+<title>Enable J2EE Archive Caching</title>
+</head>
+
+<body bgcolor="#FFFFFF" text="#00214A" vlink="#637DA6" link="#E87F02">
+
+
+<IMG SRC="images/config-banner.gif" ALT="Dynamo Configuration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a
+href="configure-server.jhtml">Configure</a>/<a
+href="configure-server-services.jhtml">Servers</a>/J2EE_Archive_Caching
+<p>
+
+<blockquote>
+
+<h3>Server: <i><valueof property=Configure.serverName></valueof></i></h3>
+
+<h2>Configure J2EE Archive Caching</h2>
+
+<form action="configure-server-services.jhtml" method=get>
+
+<input name="currentProperties" property="Configure.currentProperties" type="hidden" value="j2eeArchiveCachingEnabled">
+
+<p><i>Note that if you are running multiple Dynamo servers, J2EE Archive
+Caching should be disabled for all but one server to avoid multiple
+servers writing to the same archive files.</i>
+
+<!-- message about whether you are using the defaults -->
+(currently
+<java>
+  if ( !configure.isDefaultServer() &&
+       !configure.isUsingDefault("j2eeArchiveCachingEnabled") )
+  {
+    out.println( " not " );
+  }
+</java>
+using defaults)
+
+<!-- checkbox for enabling caching -->
+<p>
+<input type="checkbox" property="Configure.j2eeArchiveCachingEnabled">
+<b>Enable J2EE Archive Caching</b>
+
+<!-- message for what default value is -->
+<java>
+  if ( !configure.isDefaultServer() && !configure.isUsingDefault("j2eeArchiveCachingEnabled") )
+    out.println( "(default: " + (defaultCfg.isJ2eeArchiveCachingEnabled()?"enabled":"disabled") + ")" );
+</java>
+
+<!-- submit button -->
+<p>
+<ul>
+  <input type="submit" property="Configure.applyChanges" value="Apply Changes">
+</ul>
+
+<!- button for getting defaults -->
+<java>
+  if ( !configure.isDefaultServer() &&
+       !configure.isUsingDefault("j2eeArchiveCachingEnabled") )
+  {
+</java>
+    <input type="submit" property="Configure.applyDefault" value="Use Defaults">
+<java>
+  }
+</java>
+</form>
+
+<p>
+<hr>
+<b>Change Server</b><p>
+<valueof property=Configure.serverConfiguredText></valueof>
+<p><droplet src="SelectServer.jhtml">
+    <param name="returnURL" value="config-j2ee-archiving.jhtml">
+</droplet>
+<a href="configure-server-services.jhtml">Back</a><br>
+
+</body>
+</html>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/config-j2ee-archiving.jhtml#2 $$Change: 651448 $*/</java>
+

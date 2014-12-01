@@ -1,0 +1,165 @@
+
+<nucleus type=import>
+        /atg/dynamo/admin/NSAPIConfigure
+</nucleus>
+
+<HTML>
+<HEAD>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+<TITLE>Install Connection Modules: Server Version and Path</TITLE>
+
+
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="images/config-banner.gif" ALT="Dynamo Configuration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a
+href="configure-server.jhtml">Configure</a>/<a
+href="configure-server.jhtml#CM">Connection_Modules</a>/version_path
+<p>
+
+<blockquote>
+
+<H2>Install Connection Modules: Server Version and Path</H2><p>
+<FORM ACTION="config-cms-serverlist.jhtml" METHOD=POST>
+
+<!-- Display error message and then clear it. -->
+<font color=red><valueof property=NSAPIConfigure.errorMessage valueishtml></valueof></font>
+<setvalue property=NSAPIConfigure.errorMessage>
+<p>
+
+<droplet bean="/atg/dynamo/droplet/Switch">
+  <param name="value" value="bean:NSAPIConfigure.windows">
+  <oparam name="true">
+
+  <!-- This is a Windows NT/Windows 2000 machine. -->
+
+    <droplet bean="/atg/dynamo/droplet/Switch">
+      <param name="value" value="bean:NSAPIConfigure.numWinVersions">
+      <oparam name="1">
+
+        <!-- Only one version of Sun ONE Web Server is installed.     -->
+        <!-- Since there is no need for the user's input just display -->
+        <!-- the Version and Root Directory.                          -->
+
+        The Dynamo Connection Modules will be configured for the
+        Sun ONE Web Server with the following version number
+        and root directory:
+        <p>
+
+        <droplet bean="/atg/dynamo/droplet/ForEach">
+          <param name="array" 
+            value="bean:NSAPIConfigure.winVersionsAndPaths">
+          <oparam name="outputStart">
+            <table border=0 cellpadding=5 cellspacing=0>
+              <tr><th></th><th>Version</th><th>Root Directory</th></tr>
+          </oparam>
+          <oparam name="output">
+            <tr>
+              <td align="right" width=50>
+            <input type="hidden" name="winVersionAndPath"
+              property=NSAPIConfigure.winVersionAndPath
+              value="param:key">
+              </td>
+              <td align="middle"><valueof param="key"></valueof></td>
+              <td><code><valueof param="element"></valueof></code></td>
+            </tr>
+          </oparam>
+          <oparam name="outputEnd">
+            </table>
+            <p>
+          </oparam>
+        </droplet>
+
+      </oparam>
+
+      <oparam name="default">
+
+        <!-- List the Version and Root Directory of each Sun ONE  -->
+        <!-- Web Server installed and allow the user to choose    -->
+        <!-- which Sun ONE Web Server he/she wishes to configure. -->
+
+        Please check the appropriate version number and root directory 
+        of your server:
+        <p>
+
+        <droplet bean="/atg/dynamo/droplet/ForEach">
+          <param name="array" 
+            value="bean:NSAPIConfigure.winVersionsAndPaths">
+          <!-- param name="sortProperties" value="_key+" --> 
+          <oparam name="outputStart">
+            <table border=0 cellpadding=5 cellspacing=0>
+              <tr><th></th><th>Version</th><th>Root Directory</th></tr>
+          </oparam>
+          <oparam name="output">
+            <tr>
+              <td align="right" width=50>
+            <input type="radio" name="winVersionAndPath"
+              property=NSAPIConfigure.winVersionAndPath
+              value="param:key">
+              </td>
+              <td align="middle"><valueof param="key"></valueof></td>
+              <td><code><valueof param="element"></valueof></code></td>
+            </tr>
+          </oparam>
+          <oparam name="outputEnd">
+            </table>
+            <p>
+          </oparam>
+        </droplet>
+
+      </oparam>
+    </droplet>
+    <!-- end of switch that determines how many NES installations exist -->
+
+  </oparam>
+
+  <oparam name="false">
+
+  <!-- This is a UNIX machine. -->
+
+    <h3>Sun ONE Web Server Version</h3>
+
+    <setvalue property=NSAPIConfigure.version value=6.0>
+
+    Please check the appropriate version number of your server:
+    <p>
+
+    <ul>
+    <INPUT TYPE="radio" property=NSAPIConfigure.version
+      NAME="version" VALUE=6.0>6.0<br>
+    <INPUT TYPE="radio" property=NSAPIConfigure.version
+      NAME="version" VALUE=6.1>6.1<br>
+    </ul>
+    <p>
+
+    <h3>Sun ONE Web Server Root Directory</h3>
+
+    Please enter the root directory of your Sun ONE Web Server installation.<p>
+
+    Enter directory:<BR>
+    <INPUT TYPE="text" property=NSAPIConfigure.rootPath SIZE=60><p>
+
+    <p>
+    For example:
+    <table>
+      <tr>
+        <td>&nbsp&nbsp&nbsp</td>
+        <td><code>/usr/iplanet/servers</code></td>
+        <td>(Sun ONE Web Server, 6.x)</td>
+      </tr>
+    </table>
+
+  </oparam>
+</droplet>
+<!-- end of switch that determines whether this is Windows or UNIX -->
+
+<p>
+<INPUT TYPE="submit" VALUE="Next">
+</FORM>
+
+</blockquote>
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/config-cms-path.jhtml#2 $$Change: 651448 $ */</java>

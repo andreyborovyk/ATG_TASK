@@ -1,0 +1,111 @@
+<nucleus type=import>
+  /atg/dynamo/droplet/Switch
+  /atg/dynamo/admin/EnvironmentConfig
+  /atg/dynamo/droplet/ErrorMessageForEach
+</nucleus>
+
+<form action="param:returnURL" method=post>
+
+    <java>
+      String dpsRoot = request.getParameter("dpsRoot");
+      String configDir = dpsRoot + File.separator +
+                         "demo" + File.separator + "config";
+      String demoSrcDir = dpsRoot + File.separator + "demo" +
+                          File.separator + "html";
+      // Relative path within the docroot
+      String demoDestDir = "DSSDemo" + File.separator + "QuincyFunds";
+    </java>
+
+<!-- Save the values as params for later use, else they go out of scope. -->
+    <setvalue param="demoSrcDir" value="`demoSrcDir`">
+    <setvalue param="demoDestDir" value="`demoDestDir`">
+    <setvalue param="configDir" value="`configDir`">
+    <setvalue bean="EnvironmentConfig.docRootTest" value="`demoDestDir`">
+    <setvalue bean="EnvironmentConfig.configPathTest" value="`configDir`">
+
+    <!-- Table setup to display the form neatly -->
+    <TABLE BORDER="0" WIDTH="500">
+    <TR>
+      <TD>
+        <FONT SIZE="-2">
+        <droplet name="Switch">
+      	  <param name="value" value="bean:EnvironmentConfig.pathnameInDocRoot">
+    	  <oparam name="false">
+    	    Note: Dynamo is <B>not</B> currently configured to run the Quincy Funds and Targeted Email Demos on startup. If you would like to add them to Dynamo startup, click the Add Demos button.
+	  </oparam>
+	  <oparam name="true">
+	    <droplet name="Switch">
+	      <param name="value" value="bean:EnvironmentConfig.pathnameInConfigPath">
+	      <oparam name="false">
+	        Note: Dynamo is <B>not</B> currently configured to run the Quincy Funds and Targeted Email Demos on startup. If you would like to add them to Dynamo startup, click the Add Demos button.
+	      </oparam>
+	      <oparam name="default">
+	      Note: Dynamo is currently configured to run the Quincy Funds and Targeted Email Demos on startup. If you would like to remove them from Dynamo startup, click the Remove Demos button.
+	      </oparam>
+	    </droplet>
+	  </oparam>
+	</droplet>
+      </TD>
+      <TD>
+	
+    <droplet name="Switch">
+
+      <param name="value" value="bean:EnvironmentConfig.pathnameInDocRoot">
+
+      <oparam name="true">
+      <!-- demo files already exist in the docroot -->
+	<droplet name="Switch">
+	  <param name="value" value="bean:EnvironmentConfig.pathnameInConfigPath">
+	  <oparam name="false">
+          <!-- demo config dir NOT in configpath, display install button -->
+            <input type=hidden bean=EnvironmentConfig.newPostConfigPath value="param:configDir">
+ 	    <input type=submit bean=EnvironmentConfig.addPostConfigPath value="Add Demos">
+	  </oparam>
+	  <oparam name="default">
+          <!-- demo config dir already in configpath, display uninstall button -->
+            <input type=submit bean=EnvironmentConfig.removePostConfigPath submitvalue="param:configDir" value="Remove Demos">
+	  </oparam>
+	</droplet>
+
+      </oparam>
+
+      <oparam name="false">
+      <!-- demo files not yet copied -->
+	<droplet name="Switch">
+	  <param name="value" value="bean:EnvironmentConfig.pathnameInConfigPath">
+	  <oparam name="false">
+	    <!-- display install button which triggers a copy AND edit configpath -->
+	    
+	    <input type=hidden bean=EnvironmentConfig.newPostConfigPath value="param:configDir">
+	    <input type=hidden bean=EnvironmentConfig.addPostConfigPath>
+	    <input type=hidden bean=EnvironmentConfig.sourceDir value="param:demoSrcDir">
+	    <input type=hidden bean=EnvironmentConfig.destinationDir value="param:demoDestDir">
+	    <input type=submit bean=EnvironmentConfig.copyToDocRoot value="Add Demos">
+	  </oparam>
+	  <oparam name="default">
+	    <!-- display install button which triggers a copy only -->
+	    <input type=hidden bean=EnvironmentConfig.sourceDir value="param:demoSrcDir">
+	    <input type=hidden bean=EnvironmentConfig.destinationDir value="param:demoDestDir">
+	    <input type=submit bean=EnvironmentConfig.copyToDocRoot value="Add Demos">
+	  </oparam>
+	</droplet>
+
+      </oparam>	
+
+    </droplet>
+
+    </TD></TR></TABLE>
+
+    <!-- Print out any error messages -->
+    <font color=cc0000>
+      <droplet name="ErrorMessageForEach">
+        <param name="exceptions" value="bean:EnvironmentConfig.formExceptions">
+        <oparam name="output">
+          <br> <valueof param="message"></valueof>
+        </oparam>
+      </droplet>
+    </font>
+
+</form>
+<java>/* @version $Id: //product/DPS/version/10.0.3/release/DPS/admin/atg/userprofiling/admin/en/dps-demo-toggle.jhtml#2 $$Change: 651448 $*/</java>
+

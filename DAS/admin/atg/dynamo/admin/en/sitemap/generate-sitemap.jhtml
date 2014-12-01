@@ -1,0 +1,34 @@
+<html>
+<head>
+<title>Generate Sitemaps</title>
+</head>
+<body BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="../images/admin-banner.gif" ALT="Sitemap Administration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a href="sitemap-admin.jhtml">Sitemap</a>/Generate<p>
+
+<blockquote>
+
+<importbean bean="/atg/sitemap/SitemapGeneratorFormHandler">
+
+<h2>Generate Sitemaps</h2>
+
+<font color=cc0000><STRONG>
+  <valueof bean="SitemapGeneratorFormHandler.errorMessage"></valueof><p>
+</STRONG></font> 
+
+This service will generate sitemap and sitemap index information and write it to sitemap repository.<br>
+
+<br>
+
+<form action="generate-sitemap.jhtml" method=POST>
+<input type=submit bean="SitemapGeneratorFormHandler.StartSitemapGeneratorService" value="Start service">
+</form>
+
+</blockquote>
+
+</body>
+</html>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/sitemap/generate-sitemap.jhtml#2 $$Change: 651448 $*/</java>
+

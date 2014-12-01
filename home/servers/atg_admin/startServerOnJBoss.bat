@@ -1,0 +1,1 @@
+call "c:/ae10/jboss-5.1.0.GA//bin/run.bat" -c atg_admin %*

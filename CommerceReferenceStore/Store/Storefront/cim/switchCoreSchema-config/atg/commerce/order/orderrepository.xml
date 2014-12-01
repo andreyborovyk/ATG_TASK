@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE gsa-template SYSTEM "dynamosystemresource:/atg/dtds/gsa/gsa_1.0.dtd">
+
+<!-- $Change: 651448 $$DateTime: 2011/06/07 13:55:45 $$Author: rbarbier $ 
+ $Id: //hosting-blueprint/B2CBlueprint/version/10.0.3/Storefront/cim/switchCoreSchema-config/atg/commerce/order/orderrepository.xml#2 $$Change: 651448 $  Add item descriptors and properties specific to the B2C commerce  platform -->
+<gsa-template>
+
+  <header>
+    <name>CIM Store Related Order Changes </name>
+    <author>ATG</author>
+    <version>$Change: 651448 $$DateTime: 2011/06/07 13:55:45 $$Author: rbarbier $</version>
+  </header>
+  
+  
+  
+<item-descriptor name="itemPriceInfo">
+
+
+    <table type="auxiliary" id-column-name="amount_info_id" shared-table-sequence="1" name="dcspp_item_price">
+			<property name="priceList" xml-combine="remove"/>
+      <property display-name-resource="priceList" readable="true" writable="true" required="false" expert="false" category-resource="categoryItem" hidden="false" column-name="price_list" cache-mode="inherit"  data-type="string" name="priceList" queryable="true">
+        <attribute value="40" name="propertySortPriority"/>
+      </property>
+      
+   </table>
+   <table name="crs_item_price">
+      <property name="taxPriceInfo" cascade=""/>
+    </table>
+</item-descriptor>
+  
+
+ <item-descriptor name="pricingAdjustment">
+
+    <table type="primary" id-column-name="adjustment_id" shared-table-sequence="1" name="dcspp_price_adjust">
+			<property name="pricingModel" xml-combine="remove"/>
+      <property display-name-resource="pricingModel" readable="true" writable="true" required="false"  data-type="string" expert="false" category-resource="categoryBasics" hidden="false" column-name="pricing_model" cache-mode="inherit" name="pricingModel" queryable="true">
+        <attribute value="50" name="propertySortPriority"/>
+      </property>
+   
+    </table>
+
+  </item-descriptor>
+  
+
+</gsa-template>
+<!-- @version $Id: //hosting-blueprint/B2CBlueprint/version/10.0.3/Storefront/cim/switchCoreSchema-config/atg/commerce/order/orderrepository.xml#2 $$Change: 651448 $-->

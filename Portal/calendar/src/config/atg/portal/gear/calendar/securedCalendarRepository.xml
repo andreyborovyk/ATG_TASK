@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE secured-repository-template
+  PUBLIC "-//Art Technology Group, Inc.//DTD Dynamo Security//EN"
+  "http://www.atg.com/dtds/security/secured_repository_template_1.0.dtd">
+
+<secured-repository-template>
+  <item-descriptor name="event">
+    <!-- The ACL that applies to the item view/descriptor -->
+<!--
+  Null means everything
+
+    <descriptor-acl value="Profile$role$administrators-group:read,write,create,delete;Profile$role$everyone-group:read,create,delete"/>
+-->
+    <!-- The property that the ownership will be stored in -->
+    <owner-property name="owner"/>
+
+    <!-- The property that the ACL will be stored in -->
+    <acl-property name="item_acl"/>
+
+    <!-- Access rights that are assigned to the owner when an item is created -->
+    <creation-owner-acl-template value="$:read,write,list,destroy,read_acl,write_acl"/>
+
+    <!-- Access rights that are assigned to all of the owner's
+         groups when an item is created.  WARNING: This feature
+         is potentially dangerous. -->
+    <creation-group-acl-template value="$:read,list"/>
+
+  </item-descriptor>
+</secured-repository-template>
+<!-- @version $Id: //app/portal/version/10.0.3/calendar/config/atg/portal/gear/calendar/securedCalendarRepository.xml#2 $$Change: 651448 $ -->

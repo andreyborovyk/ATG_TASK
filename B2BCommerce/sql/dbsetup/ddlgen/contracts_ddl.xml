@@ -1,0 +1,74 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="contracts_ddl">
+<comment><![CDATA[ @version $Id: //product/B2BCommerce/version/10.0.3/templates/B2BCommerce/sql/contracts_ddl.xml#2 $$Change: 651448 $]]></comment>
+<comment><![CDATA[
+Normally, catalog_id and price_list_id would reference the appropriate table 
+it is possible not to use those tables though, which is why the reference is not 
+included
+]]></comment>
+   <table name="dbc_contract">
+      <column name="contract_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="display_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="creation_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <column name="start_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <column name="end_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <column name="creator_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="negotiator_info" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="price_list_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="catalog_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="term_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="comments" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dbc_contract_p">
+         <index-column column="contract_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dbc_contract_term">
+      <column name="terms_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="terms" nullable="y">
+         <column-type db="generic" type="long-varchar"/>
+         <column-type db="db2" type="varchar" length="20480" scale=""/>
+      </column>
+      <column name="disc_percent" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="7"/>
+      </column>
+      <column name="disc_days" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="net_days" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <primary-key name="dbc_contract_ter_p">
+         <index-column column="terms_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+</schema>
+<!-- @version $Id: //product/B2BCommerce/version/10.0.3/templates/B2BCommerce/sql/contracts_ddl.xml#2 $$Change: 651448 $ -->

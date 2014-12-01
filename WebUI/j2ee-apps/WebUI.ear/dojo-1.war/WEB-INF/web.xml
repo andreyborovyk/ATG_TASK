@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee" version="2.4"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+             http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+  <display-name>
+    Dojo 1.x
+  </display-name>
+
+  <description>
+    The Dojo javascript toolkit, version 1.x.
+  </description>
+
+  <!-- If context-root is set here, then ServletContextWebAppRegistry will use
+       this setting as the context root for this web application.  This must
+       match the context-root setting in application.xml. -->
+  <context-param>
+    <param-name>context-root</param-name>
+    <param-value>dojo-1</param-value>
+  </context-param>
+
+  <!-- Turn off preview for this app-->
+  <context-param>
+    <param-name>atg.preview</param-name>
+    <param-value>false</param-value>
+  </context-param>
+
+  <!-- Add Cache Headers Filter                                       -->
+  <!--                                                                -->
+  <!-- This filter is responsible for adding full caching headers to  -->
+  <!-- static content (images, js files)                              -->
+  <filter>
+    <filter-name>AddCacheHeadersFilter</filter-name>
+    <filter-class>atg.filter.AddCacheHeadersFilter</filter-class>
+    <init-param>
+      <param-name>loggingDebug</param-name>
+      <param-value>false</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingWarning</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingError</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loggingInfo</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>patterns</param-name>
+      <param-value>.*\.js,.*\.css,.*\.html,.*\.png,.*\.gif,.*\.jpg,.*\.ico</param-value>
+    </init-param>
+    <init-param>
+      <param-name>gzipPatterns</param-name>
+      <param-value>.*\.js,.*\.css</param-value>
+    </init-param>
+    <init-param>
+      <param-name>defaultContentType</param-name>
+      <param-value>application/octet-stream</param-value>
+    </init-param>
+    <init-param>
+      <param-name>flush</param-name>
+      <param-value>false</param-value>
+    </init-param>
+    <init-param>
+      <param-name>timeSpan</param-name>
+      <param-value>2592000</param-value>
+    </init-param>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>AddCacheHeadersFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <servlet>
+    <servlet-name>NucleusServlet</servlet-name>
+    <servlet-class>atg.nucleus.servlet.NucleusServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+</web-app>
+<!-- @version $Id: //product/WebUI/version/10.0.3/src/web-apps/dojo-1/WEB-INF/web.xml#2 $$Change: 651448 $-->

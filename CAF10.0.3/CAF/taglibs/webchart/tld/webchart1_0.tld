@@ -1,0 +1,531 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE taglib
+    PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN"
+    "http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_2.dtd">
+<!--
+  <ATGCOPYRIGHT>
+    Copyright (C) 1997-2009 Art Technology Group, Inc.
+    All Rights Reserved.  No use, copying or distribution of this
+    work may be made except in accordance with a valid license
+    agreement from Art Technology Group.  This notice must be
+    included on all copies, modifications and derivatives of this
+    work.
+
+    Art Technology Group (ATG) MAKES NO REPRESENTATIONS OR WARRANTIES
+    ABOUT THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+    INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT. ATG SHALL NOT BE
+    LIABLE FOR ANY DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING,
+    MODIFYING OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+
+    "Dynamo" is a trademark of Art Technology Group, Inc.
+  </ATGCOPYRIGHT>
+-->
+
+<taglib>
+  <tlib-version>1.0</tlib-version>
+  <jsp-version>1.2</jsp-version>
+  <short-name>chart</short-name>
+  <uri>http://www.atg.com/taglibs/webchart</uri>
+  <display-name>Web Chart tags</display-name>
+  <description>Web Chart 1.0 library</description>
+
+  <!--
+    Rules:
+    1. Tags must be in alphabetical order by tag class name.
+    2. Tag description must include the type of object that will be set in the page context.
+    3. Tag definitions must follow the pattern/formatting/naming convention of existing definitions.
+  -->
+
+  <!-- areEditorsComplete -->
+  <tag>
+    <name>areEditorsComplete</name>
+    <tag-class>atg.reporting.webchart.taglib.AreEditorsCompleteTag</tag-class>
+    <tei-class>atg.reporting.webchart.taglib.AreEditorsCompleteTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Checks to see if the user has satisfied all requirements of an editor such
+      that the editor can successfully render a chart.  Indicates that the
+      editor has enough information and is prepared to supply the parameters
+      necessary to render a chart.
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets the name of the scripting variable that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the attribute in the page context that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>editorDescriptors</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets a collection of EditorDescriptor objects to check.</description>
+    </attribute>
+  </tag>
+
+  <!-- generateDimensionBeans -->
+  <tag>
+    <name>generateDimensionBeans</name>
+    <tag-class>atg.reporting.webchart.taglib.GenerateDimensionBeansTag</tag-class>
+    <tei-class>atg.reporting.webchart.taglib.GenerateDimensionBeansTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Given a beanClass name and a cube it will create a collection of bean obejects of the type passed in.
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets the name of the scripting variable that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the attribute in the page context that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>cube</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the cube.</description>
+    </attribute>
+
+    <attribute>
+      <name>beanClassName</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>sets the bean name</description>
+    </attribute>
+  </tag>
+
+
+  <!-- getAllChartDescriptors -->
+  <tag>
+    <name>getAllChartDescriptors</name>
+    <tag-class>atg.reporting.webchart.taglib.GetAllChartDescriptorsTag</tag-class>
+    <tei-class>atg.reporting.webchart.taglib.GetAllChartDescriptorsTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Gets the collection of all ChartDescriptor objects for each
+      Chart stored in the chart registry as a Collection of 
+      ChartDescriptor objects.
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets the name of the scripting variable that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the attribute in the page context that will hold the results</description>
+    </attribute>
+  </tag>
+
+  <!-- getChart -->
+  <tag>
+    <name>getChart</name>
+    <tag-class>atg.reporting.webchart.taglib.GetChartTag</tag-class>
+    <tei-class>atg.reporting.webchart.taglib.GetChartTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Gets a chart given its unique id (path) in the ChartRegistry as a 
+      Chart object.
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets the name of the scripting variable that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the attribute in the page context that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>chartId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets unique id (path) of the chart to find.</description>
+    </attribute>
+  </tag>
+
+  <!-- getChartParams -->
+  <tag>
+    <name>getChartParams</name>
+    <tag-class>atg.reporting.webchart.taglib.GetChartParamsTag</tag-class>
+    <tei-class>atg.reporting.webchart.taglib.GetChartParamsTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Gets a the chart mdql substitution parameters based on the supplied editor descriptors.
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets the name of the scripting variable that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the attribute in the page context that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>editorDescriptors</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets a collection of EditorDescriptor objects to get params for.</description>
+    </attribute>
+  </tag>
+
+  <!-- getChartSelections -->
+  <tag>
+    <name>getChartSelections</name>
+    <tag-class>atg.reporting.webchart.taglib.GetChartSelectionsTag</tag-class>
+    <tei-class>atg.reporting.webchart.taglib.GetChartSelectionsTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Gets a the chart mdql choose/selection map based on the supplied editor descriptors.
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets the name of the scripting variable that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the attribute in the page context that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>editorDescriptors</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>
+        Sets a collection of EditorDescriptor objects to get
+        choose/selection map for.
+      </description>
+    </attribute>
+  </tag>
+
+  <!-- getChartUrl -->
+  <tag>
+    <name>getChartUrl</name>
+    <tag-class>atg.reporting.webchart.taglib.GetChartUrlTag</tag-class>
+    <tei-class>atg.reporting.webchart.taglib.GetChartUrlTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Gets a the servlet URL of a chart image represented by the given chart, 
+      chart parameters map, and chart selections map.
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets the name of the scripting variable that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the attribute in the page context that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>chart</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the Chart object containing the chart meta-data.</description>
+    </attribute>
+
+    <attribute>
+      <name>paramsMap</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>A map of substitution parameters to be passed into the MDQL projection.</description>
+    </attribute>
+
+    <attribute>
+      <name>selectionsMap</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>A map of choose/selection mappings to be passed into the MDQL projection.</description>
+    </attribute>
+    
+    <attribute>
+      <name>width</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The width of the generated chart image.</description>
+    </attribute>
+
+    <attribute>
+      <name>height</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The height of the generated chart image.</description>
+    </attribute>
+  </tag>
+
+  <!-- getCubes -->
+  <tag>
+    <name>getCubes</name>
+    <tag-class>atg.reporting.webchart.taglib.GetCubesTag</tag-class>
+    <tei-class>atg.reporting.webchart.taglib.GetCubesTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Gets a Collection of atg.md.Cube objects represented by the given chart, 
+      chart parameters map, and chart selections map.
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets the name of the scripting variable that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the attribute in the page context that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>chart</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the Chart object containing the cube definitions.</description>
+    </attribute>
+
+    <attribute>
+      <name>paramsMap</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>A map of substitution parameters to be passed into the MDQL projection.</description>
+    </attribute>
+
+    <attribute>
+      <name>selectionsMap</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>A map of choose/selection mappings to be passed into the MDQL projection.</description>
+    </attribute>
+  </tag>
+
+  <!-- getDimensionMember -->
+  <tag>
+    <name>getDimensionMember</name>
+    <tag-class>atg.reporting.webchart.taglib.GetDimensionMemberTag</tag-class>
+    <tei-class>atg.reporting.webchart.taglib.GetDimensionMemberTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Gets a member of a dimension given its member index.  Returns an atg.md.Member object
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets the name of the scripting variable that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the attribute in the page context that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>cube</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the cube to get the dimension member from.</description>
+    </attribute>
+
+    <attribute>
+      <name>dimensionIndex</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the index within the cube of the dimension to get the member from.</description>
+    </attribute>
+
+    <attribute>
+      <name>memberIndex</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>
+        Sets a MemberIndex object representing the index of the
+        member to retrieve within the dimension.
+      </description>
+    </attribute>
+  </tag>
+
+  <!-- getEditorDescriptors -->
+  <tag>
+    <name>getEditorDescriptors</name>
+    <tag-class>atg.reporting.webchart.taglib.GetEditorDescriptorsTag</tag-class>
+    <tei-class>atg.reporting.webchart.taglib.GetEditorDescriptorsTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Gets the collection of top level EditorDescriptor objects associated
+      with a given Chart object as a List of EditorDescriptor objects.
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets the name of the scripting variable that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the attribute in the page context that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>chart</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the Chart object to retrieve EditorDescriptor objects from.</description>
+    </attribute>
+  </tag>
+
+  <!-- getNextMemberIndex -->
+  <tag>
+    <name>getNextMemberIndex</name>
+    <tag-class>atg.reporting.webchart.taglib.GetNextMemberIndexTag</tag-class>
+    <tei-class>atg.reporting.webchart.taglib.GetNextMemberIndexTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>Gets the next MemberIndex from a CubeIterator.</description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets the name of the scripting variable that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the attribute in the page context that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>cubeIterator</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The cube iterator to retrieve the member index from</description>
+    </attribute>
+  </tag>
+
+  <!-- renderEditor -->
+  <tag>
+    <name>renderEditor</name>
+    <tag-class>atg.reporting.webchart.taglib.RenderEditorTag</tag-class>
+    <!-- no variables, so no TEI needed -->
+    <body-content>JSP</body-content>
+    <description>
+      Renders the editor associated with the supplied EditorDescriptor.
+    </description>
+
+    <attribute>
+      <name>editorDescriptor</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the EditorDescriptor whose Editor should be rendered.</description>
+    </attribute>
+  </tag>
+
+  <!-- getRendererDescriptors -->
+  <tag>
+    <name>getRendererDescriptors</name>
+    <tag-class>atg.reporting.webchart.taglib.GetRendererDescriptorsTag</tag-class>
+    <tei-class>atg.reporting.webchart.taglib.GetRendererDescriptorsTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Gets the collection of top level RendererDescriptor objects associated
+      with a given Chart object as a List of RendererDescriptor objects.
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+      <description>Sets the name of the scripting variable that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the attribute in the page context that will hold the results</description>
+    </attribute>
+
+    <attribute>
+      <name>chart</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the Chart object to retrieve RendererDescriptor objects from.</description>
+    </attribute>
+  </tag>
+
+  <!-- renderRenderer -->
+  <tag>
+    <name>renderRenderer</name>
+    <tag-class>atg.reporting.webchart.taglib.RenderRendererTag</tag-class>
+    <!-- no variables, so no TEI needed -->
+    <body-content>JSP</body-content>
+    <description>
+      Renders the Renderer associated with the supplied RendererDescriptor.
+    </description>
+
+    <attribute>
+      <name>rendererDescriptor</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the RendererDescriptor whose Renderer should be rendered.</description>
+    </attribute>
+  </tag>
+
+</taglib>

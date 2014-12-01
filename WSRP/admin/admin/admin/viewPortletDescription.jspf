@@ -1,0 +1,165 @@
+ 
+     <dspel:setvalue bean="ProducerAdminFormHandler.portletHandleForDeletion" 
+				paramvalue="portletHandleID"/>
+     <dspel:getvalueof id="viewPortletDescription" idtype="oasis.names.tc.wsrp.v1.types.PortletDescription"
+                                        bean="ProducerAdminFormHandler.viewPortletDescription">
+ 
+     <table cellpadding="1" cellspacing="0" border="0" bgcolor="#666666" width="100%"><tr><td>
+        <table cellpadding="4" cellspacing="0" border="0" bgcolor="#999999" width="100%"><tr><td>
+            <font class="pageheader">
+            <fmt:message key="view-gear-def-title" bundle="${producerAdminbundle}"/>
+            </font>
+        </td></tr></table>
+     </td></tr></table>
+
+     <table cellpadding="4" cellspacing="0" border="0" bgcolor="#EAEEF0" width="100%"><tr><td>
+        <font class="smaller">
+            <fmt:message key="view-gear-def-title-info" bundle="${producerAdminbundle}"/>
+        </font>
+     </td>
+     <td>
+	<c:url var="ViewPortletDefUrl" value="/configProducer.jsp">
+		<c:param name="mode" value="1"/>
+        </c:url>
+	<font class="smaller">&nbsp;&nbsp;
+         <dspel:a href="${ViewPortletDefUrl}">
+		back </font>
+         </dspel:a>
+     </td>
+     </tr></table>
+
+    <table cellspacing="0" cellpadding="0"  border="0" bgcolor="#c9d1d7" width="100%" id="table1">
+    <tr>
+        <td width="200"><font class="smaller">&nbsp;
+            <fmt:message key="remote-portlet-handle" bundle="${producerAdminbundle}"/>
+        </td>
+	    <td>&nbsp;<font class="smaller_bold"><c:out value="${viewPortletDescription.portletHandle}"/></td>
+	</tr>
+    <tr>
+		<td width="200"><font class="smaller">&nbsp;
+            <fmt:message key="remote-portlet-title" bundle="${producerAdminbundle}"/>
+        </td>
+		<td>&nbsp;<font class="smaller_bold"><c:out value="${viewPortletDescription.title.value}"/></td>
+	</tr>
+    <tr>
+		<td width="200"><font class="smaller">&nbsp;
+            <fmt:message key="remote-portlet-short-title" bundle="${producerAdminbundle}"/>
+    </td>
+		<td>&nbsp;<font class="smaller_bold"><c:out value="${viewPortletDescription.shortTitle.value}"/></td>
+	</tr>
+	<tr>
+		<td width="200"><font class="smaller">&nbsp;
+        <fmt:message key="remote-portlet-display-name" bundle="${producerAdminbundle}"/>
+    </td>
+		<td>&nbsp;<font class="smaller_bold"><c:out value="${viewPortletDescription.displayName.value}"/></td>
+	</tr>
+	<tr>
+		<td width="200"><font class="smaller">&nbsp;
+        <fmt:message key="remote-portlet-description" bundle="${producerAdminbundle}"/>
+    </td>
+		<td>&nbsp;<font class="smaller_bold"><c:out value="${viewPortletDescription.description.value}"/></td>
+   </tr>
+   <tr>
+		<td width="200"><font class="smaller">&nbsp;
+        <fmt:message key="remote-portlet-only-secure" bundle="${producerAdminbundle}"/>
+    </td>
+
+		<td>&nbsp;<font class="smaller_bold"><c:out value="${viewPortletDescription.onlySecure}"/></td>
+	</tr>
+    
+	<tr>
+		<td width="200"><font class="smaller">&nbsp;
+        <fmt:message key="remote-portlet-default-markup-secure" bundle="${producerAdminbundle}"/>
+    </td>
+		<td>&nbsp;<font class="smaller_bold"><c:out value="${viewPortletDescription.defaultMarkupSecure}"/></td>
+	</tr>
+	<tr>
+		<td width="200"><font class="smaller">&nbsp;
+        <fmt:message key="remote-portlet-user-get-methods" bundle="${producerAdminbundle}"/>
+    </td>
+		<td>&nbsp;<font class="smaller_bold"><c:out value="${viewPortletDescription.usesMethodGet}"/></td>
+	</tr>
+	<tr>
+		<td width="200"><font class="smaller">&nbsp;
+        <fmt:message key="remote-portlet-userContext-stored-in-session" bundle="${producerAdminbundle}"/>
+    </td>
+		<td>&nbsp;<font class="smaller_bold"><c:out value="${viewPortletDescription.userContextStoredInSession}"/></td>
+	</tr>
+	<tr>
+		<td width="200"><font class="smaller">&nbsp;
+        <fmt:message key="remote-portlet-templates-stored-in-session" bundle="${producerAdminbundle}"/>
+    </td>
+		<td>&nbsp;<font class="smaller_bold"><c:out value="${viewPortletDescription.templatesStoredInSession}"/></td>
+	</tr>
+	<tr>
+		<td width="200"><font class="smaller">&nbsp;
+        <fmt:message key="remote-portlet-has-user-specific-states" bundle="${producerAdminbundle}"/>
+    </td>
+		<td>&nbsp;<font class="smaller_bold"><c:out value="${viewPortletDescription.hasUserSpecificState}"/></td>
+	</tr>
+	<tr>
+		<td width="200"><font class="smaller">&nbsp;
+        <fmt:message key="remote-portlet-supports-template-processing" bundle="${producerAdminbundle}"/>
+    </td>
+		<td>&nbsp;<font class="smaller_bold"><c:out value="${viewPortletDescription.doesUrlTemplateProcessing}"/></td>
+	</tr></table>
+
+    <table cellspacing="0" cellpadding="2"  border="0" bgcolor="#c9d1d7" width="100%" id="table1">
+
+        <tr><td nowrap>
+		    <font class="smaller">&nbsp;
+            <fmt:message key="remote-portlet-markupType" bundle="${producerAdminbundle}"/>
+        </td></tr>
+
+<dspel:getvalueof id="markupType" idtype="oasis.names.tc.wsrp.v1.types.MarkupType[]" bean="ProducerAdminFormHandler.viewPortletDescription.markupTypes">
+      <c:set var="counterOfmarkupType" value="0"/>
+        <c:forEach var="markupTypeDefintion" items="${markupType}" varStatus="status">
+            <c:set var="counterOfmarkupType" value="${counterOfmarkupType+1}"/>
+              <c:if test="${status.index==0}">
+              </c:if>
+    	        <tr><td width="400">
+	    	        <table border="1"cellpadding="1" width="100%" id="table2">
+		    	        <tr>
+				            <td><font class="smaller">&nbsp;<c:out value="${markupTypeDefintion.mimeType}"/>&nbsp;</td>
+				            <td><font class="smaller">
+                              <c:set var="counterOfmodes" value="0"/>
+                              <c:forEach var="modesArrayDefinition" items="${markupTypeDefintion.modes}" varStatus="status">
+                                  <c:set var="counterOfmodes" value="${counterOfmodes+1}"/>
+                                  <c:if test="${status.index==0}">
+                                  </c:if>
+                                        <li><c:out value="${modesArrayDefinition}"/>&nbsp;&nbsp;
+                                  </c:forEach>
+                        <c:if test="${counterOfmodes == 0}">
+                             <font class="smaller"><fmt:message key="wsrp-producer-admin-no-av-modes" bundle="${producerAdminbundle}"/></font>
+                        </c:if>
+                    </td>
+                    <td><font class="smaller">
+                            <c:set var="counterOfWindow" value="0"/>
+                            <c:forEach var="windowsArrayDefinition" items="${markupTypeDefintion.windowStates}" varStatus="status">
+                                <c:set var="counterOfWindow" value="${counterOfWindow+1}"/>
+                                <c:if test="${status.index==0}">
+                                </c:if>
+                                      <li>&nbsp;<c:out value="${windowsArrayDefinition}"/>&nbsp;
+                            </c:forEach>
+                       <c:if test="${counterOfWindow == 0}">
+                            <font class="smaller"><fmt:message key="wsrp-producer-admin-no-av-windows-states" bundle="${producerAdminbundle}"/></font>
+                       </c:if>
+                    </td></tr></table>
+		       </td></tr>
+       </c:forEach>
+     </dspel:getvalueof>
+          <c:if test="${counterOfmarkupType == 0}">
+             <font class="smaller"><fmt:message key="wsrp-producer-admin-no-av-mime-types" bundle="${producerAdminbundle}"/></font>
+           </c:if>
+    </td></tr></table>
+
+
+	<table cellspacing="0" cellpadding="4"  border="0" bgcolor="#c9d1d7" width="100%" id="table1">
+        <tr><td nowrap>
+            <tr><td>
+            </td></tr>
+            <tr><td>
+            </td></tr>
+    </table>
+    </dspel:getvalueof>
+<%-- @version $Id: //product/WSRP/version/10.0.3/admin/admin/admin/viewPortletDescription.jspf#2 $$Change: 651448 $--%>

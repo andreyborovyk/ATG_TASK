@@ -1,0 +1,791 @@
+@import url(cssModules/foundation.css);
+@import url(cssModules/topNavigationTabs.css);
+@import url(cssModules/dataTable.css);
+@import url(cssModules/tableIcons.css);
+@import url(cssModules/formVerticalList.css);
+@import url(cssModules/pagination.css);
+@import url(cssModules/dataForm.css);
+
+
+
+/* ##########################################################
+	General styles
+*/
+h3{
+  clear: left;
+}
+span.required{
+	font-size:25px;
+	font-weight:normal;
+	line-height:0;
+	vertical-align:-10px;
+	color:#000;
+	margin-right:4px;
+	cursor:default;
+}
+div.atg_smerch_configSection{
+	margin-left:170px;
+	clear:both;
+}
+div.atg_smerch_configControl{
+	margin:0 2% 8px 0;
+	width:98%;
+}
+
+dl.atg_smerch_configList{
+  font-size: 1.2em;
+  margin: 0;
+  width: 95%;
+}
+dl.atg_smerch_configList input.formTextField{
+  width: auto;
+}
+
+*+html dl.atg_smerch_configList{
+  margin: 20px 0 0;
+}
+dl.atg_smerch_configList dt{
+  margin: 0 5px 15px 0;
+  float: left;
+  clear: left;
+  width: 170px;
+  text-align: right;
+  padding-top: 4px;
+  color: #5E595A;
+}
+dl.atg_smerch_configList dt.atg_smerch_conflict{
+	background: url(../images/icon_alertError.gif) no-repeat;
+	padding-left: 20px;
+}
+dl.atg_smerch_configList dd{
+  margin: 0 0 15px 0;
+  padding-top: 5px;
+  overflow: hidden;
+}
+dl.atg_smerch_configList dd input,
+dl.atg_smerch_configList dd select{
+  margin-top: -5px;
+}
+dl.atg_smerch_configList dd img{
+  vertical-align: -2px;
+}
+dl.atg_smerch_configList dd img.iconDeleteSmall{
+  vertical-align: -1px;
+}
+.atg_formAction a{
+  margin-left: 8px;
+}
+dl dd.atg_smerch_configLabel,
+dl dt.atg_smerch_configLabel{
+  padding-top: 4px;
+  margin-bottom:4px;
+}
+
+h3.atg_smerch_sectionTitle,
+h4.atg_smerch_sectionTitle{
+	clear:both;
+}
+
+dd table.atg_dataTable.atg_smerch_summaryTable {
+	margin-left:2px;
+	margin-right:2%;
+	width:96%;
+}
+table.atg_dataTable.atg_smerch_summaryTable {
+	margin-left:2%;
+	margin-right:2%;
+	margin-bottom: 20px;
+	width:96%;
+}
+div.atg_tablePagination{
+  float: none;
+  width: 96%;
+  margin-top: -20px;
+  margin-bottom: 30px;
+  border-top: none;
+}
+div.atg_topPagination{
+  float: none;
+  width: 96%;
+  margin-top: 0;
+  margin-bottom: 0;
+  border-top: 1px solid #ccc;
+}
+table.atg_dataTable table.atg_dataTable{
+  margin: 10px 20px;
+}
+table.atg_dataTable table.atg_dataTable tr{
+  background: transparent;
+}
+.atg_tablePagination{
+  margin-left: 2%;
+  margin-right: 2%;
+}
+.atg_indent{
+  margin-left: 40px !important;
+}
+.atg_formActionPop{
+  margin-top: 20px;
+  margin-left: 20px;
+}
+.atg_disableSection{
+  color: #999;
+}
+ul.atg_formVerticalList{
+  margin-bottom: 15px;
+}
+#rightPaneContent p.atg_subhead{
+  margin-top: 18px;
+  margin-bottom: 9px;
+}
+.atg_horizontalList{
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow: hidden;
+}
+.atg_horizontalList li{
+  float: left;
+  padding: 3px 0 0;
+  margin-right: 10px;
+  white-space: nowrap;
+}
+.atg_panelFooter{
+  overflow: hidden;
+  background: #efefef;
+  padding: 5px 10px;
+  text-align: right;
+  border-top: 1px solid #ccc;
+  margin-top: 20px;
+  clear: left;
+  height: 1%;
+}
+.atg_panelFooter ul{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.atg_panelFooter li{
+  float: right;
+  margin-right: 5px;
+}
+.atg_panelFooter li.secondaryActions{
+  float: left;
+}
+.atg_panelFooter table{
+  float: right;
+}
+.atg_panelFooter td{
+  padding: 2px;
+}
+.atg_noFieldset{
+  margin: 20px 0 20px;
+}
+dl.atg_nestedValues{
+  margin-top: 10px;
+}
+dl.atg_nestedValues dt,
+dl.atg_nestedValues dd{
+  margin-bottom: 15px;
+}
+.atg_searchButton input{
+  font-weight: bold;
+}
+.atg_smerch_newSearchTest:link,
+.atg_smerch_newSearchTest:visited{
+  display: block;
+  background-color: #efefef;
+  background-image: url(../images/Searchtest_icon3.gif);
+  background-repeat: no-repeat;
+  background-position: 3px 50%;
+  padding: 8px 0 8px 23px;
+  border-bottom: 1px solid #ccc;
+}
+.atg_smerch_newSearchTest:hover,
+.atg_smerch_newSearchTest:active{
+  background-color: #E4E4E4;
+  color: #000;
+}
+/* ###########################################################
+		Rules tables
+*/
+
+.atg_smerch_rulesTable{
+	margin-left: 20px;
+}
+
+table.atg_dataTable.atg_smerch_rulesTable{
+	margin:0 2% 10px 2px;
+	width:96%;
+}
+.atg_rowHighlight td{
+  background: #408000;
+  color: #fff;
+}
+#rightPaneContent p.atg_tableViewSwitch{
+  margin: 20px 0 5px 2%;
+}
+#rightPaneContent p.atg_fildsetNote{
+  margin: 20px 0 5px 2%;
+}
+#rightPaneContent p.atg_tableNote{
+  margin: -15px 0 35px 2%;
+}
+.atg_arrowUp{
+  background-image: url(../images/icon_arrowUp.gif);
+	background-position: 1px 50%;
+}
+.atg_positionUp{
+  background: url(../images/icon_arrowUp.gif) no-repeat left top;
+	padding-left: 16px;
+}
+.atg_trackedItem_firstPage{
+  background: url(../images/icon_trackedItem_firstPage.gif) no-repeat left top;
+}
+.atg_trackedItem_notFirstPage{
+  background: url(../images/icon_trackedItem_notFirstPage.gif) no-repeat left top;
+}
+.atg_trackedItem_notIncluded{
+  background: url(../images/icon_trackedItem_notIncluded.gif) no-repeat left top;
+}
+.atg_exclusion{
+  padding-right: 16px;
+  background: url(../images/icon_propertyDenyDefault.gif) no-repeat right top;
+}
+.atg_categoryUsed{
+  font-weight: bold;
+}
+.atg_categoryUsedIndicator{
+  background: url(../images/icon_successLarge.gif) no-repeat 3px 50%;
+}
+
+
+/* ###########################################################
+		Config tables
+*/
+.atg_smerch_config_table{
+	clear:both;
+	margin:0 2% 0 2px;
+
+}
+
+td.atg_smerch_orderCell{
+	width:38px;
+}
+
+td.atg_smerch_config_table_orderCell{
+	width:40px;
+}
+th.td.atg_smerch_enableCell,
+td.atg_smerch_enableCell{
+	text-align:center;
+	width:40px;
+}
+.atg_smerch_config_table table.atg_dataTable{
+	margin-top: 10px;
+}
+
+
+table.atg_dataTable.atg_smerch_inheritTable{
+	margin-left:120px;
+	width:auto;
+}
+span.atg_smerch_inheritSelect{
+	margin-left:10px;
+}
+.atg_smerch_inherit_section table.atg_dataTable.atg_smerch_inheritTable{
+	float:left;
+	margin-left:6px;
+}
+
+.atg_smerch_inherit_section{
+	margin-left:40px;
+	display:block;
+	clear:both;
+}
+.atg_smerch_inherit_sectionLabel{
+ 	float:left;
+	margin-left:15px;
+}
+
+table.atg_dataTable .atg_calculatedScore td.atg_scoreLabel{
+  text-align: right;
+  border-right: none;
+}
+.atg_calculatedScore .scoreTotal{
+  border-left: none;
+}
+.atg_searchProcessStage dl{
+  margin: 0;
+  padding: 0;
+}
+.atg_trackedItemOutcomes dl{
+  margin: 0 0 5px 0;
+  padding: 0;
+}
+.atg_searchProcessStage dt{
+  font-weight: bold;
+}
+.atg_searchProcessStage dd{
+  margin: 0;
+  padding: 0;
+}
+.atg_trackedItemOutcomes dt{
+  margin-bottom: 4px;
+}
+.atg_trackedItemOutcomes dd{
+  margin: 0;
+  padding: 1px 0 3px 16px;
+
+}
+.atg_groupedItemsArrow{
+  float: right;
+}
+#rightPaneContent p.atg_includedConstraint,
+#rightPaneContent p.atg_excludedConstraint{
+  margin: 20px 0 0;
+}
+#rightPaneContent p.atg_includedConstraint{
+  padding-left: 16px;
+  background: url(../images/icon_successLarge.gif) no-repeat;
+}
+#rightPaneContent p.atg_excludedConstraint{
+  padding-left: 16px;
+  background: url(../images/icon_no.gif) no-repeat;
+}
+td.atg_trackedItem_notIncluded,
+td.atg_trackedItem_notFirstPage,
+td.atg_trackedItem_firstPage{
+  padding-left: 20px !important;
+  background-position: 3px 50%;
+}
+td.atg_subConfiguration{
+  padding-left: 20px !important;
+}
+td.atg_subsubConfiguration{
+  padding-left: 40px !important;
+}
+tr.atg_subConfigurationMatch{
+  font-weight: bold;
+}
+.atg_smerch_configListSingle{
+  margin-left: 2% !important;
+}
+.atg_smerch_configListSingle dt{
+  width: auto !important;
+}
+.atg_categoryDeterminationInfo{
+  margin-left: 2%;
+}
+.atg_categoryDeterminationInfo h3{
+  font-size: 1.1em;
+  margin-left: 0;
+}
+#rightPaneContent .atg_categoryDeterminationInfo p{
+  margin: 0 0 2px 0;
+}
+.atg_categoryDeterminationInfo ul{
+  margin-top: 0;
+  margin-left: 10px;
+  padding-left: 0;
+  list-style-position: inside;
+}
+*+html #searchConfigSpan,
+*+html #envMsg,
+*+html #selectSourceInput_cats_displayName{ /* IE7 fixes */
+  vertical-align: 5px;
+}
+* html #searchConfigSpan,
+* html #envMsg,
+* html #selectSourceInput_cats_displayName{ /* IE6 fixes */
+  vertical-align: 5px;
+}
+#searchConfigs_table th.tableOrder,
+#childDimensionFolders_table th.tableOrder{
+  width: 100px;
+}
+
+
+/* ###########################################################
+		Item Content Nav
+*/
+
+
+ul.atg_contentItemNav{
+  list-style: none;
+  margin: 0 2% 20px;
+  padding: 0;
+  overflow: hidden;
+  }
+ul.atg_contentItemNav li{
+  float: left;
+}
+ul.atg_contentItemNav li.atg_contentItemNav_back{
+  margin-right: 30px;
+}
+ul.atg_contentItemNav li.atg_contentItemNav_page,
+ul.atg_contentItemNav li.atg_contentItemNav_views ul li.atg_contentItemNav_viewItem{
+  margin-right: 10px;
+}
+ul.atg_contentItemNav li.atg_contentItemNav_views{
+  float: right;
+}
+ul.atg_contentItemNav li.atg_contentItemNav_views ul{
+  list-style: none;
+}
+
+
+/* ###########################################################
+		Property tables
+*/
+
+.atg_smerch_property_section{
+	display:block;
+	clear:both;
+	margin-left:135px;
+}
+
+/*.atg_smerch_property_ranking_section{
+	width:400px;
+}*/
+
+div.atg_smerch_property_rankingControls{
+	display:block;
+	clear:both;
+}
+
+.atg_smerch_thesaurusTable{
+  margin-left: 2px;
+}
+
+span.atg_smerch_property_conflictField{
+	font-weight: bold;
+	background: url(../images/icon_alertError.gif) no-repeat;
+	padding-left: 20px;
+	padding-bottom: 2px;
+}
+
+table.atg_dataTable.atg_smerch_propertyWeighting{
+	margin:0 2% 10px 2px;
+	width:96%;
+}
+div.atg_smerch_propertyDescription{
+	margin:10px 0 10px 0;
+	clear:both;
+}
+table.atg_dataTable.atg_smerch_propertyRanking{
+	width: 98%;
+	margin-left: 2px;
+}
+
+table.atg_dataTable.atg_smerch_propertyNumberRanking{
+	margin:0 2% 10px 3%;
+	width:auto;
+}
+div.atg_smerch_configControl.atg_smerch_numberRangeControl{
+	margin:0 2% 8px 3%;
+}
+div.atg_smerch_propertyWeightingValue{
+	min-width:40px;
+	float:left;
+	width: 40px;
+}
+
+table.atg_dataTable.atg_smerch_propertyRanking td.atg_smerch_propertyRankingCell{
+	width: 20px;
+}
+table.atg_dataTable.atg_smerch_propertyRanking td.atg_smerch_propertyRankingCell input{
+	width:30px;
+}
+
+/* ###########################################################
+	Ranking visuals
+*/
+td.atg_smerch_rankIndicatorBest{
+	background:#247dca;
+	width:25px;
+	color:#eeeeee;
+	font-weight:bold;
+}
+td.td.atg_smerch_rankIndicator{
+		width:25px;
+}
+td.atg_smerch_rankIndicatorBetter{
+		width:25px;
+		color:#dddddd;
+		font-weight:bold;
+}
+td.atg_smerch_rankIndicatorGood{
+	background:#ffffff;
+	width:25px;
+	color:#000000;
+	font-weight:bold;
+
+}
+/* ###########################################################
+		Enhanced Ranking tables
+*/
+
+.atg_smerch_propertyRanking td{
+  border:none;
+  border-top:1px solid #c2c2c2;
+}
+.atg_smerch_propertyRanking .atg_combinedRow td{
+  border:none;
+}
+
+td.atg_smerch_rankIndicator,
+td.atg_smerch_rankIndicatorBest,
+td.atg_smerch_rankIndicatorGood{
+  border-right:1px solid #c2c2c2;
+  border-left:1px solid #c2c2c2;
+  border-top:1px solid #c2c2c2;
+}
+.atg_smerch_propertyRanking .atg_combinedRow td.atg_smerch_rankIndicator,
+.atg_smerch_propertyRanking .atg_combinedRow td.atg_smerch_rankIndicatorBest,
+.atg_smerch_propertyRanking .atg_combinedRow td.atg_smerch_rankIndicatorGood{
+  border-top:none;
+  border-right:1px solid #c2c2c2;
+  border-left:1px solid #c2c2c2;
+}
+
+.atg_dataTable .atg_numberValue{
+	text-align: right;
+}
+.atg_dataTable th.atg_numberValue{
+	text-align: right;
+	padding-right: 5px;
+}
+
+/* ###########################################################
+		Thesaurus tables
+*/
+div.atg_smerch_thesaurusSection{
+	margin:0 2% 10px 2%;
+	width:96%;
+}
+
+input.atg_smerch_thesaurus_conflictField{
+	background:#ffffca;
+}
+span.atg_smerch_thesaurus_conflictField{
+	font-weight:bold;
+}
+.atg_smerch_autoWidth,
+table.atg_dataTable.atg_smerch_autoWidth{
+	width:auto;
+}
+
+
+/* ###########################################################
+		Facets
+*/
+
+.atg_facetListing{
+  margin: 0 0 0 21px;
+  padding: 0;
+  overflow: hidden;
+  list-style: none;
+  clear: left;
+}
+.atg_facetListing li{
+  height: 90%;
+  float: left;
+  margin-right: 25px;
+}
+.atg_facetListing dl{
+  margin: 0;
+  padding: 0;
+}
+.atg_facetListing dt{
+  font-weight: bold;
+  margin-bottom: 3px;
+}
+.atg_facetListing dd{
+  margin: 0 0 3px 0;
+  padding: 0;
+}
+.atg_facetListing .multiSelect{
+  height: 90px;
+}
+
+.atg_smerch_summaryTable td img{
+  vertical-align: -6px;
+}
+.atg_smerch_summaryTable td .atg_smerch_summaryTable{
+  margin-left: 38px;
+  margin-bottom: 15px;
+}
+.atg_smerch_summaryTable td.noIndent{
+  padding: 0 !important;
+  border: 0 !important;
+}
+.atg_smerch_summaryTable td.noIndent .atg_smerch_summaryTable{
+  margin: 0;
+  width: 100%;
+  border: 0 !important;
+}
+.atg_smerch_summaryTableActions{
+  margin-top: 10px;
+}
+.atg_smerch_facetRules.notMet{
+  color: #F33;
+}
+.atg_smerch_facetRules ul{
+  list-style: square;
+  margin: 5px 0 0 23px;
+  padding: 0;
+}
+.atg_smerch_facetRules ul li{
+  margin-bottom: 3px;
+}
+.atg_dataTable td.atg_smerch_facetSource_category{
+  padding-left: 22px !important;
+  background-image: url(../images/category.gif);
+  background-repeat: no-repeat;
+  background-position: 3px 50%;
+}
+.atg_dataTable td.atg_smerch_facetSource_catalog{
+  padding-left: 22px !important;
+  background-image: url(../images/catalog.gif);
+  background-repeat: no-repeat;
+  background-position: 3px 50%;
+}
+.atg_dataTable td.atg_smerch_facetSource_facet{
+  padding-left: 22px !important;
+  background-image: url(../images/icon_facet.gif);
+  background-repeat: no-repeat;
+  background-position: 3px 50%;
+}
+
+.atg_smerch_facetRules .notMet{
+  color: #F33;
+}
+.atg_smerch_facetRules ul{
+  list-style: square;
+  margin: 5px 0 0 23px;
+  padding: 0;
+}
+.atg_smerch_facetRules ul li{
+  margin-bottom: 3px;
+}
+
+/* ###########################################################
+		Bar Graphs
+*/
+
+.barValue{
+  float: left;
+  margin-right: 5px;
+}
+.bar1{
+  height: 13px;
+  background: #F00;
+  float: left;
+}
+.bar2{
+  height: 13px;
+  background: #DFA200;
+  float: left;
+}
+.bar3{
+  height: 13px;
+  background: #71A1DF;
+  float: left;
+}
+
+/* ###########################################################
+   Search Testing Environment, Select Dimension Values & Save Pickers
+*/
+#environmentDialogBox, #saveDialogBox, #dimensionValuesDialogBox {
+  background:#fff url(../images/bg_assetBrowser_bottomNew.gif) repeat-x left bottom !important;
+  clear:left;
+  margin:0px 1px 0 1px;
+  overflow:hidden;
+  border: 1px solid #A6BEDF;
+}
+
+#environmentDialogBox, #saveDialogBox {
+  width:352px;
+}
+
+#dimensionValuesDialogBox {
+  width:452px;
+}
+
+#environmentDialogBox h1, #saveDialogBox h1, #dimensionValuesDialogBox h1 {
+  margin-top:0;
+  padding:10px 0 10px 10px;
+  width:auto;
+  background:#C3D3E9 url(../images/box_header2.gif) repeat-x left bottom;
+  border:1px solid #fff;
+  border-bottom:none;
+  color:#fff;
+}
+
+#environmentDialogFooter, #saveDialogFooter, #dimensionValuesDialogFooter {
+  margin:0;
+  padding:0 5px 0 5px;
+  font-size:.9em;
+  font-weight:normal;
+  text-align: right;
+  line-height: 30px;
+}
+
+#environmentDialogFooter .button, #saveDialogFooter .button, #dimensionValuesDialogFooter .button {
+  margin-left: 5px !important;
+}
+
+#environmentDialogBody, #saveDialogBody, #dimensionValuesDialogBody {
+  clear:left;
+  height:125px !important;
+  height:auto;
+  overflow:auto;
+  padding: 10px;
+}
+
+#environmentDialogBody, #saveDialogBody {
+  width:332px;
+}
+
+#dimensionValuesDialogBody {
+  width:432px;
+}
+
+.searchTestingTableHeading {
+  font-weight: bold;
+  margin-bottom: 5px; 
+  margin-left: 15px;
+}
+
+#undeployedWithoutCategoryAlert, #undeployedWithoutCategoryAlert2 {
+  background: url(/AssetManager/images/icon_alertSmall.gif) no-repeat;
+  padding-left: 20px;
+}
+
+.atg_scoreTotal .notMet, .atg_queryTermTotal .notMet {
+  color: #F33;
+}
+
+.atg_dataTable td.groupCount {
+  background: url(../images/arrow.gif) 2px 7px no-repeat;
+  padding-left: 20px !important;
+}
+
+span.highlight {
+  background: #ffff00;
+}
+
+div#srchEnvPicker .atg_formActionPop, div#dimValPicker .atg_formActionPop {
+  text-align: right;
+}
+
+div#srchEnvPicker div.srchEnvPicker_comment {
+  color: gray;
+  font-style: italic;
+  padding-left: 22px;
+}
+
+.atg_testFolder_name {
+  vertical-align: top;
+}

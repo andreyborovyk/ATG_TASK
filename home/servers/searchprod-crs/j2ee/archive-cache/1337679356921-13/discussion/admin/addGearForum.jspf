@@ -1,0 +1,135 @@
+<%--
+Page:   	addGearForum.jsp
+Gear:  	 	Discussion Gear
+gearmode: 	instanceConfig
+displayMode: 	full
+
+Author:      	Jeff Banister
+Description: 	This page is included by instanceConfig.jsp, and renders and handles a form to create
+      		a forum which is associated to a particular gear instance.
+--%>
+
+<%
+
+   String thisConfigPage="AddGearForum";
+
+   String gearNameEncoded="";
+   if (gearName!=null) {  gearNameEncoded=atg.servlet.ServletUtil.escapeURLString((String) gearName); }
+
+%>
+
+
+<jsp:useBean id="formInput" scope="request" class="atg.portal.gear.discussion.AddForumBean">
+  <jsp:setProperty name="formInput" property="*"/>
+</jsp:useBean>
+
+<dsp:importbean bean="/atg/userprofiling/Profile"/>
+
+<%
+    String nameParam=atg.servlet.ServletUtil.getDynamoRequest(request).getParameter("forumName");
+    if (nameParam==null) {
+      nameParam="";
+    }
+    String descParam=atg.servlet.ServletUtil.getDynamoRequest(request).getParameter("forumDescription");
+    if (descParam==null) {
+      descParam="";
+    }
+
+%>
+
+<dsp:getvalueof id="profile" bean="Profile">
+<!-- handle the form if it was filled in -->
+<core:If value="<%= formInput.getHandleForm() %>" >
+  <discuss:addForum id="postResult"
+                    newForum="<%= formInput %>"
+		    user="<%= (atg.userprofiling.Profile) profile%>"
+		    gearId="<%= gearID %>"
+		    env="<%= pafEnv %>">
+    <core:ExclusiveIf>
+       <core:If value="<%= postResult.getSuccess() %>" >
+	  <img src='/gear/discussion/images/info.gif' border="0">&nbsp;<font class="small"><i18n:message key="new-forum-feedback-msg"/></font>
+       </core:If>
+      <%-- if not, display errors --%>
+      <core:DefaultCase>
+         <font color=cc0000 class="small"><b><i18n:message key="<%=postResult.getErrorMsg()%>" /></b></font>
+      </core:DefaultCase>
+    </core:ExclusiveIf>
+  </discuss:addForum>
+</core:If>
+</dsp:getvalueof>
+
+
+  <table cellpadding="1" cellspacing="0" border="0" bgcolor="#666666" width="98%"><tr><td>
+<table cellpadding="4" cellspacing="0" border="0" bgcolor="#BAD8EC" width="100%"><tr><td>
+  <font class="pageheader_edit">
+Create new forum for "<%= pafEnv.getGear().getName(response.getLocale()) %>"
+
+</td></tr></table>
+</td></tr></table>
+
+<table cellpadding="2" cellspacing="0" border="0" bgcolor="#EAEEF0" width="98%">
+
+<core:CreateUrl id="formURL" url="<%= origURI %>">
+<form ACTION="<%= formURL.getNewUrl() %>" METHOD="POST">
+
+
+<%--
+ Sets form encoding to the same as the encoding of this response.
+ This hidden field will let the form processing code know what the character encoding of the POSTed data is. 
+ --%>
+<input type="hidden" name="_dyncharset" value="<%= response.getCharacterEncoding() %>">
+
+<input type="hidden" name="handleForm" value="true">
+
+<input type="hidden" name="atg.paf.RedirectNoIncludeURL" value="discussion-url">
+<input type="hidden" name="paf_gear_id" value="<%= gearID %>">
+<input type="hidden" name="paf_dm" value="full">
+<input type="hidden" name="paf_gm" value="instanceConfig">
+<input type="hidden" name="config_page" value="<%= thisConfigPage%>">
+<input type="hidden" name="paf_page_id" value="<%= pageID %>"/>
+<input type="hidden" name="paf_page_url" value="<%= pageURLEncoded %>"/>
+<input type="hidden" name="paf_community_id" value="<%= communityID %>"/>
+
+
+<tr><td>
+        <font class="smaller">Use the forms below to create a new forum.
+        </td></tr></table>
+  
+<img src='/gear/discussion/images/clear.gif' height="1" width="1" border="0"><br>
+
+
+
+
+<table cellpadding="4" cellspacing="0" border="0" bgcolor="#BAD8EC" width="98%">
+
+<tr>
+   <td align="leftght" width"30%"><font class="smaller"><i18n:message key="forum-name"/>:</font></td>
+   <td>
+   <INPUT TYPE="text" NAME="forumName" SIZE="50" MAXLENGTH="50" VALUE="<%= nameParam%>">
+   </td>
+</tr>
+
+  <tr>
+    <td>&nbsp;</td>
+    <td><font class="smaller">
+    <input type="radio" name="forumType" value="private" checked>&nbsp;<i18n:message key="private"/></font>
+    </td>
+  </tr>
+
+  <tr>
+    <td>&nbsp;</td>
+    <td><font class="smaller">
+    <input type="radio" name="forumType" value="public">&nbsp;<i18n:message key="public"/></font>
+    </td>
+  </tr>
+
+  <tr><td>&nbsp;</td><td>
+    <i18n:message id="submit01" key="submit-button-label" /><INPUT type="submit" value="<%= submit01 %>">
+   <i18n:message id="clear02" key="clear-button-label" /> &nbsp;&nbsp;&nbsp;&nbsp;<input type="Reset" value="<%= clear02 %>"></td>
+  </tr>
+</form>
+</core:CreateUrl>
+</table>
+
+
+<%-- @version $Id: //app/portal/version/10.0.3/discussion/discussion.war/admin/addGearForum.jspf#2 $$Change: 651448 $--%>

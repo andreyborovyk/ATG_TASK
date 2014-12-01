@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE database-initializer SYSTEM "http://www.atg.com/dtds/dbinit_1_0.dtd">
+<database-initializer>
+	<schema id="searchSchema">
+		<sql>
+			<path>
+				<create>
+					sql/db_components/${database}/search_ddl.sql
+				</create>
+				<drop>
+					sql/uninstall/${database}/drop_search_ddl.sql
+				</drop>
+			</path>
+		</sql>
+	</schema>
+	<server-instance-type id="production">
+		<datasource id="switchingCore">
+			<schema id="searchSchema"/>
+		</datasource>	
+		<datasource id="nonswitchingCore">
+			<schema id="searchSchema"/>
+		</datasource>	
+	</server-instance-type>
+	<server-instance-type id="staging">
+		<datasource id="stagingswitchingCore">
+			<schema id="searchSchema"/>
+		</datasource>	
+		<datasource id="stagingnonswitchingCore">
+			<schema id="searchSchema"/>
+		</datasource>	
+	</server-instance-type>
+  <server-instance-type id="svcagent">
+    <datasource id="svcagent_db">
+      <schema id="searchSchema">
+      </schema>
+    </datasource>
+  </server-instance-type>
+</database-initializer>
+<!-- @version $Id: //product/DAF/version/10.0.3/Search/Index/src/cim/dbinit.xml#2 $$Change: 651448 $-->

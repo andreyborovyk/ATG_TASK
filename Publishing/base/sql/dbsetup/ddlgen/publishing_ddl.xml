@@ -1,0 +1,1149 @@
+<!DOCTYPE schema SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="publishing_ddl" description="tables for the epublishing repository">
+
+  <comment> @version $Id: //product/Publishing/version/10.0.3/pws/sql/xml/publishing_ddl.xml#2 $</comment>
+
+  <comment>
+    The tables here are for the various parts of the epublishing system.
+  </comment>
+
+  <!-- table definition for the history item descriptor -->
+  <table name="epub_history" description="information about history elements for projects">
+    <column name="history_id" nullable="n"
+         description="each history element has a unique id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+    <column name="profile" nullable="y"
+         description="the id of the profile which created this history element">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="timestamp" nullable="y"
+         description="the time the action in this history element occurred">
+      <column-type db="generic" type="datetime"/> 
+      <column-type db="oracle" type="timestamp"/> 
+    </column>
+    <column name="action" nullable="y"
+         description="the name of an action which this history element represents">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="action_type" nullable="y"
+         description="the type of action which this history element represents">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="description" i18n="y" nullable="y"
+         description="an associated description for this history element">
+      <column-type db="generic" type="varchar" length="4096"/>
+      <column-type db="mssql" type="text" />
+      <column-type db="sybase" type="varchar" length="2048"/>
+    </column>
+
+    <primary-key name="history_pk">
+      <index-column column="history_id"/>
+    </primary-key>
+    <!--foreign-key name="hist_profile_fk" referenced-table="dps_user"
+         description="ensures that the profile exists in the user table">
+      <fkey-column referencing-column="profile" referenced-column="id"/>
+    </foreign-key-->
+
+    <index name="his_profile_idx" table="epub_history"
+         description="makes searching on the profile of history elements faster">
+      <index-column column="profile"/>
+    </index>
+    <index name="his_timestamp_idx" table="epub_history"
+         description="makes searching on the timestamp of history elements faster">
+      <index-column column="timestamp"/>
+    </index>
+    <index name="his_action_idx" table="epub_history"
+         description="makes searching on the action of history elements faster">
+      <index-column column="action"/>
+    </index>
+  </table>
+
+
+  
+  <!-- table definition for the history's -->
+  <table name="epub_his_act_parm" description="action parameters">
+    <column name="history_id" nullable="n"
+         description="the id of the history">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="action_param" nullable="y"
+         description="the action paramters for the history's action">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="sequence_num" nullable="n"
+         description="the sequence number which determines the ordering of the history element in relation to the other history elements">
+      <column-type db="generic" type="bigint"/>
+    </column>
+
+    <primary-key name="epub_his_ac_pk">
+      <index-column column="history_id" order="asc" seq="1"/>
+      <index-column column="sequence_num" order="asc" seq="2"/>
+    </primary-key>
+    <foreign-key name="epub_hisact_id_fk" referenced-table="epub_history"
+         description="ensures that the history_id exists in the epub_history table">
+      <fkey-column referencing-column="history_id" referenced-column="history_id"/>
+    </foreign-key>
+  </table>
+
+
+  <!-- table definition for taskinfo items associated to a project -->
+  <table name="epub_taskinfo" description="task information associated to projects">
+    <column name="taskinfo_id" nullable="n"
+         description="the id of this task information item">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="version" nullable="n"
+         description="the version of the task information item">
+      <column-type db="generic" type="bigint"/>
+    </column>
+    <column name="process_id" nullable="n"
+         description="the id of the process to which this item pertains">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="process_name" i18n="y" nullable="n"
+         description="the name of the process whose task this item describes">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="segment_name" i18n="y" nullable="n"
+         description="the name of the process segment whose task this item describes">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="task_element_id" nullable="n"
+         description="the element id of the task this item describes">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="acl" nullable="y"
+         description="the access control list assigned to the task at runtime">
+      <column-type db="generic" type="varchar" length="2048"/>
+      <column-type db="mssql" type="text"/>
+    </column>
+    <column name="priority" nullable="y"
+         description="the priority of the task">
+      <column-type db="generic" type="bigint"/>
+    </column>
+    <column name="owner_name" nullable="y"
+            description="the persona name of the owner of the task, or null if no owner is known.">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="last_actor_name" nullable="y"
+         description="the persona name of the last known actor on the task.">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="last_action_date" nullable="y"
+         description="the date of the last known action on the task.">
+      <column-type db="generic" type="datetime"/>
+      <column-type db="oracle" type="timestamp"/>
+    </column>
+    <column name="last_outcome_id" nullable="y"
+         description="the element id of the last applied outcome for the task.">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+
+    <primary-key name="taskinfo_pk">
+      <index-column column="taskinfo_id"/>
+    </primary-key>
+    <index name="taskinfo_pname_ix" table="epub_taskinfo">
+      <index-column column="process_name"/>
+    </index>
+  </table>
+
+
+  <!--*************************************************************************************************-->
+  <!--               Deployment Topology Elements ** START                                            -->
+  <!--*************************************************************************************************-->
+  
+    <!---table definition of transport item descriptor -->
+   <table name="epub_agent_trnprt" description="information about target agent's transport">
+       <column name="transport_id" nullable="n"
+         description="each transport has a unique id, everybody knows dat">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="version" nullable="n"
+         description="the version of the transport object">
+      <column-type db="generic" type="bigint"/>
+    </column>        
+    <column name="transport_type" nullable="n"
+         description="the transport type of the transport. Can be one of RMI">
+      <column-type db="generic" type="one-digit"/>
+    </column>    
+   <column name="jndi_name" nullable="y"
+         description="jndi name for the target agent's transport">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>    
+   <column name="rmi_uri" nullable="y"
+         description="rmi uri for the target agent's transport">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>        
+   </table>
+
+   <!---table definition of agent item descriptor -->
+    <table name="epub_agent" description="information about target agents" >
+    <column name="agent_id" nullable="n"
+         description="each agent has a unique id, everybody knows dat">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="version" nullable="n"
+         description="the version of the target object">
+      <column-type db="generic" type="bigint"/>
+    </column>
+    <column name="creation_time" nullable="y"
+         description="the time this agent definition was created">
+      <column-type db="generic" type="datetime"/>
+      <column-type db="oracle" type="timestamp"/>
+    </column>    
+   <column name="display_name" i18n="y" nullable="y"
+         description="the name of the target">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>    
+    <column name="description" i18n="y" nullable="y"
+         description="a description of the agent object">
+      <column-type db="generic" type="varchar" length="1024"/>
+    </column>
+    <column name="main_agent_id" nullable="y"
+         description="the agent id of the target def that this agent def is surrogate for.">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="transport" nullable="n"
+         description="the id of transport definition for this agent">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>    
+    <primary-key name="target_agent_pk">
+      <index-column column="agent_id"/>    
+    </primary-key>
+   </table>
+       
+  <!---table definition of target item descriptor -->
+  <table name="epub_target" description="information about targets" >
+    <column name="target_id" nullable="n"
+         description="each target has a unique id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="snapshot_name" nullable="y"
+         description="each target has an initial snapshot associated with it">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="version" nullable="n"
+         description="the version of the target object">
+      <column-type db="generic" type="bigint"/>
+    </column>
+    <column name="creation_time" nullable="y"
+         description="the time this target definition was created">
+      <column-type db="generic" type="datetime"/>
+      <column-type db="oracle" type="timestamp"/>
+    </column>    
+    <column name="main_target_id" nullable="y"
+         description="the target id of the target def that this target def is surrogate for.">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+   <column name="display_name" i18n="y" nullable="y"
+         description="the name of the target">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="description" i18n="y" nullable="y"
+         description="a description of the target">
+      <column-type db="generic" type="varchar" length="1024"/>
+    </column>
+    <column name="halted" nullable="y"
+         description="indicates whether this target is accepting deployment jobs">
+      <column-type db="generic" type="one-digit"/>
+    </column>
+    <column name="flag_agents" nullable="y"
+         description="indicates whether this target should use import v/s full deployment for initialization">
+      <column-type db="generic" type="one-digit"/>
+    </column>
+    <column name="target_type" nullable="y"
+         description="indicates whether this target is set for workflow or one-off deployments">
+      <column-type db="generic" type="one-digit"/>
+    </column>
+    <primary-key name="targets_pk">
+      <index-column column="target_id"/>    
+    </primary-key>
+    </table>
+  
+  <!---table definition of target source/destination repository/vfs map -->
+  <table name="epub_tr_dest" description="target source/destination repository/vfs" >
+    <column name="target_id" nullable="n"
+         description="the project id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="target_source" nullable="n"
+         description="nucleus path to the source repository/vfs">
+      <column-type db="generic" type="varchar" length="100"/>
+    </column>
+    <column name="target_destination" nullable="n"
+         description="path to the destination repository or host/port of destination filesytem">
+      <column-type db="generic" type="varchar" length="100"/>
+    </column>
+
+    <primary-key name="epub_trd_id_pk">
+      <index-column column="target_id" order="asc" seq="1"/>
+      <index-column column="target_source" order="asc" seq="2"/>
+   </primary-key>
+  </table>
+
+  <!---table definition of topology item descriptor -->
+  <table name="epub_topology" description="information about a topology" >
+    <column name="topology_id" nullable="n"
+         description="each topology has a unique id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="version" nullable="n"
+         description="the version of the target object">
+      <column-type db="generic" type="bigint"/>
+    </column>
+    <column name="primary_tl" nullable="y"
+        description="indicates whether this topology if the primary topology">
+      <column-type db="generic" type="one-digit"/>
+    </column>
+    <primary-key name="topology_pk">
+      <index-column column="topology_id"/>    
+    </primary-key>
+    </table>
+
+  <!-- table definition for the targets property -->
+  <table name="epub_tl_targets" description="targets for a topology" >
+    <column name="topology_id" nullable="n"
+         description="the id of the topology to which the target is associated">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="target_id" nullable="n"
+         description="the id of a targets for this topology">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    <column name="sequence_num" nullable="n"
+         description="the sequence number which determines the ordering of the target element in relation to the other target elements">
+      <column-type db="generic" type="bigint"/>
+    </column>
+
+    <primary-key name="pr_tp_tr_pk">
+      <index-column column="topology_id" order="asc" seq="1"/>
+      <index-column column="target_id" order="asc" seq="2"/>
+    </primary-key>
+<!--
+    <foreign-key name="pt_tl_tl_id_fk" referenced-table="epub_topology"
+         description="ensures that the topology_id exists in the epub_topology table">
+      <fkey-column referencing-column="topology_id" referenced-column="topology_id"/>
+    </foreign-key>
+    <foreign-key name="pt_tl_ta_id_fk" referenced-table="epub_target"
+         description="ensures that the target_id exists in the epub_target table" index-name="epub_tl_targets_x">
+      <fkey-column referencing-column="target_id" referenced-column="target_id" />
+    </foreign-key>
+-->
+  </table>
+
+  <!-- table definition for the agent property -->
+  <table name="epub_tr_agents" description="agents for a target" >
+    <column name="target_id" nullable="n"
+         description="the id of the target to which the agent is associated">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="agent_id" nullable="n"
+         description="the id of a agent item for this target">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    <primary-key name="pr_ag_pk">
+      <index-column column="target_id" order="asc" seq="1"/>
+      <index-column column="agent_id" order="asc" seq="2"/>
+    </primary-key>
+    <foreign-key name="pt_tr_pr_id_fk" referenced-table="epub_target"
+         description="ensures that the target_id exists in the epub_target table">
+      <fkey-column referencing-column="target_id" referenced-column="target_id"/>
+    </foreign-key>
+    <foreign-key name="pt_ag_ag_id_fk" referenced-table="epub_agent"
+         description="ensures that the agent_id exists in the epub_agent table" index-name="epub_tr_agents_x">
+      <fkey-column referencing-column="agent_id" referenced-column="agent_id"/>
+    </foreign-key>
+
+
+  </table>  
+
+
+  <!-- table definition for the agent's principalAssets property -->
+  <table name="epub_princ_asset" description="information relative to principal assets for a target agent" >
+    <column name="agent_id" nullable="n"
+         description="the id of the agent to which this principal asset setting is associated">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="principal_assets" nullable="n"
+         description="the principal assets for this agent">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    <primary-key name="princ_asset_pk">
+      <index-column column="agent_id" order="asc" seq="1"/>
+      <index-column column="principal_assets" order="asc" seq="2"/>
+    </primary-key>
+    <foreign-key name="princ_aset_id_fk" referenced-table="epub_agent"
+         description="ensures that the agent_id exists in the epub_agent table">
+      <fkey-column referencing-column="agent_id" referenced-column="agent_id"/>
+    </foreign-key>
+
+  </table>  
+
+  <!-- table definition for the agent's includeAssetDestinations property -->
+  <table name="epub_includ_asset" description="information relative to include asset destinations for a target agent" >
+    <column name="agent_id" nullable="n"
+         description="the id of the agent to which this include asset destination setting is associated">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="include_assets" nullable="n"
+         description="the include asset destinations for this agent">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+
+    <primary-key name="includ_asset_pk">
+      <index-column column="agent_id" order="asc" seq="1"/>
+      <index-column column="include_assets" order="asc" seq="2"/>
+    </primary-key>
+    <foreign-key name="includ_aset_id_fk" referenced-table="epub_agent"
+         description="ensures that the agent_id exists in the epub_agent table">
+      <fkey-column referencing-column="agent_id" referenced-column="agent_id"/>
+    </foreign-key>
+
+
+  </table>  
+
+  <!-- table definition for the agent's excludeAssetDestinations property -->
+  <table name="epub_exclud_asset" description="information relative to exclude asset destinations for a target agent" >
+    <column name="agent_id" nullable="n"
+         description="the id of the agent to which this excluded asset destination setting is associated">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="exclude_assets" nullable="n"
+         description="the exclude asset destinations for this agent">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+
+    <primary-key name="exclud_asset_pk">
+      <index-column column="agent_id" order="asc" seq="1"/>
+      <index-column column="exclude_assets" order="asc" seq="2"/>
+    </primary-key>
+    <foreign-key name="exclud_aset_id_fk" referenced-table="epub_agent"
+         description="ensures that the agent_id exists in the epub_agent table">
+      <fkey-column referencing-column="agent_id" referenced-column="agent_id"/>
+    </foreign-key>
+
+
+  </table> 
+  
+  <!-- table definition for the agent's destinationMap property -->
+  <table name="epub_dest_map" description="information on mapping a component to another component on the agent" >
+    <column name="agent_id" nullable="n"
+         description="the id of the agent to which this destination mapping setting is associated">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="source" nullable="n"
+         description="the source for this mapping">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="destination" nullable="n"
+         description="the destination for this mapping">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+
+    <primary-key name="dest_map_pk">
+      <index-column column="agent_id" order="asc" seq="1"/>
+      <index-column column="source" order="asc" seq="2"/>
+    </primary-key>
+    <foreign-key name="dest_map_id_fk" referenced-table="epub_agent"
+         description="ensures that the agent_id exists in the epub_agent table">
+      <fkey-column referencing-column="agent_id" referenced-column="agent_id"/>
+    </foreign-key>
+
+  </table> 
+  
+  <!--*************************************************************************************************-->
+  <!--               Deployment Topology Elements ** END                                                -->
+  <!--*************************************************************************************************-->
+  
+  <!-- table definition for the project item descriptor -->
+  <table name="epub_project" description="information about projects">
+    <column name="project_id" nullable="n"
+         description="each project has a unique id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="version" nullable="n"
+         description="the version of the project object">
+      <column-type db="generic" type="bigint"/>
+    </column>
+    <column name="acl" nullable="y"
+         description="the access control list for the project object">
+      <column-type db="generic" type="varchar" length="2048"/>
+      <column-type db="mssql" type="text"/>
+    </column>
+    
+    <column name="display_name" i18n="y" nullable="y"
+         description="the name of the project object">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="description" i18n="y" nullable="y"
+         description="a description of the project object">
+      <column-type db="generic" type="varchar" length="1024"/>
+      <column-type db="mssql" type="text"/>
+    </column>
+    <column name="creator" nullable="y"
+         description="the profile id of the user which created the project">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    <column name="workspace" nullable="n"
+         description="the name of the workspace in which this project exists">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="workflow_id" nullable="y"
+         description="the id of the process' workflow object">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    <column name="checked_in" nullable="y"
+         description="indicates whether this project is checked in">
+      <column-type db="generic" type="one-digit"/>
+    </column>
+    <column name="locked" nullable="y"
+         description="indicates whether this project is locked for deployment">
+      <column-type db="generic" type="one-digit"/>
+    </column>	  
+    <column name="editable" nullable="y"
+         description="indicates whether this project is editable or readonly">
+      <column-type db="generic" type="one-digit"/>
+    </column>
+
+    <column name="status" nullable="y"
+         description="the status of the project. Can be one of Active, Completed, Suspended, Error">
+      <column-type db="generic" type="bigint"/>
+    </column>
+    <column name="status_detail" i18n="y" nullable="y"
+         description="details about the status of the project">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+
+    <column name="checkin_date" nullable="y"
+         description="the checkin time of the project">
+      <column-type db="generic" type="datetime"/>
+      <column-type db="oracle" type="timestamp"/>
+    </column>
+    <column name="creation_date" nullable="y"
+         description="the creation date of the project">
+      <column-type db="generic" type="datetime"/>
+      <column-type db="oracle" type="timestamp"/>
+    </column>
+    <column name="completion_date" nullable="y"
+         description="the completion date of the project">
+      <column-type db="generic" type="datetime"/>
+      <column-type db="oracle" type="timestamp"/>
+    </column>
+
+    <primary-key name="project_pk">
+      <index-column column="project_id"/>
+    </primary-key>
+    <check name="pr_editable_chk"
+         description="ensures that the editable column only has a value of 0 or 1">
+      <check-expr db="generic" expression="editable in (0,1)"/>
+    </check>
+
+    <index name="pr_workspace_idx" table="epub_project"
+         description="makes searching on the workspaces of projects faster">
+      <index-column column="workspace"/>
+    </index>
+    <index name="pr_disp_name_idx" table="epub_project"
+         description="makes searching on the display names of projects faster">
+      <index-column column="display_name"/>
+    </index>
+    <index name="pr_creator_idx" table="epub_project"
+         description="makes searching on the creator of projects faster">
+      <index-column column="creator"/>
+    </index>
+    <index name="pr_creat_date_idx" table="epub_project"
+         description="makes searching on the creation date of projects faster">
+      <index-column column="creation_date"/>
+    </index>
+    <index name="pr_comp_date_idx" table="epub_project"
+         description="makes searching on the completion date of projects faster">
+      <index-column column="completion_date"/>
+    </index>
+  </table>
+
+    <!-- table definition for the deploymentTargetWorkspaces map -->
+  <table name="epub_prj_targt_ws" description="information about project's target workspaces" >
+    <column name="project_id" nullable="n"
+         description="the id of the project with which this target workspace is associated ">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="target_id" nullable="n"
+         description="the project id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="workspace_id" nullable="y"
+         description="the workspace id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    <primary-key name="epub_prw_id_pk">
+      <index-column column="project_id" order="asc" seq="1"/>
+      <index-column column="target_id" order="asc" seq="2"/>
+   </primary-key>
+<!--
+   <foreign-key name="pt_tr_ws_pr_id_fk" referenced-table="epub_project"
+       description="ensures that the project_id exists in the project table">
+     <fkey-column referencing-column="project_id" referenced-column="project_id"/>
+    </foreign-key>
+    <foreign-key name="pt_tr_ws_ta_id_fk" referenced-table="epub_target"
+       description="ensures that the project_id exists in the project table" index-name="epub_prj_targtws_x">
+      <fkey-column referencing-column="target_id" referenced-column="target_id"/>
+    </foreign-key>
+-->
+  </table>
+
+    <!-- table definition for the deploymentTargetApproval map -->
+  <table name="epub_pr_tg_status" description="information about project's target approvals" >
+    <column name="project_id" nullable="n"
+         description="the id of the project with which this target merge workspace is associated ">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="target_id" nullable="n"
+         description="the project id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="status_code" nullable="y" 
+         description="the approval code">
+      <column-type db="generic" type="one-digit"/>
+    </column>
+
+    <primary-key name="epub_pr_ap_id_pk">
+      <index-column column="project_id" order="asc" seq="1"/>
+      <index-column column="target_id" order="asc" seq="2"/>
+   </primary-key>
+<!--
+   <foreign-key name="pt_tr_ap_pr_id_fk" referenced-table="epub_project"
+       description="ensures that the project_id exists in the project table">
+     <fkey-column referencing-column="project_id" referenced-column="project_id"/>
+    </foreign-key>
+    <foreign-key name="pt_tr_ap_ta_id_fk" referenced-table="epub_target"
+       description="ensures that the project_id exists in the project table" index-name="epub_pr_tg_sta_x">
+      <fkey-column referencing-column="target_id" referenced-column="target_id"/>
+    </foreign-key>
+-->
+  </table>
+    
+    <!-- table definition for the deploymentTargetSnapshot map -->
+  <table name="epub_prj_tg_snsht" description="information about project's target snapshots" >
+    <column name="project_id" nullable="n"
+         description="the id of the project with which this target snapshot is associated ">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="target_id" nullable="n"
+         description="the project id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="snapshot_id" nullable="y"
+         description="the snapshot name">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    <primary-key name="epub_prs_id_pk">
+      <index-column column="project_id" order="asc" seq="1"/>
+      <index-column column="target_id" order="asc" seq="2"/>
+   </primary-key>
+<!--
+   <foreign-key name="pt_snapt_pr_id_fk" referenced-table="epub_project"
+       description="ensures that the project_id exists in the project table">
+     <fkey-column referencing-column="project_id" referenced-column="project_id"/>
+    </foreign-key>
+    <foreign-key name="pt_snapt_ta_id_fk" referenced-table="epub_target"
+       description="ensures that the project_id exists in the project table" index-name="epub_prj_tgsnsht_x">
+      <fkey-column referencing-column="target_id" referenced-column="target_id"/>
+    </foreign-key>
+-->
+  </table>
+
+    <!-- table definition for the deploymentTimes map -->
+  <table name="epub_pr_tg_dp_ts" description="information about project's deployment time" >
+    <column name="project_id" nullable="n"
+         description="the id of the project with which this target deployment time is associated ">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="target_id" nullable="n"
+         description="the project id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="deployment_time" nullable="y"
+         description="the deployment time">
+      <column-type db="generic" type="datetime"/>
+      <column-type db="oracle" type="timestamp"/>
+    </column>
+
+    <primary-key name="epub_pr_dt_id_pk">
+      <index-column column="project_id" order="asc" seq="1"/>
+      <index-column column="target_id" order="asc" seq="2"/>
+   </primary-key>
+<!--
+   <foreign-key name="pt_dp_t_pr_id_fk" referenced-table="epub_project"
+       description="ensures that the project_id exists in the project table">
+     <fkey-column referencing-column="project_id" referenced-column="project_id"/>
+    </foreign-key>
+    <foreign-key name="pt_dp_t_ta_id_fk" referenced-table="epub_target"
+-->
+  </table>
+
+      <!-- table definition for the deploymentIds map -->
+  <table name="epub_pr_tg_dp_id" description="information about project's deployment id" >
+    <column name="project_id" nullable="n"
+         description="the id of the project with which this target deployment id is associated ">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="target_id" nullable="n"
+         description="the target id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="deployment_id" nullable="y"
+         description="the deployment id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    <primary-key name="epub_pr_dp_id_pk">
+      <index-column column="project_id" order="asc" seq="1"/>
+      <index-column column="target_id" order="asc" seq="2"/>
+   </primary-key>
+  </table>
+
+    <!-- table definition for the deploymentTargetApprovalTime map -->
+  <table name="epub_pr_tg_ap_ts" description="information about project's target approval timestamps" >
+    <column name="project_id" nullable="n"
+         description="the id of the project with which this target approval timestamp is associated ">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="target_id" nullable="n"
+         description="the project id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="approval_time" nullable="y"
+         description="the approval time">
+      <column-type db="generic" type="datetime"/>
+      <column-type db="oracle" type="timestamp"/>
+    </column>
+
+    <primary-key name="epub_ap_ts_id_pk">
+      <index-column column="project_id" order="asc" seq="1"/>
+      <index-column column="target_id" order="asc" seq="2"/>
+   </primary-key>
+<!--
+   <foreign-key name="pt_apr_t_pr_id_fk" referenced-table="epub_project"
+       description="ensures that the project_id exists in the project table">
+     <fkey-column referencing-column="project_id" referenced-column="project_id"/>
+    </foreign-key>
+    <foreign-key name="pt_apr_t_ta_id_fk" referenced-table="epub_target"
+       description="ensures that the project_id exists in the project table">
+      <fkey-column referencing-column="target_id" referenced-column="target_id"/>
+    </foreign-key>
+-->
+  </table>
+
+
+  <!-- table definition for the project's history property -->
+  <table name="epub_pr_history" description="information about the history of projects">
+    <column name="project_id" nullable="n"
+         description="the id of the project to which the history element is associated">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="sequence_num" nullable="n"
+         description="the sequence number which determines the ordering of the history element in relation to the other history elements in the same project">
+      <column-type db="generic" type="bigint"/>
+    </column>
+    <column name="history" nullable="n"
+         description="the id of the related history element in the project whose id is in the project_id column">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    <primary-key name="pr_hist_pk">
+      <index-column column="project_id" order="asc" seq="1"/>
+      <index-column column="sequence_num" order="asc" seq="2"/>
+    </primary-key>
+    <foreign-key name="pt_hist_id_fk" referenced-table="epub_project"
+         description="ensures that the project_id exists in the project table">
+      <fkey-column referencing-column="project_id" referenced-column="project_id"/>
+    </foreign-key>
+    <foreign-key name="pt_hist_hist_fk" referenced-table="epub_history"
+         description="ensures that the history_id exists in the history table" index-name="pr_hist_hist_idx">
+      <fkey-column referencing-column="history" referenced-column="history_id"/>
+    </foreign-key>
+
+  </table>
+
+
+
+  <!-- table definition for the process item descriptor -->
+  <table name="epub_process" description="information about processes">
+    <column name="process_id" nullable="n"
+         description="each process has a unique id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="version" nullable="n"
+         description="the version of the process object">
+      <column-type db="generic" type="numeric" length="19"/>
+	  <column-type db="mysql" type="bigint" />
+    </column>
+    <column name="acl" nullable="y"
+         description="the access control list for the process object">
+      <column-type db="generic" type="varchar" length="2048"/>
+      <column-type db="mssql" type="text"/>
+    </column>
+    
+    <column name="display_name" i18n="y" nullable="y"
+         description="the name of the process object">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="description" i18n="y" nullable="y"
+         description="a description of the process object">
+      <column-type db="generic" type="varchar" length="1024"/>
+      <column-type db="mssql" type="text"/>
+    </column>
+    <column name="creator" nullable="y"
+         description="the profile id of the user which created the process">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    <column name="project" nullable="y"
+         description="the id of the current project for this process">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    <column name="process_data" nullable="y"
+         description="optional process data object">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="workflow_id" nullable="y"
+         description="the id of the process' workflow object">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="activity" nullable="y"
+         description="the name of the activity which was selected when the process was created">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="site_id" nullable="y"
+         description="the site id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    <column name="status" nullable="y"
+         description="the status of the process. Can be one of Edit, Runnning, Edit-Running, Deployed, Completed">
+      <column-type db="generic" type="numeric" length="19"/>
+	  <column-type db="mysql" type="bigint" />
+    </column>
+    <column name="status_detail" i18n="y" nullable="y"
+         description="details about the status of the process">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+
+    <column name="creation_date" nullable="y"
+         description="the creation date of the process">
+      <column-type db="generic" type="datetime"/>
+      <column-type db="oracle" type="timestamp"/>
+    </column>
+    <column name="completion_date" nullable="y"
+         description="the completion date of the process">
+      <column-type db="generic" type="datetime"/>
+      <column-type db="oracle" type="timestamp"/>
+    </column>
+
+    <primary-key name="process_pk">
+      <index-column column="process_id"/>
+    </primary-key>
+
+    <index name="prc_disp_name_idx" table="epub_process"
+         description="makes searching on the display names of processes faster">
+      <index-column column="display_name"/>
+    </index>
+    <index name="prc_creator_idx" table="epub_process"
+         description="makes searching on the creator of processes faster">
+      <index-column column="creator"/>
+    </index>
+    <index name="prc_creat_date_idx" table="epub_process"
+         description="makes searching on the creation date of processes faster">
+      <index-column column="creation_date"/>
+    </index>
+    <index name="prc_comp_date_idx" table="epub_process"
+         description="makes searching on the completion date of processes faster">
+      <index-column column="completion_date"/>
+    </index>
+    <index name="prc_project_idx" table="epub_process"
+          description="makes searching on the completion date of processes faster">
+      <index-column column="project"/>
+    </index>
+  </table>
+
+  <!-- table definition for the process' previousProjectIds property -->
+  <table name="epub_proc_prv_prj" description="information about the previous projects of a process">
+    <column name="process_id" nullable="n"
+         description="the id of the process which the previous project id is associated">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="sequence_num" nullable="n"
+         description="the sequence number which determines the ordering of the previous project ids in relation to the other ids in the same process">
+      <column-type db="generic" type="numeric" length="19"/>
+	  <column-type db="mysql" type="bigint" />
+    </column>
+    <column name="project_id" nullable="n"
+         description="the id of the previous project in the process whose id is in the process_id column">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    <primary-key name="proc_prv_prj_pk">
+      <index-column column="process_id" order="asc" seq="1"/>
+      <index-column column="sequence_num" order="asc" seq="2"/>
+    </primary-key>
+    <foreign-key name="prc_pvprj_pcid_fk" referenced-table="epub_process"
+         description="ensures that the process_id exists in the process table">
+      <fkey-column referencing-column="process_id" referenced-column="process_id"/>
+    </foreign-key>
+    <foreign-key name="prc_prv_prj_id_fk" referenced-table="epub_project"
+         description="ensures that the project_id exists in the project table" index-name="epub_prv_prj_id_x">
+      <fkey-column referencing-column="project_id" referenced-column="project_id"/>
+    </foreign-key>
+  </table>
+
+  <!-- table definition for the process' history property -->
+  <table name="epub_proc_history" description="information about the history of processes">
+    <column name="process_id" nullable="n"
+         description="the id of the process which the history element is associated">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="sequence_num" nullable="n"
+         description="the sequence number which determines the ordering of the history element in relation to the other history elements in the same process">
+      <column-type db="generic" type="numeric" length="19"/>
+	  <column-type db="mysql" type="bigint" />
+    </column>
+    <column name="history" nullable="n"
+         description="the id of the related history element in the process whose id is in the process_id column">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    <primary-key name="proc_hist_pk">
+      <index-column column="process_id" order="asc" seq="1"/>
+      <index-column column="sequence_num" order="asc" seq="2"/>
+    </primary-key>
+    <foreign-key name="proc_hist_id_fk" referenced-table="epub_process"
+         description="ensures that the process_id exists in the process table">
+      <fkey-column referencing-column="process_id" referenced-column="process_id"/>
+    </foreign-key>
+    <foreign-key name="proc_hist_hist_fk" referenced-table="epub_history"
+         description="ensures that the history_id exists in the history table" index-name="epub_proc_hist_x">
+      <fkey-column referencing-column="history" referenced-column="history_id"/>
+    </foreign-key>
+  </table>
+
+
+  <!-- table definition for the project's taskInfo property -->
+  <table name="epub_proc_taskinfo" description="task information relative to processes">
+    <column name="id" nullable="n"
+         description="the id of the process to which the task info is associated">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="taskinfo_id" nullable="n"
+         description="the id of a task info item for this process">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    <primary-key name="prc_ti_pk">
+      <index-column column="taskinfo_id"/>
+    </primary-key>
+    <foreign-key name="prc_ti_prc_id_fk" referenced-table="epub_process"
+         description="ensures that the process_id exists in the process table" index-name="epub_prctaskinfo_x">
+      <fkey-column referencing-column="id" referenced-column="process_id"/>
+    </foreign-key>
+    <foreign-key name="prc_ti_ti_id_fk" referenced-table="epub_taskinfo"
+         description="ensures that the taskinfo_id exists in the taskinfo table">
+      <fkey-column referencing-column="taskinfo_id" referenced-column="taskinfo_id"/>
+    </foreign-key>
+  </table>
+  
+   <!-- table definition for the PendingDeployment item descriptor -->
+  <table name="epub_deployment" description="information about deployment schedules" >
+    <column name="deployment_id" nullable="n"
+         description="each deployment has a unique id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="version" nullable="n"
+         description="the version of the schedule object">
+      <column-type db="generic" type="bigint"/>
+    </column>
+    <column name="target_id" nullable="y"
+         description="the target name to deploy to">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="deploy_time" nullable="n"
+         description="the time at which the snapshot should be deployed">
+      <column-type db="generic" type="datetime"/>
+      <column-type db="oracle" type="timestamp"/>
+    </column>
+    <column name="create_time" nullable="n"
+         description="the time at which this schedule was created">
+      <column-type db="generic" type="datetime"/>
+      <column-type db="oracle" type="timestamp"/>
+    </column>
+    <column name="creator" nullable="y"
+         description="the username of the user who created the schedule">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="uri" nullable="y"
+         description="rmi uri of the current deployment">
+      <column-type db="generic" type="varchar" length="100"/>
+    </column>
+    <column name="next_dep_id" nullable="y"
+         description="the schedule id of the schedule which is next in queue">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+   <column name="previous_dep_id" nullable="y"
+         description="the schedule id of the schedule which is previous in queue">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>    
+    <column name="force_full" nullable="y"
+         description="wether to force a full deployment">
+      <column-type db="generic" type="one-digit"/>         
+    </column>
+    <column name="dep_type" nullable="y"
+         description="the deployment type">
+      <column-type db="generic" type="one-digit"/>
+    </column>
+    <column name="status" nullable="y"
+         description="the type of deployment, one of Error or Success">
+	  <column-type db="generic" type="numeric" length="3"/>
+	  <column-type db="mysql" type="smallint" />
+    </column>
+    <column name="message_code" nullable="y"
+         description="the i18n message key name for the error that occured during the execution of this schedule">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="strict_file_op" nullable="y"
+         description="determines if deployment will enforce strict file update operations">
+      <column-type db="generic" type="tinyint"/>
+    </column>
+    <column name="strict_repo_op" nullable="y"
+         description="determines if deployment will enforce strict repository update operations">
+      <column-type db="generic" type="tinyint"/>
+    </column>
+    
+    <primary-key name="deployment_pk">
+      <index-column column="deployment_id"/>
+    </primary-key>
+
+    <index name="depl_time_idx" table="epub_deployment"
+         description="makes searching on the deploy time of deployments faster">
+      <index-column column="deploy_time"/>
+    </index>
+  </table>
+
+  <!-- table definition for the deployment projects set -->
+  <table name="epub_deploy_proj" description="information about projects for deployment" >
+    <column name="deployment_id" nullable="n"
+         description="the id of the deployment schedule">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="project_id" nullable="n"
+         description="the project id in the schedule">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="sequence_num" nullable="n"
+         description="the sequence number which determines the ordering of the projects">
+      <column-type db="generic" type="bigint"/>
+    </column>
+
+    <primary-key name="epub_dep_proj_pk">
+      <index-column column="deployment_id" order="asc" seq="1"/>
+      <index-column column="project_id" order="asc" seq="2"/>
+    </primary-key>
+
+  </table>
+  
+  <!-- table definition for the history's -->
+  <table name="epub_dep_err_parm" description="error params for an error message">
+    <column name="deployment_id" nullable="n"
+         description="the id of the history">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="error_param" nullable="y"
+         description="the error paramters for the schedule's error message">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="sequence_num" nullable="n"
+         description="the sequence number which determines the ordering of the error params">
+      <column-type db="generic" type="bigint"/>
+    </column>
+
+    <primary-key name="epub_dep_er_pk">
+      <index-column column="deployment_id" order="asc" seq="1"/>
+      <index-column column="sequence_num" order="asc" seq="2"/>
+    </primary-key>
+    <foreign-key name="epub_dep_id_fk" referenced-table="epub_deployment"
+         description="ensures that the deployment_id exists in the epub_deployment table">
+      <fkey-column referencing-column="deployment_id" referenced-column="deployment_id"/>
+    </foreign-key>
+  </table>
+
+
+
+   <!-- deployment log -->
+  <comment>
+    Log of deployments that have occured. See the epub repository
+  </comment>
+  <comment>
+    definition file for more details
+  </comment>
+
+  <table name="epub_dep_log" >
+    <column name="log_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="dep_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="target_name" nullable="n">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="log_time" nullable="n">
+      <column-type db="generic" type="datetime"/>
+      <column-type db="oracle" type="timestamp"/>
+    </column>
+    <column name="begin_time" nullable="n">
+      <column-type db="generic" type="datetime"/>
+      <column-type db="oracle" type="timestamp"/>
+    </column>
+    <column name="end_time" nullable="n">
+      <column-type db="generic" type="datetime"/>
+      <column-type db="oracle" type="timestamp"/>
+    </column>
+    <column name="actor_id" nullable="y">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="type" nullable="n">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <column name="dep_mode" nullable="n">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <column name="status" nullable="n">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <column name="deli_proj_ids" nullable="y">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="delimiter" nullable="n">
+      <column-type db="generic" type="varchar" length="5"/>
+    </column>
+    <column name="strict_file_op" nullable="y">
+      <column-type db="generic" type="tinyint"/>
+    </column>
+    <column name="strict_repo_op" nullable="y">
+      <column-type db="generic" type="tinyint"/>
+    </column>
+
+    <primary-key name="dep_log_pk">
+      <index-column column="log_id"/>
+    </primary-key>
+   </table>
+   
+</schema>
+<!-- @version $Id: //product/Publishing/version/10.0.3/pws/sql/xml/publishing_ddl.xml#2 $$Change: 651448 $ -->

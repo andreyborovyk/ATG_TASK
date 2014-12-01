@@ -1,0 +1,69 @@
+<!-- $author:efried $ -->
+
+<gsa-template>
+
+  <!-- //////////////////////////////////// -->
+  <!--                                      -->
+  <!-- Internationalized promotion properties -->
+  <!--                                      -->
+  <!--        displayName                   -->
+  <!--                                      -->
+  <!-- //////////////////////////////////// -->
+  <item-descriptor name="promotion">
+    
+    <attribute name="categoryPresentationDerivedPriority" value="500"/>
+
+    <table name="dcs_promotion" type="primary" id-column-name="promotion_id">
+      <!-- remove the old versions of these properties -->
+      <!-- The "remove" must be in the correct table tag or it will not work -->
+      <property name="displayName" xml-combine="remove"/>
+
+      <!-- store the english versions in the old column -->
+      <property name="displayName_en" data-type="string" column-name="display_name" required="true" queryable="true"
+                category-resource="categoryPresentation" display-name-resource="name">
+        <attribute name="resourceBundle" value="atg.commerce.PricingModelsTemplateResources"/>
+	<attribute name="propertySortPriority" value="-3"/>
+        <attribute name="locale" value="en"/>
+      </property>
+    </table>
+
+
+
+   <!-- create german versions in a separate table -->
+    <table name="dbc_promotion_de" type="auxiliary" id-column-name="promotion_id">
+      <property name="displayName_de" data-type="string" column-name="display_name" queryable="true" 
+                category-resource="categoryPresentation" display-name-resource="name">
+        <attribute name="resourceBundle" value="atg.commerce.PricingModelsTemplateResources"/>
+	<attribute name="propertySortPriority" value="-3"/>
+        <attribute name="locale" value="de"/>
+      </property>
+    </table>
+
+   <!-- create japanese versions in a separate table -->
+    <table name="dbc_promotion_ja" type="auxiliary" id-column-name="promotion_id">
+      <property name="displayName_ja" data-type="string" column-name="display_name" queryable="true" 
+                category-resource="categoryPresentation" display-name-resource="name">
+        <attribute name="resourceBundle" value="atg.commerce.PricingModelsTemplateResources"/>
+	<attribute name="propertySortPriority" value="-3"/>
+        <attribute name="locale" value="ja"/>
+      </property>
+    </table>
+
+    <!-- create derived properties to automatically get the correct string -->
+    <property name="displayName" data-type="string" 
+              category-resource="categoryPresentationDerived" writable="false"
+              display-name-resource="name" queryable="true">
+      <derivation method="firstWithLocale">
+        <expression>displayName_en</expression>
+        <expression>displayName_de</expression>
+        <expression>displayName_ja</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.commerce.PricingModelsTemplateResources"/>
+      <attribute name="propertySortPriority" value="-3"/>
+      <attribute name="keyService" value="/atg/userprofiling/LocaleService"/>
+      <attribute name="defaultKey" value="en_US"/>
+    </property>
+
+  </item-descriptor>
+  </gsa-template>
+<!-- @version $Id: //product/B2BCommerce/version/10.0.3/release/MotorpriseJSP/j2ee-apps/motorprise/config/atg/commerce/pricing/pricingModels.xml#2 $$Change: 651448 $ -->

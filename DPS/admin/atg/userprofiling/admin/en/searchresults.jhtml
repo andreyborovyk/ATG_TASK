@@ -1,0 +1,60 @@
+<importbean bean="/atg/userprofiling/ProfileFindForm">
+<importbean bean="/atg/userprofiling/PropertyManager">
+<importbean bean="/atg/userprofiling/ProfileErrorMessageForEach">
+<importbean bean="/atg/dynamo/droplet/Switch">
+
+<html>
+<head>
+<title>Search Results</title>
+</head>
+<body BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="images/dpsadminbanner.gif" ALT="Dynamo Personalization Administration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a href="index.jhtml">Personalization
+Administration</a>/<a href="search.jhtml">Search</a>/Search Results<p>
+
+<blockquote>
+
+<droplet name="Switch">
+   <param name="value" value="bean:ProfileFindForm.formError">
+   <oparam name="true">
+    <font color=cc0000><STRONG><UL>
+     <droplet name="ProfileErrorMessageForEach">
+      <param name="exceptions" value="bean:ProfileFindForm.formExceptions">
+      <oparam name="output">
+	<LI> <valueof param="message"></valueof>
+      </oparam>
+     </droplet>
+    </UL></STRONG></font>
+   </oparam>
+</droplet>
+
+<h2>Search Results</h2>
+
+<droplet bean="Switch">
+ <param name="value" value="bean:ProfileFindForm.searchType">
+ <oparam name="group">
+           
+       <droplet src="searchresults_group.jhtml">
+        <param name="groupName" value="bean:ProfileFindForm.groupName">
+        <param name="property" value="bean:PropertyManager.loginPropertyName">
+       </droplet>
+ 
+ </oparam>
+ <oparam name="query">
+  
+      <droplet src="searchresults_query.jhtml">
+        <param name="query" value="bean:ProfileFindForm.query">
+        <param name="property" value="bean:PropertyManager.loginPropertyName">
+      </droplet>	     
+  
+ </oparam>
+</droplet>
+
+ 
+</blockquote>
+
+</body>
+</html>
+<java>/* @version $Id: //product/DPS/version/10.0.3/release/DPS/admin/atg/userprofiling/admin/en/searchresults.jhtml#2 $$Change: 651448 $ */</java>

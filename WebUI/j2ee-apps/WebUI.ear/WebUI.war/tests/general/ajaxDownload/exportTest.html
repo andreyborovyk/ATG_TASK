@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>File Download Test</title>
+	<script type="text/javascript" src="/dojo-1/dojo/dojo.js.uncompressed.js" djConfig="isDebug: true, parseOnLoad: true"></script>
+
+		<script type="text/javascript" src="/WebUI/atg.js"></script>
+
+		
+		<script type="text/javascript" src="/dojo-1/dojo-fixes.js"></script>
+
+
+		<script type="text/javascript" src="exportDownload.js"></script>
+
+	<title>Export Download Test</title>
+	
+</head>
+
+<body>
+
+
+  <h3>This form returns a download via an iframe, so the page won't refresh but the download will occur</h3>
+
+  <form action="delay.jsp" method="post" accept-charset="utf-8" id="testForm" target="iframeEeek">
+    <input name="var1" value="foo" />
+    <input name="var2" value="bar" />
+    <input type="submit" value="Show Slow Download &rarr;" id="testSubmit" />
+  </form>
+
+
+  <h3>To Do</h3>
+  
+  <ul>
+    <li>Dummy Test Case for failed download</li>
+    <li>Test Case that shows the polling</li>
+    <li>Test Case that does stuff once the download has occured</li>
+  <ul>
+
+</body>
+</html>

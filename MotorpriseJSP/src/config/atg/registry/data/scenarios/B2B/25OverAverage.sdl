@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE process SYSTEM "dynamosystemresource:/atg/dtds/pdl/pdl_1.0.dtd">
+<process author="admin" creation-time="988915675628" enabled="false" last-modified-by="admin" modification-time="1045003090941">
+  <segment migrate-subjects="false">
+    <segment-name>Large purchase</segment-name>
+    <!--================================-->
+    <!--== Order changes subType is OrderFinished  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.commerce.fulfillment.scenario.OrderModified</event-name>
+      <filter construct="event-property-filter" operator="eq">
+        <event-property construct="event-property">
+          <property-name>subType</property-name>
+        </event-property>
+        <constant>OrderFinished</constant>
+      </filter>
+    </event>
+    <!--================================-->
+    <!--== Order where Customer's Number of orders is greater than 5  -->
+    <!--================================-->
+    <condition id="2">
+      <filter operator="orderCondition">
+        <constant>&lt;qualifier&gt;&lt;greater-than&gt;&lt;value&gt;profile.numOfOrders&lt;/value&gt;&lt;constant&gt;&lt;data-type&gt;java.lang.Integer&lt;/data-type&gt;&lt;string-value&gt;5&lt;/string-value&gt;&lt;/constant&gt;&lt;/greater-than&gt;&lt;/qualifier&gt;</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Order price is at least 25 percent greater than Person's Average order price  -->
+    <!--================================-->
+    <condition id="3">
+      <filter operator="orderPricePercentComparison">
+        <event-property>
+          <property-name>order</property-name>
+          <property-name>priceInfo</property-name>
+          <property-name>total</property-name>
+        </event-property>
+        <constant>ge</constant>
+        <constant type="java.lang.Integer">25</constant>
+        <constant>gt</constant>
+        <subject-property>
+          <property-name>avgOrderAmt</property-name>
+        </subject-property>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Give Promotion promotions: 10% off order  -->
+    <!--================================-->
+    <action id="4">
+      <action-name>promotion</action-name>
+      <action-param name="promotions">
+        <array type="java.lang.String[]">
+          <constant>promo20003</constant>
+        </array>
+      </action-param>
+    </action>
+    <fork id="5">
+      <branch id="5.1">
+        <!--================================-->
+        <!--== Locale is en_US  -->
+        <!--================================-->
+        <condition construct="people-element" id="5.1.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>locale</property-name>
+            </subject-property>
+            <constant>en_US</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Send email with path MotorpriseJSP:/en/email/25OverAverage.jsp  -->
+        <!--================================-->
+        <action id="5.1.2">
+          <action-name>sendEmail</action-name>
+          <action-param name="scenarioPathInfo">
+            <constant>MotorpriseJSP:/en/email/25OverAverage.jsp</constant>
+          </action-param>
+        </action>
+      </branch>
+      <branch id="5.2">
+        <!--================================-->
+        <!--== Locale is de_DE  -->
+        <!--================================-->
+        <condition construct="people-element" id="5.2.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>locale</property-name>
+            </subject-property>
+            <constant>de_DE</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Send email with path MotorpriseJSP:/de/email/25OverAverage.jsp  -->
+        <!--================================-->
+        <action id="5.2.2">
+          <action-name>sendEmail</action-name>
+          <action-param name="scenarioPathInfo">
+            <constant>MotorpriseJSP:/de/email/25OverAverage.jsp</constant>
+          </action-param>
+        </action>
+      </branch>
+      <branch id="5.3">
+        <!--================================-->
+        <!--== Locale is ja_JP  -->
+        <!--================================-->
+        <condition construct="people-element" id="5.3.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>locale</property-name>
+            </subject-property>
+            <constant>ja_JP</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Send email with path MotorpriseJSP:/ja/email/25OverAverage.jsp  -->
+        <!--================================-->
+        <action id="5.3.2">
+          <action-name>sendEmail</action-name>
+          <action-param name="scenarioPathInfo">
+            <constant>MotorpriseJSP:/ja/email/25OverAverage.jsp</constant>
+          </action-param>
+        </action>
+      </branch>
+    </fork>
+  </segment>
+</process>

@@ -1,0 +1,57 @@
+<nucleus type=import>
+  /atg/dynamo/service/ConfigurationReporter
+</nucleus>
+
+<HTML>
+<HEAD>
+  <link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+  <TITLE>PROPERTY REPRESENTATION - BASIC</TITLE>
+</HEAD>
+
+<body>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="images/admin-banner.gif" ALT="Dynamo ConfigurationReporter" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+<a href="/">admin</a>/<a href="conf-reporter.jhtml">Configuration Reporter</a>
+
+<h2>Configuration Reporter</h2>
+
+<h3>PROPERTY REPRESENTATION REPORT: BASIC</h3>
+
+<blockquote>
+This report outputs the properties and values of components in the Dynamo component hierarchy
+that have been set through properties files, including properties set in the Dynamo
+Control Center. It excludes properties that have their default values or that were set
+during runtime. These properties and values are then saved to a serialized output file.
+ 
+<form action="config-reporter-property-representation1.jhtml"method=post>
+ <p><input type=checkbox property="ConfigurationReporter.saveJVMPropertiesInPropertiesSerialization">
+ Save Java Virtual Machine properties in serialization output file<br>
+ <p>Serialization output file:
+ <input type=text property="ConfigurationReporter.serializedPropertiesFileName" size=60><br>
+ <p>
+ <p><input type=submit property="ConfigurationReporter.saveCurrentDynamoComponentProperties" value="Create Property Representation Report">
+</form>
+</blockquote> 
+
+<h3>XML PROPERTY  REPRESENTATION REPORT</h3>
+
+<blockquote>After you create a serialized Property Representation Report in the step above, you can output the list of components included in the report in the form of an XML file. To output the properties and values as well, check the <b>Output all property values box</b> box.
+
+<form action="config-reporter-property-representation1.jhtml" method=post>
+<p><input type=checkbox property="ConfigurationReporter.outputComponentPropertiesInXML">
+Output all property values<br>
+<p>Serialization output file:
+<input type=text property="ConfigurationReporter.serializedPropertiesFileName" size=60><br>
+<p>XML output file:
+<input type=text property="ConfigurationReporter.propertyRepresentationXMLFileName" size=60><br>
+<p>
+<input type=submit property="ConfigurationReporter.outputPropertyRepresentationToXML" value="Create XML File">
+<p>
+</form>
+</blockquote>
+
+<BODY>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/config-reporter-property-representation1.jhtml#2 $$Change: 651448 $*/</java>
+

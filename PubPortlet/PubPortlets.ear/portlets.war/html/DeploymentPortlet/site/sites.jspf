@@ -1,0 +1,205 @@
+<!-- BEGIN FILE sites.jspf -->
+	<div id="intro">
+	<h2>    <fmt:message key="deployment-administration-overview" bundle="${depBundle}"/></h2>
+
+	<p>
+	<fmt:message key="sites-intro" bundle="${depBundle}"/>
+	</p>
+	</div>
+  
+  <!-- begin content -->
+	<table cellpadding="0" cellspacing="0" border="0" width="100%">
+	
+	<tr>
+	<td width="100%">
+		<portlet:renderURL var="thisPageURL">	
+		  <portlet:param name="atg_admin_menu_group" value="deployment"/>
+		  <portlet:param name="atg_admin_menu_1" value="overview"/>
+		  <portlet:param name="overview_no_tabs" value="true"/>
+	    <portlet:param name="from_menu" value="true"/>
+		</portlet:renderURL>
+
+	<div class="displayResults displayResultsTop"><a href="<c:out value='${thisPageURL}'/>" class="refreshButton"><fmt:message key="refresh-results" bundle="${depBundle}"/></a></div>
+		<table cellpadding="0" cellspacing="0" border="0" width="100%" id="attributeBar">
+		<tr>
+		<td>
+		
+			<div class="attributes">
+			<br /><br />
+			</div>
+			
+			<div class="attributeExtras">
+			<br /><br />
+			</div>
+
+		</td>
+		</tr>
+		</table>
+		
+		<div id="adminDeployment">
+
+		<table cellpadding="0" cellspacing="0" border="0" class="dataTableNoGrid">
+		
+		<tr>
+		<th class="leftAligned"><span class="tableHeader">        <fmt:message key="site-name" bundle="${depBundle}"/></span></th>
+		<th class="centerAligned"><span class="tableHeader">        <fmt:message key="site-status" bundle="${depBundle}"/></span></th>
+		<th class="centerAligned"><span class="tableHeader">        <fmt:message key="incrementally-deployable" bundle="${depBundle}"/></span></th>
+		<th class="centerAligned"><span class="tableHeader">        <fmt:message key="deployment-status" bundle="${depBundle}"/></span></th>
+		<th class="centerAligned wrapNoBorder"><span class="tableHeader">        <fmt:message key="agent-status" bundle="${depBundle}"/></span></th>
+		</tr>
+		<pws:getTargets var="targets"/>
+  <c:if test="${empty targets}">  
+    <tr> 
+	   <td colspan="5" class="leftAligned">
+      <span class="adminDeployment NoData">
+      <fmt:message key="no-sites-line1" bundle="${depBundle}"/><br/>
+      <fmt:message key="no-sites-line2" bundle="${depBundle}"/>
+      </span>
+      </td>
+    </tr>
+  </c:if>
+
+	<c:forEach var="target" items="${targets}" varStatus="loopStatus">
+		 <c:choose>
+       <c:when test="${loopStatus.count % 2 == 0}">
+         <tr class="alternateRowHighlight">			
+       </c:when>
+       <c:otherwise>
+  		   <tr>			
+       </c:otherwise>
+  		</c:choose>
+		<td class="leftAligned wrapNoBorder"><span class="tableInfo">
+<c:set var="TARGET_ID" value="${target.ID}"/>
+                  <portlet:renderURL var="siteURL"> 
+                    <portlet:param name="atg_admin_menu_group" value="deployment"/>  
+                    <portlet:param name="atg_admin_menu_1" value="overview"/>  
+                    <portlet:param name="target_id" value='<%=pageContext.findAttribute("TARGET_ID")+""%>'/>  
+                    <portlet:param name="goto_details_tabs" value="true"/>  
+                 </portlet:renderURL> 
+                  <a href='<c:out value="${siteURL}"/>'>
+                   <img src="<c:url context="${initParam['atg.bizui.ContextPath']}" value='/images/icon_site.gif'/>" alt='<fmt:message key="process" bundle="${depBundle}"/>' width="16" height="18" border="0" style="margin-right: 6px; vertical-align: middle;" /><c:out value="${target.name}"/>
+		  </a></span></td>
+    <c:choose>
+    <c:when test="${!target.accessible}">
+		  <td class="centerAligned"><span class="tableInfo"><span class="error">
+      <fmt:message key="inaccessible" bundle="${depBundle}"/>
+    </span>    </span>            
+    </c:when>
+    <c:when test="${target.halted}">
+		  <td class="centerAligned"><span class="tableInfo"><span class="error">
+      <fmt:message key="deployment-halted" bundle="${depBundle}"/>
+    </span>    </span>      
+    </c:when>    
+    <c:otherwise>
+		  <td class="centerAligned"><span class="tableInfo">
+		  <fmt:message key="healthy" bundle="${depBundle}"/>
+    </span>		  
+    </c:otherwise>
+    </c:choose>
+</td>
+   <portlet:renderURL var="agentsURL">
+     <portlet:param name="atg_admin_menu_group" value="deployment"/>
+     <portlet:param name="atg_admin_menu_1" value="overview"/>
+     <portlet:param name="goto_details_tabs" value="true"/>
+     <portlet:param name="site_tab_name" value="agents"/>
+     <portlet:param name="target_id" value='<%=pageContext.findAttribute("TARGET_ID")+""%>'/>
+    </portlet:renderURL>
+		<td class="centerAligned"><span class="tableInfo">
+     <c:choose>
+     <c:when test="${!target.accessible}">
+       <fmt:message key="question-mark" bundle="${depBundle}"/>
+     </c:when>
+     <c:when test="${target.oneOff}">
+       <fmt:message key="yes" bundle="${depBundle}"/>
+     </c:when>
+     <c:when test="${target.incrementallyDeployable}">
+       <fmt:message key="yes" bundle="${depBundle}"/>
+     </c:when>
+     <c:otherwise>
+       <fmt:message key="no" bundle="${depBundle}"/>
+     </c:otherwise>
+    </c:choose>
+    </span></td>
+      <c:choose>
+      <c:when test="${!empty target.currentDeployment}">
+       <c:choose>
+       <c:when test="${target.currentDeployment.status.stateError}">
+    		<td class="centerAligned error"><span class="tableInfo">
+       </c:when>
+       <c:otherwise>
+    		<td class="centerAligned"><span class="tableInfo">
+       </c:otherwise>
+       </c:choose>
+        <c:if test="${target.currentDeployment.status.stateError}">
+        <span class="error"> <c:out value="${target.currentDeployment.status.userStateString}"/></span>
+        </c:if>
+        <c:if test="${!target.currentDeployment.status.stateError}">
+         <c:out value="${target.currentDeployment.status.userStateString}"/>
+        </c:if>
+      </c:when>
+      <c:otherwise>
+  		<td class="centerAligned"><span class="tableInfo">
+	    <fmt:message key="not-deploying" bundle="${depBundle}"/>
+      </c:otherwise>
+      </c:choose>
+    </span></td>
+
+    <dspel:importbean var="deploymentServer" bean="/atg/epub/DeploymentServer"/>
+		<td class="leftAligned"><span class="tableInfo">
+      <c:choose>
+        <c:when test="${target.accessible}">
+          <p/><a href="<c:out value='${agentsURL}'/>">
+          <c:choose>
+            <c:when test="${deploymentServer.allowMissingNonEssentialAgents}">
+              <fmt:message key="all-essential-agents-accessible" bundle="${depBundle}"/>
+            </c:when>
+            <c:otherwise>
+              <fmt:message key="all-agents-accessible" bundle="${depBundle}"/>
+            </c:otherwise>
+          </c:choose>
+          </a> 
+        </c:when>
+        <c:otherwise>
+          <c:forEach var="agent" items="${target.agents}">	
+            <c:if test="${agent.status.stateError}">
+              <a href="<c:out value='${agentsURL}'/>"><span class="error"> <fmt:message key="in-error-state" bundle="${depBundle}"><fmt:param value='${agent.name}'/> </fmt:message></span></a><br/>
+            </c:if>
+          </c:forEach>
+  	    </c:otherwise>  
+      </c:choose>
+      </span>          
+		</td>
+    </tr>
+     <c:choose>
+		  <c:when test="${loopStatus.count % 2 == 0}">
+       <tr class="alternateRowHighlight">			
+      </c:when>
+     <c:otherwise>
+		   <tr>			
+     </c:otherwise>
+  	</c:choose>
+		<td class="wrapBorder" colspan="6"><span class="tableInfo">
+    <c:out value="${target.description}"/>
+    </span></td>	
+ 		</tr>
+
+</c:forEach>
+		</table>
+			
+	</div>
+	<div class="contentActions">
+	<table cellpadding="0" cellspacing="0" border="0">
+	<tr>
+	<td class="blankSpace" width="100%">&nbsp;</td>
+	</tr>
+	</table>
+	</div>
+		
+	
+	</td>
+	</tr>
+	</table>
+	<!-- end content -->
+
+<!-- END FILE sites.jspf -->
+<%-- @version $Id: //product/PubPortlet/version/10.0.3/portlets.war/html/DeploymentPortlet/site/sites.jspf#2 $$Change: 651448 $--%>

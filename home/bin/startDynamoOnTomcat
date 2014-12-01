@@ -1,0 +1,257 @@
+#!/bin/sh
+
+#!/bin/sh 
+
+PROGRAM=`basename $0`
+
+ulimit -n 1000
+
+# No coredumps
+ulimit -c 0
+
+usage()
+{
+    echo "*** startDynamoOnTomcat [-s atg-server-name] [-clean] [-l] [-base tomcat-base-dir] [-f additional-flag] [-t tomcat-home-dir] [-layer config layers] [-debug] [-debugPort port-num] [-m additional-module-list]"
+    echo "***"
+    echo "*** server-name is the name of the Dynamo server to use."
+    echo "*** -clean Delete existing assembler-created wars"
+    echo "*** -l Run with the liveconfig config layer."
+    echo "*** -s The ATG server name to use."
+    echo "*** -base The destination Tomcat base directory. Defaults to $CATALINA_HOME/atgbases/{server | \"atgfault\" }."
+    echo "*** -f Run additionally with the specified runAssembler flag."
+    echo "*** -t The location of the Tomcat installation (home) directory."
+    echo "*** -layer Run additionally with the specified configuration layers"
+    echo "*** -m Run additionally with the specified modules."
+    echo "*** -debug     Run with remote debugging enabled on port 8000"
+    echo "*** -debugPort Specifies the port for remote debugging"
+    exit 0
+}
+
+unknownoptionerror()
+{
+    echo "Unknown option: $1"
+    usage
+}
+
+nonexistantserver()
+{
+    echo "***"
+    echo "*** The ATG server directory for server: ${SERVER_NAME} does not exist."
+    echo "*** You must specify a valid server."
+    echo "***"
+    usage
+}
+
+
+unknowntomcathome()
+{
+    echo "***"
+    echo "*** CATALINA_HOME is not defined. You must specify the CATALINA_HOME dir."
+    echo "***"
+    usage
+}
+
+nonexistanttomcathome()
+{
+    echo "***"
+    echo "*** The CATALINA_HOME: ${CATALINA_HOME} does not exist."
+    echo "*** You must specify a valid path for the CATALINA_HOME dir."
+    echo "***"
+    usage
+}
+
+emptybasename()
+{
+    echo "***"
+    echo "*** No Tomcat base directory specified."
+    echo "*** You must specify an ear file name when using the -base option."
+    echo "***"
+    usage         
+
+}
+
+nolayers()
+{
+    echo "***"
+    echo "*** No configuration layers have been specified. You must specify"
+    echo "*** one or more configuration layers when using the -layer option."
+    echo "***"
+    usage
+}
+
+
+FIRSTCHAR=$1
+SERVER_NAME=
+LIVECONFIG=
+BASEFILE_NAME=
+ADDITIONAL_MODULES=DafEar.Admin
+CLEANSTART=
+TOMCAT_SERVER="atgdefault"
+DEBUG_FLAG=
+JAVA_OPTS="-Xms512m -Xmx1024m -XX:MaxPermSize=128m -XX:MaxNewSize=128m ${JAVA_OPTS}"
+# -Deasybeans.log.handler=false
+# -verbose:class
+export JAVA_OPTS
+
+PROGRAM_DIR=`dirname $0`
+. $PROGRAM_DIR/checkDynamoHome.sh
+
+# Provide a default value for CATALINA_HOME.
+if [ ! "${CATALINA_HOME}" -o -z "${CATALINA_HOME}" ]; then
+  CATALINA_HOME="${DYNAMO_HOME}/../Tomcat/apache-tomcat-6.0.26"
+  export CATALINA_HOME
+fi
+
+DASENV=$DYNAMO_HOME/localconfig/dasEnv.sh
+if [ -f $DASENV ]; then
+    # handle das env
+    . $DASENV
+else
+  echo "CATALINA_HOME=${CATALINA_HOME}" >> ${DASENV}
+fi
+
+
+# Provide a default value for CATALINA_HOME.
+if [ ! "${CATALINA_HOME}" -o -z "${CATALINA_HOME}" ]; then
+  CATALINA_HOME="${DYNAMO_HOME}/../Tomcat/apache-tomcat-6.0.26"
+  export CATALINA_HOME
+fi
+
+
+
+# parse the input params
+while [ "x$1" != "x" ]
+do
+  case $1 in
+      -help) usage
+	  ;;
+      -l) LIVECONFIG="-liveconfig"
+	  ;;
+      -clean) CLEANSTART="-tomcat-clean";
+	  rm -f "${DYNAMO_HOME}"/*.tm.epoch "${DYNAMO_HOME}/tm.out.lck" "${DYNAMO_HOME}/tm.out" "${DYNAMO_HOME}"/tmlog*.log
+	  ;;
+      -base) shift
+          BASEFILE_NAME="$1"
+          if [ ! ${BASEFILE_NAME} -o -z ${BASEFILE_NAME} ]; then
+              emptybasename
+          fi
+          ;;
+      -s) shift
+          SERVER_NAME="$1"
+	  if [ ! -d ${DYNAMO_HOME}/servers/${SERVER_NAME} ]; then
+	      nonexistantserver
+	  fi
+	  TOMCAT_SERVER="$1"
+	  SERVER_NAME="-server ${SERVER_NAME}"
+	  ;;
+      -m) 
+          while [ "x$2" != "x" ] 
+            do
+            case $2 in
+                -*) break
+                    ;;
+                *) if [ -n $ADDITIONAL_MODULES ]; then
+                    ADDITIONAL_MODULES="${ADDITIONAL_MODULES}:$2" 
+                    else
+                    ADDITIONAL_MODULES="$2" 
+                    fi
+                    ;;
+            esac
+            shift
+          done
+          echo "ADDITIONAL_MODULES=$ADDITIONAL_MODULES"
+          ;;      
+      -layer)
+          while [ "x$2" != "x" ]
+            do
+            case $2 in
+                -*) break
+                    ;;
+                *) if [ "$ADDITIONAL_LAYERS" ]; then
+                    ADDITIONAL_LAYERS="${ADDITIONAL_LAYERS} $2" 
+                    else
+                    ADDITIONAL_LAYERS="-layer $2" 
+                    fi
+                    ;;
+            esac
+            shift
+          done
+          echo "ADDITIONAL_LAYERS=$ADDITIONAL_LAYERS"
+          ;;
+      -t) shift
+	  CATALINA_HOME="$1"
+	  export CATALINA_HOME
+	  ;;
+      -f) shift
+	  ADDITIONAL_FLAGS="$1 ${ADDITIONAL_FLAGS}"
+	  ;;
+      -debug) DEBUG_FLAG="jpda";;
+      -debugPort) JPDA_ADDRESS=$2
+              export JPDA_ADDRESS
+              shift
+	  ;;
+      *) unknownoptionerror $1
+	  ;;
+  esac
+  shift
+done
+
+# CATALINA_HOME is not defined
+if [ ! "${CATALINA_HOME}" -o -z "${CATALINA_HOME}" ]; then
+    unknowntomcathome
+fi
+
+# CATALINA_HOME is an invalid value
+if [ ! -d ${CATALINA_HOME}/ ]; then
+    nonexistanttomcathome
+fi
+
+# Layer option present, but no layers specified
+if [ "${ADDITIONAL_LAYERS}" = "-layers" ]; then
+    nolayers
+fi
+
+
+if [ ! "${BASEFILE_NAME}" -o -z "${BASEFILE_NAME}" ]; then
+  CATALINA_BASE="${CATALINA_HOME}/atgbases/${TOMCAT_SERVER}"
+else
+  CATALINA_BASE="${BASEFILE_NAME}"
+fi
+
+export CATALINA_BASE
+
+# copy over the mysql driver, for convenience
+echo "DYNAMO_HOME: $DYNAMO_HOME"
+if [ ! -f "${CATALINA_HOME}/lib/mysql-connector-java-5.1.15-bin.jar" ] ; then
+   MYSQL_SRC="${DYNAMO_HOME}/../../devtools/lib/mysql-connector-java-5.1.15-bin.jar"
+   echo "MYSQL_SRC: $MYSQL_SRC"
+   if [ ! -f "${MYSQL_SRC}" ] ; then
+       MYSQL_SRC="${DYNAMO_HOME}/../../DAS/src/lib/mysql-connector-java-5.1.15-bin.jar"
+   fi
+   if [ -f "${MYSQL_SRC}" ] ; then
+       cp "${MYSQL_SRC}" "${CATALINA_HOME}/lib/"
+   fi
+fi
+
+if [ -f /bin/cygpath ] ; then
+  ADDITIONAL_MODULES=`cygpath -pw $ADDITIONAL_MODULES`
+fi
+
+${DYNAMO_HOME}/bin/runAssembler -tomcat ${BASEFILE_NAME} -tomcat-initial-resources-file "${DYNAMO_HOME}/../DafEar/Tomcat/mysql-resources/context-btm.xml" ${ADDITIONAL_FLAGS} ${SERVER_NAME} ${LIVECONFIG} ${ADDITIONAL_LAYERS} ${CLEANSTART} -m ${ADDITIONAL_MODULES}
+
+# for BTM 
+echo "${CATALINA_BASE}/conf/resources.properties"
+if [ ! -f "${CATALINA_BASE}/conf/resources.properties" ] ; then
+    echo "Copying..."
+    cp "${DYNAMO_HOME}/../DafEar/Tomcat/mysql-resources/btm-resources.properties" \
+    "${CATALINA_BASE}/conf/resources.properties"
+fi
+
+if [ "${?}" != 0 ] ; then
+ echo "Errors encountered during ear file assembly."
+ exit 1
+fi
+
+${CATALINA_HOME}/bin/catalina.sh ${DEBUG_FLAG} run
+
+exit 0 

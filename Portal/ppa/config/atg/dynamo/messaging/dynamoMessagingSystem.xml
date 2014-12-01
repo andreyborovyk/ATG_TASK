@@ -1,0 +1,186 @@
+<!--
+  This is the regular DMS configuration file used on all servers, both
+  individual and global.
+-->
+
+<dynamo-message-system>
+
+  <patchbay>
+
+    <!-- PAF Messages -->
+    <message-sink>
+      <nucleus-name>/atg/scenario/ScenarioManager</nucleus-name>
+      <input-port>
+        <port-name>IndividualEvents</port-name>
+	<input-destination>
+	  <provider-name>local</provider-name>
+          <destination-name>localdms:/local/PPA/CommunityProposalEvents</destination-name>
+          <destination-type>Topic</destination-type>
+        </input-destination>
+      </input-port>
+    </message-sink>
+
+    <message-source>
+      <nucleus-name>
+        /atg/workflow/portal/communityproposal/process/WorkflowProcessManager
+      </nucleus-name>
+
+      <output-port>
+        <port-name>
+          IndividualTimers
+        </port-name>
+        <output-destination>
+          <provider-name>
+            sqldms
+          </provider-name>
+          <destination-name>
+            sqldms:/sqldms/PortalWorkflowQueue/IndividualTimerEvents
+          </destination-name>
+          <destination-type>
+            Queue
+          </destination-type>
+        </output-destination>
+      </output-port>
+    </message-source>
+
+    <message-source>
+      <nucleus-name>
+        /atg/portal/process/CommunityProposalHome
+      </nucleus-name>
+      
+      <output-port>
+        <port-name>
+          CommunityProposalEvents
+        </port-name>
+        <output-destination>
+          <provider-name>
+            local
+          </provider-name>
+          <destination-name>
+            localdms:/local/PPA/CommunityProposalEvents
+          </destination-name>
+          <destination-type>
+            Topic
+          </destination-type>
+        </output-destination>
+      </output-port>
+    </message-source>
+
+    <message-source>
+      <nucleus-name>
+        /atg/workflow/portal/communityproposal/WorkflowMessageSource
+      </nucleus-name>
+
+      <output-port>
+        <port-name>
+          WorkflowEvents
+        </port-name>
+	<output-destination>
+	  <provider-name>
+	    local
+	  </provider-name>
+	  <destination-name>
+	    localdms:/local/PortalWorkflowTopic/WorkflowManagerEvents
+	  </destination-name>
+	  <destination-type>
+	    Topic
+	  </destination-type>
+	</output-destination>
+      </output-port>
+    </message-source>
+
+    <message-sink>
+      <nucleus-name>
+        /atg/workflow/portal/communityproposal/process/WorkflowProcessManager
+      </nucleus-name>
+
+      <input-port>
+        <port-name>
+          IndividualEvents
+        </port-name>
+        <input-destination>
+          <provider-name>
+            local
+          </provider-name>
+          <destination-name>
+            localdms:/local/PortalWorkflowTopic/WorkflowManagerEvents
+          </destination-name>
+          <destination-type>
+            Topic
+          </destination-type>
+        </input-destination>
+      </input-port>
+
+      <input-port>
+        <port-name>
+          ProcessUpdates
+        </port-name>
+        <input-destination>
+          <provider-name>
+            sqldms
+          </provider-name>
+          <destination-name>
+            sqldms:/sqldms/PortalWorkflowTopic/WorkflowUpdateEvents
+          </destination-name>
+          <destination-type>
+            Topic
+          </destination-type>
+        </input-destination>
+      </input-port>
+
+      <input-port>
+        <port-name>
+          MigrationUpdates
+        </port-name>
+        <input-destination>
+          <provider-name>
+            sqldms
+          </provider-name>
+          <destination-name>
+            sqldms:/sqldms/PortalWorkflowTopic/WorkflowMigrationUpdateEvents
+          </destination-name>
+          <destination-type>
+            Topic
+          </destination-type>
+	</input-destination>
+      </input-port>      
+    </message-sink>
+
+  </patchbay>
+
+  <local-jms>
+    <jndi-prefix>/local</jndi-prefix>
+    <topic-name>/PortalWorkflowTopic/WorkflowManagerEvents</topic-name>
+    <topic-name>/PPA/CommunityProposalEvents</topic-name>
+  </local-jms>
+
+  <!-- message registry definitions -->
+  <message-registry>
+    <message-family>
+      <message-family-name>
+        atg
+      </message-family-name>
+
+      <message-type>
+        <jms-type>
+          atg.portal.process.CommunityProposalMessage
+        </jms-type>
+	      <message-class>
+	        atg.portal.process.CommunityProposalMessageImpl
+	      </message-class>
+	      <message-context>
+	        request
+	      </message-context>
+        <display-name>
+          Community proposal created
+        </display-name>
+        <description>
+          Community Proposal Created
+        </description>	      
+      </message-type>
+
+    </message-family>
+  </message-registry>
+
+</dynamo-message-system>
+<!-- @version $Id: //app/portal/version/10.0.3/ppa/config/atg/dynamo/messaging/dynamoMessagingSystem.xml#2 $$Change: 651448 $ -->

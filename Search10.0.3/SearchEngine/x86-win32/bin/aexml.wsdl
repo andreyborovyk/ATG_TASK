@@ -1,0 +1,279 @@
+<?xml version='1.0'?>
+<wsdl:definitions name='com.primus.aesoap.service.AEXmlService'
+    targetNamespace='http://primus.com/AnswerEngine/aesoap/'
+    xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'
+    xmlns:xsd='http://www.w3.org/2001/XMLSchema'
+    xmlns:tns='http://primus.com/AnswerEngine/aesoap/'
+    xmlns:http='http://schemas.xmlsoap.org/wsdl/http/'
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xmlns:mime='http://schemas.xmlsoap.org/wsdl/mime/'
+    xmlns:soap='http://schemas.xmlsoap.org/wsdl/soap/'
+    xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'>
+    <wsdl:message name='AEXmlService_RequestXML_Request'>
+        <wsdl:part name='p0' type='xsd:string'/>
+    </wsdl:message>
+    <wsdl:message name='AEXmlService_RequestXML_Response'>
+        <wsdl:part name='response' type='xsd:string'/>
+    </wsdl:message>
+	<wsdl:message name='AEXmlService_IndexByXML_Request'>
+        <wsdl:part name='request' type='xsd:string'/>
+    </wsdl:message>
+    <wsdl:message name='AEXmlService_IndexByXML_Response'>
+        <wsdl:part name='response' type='xsd:string'/>
+    </wsdl:message>
+	<wsdl:message name='AEXmlService_DeployByXML_Request'>
+        <wsdl:part name='request' type='xsd:string'/>
+    </wsdl:message>
+    <wsdl:message name='AEXmlService_DeployByXML_Response'>
+        <wsdl:part name='response' type='xsd:string'/>
+    </wsdl:message>
+    <wsdl:message name='AEXmlService_StartWithContent_Request'>
+        <wsdl:part name='request' type='xsd:string'/>
+    </wsdl:message>
+    <wsdl:message name='AEXmlService_StartWithContent_Response'>
+    </wsdl:message>
+    <wsdl:message name='AEXmlService_GetStartupStatus_Request'>
+    </wsdl:message>
+    <wsdl:message name='AEXmlService_GetStartupStatus_Response'>
+        <wsdl:part name='response' type='xsd:string'/>
+    </wsdl:message>
+    <wsdl:message name='AEXmlService_GetStartupMessages_Request'>
+    </wsdl:message>
+    <wsdl:message name='AEXmlService_GetStartupMessages_Response'>
+        <wsdl:part name='response' type='xsd:string'/>
+    </wsdl:message>
+    <wsdl:message name='AEXmlService_ClearStartupMessages_Request'>
+
+    </wsdl:message>
+
+    <wsdl:message name='AEXmlService_ClearStartupMessages_Response'>
+
+    </wsdl:message>
+
+    <wsdl:message name='AEXmlService_Shutdown_Request'>
+
+    </wsdl:message>
+
+    <wsdl:message name='AEXmlService_Shutdown_Response'>
+
+    </wsdl:message>
+
+    <wsdl:message name='AEXmlService_CancelIndexing_Request'>
+
+    </wsdl:message>
+
+    <wsdl:message name='AEXmlService_CancelIndexing_Response'>
+
+    </wsdl:message>
+    <wsdl:message name='AEXmlService_CleanupDataDirectory_Request'>
+    </wsdl:message>
+    <wsdl:message name='AEXmlService_CleanupDataDirectory_Response'>
+    </wsdl:message>
+
+
+    <wsdl:portType name='AEXmlService'>
+        <wsdl:operation name='RequestXML' parameterOrder='p0'>
+            <wsdl:input name='RequestXML' message='tns:AEXmlService_RequestXML_Request'/>
+            <wsdl:output name='RequestXML' message='tns:AEXmlService_RequestXML_Response'/>
+        </wsdl:operation>
+		<wsdl:operation name='IndexByXML'>
+            <wsdl:input name='IndexByXML' message='tns:AEXmlService_IndexByXML_Request'/>
+            <wsdl:output name='IndexByXML' message='tns:AEXmlService_IndexByXML_Response'/>
+        </wsdl:operation>
+		<wsdl:operation name='DeployByXML'>
+            <wsdl:input name='DeployByXML' message='tns:AEXmlService_DeployByXML_Request'/>
+            <wsdl:output name='DeployByXML' message='tns:AEXmlService_DeployByXML_Response'/>
+        </wsdl:operation>
+        <wsdl:operation name='StartWithContent'>
+            <wsdl:input name='StartWithContent' message='tns:AEXmlService_StartWithContent_Request'/>
+            <wsdl:output name='StartWithContent' message='tns:AEXmlService_StartWithContent_Response'/>
+        </wsdl:operation>
+        <wsdl:operation name='GetStartupStatus'>
+            <wsdl:input name='GetStartupStatus' message='tns:AEXmlService_GetStartupStatus_Request'/>
+            <wsdl:output name='GetStartupStatus' message='tns:AEXmlService_GetStartupStatus_Response'/>
+        </wsdl:operation>
+        <wsdl:operation name='GetStartupMessages'>
+            <wsdl:input name='GetStartupMessages' message='tns:AEXmlService_GetStartupMessages_Request'/>
+            <wsdl:output name='GetStartupMessages' message='tns:AEXmlService_GetStartupMessages_Response'/>
+        </wsdl:operation>
+        <wsdl:operation name='ClearStartupMessages'>
+
+            <wsdl:input name='ClearStartupMessages' message='tns:AEXmlService_ClearStartupMessages_Request'/>
+
+            <wsdl:output name='ClearStartupMessages' message='tns:AEXmlService_ClearStartupMessages_Response'/>
+
+        </wsdl:operation>
+
+        <wsdl:operation name='Shutdown'>
+
+            <wsdl:input name='Shutdown' message='tns:AEXmlService_Shutdown_Request'/>
+
+            <wsdl:output name='Shutdown' message='tns:AEXmlService_Shutdown_Response'/>
+
+        </wsdl:operation>
+
+        <wsdl:operation name='CancelIndexing'>
+
+            <wsdl:input name='CancelIndexing' message='tns:AEXmlService_CancelIndexing_Request'/>
+
+            <wsdl:output name='CancelIndexing' message='tns:AEXmlService_CancelIndexing_Response'/>
+
+        </wsdl:operation>
+        <wsdl:operation name='CleanupDataDirectory'>
+            <wsdl:input name='CleanupDataDirectory' message='tns:AEXmlService_CleanupDataDirectory_Request'/>
+            <wsdl:output name='CleanupDataDirectory' message='tns:AEXmlService_CleanupDataDirectory_Response'/>
+        </wsdl:operation>
+
+    </wsdl:portType>
+    <wsdl:binding name='AEXmlService' type='tns:AEXmlService'>
+        <soap:binding transport='http://schemas.xmlsoap.org/soap/http' style='rpc'/>
+        <wsdl:operation name='RequestXML'>
+            <soap:operation soapAction='' style='rpc'/>
+            <wsdl:input name='RequestXML'>
+                <soap:body use='encoded' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' 
+				namespace='http://primus.com/AnswerEngine/aesoap/AEXmlService'/>
+            </wsdl:input>
+            <wsdl:output name='RequestXML'>
+                <soap:body use='encoded' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' 
+				namespace='http://primus.com/AnswerEngine/aesoap/AEXmlService'/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name='IndexByXML'>
+            <soap:operation soapAction='' style='rpc'/>
+            <wsdl:input name='IndexByXML'>
+                <soap:body use='encoded' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' 
+				namespace='http://primus.com/AnswerEngine/aesoap/AEXmlService'/>
+            </wsdl:input>
+            <wsdl:output name='IndexByXML'>
+                <soap:body use='encoded' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' 
+				namespace='http://primus.com/AnswerEngine/aesoap/AEXmlService'/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name='DeployByXML'>
+            <soap:operation soapAction='' style='rpc'/>
+            <wsdl:input name='DeployByXML'>
+                <soap:body use='encoded' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' 
+				namespace='http://primus.com/AnswerEngine/aesoap/AEXmlService'/>
+            </wsdl:input>
+            <wsdl:output name='DeployByXML'>
+                <soap:body use='encoded' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' 
+				namespace='http://primus.com/AnswerEngine/aesoap/AEXmlService'/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name='StartWithContent'>
+            <soap:operation soapAction='' style='rpc'/>
+            <wsdl:input name='StartWithContent'>
+                <soap:body use='encoded' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'
+                namespace='http://primus.com/AnswerEngine/aesoap/AEXmlService'/>
+            </wsdl:input>
+            <wsdl:output name='StartWithContent'>
+                <soap:body use='encoded' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'
+                namespace='http://primus.com/AnswerEngine/aesoap/AEXmlService'/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name='GetStartupStatus'>
+            <soap:operation soapAction='' style='rpc'/>
+            <wsdl:input name='GetStartupStatus'>
+                <soap:body use='encoded' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'
+                namespace='http://primus.com/AnswerEngine/aesoap/AEXmlService'/>
+            </wsdl:input>
+            <wsdl:output name='GetStartupStatus'>
+                <soap:body use='encoded' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'
+                namespace='http://primus.com/AnswerEngine/aesoap/AEXmlService'/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name='GetStartupMessages'>
+            <soap:operation soapAction='' style='rpc'/>
+            <wsdl:input name='GetStartupMessages'>
+                <soap:body use='encoded' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'
+                namespace='http://primus.com/AnswerEngine/aesoap/AEXmlService'/>
+            </wsdl:input>
+            <wsdl:output name='GetStartupMessages'>
+                <soap:body use='encoded' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'
+                namespace='http://primus.com/AnswerEngine/aesoap/AEXmlService'/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name='ClearStartupMessages'>
+
+            <soap:operation soapAction='' style='rpc'/>
+
+            <wsdl:input name='ClearStartupMessages'>
+
+                <soap:body use='encoded' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'
+
+                namespace='http://primus.com/AnswerEngine/aesoap/AEXmlService'/>
+
+            </wsdl:input>
+
+            <wsdl:output name='ClearStartupMessages'>
+
+                <soap:body use='encoded' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'
+
+                namespace='http://primus.com/AnswerEngine/aesoap/AEXmlService'/>
+
+            </wsdl:output>
+
+        </wsdl:operation>
+
+        <wsdl:operation name='Shutdown'>
+
+            <soap:operation soapAction='' style='rpc'/>
+
+            <wsdl:input name='Shutdown'>
+
+                <soap:body use='encoded' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'
+
+                namespace='http://primus.com/AnswerEngine/aesoap/AEXmlService'/>
+
+            </wsdl:input>
+
+            <wsdl:output name='Shutdown'>
+
+                <soap:body use='encoded' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'
+
+                namespace='http://primus.com/AnswerEngine/aesoap/AEXmlService'/>
+
+            </wsdl:output>
+
+        </wsdl:operation>
+
+        <wsdl:operation name='CancelIndexing'>
+
+            <soap:operation soapAction='' style='rpc'/>
+
+            <wsdl:input name='CancelIndexing'>
+
+                <soap:body use='encoded' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'
+
+                namespace='http://primus.com/AnswerEngine/aesoap/AEXmlService'/>
+
+            </wsdl:input>
+
+            <wsdl:output name='CancelIndexing'>
+
+                <soap:body use='encoded' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'
+
+                namespace='http://primus.com/AnswerEngine/aesoap/AEXmlService'/>
+
+            </wsdl:output>
+
+        </wsdl:operation>
+        <wsdl:operation name='CleanupDataDirectory'>
+            <soap:operation soapAction='' style='rpc'/>
+            <wsdl:input name='CleanupDataDirectory'>
+                <soap:body use='encoded' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'
+                namespace='http://primus.com/AnswerEngine/aesoap/AEXmlService'/>
+            </wsdl:input>
+            <wsdl:output name='CleanupDataDirectory'>
+                <soap:body use='encoded' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'
+                namespace='http://primus.com/AnswerEngine/aesoap/AEXmlService'/>
+            </wsdl:output>
+        </wsdl:operation>
+
+    </wsdl:binding>
+    <wsdl:service name='AEXmlService'>
+        <wsdl:port name='AEXmlService' binding='tns:AEXmlService'>
+            <soap:address location='http://localhost:6070/AEXmlService/'/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

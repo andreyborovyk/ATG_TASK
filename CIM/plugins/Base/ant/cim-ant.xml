@@ -1,0 +1,828 @@
+<project name="cim-ant-utility" default="" basedir=".">
+
+  <target name="start.sqlrepository.windows">
+    <exec executable="cmd" dir="${cim.dynamo.root}/home/bin" failonerror="true">
+      <env key="CLASSPATH" value="${cim.classpath}"/> 
+      <env key="ATG_CHECK_DEPLOY_TARGETS" value="false"/> 
+    	<env key="DYNAMO_HOME" value="${cim.dynamo.root}/home"/>
+    	<arg value="/c"/>
+      <arg value="${cim.dynamo.root}home/bin/startSQLRepository.bat
+      ${cim.sqlrepository.arg}"/>
+    </exec>
+  </target>
+
+
+  <target name="start.sqlrepository.nonwindows">
+    <exec executable="${cim.dynamo.root}home/bin/startSQLRepository" dir="${cim.dynamo.root}home/bin" failonerror="true">
+      <arg line="${cim.sqlrepository.arg}"/>
+        <env key="DYNAMO_HOME" value="${cim.dynamo.root}/home"/>
+        <env key="CLASSPATH" value="${cim.classpath}"/> 
+        <env key="ATG_CHECK_DEPLOY_TARGETS" value="false"/>
+    </exec>
+  </target>
+  
+  <target name="dir.copy" >
+    <copy todir="${dir.copy.destination}" overwrite="true" verbose="true">
+      <fileset dir="${dir.copy.source}"/>
+    </copy>
+  </target>
+    
+    <target name="dir.copy.filter" >
+        <copy todir="${dir.copy.destination}" overwrite="true" verbose="true">
+          <fileset dir="${dir.copy.source}">
+              <include name="${dir.copy.filefilter}"/>
+          </fileset>
+        </copy>
+  </target>
+    
+    <target name="jar.extract.filter">
+        <unjar src="${jar.src}" dest="${jar.dest}">
+            <patternset>
+                <include name="${jar.filter}"/>
+            </patternset>
+        </unjar>
+    </target>
+  
+  <target name="dir.delete">
+    <delete verbose="true" dir="${dir.path}"/>
+  </target>
+
+  <target name="dir.delete.all">
+    <delete includeEmptyDirs="true">
+      <fileset dir="${dir.path}"/>
+    </delete>
+  </target>  
+  
+  <target name="file.rename">
+    <move file="${src.file}" tofile="${dest.file}" overwrite="true"/>
+  </target>
+ 
+  <target name="file.copy">
+     <copy file="${src.file}" tofile="${dest.file}" verbose="true" overwrite="true"/> 
+  </target>    
+    
+   <target name="copyHeadlessFile.copy">
+      <copy file="${cim.srcheadlessfilepath}" tofile="${cim.destheadlessfilepath}" verbose="true" overwrite="true"/> 
+   </target>
+  
+      <target name="sql.execute">
+          <sql
+              onerror="continue"    
+            driver="${jdbc.driverclassname}"
+            url="${jdbc.url}"
+            userid="${jdbc.username}"
+            password="${jdbc.password}"
+            src="${src.file}"
+            />
+      </target>
+  
+  <target name="exec.dynamo.bat.file.windows">
+    <exec executable="cmd" failonerror="true">
+        <env key="DYNAMO_HOME" value="${cim.dynamo.root}home"/>
+        <env key="CLASSPATH" value="${cim.classpath}"/>
+      <arg value="/c"/>
+      <arg value="${exec.filepath.windows} ${exec.args.windows}"/>
+    </exec>
+    </target>
+  
+  <target name="exec.dynamo.executable.file.nonwindows">
+    <exec executable="${exec.filepath.nonwindows}" failonerror="true">
+        <arg line="${exec.args.nonwindows}"/>
+        <env key="DYNAMO_HOME" value="${cim.dynamo.root}/home"/>
+        <env key="CLASSPATH" value="${cim.classpath}"/>  
+    </exec>
+  </target>
+  
+   <target name="exec.runAssembler.bat.file.windows">
+    <exec executable="cmd" dir="${cim.dynamo.root}/home/bin" failonerror="true">
+      <env key="DYNAMO_HOME" value="${cim.dynamo.root}home"/>
+      <env key="CLASSPATH" value="${cim.classpath}"/>
+    	<env key="CATALINA_HOME" value="${cim.tomcat.home}"/>
+      <arg value="/c"/>
+      <arg value="${cim.dynamo.root}home/bin/runAssembler.bat ${cim.runAssembler.arg}"/>
+    </exec>
+    </target>
+    
+    <target name="exec.runAssembler.sh.file.nonwindows">
+    <exec executable="${cim.dynamo.root}home/bin/runAssembler" dir="${cim.dynamo.root}home/bin" failonerror="true">
+      <arg line="${cim.runAssembler.arg}"/>
+      <env key="DYNAMO_HOME" value="${cim.dynamo.root}/home"/>
+      <env key="CLASSPATH" value="${cim.classpath}"/> 
+    	<env key="CATALINA_HOME" value="${cim.tomcat.home}"/>
+    </exec>
+  </target>
+  
+  <target name="exec.startRepositoryLoader.bat.file.windows">
+      <copy tofile="${cim.dynamo.root}/home/bin/startRepositoryLoader.bat" file="${cim.dynamo.root}/Publishing/base/bin/startRepositoryLoader.bat" verbose="true" overwrite="true"/> 
+    <exec executable="cmd" dir="${cim.dynamo.root}/home/bin/" failonerror="true">
+      <env key="DYNAMO_HOME" value="${cim.dynamo.root}home"/>
+        <env key="CLASSPATH" value="${cim.classpath}"/>
+      <arg value="/c"/>
+      <arg value="${cim.dynamo.root}/home/bin/startRepositoryLoader.bat ${cim.startRepositoryLoader.arg}"/>
+    </exec>
+    <delete file="${cim.dynamo.root}/home/bin/startRepositoryLoader.bat"/>
+    </target>
+    
+    <target name="exec.startRepositoryLoader.file.nonwindows">
+        <copy tofile="${cim.dynamo.root}/home/bin/startRepositoryLoader" file="${cim.dynamo.root}/Publishing/base/bin/startRepositoryLoader" verbose="true" overwrite="true"/> 
+    <chmod file="${cim.dynamo.root}/home/bin/startRepositoryLoader" perm="u+x"/>
+    <exec executable="${cim.dynamo.root}/home/bin/startRepositoryLoader" dir="${cim.dynamo.root}/home/bin/" failonerror="true">
+      <arg line="${cim.startRepositoryLoader.arg}"/>
+        <env key="DYNAMO_HOME" value="${cim.dynamo.root}/home"/>
+        <env key="CLASSPATH" value="${cim.classpath}"/> 
+    </exec>
+    <delete file="${cim.dynamo.root}/home/bin/startRepositoryLoader.sh"/>
+  </target>
+
+
+  <!-- whether to delete on tempfile. Can turn off for debugging. -->
+  <property name="cim.delete.tempfiles" value="true"/>
+
+  <!-- These should be set programatically by CIM. -->
+
+<!--
+  <property name="wl.home" value="/home/.../bea10/wlserver_10.0"/>
+  <property name="wl.domain.dir" value="/home/.../bea10/user_projects/domains/base_domain"/>
+
+  <property name="cim.script.extension" value=".sh"/>
+  <property name="cim.dynamo.root" value="/home/.../Dynamo"/>
+
+  <property name="wl.servername" value="PubServer"/>
+  <property name="wl.http.port" value="7070"/>
+  <property name="wl.https.port" value="7071"/>
+
+  <property name="wl.adminserver.username" value="weblogic"/>
+  <property name="wl.adminserver.password" value="weblogic"/>
+  <property name="wl.adminserver.url" value="t3://localhost:7001"/>
+
+  <property name="wl.deploy.appname" value="ATG-MyApp"/>
+  <property name="wl.deploy.earpath" value="/home/.../jboss-eap-4.2/jboss-as/server/atg/deploy/ATG.ear"/>
+  <property name="wl.deploy.servername" value="PubServer"/>
+-->
+
+
+  <!-- =================================================== -->
+  <!--  Weblogic-related targets. -->
+  <!-- =================================================== -->
+
+  <macrodef name="appendToFile">
+    <!-- Append the contents of source.file to target.file -->
+    <!-- also needs ${cim.script.extension} -->
+    <attribute name="target.file" description="File to append to"/>
+    <attribute name="source.file" description="File whose content to append to target.file"/>
+    <sequential>
+      <tempfile property="cim.append.copy" prefix="cim-append-" suffix=".tmp" deleteonexit="${cim.delete.tempfiles}"/>    
+      <copy file="@{target.file}" tofile="${cim.append.copy}"/>
+      <concat destfile="@{target.file}">
+       <filelist files="${cim.append.copy}"/>
+       <filelist files="@{source.file}"/>
+      </concat>
+    </sequential>
+  </macrodef>
+
+
+  <target name="wlst-exec-file">
+    <!-- Invoke wslt on the specified ${wslt.file} -->
+    <!-- wl.home  -->
+    <!-- cim.script.extension  -->
+    <!-- wlst.file -->
+    <wlstExecFile wl.home="${wl.home}" wlst.file="${wlst.file}"/>
+  </target>
+
+  <macrodef name="wlstExecFile">
+     <!-- Invoke wslt on the specified ${wslt.file} -->
+     <!-- cim.script.extension  -->
+    <attribute name="wl.home" description="Oracle Weblogic home directory"/>
+    <attribute name="wlst.file" description="wlst File to execute"/>
+    <sequential>
+      <tempfile property="wlst.exec.file" prefix="wlst-" suffix="${cim.script.extension}" deleteonexit="${cim.delete.tempfiles}"/>    
+      <concat destfile="${wlst.exec.file}">
+       <filelist files="@{wl.home}/common/bin/wlst${cim.script.extension}"/>
+       <filelist files="${cim.dynamo.root}/CIM/plugins/Base/filetemplate/wlst-append${cim.script.extension}"/>
+      </concat>
+      <chmod file="${wlst.exec.file}" perm="+x"/>
+      <echo message="Executing @{wl.home}/common/bin/wlst${cim.script.extension} @{wlst.file}"/>
+      <exec executable="${wlst.exec.file}" failonerror="true">
+        <!-- <arg value="${wl.home}/common/bin/wlst${cim.script.extension}"/> -->
+        <arg value="@{wlst.file}"/>
+      </exec>
+    </sequential>
+  </macrodef>
+
+  <macrodef name="wlstExecFileOutput">
+     <!-- Invoke wslt on the specified ${wslt.file} -->
+     <!-- cim.script.extension  -->
+    <attribute name="wl.home" description="Oracle Weblogic home directory"/>
+    <attribute name="wlst.file" description="wlst File to execute"/>
+    <attribute name="output.prop" description="Output Property to Return to CIM" />
+    <sequential>
+      <tempfile property="wlst.exec.file" prefix="wlst-" suffix="${cim.script.extension}" deleteonexit="${cim.delete.tempfiles}"/>    
+      <concat destfile="${wlst.exec.file}">
+       <filelist files="@{wl.home}/common/bin/wlst${cim.script.extension}"/>
+       <filelist files="${cim.dynamo.root}/CIM/plugins/Base/filetemplate/wlst-append${cim.script.extension}"/>
+      </concat>
+      <chmod file="${wlst.exec.file}" perm="+x"/>
+      <echo message="Executing @{wl.home}/common/bin/wlst${cim.script.extension} @{wlst.file}"/>
+      <exec executable="${wlst.exec.file}" failonerror="true" outputproperty="@{output.prop}">
+        <!-- <arg value="${wl.home}/common/bin/wlst${cim.script.extension}"/> -->
+        <arg value="@{wlst.file}"/>
+      </exec>
+      <echo message="${@{output.prop}}" />
+    </sequential>
+  </macrodef>
+
+  <macrodef name="wlstExecWithReplace">
+    <!-- Replace values in template, and execute wlst on the result -->
+    <!--  cim.script.extension - either ".bat" or ".sh" -->
+    <attribute name="wl.home" description="Oracle Weblogic Home Directory"/>
+    <attribute name="template" description="wlst python template file"/>
+    <attribute name="properties.file" description="the properties file of replacements"/>
+    <sequential>
+      <tempfile property="wlst.temp.file" prefix="wlst-exec-" suffix=".py" deleteonexit="${cim.delete.tempfiles}"/>
+      <copy file="@{template}" tofile="${wlst.temp.file}"/>
+      <replace file="${wlst.temp.file}" replacefilterfile="@{properties.file}"/>
+
+      <wlstExecFile wl.home="${wl.home}" wlst.file="${wlst.temp.file}"/>
+    </sequential>
+  </macrodef>
+  
+  <macrodef name="wlstExecReplaceOutput"> 
+    <attribute name="wl.home" description="Oracle Weblogic Home Directory"/>
+    <attribute name="template" description="wlst python template file"/>
+    <attribute name="properties.file" description="the properties file of replacements"/>
+    <sequential>
+      <tempfile property="wlst.temp.file" prefix="wlst-exec-" suffix=".py" deleteonexit="${cim.delete.tempfiles}"/>
+      <copy file="@{template}" tofile="${wlst.temp.file}"/>
+      <replace file="${wlst.temp.file}" replacefilterfile="@{properties.file}"/>
+
+      <wlstExecFileOutput wl.home="${wl.home}" wlst.file="${wlst.temp.file}" output.prop="${output.prop}"/>
+    </sequential>
+   </macrodef>
+
+  <target name="wl-create-server">
+    <!-- Create a server with the specified values. -->
+    <!--  cim.script.extension - the cim script extension ".sh" or ".bat"-->
+    <!--  cim.dynamo.root - The ATG root directory. -->
+    <!--  wl.domain.dir - The Oracle Weblogic domain directory. -->
+    <!--  wl.home - The Oracle Weblogic home directory -->
+    <!--  wl.servername - the servername of the server to create -->
+    <!--  wl.http.port - the HTTP Port of the server to create -->
+    <!--  wl.https.port - the HTTP port of the server to create -->
+    
+    <tempfile property="cim.replacement.properties.file" prefix="wl-create-" suffix=".properties" deleteonexit="${cim.delete.tempfiles}"/>    
+    <propertyfile file="${cim.replacement.properties.file}">
+      <entry key="$${cim.dynamo.root}" value="${cim.dynamo.root}"/>
+      <entry key="$${wl.domain.dir}" value="${wl.domain.dir}"/>
+      <entry key="$${wl.servername}" value="${wl.servername}"/>
+      <entry key="$${wl.http.port}" value="${wl.http.port}"/>
+      <entry key="$${wl.https.port}" value="${wl.https.port}"/>
+    </propertyfile>
+
+    <wlstExecWithReplace wl.home="${wl.home}" template="${cim.dynamo.root}/CIM/plugins/Base/filetemplate/wl-create-server.py" properties.file="${cim.replacement.properties.file}"/>
+  </target>
+
+
+
+  <target name="wl-online-connect">
+    <!-- Connect to the specified Oracle server (then disconnect). Used -->
+    <!--   to test connection parameters. -->
+
+    <!--  cim.script.extension - the cim script extension -->
+    <!--  cim.dynamo.root - The ATG root directory. -->
+    <!--  cim.script.extension -->
+    <!--  wl.home - The Oracle Weblogic home directory -->
+
+    <!--  wl.adminserver.username - username for the Oracle Weblogic AdminServer to connect to -->
+    <!--  wl.adminserver.password - password for the Oracle Weblogic AdminServer to connect to -->
+    <!--  wl.adminserver.url - url for the Oracle Weblogic AdminServer to connect to -->
+
+    <tempfile property="cim.replacement.properties.file" prefix="wl-create-" suffix=".properties" deleteonexit="${cim.delete.tempfiles}"/>    
+    <propertyfile file="${cim.replacement.properties.file}">
+      <entry key="$${cim.dynamo.root}" value="${cim.dynamo.root}"/>
+      <entry key="$${wl.adminserver.username}" value="${wl.adminserver.username}"/>
+      <entry key="$${wl.adminserver.password}" value="${wl.adminserver.password}"/>
+      <entry key="$${wl.adminserver.url}" value="${wl.adminserver.url}"/>
+    </propertyfile>
+
+    <wlstExecWithReplace wl.home="${wl.home}" template="${cim.dynamo.root}/CIM/plugins/Base/filetemplate/wl-online-connect.py" properties.file="${cim.replacement.properties.file}"/>
+  </target>
+
+
+  <target name="wl-online-create-server">
+    <!-- Create a server with the specified values. -->
+    <!--  cim.script.extension - the cim script extension -->
+    <!--  cim.dynamo.root - The ATG root directory. -->
+
+    <!--   wl.adminserver.username - username for the Oracle Weblogic AdminServer to connect to -->
+    <!--   wl.adminserver.password - password for the Oracle Weblogic AdminServer to connect to -->
+    <!--   wl.adminserver.url - url for the Oracle Weblogic AdminServer to connect to -->
+
+    <!--  wl.home - The Oracle Weblogic home directory -->
+    <!--  wl.servername - the servername of the server to create -->
+    <!--  wl.http.port - the HTTP Port of the server to create -->
+    <!--  wl.https.port - the HTTP port of the server to create -->
+    
+    <tempfile property="cim.replacement.properties.file" prefix="wl-create-" suffix=".properties" deleteonexit="${cim.delete.tempfiles}"/>    
+    <propertyfile file="${cim.replacement.properties.file}">
+      <entry key="$${cim.dynamo.root}" value="${cim.dynamo.root}"/>
+
+      <entry key="$${wl.adminserver.username}" value="${wl.adminserver.username}"/>
+      <entry key="$${wl.adminserver.password}" value="${wl.adminserver.password}"/>
+      <entry key="$${wl.adminserver.url}" value="${wl.adminserver.url}"/>
+
+      <entry key="$${wl.servername}" value="${wl.servername}"/>
+      <entry key="$${wl.http.port}" value="${wl.http.port}"/>
+      <entry key="$${wl.https.port}" value="${wl.https.port}"/>
+
+    </propertyfile>
+
+    <wlstExecWithReplace wl.home="${wl.home}" template="${cim.dynamo.root}/CIM/plugins/Base/filetemplate/wl-online-create-server.py" properties.file="${cim.replacement.properties.file}"/>
+  </target>
+
+
+  <target name="wl-online-jdbc-prologue">
+    <!-- Output the prolog to creating jdbc resources. -->
+
+    <!--  wl.jdbc.scriptfile - the scriptfile to append to  -->  
+
+    <!--  cim.script.extension - the cim script extension -->
+    <!--  cim.dynamo.root - The ATG root directory. -->
+    <!--  cim.script.extension -->
+    <!--  wl.home - The Oracle Weblogic home directory -->
+
+    <!--  wl.adminserver.username - username for the Oracle Weblogic AdminServer to connect to -->
+    <!--  wl.adminserver.password - password for the Oracle Weblogic AdminServer to connect to -->
+    <!--  wl.adminserver.url - url for the Oracle Weblogic AdminServer to connect to -->
+
+    <delete file="${wl.jdbc.scriptfile}"/>
+
+    <tempfile property="cim.replacement.properties.file" prefix="wl-create-" suffix=".properties" deleteonexit="${cim.delete.tempfiles}"/>    
+    <propertyfile file="${cim.replacement.properties.file}">
+      <entry key="$${cim.dynamo.root}" value="${cim.dynamo.root}"/>
+      <entry key="$${wl.adminserver.username}" value="${wl.adminserver.username}"/>
+      <entry key="$${wl.adminserver.password}" value="${wl.adminserver.password}"/>
+      <entry key="$${wl.adminserver.url}" value="${wl.adminserver.url}"/>
+      <entry key="$${db.type}" value="${db.type}"/>
+    </propertyfile>
+
+    <copy file="${cim.dynamo.root}/CIM/plugins/Base/filetemplate/wl-online-create-ds-prologue.py" tofile="${wl.jdbc.scriptfile}"/>
+
+    <replace file="${wl.jdbc.scriptfile}" replacefilterfile="${cim.replacement.properties.file}"/>
+  </target>
+
+
+
+  <target name="wl-jdbc-prologue">
+    <!-- Output the first part of a script file to create one or more -->
+    <!-- JDBC datasources. Typically one invoked wl-jdbc-prologue, -->
+    <!-- then wl-jdbc-append one or more times, then -->
+    <!-- wl-jdbc-postlude, then wlst-exec-file. -->
+
+    <!--  wl.jdbc.scriptfile - the scriptfile to append to  -->   
+    <!--  wl.home - The Oracle Weblogic home directory -->
+    <!--  wl.domain.dir - The Oracle Weblogic domain directory. -->
+    <!--  cim.dynamo.root - The ATG root directory. -->
+    <!--  cim.script.extension - the cim script extension ".sh" or ".bat"-->
+
+    <delete file="${wl.jdbc.scriptfile}"/>
+
+    <tempfile property="cim.replacement.properties.file" prefix="wl-jdbc-" suffix=".properties" deleteonexit="${cim.delete.tempfiles}"/>    
+    <propertyfile file="${cim.replacement.properties.file}">
+      <entry key="$${cim.dynamo.root}" value="${cim.dynamo.root}"/>
+      <entry key="$${wl.domain.dir}" value="${wl.domain.dir}"/>
+    </propertyfile>
+
+    <copy file="${cim.dynamo.root}/CIM/plugins/Base/filetemplate/wl-create-ds-prologue.py" tofile="${wl.jdbc.scriptfile}"/>
+    <replace file="${wl.jdbc.scriptfile}" replacefilterfile="${cim.replacement.properties.file}"/>
+  </target>
+
+
+  <target name="wl-online-jdbc-postlude">
+    <!-- Output the postlude that finishes up creating one or more -->
+    <!-- JDBC datasources.-->
+    <!--  cim.dynamo.root - The ATG root directory. -->
+    <!--  cim.script.extension - the cim script extension ".sh" or ".bat"-->
+    <!--  wl.home - The Oracle Weblogic home directory -->
+    <!--  wl.jdbc.scriptfile - the scriptfile to append to  -->   
+    <!--  wl.home - The Oracle Weblogic home directory -->
+    <!--  wl.domain.dir - The Oracle Weblogic domain directory. -->
+
+    <tempfile property="cim.replacement.properties.file" prefix="wl-jdbc-postlude-" suffix=".properties" deleteonexit="${cim.delete.tempfiles}"/>    
+    <propertyfile file="${cim.replacement.properties.file}">
+      <entry key="$${cim.dynamo.root}" value="${cim.dynamo.root}"/>
+      <entry key="$${wl.domain.dir}" value="${wl.domain.dir}"/>
+    </propertyfile>
+
+    <tempfile property="jdbc.command.file" prefix="wl-jdbc-postlude-" suffix=".py" deleteonexit="${cim.delete.tempfiles}"/>
+
+    <copy file="${cim.dynamo.root}/CIM/plugins/Base/filetemplate/wl-online-create-ds-postlude.py" tofile="${jdbc.command.file}"/>
+    <replace file="${jdbc.command.file}" replacefilterfile="${cim.replacement.properties.file}"/>
+
+    <appendToFile source.file="${jdbc.command.file}" target.file="${wl.jdbc.scriptfile}"/>
+  </target>
+
+
+  <target name="wl-jdbc-append">
+    <!-- Append the command to create a JDBC datasource. Should be -->
+    <!-- invoked on a file created by wl-jdbc-prologue, and followed -->
+    <!-- up invoking wl-jdbc-postlude, and then wlst-exec-file. -->
+
+    <!-- wl.jdbc.scriptfile - the scriptfile to append to  -->
+    <!-- wl.jdbc.jndiname  - the JNDI name to which to bind the datasource we are creating. -->
+    <!-- wl.jdbc.url - the JDBC URL of the datasource to create  -->
+    <!-- wl.jdbc.user  - the JDBC username of the datasource to create -->
+    <!-- wl.jdbc.password - the JDBC password of the datasource to create -->
+    <!-- wl.jdbc.driver - the JDBC driver class of the datasource to create -->
+
+    <tempfile property="cim.replacement.properties.file" prefix="wl-jdbc-" suffix=".properties" deleteonexit="${cim.delete.tempfiles}"/>    
+    <propertyfile file="${cim.replacement.properties.file}">
+      <entry key="$${cim.dynamo.root}" value="${cim.dynamo.root}"/>
+      <entry key="$${wl.servername}" value="${wl.servername}"/>
+      <entry key="$${wl.jdbc.jndiname}" value="${wl.jdbc.jndiname}"/>
+      <entry key="$${wl.jdbc.url}" value="${wl.jdbc.url}"/>
+      <entry key="$${wl.jdbc.user}" value="${wl.jdbc.user}"/>
+      <entry key="$${wl.jdbc.password}" value="${wl.jdbc.password}"/>
+      <entry key="$${wl.jdbc.driver}" value="${wl.jdbc.driver}"/>
+      <entry key="$${wl.jdbc.port}" value="${wl.jdbc.port}"/>
+      <entry key="$${wl.jdbc.dbname}" value="${wl.jdbc.dbname}"/>
+      <entry key="$${wl.jdbc.dbserver}" value="${wl.jdbc.dbserver}"/>
+      <entry key="$${wl.dbtype}" value="${wl.dbtype}"/>
+    </propertyfile>
+
+    <tempfile property="jdbc.command.file" prefix="wl-jdbc-command-" suffix=".py" deleteonexit="${cim.delete.tempfiles}"/>
+
+    <copy file="${cim.dynamo.root}/CIM/plugins/Base/filetemplate/wl-create-ds-command.py" tofile="${jdbc.command.file}"/>
+    <replace file="${jdbc.command.file}" replacefilterfile="${cim.replacement.properties.file}"/>
+
+    <appendToFile source.file="${jdbc.command.file}" target.file="${wl.jdbc.scriptfile}"/>
+  </target>
+
+
+  <target name="wl-jdbc-postlude">
+    <!-- Output the postlude that finishes up creating on or more datasources. -->
+
+    <!--  cim.dynamo.root - The ATG root directory. -->
+    <!--  cim.script.extension - the cim script extension ".sh" or ".bat"-->
+    <!--  wl.jdbc.scriptfile - the scriptfile to append to  -->   
+    <!--  wl.home - The Oracle Weblogic home directory -->
+    <!--  wl.domain.dir - The Oracle Weblogic domain directory. -->
+
+    <tempfile property="cim.replacement.properties.file" prefix="wl-jdbc-postlude-" suffix=".properties" deleteonexit="${cim.delete.tempfiles}"/>    
+    <propertyfile file="${cim.replacement.properties.file}">
+      <entry key="$${cim.dynamo.root}" value="${cim.dynamo.root}"/>
+      <entry key="$${wl.domain.dir}" value="${wl.domain.dir}"/>
+    </propertyfile>
+
+    <tempfile property="jdbc.command.file" prefix="wl-jdbc-postlude-" suffix=".py" deleteonexit="${cim.delete.tempfiles}"/>
+
+    <copy file="${cim.dynamo.root}/CIM/plugins/Base/filetemplate/wl-create-ds-postlude.py" tofile="${jdbc.command.file}"/>
+    <replace file="${jdbc.command.file}" replacefilterfile="${cim.replacement.properties.file}"/>
+
+    <appendToFile source.file="${jdbc.command.file}" target.file="${wl.jdbc.scriptfile}"/>
+  </target>
+
+
+
+  <target name="wl-test-jdbc">
+    <!-- Test creating a Oracle Weblogic jdbc datasource. Invokes prologue, -->
+    <!-- append, and postlude.  -->
+    <antcall target="wl-jdbc-prologue">
+      <param name="wl.jdbc.scriptfile" value="/tmp/wl-create-jdbc.py"/>
+    </antcall>
+    <antcall target="wl-jdbc-append">
+      <param name="cim.dynamo.root" value="${cim.dynamo.root}"/>
+      <param name="wl.jdbc.jndiname" value="ATGMyTestDS"/>
+      <param name="wl.jdbc.url" value="jdbc:foobar:baz"/>
+      <param name="wl.jdbc.user" value="jdbcUser"/>
+      <param name="wl.jdbc.password" value="jdbcPassword"/>
+      <param name="wl.jdbc.driver" value="some.jdbc.Driver"/>
+      <param name="wl.jdbc.scriptfile" value="/tmp/wl-create-jdbc.py"/>
+    </antcall>
+    <antcall target="wl-jdbc-postlude">
+      <param name="wl.jdbc.scriptfile" value="/tmp/wl-create-jdbc.py"/>
+    </antcall>
+
+    <wlstExecFile wl.home="${wl.home}" wlst.file="/tmp/wl-create-jdbc.py"/>
+  </target>
+
+
+
+  <target name="wl-online-test-jdbc">
+    <!-- Test creating a Oracle Weblogic jdbc datasource. Invokes prologue, -->
+    <!-- append, and postlude.  -->
+    <antcall target="wl-online-jdbc-prologue">
+      <param name="wl.jdbc.scriptfile" value="/tmp/wl-create-jdbc.py"/>
+    </antcall>
+    <antcall target="wl-jdbc-append">
+      <param name="cim.dynamo.root" value="${cim.dynamo.root}"/>
+      <param name="wl.jdbc.jndiname" value="ATGMyTestDS"/>
+      <param name="wl.jdbc.url" value="jdbc:foobar:baz"/>
+      <param name="wl.jdbc.user" value="jdbcUser"/>
+      <param name="wl.jdbc.password" value="jdbcPassword"/>
+      <param name="wl.jdbc.driver" value="some.jdbc.Driver"/>
+      <param name="wl.jdbc.scriptfile" value="/tmp/wl-create-jdbc.py"/>
+    </antcall>
+    <antcall target="wl-online-jdbc-postlude">
+      <param name="wl.jdbc.scriptfile" value="/tmp/wl-create-jdbc.py"/>
+    </antcall>
+
+    <wlstExecFile wl.home="${wl.home}" wlst.file="/tmp/wl-create-jdbc.py"/>
+  </target>
+
+  <target name="wl-online-check-deployments">
+    <!-- Connect to the specified Oracle server (then disconnect). Used -->
+    <!--   to test connection parameters. -->
+
+    <!--  cim.script.extension - the cim script extension -->
+    <!--  cim.dynamo.root - The ATG root directory. -->
+    <!--  cim.script.extension -->
+    <!--  wl.home - The Oracle Weblogic home directory -->
+
+    <!--  wl.adminserver.username - username for the Oracle Weblogic AdminServer to connect to -->
+    <!--  wl.adminserver.password - password for the Oracle Weblogic AdminServer to connect to -->
+    <!--  wl.adminserver.url - url for the Oracle Weblogic AdminServer to connect to -->
+
+    <tempfile property="cim.replacement.properties.file" prefix="wl-create-" suffix=".properties" deleteonexit="${cim.delete.tempfiles}"/>    
+    <propertyfile file="${cim.replacement.properties.file}">
+      <entry key="$${cim.dynamo.root}" value="${cim.dynamo.root}"/>
+      <entry key="$${wl.adminserver.username}" value="${wl.adminserver.username}"/>
+      <entry key="$${wl.adminserver.password}" value="${wl.adminserver.password}"/>
+      <entry key="$${wl.adminserver.url}" value="${wl.adminserver.url}"/>
+      <entry key="$${wl.deploy.appname}" value="${wl.deploy.appname}"/>
+      <entry key="$${output.prop}" value="${output.prop}"/>
+    </propertyfile>
+
+    <wlstExecReplaceOutput wl.home="${wl.home}" template="${cim.dynamo.root}/CIM/plugins/Base/filetemplate/wl-check-deployments.py" properties.file="${cim.replacement.properties.file}"/>
+  </target>
+
+
+  <target name="wl-deploy-ear">
+    <!--  cim.dynamo.root - The ATG root directory. -->
+    <!--  cim.script.extension - the cim script extension ".sh" or ".bat"-->
+    <!--  wl.home - The Oracle Weblogic home directory -->
+
+    <!-- wl.adminserver.username - username for the Oracle Weblogic AdminServer to connect to -->
+    <!-- wl.adminserver.password - password for the Oracle Weblogic AdminServer to connect to -->
+    <!-- wl.adminserver.url - url for the Oracle Weblogic AdminServer to connect to -->
+    <!-- wl.deploy.appname - application name for the application to deploy -->
+    <!-- wl.deploy.earpath - path to the ear file of the application to deploy. -->
+    <!-- wl.deploy.servername - name of the server of the application to deploy-->
+
+    <tempfile property="cim.replacement.properties.file" prefix="wl-create-" suffix=".properties" deleteonexit="${cim.delete.tempfiles}"/>    
+
+
+    <propertyfile file="${cim.replacement.properties.file}">
+      <entry key="$${cim.dynamo.root}" value="${cim.dynamo.root}"/>
+      <entry key="$${wl.adminserver.username}" value="${wl.adminserver.username}"/>
+      <entry key="$${wl.adminserver.password}" value="${wl.adminserver.password}"/>
+      <entry key="$${wl.adminserver.url}" value="${wl.adminserver.url}"/>
+      <entry key="$${wl.deploy.appname}" value="${wl.deploy.appname}"/>
+      <entry key="$${wl.deploy.earpath}" value="${wl.deploy.earpath}"/>
+      <entry key="$${wl.deploy.servername}" value="${wl.deploy.servername}"/>
+    </propertyfile>
+
+    <wlstExecWithReplace wl.home="${wl.home}" template="${cim.dynamo.root}/CIM/plugins/Base/filetemplate/wl-online-deploy-ear.py" properties.file="${cim.replacement.properties.file}"/>
+
+  </target>
+
+
+   <target name="weblogicQueueXADatasource">
+      <echo message="weblogic Queue ds" /> 
+   </target>
+   
+   <target name="weblogicRegisterXADatasources">
+      <echo message="weblogic Register all ds" /> 
+   </target>
+      
+   <target name="weblogicCreateServerInstance">
+      <echo message="weblogic create server instance" /> 
+   </target>
+
+  <!-- =================================================== -->
+  <!-- IBM Websphere-related targets. -->
+  <!-- =================================================== -->
+
+   <target name="was-exec-file">
+    <!-- Invoke wasadmin on the specified ${wasadmin.file} -->
+    <!-- was.home  -->
+    <!-- cim.script.extension  -->
+    <!-- wasadmin.file -->
+    <wasExecFile was.home="${was.home}" wsadmin.file="${wsadmin.file}"/>
+  </target>
+
+  <macrodef name="wasExecFile">
+     <!-- Invoke wslt on the specified ${wslt.file} -->
+     <!-- cim.script.extension  -->
+    <attribute name="was.home" description="IBM Websphere home directory"/>
+    <attribute name="wsadmin.file" description="wsadmin File to execute"/>
+    <sequential>
+      <echo message="exec @{was.home}bin/wsadmin${cim.script.extension}"/>
+      <chmod file="${cim.dynamo.root}/CIM/plugins/Base/filetemplate/was-wrapper${cim.script.extension}" perm="+x" />
+      <exec executable="${cim.dynamo.root}/CIM/plugins/Base/filetemplate/was-wrapper${cim.script.extension}" failonerror="true">
+        <arg line="&quot;@{was.home}/bin/wsadmin${cim.script.extension}&quot;" />
+        <arg line="-lang jython" />
+        <arg line="-conntype SOAP" />
+        <arg line="-host ${was.server.hostname}" />
+        <arg line="-port ${was.server.port}" />
+        <arg line="-user ${was.server.username}" />
+        <arg line="-password ${was.server.password}" />
+        <arg line="-f @{wsadmin.file}"/>
+        <arg line="-javaoption -Dcom.ibm.CORBA.requestTimeout=600" />
+      </exec>
+    </sequential>
+  </macrodef>
+  
+  <macrodef name="wasExecWithClasspath">
+     <!-- Invoke wslt on the specified ${wslt.file} -->
+     <!-- cim.script.extension  -->
+    <attribute name="was.home" description="IBM Websphere home directory"/>
+    <attribute name="wsadmin.file" description="wsadmin File to execute"/>
+    <sequential>
+      <echo message="exec @{was.home}/bin/wsadmin${cim.script.extension}"/>
+      <chmod file="${cim.dynamo.root}/CIM/plugins/Base/filetemplate/was-wrapper${cim.script.extension}"
+perm="+x" />
+      <exec executable="${cim.dynamo.root}/CIM/plugins/Base/filetemplate/was-wrapper${cim.script.extension}" failonerror="true">
+        <arg line="&quot;@{was.home}/bin/wsadmin${cim.script.extension}&quot;" />
+        <arg line="-lang jython" />
+        <arg line="-conntype SOAP" />
+        <arg line="-host ${was.server.hostname}" />
+        <arg line="-port ${was.server.port}" />
+        <arg line="-user ${was.server.username}" />
+        <arg line="-password ${was.server.password}" />
+        <arg line="-wsadmin_classpath '${cim.lib.path}'" />
+        <arg line="-f @{wsadmin.file}"/>
+        <arg line="-javaoption -Dcom.ibm.CORBA.requestTimeout=600" />
+      </exec>
+    </sequential>
+  </macrodef>
+
+  
+   <macrodef name="wasExecWithReplace">
+    <!-- Replace values in template, and execute wlst on the result -->
+    <!--  cim.script.extension - either ".bat" or ".sh" -->
+    <attribute name="was.home" description="IBM Websphere Home Directory"/>
+    <attribute name="template" description="was python template file"/>
+    <attribute name="properties.file" description="the properties file of replacements"/>
+    <sequential>
+      <tempfile property="was.temp.file" prefix="was-exec-" suffix=".py" deleteonexit="no"/>
+      <copy file="@{template}" tofile="${was.temp.file}"/>
+      <replace file="${was.temp.file}" replacefilterfile="@{properties.file}"/>
+      <wasExecFile was.home="${was.home}" wsadmin.file="${was.temp.file}" />
+    </sequential>
+  </macrodef>
+  
+  <macrodef name="wasExecReplaceClasspath">
+    <!-- Replace values in template, and execute wlst on the result -->
+    <!--  cim.script.extension - either ".bat" or ".sh" -->
+    <attribute name="was.home" description="IBM Websphere Home Directory"/>
+    <attribute name="template" description="was python template file"/>
+    <attribute name="properties.file" description="the properties file of replacements"/>
+    <sequential>
+      <tempfile property="was.temp.file" prefix="was-exec-" suffix=".py" deleteonexit="${cim.delete.tempfiles}"/>
+      <copy file="@{template}" tofile="${was.temp.file}"/>
+      <replace file="${was.temp.file}" replacefilterfile="@{properties.file}"/>
+      <wasExecWithClasspath was.home="${was.home}" wsadmin.file="${was.temp.file}" />
+    </sequential>
+  </macrodef>
+
+  
+	<target name="was-get-topology">
+	<tempfile property="cim.replacement.properties.file" prefix="was-get-" suffix=".properties" deleteonexit="${cim.delete.tempfiles}"/>    
+
+		<propertyfile file="${cim.replacement.properties.file}">
+		<entry key="$${cim.dynamo.root}" value="${cim.dynamo.root}"/>
+    <entry key="$${cim.lib.path}" value="${cim.lib.path}"/>
+		</propertyfile>
+	
+	<wasExecReplaceClasspath was.home="${was.home}" template="${cim.dynamo.root}/CIM/plugins/Base/filetemplate/was-get-topology.py" properties.file="${cim.replacement.properties.file}" />
+
+	</target>
+  
+  
+   <target name="was-deploy-ear">
+    <!--  cim.dynamo.root - The ATG root directory. -->
+    <!--  was.home - The IBM Websphere home directory -->
+    <!--  cim.script.extension - the cim script extension ".sh" or ".bat"-->
+
+    <!-- was.server.username - username for the IBM Websphere server to connect to -->
+    <!-- was.server.password - password for the IBM Websphere server to connect to -->
+    <!-- was.server.url - url for the IBM Websphere server to connect to -->
+    <!-- was.deploy.appname - application name for the application to deploy -->
+    <!-- was.deploy.earpath - path to the ear file of the application to deploy. -->
+    <!-- was.deploy.servername - name of the server of the application to deploy-->
+
+    <tempfile property="cim.replacement.properties.file" prefix="was-create-" suffix=".properties" deleteonexit="${cim.delete.tempfiles}"/>    
+
+    <propertyfile file="${cim.replacement.properties.file}">
+      <entry key="$${cim.dynamo.root}" value="${cim.dynamo.root}"/>
+      <entry key="$${was.deploy.appname}" value="${was.deploy.appname}"/>
+      <entry key="$${was.deploy.earpath}" value="${was.deploy.earpath}"/>
+      <entry key="$${was.deploy.servername}" value="${was.deploy.servername}"/>
+      <entry key="$${was.deploy.nodename}" value="${was.deploy.nodename}"/>
+    </propertyfile>
+	
+	<wasExecWithReplace was.home="${was.home}" template="${cim.dynamo.root}/CIM/plugins/Base/filetemplate/was-deploy-ear.py" properties.file="${cim.replacement.properties.file}" />
+  </target>
+  
+  <target name="was-create-server"> 
+   <!--  cim.dynamo.root - The ATG root directory. -->
+    <!--  was.home - The IBM Websphere home directory -->
+    <!--  cim.script.extension - the cim script extension ".sh" or ".bat"-->
+
+    <!-- was.server.username - username for the IBM Websphere server to connect to -->
+    <!-- was.server.password - password for the IBM Websphere server to connect to -->
+    <!-- was.server.url - url for the IBM Websphere server to connect to -->
+    <!-- was.deploy.appname - application name for the application to deploy -->
+    <!-- was.deploy.earpath - path to the ear file of the application to deploy. -->
+    <!-- was.deploy.servername - name of the server of the application to deploy-->
+
+    <tempfile property="cim.replacement.properties.file" prefix="was-create-" suffix=".properties" deleteonexit="${cim.delete.tempfiles}"/>    
+
+    <propertyfile file="${cim.replacement.properties.file}">
+      <entry key="$${cim.dynamo.root}" value="${cim.dynamo.root}"/>
+      <entry key="$${was.deploy.servername}" value="${was.deploy.servername}"/>
+      <entry key="$${was.deploy.nodename}" value="${was.deploy.nodename}"/>
+      <entry key="$${was.deploy.httpport}" value="${was.deploy.httpport}"/>
+      <entry key="$${was.deploy.httpsport}" value="${was.deploy.httpsport}"/>
+    </propertyfile>
+	<wasExecWithReplace was.home="${was.home}" template="${cim.dynamo.root}/CIM/plugins/Base/filetemplate/was-create-server.py" properties.file="${cim.replacement.properties.file}"/>
+  
+  </target>
+  
+   <target name="was-create-jdbc-provider"> 
+   <!--  cim.dynamo.root - The ATG root directory. -->
+    <!--  was.home - The IBM Websphere home directory -->
+    <!--  cim.script.extension - the cim script extension ".sh" or ".bat"-->
+
+    <!-- was.server.username - username for the IBM Websphere server to connect to -->
+    <!-- was.server.password - password for the IBM Websphere server to connect to -->
+    <!-- was.server.url - url for the IBM Websphere server to connect to -->
+    <!-- was.deploy.appname - application name for the application to deploy -->
+    <!-- was.deploy.earpath - path to the ear file of the application to deploy. -->
+    <!-- was.deploy.servername - name of the server of the application to deploy-->
+
+    <tempfile property="cim.replacement.properties.jdbc.file" prefix="was-jdbc-" suffix=".properties" deleteonexit="${cim.delete.tempfiles}"/>    
+
+    <propertyfile file="${cim.replacement.properties.jdbc.file}">
+      <entry key="$${cim.dynamo.root}" value="${cim.dynamo.root}"/>
+      <entry key="$${was.nodename}" value="${was.nodename}"/>
+      <entry key="$${was.servername}" value="${was.servername}"/>
+      <entry key="$${db.password}" value="${db.password}" />
+      <entry key="$${db.user}" value="${db.user}" />
+      <entry key="$${db.url}" value="${db.url}" />
+      <entry key="$${was.jndiname}" value="${was.jndiname}" />
+      <entry key="$${db.driverclass}" value="${db.driverclass}" />
+      <entry key="$${db.name}" value="${db.name}" />
+      <entry key="$${db.alias}" value="${db.alias}" />
+      <entry key="$${db.type}" value="${db.type}" />
+      <entry key="$${db.driverpaths}" value="${db.driverpaths}" />
+    </propertyfile>
+    
+  <wasExecWithReplace was.home="${was.home}" template="${cim.dynamo.root}/CIM/plugins/Base/filetemplate/was-create-jdbc-provider.py" properties.file="${cim.replacement.properties.jdbc.file}"/>
+  
+  </target>
+  
+  <target name="was-register-datasource"> 
+   <!--  cim.dynamo.root - The ATG root directory. -->
+    <!--  was.home - The IBM Websphere home directory -->
+    <!--  cim.script.extension - the cim script extension ".sh" or ".bat"-->
+
+    <!-- was.server.username - username for the IBM Websphere server to connect to -->
+    <!-- was.server.password - password for the IBM Websphere server to connect to -->
+    <!-- was.server.url - url for the IBM Websphere server to connect to -->
+    <!-- was.deploy.appname - application name for the application to deploy -->
+    <!-- was.deploy.earpath - path to the ear file of the application to deploy. -->
+    <!-- was.deploy.servername - name of the server of the application to deploy-->
+
+    <tempfile property="cim.replacement.properties.file" prefix="was-register-" suffix=".properties" deleteonexit="${cim.delete.tempfiles}"/>    
+
+    <propertyfile file="${cim.replacement.properties.file}">
+      <entry key="$${cim.dynamo.root}" value="${cim.dynamo.root}"/>
+      <entry key="$${was.nodename}" value="${was.nodename}"/>
+      <entry key="$${was.servername}" value="${was.servername}"/>
+      <entry key="$${was.cellname}" value="${was.cellname}"/>
+      <entry key="$${db.password}" value="${db.password}" />
+      <entry key="$${db.user}" value="${db.user}" />
+      <entry key="$${db.url}" value="${db.url}" />
+      <entry key="$${db.port}" value="${db.port}" />
+      <entry key="$${db.hostname}" value="${db.hostname}" />
+      <entry key="$${db.servername}" value="${db.servername}" />
+      <entry key="$${was.jndiname}" value="${was.jndiname}" />
+      <entry key="$${db.driverclass}" value="${db.driverclass}" />
+      <entry key="$${db.name}" value="${db.name}" />
+      <entry key="$${db.alias}" value="${db.alias}" />
+      <entry key="$${db.type}" value="${db.type}" />
+    </propertyfile>
+  
+  
+	<wasExecWithReplace was.home="${was.home}" template="${cim.dynamo.root}/CIM/plugins/Base/filetemplate/was-register-datasource.py" properties.file="${cim.replacement.properties.file}"/>
+  
+  </target>
+  
+  <target name="was-copy-protocol-jar"> 
+    <copy file="${cim.dynamo.root}/DAS/lib/protocol.jar" todir="${was.home}/lib" /> 
+  </target>
+  
+         
+</project>
+<!-- @version $Id: //product/CIM/version/10.0.3/plugins/Base/ant/cim-ant.xml#2 $$Change: 651448 $-->

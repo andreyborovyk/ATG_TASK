@@ -1,0 +1,81 @@
+<%@ taglib uri="dsp" prefix="dsp" %>
+<dsp:page>
+
+<dsp:importbean bean="/atg/commerce/order/purchase/CartModifierFormHandler"/>
+<dsp:importbean bean="/atg/commerce/gifts/GiftlistFormHandler"/>
+<dsp:importbean bean="/atg/commerce/pricing/PriceItem"/>
+<dsp:importbean bean="/atg/commerce/catalog/SKULookup"/>
+<dsp:importbean bean="/atg/commerce/catalog/ProductLookup"/>
+<dsp:importbean bean="/atg/dynamo/droplet/Format"/>
+
+<%/* This fragment displays a line item in the purchase list display
+         It renders the gift-item set in the parameter item
+*/%>
+
+<DECLAREPARAM NAME="gift-item" CLASS="atg.repository.RepositoryItem" 
+    DESCRIPTION="gift-list-item">
+<tr>
+  <%/*part number*/%>
+
+  <dsp:droplet name="SKULookup">
+    <dsp:param name="id" param="gift-item.catalogrefid"/>
+    <dsp:oparam name="output">
+      <dsp:setvalue param="sku" paramvalue="element"/>
+
+      <dsp:droplet name="ProductLookup">
+        <dsp:param name="id" param="gift-item.productid"/>
+        <dsp:oparam name="output">
+          <dsp:setvalue paramvalue="element" param="product"/>
+
+                  <td><dsp:valueof param="sku.manufacturer_part_number"/></td>
+                  <td>&nbsp;</td>
+                  
+		  <dsp:getvalueof id="urlStr" idtype="java.lang.String" param="product.template.url">
+                  <td><dsp:a page="<%=urlStr%>">
+                        <dsp:param name="id" param="product.repositoryId"/>
+                        <dsp:valueof param="product.displayName">–¼‘O‚È‚µ</dsp:valueof></dsp:a>                  
+                  </td> 
+                  <td>&nbsp;</td>
+		  </dsp:getvalueof>
+
+               <td><input name="<dsp:valueof param='gift-item.id'/>" size="4" type="text" value="<dsp:valueof param='gift-item.quantityDesired'/>"></td>
+                  <td>&nbsp;</td>
+
+                  <td>&nbsp;</td>
+
+                  <td align=center>
+                    <dsp:input bean="GiftlistFormHandler.removeGiftitemIds" paramvalue="gift-item.repositoryId" name="removeid" type="checkbox"/>
+
+                    <%-- for add to cart functionality --%>
+                    <dsp:input bean="CartModifierFormHandler.catalogRefIds" paramvalue="sku.repositoryId" type="HIDDEN"/>
+                    <dsp:input bean="CartModifierFormHandler.productIds" paramvalue="product.repositoryId" type="HIDDEN"/> 
+
+		    <%-- Original JHTML for the following two hidden input fields looked like this : --%>
+		    <%--
+                    <input type="HIDDEN" NAME="param:sku.repositoryId" VALUE="param:gift-item.quantityDesired">
+                    <input type="HIDDEN" NAME="`request.getParameter("sku.repositoryId")`-prod" VALUE="param:product.repositoryId">
+		    --%>
+
+		    <%-- We use nested dsp:getvalueof tags to place the subexpressions for each --%>
+		    <%-- input name and value into scripting variables that we can then use as  --%>
+		    <%-- attribute values in the input tags.  This is more verbose than doing   --%>
+		    <%-- it all in one input tag with embedded dsp tags, but also clearer       --%>
+
+		    <dsp:getvalueof param="sku.repositoryId" id="sku_id">
+		      <dsp:getvalueof param="gift-item.quantityDesired" id="quantity">
+		        <input name="<%=sku_id%>" type="HIDDEN" value="<%=quantity%>">
+		      </dsp:getvalueof>
+		      <dsp:getvalueof param="product.repositoryId" id="product_id">
+		        <input name="<%=sku_id + "-prod"%>" type="HIDDEN" value="<%=product_id%>">
+		      </dsp:getvalueof>
+		    </dsp:getvalueof>
+                    </td>
+                  <td>&nbsp;</td>
+                </tr>
+        </dsp:oparam> <%/*productlookup*/%>
+      </dsp:droplet>
+        
+    </dsp:oparam> <%/*productlookup*/%>
+  </dsp:droplet>
+</dsp:page>
+<%-- @version $Id: //product/B2BCommerce/version/10.0.3/release/MotorpriseJSP/j2ee-apps/motorprise/web-app/ja/user/purchase_list_item.jspf#2 $$Change: 651448 $--%>

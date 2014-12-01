@@ -1,0 +1,142 @@
+<html>
+<head>
+<title>ATG Calendar Sample Page</title>
+<meta http-equiv="Content-Type" content="text/html; charset= iso-8859-1" />
+<script language="Javascript" src="../scripts/calendar_date.js"></script>
+<script language="Javascript" src="../scripts/calendar_functions.js"></script>
+<script language="Javascript" src="../scripts/calendar_html.js"></script>
+<script language="Javascript" src="../scripts/calendar_validation.js"></script>
+<script language="Javascript" src="../scripts/atg-ui_validation.js"></script>
+<link rel="stylesheet" href="../css/calendar.css" type="text/css">
+</head>
+
+<body style="margin:0px;overflow:hidden">
+
+<div id="calendarCurtain" class="atgCalendar_curtain"></div>
+<div id="calendarContainer" class="atgCalendar_divShow"></div>
+
+<!-- [CalendarInstance] -->
+<script language="JavaScript">
+calendarInstance1 = {
+	calendarInstanceId: "calendarInstance1",
+	curtainId: "calendarCurtain",
+	containerId: "calendarContainer",
+	anchorId: "calendarAnchor1",
+	dateInputId: "dateInputId1",
+	stylesId: "calendarStyles1",
+	i18nId: "calendarI18n",
+	horizontalOffset: 18,
+	verticalOffset: 0,
+	closeAfterSelection: false,
+	hasToday: true,
+	hasClose: true,
+	displayBelowAnchor: true,
+	displayRightOfAnchor: true,
+	autoFlip: true,
+	clearDateOnError: true,
+  setDateOnCalendarOpen: true
+}
+</script>
+<!-- [/CalendarInstance] -->
+
+<!-- [CalendarInstance] -->
+<script language="JavaScript">
+calendarInstance2 = {
+	calendarInstanceId: "calendarInstance2",
+	containerId: "calendarContainer",
+	anchorId: "calendarAnchor2",
+	dateInputId: "dateInputId2",
+	stylesId: "calendarStyles1",
+	i18nId: "calendarI18n",
+	horizontalOffset: 18,
+	verticalOffset: 0,
+	closeAfterSelection: true,
+	hasToday: true,
+	hasClose: false,
+	displayBelowAnchor: true,
+	displayRightOfAnchor: true,
+	autoFlip: true,
+	clearDateOnError: false,
+  setDateOnCalendarOpen: true
+}
+</script>
+<!-- [/CalendarInstance] -->
+
+<!-- [CalendarI18n] -->
+<script language="JavaScript">
+calendarI18n = {
+	dateFormat: "MM/DD/YY",
+	todayTextString: "Today",
+	closeTextString: "Close"
+}
+calendarI18n.dayNames = new Array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
+calendarI18n.monthNames = new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+calendarI18n.daySymbols = new Array("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat");
+</script>
+<!-- [/CalendarI18n] -->
+
+<!-- [CalendarStyle] -->
+<script language="JavaScript">
+calendarStyles1 = {
+	AdditionalTodayRow: "atgCalendar_additionalTodayRow",
+	AdditionalCloseRow: "atgCalendar_additionalCloseRow",
+	BorderBottomLeft: "atgCalendar_borderBottomLeft",
+	BorderBottomMiddle: "atgCalendar_borderBottomMiddle",
+	BorderBottomRight: "atgCalendar_borderBottomRight",
+	BorderTopLeft: "atgCalendar_borderTopLeft",
+	BorderTopMiddle: "atgCalendar_borderTopMiddle",
+	BorderTopRight: "atgCalendar_borderTopRight",
+	BottomSpacer: "atgCalendar_bottomSpacer",
+	CalendarDivHide: "atgCalendar_divHide",
+	CalendarDivShow: "atgCalendar_divShow",
+	CloseIcon: "atgCalendar_closeIcon",
+	Container: "atgCalendar_container",
+	CurrentMonth: "atgCalendar_titleText",
+	DateLabels: "atgCalendar_dateLabels",
+	DateLabelsWeekend: "atgCalendar_dateLabelsWeekend",
+	DateSeparator: "atgCalendar_dateSeparator",
+	IconArrowLeft: "atgCalendar_previousMonthIcon",
+	IconArrowRight: "atgCalendar_nextMonthIcon",
+	Left: "atgCalendar_left",
+	Middle: "atgCalendar_middle",
+	MonthContainer: "atgCalendar_monthContainer",
+	MonthRow: "atgCalendar_monthRow",
+	NextMonthRow: "atgCalendar_nextMonthRow",
+	Numerics: "atgCalendar_numerics",
+	NumericsOff: "atgCalendar_numericsOff",
+	NumericsSelected: "atgCalendar_numericsSelected",
+	NumericsToday: "atgCalendar_numericsToday",
+	NumericsWeekend: "atgCalendar_numericsWeekend",
+	NumericsWeekendToday: "atgCalendar_numericsWeekendToday",
+	PreviousMonthRow: "atgCalendar_previousMonthRow",
+	Right: "atgCalendar_right",
+	TitleLeft: "atgCalendar_titleLeft",
+	TitleMiddle: "atgCalendar_titleMiddle",
+	TitleRight: "atgCalendar_titleRight",
+	TitleTopLeft: "atgCalendar_titleTopLeft",
+	TitleTopMiddle: "atgCalendar_titleTopMiddle",
+	TitleTopRight: "atgCalendar_titleTopRight",
+	TodayIcon: "atgCalendar_todayIcon"
+}
+</script>
+<!-- [/CalendarStyle] -->
+
+<br>
+&nbsp;&nbsp;<span class="atgCalendar_Text"><b>ATG Calendar Sample Page</b></span>
+
+<br>
+<div style="margin-top:200px;margin-left:200px">
+<span class="atgCalendar_Text">Date:</span>
+<input id="dateInputId1" type="text" size="10">
+<img id="calendarAnchor1" src="../images/calendar/calendar2_off.gif" style="cursor:pointer" onclick="atgCalendar_openCalendar(calendarInstance1)">
+<br><br><br><br>
+<span class="atgCalendar_Text">Date:</span>
+<input id="dateInputId2" type="text" size="10">
+<img id="calendarAnchor2" src="../images/calendar/calendar2_off.gif" style="cursor:pointer" onclick="atgCalendar_openCalendar(calendarInstance2)">
+</div>
+
+
+</body>
+</html>
+
+	

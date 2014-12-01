@@ -1,0 +1,360 @@
+
+<blockquote>
+
+<dsp:importbean bean="/atg/portal/gear/communities/EditFavorites"/>
+
+
+<%
+ String strActionURL = "";
+ String ceContextPath = "/portal/layoutTemplates";
+%>
+
+<core:CreateUrl id="actionURL" url="<%= pafEnv.getOriginalRequestURI()%>">
+   <core:UrlParam param="paf_dm" value='<%=request.getParameter("paf_dm")%>'/>
+   <core:UrlParam param="paf_gm" value='<%=request.getParameter("paf_gm")%>'/>
+   <core:UrlParam param="paf_gear_id" value='<%=request.getParameter("paf_gear_id")%>'/>
+<%  strActionURL = actionURL.getNewUrl(); 
+%>
+</core:CreateUrl>
+
+<dsp:form name="rearrange" method="post" action="<%= strActionURL %>">
+
+<!-- need hidden vars for edit gear mode -->
+<input type="hidden" name="paf_dm" value="<%=pafEnv.getDisplayMode() %>" >
+
+
+<dsp:input type="hidden" bean="EditFavorites.userId"
+	value="<%= ((atg.repository.RepositoryItem) profile).getRepositoryId() %>"/>
+<dsp:input type="hidden" bean="EditFavorites.strFavorites"
+	paramvalue="favorite_hidden_0"/>
+<core:CreateUrl id="fullSuccessPageUrl" url="<%=pafEnv.getOriginalRequestURI() %>">
+<dsp:input type="hidden" bean="EditFavorites.successURL" value="<%=fullSuccessPageUrl.getNewUrl() %>"/>
+</core:CreateUrl>
+
+
+
+<br><font class="small_bold"><i18n:message key="edit-favorites"/></font><br>
+
+<core:Switch value='<%=request.getParameter("javascript")%>'>
+<core:Case value="false">
+<script language="javascript">
+<!--
+function doinit(){}
+//-->
+</script>
+</core:Case>
+<core:DefaultCase>
+
+
+<script language="javascript" type="text/javascript">
+ <!--
+
+var pcImg = new Array();
+pcImg[0] = new Image(16,16);
+pcImg[1] = new Image(16,16);
+pcImg[2] = new Image(16,16);
+
+pcImg[0].src = '<%= ceContextPath + "/images/community/arrow_up_16x16_dim.gif" %>' ;
+pcImg[1].src = '<%= ceContextPath + "/images/community/arrow_down_16x16_dim.gif" %>';
+pcImg[2].src = '<%= ceContextPath + "/images/community/arrow_x_16x16_dim.gif" %>';
+
+var pcImgo = new Array();
+pcImgo[0] = new Image(16,16);
+pcImgo[1] = new Image(16,16);
+pcImgo[2] = new Image(16,16);
+pcImgo[0].src = '<%= ceContextPath + "/images/community/arrow_up_16x16.gif" %>' ;
+pcImgo[1].src = '<%= ceContextPath + "/images/community/arrow_down_16x16.gif" %>';
+pcImgo[2].src = '<%= ceContextPath + "/images/community/arrow_x_16x16.gif" %>';
+
+var arrowSeq  = new Array("up","down","x");
+
+var isIE = ( navigator.appVersion.indexOf('MSIE') > -1 ) ? true:false ;
+
+function FWFindImage(doc, name, j) {
+    var theImage = false;
+    if (doc.images) theImage = doc.images[name];
+    if (theImage) return theImage;
+    if (doc.layers) {
+        for (j = 0; j < doc.layers.length; j++) {
+            theImage = FWFindImage(doc.layers[j].document, name, 0);
+            if (theImage)  return theImage ;
+        };
+    };
+    return (false);
+}
+
+function moveUD(direction) {
+    if ( document.images['img0_'+direction].src.indexOf("dim.gif") !=  -1 ) {  return ; }
+    objRef = eval("document.forms['rearrange'].favorite_selection_0");
+    if ( objRef.options.length < 1 || objRef.selectedIndex < 0 ) {            return;   } 
+
+    dirN = (direction == "down" ) ? 1 : -1;
+    targetPos   = objRef.selectedIndex + dirN ;
+    tempOptionV = objRef.options[targetPos].value;
+    tempOptionT = objRef.options[targetPos].text;
+    if ( tempOptionV  != "" ) {
+         objRef.options[objRef.selectedIndex+dirN].value = objRef.options[objRef.selectedIndex].value;
+         objRef.options[objRef.selectedIndex+dirN].text  = objRef.options[objRef.selectedIndex].text;
+         objRef.options[objRef.selectedIndex].value = tempOptionV;
+         objRef.options[objRef.selectedIndex].text  = tempOptionT;
+         objRef.selectedIndex = objRef.selectedIndex+dirN;
+    } else {
+         objRef.options[targetPos] = null;
+    }
+    rewriteHidden();
+}
+
+function remove( ) {
+    if ( document.images['img0_x'].src.indexOf("dim.gif") !=  -1 ) {  return ; }
+    objRef  = eval("document.forms['rearrange'].favorite_selection_0");
+    objRefR = eval("document.forms['rearrange'].favorite_removed");
+    if ( objRefR.value != "" ) {
+      objRefR.value = objRefR.value +","+ objRef.options[objRef.selectedIndex].value+"";
+    } else {
+      objRefR.value =  objRef.options[objRef.selectedIndex].value+"";
+    }
+    if ( objRef.options!=null ){
+      objRef.options[objRef.selectedIndex].value = "";
+      rewriteHidden();
+    }
+}
+
+
+
+function rewriteHidden() {
+     tempT = "";
+     objRef =  eval( "document.forms['rearrange'].favorite_selection_0" );
+     for ( i = 0 ; i < objRef.options.length ; i++ ){
+          if ( objRef.options[i].value == "" ) {                                  
+               objRef.options[i] = null;
+          };
+     }
+     for ( i = 0 ; i < objRef.options.length ; i++ ){
+           tempT = tempT + objRef.options[i].value;
+           if ( ( i < objRef.options.length -1 ) && ( objRef.options[i+1].value  != "" )  )  tempT = tempT + ",";
+     }
+     objRefHidden = eval("document.forms['rearrange'].favorite_hidden_0" );
+     objRefHidden.value = tempT;
+    if ( isIE) {
+       // lets not rush IE
+      window.setTimeout("dimAll()",200);
+    } else {
+      dimAll();
+    }
+}
+
+function dimAll() {
+    for (  m = 0 ;  m < arrowSeq.length  ;   m++ ) {
+         iId =  "img0_"+arrowSeq[m] ;
+         var theImage = FWFindImage(document,iId , 0);
+         if (theImage ){
+              theImage.src = pcImg[m].src;
+         }
+    }
+    highLight();
+}
+
+function highLight() {
+
+    srcObj = eval("document.forms['rearrange'].favorite_selection_0");
+
+    for (  i=0 ;  i < arrowSeq.length  ;  i++ ) {
+           id =  "img0_"+arrowSeq[i] ;
+           var theImage = FWFindImage(document, id, 0);
+           if (theImage)  theImage.src = pcImg[i].src; 
+           if ( srcObj.selectedIndex >= 0 ) {
+             if ( srcObj.options[srcObj.selectedIndex].value != "") {
+               var showFirst = ( ( srcObj.selectedIndex == 0 )               && ( i == 0 ) ) ? false : true ;
+               var showLast  = ( ((srcObj.length-1) == srcObj.selectedIndex) && ( i == 1 ) ) ? false : true ;
+               if ( theImage && showFirst && showLast ) theImage.src = pcImgo[i].src;   
+             };
+           };
+    };
+}
+
+function doinit() {
+        rewriteHidden();
+} 
+
+function doNull(){}
+
+//-->
+
+</script>
+
+</core:DefaultCase>
+</core:Switch>
+
+<table border=0 cellspacing="0" cellpadding="3" width="320">
+
+<core:If value="<%= faves.getFavorites().isEmpty() %>">
+<tr>
+<td colspan=3>
+<font class="small"><BR><i18n:message key="no-faves-msg1"/>&nbsp;&nbsp;
+<i18n:message key="no-faves-msg2"/></font>
+</td>
+</tr>
+</core:If>
+
+<core:IfNot value="<%= faves.getFavorites().isEmpty() %>">
+<tr>
+
+<input type="hidden" name="paf_gear_id" value="<%=request.getParameter("paf_gear_id")%>">
+<input type="hidden" name="paf_gm" value="<%=request.getParameter("paf_gm")%>">
+<input type="hidden" name="paf_dm" value="<%=request.getParameter("paf_dm")%>">
+
+<td align="right" rowspan="2">
+
+<core:Switch value='<%=request.getParameter("javascript")%>'>
+<core:Case value="false">
+
+ <select  name="favorite_selection_0" size="10"  style="width:190">
+  <core:ForEach id="communityLinks" values="<%= faves.getFavorites() %>"
+	castClass="atg.portal.framework.Community" elementId="community">
+     <option value="<%= community.getId( )%>"><%= community.getName()%></option>
+  </core:ForEach>
+ <option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+
+</core:Case>
+<core:DefaultCase>
+
+<select  name="favorite_selection_0" size="10"  style="width:190"  onChange="highLight(0,'Middle',this)">
+  <core:ForEach id="communityLinks" values="<%= faves.getFavorites() %>"
+	castClass="atg.portal.framework.Community" elementId="community">
+     <option value="<%= community.getId( )%>"><%= community.getName()%></option>
+  </core:ForEach>
+ <option value="">_____________________________</option>
+
+</core:DefaultCase>
+</core:Switch>
+</select>
+
+<core:Switch value='<%=request.getParameter("javascript")%>'>
+<core:Case value="false">
+</td><td valign="top">
+<input type="image" value="up" name="up"  src= '<%= ceContextPath + "/images/community/arrow_up_16x16.gif"%>' width="16" height="16" border="0"><br>
+<input type="image" value="down" name="down"  src='<%= ceContextPath + "/images/community/arrow_down_16x16.gif"%>' width="16" height="16" border="0"><br><br><br>
+<input type="image" value="remove" name="remove"  src='<%= ceContextPath + "/images/community/arrow_x_16x16.gif"%>' width="16" height="16" border="0">
+
+
+</core:Case>
+
+<core:DefaultCase>
+</td><td valign="top">
+
+<a 
+href="Javascript:doNull();" 
+onClick="moveUD('up');return true;"
+><img name="img0_up" src='<%= ceContextPath + "/images/community/arrow_up_16x16_dim.gif"%>' width="16" height="16" border="0"></a><br>
+<a
+ href="Javascript:doNull()"
+ onClick="move('down');return true;"
+
+
+><img name="img0_down"  src='<%= ceContextPath + "/images/community/arrow_down_16x16_dim.gif"%>' width="16" height="16" border="0"></a><br><br><br>
+<a href="Javascript:doNull()" 
+onclick="remove();return true;"><img name="img0_x"  src='<%= ceContextPath + "/images/community/arrow_x_16x16_dim.gif"%>' width="16" height="16" border="0"></a>
+
+
+</core:DefaultCase>
+</core:Switch>
+
+</td>
+</tr>
+<tr><td colspan="1" valign="bottom">
+<dsp:input type="submit" bean="EditFavorites.updateFavorites" name="Submit"  value="Done"/>&nbsp;&nbsp;
+
+</td>
+</tr>
+<tr><td colspan="3">
+
+<core:IfNull value='<%=request.getParameter("favorite_hidden_0")%>'  >
+
+ <% String communityFieldList = null; %>
+
+   <core:ForEach id="communityLinks" values="<%= faves.getFavorites() %>"
+	castClass="atg.portal.framework.Community" elementId="community">
+ 
+    <core:IfNotNull value="<%= communityFieldList%>"  >
+     <% communityFieldList = communityFieldList+","+community.getId();  %>
+    </core:IfNotNull>
+   
+    <core:IfNull    value="<%= communityFieldList%>"  >
+     <% communityFieldList = community.getId();  %>
+    </core:IfNull>
+  
+   </core:ForEach>
+ 
+ <dsp:input type="hidden" name="favorite_hidden_0" value="<%=communityFieldList%>" bean="EditFavorites.strFavorites"/>
+</core:IfNull>
+<!--  HERE  -->
+<dsp:input type="hidden" name="favorite_removed" bean="EditFavorites.strFavesRemoved" paramvalue="favorite_removed" />
+
+<core:IfNotNull value='<%=request.getParameter("favorite_hidden_0")%>'  >
+
+<dsp:input type="hidden" name="favorite_hidden_0" bean="EditFavorites.strFavorites" paramvalue="favorite_hidden_0" />
+
+</core:IfNotNull>
+
+<core:CreateUrl id="fullChildPageUrl" url="<%= pafEnv.getPageURI(pafEnv.getPage()) %>">
+<core:UrlParam  param="update" value='<%= "true" + Math.random()%>'/>
+<dsp:valueof param="success"/>
+
+<input type="hidden" name="successUrl" value="<%=fullChildPageUrl.getNewUrl()%>"/>
+</core:CreateUrl>
+<br>
+<core:Switch value='<%=request.getParameter("javascript")%>'>
+<core:Case value="false">
+<input type="hidden" name="javascript" value="false">
+
+<core:CreateUrl id="noJavascriptUrl" url="<%= pafEnv.getOriginalRequestURI()%>">
+   <core:UrlParam param="paf_dm" value='<%=request.getParameter("paf_dm")%>'/> 
+   <core:UrlParam param="paf_gm" value='<%=request.getParameter("paf_gm")%>'/> 
+   <core:UrlParam param="paf_gear_id" value='<%=request.getParameter("paf_gear_id")%>'/> 
+   <core:UrlParam param="javascript" value="true"/> 
+
+<font class="smaller"><a href="<%= noJavascriptUrl.getNewUrl()%>"><i18n:message key="re-activate-javacript"/></a></font>
+
+</core:CreateUrl>
+
+
+
+</core:Case>
+<core:DefaultCase>
+<script language="Javascript">
+<!--
+
+document.writeln("<input type='hidden' name='javascript' value='true'>");
+
+//-->
+</script>
+<%--
+<core:CreateUrl id="noJavascriptUrl" url="<%= pafEnv.getOriginalRequestURI()%>">
+   <core:UrlParam param="paf_dm" value='<%=request.getParameter("paf_dm")%>'/> 
+   <core:UrlParam param="paf_gm" value='<%=request.getParameter("paf_gm")%>'/> 
+   <core:UrlParam param="paf_gear_id" value='<%=request.getParameter("paf_gear_id")%>'/> 
+   <core:UrlParam param="javascript" value="false"/> 
+
+<font class="smaller"><a href="<%= noJavascriptUrl.getNewUrl()%>"><i18n:message key="trouble-with-javascript"/></a></font>
+
+</core:CreateUrl>
+--%>
+</core:DefaultCase>
+</core:Switch>
+</td>
+</tr>
+
+</core:IfNot>
+</table>
+</dsp:form>
+
+</blockquote>
+
+<script language="javascript">
+<!--
+ doinit();
+//-->
+</script>
+<%-- @version $Id: //app/portal/version/10.0.3/templates/layoutTemplates.war/web/html/communities_edit.jspf#2 $$Change: 651448 $--%>
+
+

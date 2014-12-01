@@ -1,0 +1,26 @@
+<DECLAREPARAM NAME="category" CLASS="java.lang.Object" DESCRIPTION="The current category to display">
+<strong>Category: <valueof param="category.displayName"></valueof></strong>
+<blockquote>
+<DL>
+<DT>Child Categories:
+<droplet bean="/atg/dynamo/droplet/ForEach">
+  <param name="array" value="param:category.childCategories">
+  <param name="elementName" value="childCategory">
+  <param name="indexName" value="categoryIndex">
+  <oparam name="output">
+    <DD><droplet src="category_fragment.jhtml"></droplet>  
+  </oparam>
+</droplet>
+
+<DT>Child Products:
+<droplet bean="/atg/dynamo/droplet/ForEach">
+  <param name="array" value="param:category.childProducts">
+  <param name="elementName" value="childProduct">
+  <param name="indexName" value="productIndex">
+  <oparam name="output">
+    <DD><droplet src="product_fragment.jhtml"></droplet>
+  </oparam>
+</droplet>
+</DL>
+</blockquote>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/B2CCommerce/html/sample_catalog/category_navigation.jhtml#2 $$Change: 651448 $*/</java>

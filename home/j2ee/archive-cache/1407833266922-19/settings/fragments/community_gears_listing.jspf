@@ -1,0 +1,151 @@
+
+<%--
+  // this file is included from the main community_gears.jsp ( mode = 1 ) 
+  // also from add shared and add gears pages.
+--%>
+
+  <i18n:message id="configureLink" key="community_gears_configure_link"/>
+  <i18n:message id="deleteLink"    key="community_gears_delete_link"/>
+  <i18n:message id="removeLink"    key="community_gears_remove_link"/>
+  <i18n:message id="accessLink"    key="community_gears_acl_link"/>
+  <i18n:message id="roleLink"      key="community_gears_role_link"/>
+  <i18n:message id="sharedLabel"   key="community_gears_shared_label"/>
+  <i18n:message key="community_settings_discription" id="discriptionLabel"/>
+ <table border="0" cellpadding="0" cellspacing="0" width="100%"> 
+ <tr><td colspan="5" bgcolor="#666666"><img src='<%= response.encodeURL("images/clear.gif")%>' height="1" width="1" border="0" alt="" /></td></tr>
+  <core:ForEach id="allCommunityGears"
+                values="<%= adminEnv.getCommunity().getGearSet(atg.portal.framework.Comparators.getGearComparator()) %>"
+                castClass="atg.portal.framework.Gear"
+                elementId="gear">
+
+ <%  rowHighlight = ( rowHighlight.equals("dddddd") ) ?  "ffffff" : "dddddd";  %> 
+ <tr bgcolor="<%="#"+rowHighlight%>">
+
+
+
+   <core:ExclusiveIf>
+    <core:If value='<%= gear.getDescription() != null && (!(gear.getDescription().trim()).equals("")) %>'>
+      <td valign="bottom" ><img src='<%= response.encodeURL("images/discription.gif")%>' alt='<%= discriptionLabel+"\n"+ gear.getDescription() %>' /></td>
+    </core:If>
+    <core:DefaultCase>
+      <td><font class="adminbody">&nbsp;</font></td>
+    </core:DefaultCase>
+   </core:ExclusiveIf>
+
+   <td width="80%" bgcolor="<%="#"+rowHighlight%>"><font class="smaller">&nbsp;<%= gear.getName(response.getLocale())%>&nbsp;(<%= gear.getGearDefinition().getName()%>)</font>&nbsp;</td>
+
+
+ <%-- Configure link is not shown if gear is shared and gear's parent community points to some other community. --%>
+ <core:If value="<%=showConfigureLink%>" >
+   <td NOWRAP><font class="small">&nbsp;&nbsp;
+              <%  // if the gear is shared from another community hide configure link 
+                 if((!gear.isShared()) ||
+                   (gear.getParentCommunity().getId().equals(adminEnv.getCommunity().getId()))) {
+              %>
+               <core:CreateUrl id="editGearUrl" url="community_gears.jsp">
+                <core:UrlParam param="mode" value="7"/>
+                <core:UrlParam param="paf_page_id" value="<%=dsp_page_id%>"/>
+                <paf:encodeUrlParam param="paf_page_url" value="<%=dsp_page_url%>"/>
+                <core:UrlParam param="paf_community_id" value="<%=dsp_community_id%>"/>
+                <core:UrlParam param="paf_gear_id" value="<%=gear.getId()%>"/>
+                 <dsp:a  target="_top" href="<%= editGearUrl.getNewUrl() %>" ><%=configureLink%></dsp:a>
+               </core:CreateUrl>
+
+
+
+             <%} else {%>
+
+               <i><font class="smaller" color="#666666"><%=sharedLabel%></font></i>
+
+             <%}%>
+          
+</font></td>  
+</core:If>
+<% 
+
+ String isShared = (gear.isShared()) ? "true" : "false" ;
+%>
+<%-- DELETE     --%>
+            <core:CreateUrl id="deleteGearURL" url="community_gears.jsp">
+                <core:UrlParam param="mode" value="<%=deleteMode%>"/>
+                <core:UrlParam param="returnMode" value="<%=returnMode%>"/>
+                <core:UrlParam param="paf_page_id" value="<%=dsp_page_id%>"/>
+                <paf:encodeUrlParam param="paf_page_url" value="<%=dsp_page_url%>"/>
+                <core:UrlParam param="paf_community_id" value="<%=dsp_community_id%>"/>
+                <core:UrlParam param="paf_gear_id" value="<%=gear.getId()%>"/>
+    <%
+      if(gear.getParentCommunity().getId().equals(adminEnv.getCommunity().getId())) {
+    %>
+
+<td NOWRAP><font class="small">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<dsp:a href="<%=deleteGearURL.getNewUrl()%>" target="_top"><%=deleteLink%></dsp:a>&nbsp;&nbsp;</font></td>
+            
+    <% } else {  %>
+
+<td NOWRAP width="20%"><font class="small">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<dsp:a  target="_top" href='<%=deleteGearURL.getNewUrl()+"&removeFlag=true"%>'><%=removeLink%></dsp:a>&nbsp;&nbsp;</font></td>
+
+    <%}%>
+   </core:CreateUrl>
+
+
+<%-- END DELETE --%>
+
+<%-- ACL EDITOR LINK --%>
+<td NOWRAP ><font class="small">&nbsp;&nbsp;
+ <core:If value="<%=showConfigureLink%>" >
+
+              <%  // if the gear is shared from another community hide configure link 
+                 if((!gear.isShared()) ||
+                   (gear.getParentCommunity().getId().equals(adminEnv.getCommunity().getId()))) {
+              %>
+               <core:CreateUrl id="editACLUrl" url="community_gears.jsp">
+                <core:UrlParam param="mode" value="12"/>
+                <core:UrlParam param="paf_page_id" value="<%=dsp_page_id%>"/>
+                <paf:encodeUrlParam param="paf_page_url" value="<%=dsp_page_url%>"/>
+                <core:UrlParam param="paf_community_id" value="<%=dsp_community_id%>"/>
+                <core:UrlParam param="paf_gear_id" value="<%=gear.getId()%>"/>
+                 <dsp:a target="_top" href="<%= editACLUrl.getNewUrl() %>" ><%=accessLink%></dsp:a>
+               </core:CreateUrl>
+               &nbsp;&nbsp;
+	       <% // if the gear has no roles, we don't need a role
+                  // editor
+                  if (gear.getGearDefinition().getGearRoleManager().getRoleSet().size() > 0) {
+               %>
+               <core:CreateUrl id="editRoleUrl" url="community_gears.jsp">
+                <core:UrlParam param="mode" value="13"/>
+                <core:UrlParam param="paf_page_id" value="<%=dsp_page_id%>"/>
+                <paf:encodeUrlParam param="paf_page_url" value="<%=dsp_page_url%>"/>
+                <core:UrlParam param="paf_community_id" value="<%=dsp_community_id%>"/>
+                <core:UrlParam param="paf_gear_id" value="<%=gear.getId()%>"/>
+                 <dsp:a target="_top" href="<%= editRoleUrl.getNewUrl() %>" ><%=roleLink%></dsp:a>
+               </core:CreateUrl>
+               <% } else { %>
+               &nbsp;
+               <% } %>
+             <%} else {%>
+
+               <i><font class="smaller" color="#666666"><%=sharedLabel%></font></i>
+
+             <%}%>
+         
+</font>
+</core:If>
+</td>
+
+<%-- END ACL EDITOR --%>
+
+
+  </tr>
+  </core:ForEach>
+ <tr><td colspan="5" bgcolor="#666666"><img src='<%= response.encodeURL("images/clear.gif")%>' height="1" width="1" border="0" alt="" /></td></tr>
+</table>
+
+
+<core:If value="<%=adminEnv.getCommunity().getGearSet().size() == 0 %>">
+
+<br /><br /><font class="smaller"><i18n:message key="community_gears_currently_no_gears"/></font><br /><br />
+
+</core:If>        
+        
+
+</font>
+<%-- @version $Id: //app/portal/version/10.0.3/paf/settings.war/fragments/community_gears_listing.jspf#2 $$Change: 651448 $--%>

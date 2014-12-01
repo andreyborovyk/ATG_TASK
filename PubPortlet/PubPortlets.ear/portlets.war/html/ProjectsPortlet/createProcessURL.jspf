@@ -1,0 +1,24 @@
+<%--
+  Create a URL that will load a new project into context
+  
+  Parameters:
+    createURLForProjectId - The project ID for which to create a link URL
+
+  @version $Id: //product/PubPortlet/version/10.0.3/portlets.war/html/ProjectsPortlet/createProcessURL.jspf#2 $$Change: 651448 $
+  @updated $DateTime: 2011/06/07 13:55:45 $$Author: rbarbier $
+--%>
+
+<%-- Build a URL to link to the project in the ProjectsPortlet --%>
+<pws:getProcess var="process" projectId="${createURLForProjectId}"/>
+<c:set var="createURLForProcessId" value="${process.id}"/>
+
+<dspel:importbean bean="/atg/bizui/portlet/PortletConfiguration" var="bizuiPortletConfig"/>
+<c:set var="portletID" value='${bizuiPortletConfig.defaultProcessPortletID}'/>
+
+<portlet:renderURL  var="processURL">
+  <portlet:param name="projectView" value='<%=(String)pageContext.getAttribute("PROJECT_DETAIL_VIEW")%>'/>
+  <portlet:param name="process" value='<%=((String)pageContext.getAttribute("createURLForProcessId"))%>'/>
+</portlet:renderURL>
+<c:set var="processURL" value="${processURL}&project=${createURLForProjectId}&processPortlet=${portletID}"/>
+
+<%-- @version $Id: //product/PubPortlet/version/10.0.3/portlets.war/html/ProjectsPortlet/createProcessURL.jspf#2 $$Change: 651448 $--%>

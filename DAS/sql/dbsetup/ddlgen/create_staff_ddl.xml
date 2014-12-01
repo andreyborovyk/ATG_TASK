@@ -1,0 +1,88 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="create_staff_ddl">
+<comment><![CDATA[ @version $Id: //product/DAS/version/10.0.3/templates/DAS/sql/create_staff_ddl.xml#2 $$Change: 651448 $]]></comment>
+<comment><![CDATA[
+SQL for creating the Dynamo Staff Repository for the GSA
+]]></comment>
+
+<comment><![CDATA[
+Primary account table.
+]]></comment>
+<comment><![CDATA[
+ Type=1 is a login account.  The first_name, last_name, and password 
+        fields are valid for this type of account.
+]]></comment>
+<comment><![CDATA[
+Type=2 is a group account.  The description field is valid for 
+       this type of account.
+]]></comment>
+<comment><![CDATA[
+Type=4 is a privilege account.  The description field is valid for 
+       this type of account.
+]]></comment>
+   <table name="das_account">
+      <column name="account_name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="type" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="first_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="last_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="password" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="lastpwdupdate" nullable="y">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <primary-key name="das_account_p">
+         <index-column column="account_name" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="das_group_assoc" description="attribute value table for das_login.groups. This contains the group associations for each account">
+      <column name="account_name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="group_name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+     <primary-key name="das_grp_asc_p">
+         <index-column column="account_name" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+   </table>
+   <comment><![CDATA[
+Adding the previous password information
+]]></comment>
+   <table name="das_acct_prevpwd">
+      <column name="account_name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="seq_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="prevpwd" nullable="y">
+         <column-type db="generic" type="varchar" length="35"/>
+      </column>
+      <primary-key name="das_prevpwd_p">
+         <index-column column="account_name" order="asc" seq="1"/>
+         <index-column column="seq_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="das_prvpwd_d_f" referenced-table="das_account">
+         <fkey-column referencing-column="account_name" referenced-column="account_name"/>
+      </foreign-key>
+   </table>
+</schema>
+<!-- @version $Id: //product/DAS/version/10.0.3/templates/DAS/sql/create_staff_ddl.xml#2 $$Change: 651448 $ -->

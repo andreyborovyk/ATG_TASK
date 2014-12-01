@@ -1,0 +1,85 @@
+<HTML>
+<HEAD>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+<TITLE>Performance Monitor Configuration</TITLE>
+</HEAD>
+
+<java type=import>
+  atg.service.perfmonitor.*
+</java>
+<java>
+  PerformanceMonitor perfmon = PerformanceMonitor.getPerformanceMonitor();
+</java>
+
+<body bgcolor="#FFFFFF" text="#00214A" vlink="#637DA6" link="#E87F02">
+<img src="images/performance-monitor-banner.gif" alt="Performance Monitor" align=top width="585" height="37" border="0">
+
+<p><a href="/">admin</a>/
+<droplet bean="/atg/dynamo/droplet/Switch">
+<param name="value" value="bean:/atg/dynamo/Configuration.dynamoAppServer">
+  <!-- Dynamo App Server -->
+  <oparam name="true">
+    <a href="performance.jhtml">Performance Summary</a>/
+  </oparam>
+</droplet>
+<a href="performance-monitor.jhtml">Performance Monitor</a>/Performance Monitor Configuration
+<h2>Performance Monitor Configuration</h2>
+
+<form method=POST action="performance-monitor.jhtml">
+<p><b>Reset all performance data</b><p>
+
+<ul>
+<input type=submit bean="/atg/dynamo/service/PerformanceMonitor.reset" value="Reset Data">
+</ul>
+</form>
+
+<form method=POST>
+<p><br><b>Performance Monitor Mode</b><p>
+
+Current mode:
+<DROPLET BEAN="/atg/dynamo/droplet/Switch">
+  <PARAM NAME="value" VALUE="bean:/atg/dynamo/service/PerformanceMonitor.mode">
+  <OPARAM NAME="unset">
+    mode not set.
+  </OPARAM>
+  <OPARAM NAME="0">
+   <b>DISABLED</b>
+  </OPARAM>
+  <OPARAM NAME="1">
+    <b>NORMAL</b>
+  </OPARAM>
+  <OPARAM NAME="2">
+    <b>TIME</b>
+  </OPARAM>
+  <OPARAM NAME="3">
+    <b>MEMORY</b>
+  </OPARAM>
+</DROPLET>
+
+<p>
+<ul>
+<input type="radio" bean="/atg/dynamo/service/PerformanceMonitor.mode" value="1" `(perfmon.getMode() == PerformanceMonitor.NORMAL ? "checked" : "")`>NORMAL - track the stack of operations each thread is currently executing<br>
+<input type="radio" bean="/atg/dynamo/service/PerformanceMonitor.mode" value="2" `(perfmon.getMode() == PerformanceMonitor.TIME ? "checked" : "")`>TIME - keep statistics for how much time each operation takes<br>
+<input type="radio" bean="/atg/dynamo/service/PerformanceMonitor.mode" value="3" `(perfmon.getMode() == PerformanceMonitor.MEMORY ? "checked" : "")`>MEMORY - keep statistics for how much time and memory each operation takes<br>
+<input type="radio" bean="/atg/dynamo/service/PerformanceMonitor.mode" value="0" `(perfmon.getMode() == PerformanceMonitor.DISABLED ? "checked" : "")`>DISABLED<p>
+<input type=submit bean="/atg/dynamo/service/PerformanceMonitor.mode" value="Change Mode">
+</ul>
+</form>
+<br>
+
+<table border=0>
+  <tr valign=top>
+    <td>Notes:</td>
+    <td>1. Changes made on this page are global to the server.<br>
+        2. Enabling the Performance Monitor will have a small affect on the
+           performance of the server.<br>
+        3. MEMORY mode will cause all requests to the server to be
+           serialized and could possibly cause deadlock. This mode is provided
+           for troubleshooting only.</td>
+  </tr>
+</table>
+
+</body>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/performance-monitor-config.jhtml#2 $$Change: 651448 $ */</java>
+

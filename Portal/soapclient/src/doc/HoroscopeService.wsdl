@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="HoroscopeService_Service"
+  targetNamespace="http://localhost:8840/atg.portal.soap.HoroscopeService"
+  xmlns="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:tns="http://localhost:8840/atg.portal.soap.HoroscopeService"
+  xmlns:types="http://localhost:8840/atg.portal.soap.HoroscopeService/types/"
+  xmlns:interface="http://localhost:8840/atg.portal.soap.HoroscopeService-interface"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+<message
+      name="IngetHoroscopeRequest">
+  <part name="Year"
+      type="xsd:string"/>
+  <part name="Month"
+    type="xsd:string"/>
+  <part name="Day"
+      type="xsd:string"/>
+</message>
+
+<message
+      name="OutgetHoroscopeResponse">
+  <part name="horoscope"
+    type="xsd:string"/>
+</message>
+
+
+<portType
+      name="HoroscopeService_Service">
+  <operation
+        name="getHoroscope">
+    <input
+        message="tns:IngetHoroscopeRequest"/>
+    <output
+    message="tns:OutgetHoroscopeResponse"/>
+  </operation>
+</portType>
+
+
+
+<binding
+    name="HoroscopeService_ServiceBinding"
+      type="tns:HoroscopeService_Service">
+  <soap:binding style="rpc"
+      transport="http://schemas.xmlsoap.org/soap/http"/>
+  <operation
+        name="getHoroscope">
+    <soap:operation
+          soapAction="urn:atg-portal-demo-horoscope"/>
+    <input>
+      <soap:body
+          encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+          namespace="urn:atg-portal-demo-horoscope"
+          use="encoded"/>
+    </input>
+    <output>
+      <soap:body
+          encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+          namespace="urn:atg-portal-demo-horoscope" use="encoded"/>
+    </output>
+  </operation>
+</binding>
+
+<service
+      name="HoroscopeService_Service">
+  <documentation>IBM WSTK V2.4 generated service definition file</documentation>
+  <port
+      binding="interface:HoroscopeService_ServiceBinding"
+        name="HoroscopeService_ServicePort">
+    <soap:address location="http://localhost:8840/Portal/demo/soap"/>
+  </port>
+</service>
+
+</definitions>

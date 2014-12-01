@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<dynamo-message-system>
+  <patchbay>
+     <message-source>
+       <nucleus-name>
+         /atg/projects/b2bstore/order/OrderCanceller
+       </nucleus-name>
+       <output-port>
+         <port-name>
+           DEFAULT
+         </port-name>
+       </output-port>
+       <output-port>
+        <port-name>
+           ModifyOrderPort
+ 	</port-name>
+ 	<output-destination>
+ 	  <destination-name>
+             patchbay:/Fulfillment/ModifyOrder
+ 	  </destination-name>
+ 	  <destination-type>
+ 	    Topic
+ 	  </destination-type>
+ 	</output-destination>
+       </output-port>
+     </message-source>
+  </patchbay>
+</dynamo-message-system>
+<!-- @version $Id: //product/B2BCommerce/version/10.0.3/release/MotorpriseJSP/j2ee-apps/motorprise/config/atg/dynamo/messaging/dynamoMessagingSystem.xml#2 $$Change: 651448 $ -->

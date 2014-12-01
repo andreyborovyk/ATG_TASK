@@ -1,0 +1,286 @@
+<nucleus type=import>
+	/atg/dynamo/admin/Configure
+</nucleus>
+<java type=import> java.net.InetAddress</java>
+
+<java>
+  atg.service.dynamo.ServerConfig configure = (atg.service.dynamo.ServerConfig) request.resolveName("/atg/dynamo/admin/Configure");
+  atg.service.dynamo.ServerConfig defaultCfg = (atg.service.dynamo.ServerConfig) request.resolveName("/atg/dynamo/admin/DefaultConfigure");
+  if (request.getMethod().equalsIgnoreCase("GET"))
+    configure.refresh();
+</java>
+
+<HTML>
+<HEAD>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+<TITLE>Configure Use of the Session Backup Server</TITLE>
+
+
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="images/config-banner.gif" ALT="Dynamo Configuration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a href="configure-server.jhtml">Configure</a>/<a href="configure-server-services.jhtml">Servers</a>/Use Session Backup Server<p>
+
+
+
+<blockquote>
+
+<h3>Server: <i><valueof property=Configure.serverName></valueof></i></h3>
+
+<H2>Configure Use of the Session Backup Server</H2>
+
+<FORM ACTION="configure-server-services.jhtml" METHOD=POST>
+
+<input name="currentProperties" property="Configure.currentProperties" type=hidden value="backingUpSessions">
+<input name="currentProperties" property="Configure.currentProperties" type=hidden value="useSessionBackupServerHostName">
+<input name="currentProperties" property="Configure.currentProperties" type=hidden value="useSessionBackupServerPort">
+
+<p>
+    The Session Backup Server stores copies of selected session components
+    for automatic recovery in case a request handling server fails.  
+<p>
+
+<INPUT TYPE="checkbox" property="Configure.backingUpSessions"> <b>Enable the use of a Session Backup Server</b>
+
+<java>
+    if ( !configure.isDefaultServer() && !configure.isUsingDefault("backingUpSessions") )
+        out.println( "(default: " + (defaultCfg.isBackingUpSessions()?"enabled":"disabled") + ")" );
+</java>
+<br>
+
+(currently
+
+<java>
+  if ( !configure.isDefaultServer() &&
+       (!configure.isUsingDefault("backingUpSessions") ||
+        !configure.isUsingDefault("useSessionBackupServerPort") ||
+        !configure.isUsingDefault("useSessionBackupServerHostName")) )
+  {
+    out.println( " not " );
+  }
+</java>
+
+using defaults)
+
+<p>
+<ul>
+
+	Host name of Session Backup Server
+    <java>
+        if ( !configure.isDefaultServer() && !configure.isUsingDefault("useSessionBackupServerHostName") )
+            out.println( "(default: " + defaultCfg.getUseSessionBackupServerHostName() + ")" );
+    </java>
+	<br>
+	<INPUT TYPE="text" property="Configure.useSessionBackupServerHostName"><br>
+
+<droplet bean="/atg/dynamo/droplet/Switch">
+  <param name="value" value="bean:/atg/dynamo/Configuration.dynamoAppServer">
+     <oparam name="true">
+	Port number of Session Backup Server
+
+    <java>
+  atg.service.dynamo.ServerConfig configure = (atg.service.dynamo.ServerConfig) request.resolveName("/atg/dynamo/admin/Configure");
+  atg.service.dynamo.ServerConfig defaultCfg = (atg.service.dynamo.ServerConfig) request.resolveName("/atg/dynamo/admin/DefaultConfigure");
+
+        if ( !configure.isDefaultServer() && !configure.isUsingDefault("useSessionBackupServerPort") )
+            out.println( "(default: " + defaultCfg.getUseSessionBackupServerPort() + ")" );
+    </java>
+	<br>
+	<INPUT TYPE="text" property="Configure.useSessionBackupServerPort"><p>
+</oparam>
+</droplet>
+
+<INPUT TYPE="submit" property=Configure.applyChanges VALUE="Apply Changes">
+
+<java>
+  if ( !configure.isDefaultServer() &&
+       (!configure.isUsingDefault("backingUpSessions") ||
+        !configure.isUsingDefault("useSessionBackupServerPort") ||
+        !configure.isUsingDefault("useSessionBackupServerHostName")) )
+  {
+</java>
+
+<INPUT TYPE="submit" property="Configure.applyDefault" VALUE="Use Defaults">
+
+<java>
+  }
+</java>
+<br><i>Note: These actions do not affect the other configuration options on this page.</i>
+</ul>
+</form>
+
+
+
+
+
+<a name="properties"></a>
+<FORM ACTION="use-backup-server.jhtml#properties" METHOD=POST>
+
+<input name="currentProperties" property="Configure.currentProperties" type=hidden value="sessionBackupServerPropertyList">
+
+<b>Session properties and components that are backed up:</b>
+<br>
+
+(currently
+
+<java>
+  if ( !configure.isDefaultServer() &&
+       !configure.isUsingDefault("sessionBackupServerPropertyList") )
+  {
+    out.println( " not " );
+  }
+</java>
+
+using defaults)
+
+
+<ul>
+		<TABLE BORDER="1" CELLPADDING="6" CELLSPACING="0">
+			<TR>
+				<TD ALIGN=LEFT VALIGN=TOP>
+					Absolute component or property path name 
+					<br>
+					(e.g. <code>/atg/userprofiling/ProfileFailService.uidForFailover</code>)
+				</TD>
+				<TD ALIGN=LEFT VALIGN=TOP>
+					<br>
+				</TD>
+			</TR>
+
+	<java>
+	String  paths[] = configure.getSessionBackupServerPropertyList();
+
+	if ( null != paths )
+	{
+    	for( int i=0; i < paths.length; ++i )
+    	{
+    	    if ( null == paths[i] )
+    	        continue;
+
+			</java>
+			<TR>
+			<TD ALIGN=LEFT VALIGN=TOP>
+			<java> out.print( paths[i] ); </java>
+			</TD>
+			<TD ALIGN=LEFT VALIGN=TOP>
+			<INPUT TYPE="submit" name="delete`paths[i]`" property="Configure.deleteSessionProperty"
+				submitvalue="`paths[i]`" VALUE="Delete">
+			</td>
+			</TR>
+    	    <java>
+    	}
+    }
+	</java>
+			<TR>
+				<TD ALIGN=LEFT VALIGN=TOP>
+					new component or property path name<br>
+					<INPUT TYPE="text" property="Configure.newSessionProperty" size=30 Value="">
+				</td>
+				<TD ALIGN=LEFT VALIGN=top>
+					&nbsp;<br>
+					<INPUT TYPE="submit" property="Configure.addSessionProperty" VALUE="Add Path">
+				</td>
+			</TR>
+		</TABLE>
+
+</ul>
+<br>
+
+<java>
+if ( !configure.isDefaultServer() && !configure.isUsingDefault("sessionBackupServerPropertyList") )
+{
+	</java> <INPUT TYPE="submit" property="Configure.applyDefault" VALUE="Use Defaults"> <java>
+}
+</java>
+</form>
+
+<droplet bean="/atg/dynamo/droplet/Switch">
+  <param name="value" value="bean:/atg/dynamo/Configuration.dynamoAppServer">
+     <oparam name="true">
+
+<a name="addresses"></a>
+<FORM ACTION="use-backup-server.jhtml#addresses" METHOD=POST>
+
+<b>Hosts allowed to run session backup servers:</b>
+<br>
+
+<ul>
+		<TABLE BORDER="1" CELLPADDING="6" CELLSPACING="0">
+			<TR>
+				<TD ALIGN=LEFT VALIGN=TOP>
+					Host name or IP address
+				</TD>
+				<TD ALIGN=LEFT VALIGN=TOP>
+					<br>
+				</TD>
+			</TR>
+
+	<java>
+  atg.service.dynamo.ServerConfig configure = (atg.service.dynamo.ServerConfig) request.resolveName("/atg/dynamo/admin/Configure");
+
+	InetAddress  addrs[] = configure.getAllowedRestorationAddresses();
+
+	if ( null != addrs )
+	{
+    	for( int i=0; i < addrs.length; ++i )
+    	{
+    	    if ( null == addrs[i] )
+    	        continue;
+
+			</java>
+			<TR>
+			<TD ALIGN=LEFT VALIGN=TOP>
+			<java> out.print( addrs[i].toString() ); </java>
+			</TD>
+			<TD ALIGN=LEFT VALIGN=TOP>
+			<INPUT TYPE="submit" name="delete`i`" property="Configure.deleteAddress"
+				submitvalue="`addrs[i].getHostAddress()`" VALUE="Delete">
+			</td>
+			</TR>
+    	    <java>
+    	}
+    }
+	</java>
+			<TR>
+				<TD ALIGN=LEFT VALIGN=TOP>
+					new host name or ip address <br>
+					<INPUT TYPE="text" property="Configure.newAddress" size=30 Value="">
+                                        <droplet bean="/atg/dynamo/droplet/Switch">
+                                          <param name="value" value="bean:Configure.invalidAddressError">
+                                          <oparam name="true"><br>
+                                            <font color="#ff2222">Unable to resolve host/ip address: <valueof bean="Configure.newAddress">(not set)</valueof>
+                                          </oparam>
+                                        </droplet>
+				</td>
+				<TD ALIGN=LEFT VALIGN=top>
+					&nbsp;<br>
+					<INPUT TYPE="submit" property="Configure.addAddress" VALUE="Add Address">
+				</td>
+			</TR>
+		</TABLE>
+
+</ul>
+<br>
+</form>
+
+</oparam>
+</droplet>
+
+<hr>
+<b>Change Server</b><p>
+<valueof property=Configure.serverConfiguredText></valueof>
+<p>
+<droplet src="SelectServer.jhtml">
+    <param name="returnURL" value="use-backup-server.jhtml">
+
+</droplet>
+<p>
+<a href="configure-server-services.jhtml">Back</a><br>
+
+</blockquote>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/use-backup-server.jhtml#2 $$Change: 651448 $*/</java>

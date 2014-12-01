@@ -1,0 +1,43 @@
+
+<nucleus type=import>
+	/atg/dynamo/admin/Configure
+</nucleus>
+
+<java>
+  atg.service.dynamo.ServerConfig configure = (atg.service.dynamo.ServerConfig) request.resolveName("/atg/dynamo/admin/Configure");
+</java>
+
+<HTML>
+<HEAD>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+<TITLE>Confirm Command</TITLE>
+
+
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="images/config-banner.gif" ALT="Dynamo Configuration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<blockquote>
+
+<h2>Confirm</h2>
+
+<blockquote>
+
+<FORM ACTION="config-individual.jhtml" METHOD=GET>
+Are you sure you want to delete server <b><valueof property="Configure.deleteServerName"></valueof></b>?<p>
+    <INPUT TYPE=hidden property="Configure.deleteServerName">
+	<INPUT TYPE="submit" property="Configure.deleteServer" VALUE="Delete">
+	<INPUT TYPE="submit" VALUE="Cancel">
+</FORM>
+
+</blockquote>
+
+<hr>
+<a href="config-individual.jhtml">Back</a><br>
+</blockquote>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/confirm.jhtml#2 $$Change: 651448 $ */</java>
+

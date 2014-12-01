@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<portlet-app xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd"
+version="1.0">
+
+  <portlet>
+    <description>Assets portlet for ATG Biz UI.</description>
+    <portlet-name>AssetsPortlet</portlet-name>
+    <display-name>Assets Portlet</display-name>
+
+    <portlet-class>atg.epub.portlet.asset.AssetPortlet</portlet-class>
+    <init-param>
+      <name>loggingDebug</name>
+      <value>true</value>
+    </init-param>
+    <init-param>
+      <name>path</name>
+      <value>/html/AssetsPortlet/browse.jsp</value>
+    </init-param>
+    <init-param>
+      <name>projectPageId</name>
+      <value>100004</value>
+    </init-param>
+    <init-param>
+      <name>projectCommunityId</name>
+      <value>100001</value>
+    </init-param>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>VIEW</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Assets Portlet</title>
+    </portlet-info>
+  </portlet>
+
+  <portlet>
+    <description>Projects portlet for ATG Biz UI.</description>
+    <portlet-name>ProjectsPortlet</portlet-name>
+    <display-name>Project Portlet</display-name>
+
+    <portlet-class>atg.epub.portlet.project.ProjectPortlet</portlet-class>
+    <init-param>
+      <name>path</name>
+      <value>/html/ProjectsPortlet/projectBrowse.jsp</value>
+    </init-param>
+    <init-param>
+      <name>loggingDebug</name>
+      <value>false</value>
+    </init-param>
+    <init-param>
+      <name>loggingError</name>
+      <value>false</value>
+    </init-param>
+    <init-param>
+      <name>assetPageURL</name>
+      <value>/atg/bcc/assets</value>
+    </init-param>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>VIEW</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Project Portlet</title>
+    </portlet-info>
+  </portlet>
+
+  <portlet>
+    <description>Outstanding Requests portlet for ATG Biz UI.</description>
+    <portlet-name>OutstandingRequestsPortlet</portlet-name>
+    <display-name>Outstanding Requests Portlet</display-name>
+
+    <portlet-class>atg.portlet.DispatchPortlet</portlet-class>
+    <init-param>
+      <name>path</name>
+      <value>/html/OutstandingRequestsPortlet/index.jsp</value>
+    </init-param>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>VIEW</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Outstanding Requests Portlet</title>
+    </portlet-info>
+  </portlet>
+  
+  <portlet>
+    <description>Deployment Portlet.</description>
+    <portlet-name>DeploymentPortlet</portlet-name>
+    <display-name>Deployment Portlet</display-name>
+
+    <portlet-class>atg.portlet.DispatchPortlet</portlet-class>
+    <init-param>
+      <name>path</name>
+      <value>/html/DeploymentPortlet/index.jsp</value>
+    </init-param>
+    <init-param>
+      <name>projectPageId</name>
+      <value>100004</value>
+    </init-param>
+    <init-param>
+      <name>projectCommunityId</name>
+      <value>100001</value>
+    </init-param>
+   <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>VIEW</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Deployment Portlet</title>
+    </portlet-info>
+  </portlet>
+ 
+  <portlet>
+    <description>Deployment UI menu portlet.</description>
+    <portlet-name>DeploymentMenuPortlet</portlet-name>
+    <display-name>Deployment Menu</display-name>
+    <portlet-class>atg.portlet.DispatchPortlet</portlet-class>
+    <init-param>
+      <name>path</name>
+      <value>/html/DeploymentMenuPortlet/index.jsp</value>
+    </init-param>
+    <init-param>
+      <name>deploymentUIPageIndexi</name>
+      <value>1</value>
+    </init-param>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>VIEW</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Deployment Menu</title>
+    </portlet-info>
+  </portlet>
+
+ <portlet>
+    <description>A portlet to list either the current user's tasks or the task pool.</description>
+    <portlet-name>MyTasksPortlet</portlet-name>
+    <display-name>My Tasks Portlet</display-name>
+
+    <portlet-class>atg.portlet.DispatchPortlet</portlet-class>
+    <init-param>
+      <name>loggingError</name>
+      <value>false</value>
+    </init-param>
+    <init-param>
+      <name>path</name>
+      <value>/html/ToDoPortlet/tasksShared.jsp</value>
+    </init-param>
+    <init-param>
+      <name>projectPageId</name>
+      <value>100004</value>
+    </init-param>
+     <init-param>
+      <name>projectCommunityId</name>
+      <value>100001</value>
+    </init-param>
+    <init-param>
+      <name>taskCountShared</name>
+      <value>10</value>
+    </init-param>
+    <init-param>
+      <name>showTaskPool</name>
+      <value>false</value>
+    </init-param>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>VIEW</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>My Tasks Portlet</title>
+    </portlet-info>
+  </portlet>
+
+
+ <portlet>
+    <description>A portlet to list either the current user's tasks or the task pool.</description>
+    <portlet-name>AllTasksPortlet</portlet-name>
+    <display-name>All Tasks Portlet</display-name>
+
+    <portlet-class>atg.portlet.DispatchPortlet</portlet-class>
+    <init-param>
+      <name>path</name>
+      <value>/html/ToDoPortlet/tasksShared.jsp</value>
+    </init-param>
+    <init-param>
+      <name>loggingError</name>
+      <value>false</value>
+    </init-param>
+    <init-param>
+      <name>projectPageId</name>
+      <value>100004</value>
+    </init-param>
+    <init-param>
+      <name>projectCommunityId</name>
+      <value>100001</value>
+    </init-param>
+   <init-param>
+      <name>taskCountShared</name>
+      <value>10</value>
+    </init-param>
+    <init-param>
+      <name>showTaskPool</name>
+      <value>true</value>
+    </init-param>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>VIEW</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>All Tasks Portlet</title>
+    </portlet-info>
+  </portlet>
+
+
+  <portlet>
+    <portlet-name>ProjectHistoryPortlet</portlet-name>
+    <display-name>Project History Portlet</display-name>
+
+    <portlet-class>atg.portlet.DispatchPortlet</portlet-class>
+    <init-param>
+      <name>path</name>
+      <value>/html/ProjectHistoryPortlet/index.jsp</value>
+    </init-param>
+    <init-param>
+      <name>loggingError</name>
+      <value>false</value>
+    </init-param>
+    <init-param>
+      <name>projectPageId</name>
+      <value>100004</value>
+    </init-param>
+     <init-param>
+      <name>projectCommunityId</name>
+      <value>100001</value>
+    </init-param>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>VIEW</portlet-mode>
+    </supports>    
+    <portlet-info>
+      <title>Project History Portlet</title>
+    </portlet-info>
+  </portlet>
+
+</portlet-app>
+<!-- @version $Id: //product/PubPortlet/version/10.0.3/portlets.war/WEB-INF/portlet.xml#2 $$Change: 651448 $-->

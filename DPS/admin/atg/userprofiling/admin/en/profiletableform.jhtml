@@ -1,0 +1,119 @@
+<importbean bean="/atg/userprofiling/servlet/ProfileRepositoryItemDescriptorServlet">
+<importbean bean="/atg/userprofiling/servlet/ProfileRepositoryItemServlet">
+<importbean bean="/atg/userprofiling/servlet/ProfileRepositoryItemPropertyValueServlet">
+<importbean bean="/atg/userprofiling/ProfileAdminFormHandler">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/Switch">
+
+
+<declareparam name="id" value="java.lang.String" description="The RepositoryId of the Profile to View">
+<declareparam name="passwordProperty" value="java.lang.String" description="The name of the passwordProperty">
+<declareparam name="loginProperty" value="java.lang.String" description="The name of the loginProperty">
+
+<table border>
+
+<tr><th>Attribute Name</th><th>Value</th><th>Type</th><th>Description</th></tr>
+
+<!--                                                                    -->
+<!-- Show all the properties and in the Profile Repository for param:id -->
+<!--                                                                    -->
+<droplet bean="ProfileRepositoryItemDescriptorServlet">
+ <oparam name="output">
+	
+	<input type="hidden" bean="ProfileAdminFormHandler.createProfileType" value="param:itemDescriptor.itemDescriptorName">
+
+	<droplet bean="ForEach">
+	 <param name="array" value="param:itemDescriptor.propertyDescriptors">
+	 <param name="sortProperties" value="+displayName">
+	 <oparam name="output">
+
+	        <setvalue param="sortProperties" value="">
+<java type=import>
+atg.beans.*
+</java>
+<java type=import>
+atg.repository.*
+</java>
+<java>
+                RepositoryPropertyDescriptor pDesc = null;
+		Object value;
+	
+		if((value = request.getObjectParameter("element")) != null) {
+		   if(value instanceof DynamicPropertyDescriptor) {
+		   
+		      pDesc = (RepositoryPropertyDescriptor)value;
+		        
+		      boolean show = true;		
+
+		      if(pDesc.getPropertyType().isPrimitive()) 
+		          show = false;
+
+                      // right now, skip hierarchical types
+                      if (pDesc.getPropertyItemDescriptor() != null ||
+                          pDesc.getComponentItemDescriptor() != null)
+                          show = false;
+			
+		      if((pDesc.getPropertyType().isArray()) &&
+			 (pDesc.getPropertyType().getComponentType().isPrimitive())) 
+			   show = false;
+					      
+		      if(java.util.Map.class.isAssignableFrom(pDesc.getPropertyType()))
+		        show = false;
+		        
+		      if(!pDesc.isWritable())
+		         show = false;
+
+		      if(!pDesc.isReadable())
+		         show = false;
+
+		      if((pDesc instanceof RepositoryPropertyDescriptor) &&
+                         (! ((RepositoryPropertyDescriptor)pDesc).isQueryable()))
+		      	 show = false;
+
+		      if(show == true) {	   
+                
+</java>	     
+   
+
+		       	    	   <tr>
+				     <td valign=top>
+				                  <droplet src="profiletableform_attributecell.jhtml">
+						   <param name="propertyDesc" value="param:element"> 
+						   <param name="passwordProperty" value="param:passwordProperty"> 
+						   <param name="loginProperty" value="param:loginProperty"> 
+						  </droplet>
+				     </td> 
+	 
+	 	 	             <td valign=top>
+				                  <droplet src="profiletableform_valuecell.jhtml">
+						   <param name="propertyDesc" value="param:element">
+				                   <param name="id" value="param:id">  
+						   <param name="passwordProperty" value="param:passwordProperty">
+						  </droplet>
+		                     </td>
+
+				     <td valign=top>
+				                  <droplet src="profiletableform_typecell.jhtml">
+			                            <param name="propertyDesc" value="param:element">
+			                          </droplet>
+		                     </td>
+
+				     <td valign=top><valueof param="element.shortDescription">null</valueof></td>
+		                  </tr>
+		  	            
+<java>
+                    }                 
+	       }
+           }
+</java>
+	       
+	 </oparam>	 
+	</droplet>
+
+     
+ </oparam>
+</droplet>
+
+</table>
+<java>/* @version $Id: //product/DPS/version/10.0.3/release/DPS/admin/atg/userprofiling/admin/en/profiletableform.jhtml#2 $$Change: 651448 $ */</java>
+

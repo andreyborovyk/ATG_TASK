@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE gsa-template
+        PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN"
+        "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template>
+
+  <header>
+    <name>Versionmanager Repository</name>
+    <author>Last modified by $Author: rbarbier $</author>
+    <version>$Id: //product/Publishing/version/10.0.3/pws/config/atg/epub/version/versionmanagerRepository.xml#2 $$Change: 651448 $</version>
+  </header>
+
+  <!-- itemDescriptor: developmentLine           -->
+  <!--                                           -->
+  <!-- A DevelopmentLine is a set of versions,   -->
+  <!-- with one from each included asset.        -->
+  <!-- Usually called a "Line of Development"    -->
+  <!-- or "codeline" in other version management -->
+  <!-- systems.                                  -->
+  <!-- A Line is one of:                         -->
+  <!--                                           -->
+  <!--  Branch - a shared line of development    -->
+  <!--  Workspace - working set of versions and  -->
+  <!--              revisions                    -->
+  <!--  Snapshot - archive of a consistent set   -->
+  <!--             of versions                   -->
+  <item-descriptor name="developmentLine" display-name="developmentLine" sub-type-property="type"
+          display-property="name" item-cache-size="500" query-cache-size="50">
+    <table name="avm_devline" type="primary" id-column-name="id">
+      <property name="id" display-name="id" column-name="id" data-type="string" required="true"/>
+      <property name="type" display-name="type" column-name="type" data-type="enumerated" display-name-resource="type" writable="false" hidden="true">
+        <attribute name="useCodeForValue" value="true"/>
+        <option value="branch" code="0"/>
+        <option value="snapshot" code="1"/>
+        <option value="workspace" code="2"/>
+      </property>
+      <property name="name" display-name="name" column-name="name" data-type="string" required="true"/>
+      <property name="parent" display-name="parent" column-name="parent" item-type="developmentLine"/>
+      <property name="dateCreated" data-type="timestamp" column-name="date_created">
+        <attribute name="useNowForDefault" value="true"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- itemDescriptor: branch                    -->
+  <!--                                           -->
+  <!-- A development line which is shared.       -->
+  <item-descriptor name="branch" display-name="branch" super-type="developmentLine" sub-type-value="branch"
+        display-property="name" item-cache-size="500" query-cache-size="50">
+  </item-descriptor>
+
+  <!-- itemDescriptor: snapshot                  -->
+  <!--                                           -->
+  <!-- A development line which consists of a    -->
+  <!-- set of archived versions.                 -->
+  <item-descriptor name="snapshot" display-name="snapshot" super-type="developmentLine" sub-type-value="snapshot"
+          display-property="name" item-cache-size="500" query-cache-size="50">
+  </item-descriptor>
+
+  <!-- itemDescriptor: workspace                 -->
+  <!--                                           -->
+  <!-- A DevelopmentLine that controls changes   -->
+  <!-- to versioned resources.                   -->    
+  <item-descriptor name="workspace" display-name="workspace" super-type="developmentLine" sub-type-value="workspace"
+          display-property="name" item-cache-size="500" query-cache-size="50">
+    <table name="avm_workspace" id-column-name="ws_id">
+      <property name="userid" display-name="userid" data-type="string" column-name="userid"/>
+      <property name="checkedIn" display-name="checkIn" data-type="boolean" column-name="checked_in" required="true" default="false"/>
+      <property name="checkinTime" display-name="checkinTime" data-type="timestamp" column-name="ci_time"/>
+      <property name="isLocked" display-name="isLocked" data-type="boolean" column-name="locked" required="true" default="false"/>
+      <property name="isEditable" display-name="isEditable" data-type="boolean" column-name="editable" required="true" default="true"/>
+      <property name="comment" display-name="comment" data-type="string" column-name="change_was"/>
+    </table>
+  </item-descriptor>
+  
+  <!-- itemDescriptor: assetLock                 -->
+  <!--                                           -->
+  <!-- Represents a deployment lock.             -->
+  <item-descriptor name="assetLock" display-name="assetLock" display-property="id"
+          item-cache-size="1000" query-cache-size="100">
+    <table name="avm_asset_lock" type="primary" id-column-names="repository_name,descriptor_name,repository_id">
+      <property name="id" display-name="id" data-types="string,string,string" column-names="repository_name,descriptor_name,repository_id" required="true"/>
+      <property name="repositoryName" display-name="repository" data-type="string" column-name="repository_name" required="true"/>
+      <property name="descriptorName" display-name="descriptor" data-type="string" column-name="descriptor_name" required="true"/>
+      <property name="repositoryId" display-name="repositoryId" data-type="string" column-name="repository_id" required="true"/>
+      <property name="workspace" display-name="workspace" column-name="workspace_id" item-type="workspace" required="true"/>
+    </table>
+  </item-descriptor>  
+</gsa-template>
+
+<!-- @version $Id: //product/Publishing/version/10.0.3/pws/config/atg/epub/version/versionmanagerRepository.xml#2 $$Change: 651448 $ -->

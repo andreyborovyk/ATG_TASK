@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+    <title>Create Web Service: Select Message Type</title>
+  </head>
+<nucleus type=import>
+        /atg/dynamo/droplet/Switch
+        /atg/dynamo/droplet/ForEach
+        /atg/dynamo/messaging/MessagingManager        
+	/atg/dynamo/admin/CreateWebService
+</nucleus>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+<IMG SRC="../images/admin-banner.gif" ALT="Dynamo Administration"
+     ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<setvalue param="MessagingManager" value="bean:MessagingManager">
+
+<JAVA>
+  String strJMSType = request.getParameter("jmsType");
+  if ("null".equals(strJMSType)) {
+	request.setParameter("jmsType", null);
+        strJMSType = null;
+  }
+
+
+  atg.dms.registry.MessageType mtype = null;
+
+
+  if (strJMSType != null) {
+   atg.dms.patchbay.PatchBayManager mgr =
+	  (atg.dms.patchbay.PatchBayManager)request.getObjectParameter(
+           "MessagingManager");
+   mtype = mgr.getMessageType(strJMSType);
+  }
+
+
+  request.setParameter("resolvedMessageType", mtype);
+</JAVA>
+<droplet name="Switch">
+  <param name="value" value="param:resolvedMessageType">
+  <param name="unset" value=" ">
+  <param name="null" value=" ">
+  <oparam name="default">
+   <%-- Important to set & reset component name and method first.... --%>
+   <setvalue bean="CreateWebService.componentName"
+	     value="">
+   <setvalue bean="CreateWebService.componentName"
+	     value="/atg/dynamo/messaging/MessageImporter">
+   <setvalue bean="CreateWebService.methodName"
+	     value="receiveObjectMessage">
+   <setvalue bean="CreateWebService.JMSType"
+	     value="param:resolvedMessageType.JMSType">
+   <setvalue bean="CreateWebService.messageClassName"
+	     value="param:resolvedMessageType.className">
+   <setvalue bean="CreateWebService.parameterNamesAsString"
+	     value="Message">
+   <setvalue bean="CreateWebService.applicationName"
+	     value="param:resolvedMessageType.JMSType">
+   <JAVA>response.sendLocalRedirect(request.encodeURL("appconfig.jhtml"), request);</JAVA>
+  </oparam>
+</droplet>
+
+<a href="/">admin</a> / <a href="index.jhtml">Web Service
+	Administration</a> / Create Web Service </p><p>
+
+    <h2>Create Web Service</h2>
+    <h1>Select Message Type</h1>
+
+<blockquote>
+
+ <droplet name="Switch">
+   <PARAM NAME="value" VALUE="param:jmsType">
+   <OPARAM name="unset"></OPARAM>
+   <OPARAM name="default">
+    <droplet name="Switch">
+      <PARAM NAME="value" VALUE="param:resolvedMessageType">
+      <OPARAM name="unset">
+	  <font color="red">Error: no message type named 
+           "<valueof param="jmsType">null</valueof>" exists.</font><P>
+      </OPARAM>
+      <P>
+    </droplet>
+   </OPARAM>
+ </droplet>
+
+To choose a message type you 
+wish to expose web service, please click on a message type below:
+
+<P>
+
+
+<droplet src="listmessages.jhtml">
+  <param name="messageFamilies"
+	 value="bean:MessagingManager.messageFamilies">
+</droplet>
+
+</blockquote>
+  </BODY>
+</html>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/webservice/selectmessage.jhtml#2 $$Change: 651448 $*/</java>

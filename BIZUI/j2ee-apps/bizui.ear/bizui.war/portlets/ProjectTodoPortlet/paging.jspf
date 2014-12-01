@@ -1,0 +1,34 @@
+        <div id="projectTodoPaging">
+
+          <c:set var="pagingCount" value="10"/>
+
+          <%-- Render 'prev' link if needed --%>
+          <c:if test='${sessionScope.pagingIndex > 0}'>
+            <c:url var="pagingUrl" value="/portlets/ProjectTodoPortlet/index.jsp">
+              <c:param name="userTasks" value="${userTasks}"/>
+              <c:param name="unowned" value="${unowned}"/>
+              <c:param name="pagingIndex" value="${ sessionScope.prevPagingIndex }"/>
+              <c:param name="noCache" value="true"/>
+            </c:url>
+
+            <dspel:a href="#" onclick="issueRequest('${pagingUrl}', 'projectResults')">
+              <span class="projectTodoPrevPaging">&lt <fmt:message key="paging-prev" bundle="${projectTodoBundle}"/>&nbsp;</span>
+            </dspel:a>
+          </c:if>
+
+          <%-- Render 'next' link --%>
+          <c:if test='${sessionScope.processesDisplayed >= pagingCount}'>
+            <c:url var="pagingUrl" value="/portlets/ProjectTodoPortlet/index.jsp">
+              <c:param name="userTasks" value="${userTasks}"/>
+              <c:param name="unowned" value="${unowned}"/>
+              <c:param name="noCache" value="true"/>
+              <c:param name="pagingIndex" value="${ sessionScope.nextPagingIndex }"/>
+            </c:url>
+
+            <dspel:a href="#" onclick="issueRequest('${pagingUrl}', 'projectResults')">
+              <span class="projectTodoNextPaging">&nbsp;<fmt:message key="paging-next" bundle="${projectTodoBundle}"/> &gt</span>
+            </dspel:a>
+          </c:if>
+
+        </div>
+<%-- @version $Id: //product/BIZUI/version/10.0.3/web-apps/bizui/portlets/ProjectTodoPortlet/paging.jspf#2 $$Change: 651448 $--%>

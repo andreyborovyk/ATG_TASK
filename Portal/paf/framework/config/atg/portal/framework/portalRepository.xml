@@ -1,0 +1,1515 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE gsa-template
+        PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN"
+        "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template>
+
+  <header>
+    <name>Default Portal Repository</name>
+    <author>PAF Team</author>
+    <version>$Id: //app/portal/version/10.0.3/paf/config/framework/atg/portal/framework/portalRepository.xml#2 $$Change: 651448 $</version>
+  </header>
+
+  <!-- TBD: what properties MUST be set? -->
+
+  <!-- ===================================================================== -->
+  <!-- Folders.  This item descriptor is the supertype for :                 -->
+  <!-- community (0), page (1) and gearDefinition (2)                        -->
+  <!-- ===================================================================== -->
+  <item-descriptor name="folder" display-name-resource="itemDescriptorFolder" sub-type-property="type" display-property="name" query-cache-size="100" version-property="internalVersion" expert="true">
+    <attribute name="resourceBundle" value="atg.portal.framework.PortalRepositoryTemplateResources"/>
+    
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="paf_folder" type="primary" id-column-name="folder_id">
+      <property category-resource="categoryInfo" name="internalVersion" display-name-resource="internalVersion" data-type="int" column-name="internal_version" writable="false" queryable="false">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="name" display-name-resource="name" data-type="string" column-name="name" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="description" display-name-resource="description" data-type="string" column-name="description">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      
+      <property name="type" display-name-resource="type" data-type="enumerated" column-name="type" writable="false" hidden="true">
+        <attribute name="useCodeForValue" value="false"/>
+        <option value="community" code="0"/>
+        <option value="page" code="1"/>
+        <option value="geardefinition" code="2"/>
+      </property>
+      
+      <property category-resource="categoryBasics" name="parent" display-name-resource="parentFolder" item-type="folder" column-name="parent">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property category-resource="categoryBasics" name="urlName" display-name-resource="urlName" data-type="string" column-name="url_name" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+
+    <table name="paf_child_folder" type="multi" id-column-name="folder_id" multi-column-name="sequence_num">
+      <property category-resource="categoryBasics" name="childFolders" display-name-resource="childFolders" data-type="list" component-item-type="folder" column-name="child_folder_id" queryable="false">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+    </table>
+
+    <property category-resource="categoryBasics" name="childItems" display-name-resource="childItems" queryable="false">
+      <attribute name="propertySortPriority" value="60"/>
+    </property>
+
+    <table name="paf_folder_acl" type="multi" id-column-name="id" multi-column-name="indx">
+      <property name="acl" column-name="acl" data-type="array" component-data-type="string">
+        <attribute name="elementSize" value="254"/>
+      </property>
+    </table>
+
+    <table name="paf_fldr_ln_names" type="multi" id-column-name="folder_id" multi-column-name="locale">
+      <property category-resource="categoryBasics" name="localizedNames" display-name-resource="localizedNames" column-name="localized_name" data-type="map" component-data-type="string">
+        <attribute name="propertySortPriority" value="35"/>
+      </property>
+    </table>
+
+    <table name="paf_fldr_ln_descs" type="multi" id-column-name="folder_id" multi-column-name="locale">
+      <property category-resource="categoryBasics" name="localizedDescriptions" display-name-resource="localizedDescriptions" column-name="localized_desc" data-type="map" component-data-type="string">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+
+  </item-descriptor>
+
+  <item-descriptor name="communityFolder" display-name-resource="itemDescriptorCommunityFolder" super-type="folder" sub-type-value="community" query-cache-size="100" version-property="internalVersion">
+    <attribute name="resourceBundle" value="atg.portal.framework.PortalRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="paf_cf_child_item" type="multi" id-column-name="folder_id" multi-column-name="sequence_num">
+      <property category-resource="categoryBasics" name="childItems" display-name-resource="childItems" data-type="list" component-item-type="community" column-name="child_item_id" queryable="false">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+    </table>
+
+    <table name="paf_cf_gfldrs" type="multi" id-column-name="comm_folder_id">
+      <property category-resource="categoryBasics" name="gearFolders" display-name-resource="gearFolders" data-type="set" component-item-type="gearDefinitionFolder" column-name="gear_def_fldr_id" queryable="true">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+    </table>
+
+  </item-descriptor>
+
+  <item-descriptor name="pageFolder" display-name-resource="itemDescriptorPageFolder" super-type="folder" sub-type-value="page" query-cache-size="100" version-property="internalVersion">
+    <attribute name="resourceBundle" value="atg.portal.framework.PortalRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="paf_pf_child_item" type="multi" id-column-name="folder_id" multi-column-name="sequence_num">
+      <property category-resource="categoryBasics" name="childItems" display-name-resource="childItems"  data-type="list" component-item-type="page" column-name="child_item_id" queryable="true">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="gearDefinitionFolder" display-name-resource="itemDescriptorGearDefinitionFolder" super-type="folder" sub-type-value="geardefinition" query-cache-size="100" version-property="internalVersion">
+    <attribute name="resourceBundle" value="atg.portal.framework.PortalRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="paf_gdf_child_item" type="multi" id-column-name="folder_id" multi-column-name="sequence_num">
+      <property category-resource="categoryBasics" name="childItems" display-name-resource="childItems" data-type="list" component-item-type="gearDefinition" column-name="child_item_id" queryable="false">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ===================================================================== -->
+  <!-- deviceOutputs                                                         -->
+  <!-- ===================================================================== -->
+  <item-descriptor name="deviceOutputs" display-name-resource="itemDescriptorDeviceOutputs" query-cache-size="100" version-property="internalVersion">
+    <attribute name="resourceBundle" value="atg.portal.framework.PortalRepositoryTemplateResources"/>
+
+    <attribute name="categoryOutputPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="paf_device_outputs" type="primary" id-column-name="device_outputs_id">
+      <property category-resource="categoryInfo" name="internalVersion" display-name-resource="internalVersion" data-type="int" column-name="internal_version" writable="false" queryable="false"/>
+    </table>
+    <table name="paf_device_output" type="multi" id-column-name="device_output_id" multi-column-name="type">
+      <property category-resource="categoryOutput" name="types" display-name-resource="deviceOutputTypes" data-type="map" component-data-type="string" column-name="url"/>
+    </table>
+  </item-descriptor>
+
+  <!-- ===================================================================== -->
+  <!-- displayModes                                                          -->
+  <!-- ===================================================================== -->
+  <item-descriptor name="displayModes" display-name-resource="itemDescriptorDisplayModes" query-cache-size="100" version-property="internalVersion">
+    <attribute name="resourceBundle" value="atg.portal.framework.PortalRepositoryTemplateResources"/>
+
+    <attribute name="categoryModePriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="paf_display_modes" type="primary" id-column-name="display_modes_id">
+      <property category-resource="categoryInfo" name="internalVersion" display-name-resource="internalVersion" data-type="int" column-name="internal_version" writable="false" queryable="false"/>
+      <!-- Display Modes -->
+      <property category-resource="categoryMode" name="shared" item-type="deviceOutputs" column-name="shared_mode" display-name-resource="shared">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryMode" name="full" item-type="deviceOutputs" column-name="full_mode" display-name-resource="full">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryMode" name="popup" item-type="deviceOutputs" column-name="popup_mode" display-name-resource="popup">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ===================================================================== -->
+  <!-- community                                                             -->
+  <!-- ===================================================================== -->
+  <item-descriptor name="community" display-name-resource="itemDescriptorCommunity" version-property="internalVersion" id-space-name="community" display-property="name" last-modified-property="lastModified" query-cache-size="100">
+    <attribute name="resourceBundle" value="atg.portal.framework.PortalRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryCommunityPriority" value="20"/>
+    <attribute name="categoryInfoPriority" value="30"/>
+
+    <table name="paf_community" type="primary" id-column-name="community_id">
+      <property category-resource="categoryBasics" name="id" data-type="string" column-name="community_id" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="name" display-name-resource="name" data-type="string" column-name="name" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="urlName" display-name-resource="urlName" data-type="string" column-name="url_name" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryBasics" name="description" display-name-resource="description" data-type="string" column-name="description">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryInfo" name="creationDate" display-name-resource="creationDate" data-type="timestamp" column-name="creation_date" writable="false">
+        <attribute name="useNowForDefault" value="true"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryInfo" name="lastModified" display-name-resource="lastModified" data-type="timestamp" column-name="last_modified" writable="false">
+        <attribute name="useNowForDefault" value="true"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryInfo" name="internalVersion" display-name-resource="internalVersion" data-type="int" column-name="internal_version" writable="false" queryable="false">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="enabled" display-name-resource="communityEnabled"  data-type="boolean" column-name="enabled" default="false" required="true">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property category-resource="categoryBasics" name="accessLevel" display-name-resource="communityAccessLevel" data-type="int" column-name="access_level" default="2">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property category-resource="categoryCommunity" name="parentFolder" display-name-resource="parentFolder" item-type="communityFolder" column-name="parent_folder" required="true" cascade="update">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryCommunity" name="pageFolder" display-name-resource="pageFolder" item-type="pageFolder" column-name="page_folder" required="true" queryable="false" cascade="update">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryCommunity" name="defaultPage" display-name-resource="defaultPage" item-type="page" column-name="default_page" queryable="true">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryCommunity" name="personalization" display-name-resource="personalization"  data-type="enumerated" column-name="personalization" required="true" default="page">
+        <attribute name="useCodeForValue" value="false"/>
+        <option value="none" code="0"/>
+        <option value="page" code="1"/>
+        <option value="community" code="2"/>
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property category-resource="categoryCommunity" name="membershipRequest" display-name-resource="membershipRequest" data-type="enumerated" column-name="membership_req" required="true" default="automatic">
+        <attribute name="useCodeForValue" value="false"/>
+        <option value="automatic" code="0"/>
+        <option value="allow" code="1"/>
+        <option value="disallow" code="2"/>
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property category-resource="categoryCommunity" name="pageTemplate" display-name-resource="pageTemplate"  item-type="pageTemplate" column-name="page_template" queryable="true" required="true" cascade="update">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property category-resource="categoryCommunity" name="gearTitleTemplate" display-name-resource="gearTitleTemplate"  item-type="gearTitleTemplate" column-name="title_template" queryable="true" required="true" cascade="update">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+      <property category-resource="categoryCommunity" name="loginTemplate" display-name-resource="loginTemplate"  item-type="template" column-name="li_template" queryable="true" required="false">
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+      <property category-resource="categoryCommunity" name="logoutTemplate" display-name-resource="logoutTemplate"  item-type="template" column-name="lo_template" queryable="true" required="false">
+        <attribute name="propertySortPriority" value="90"/>
+      </property>
+      <property category-resource="categoryCommunity" name="accessDeniedTemplate" display-name-resource="accessDeniedTemplate"  item-type="template" column-name="ad_template" queryable="true" required="false">
+        <attribute name="propertySortPriority" value="100"/>
+      </property>
+      <property category-resource="categoryCommunity" name="registrationTemplate" display-name-resource="registrationTemplate"  item-type="template" column-name="rg_template" queryable="true" required="false">
+        <attribute name="propertySortPriority" value="110"/>
+      </property>
+      <property category-resource="categoryCommunity" name="updateProfileTemplate" display-name-resource="updateProfileTemplate"  item-type="template" column-name="up_template" queryable="true" required="false">
+        <attribute name="propertySortPriority" value="120"/>
+      </property>
+      <property category-resource="categoryCommunity" name="inactiveTemplate" display-name-resource="inactiveTemplate"  item-type="template" column-name="ia_template" queryable="true" required="false">
+        <attribute name="propertySortPriority" value="130"/>
+      </property>
+      <property category-resource="categoryCommunity" name="style" display-name-resource="style" item-type="style" column-name="page_style" queryable="false">
+        <attribute name="propertySortPriority" value="140"/>
+      </property>
+    </table>
+
+    <table name="paf_comm_gears" type="multi" id-column-name="community_id">
+      <property category-resource="categoryCommunity" name="gears" display-name-resource="gears" data-type="set" component-item-type="gear" column-name="gear_id" queryable="true">
+        <attribute name="propertySortPriority" value="90"/>
+      </property>
+    </table>
+    <table name="paf_comm_gfldrs" type="multi" id-column-name="community_id">
+      <property category-resource="categoryCommunity" name="gearFolders" display-name-resource="gearFolders" data-type="set" component-item-type="gearDefinitionFolder" column-name="gear_def_fldr_id" queryable="true">
+        <attribute name="propertySortPriority" value="100"/>
+      </property>
+    </table>
+    <table name="paf_comm_lnames" type="multi" id-column-name="community_id" multi-column-name="locale">
+      <property category-resource="categoryCommunity" name="localizedNames" display-name-resource="localizedNames" column-name="localized_name" data-type="map" component-data-type="string">
+        <attribute name="propertySortPriority" value="110"/>
+      </property>
+    </table>
+    <table name="paf_comm_ldescs" type="multi" id-column-name="community_id" multi-column-name="locale">
+      <property category-resource="categoryCommunity" name="localizedDescriptions" display-name-resource="localizedDescriptions" column-name="localized_desc" data-type="map" component-data-type="string">
+        <attribute name="propertySortPriority" value="120"/>
+      </property>
+    </table>
+    <table name="paf_community_acl" type="multi" id-column-name="id" multi-column-name="indx">
+      <property name="acl" column-name="acl" data-type="array" component-data-type="string">
+        <attribute name="elementSize" value="254"/>
+      </property>
+    </table>
+    <table name="paf_comm_roles" type="multi" id-column-name="community_id" multi-column-name="role_name">
+      <property category-resource="categoryCommunity" name="roles" display-name-resource="roles" data-type="map"  column-name="role_id" component-data-type="string">
+        <attribute name="propertySortPriority" value="130"/>
+      </property>
+    </table>
+
+  </item-descriptor>
+
+  <!-- ===================================================================== -->
+  <!-- template                                                          -->
+  <!-- ===================================================================== -->
+  <item-descriptor name="template" display-name-resource="itemDescriptorTemplate" version-property="internalVersion" id-space-name="template" display-property="name" last-modified-property="lastModified" query-cache-size="100">
+    <attribute name="resourceBundle" value="atg.portal.framework.PortalRepositoryTemplateResources"/>
+    
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="paf_template" type="primary" id-column-name="template_id">
+      <property category-resource="categoryBasics" name="name" display-name-resource="name"  data-type="string" column-name="name" required="true">
+        <attribute name="unique" value="true"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="description" display-name-resource="description" data-type="string" column-name="description">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryInfo" name="creationDate" display-name-resource="creationDate"  data-type="timestamp" column-name="creation_date" writable="false">
+        <attribute name="useNowForDefault" value="true"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryInfo" name="lastModified" display-name-resource="lastModified"  data-type="timestamp" column-name="last_modified" writable="false">
+        <attribute name="useNowForDefault" value="true"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryInfo" name="internalVersion" display-name-resource="internalVersion" data-type="int" column-name="internal_version" writable="false" queryable="false">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="author" display-name-resource="author" data-type="string" column-name="author">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryBasics" name="version" display-name-resource="templateVersion" data-type="string" column-name="version">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property category-resource="categoryBasics" name="smallImageURL" display-name-resource="smallImageURL"  data-type="string" column-name="small_image_url" queryable="false">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property category-resource="categoryBasics" name="smallImageAlt" display-name-resource="smallImageAlt"  data-type="string" column-name="small_image_alt" queryable="false">
+        <attribute name="propertySortPriority" value="55"/>
+      </property>
+      <property category-resource="categoryBasics" name="largeImageURL"  display-name-resource="largeImageURL" data-type="string" column-name="large_image_url" queryable="false">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property category-resource="categoryBasics" name="largeImageAlt"  display-name-resource="largeImageAlt" data-type="string" column-name="large_image_alt" queryable="false">
+        <attribute name="propertySortPriority" value="65"/>
+      </property>
+      <property category-resource="categoryBasics" name="servletContext" display-name-resource="servletContext" data-type="string" column-name="servlet_context"  queryable="false" required="true">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+      <property category-resource="categoryBasics" name="deviceOutputs" display-name-resource="deviceOutputs" item-type="deviceOutputs" column-name="device_outputs" required="true" cascade="update">
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ===================================================================== -->
+  <!-- pageTemplate                                                          -->
+  <!-- ===================================================================== -->
+  <item-descriptor name="pageTemplate" display-name-resource="itemDescriptorPageTemplate" version-property="internalVersion" id-space-name="page_template" display-property="name" last-modified-property="lastModified" query-cache-size="100">
+    <attribute name="resourceBundle" value="atg.portal.framework.PortalRepositoryTemplateResources"/>
+    
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="paf_page_template" type="primary" id-column-name="page_template_id">
+      <property category-resource="categoryBasics" name="name" display-name-resource="name"  data-type="string" column-name="name" required="true">
+        <attribute name="unique" value="true"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="description" display-name-resource="description" data-type="string" column-name="description">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryInfo" name="creationDate" display-name-resource="creationDate"  data-type="timestamp" column-name="creation_date" writable="false">
+        <attribute name="useNowForDefault" value="true"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryInfo" name="lastModified" display-name-resource="lastModified"  data-type="timestamp" column-name="last_modified" writable="false">
+        <attribute name="useNowForDefault" value="true"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryInfo" name="internalVersion" display-name-resource="internalVersion" data-type="int" column-name="internal_version" writable="false" queryable="false">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="author" display-name-resource="author" data-type="string" column-name="author">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryBasics" name="version" display-name-resource="pageTemplateVersion" data-type="string" column-name="version">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property category-resource="categoryBasics" name="smallImageURL" display-name-resource="smallImageURL"  data-type="string" column-name="small_image_url" queryable="false">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property category-resource="categoryBasics" name="smallImageAlt" display-name-resource="smallImageAlt"  data-type="string" column-name="small_image_alt" queryable="false">
+        <attribute name="propertySortPriority" value="55"/>
+      </property>
+      <property category-resource="categoryBasics" name="largeImageURL"  display-name-resource="largeImageURL" data-type="string" column-name="large_image_url" queryable="false">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property category-resource="categoryBasics" name="largeImageAlt"  display-name-resource="largeImageAlt" data-type="string" column-name="large_image_alt" queryable="false">
+        <attribute name="propertySortPriority" value="65"/>
+      </property>
+      <property category-resource="categoryBasics" name="servletContext" display-name-resource="servletContext" data-type="string" column-name="servlet_context"  queryable="false" required="true">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+      <property category-resource="categoryBasics" name="displayModes" display-name-resource="displayModes" item-type="displayModes" column-name="display_modes" required="true" cascade="update">
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+    </table>
+    <table name="paf_ptpl_ln_names" type="multi" id-column-name="page_template_id" multi-column-name="locale">
+      <property category-resource="categoryBasics" name="localizedNames" display-name-resource="localizedNames" column-name="localized_name" data-type="map" component-data-type="string">
+        <attribute name="propertySortPriority" value="35"/>
+      </property>
+    </table>
+
+    <table name="paf_ptpl_ln_descs" type="multi" id-column-name="page_template_id" multi-column-name="locale">
+      <property category-resource="categoryBasics" name="localizedDescriptions" display-name-resource="localizedDescriptions" column-name="localized_desc" data-type="map" component-data-type="string">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ===================================================================== -->
+  <!-- page                                                                  -->
+  <!-- ===================================================================== -->
+  <item-descriptor name="page" display-name-resource="itemDescriptorPage" version-property="internalVersion" id-space-name="page" display-property="name" last-modified-property="lastModified" query-cache-size="100">
+    <attribute name="resourceBundle" value="atg.portal.framework.PortalRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="paf_page" type="primary" id-column-name="page_id">
+      <property category-resource="categoryBasics" name="name" display-name-resource="name" data-type="string" column-name="name" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="urlName" display-name-resource="urlName" data-type="string" column-name="url_name" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryBasics" name="description" display-name-resource="description" data-type="string" column-name="description">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryInfo" name="creationDate" display-name-resource="creationDate" data-type="timestamp" column-name="creation_date" writable="false">
+        <attribute name="useNowForDefault" value="true"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryInfo" name="lastModified" display-name-resource="lastModified" data-type="timestamp" column-name="last_modified" writable="false">
+        <attribute name="useNowForDefault" value="true"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryInfo" name="internalVersion" display-name-resource="internalVersion" data-type="int" column-name="internal_version" writable="false" queryable="false">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="accessLevel" display-name-resource="accessLevel" data-type="int" column-name="access_level" default="0">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property category-resource="categoryBasics" name="parentFolder" display-name-resource="parentFolder" item-type="pageFolder" column-name="parent_folder" required="true" cascade="update">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property category-resource="categoryBasics" name="parentCommunity" display-name-resource="parentCommunity" item-type="community" column-name="parent_comm_id" required="true" cascade="update">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property category-resource="categoryBasics" name="layoutTemplate" display-name-resource="layoutTemplate" item-type="layoutTemplate" column-name="layout_id" required="true" queryable="false" cascade="update">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+      <property category-resource="categoryBasics" name="allowLayoutChanges" display-name-resource="allowLayoutChanges" data-type="boolean" column-name="allow_layout_chgs" required="true" default="true">
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+      <property category-resource="categoryBasics" name="colorPalette" display-name-resource="colorPalette" item-type="colorPalette" column-name="palette_id" queryable="false">
+        <attribute name="propertySortPriority" value="90"/>
+      </property>
+      <property category-resource="categoryBasics" name="fixed" display-name-resource="fixed" data-type="boolean" column-name="fixed" required="true" default="false">
+        <attribute name="propertySortPriority" value="100"/>
+      </property>
+      <property category-resource="categoryBasics" name="wirelessEnabled" display-name-resource="wirelessEnabled"  data-type="boolean" column-name="wireless_enabled" required="true" default="false">
+        <attribute name="propertySortPriority" value="110"/>
+      </property>
+    </table>
+
+    <table name="paf_page_regions" type="multi" id-column-name="page_id" multi-column-name="tag">
+      <property category-resource="categoryBasics" name="regions" display-name-resource="regions"  data-type="map" component-item-type="region" column-name="region_id" queryable="false" cascade="delete">
+        <attribute name="propertySortPriority" value="120"/>
+      </property>
+    </table>
+
+    <table name="paf_page_acl" type="multi" id-column-name="id" multi-column-name="indx">
+      <property name="acl" column-name="acl" data-type="array" component-data-type="string">
+        <attribute name="elementSize" value="254"/>
+      </property>
+    </table>
+
+    <table name="paf_page_ln_names" type="multi" id-column-name="page_id" multi-column-name="locale">
+      <property category-resource="categoryBasics" name="localizedNames" display-name-resource="localizedNames" column-name="localized_name" data-type="map" component-data-type="string">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+
+    <table name="paf_page_ln_descs" type="multi" id-column-name="page_id" multi-column-name="locale">
+      <property category-resource="categoryBasics" name="localizedDescriptions" display-name-resource="localizedDescriptions" column-name="localized_desc" data-type="map" component-data-type="string">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+    </table>
+
+  </item-descriptor>
+
+  <!-- ===================================================================== -->
+  <!-- layoutTemplate                                                        -->
+  <!-- ===================================================================== -->
+  <item-descriptor name="layoutTemplate" display-name-resource="itemDescriptorLayoutTemplate" version-property="internalVersion" id-space-name="layout" display-property="name" last-modified-property="lastModified" query-cache-size="100">
+    <attribute name="resourceBundle" value="atg.portal.framework.PortalRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="paf_layout" type="primary" id-column-name="layout_id">
+      <property category-resource="categoryBasics" name="name" display-name-resource="name" data-type="string" column-name="name" required="true">
+        <attribute name="unique" value="true"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="description" display-name-resource="description" data-type="string" column-name="description">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryInfo" name="creationDate" display-name-resource="creationDate"  data-type="timestamp" column-name="creation_date" writable="false">
+        <attribute name="useNowForDefault" value="true"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryInfo" name="lastModified" display-name-resource="lastModified" data-type="timestamp" column-name="last_modified" writable="false">
+        <attribute name="useNowForDefault" value="true"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryInfo" name="internalVersion" display-name-resource="internalVersion" data-type="int" column-name="internal_version" writable="false" queryable="false">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="author" display-name-resource="author" data-type="string" column-name="author">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryBasics" name="version" display-name-resource="layoutTemplateVersion" data-type="string" column-name="version">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property category-resource="categoryBasics" name="smallImageURL" display-name-resource="smallImageURL"  data-type="string" column-name="small_image_url" queryable="false">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property category-resource="categoryBasics" name="smallImageAlt" display-name-resource="smallImageAlt"  data-type="string" column-name="small_image_alt" queryable="false">
+        <attribute name="propertySortPriority" value="55"/>
+      </property>
+      <property category-resource="categoryBasics" name="largeImageURL" display-name-resource="largeImageURL" data-type="string" column-name="large_image_url" queryable="false">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property category-resource="categoryBasics" name="largeImageAlt" display-name-resource="largeImageAlt" data-type="string" column-name="large_image_alt" queryable="false">
+        <attribute name="propertySortPriority" value="65"/>
+      </property>
+      <property category-resource="categoryBasics" name="servletContext" display-name-resource="servletContext" data-type="string" column-name="servlet_context" queryable="false" required="true">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+      <property category-resource="categoryBasics" name="displayModes" display-name-resource="displayModes"  item-type="displayModes" column-name="display_modes" queryable="false" required="true" cascade="update">
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+    </table>
+
+    <table name="paf_layout_regdefs" type="multi" id-column-name="layout_id" multi-column-name="sequence_num">
+      <property category-resource="categoryBasics" name="regionDefinitions" display-name-resource="regionDefinitions" data-type="list" component-item-type="regionDefinition" column-name="region_def_id" queryable="false">
+        <attribute name="propertySortPriority" value="90"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ===================================================================== -->
+  <!-- style                                                                 -->
+  <!-- ===================================================================== -->
+  <item-descriptor name="style" display-name-resource="itemDescriptorStyle" version-property="internalVersion" id-space-name="style" display-property="name" last-modified-property="lastModified" query-cache-size="100">
+    <attribute name="resourceBundle" value="atg.portal.framework.PortalRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="paf_style" type="primary" id-column-name="style_id">
+      <property category-resource="categoryBasics" name="name" display-name-resource="name" data-type="string" column-name="name" required="true">
+        <attribute name="unique" value="true"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="description" display-name-resource="description" data-type="string" column-name="description">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryInfo" name="creationDate" display-name-resource="creationDate" data-type="timestamp" column-name="creation_date" writable="false">
+        <attribute name="useNowForDefault" value="true"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryInfo" name="lastModified" display-name-resource="lastModified"  data-type="timestamp" column-name="last_modified" writable="false">
+        <attribute name="useNowForDefault" value="true"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryInfo" name="internalVersion" display-name-resource="internalVersion" data-type="int" column-name="internal_version" writable="false" queryable="false">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="author" display-name-resource="author" data-type="string" column-name="author">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryBasics" name="version" display-name-resource="styleVersion" data-type="string" column-name="version">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property category-resource="categoryBasics" name="servletContext" display-name-resource="servletContext" data-type="string" column-name="servlet_context" queryable="false" required="true">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property category-resource="categoryBasics" name="cssURL" display-name-resource="cssURL" data-type="string" column-name="css_url" required="true" queryable="false">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+    </table>
+    <table name="paf_styl_ln_names" type="multi" id-column-name="style_id" multi-column-name="locale">
+      <property category-resource="categoryBasics" name="localizedNames" display-name-resource="localizedNames" column-name="localized_name" data-type="map" component-data-type="string">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+
+    <table name="paf_styl_ln_descs" type="multi" id-column-name="style_id" multi-column-name="locale">
+      <property category-resource="categoryBasics" name="localizedDescriptions" display-name-resource="localizedDescriptions" column-name="localized_desc" data-type="map" component-data-type="string">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ===================================================================== -->
+  <!-- colorPalette                                                          -->
+  <!-- ===================================================================== -->
+  <item-descriptor name="colorPalette" display-name-resource="itemDescriptorColorPalette" version-property="internalVersion" id-space-name="color_palette" display-property="name" last-modified-property="lastModified" query-cache-size="100">
+    <attribute name="resourceBundle" value="atg.portal.framework.PortalRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryImagesPriority" value="20"/>
+    <attribute name="categoryColorsPriority" value="30"/>
+    <attribute name="categoryInfoPriority" value="40"/>
+
+    <table name="paf_col_palette" type="primary" id-column-name="palette_id">
+      <property category-resource="categoryBasics" name="name" display-name-resource="name" data-type="string" column-name="name" required="true">
+        <attribute name="unique" value="true"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="description" display-name-resource="description" data-type="string" column-name="description">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryInfo" name="creationDate" display-name-resource="creationDate" data-type="timestamp" column-name="creation_date" writable="false">
+        <attribute name="useNowForDefault" value="true"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryInfo" name="lastModified" display-name-resource="lastModified"  data-type="timestamp" column-name="last_modified" writable="false">
+        <attribute name="useNowForDefault" value="true"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryInfo" name="internalVersion" display-name-resource="internalVersion" data-type="int" column-name="internal_version" writable="false" queryable="false">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="author" display-name-resource="author" data-type="string" column-name="author">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryBasics" name="version" display-name-resource="colorPaletteVersion" data-type="string" column-name="version">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property category-resource="categoryBasics" name="servletContext" display-name-resource="servletContext" data-type="string" column-name="servlet_context" queryable="false" required="true">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property category-resource="categoryBasics" name="smallImageURL" display-name-resource="smallImageURL"  data-type="string" column-name="small_image_url" queryable="false">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property category-resource="categoryBasics" name="smallImageAlt" display-name-resource="smallImageAlt"  data-type="string" column-name="small_image_alt" queryable="false">
+        <attribute name="propertySortPriority" value="65"/>
+      </property>
+      <property category-resource="categoryBasics" name="largeImageURL" display-name-resource="largeImageURL"  data-type="string" column-name="large_image_url" queryable="false">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+      <property category-resource="categoryBasics" name="largeImageAlt" display-name-resource="largeImageAlt"  data-type="string" column-name="large_image_alt" queryable="false">
+        <attribute name="propertySortPriority" value="75"/>
+      </property>
+      <property category-resource="categoryImages" name="pageBackgroundImageURL" display-name-resource="pageBackgroundImageURL"  data-type="string" column-name="pg_bg_image_url" queryable="false">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryColors" name="pageBackgroundColor" display-name-resource="pageBackgroundColor" data-type="String" column-name="pg_bg_color">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryColors" name="pageTextColor" display-name-resource="pageTextColor" data-type="String" column-name="pg_text_color">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryColors" name="pageLinkColor" display-name-resource="pageLinkColor" data-type="String" column-name="pg_link_color">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryColors" name="pageActionLinkColor" display-name-resource="pageActionLinkColor" data-type="String" column-name="pg_alink_color">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property category-resource="categoryColors" name="pageVisitedLinkColor" display-name-resource="pageVisitedLinkColor" data-type="String" column-name="pg_vlink_color">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property category-resource="categoryColors" name="gearTitleBackgroundColor" display-name-resource="gearTitleBackgroundColor" data-type="String" column-name="gt_bg_color">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property category-resource="categoryColors" name="gearTitleTextColor"  display-name-resource="gearTitleTextColor" data-type="String" column-name="gt_text_color">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+      <property category-resource="categoryColors" name="gearBackgroundColor" display-name-resource="gearBackgroundColor" data-type="String" column-name="gear_bg_color">
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+      <property category-resource="categoryColors" name="gearTextColor" display-name-resource="gearTextColor" data-type="String" column-name="gear_text_color">
+        <attribute name="propertySortPriority" value="90"/>
+      </property>
+      <property category-resource="categoryColors" name="highlightBackgroundColor" display-name-resource="highlightBackgroundColor" data-type="String" column-name="hl_bg_color">
+        <attribute name="propertySortPriority" value="100"/>
+      </property>
+      <property category-resource="categoryColors" name="highlightTextColor" display-name-resource="highlightTextColor" data-type="String" column-name="hl_text_color">
+        <attribute name="propertySortPriority" value="110"/>
+      </property>
+    </table>
+    <table name="paf_cpal_ln_names" type="multi" id-column-name="palette_id" multi-column-name="locale">
+      <property category-resource="categoryBasics" name="localizedNames" display-name-resource="localizedNames" column-name="localized_name" data-type="map" component-data-type="string">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+
+    <table name="paf_cpal_ln_descs" type="multi" id-column-name="palette_id" multi-column-name="locale">
+      <property category-resource="categoryBasics" name="localizedDescriptions" display-name-resource="localizedDescriptions" column-name="localized_desc" data-type="map" component-data-type="string">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ===================================================================== -->
+  <!-- gearTitleTemplate                                                     -->
+  <!-- ===================================================================== -->
+  <item-descriptor name="gearTitleTemplate" display-name-resource="itemDescriptorGearTitleTemplate" version-property="internalVersion" id-space-name="gear_title_template" display-property="name" last-modified-property="lastModified" query-cache-size="100">
+    <attribute name="resourceBundle" value="atg.portal.framework.PortalRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryModePriority" value="20"/>
+    <attribute name="categoryInfoPriority" value="30"/>
+
+    <table name="paf_title_template" type="primary" id-column-name="title_template_id">
+      <property category-resource="categoryBasics" name="name" display-name-resource="name"  data-type="string" column-name="name" required="true">
+        <attribute name="unique" value="true"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="description" display-name-resource="description" data-type="string" column-name="description">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryInfo" name="creationDate" display-name-resource="creationDate"  data-type="timestamp" column-name="creation_date" writable="false">
+        <attribute name="useNowForDefault" value="true"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryInfo" name="lastModified" display-name-resource="lastModified" data-type="timestamp" column-name="last_modified" writable="false">
+        <attribute name="useNowForDefault" value="true"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryInfo" name="internalVersion" display-name-resource="internalVersion" data-type="int" column-name="internal_version" writable="false" queryable="false">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="author" display-name-resource="author" data-type="string" column-name="author">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryBasics" name="version" display-name-resource="gearTitleTemplateVersion" data-type="string" column-name="version">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property category-resource="categoryBasics" name="servletContext" display-name-resource="servletContext"  data-type="string" column-name="servlet_context" queryable="false" required="true">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property category-resource="categoryMode" name="templateDisplayModes" display-name-resource="templateDisplayModes" item-type="displayModes" column-name="template_dm" required="false" queryable="false">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryMode" name="preTemplateDisplayModes" display-name-resource="preTemplateDisplayModes" item-type="displayModes" column-name="pre_template_dm" required="false" queryable="false">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryMode" name="postTemplateDisplayModes" display-name-resource="postTemplateDisplayModes" item-type="displayModes" column-name="post_template_dm"  required="false" queryable="false">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryBasics" name="smallImageURL" display-name-resource="smallImageURL"  data-type="string" column-name="small_image_url" queryable="false">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property category-resource="categoryBasics" name="smallImageAlt" display-name-resource="smallImageAlt"  data-type="string" column-name="small_image_alt" queryable="false">
+        <attribute name="propertySortPriority" value="55"/>
+      </property>
+      <property category-resource="categoryBasics" name="largeImageURL" display-name-resource="largeImageURL"  data-type="string" column-name="large_image_url" queryable="false">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property category-resource="categoryBasics" name="largeImageAlt" display-name-resource="largeImageAlt"  data-type="string" column-name="large_image_alt" queryable="false">
+        <attribute name="propertySortPriority" value="65"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ===================================================================== -->
+  <!-- regionDefinition                                                      -->
+  <!-- ===================================================================== -->
+  <item-descriptor name="regionDefinition" display-name-resource="itemDescriptorRegionDefinition" display-property="name" query-cache-size="100" version-property="internalVersion">
+    <attribute name="resourceBundle" value="atg.portal.framework.PortalRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="paf_region_def" type="primary" id-column-name="region_def_id">
+      <property category-resource="categoryInfo" name="internalVersion" display-name-resource="internalVersion" data-type="int" column-name="internal_version" writable="false" queryable="false">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+
+      <property category-resource="categoryBasics" name="name" display-name-resource="name"  data-type="string" column-name="name" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="width" display-name-resource="regionWidth" data-type="enumerated" column-name="width" required="true">
+        <attribute name="useCodeForValue" value="false"/>
+        <option value="narrow" code="0"/>
+        <option value="wide" code="1"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryBasics" name="height" display-name-resource="regionHeight"  data-type="enumerated" column-name="height" required="true">
+        <attribute name="useCodeForValue" value="false"/>
+        <option value="short" code="0"/>
+        <option value="tall" code="1"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ===================================================================== -->
+  <!-- region                                                                -->
+  <!-- ===================================================================== -->
+  <item-descriptor name="region" display-name-resource="itemDescriptorRegion" query-cache-size="100" version-property="internalVersion">
+    <attribute name="resourceBundle" value="atg.portal.framework.PortalRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <property category-resource="categoryBasics" name="name" display-name-resource="name" data-type="string" writable="false">
+      <derivation method="firstNonNull" >
+        <expression>regionDefinition.name</expression>
+      </derivation>
+      <attribute name="propertySortPriority" value="10"/>
+    </property>
+    <table name="paf_region" type="primary" id-column-name="region_id">
+      <property category-resource="categoryInfo" name="internalVersion" display-name-resource="internalVersion" data-type="int" column-name="internal_version" writable="false" queryable="false">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="regionDefinition" display-name-resource="regionDefinition" item-type="regionDefinition" column-name="definition" required="true" queryable="false" cascade="update">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryBasics" name="parentPage" display-name-resource="parentPage" item-type="page" column-name="parent_page_id" required="true" cascade="update">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryBasics" name="fixed" display-name-resource="fixed" data-type="boolean" column-name="fixed" required="true" default="false">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+
+    <table name="paf_region_gears" type="multi" id-column-name="region_id" multi-column-name="sequence_num">
+      <property category-resource="categoryBasics" name="gears" data-type="list" component-item-type="gear" column-name="gear_id" display-name-resource="gears" queryable="true">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ===================================================================== -->
+  <!-- gearModes                                                             -->
+  <!-- ===================================================================== -->
+  <item-descriptor name="gearModes" display-name-resource="itemDescriptorGearModes" query-cache-size="100" version-property="internalVersion">
+    <attribute name="resourceBundle" value="atg.portal.framework.PortalRepositoryTemplateResources"/>
+
+    <attribute name="categoryModePriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+ 
+    <table name="paf_gear_modes" type="primary" id-column-name="gear_modes_id">
+      <property category-resource="categoryInfo" name="internalVersion" display-name-resource="internalVersion" data-type="int" column-name="internal_version" writable="false" queryable="false">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryMode" name="content" display-name-resource="contentMode" item-type="displayModes" column-name="content_mode">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryMode" name="help" display-name-resource="helpMode" item-type="displayModes" column-name="help_mode">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryMode" name="about" display-name-resource="aboutMode" item-type="displayModes" column-name="about_mode">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryMode" name="preview" display-name-resource="previewMode" item-type="displayModes" column-name="preview_mode">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property category-resource="categoryMode" name="userConfig" display-name-resource="userConfigMode" item-type="displayModes" column-name="user_cfg_mode">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property category-resource="categoryMode" name="instanceConfig" display-name-resource="instanceConfigMode" item-type="displayModes" column-name="instance_cfg_mode">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property category-resource="categoryMode" name="initialConfig" display-name-resource="initialConfigMode" item-type="displayModes" column-name="initial_cfg_mode">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+      <property category-resource="categoryMode" name="installConfig" display-name-resource="installConfigMode" item-type="displayModes" column-name="install_cfg_mode">
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ===================================================================== -->
+  <!-- gearDefinition                                                        -->
+  <!-- ===================================================================== -->
+  <item-descriptor name="gearDefinition" display-name-resource="itemDescriptorGearDefinition" version-property="internalVersion" id-space-name="geardefinition" display-property="name" last-modified-property="lastModified" query-cache-size="100">
+    <attribute name="resourceBundle" value="atg.portal.framework.PortalRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryRenderingPriority" value="20"/>
+    <attribute name="categoryCachingPriority" value="30"/>
+    <attribute name="categoryAlertingPriority" value="40"/>
+    <attribute name="categoryErrorHandlingPriority" value="50"/>
+    <attribute name="categoryInfoPriority" value="60"/>
+
+    <table name="paf_gear_def" type="primary" id-column-name="gear_def_id">
+      <property category-resource="categoryBasics" name="name" display-name-resource="name" data-type="string" column-name="name" required="true">
+        <attribute name="unique" value="true"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="description" display-name-resource="description" data-type="string" column-name="description">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryInfo" name="creationDate" display-name-resource="creationDate" data-type="timestamp" column-name="creation_date" writable="false">
+        <attribute name="useNowForDefault" value="true"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryInfo" name="lastModified" display-name-resource="lastModified" data-type="timestamp" column-name="last_modified" writable="false">
+        <attribute name="useNowForDefault" value="true"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryInfo" name="internalVersion" display-name-resource="internalVersion" data-type="int" column-name="internal_version" writable="false" queryable="false">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="parentFolder" display-name-resource="parentFolder"  item-type="gearDefinitionFolder" column-name="parent_folder" required="true" cascade="update">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryBasics" name="author" display-name-resource="author" data-type="string" column-name="author">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property category-resource="categoryBasics" name="version" display-name-resource="gearDefinitionVersion" data-type="string" column-name="version">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property category-resource="categoryBasics" name="hide" display-name-resource="hide" data-type="boolean" column-name="hide" default="false" required="true">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property category-resource="categoryBasics" name="jsr168" display-name-resource="jsr168"  data-type="boolean" column-name="jsr168" default="0" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="portletGUID" display-name-resource="portletGUID" data-type="string" column-name="portlet_guid">
+      	  <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryRendering" name="timeout" display-name-resource="timeout"  data-type="long" column-name="timeout" default="0" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryRendering" name="renderAsynchronously" display-name-resource="renderAsynchronously" data-type="boolean" column-name="render_async" default="false" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryCaching" name="shouldCache" display-name-resource="shouldCache" data-type="boolean" column-name="should_cache" default="false" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryCaching" name="cacheTimeout" display-name-resource="cacheTimeout" data-type="long" column-name="cache_timeout" default="86400000" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+
+      <property category-resource="categoryErrorHandling" name="interceptErrors" display-name-resource="interceptErrors" data-type="boolean" column-name="intercept_errors" default="false" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryErrorHandling" name="shouldCoverErrorsWithCache" display-name-resource="shouldCoverErrorsWithCache" data-type="boolean" column-name="cover_err_cache" default="false" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryBasics" name="servletContext" display-name-resource="servletContext"  data-type="string" column-name="servlet_context" queryable="false" required="true">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+      <property category-resource="categoryBasics" name="sharable" display-name-resource="sharable"  data-type="boolean" column-name="sharable" required="true" default="false">
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+      <property category-resource="categoryBasics" name="width" data-type="enumerated" column-name="width" display-name-resource="gearWidth" required="true" default="noPreference">
+        <attribute name="useCodeForValue" value="false"/>
+        <option value="narrow" code="0"/>
+        <option value="wide" code="1"/>
+        <option value="noPreference" code="2"/>
+        <attribute name="propertySortPriority" value="90"/>
+      </property>
+      <property category-resource="categoryBasics" name="height" display-name-resource="gearHeight" data-type="enumerated" column-name="height" required="true" default="noPreference">
+        <attribute name="useCodeForValue" value="false"/>
+        <option value="short" code="0"/>
+        <option value="tall" code="1"/>
+        <option value="noPreference" code="2"/>
+        <attribute name="propertySortPriority" value="100"/>
+      </property>
+      <property category-resource="categoryBasics" name="smallImageURL" display-name-resource="smallImageURL" data-type="string" column-name="small_image_url" queryable="false">
+        <attribute name="propertySortPriority" value="110"/>
+      </property>
+      <property category-resource="categoryBasics" name="smallImageAlt" display-name-resource="smallImageAlt" data-type="string" column-name="small_image_alt" queryable="false">
+        <attribute name="propertySortPriority" value="115"/>
+      </property>
+      <property category-resource="categoryBasics" name="largeImageURL" display-name-resource="largeImageURL" data-type="string" column-name="large_image_url" queryable="false">
+        <attribute name="propertySortPriority" value="120"/>
+      </property>
+      <property category-resource="categoryBasics" name="largeImageAlt" display-name-resource="largeImageAlt" data-type="string" column-name="large_image_alt" queryable="false">
+        <attribute name="propertySortPriority" value="125"/>
+      </property>
+      <property category-resource="categoryBasics" name="gearModes" display-name-resource="gearModes" item-type="gearModes" column-name="gear_modes" queryable="false" required="true" cascade="update">
+        <attribute name="propertySortPriority" value="130"/>
+      </property>
+    </table>
+    
+    <table name="paf_gd_cprops" type="multi" id-column-name="gear_def_id" multi-column-name="sequence_num">
+      <property category-resource="categoryCaching" name="cacheKeyProperties" display-name-resource="cacheKeyProperties" data-type="array" component-data-type="string" column-name="name">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+    </table>
+
+    <table name="paf_gd_iparams" type="multi" id-column-name="gear_def_id" multi-column-name="name">
+      <property category-resource="categoryBasics" name="instanceParams" display-name-resource="instanceParams" data-type="map" component-item-type="gearParameter" column-name="gear_param_id" queryable="false">
+        <attribute name="propertySortPriority" value="140"/>
+      </property>
+    </table>
+
+    <table name="paf_gd_uparams" type="multi" id-column-name="gear_def_id" multi-column-name="name">
+      <property category-resource="categoryBasics" name="userParams" display-name-resource="userParams" data-type="map" component-item-type="gearParameter" column-name="gear_param_id" queryable="false">
+        <attribute name="propertySortPriority" value="150"/>
+      </property>
+    </table>
+
+    <table name="paf_gd_l10n_names" type="multi" id-column-name="gear_def_id" multi-column-name="locale">
+      <property category-resource="categoryBasics" name="localizedNames" display-name-resource="localizedNames" column-name="localized_name" data-type="map" component-data-type="string">
+        <attribute name="propertySortPriority" value="35"/>
+      </property>
+    </table>
+
+    <table name="paf_gd_l10n_descs" type="multi" id-column-name="gear_def_id" multi-column-name="locale">
+      <property category-resource="categoryBasics" name="localizedDescriptions" display-name-resource="localizedDescriptions" column-name="localized_desc" data-type="map" component-data-type="string">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+
+   <table name="alt_gear_def_rel" type="multi" id-column-name="gear_def_id" multi-column-name="name">
+     <property category-resource="categoryAlerting" name="gearAlerts" display-name-resource="gearAlerts"  column-name="id" data-type="map" component-item-type="alert_gear_def" repository="/atg/portal/alert/AlertRepository" required="false">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+    </table>
+
+    <table name="paf_base_gear_role" type="multi" id-column-name="gear_def_id">
+      <property category-resource="categoryBasics" name="defaultRoleNames" display-name-resource="defaultRoleNames" data-type="set"  column-name="role_name" component-data-type="string">
+        <attribute name="propertySortPriority" value="45"/>
+      </property>
+    </table>
+
+  </item-descriptor>
+
+  <!-- ===================================================================== -->
+  <!-- gear                                                                  -->
+  <!-- ===================================================================== -->
+  <item-descriptor name="gear" display-name-resource="itemDescriptorGear" id-space-name="gear" display-property="name" query-cache-size="100" version-property="internalVersion">
+    <attribute name="resourceBundle" value="atg.portal.framework.PortalRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryAlertingPriority" value="20"/>
+    <attribute name="categoryInfoPriority" value="30"/>
+
+    <property category-resource="categoryBasics" name="name" display-name-resource="name" data-type="string">
+      <derivation method="firstNonNull" override-property="overrideName">
+        <expression>gearDefinition.name</expression>
+      </derivation>
+      <attribute name="propertySortPriority" value="10"/>
+    </property>
+    <property category-resource="categoryBasics" name="description" display-name-resource="description" data-type="string">
+      <derivation method="firstNonNull" override-property="overrideDescription">
+        <expression>gearDefinition.description</expression>
+      </derivation>
+      <attribute name="propertySortPriority" value="20"/>
+    </property>
+
+    <table name="paf_gear" type="primary" id-column-name="gear_id">
+      <property category-resource="categoryInfo" name="internalVersion" display-name-resource="internalVersion" data-type="int" column-name="internal_version" writable="false" queryable="false">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryBasics" name="overrideName" display-name-resource="overrideName"  data-type="string" column-name="name" hidden="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="overrideDescription" display-name-resource="overrideDescription" data-type="string" column-name="description" hidden="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryBasics" name="gearDefinition" display-name-resource="gearDefinition"  item-type="gearDefinition" column-name="gear_definition" required="true" queryable="true" cascade="update">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryBasics" name="showTitleBars" display-name-resource="showTitleBars" data-type="boolean" column-name="show_title_bars" required="true" default="true">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property category-resource="categoryBasics" name="accessLevel" display-name-resource="accessLevel" data-type="int" column-name="access_level" default="0">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property category-resource="categoryBasics" name="parentCommunity" display-name-resource="parentCommunity" item-type="community" column-name="parent_comm_id" required="true" queryable="false">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property category-resource="categoryBasics" name="shared" display-name-resource="sharedGear" data-type="boolean" column-name="is_shared" required="true" default="false">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+    </table>
+
+    <table name="paf_gear_iparams" type="multi" id-column-name="gear_id" multi-column-name="tag">
+      <property category-resource="categoryBasics" name="instanceParameterValues" display-name-resource="instanceParameterValues" data-type="map" component-data-type="string" column-name="iparam_value" queryable="false">
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+    </table>
+
+    <table name="paf_gear_ln_names" type="multi" id-column-name="gear_id" multi-column-name="locale">
+      <property category-resource="categoryBasics" name="localizedNames" display-name-resource="localizedNames" column-name="localized_name" data-type="map" component-data-type="string">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+
+    <table name="paf_gear_ln_descs" type="multi" id-column-name="gear_id" multi-column-name="locale">
+      <property category-resource="categoryBasics" name="localizedDescriptions" display-name-resource="localizedDescriptions" column-name="localized_desc" data-type="map" component-data-type="string">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+    </table>
+
+   <table name="alt_gear_rel" type="multi" id-column-name="gear_id" multi-column-name="name">
+     <property category-resource="categoryAlerting" name="gearAlerts" display-name-resource="gearAlerts" column-name="id" data-type="map" component-item-type="alert_gear" repository="/atg/portal/alert/AlertRepository" required="false">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+   </table>
+
+    <table name="paf_gear_acl" type="multi" id-column-name="id" multi-column-name="indx">
+      <property name="acl" column-name="acl" data-type="array" component-data-type="string">
+        <attribute name="elementSize" value="254"/>
+      </property>
+    </table>
+    <table name="paf_gear_roles" type="multi" id-column-name="gear_id" multi-column-name="role_name">
+      <property category-resource="categoryBasics" name="roles" display-name-resource="roles" data-type="map"  column-name="role_id" component-data-type="string">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+    </table>
+
+  </item-descriptor>
+
+  <!-- ===================================================================== -->
+  <!-- gearParameter                                                         -->
+  <!-- ===================================================================== -->
+  <item-descriptor name="gearParameter" display-name-resource="itemDescriptorGearParameter" query-cache-size="100" version-property="internalVersion">
+    <attribute name="resourceBundle" value="atg.portal.framework.PortalRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="paf_gear_param" type="primary" id-column-name="gear_param_id">
+      <property category-resource="categoryInfo" name="internalVersion" display-name-resource="internalVersion" data-type="int" column-name="internal_version" writable="false" queryable="false">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="description" display-name-resource="description" data-type="string" column-name="description">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="defaultValue" display-name-resource="defaultValue" data-type="string" column-name="default_value">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryBasics" name="required" display-name-resource="required"  data-type="boolean" column-name="required" required="true" default="false">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryBasics" name="readonly" display-name-resource="readonly"  data-type="boolean" column-name="isreadonly" required="true" default="false">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+    </table>      
+    <table name="paf_gear_prmvals" type="multi" id-column-name="gear_param_id" multi-column-name="sequence_num">
+      <property category-resource="categoryBasics" name="paramValues" display-name-resource="paramValues"  data-type="list" component-data-type="string" column-name="param_value" queryable="true">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ===================================================================== -->
+  <!-- defaultCommunityRole                                                     -->
+  <!-- ===================================================================== -->
+  <item-descriptor name="defaultCommunityRole" display-name-resource="itemDescriptorDefaultCommunityRole">
+    <attribute name="resourceBundle" value="atg.portal.framework.PortalRepositoryTemplateResources"/>
+    <table name="paf_base_comm_role" id-column-name="id" type="primary">
+      <property name="roleName" display-name-resource="roleName" data-type="string" column-name="role_name" required="true"/>
+      <property name="category" display-name-resource="category" data-type="string" column-name="category" required="true"/>
+    </table>
+  </item-descriptor>
+
+  <!-- CommunityTemplate -->
+  <item-descriptor name="communityTemplate" 
+                   display-name-resource="itemDescriptorCommunityTemplate"
+		   version-property="internalVersion"
+		   id-space-name="communityTemplate"
+		   display-property="name">
+    <attribute name="resourceBundle" 
+               value="atg.portal.framework.PortalRepositoryTemplateResources"/>
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryCommunityPriority" value="20"/>
+    <attribute name="categoryInfoPriority" value="30"/>
+
+    <table name="paf_comm_template" type="primary" id-column-name="template_id">
+      <property category-resource="categoryBasics" name="name" 
+                display-name-resource="name" data-type="string"
+		column-name="name" required="true">
+	<attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="description" 
+                display-name-resource="description" data-type="string" column-name="description">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryInfo" name="creationDate" 
+                display-name-resource="creationDate" data-type="timestamp" 
+		column-name="creation_date" writable="false">
+        <attribute name="useNowForDefault" value="true"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryInfo" name="internalVersion" 
+                display-name-resource="internalVersion" data-type="int" 
+		column-name="internal_version" writable="false" queryable="false">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="enabled" 
+                display-name-resource="communityEnabled"  
+		data-type="boolean" column-name="enabled" default="false" required="true">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property category-resource="categoryBasics" name="accessLevel" 
+                display-name-resource="communityAccessLevel" data-type="int" 
+		column-name="access_level" default="2">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property category-resource="categoryCommunity" name="parentFolder" 
+                display-name-resource="parentFolder" item-type="communityFolder"
+		column-name="parent_folder" required="true">
+	<attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryCommunity" name="pageFolder"
+                display-name-resource="pageFolder" item-type="communityTemplatePageFolder" 
+		column-name="page_folder" required="true" cascade="delete">
+	<attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryCommunity" name="defaultPage"
+                display-name-resource="defaultPage" item-type="communityTemplatePage" 
+		column-name="default_page" required="true">
+	<attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryCommunity" name="personalization" 
+                display-name-resource="personalization"  data-type="enumerated" 
+		column-name="personalization" required="true" default="page">
+        <attribute name="useCodeForValue" value="false"/>
+        <option value="none" code="0"/>
+        <option value="page" code="1"/>
+        <option value="community" code="2"/>
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property category-resource="categoryCommunity" name="membershipRequest" 
+                display-name-resource="membershipRequest" data-type="enumerated" 
+		column-name="membership_req" required="true" default="automatic">
+        <attribute name="useCodeForValue" value="false"/>
+        <option value="automatic" code="0"/>
+        <option value="allow" code="1"/>
+        <option value="disallow" code="2"/>
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property category-resource="categoryCommunity" name="pageTemplate"
+                display-name-resource="pageTemplate" 
+		item-type="pageTemplate" column-name="page_template" required="true">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryCommunity" name="gearTitleTemplate"
+                display-name-resource="gearTitleTemplate" 
+		item-type="gearTitleTemplate" column-name="title_template" required="true">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property category-resource="categoryCommunity" name="style"
+                display-name-resource="style" item-type="style"
+		column-name="style" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+    <table name="paf_ct_gears" type="multi" id-column-name="template_id">
+      <property category-resource="categoryCommunity" name="gears" display-name-resource="gears" data-type="set" component-item-type="communityTemplateGear" column-name="gear_id" queryable="true" cascade="delete">
+        <attribute name="propertySortPriority" value="90"/>
+      </property>
+    </table>
+    <table name="paf_ct_gr_fldrs" type="multi" id-column-name="template_id">
+      <property category-resource="categoryCommunity" name="gearFolders" display-name-resource="gearFolders" data-type="set" component-item-type="gearDefinitionFolder" column-name="gear_def_folder_id" queryable="true">
+        <attribute name="propertySortPriority" value="100"/>
+      </property>
+    </table>
+    <table name="paf_ct_roles" type="multi" id-column-name="template_id" multi-column-name="role_name">
+      <property category-resource="categoryCommunity" name="roles" display-name-resource="roles" data-type="map" column-name="role_id" component-data-type="string">
+        <attribute name="propertySortPriority" value="130"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- CommunityTemplatePageFolder -->
+  <item-descriptor name="communityTemplatePageFolder" display-name-resource="itemDescriptorCommunityTemplatePageFolder" query-cache-size="100" version-property="internalVersion">
+    <attribute name="resourceBundle" value="atg.portal.framework.PortalRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="paf_ct_folder" type="primary" id-column-name="folder_id">
+      <property category-resource="categoryInfo" name="internalVersion" display-name-resource="internalVersion" data-type="int" column-name="internal_version" writable="false" queryable="false">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="name" display-name-resource="name" data-type="string" column-name="name" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryBasics" name="description" display-name-resource="description" data-type="string" column-name="description">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      
+      <property category-resource="categoryBasics" name="parent" display-name-resource="parentFolder" item-type="communityTemplatePageFolder" column-name="parent">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property category-resource="categoryBasics" name="urlName" display-name-resource="urlName" data-type="string" column-name="url_name" required="true">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+    </table>
+
+    <table name="paf_ct_child_fldr" type="multi" id-column-name="folder_id" multi-column-name="sequence_num">
+      <property category-resource="categoryBasics" name="childFolders" display-name-resource="communityTemplateChildFolders" data-type="list" component-item-type="communityTemplatePageFolder" column-name="child_folder_id" queryable="false">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+    </table>
+
+    <table name="paf_ct_pagefolder" type="multi" id-column-name="folder_id" multi-column-name="sequence_num">
+      <property category-resource="categoryBasics" name="childItems" display-name-resource="childItems"  data-type="list" component-item-type="communityTemplatePage" column-name="child_item_id" queryable="true" cascade="delete">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- CommunityTemplatePage -->
+  <item-descriptor name="communityTemplatePage" display-name-resource="itemDescriptorCommunityTemplatePage" version-property="internalVersion" id-space-name="communityTemplatePage" display-property="name" last-modified-property="lastModified" query-cache-size="100">
+    <attribute name="resourceBundle" value="atg.portal.framework.PortalRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="paf_ct_page" type="primary" id-column-name="page_id">
+      <property category-resource="categoryBasics" name="name" display-name-resource="name" data-type="string" column-name="name" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="urlName" display-name-resource="urlName" data-type="string" column-name="url_name" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryBasics" name="description" display-name-resource="description" data-type="string" column-name="description">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryInfo" name="creationDate" display-name-resource="creationDate" data-type="timestamp" column-name="creation_date" writable="false">
+        <attribute name="useNowForDefault" value="true"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryInfo" name="lastModified" display-name-resource="lastModified" data-type="timestamp" column-name="last_modified" writable="false">
+        <attribute name="useNowForDefault" value="true"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryInfo" name="internalVersion" display-name-resource="internalVersion" data-type="int" column-name="internal_version" writable="false" queryable="false">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="accessLevel" display-name-resource="accessLevel" data-type="int" column-name="access_level" default="0">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property category-resource="categoryBasics" name="parentFolder" display-name-resource="parentFolder" item-type="communityTemplatePageFolder" column-name="parent_folder" required="true">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property category-resource="categoryBasics" name="layoutTemplate" display-name-resource="layoutTemplate" item-type="layoutTemplate" column-name="layout_id" required="true" queryable="false">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+      <property category-resource="categoryBasics" name="allowLayoutChanges" display-name-resource="allowLayoutChanges" data-type="boolean" column-name="allow_layout_chgs" required="true" default="true">
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+      <property category-resource="categoryBasics" name="colorPalette" display-name-resource="colorPalette" item-type="colorPalette" column-name="palette_id" queryable="false">
+        <attribute name="propertySortPriority" value="90"/>
+      </property>
+      <property category-resource="categoryBasics" name="fixed" display-name-resource="fixed" data-type="boolean" column-name="fixed" required="true" default="false">
+        <attribute name="propertySortPriority" value="100"/>
+      </property>
+      <property category-resource="categoryBasics" name="wirelessEnabled" display-name-resource="wirelessEnabled"  data-type="boolean" column-name="wireless_enabled" required="true" default="false">
+        <attribute name="propertySortPriority" value="110"/>
+      </property>
+    </table>
+
+    <table name="paf_ct_pg_regions" type="multi" id-column-name="page_id" multi-column-name="tag">
+      <property category-resource="categoryBasics" name="regions" display-name-resource="regions"  data-type="map" component-item-type="communityTemplateRegion" column-name="region_id" queryable="false" cascade="delete">
+        <attribute name="propertySortPriority" value="120"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- CommunityTemplateRegion -->
+  <item-descriptor name="communityTemplateRegion" display-name-resource="itemDescriptorCommunityTemplateRegion" query-cache-size="100" version-property="internalVersion">
+    <attribute name="resourceBundle" value="atg.portal.framework.PortalRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <property category-resource="categoryBasics" name="name" display-name-resource="name" data-type="string" writable="false">
+      <derivation method="firstNonNull" >
+        <expression>regionDefinition.name</expression>
+      </derivation>
+      <attribute name="propertySortPriority" value="10"/>
+    </property>
+    <table name="paf_ct_region" type="primary" id-column-name="region_id">
+      <property category-resource="categoryInfo" name="internalVersion" display-name-resource="internalVersion" data-type="int" column-name="internal_version" writable="false" queryable="false">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="regionDefinition" display-name-resource="regionDefinition" item-type="regionDefinition" column-name="definition" required="true" queryable="false" cascade="update">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryBasics" name="fixed" display-name-resource="fixed" data-type="boolean" column-name="fixed" required="true" default="false">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+
+    <table name="paf_ct_region_grs" type="multi" id-column-name="region_id" multi-column-name="sequence_num">
+      <property category-resource="categoryBasics" name="gears" data-type="list" component-item-type="communityTemplateGear" column-name="gear_id" display-name-resource="gears" queryable="true">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- CommunityTemplateGear -->
+  <item-descriptor name="communityTemplateGear" display-name-resource="itemDescriptorCommunityTemplateGear" id-space-name="communityTemplateGear" display-property="name" query-cache-size="100" version-property="internalVersion">
+    <attribute name="resourceBundle" value="atg.portal.framework.PortalRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryAlertingPriority" value="20"/>
+    <attribute name="categoryInfoPriority" value="30"/>
+
+    <property category-resource="categoryBasics" name="name" display-name-resource="name" data-type="string">
+      <derivation method="firstNonNull" override-property="overrideName">
+        <expression>gearDefinition.name</expression>
+      </derivation>
+      <attribute name="propertySortPriority" value="10"/>
+    </property>
+    <property category-resource="categoryBasics" name="description" display-name-resource="description" data-type="string">
+      <derivation method="firstNonNull" override-property="overrideDescription">
+        <expression>gearDefinition.description</expression>
+      </derivation>
+      <attribute name="propertySortPriority" value="20"/>
+    </property>
+
+    <table name="paf_ct_gear" type="primary" id-column-name="gear_id">
+      <property category-resource="categoryInfo" name="internalVersion" display-name-resource="internalVersion" data-type="int" column-name="internal_version" writable="false" queryable="false">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryBasics" name="overrideName" display-name-resource="overrideName"  data-type="string" column-name="name" hidden="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="overrideDescription" display-name-resource="overrideDescription" data-type="string" column-name="description" hidden="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryBasics" name="gearDefinition" display-name-resource="gearDefinition"  item-type="gearDefinition" column-name="gear_definition" required="true" queryable="true" cascade="update">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryBasics" name="showTitleBars" display-name-resource="showTitleBars" data-type="boolean" column-name="show_title_bars" required="true" default="true">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property category-resource="categoryBasics" name="accessLevel" display-name-resource="accessLevel" data-type="int" column-name="access_level" default="0">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property category-resource="categoryBasics" name="shared" display-name-resource="sharedGear" data-type="boolean" column-name="is_shared" required="true" default="false">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+      <property category-resource="categoryBasics" name="originalGear" display-name-resource="" item-type="gear" column-name="orig_gear_id" required="false" queryable="false">
+        <attribute name="propertySortPriority" value="75"/>
+      </property>
+    </table>
+
+    <table name="paf_ct_gr_iparams" type="multi" id-column-name="gear_id" multi-column-name="tag">
+      <property category-resource="categoryBasics" name="instanceParameterValues" display-name-resource="instanceParameterValues" data-type="map" component-data-type="string" column-name="iparam_value" queryable="false">
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+    </table>
+
+    <table name="paf_ct_gr_ln_names" type="multi" id-column-name="gear_id" multi-column-name="locale">
+      <property category-resource="categoryBasics" name="localizedNames" display-name-resource="localizedNames" column-name="localized_name" data-type="map" component-data-type="string">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+
+    <table name="paf_ct_gr_ln_descs" type="multi" id-column-name="gear_id" multi-column-name="locale">
+      <property category-resource="categoryBasics" name="localizedDescriptions" display-name-resource="localizedDescriptions" column-name="localized_desc" data-type="map" component-data-type="string">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+    </table>
+
+    <table name="paf_ct_alt_gr_rel" type="multi" id-column-name="gear_id" multi-column-name="name">
+      <property category-resource="categoryAlerting" name="gearAlerts" display-name-resource="gearAlerts" column-name="id" data-type="map" component-item-type="communityTemplateAlertGear" required="false">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+    </table>
+    <table name="paf_ct_gr_acl" type="multi" id-column-name="id" multi-column-name="indx">
+      <property name="acl" column-name="acl" data-type="array" component-data-type="string">
+        <attribute name="elementSize" value="254"/>
+      </property>
+    </table>
+    <table name="paf_ct_gr_roles" type="multi" id-column-name="gear_id"
+           multi-column-name="role_name">
+      <property category-resource="categoryBasics" name="roles" display-name-resource="roles"
+                data-type="map" column-name="role_id" component-data-type="string">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- CommunityTemplateAlertGear -->
+  <item-descriptor name="communityTemplateAlertGear" display-name-resource="itemDescriptorCommunityTemplateAlertGear" display-property="name" version-property="version" cache-mode="simple" item-cache-timeout="180000" query-cache-size="100">
+    <attribute name="resourceBundle" value="atg.portal.alert.AlertRepositoryTemplateResources"/>
+
+    <table name="paf_ct_alt_gear" id-column-name="id" type="primary">
+      <property name="version" display-name-resource="version" data-type="int" column-name="version" writable="false" expert="true">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property name="sourceId" display-name-resource="sourceId" data-type="string" column-name="source_id" required="true" />
+      <property name="sourceType" display-name-resource="sourceType" data-type="string" column-name="source_type" required="true"/>
+      <property name="messageType" display-name-resource="messageType" data-type="string" column-name="message_type" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="name" display-name-resource="name" data-type="string" column-name="name" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="defaultValue" display-name-resource="defaultValue" data-type="string" column-name="value" required="true">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="resourceBundle" display-name-resource="resourceBundle" data-type="string" column-name="resource_bundle" required="true">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //app/portal/version/10.0.3/paf/config/framework/atg/portal/framework/portalRepository.xml#2 $$Change: 651448 $ -->

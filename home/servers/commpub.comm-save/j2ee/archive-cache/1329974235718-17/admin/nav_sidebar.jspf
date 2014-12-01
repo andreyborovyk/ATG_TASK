@@ -1,0 +1,160 @@
+<!-- nav_sidebar -->
+<%-- sidebar link text --%>
+<%-- communty --%>
+<i18n:message id="i18n_available_communities" key="admin-nav-sidebar-available-communities"/>
+<i18n:message id="i18n_search_communities"    key="admin-nav-sidebar-search-communities"/>
+<i18n:message id="i18n_new_community"         key="admin-nav-sidebar-new-community"/>
+<i18n:message id="i18n_new_community_folder"  key="admin-nav-sidebar-new-community-folder"/>
+<i18n:message id="i18n_community_templates"   key="admin-nav-sidebar-community-templates"/>
+<i18n:message id="i18n_new_community_template"   key="admin-nav-sidebar-new-community-template"/>
+<i18n:message id="i18n_about_communities"     key="admin-nav-sidebar-about-communities"/>
+<%-- gears --%>
+<i18n:message id="i18n_available_gears"       key="admin-nav-sidebar-available-gears"/>
+<i18n:message id="i18n_new_gear"              key="admin-nav-sidebar-new-gear"/>
+<i18n:message id="i18n_new_gear_folder"       key="admin-nav-sidebar-new-gear-folder"/>
+<i18n:message id="i18n_about_gears"           key="admin-nav-sidebar-about-gears"/>
+<%-- styles --%>
+<i18n:message id="i18n_page_templates"        key="admin-nav-sidebar-page-templates"/>
+<i18n:message id="i18n_layout_templates"      key="admin-nav-sidebar-layout-templates"/>
+<i18n:message id="i18n_gear_title_templates"  key="admin-nav-sidebar-gear-title-templates"/>
+<i18n:message id="i18n_color_palettes"        key="admin-nav-sidebar-color-palettes"/>
+<i18n:message id="i18n_stylesheets"           key="admin-nav-sidebar-stylesheets"/>
+<i18n:message id="i18n_about_styles"          key="admin-nav-sidebar-about-styles"/>
+<%-- alerts --%>
+<i18n:message id="i18n_admin_alerts"          key="admin-nav-sidebar-admin-alerts"/>
+<i18n:message id="i18n_admin_new"             key="admin-nav-sidebar-admin-new"/>
+<i18n:message id="i18n_framework_alerts"      key="admin-nav-sidebar-framework-alerts"/>
+<i18n:message id="i18n_framework_new"         key="admin-nav-sidebar-framework-new"/>
+<i18n:message id="i18n_about_alerts"          key="admin-nav-sidebar-about-alerts"/>
+<%-- logout --%>
+<i18n:message id="i18n_logout"                key="admin-nav-sidebar-logout"/>
+
+
+<% 
+  String sbalertURLStr = null;
+  String sbcommunityURLStr = null;
+  String sbgearURLStr = null;
+  String sbstyleURLStr = null;
+  String sblogoutURLStr = null;
+%>
+
+<core:CreateUrl id="alertURL" url="/portal/admin/alert.jsp">
+  <% sbalertURLStr = alertURL.getNewUrl(); %>
+</core:CreateUrl>
+<core:CreateUrl id="communityURL" url="/portal/admin/community.jsp">
+  <% sbcommunityURLStr = communityURL.getNewUrl(); %>
+</core:CreateUrl>
+<core:CreateUrl id="gearURL"      url="/portal/admin/gear.jsp">
+  <% sbgearURLStr = gearURL.getNewUrl(); %>
+</core:CreateUrl>
+<core:CreateUrl id="styleURL"     url="/portal/admin/style.jsp">
+  <% sbstyleURLStr = styleURL.getNewUrl(); %>
+</core:CreateUrl>
+<core:CreateUrl id="logoutURL" url="/portal/admin/logout.jsp">
+  <paf:encodeUrlParam param="successURL"  value="/portal/admin/index.jsp"/>
+  <% sblogoutURLStr = logoutURL.getNewUrl(); %>
+</core:CreateUrl>
+
+
+  <TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+    <TR>
+      <TD BGCOLOR="#B7B8B7">
+        <TABLE WIDTH="150" BORDER="0" CELLPADDING="4" CELLSPACING="1">
+
+<%
+    // this data stucture holds the target base url in its first index
+    // the following indices hold the side bar link text
+    // the numbers are 1) the mode for the hightlight in this case it make the link black
+    // and not underlined.  the other numbers are to trigger the link to be highlighted 
+    // and blue and unerlined when the modes match.
+
+    String secondLevelData[][][] = {
+    {/* Communities */
+     { sbcommunityURLStr  ,""  ,""},
+     {i18n_available_communities ,"1" ,"-6-7-"},
+     {i18n_search_communities    ,"4" ,"-8-9-"},
+     {i18n_new_community         ,"2" ,""},
+     {i18n_new_community_folder  ,"3" ,""},
+     {i18n_community_templates  ,"20" ,"-23-24-"},
+     {i18n_new_community_template  ,"21" ,"-22-"},
+     {i18n_about_communities     ,"5" ,""}
+     },
+    {/* gears */
+     { sbgearURLStr       ,""  ,""},
+     {i18n_available_gears       ,"1" ,"-5-"},
+     {i18n_new_gear              ,"2" ,""},
+     {i18n_new_gear_folder       ,"3" ,""},
+     {i18n_about_gears           ,"4" ,""}
+     },
+    {/* styles */
+     { sbstyleURLStr      ,""  ,""},
+     {i18n_page_templates        ,"1" ,""},
+     {i18n_layout_templates      ,"2" ,""},
+     {i18n_gear_title_templates  ,"3" ,""},
+     {i18n_color_palettes        ,"4" ,""},
+     {i18n_stylesheets           ,"5" ,""},
+     {i18n_about_styles          ,"6" ,""}
+     },
+    { /* alerts */
+     { sbalertURLStr	 ,""  ,""},
+     {i18n_admin_alerts          ,"1" ,"-7-8-"},
+     {i18n_admin_new             ,"2" ,""},
+     {i18n_framework_alerts      ,"3" ,"-9-10-"},
+     {i18n_framework_new         ,"4" ,""},
+     {i18n_about_alerts          ,"5" ,""}
+    },
+    {/* starter */
+     {"","",""},
+     {"","",""}
+    },
+    {/* logout */
+     { sblogoutURLStr     ,""  ,""},
+     {i18n_logout                ,"1" ,""}
+    }
+};
+
+ int index = (Integer.valueOf(currPid)).intValue();
+ StringBuffer outputStrSB = new StringBuffer(); // reset
+ if ( secondLevelData[index] != null ) {
+  String secondLevel[][] =  secondLevelData[index];
+  for ( int i = 1 ; i < secondLevel.length ; i++ ) {
+   if (! secondLevel[i][1].equals(mode) ) {
+    if ( secondLevel[i][2].indexOf("-"+mode+"-") > -1 ) {
+       outputStrSB.append("<TR><TD ALIGN='left' BGCOLOR='#CBD1D7'><a class='portaladmin_leftnav' target='_top' href='");
+       outputStrSB.append(secondLevel[0][0]);
+       outputStrSB.append("?mode=");
+       outputStrSB.append(secondLevel[i][1]);
+       outputStrSB.append("'><b>");
+       outputStrSB.append(secondLevel[i][0]);
+       outputStrSB.append("</b></a></td></tr>\n");      
+     } else { 
+       outputStrSB.append("<TR><TD ALIGN='left' BGCOLOR='#EAEEF0'><a class='portaladmin_leftnav' target='_top' href='");
+       outputStrSB.append(secondLevel[0][0]);
+       outputStrSB.append("?mode=");
+       outputStrSB.append(secondLevel[i][1]);
+       outputStrSB.append("'>");
+       outputStrSB.append(secondLevel[i][0]);
+       outputStrSB.append("</a></td></tr>\n");
+     }
+   } else {
+       outputStrSB.append("<TR><TD ALIGN='left' BGCOLOR='#CBD1D7'><a class='portaladmin_leftnav' target='_top' style='text-decoration:none' href='");
+       outputStrSB.append(secondLevel[0][0]);
+       outputStrSB.append("?mode=");
+       outputStrSB.append(secondLevel[i][1]);
+       outputStrSB.append("'><b>");
+       outputStrSB.append(secondLevel[i][0]);
+       outputStrSB.append("</b></a></td></tr>\n");
+   }
+  }
+ }
+ 
+ out.print(outputStrSB.toString());
+%>
+
+</table>
+</td></tr></table>
+
+
+<img src='<%=clearGif%>' height="1" width="150" alt="">
+<!-- end nav_sidebar -->
+<%-- @version $Id: //app/portal/version/10.0.3/paf/admin.war/nav_sidebar.jspf#2 $$Change: 651448 $--%>

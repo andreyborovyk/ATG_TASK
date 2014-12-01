@@ -1,0 +1,561 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE taglib
+	PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.1//EN"
+	"http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_1.dtd">
+
+<taglib>
+  <tlibversion>1.0</tlibversion>
+  <jspversion>1.1</jspversion>
+  <shortname>paf</shortname>
+  <uri>http://www.atg.com/taglibs/portal/pafTaglib1_0</uri>
+
+  <info>The tag library containing the Portal Application Framework tags</info>
+
+  <!-- InitializeEnvironment -->
+  <tag>
+    <name>InitializeEnvironment</name>
+    <tagclass>atg.portal.framework.taglib.InitializeEnvironmentTag</tagclass>
+    <teiclass>atg.portal.framework.taglib.InitializeEnvironmentTEI</teiclass>
+    <bodycontent>JSP</bodycontent>
+    <info>
+      Initialize an environment for layout templates and other
+      framework pages, e.g. full.jsp, then render the body
+    </info>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- RenderLayout -->
+  <tag>
+    <name>RenderLayout</name>
+    <tagclass>atg.portal.framework.taglib.RenderLayoutTag</tagclass>
+    <bodycontent>empty</bodycontent>
+    <info>
+      Determines based on Display Mode and the current Device which
+      URL from the Page's Layout Templates's DisplayModes'
+      DeviceOutputs should be included and includes it
+    </info>
+
+    <attribute>
+      <name>displayMode</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>deviceOutput</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>page</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- RenderGearTitle -->
+  <tag>
+    <name>RenderGearTitle</name>
+    <tagclass>atg.portal.framework.taglib.RenderGearTitleTag</tagclass>
+    <bodycontent>empty</bodycontent>
+    <info>
+      Includes a GearTitleTemplate
+    </info>
+
+    <attribute>
+      <name>gear</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>community</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>type</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- GetGears -->
+  <tag>
+    <name>GetGears</name>
+    <tagclass>atg.portal.framework.taglib.GetGearsTag</tagclass>
+    <teiclass>atg.portal.framework.taglib.GetGearsTEI</teiclass>
+    <bodycontent>JSP</bodycontent>
+    <info>
+      Extracts a named region from a page, get the gears from the region, and then renders the body
+    </info>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>regionName</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>page</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>gearMode</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>displayMode</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>deviceOutput</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- GetGearMode -->
+  <tag>
+    <name>GetGearMode</name>
+    <tagclass>atg.portal.framework.taglib.GetGearModeTag</tagclass>
+    <teiclass>atg.portal.framework.taglib.GetGearModeTEI</teiclass>
+    <bodycontent>JSP</bodycontent>
+    <info>
+      Determines a GearMode by using the supplied default GearMode and
+      then examining the query parameters of the request for paf_gm.
+      If the query parameters include a value for paf_gm it is used
+      instead of the default GearMode.  If a Gear is supplied in the
+      onlyForGear paramter, the paf_gm query parameter is only used if
+      there is also a gear query parameter whose value is the id of
+      the gear supplied by onlyForGear.
+    </info>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>defaultGearMode</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>onlyForGear</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- InitializeGearEnvironment -->
+  <tag>
+    <name>InitializeGearEnvironment</name>
+    <tagclass>atg.portal.framework.taglib.InitializeGearEnvironmentTag</tagclass>
+    <teiclass>atg.portal.framework.taglib.InitializeGearEnvironmentTEI</teiclass>
+    <bodycontent>JSP</bodycontent>
+    <info>
+      Initialize an environment for gears, then render the body
+    </info>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- PrepareGearRenderers -->
+  <tag>
+    <name>PrepareGearRenderers</name>
+    <tagclass>atg.portal.framework.taglib.PrepareGearRenderersTag</tagclass>
+    <teiclass>atg.portal.framework.taglib.PrepareGearRenderersTEI</teiclass>
+    <bodycontent>JSP</bodycontent>
+    <info>
+      Set up a GearRenderers object that will be populated by
+      PrepareGearRenderer tags and accessed by RenderPreparedGear tags
+    </info>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- PrepareGearRenderer -->
+  <tag>
+    <name>PrepareGearRenderer</name>
+    <tagclass>atg.portal.framework.taglib.PrepareGearRendererTag</tagclass>
+    <bodycontent>empty</bodycontent>
+    <info>
+      Create a GearRenderer object for a specific gear on a page and
+      register it with an enclosing GearRenderers object
+    </info>
+
+    <attribute>
+      <name>gearRenderers</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>gear</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>deviceOutput</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>displayMode</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>gearMode</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>regionName</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- RenderPreparedGear -->
+  <tag>
+    <name>RenderPreparedGear</name>
+    <tagclass>atg.portal.framework.taglib.RenderPreparedGearTag</tagclass>
+    <bodycontent>empty</bodycontent>
+    <info>
+      Render's the gear's contents from a GearRenderer registered
+      previously by a PrepareGearRenderer
+    </info>
+
+    <attribute>
+      <name>gearRenderers</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>gear</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- PortalAdministratorCheck -->
+  <tag>
+    <name>PortalAdministratorCheck</name>
+    <tagclass>atg.portal.framework.taglib.PortalAdministratorCheck</tagclass>
+    <bodycontent>JSP</bodycontent>
+    <info>
+      Checks to see if the user is an administrator and, if not,
+      does not render the content between the open and close tags.
+    </info>
+  </tag>
+
+  <!-- PortalAdministratorBarrier -->
+  <tag>
+    <name>PortalAdministratorBarrier</name>
+    <tagclass>atg.portal.framework.taglib.PortalAdministratorBarrier</tagclass>
+    <bodycontent>empty</bodycontent>
+    <info>
+      Checks to see if the user is an administrator and, if not,
+      redirects them to either the login page or the access denied
+      page as appropriate.
+    </info>
+  </tag>
+
+  <!-- CommunityLeaderCheck -->
+  <tag>
+    <name>CommunityLeaderCheck</name>
+    <tagclass>atg.portal.framework.taglib.CommunityLeaderCheck</tagclass>
+    <bodycontent>JSP</bodycontent>
+    <info>
+      Checks to see if the user is a community leader and, if not,
+      does not render the content between the open and close tags.
+    </info>
+    <attribute>
+      <name>community</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- CommunityLeaderBarrier -->
+  <tag>
+    <name>CommunityLeaderBarrier</name>
+    <tagclass>atg.portal.framework.taglib.CommunityLeaderBarrier</tagclass>
+    <bodycontent>empty</bodycontent>
+    <info>
+      Checks to see if the user is a community leader and, if not,
+      redirects them to either the login page or the access denied
+      page as appropriate.
+    </info>
+    <attribute>
+      <name>community</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- CommunityMemberCheck -->
+  <tag>
+    <name>CommunityMemberCheck</name>
+    <tagclass>atg.portal.framework.taglib.CommunityMemberCheck</tagclass>
+    <bodycontent>JSP</bodycontent>
+    <info>
+      Checks to see if the user is a community member and, if not,
+      does not render the content between the open and close tags.
+    </info>
+    <attribute>
+      <name>community</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- CommunityMemberBarrier -->
+  <tag>
+    <name>CommunityMemberBarrier</name>
+    <tagclass>atg.portal.framework.taglib.CommunityMemberBarrier</tagclass>
+    <bodycontent>empty</bodycontent>
+    <info>
+      Checks to see if the user is a community member and, if not,
+      redirects them to either the login page or the access denied
+      page as appropriate.
+    </info>
+    <attribute>
+      <name>community</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- CommunityGuestCheck -->
+  <tag>
+    <name>CommunityGuestCheck</name>
+    <tagclass>atg.portal.framework.taglib.CommunityGuestCheck</tagclass>
+    <bodycontent>JSP</bodycontent>
+    <info>
+      Checks to see if the user is a community guest and, if not,
+      does not render the content between the open and close tags.
+    </info>
+    <attribute>
+      <name>community</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- CommunityGuestBarrier -->
+  <tag>
+    <name>CommunityGuestBarrier</name>
+    <tagclass>atg.portal.framework.taglib.CommunityGuestBarrier</tagclass>
+    <bodycontent>empty</bodycontent>
+    <info>
+      Checks to see if the user is a community guest and, if not,
+      redirects them to either the login page or the access denied
+      page as appropriate.
+    </info>
+    <attribute>
+      <name>community</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- RegisteredUserCheck -->
+  <tag>
+    <name>RegisteredUserCheck</name>
+    <tagclass>atg.portal.framework.taglib.RegisteredUserCheck</tagclass>
+    <bodycontent>JSP</bodycontent>
+    <info>
+      Checks to see if the user is a registered user and, if not,
+      does not render the content between the open and close tags.
+    </info>
+  </tag>
+
+  <!-- RegisteredUserBarrier -->
+  <tag>
+    <name>RegisteredUserBarrier</name>
+    <tagclass>atg.portal.framework.taglib.RegisteredUserBarrier</tagclass>
+    <bodycontent>empty</bodycontent>
+    <info>
+      Checks to see if the user is a registered user and, if not,
+      redirects them to either the login page or the access denied
+      page as appropriate.
+    </info>
+  </tag>
+
+ <!-- MembershipRequest -->
+ <tag>
+   <name>membershipRequest</name>
+   <tagclass>atg.portal.framework.taglib.MembershipRequestTag</tagclass>
+   <teiclass>atg.portal.framework.taglib.MembershipRequestTEI</teiclass>
+   <bodycontent>JSP</bodycontent>
+   <info>
+     Tag used to process a community membership request
+   </info>
+
+   <attribute>
+     <name>id</name>
+     <required>true</required>
+     <rtexprvalue>false</rtexprvalue>
+   </attribute>
+
+   <attribute>
+     <name>communityId</name>
+     <required>true</required>
+     <rtexprvalue>true</rtexprvalue>
+   </attribute>
+
+   <attribute>
+     <name>user</name>
+     <required>true</required>
+     <rtexprvalue>true</rtexprvalue>
+   </attribute>
+
+   <attribute>
+     <name>userRole</name>
+     <required>true</required>
+     <rtexprvalue>true</rtexprvalue>
+   </attribute>
+
+   <attribute>
+     <name>autoMembership</name>
+     <required>true</required>
+     <rtexprvalue>true</rtexprvalue>
+   </attribute>
+
+   <attribute>
+     <name>enrollMode</name>
+     <required>false</required>
+     <rtexprvalue>true</rtexprvalue>
+   </attribute>
+
+   <attribute>
+     <name>env</name>
+     <required>true</required>
+     <rtexprvalue>true</rtexprvalue>
+   </attribute>
+
+   </tag>
+
+  <!-- EncodeUrlParam -->
+  <tag>
+    <name>EncodeUrlParam</name>
+    <tagclass>atg.portal.framework.taglib.EncodingUrlParamTag</tagclass>
+    <bodycontent>JSP</bodycontent>
+    <info>
+      used inside a CreateUrl tag to specify param/encoded value pairs
+    </info>
+
+    <attribute>
+      <name>param</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>value</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- encodeUrlParam lowercase -->
+  <tag>
+    <name>encodeUrlParam</name>
+    <tagclass>atg.portal.framework.taglib.EncodingUrlParamTag</tagclass>
+    <bodycontent>JSP</bodycontent>
+    <info>
+      used inside a CreateUrl tag to specify param/encoded value pairs
+    </info>
+
+    <attribute>
+      <name>param</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>value</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+   <!-- handleAlertConfig -->
+   <tag>
+     <name>handleAlertConfig</name>
+     <tagclass>atg.portal.framework.taglib.HandleAlertConfigTag</tagclass>
+     <teiclass>atg.portal.framework.taglib.HandleAlertConfigTEI</teiclass>
+     <bodycontent>JSP</bodycontent>
+     <info>
+       Creates gear alert preference items
+     </info>
+     <attribute>
+       <name>id</name>
+       <required>true</required>
+       <rtexprvalue>true</rtexprvalue>
+     </attribute>
+     <attribute>
+       <name>formData</name>
+       <required>true</required>
+       <rtexprvalue>true</rtexprvalue>
+     </attribute>
+     <attribute>
+       <name>gearEnv</name>
+       <required>true</required>
+       <rtexprvalue>true</rtexprvalue>
+     </attribute>
+   </tag>
+
+  <!-- log lowercase -->
+  <tag>
+    <name>log</name>
+    <tagclass>atg.portal.framework.taglib.LoggingTag</tagclass>
+    <bodycontent>JSP</bodycontent>
+    <info>
+      log a message and optional exception to the servlet context logging mechanism
+    </info>
+
+    <attribute>
+      <name>message</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>throwable</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- Sets the locale using the same rules as the PageDispatcherServlet -->
+  <tag>
+    <name>setFrameworkLocale</name>
+    <tagclass>atg.portal.framework.taglib.SetFrameworkLocaleTag</tagclass>
+    <bodycontent>empty</bodycontent>
+    <info>
+      Sets the locale and charset for this page using the same rules as the PageDispatcherServlet.  You
+      won't use this in a gear.  You must have this tag in your "top level" pages,
+      such as shared_page_template.jsp, full_page_template.jsp and the community admin and
+      portal admin pages.
+    </info>
+  </tag>
+
+</taglib>

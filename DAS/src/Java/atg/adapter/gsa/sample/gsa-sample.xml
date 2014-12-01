@@ -1,0 +1,343 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE gsa-template SYSTEM "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template>
+
+  <header>
+    <name>mgk query test</name>
+    <author>mgk</author>
+    <version>$Id: //product/DAS/version/10.0.3/Java/atg/adapter/gsa/sample/gsa-sample.xml#2 $$Change: 651448 $</version>
+  </header>
+
+  <!-- USER -->
+  <item-descriptor name="user" default="true"
+                   cache-mode="disabled" query-cache-size="0" item-cache-size="0"
+                   sub-type-property="type"
+                   version-property="version">
+
+    <attribute name="foo" value="bar"/>
+    <attribute name="cacheSwitchLoadQueries" value="false"/>
+    <attribute name="cacheSwitchLoadProperties" value="true"/>
+
+    <!-- <rql-filter><rql>login starts with "j"</rql></rql-filter> -->
+
+    <property name="notPermanent" data-type="int" queryable="false"/>
+
+    <table name="gsa_user" type="primary" id-column-name="id">
+      <property name="login"/>
+      <property name="happy" data-type="boolean" default="true"/>
+      <property name="regDate" column-name="regdate" data-type="timestamp"/>
+      <property name="password">
+        <attribute name="maxLength" value="32"/>
+      </property>
+      <property name="version" column-name="ver" data-type="int"/>
+      <property name="story" data-type="string">
+        <attribute name="maxLength" value="200"/>
+      </property>
+      <property name="type" default="U"/>
+      <property name="age" data-type="int"/>
+      <property name="company" item-type="company"/>
+      <property name="mgr" item-type="user"/>
+   </table>
+   <table name="gsa_user2" type="auxiliary" id-column-name="id">
+     <property name="address" column-name="aid" item-type="address"/>
+   </table>
+   <table name="gsa_user_interest" type="multi"
+          id-column-name="id" multi-column-name="rank">
+     <property name="interests" column-name="interest"
+               data-type="list" component-data-type="string"/>
+   </table>
+   <table name="gsa_user_phone" type="multi"
+          id-column-name="id" multi-column-name="type">
+     <property name="phoneNumbers" column-name="phone_id"
+               data-type="map" component-item-type="phone-number"/>
+   </table>
+   <table name="gsa_user_polygon" type="multi" id-column-name="id">
+     <property name="polygons" column-name="polygon_id"
+               data-type="set" component-item-type="polygon"/>
+   </table>
+   <table name="foo" type="multi" id-column-name="id">
+    <property name="foos" column-name="foo" data-type="set"
+              component-data-type="int"/>
+   </table>
+  </item-descriptor>
+
+  <!-- ADDRESS -->
+  <item-descriptor name="address">
+    <table name="gsa_address" type="primary" id-column-name="aid">
+      <property name="city"/>
+      <property name="state" default="MA"/>
+      <property name="zip"/>
+    </table>
+  </item-descriptor>  
+
+  <!-- COMPANY -->
+  <item-descriptor name="company">
+    <table name="gsa_company" type="primary" id-column-name="cid">
+      <property name="address" item-type="address"/>
+      <property name="creationDate" data-type="timestamp" column-name="creation_date"/>
+    </table>
+  </item-descriptor>
+
+  <!-- PHONE # -->
+  <item-descriptor name="phone-number">
+    <table name="gsa_phone" type="primary" id-column-name="id">
+      <property name="fullNumber" column-name="full_number" data-type="string"/>
+      <property name="areaCode" column-name="area_code" data-type="string"/>
+    </table>
+  </item-descriptor>
+
+  <!-- BROKER -->
+  <item-descriptor name="broker" super-type="user" sub-type-value="B">
+    <table name="gsa_broker" id-column-name="bid">
+      <property name="license"/>
+    </table>
+  </item-descriptor>
+
+  <!-- POLYGONS -->
+  <item-descriptor name="polygon" sub-type-property="type">
+    <table name="gsa_polygon" type="primary" id-column-name="id">
+      <property name="type" data-type="enumerated" default="T">
+         <attribute name="useCodeForValue" value="false"/>
+           <option value="T" code="0"/>
+           <option value="S" code="1"/>
+      </property>
+      <property name="area" data-type="float"/>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="triangle" super-type="polygon" sub-type-value="T">
+    <table name="gsa_triangle" id-column-name="id">
+      <property name="angle1" data-type="double"/>
+      <property name="angle2" data-type="double"/>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="square" super-type="polygon" sub-type-value="S">
+    <table name="gsa_square" id-column-name="id">
+      <property name="sideLength" column-name="side_length" data-type="float"/>
+    </table>
+  </item-descriptor>
+
+<!-- end of definitions -->
+
+<!-- add things -->
+<transaction>
+
+<remove-item item-descriptor="company" id="atg"/>
+<add-item item-descriptor="company" id="atg"/>
+
+<remove-item item-descriptor="company" id="boo"/>
+<add-item item-descriptor="company" id="boo"/>
+
+<remove-item item-descriptor="company" id="AAA"/>
+<add-item item-descriptor="company" id="AAA"/>
+
+<remove-item item-descriptor="phone-number" id="main"/>
+<add-item item-descriptor="phone-number" id="main">
+  <set-property name="fullNumber" value="617-386-1000"/>
+  <set-property name="areaCode" value="617"/>
+</add-item>
+
+<remove-item item-descriptor="phone-number" id="fax"/>
+<add-item item-descriptor="phone-number" id="fax">
+  <set-property name="fullNumber" value="617-386-1111"/>
+  <set-property name="areaCode" value="617"/>
+</add-item>
+
+<remove-item item-descriptor="phone-number" id="sf"/>
+<add-item item-descriptor="phone-number" id="sf">
+  <set-property name="fullNumber" value="415-something"/>
+  <set-property name="areaCode" value="415"/>
+</add-item>
+
+<remove-item item-descriptor="address" id="addr1"/>
+<add-item item-descriptor="address" id="addr1">
+  <set-property name="city" value="cambridge"/>
+  <set-property name="state" value="MA"/>
+  <set-property name="zip" value="02140"/>
+</add-item>
+
+<remove-item item-descriptor="address" id="a2"/>
+<add-item item-descriptor="address" id="a2">
+  <set-property name="city" value="boston"/>
+  <set-property name="state" value="MA"/>
+  <set-property name="zip" value="02199"/>
+</add-item>
+
+<remove-item item-descriptor="user" id="mgk"/>
+<add-item item-descriptor="user" id="mgk">
+  <set-property name="login" value="mgk"/>
+<!--  <set-property name="age" value="3"/> -->
+  <set-property name="company" value="atg"/>
+  <set-property name="address" value="addr1"/>
+  <set-property name="interests" value="dogs"/>
+  <set-property name="phoneNumbers" value="W=main,F=fax"/>
+</add-item>
+  
+<remove-item item-descriptor="user" id="jeet"/>
+<add-item item-descriptor="user" id="jeet">
+  <set-property name="login" value="jeet"/>
+  <set-property name="password" value="dogs"/>
+  <set-property name="age" value="4"/>
+  <set-property name="company" value="atg"/>
+  <set-property name="mgr" value="mgk"/>
+  <set-property name="address" value="addr1"/>
+  <set-property name="interests" value="planes,cars,dogs"/>
+  <set-property name="phoneNumbers" value="H=main"/>
+</add-item>
+
+<remove-item item-descriptor="user" id="joe"/>
+<add-item item-descriptor="user" id="joe">
+  <set-property name="login" value="joe"/>
+  <set-property name="password" value="planes"/>
+  <set-property name="age" value="5"/>
+  <set-property name="company" value="atg"/>
+  <set-property name="mgr" value="mgk"/>
+  <set-property name="address" value="a2"/>
+  <set-property name="interests" value="java"/>
+</add-item>
+
+<remove-item item-descriptor="user" id="ina"/>
+<add-item item-descriptor="user" id="ina">
+  <set-property name="login" value="ina"/>
+  <set-property name="age" value="7"/>
+  <set-property name="company" value="atg"/>
+  <set-property name="mgr" value="mgk"/>
+  <set-property name="address" value="a2"/>
+  <set-property name="interests" value="russian"/>
+</add-item>
+
+<remove-item item-descriptor="user" id="manny"/>
+<add-item item-descriptor="user" id="manny">
+  <set-property name="login" value="manny"/>
+  <set-property name="age" value="4"/>
+  <set-property name="company" value="atg"/>
+  <set-property name="mgr" value="mgk"/>
+  <set-property name="interests" value="golf"/>
+  <set-property name="story"
+ value="I have no interesting story to tell. That is, i have a
+story but i don't presume that it is worth anyone's time to
+hear it. Still, for those with nothing better to do: I was born..."
+/>
+</add-item>
+
+<remove-item item-descriptor="user" id="fred"/>
+<add-item item-descriptor="user" id="fred">
+  <set-property name="login" value="fred"/>
+  <set-property name="age" value="1000"/>
+  <set-property name="company" value="boo"/>
+  <set-property name="mgr" value="mgk"/>
+</add-item>
+
+<remove-item item-descriptor="user" id="barney"/>
+<add-item item-descriptor="user" id="barney">
+  <set-property name="login" value="barney"/>
+  <set-property name="age" value="1000"/>
+  <set-property name="company" value="boo"/>
+  <set-property name="mgr" value="mgk"/>
+</add-item>
+
+<remove-item item-descriptor="broker" id="gil"/>
+<add-item item-descriptor="broker" id="gil">
+  <set-property name="login" value="gil"/>
+  <set-property name="age" value="41"/>
+  <set-property name="company" value="AAA"/>
+  <set-property name="mgr" value="mgk"/>
+  <set-property name="license" value="x"/>
+</add-item>
+
+<remove-item item-descriptor="user" id="wilma"/>
+<add-item item-descriptor="user" id="wilma">
+  <set-property name="login" value="wilma"/>
+  <set-property name="age" value="1000"/>
+  <set-property name="company" value="atg"/>
+  <set-property name="mgr" value="gil"/>
+</add-item>
+
+</transaction>
+
+<query-items item-descriptor="user">
+ login starts with "mgk"
+ range 0 + 1
+</query-items>
+
+<query-items item-descriptor="user">
+ login="mgk"
+</query-items>
+
+<query-items item-descriptor="user">
+ login="mgk"
+ range 0 + 1
+</query-items>
+
+<query-items item-descriptor="user">
+ login="mgk"
+ range 0 + 39
+</query-items>
+
+<query-items item-descriptor="user">
+ all
+ range 2 + 3
+</query-items>
+
+<query-items item-descriptor="user">
+ all
+ order by login
+ range 3 + 3
+</query-items>
+
+<query-items item-descriptor="user">
+ all
+</query-items>
+
+<query-items item-descriptor="user">
+ all
+ range 3 + 3
+</query-items>
+
+<query-items item-descriptor="user">
+ all
+ range 4 + 90
+</query-items>
+
+<query-items item-descriptor="user">
+phoneNumbers.W = "main"
+</query-items>
+
+<query-items item-descriptor="user">
+company = mgr.company
+</query-items>
+
+<print-item item-descriptor="user" id="abc"/>
+
+<dump-caches/>
+
+<query-items item-descriptor="square">
+sideLength > 3.1
+</query-items>
+
+<query-items item-descriptor="user">
+all order by company
+</query-items>
+
+<query-items item-descriptor="user">
+all order by company desc, login
+</query-items>
+
+<query-items item-descriptor="user">
+all order by login desc
+</query-items>
+
+<query-items item-descriptor="user">
+all order by age, login desc
+</query-items>
+
+
+<query-items item-descriptor="polygon">
+type = "T"
+</query-items>
+
+</gsa-template>
+<!-- @version $Id: //product/DAS/version/10.0.3/Java/atg/adapter/gsa/sample/gsa-sample.xml#2 $$Change: 651448 $ -->

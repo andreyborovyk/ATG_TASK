@@ -1,0 +1,83 @@
+<nucleus type=import>
+	/atg/dynamo/admin/Configure
+	/atg/dynamo/admin/EnvironmentConfig
+  /atg/dynamo/droplet/Switch
+</nucleus>
+
+<HTML>
+<HEAD>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<TITLE>Set Liveconfig Layer</TITLE>
+
+<IMG SRC="images/config-banner.gif" ALT="Dynamo Configuration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a
+href="configure-server.jhtml">Configure</a>/<a
+href="configure-server-services.jhtml">Servers</a>/Live Configuration
+<p>
+
+<h3>Server: <i><valueof property=Configure.serverName></valueof></i></h3>
+
+<blockquote>
+
+<h2>Set Liveconfig Layer</h2>
+
+<p>
+<!-- inform which mode server is currently in -->
+This server is presently configured in
+<droplet name="Switch">
+  <param name="value" value="property:EnvironmentConfig.liveConfig">
+    <oparam name="true">  production mode. </oparam>
+    <oparam name="false"> development mode. </oparam>
+</droplet>
+</p>
+
+<p>
+<!-- describe what happens when you switch to the other mode -->
+To switch your server to 
+<droplet name="Switch">
+  <param name="value" value="property:EnvironmentConfig.liveConfig">
+    <oparam name="true">  
+      development mode, disable the Liveconfig layer to optimize
+      your system for development.
+    </oparam>
+    <oparam name="false">
+      production mode, enable the Liveconfig layer to optimize your
+      system for deployment.
+    </oparam>
+</droplet>
+
+By default, Liveconfig is disabled.
+</p>
+
+<p>
+<!-- display button for switching to other mode -->
+<form action="configure-server-services.jhtml" method=post>
+  <droplet name="Switch">
+    <param name="value" value="property:EnvironmentConfig.liveConfig">
+      <oparam name="true">  
+	<input type="submit" bean="EnvironmentConfig.liveConfig"
+	 value="Switch to development mode">
+      </oparam>
+      <oparam name="false">
+	<input type="submit" bean="EnvironmentConfig.liveConfig"
+	 value="Switch to production mode">
+      </oparam>
+  </droplet>
+</form>
+
+<p>
+For more information about setting the Liveconfig layer, see the
+<a HREF="../../docs/" target="docs">Dynamo Administration
+Guide</a>.
+</p>
+
+<p>&nbsp;</p>
+
+</body>
+</html>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/config-live.jhtml#2 $$Change: 651448 $*/</java>
+

@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>Dojo Tooltip and ATG Persistent CSI Widgets</title>
+
+    <link type="text/css" href="/WebUI/css/cssFramework.css" rel="stylesheet" type="text/css"/>
+
+    <link type="text/css" href="/WebUI/css/cssModules/dataTable.css" rel="stylesheet" type="text/css"/>
+    <link type="text/css" href="/WebUI/css/cssModules/dataForm.css" rel="stylesheet" type="text/css"/>
+
+
+		<style type="text/css">
+			@import "/dojo-1/dijit/themes/atg/atg.css";
+			
+			/* From CommerceAssist.css */
+			
+			span.required {
+      color:#339900;
+      cursor:default;
+      font-size:1em;
+      font-weight:bold;
+      padding:20px;
+      }
+      span.requiredStar {
+      color:#000;
+      cursor:default;  
+      font-size:1.2em;
+      font-weight:bold;
+      }
+			
+		</style>
+
+		<script type="text/javascript" src="/dojo-1/dojo/dojo.js"
+			djConfig="isDebug: true, parseOnLoad: true, extraLocale: ['de-de', 'en-us']"></script>
+
+  		<script type="text/javascript" src="/dojo-1/dojo-fixes.js"></script>
+
+		<script type="text/javascript">
+			dojo.require("dijit.form.TextBox");
+			dojo.require("dijit.form.ValidationTextBox");
+			dojo.require("dijit.form.NumberTextBox");
+			dojo.require("dijit.form.CurrencyTextBox");
+			dojo.require("dojo.currency");
+			dojo.require("dojo.parser");	// scan page for widgets and instantiate them
+  		dojo.require("dijit.Tooltip");
+  		dojo.require("dijit.Dialog");
+		</script>
+		
+		<script type="text/javascript" charset="utf-8">
+		  dojo.registerModulePath("atg.widget", "/WebUI/dijit");
+      dojo.require("atg.widget.form.ValidationTextBox");
+      dojo.require("atg.widget.form.Button");
+      //dojo.require("atg.widget.csi.Persist");
+  		
+		</script>
+		
+	</head>
+
+	<body class="atg">
+		<h1 class="testTitle">Dojo Tooltip and ATG Persistent CSI Widgets</h1>
+
+    <h4>Form Validation Tooltips (test of required input)- Click on field and then off</h4>
+		<form id="form1" action="" name="example" method="">
+
+      <ul class="atg_dataForm atg_commerce_csr_customerInfo">
+        <li class="atg_commerce_csr_firstName atg_dataForm_first">
+          <span class="atg_commerce_csr_fieldTitle">
+            <label for="firstName"  id="firstNameAlert">
+              <span class="requiredStar">*</span>
+              First Name:
+            </label>
+          </span>
+        <input value="" tabindex="1" maxlength="40" required="true" trim="true" type="text" dojoType="atg.widget.form.ValidationTextBox" id="cpFirstName" propercase="true" inlineIndicator="firstNameAlert" size="25" invalidMessage="The First Name is required." name="cpFirstName"/>
+
+        </li>
+        
+        <li class="atg_commerce_csr_lastName atg_dataForm_first">
+          <span class="atg_commerce_csr_fieldTitle">
+            <label for="lastName"  id="lastNameAlert">
+              <span class="requiredStar">*</span>
+              Last Name:
+            </label>
+          </span>
+        <input value="" tabindex="1" maxlength="40" required="true" trim="true" type="text" dojoType="atg.widget.form.ValidationTextBox" id="cpLastName" propercase="true" inlineIndicator="lastNameAlert" size="25" invalidMessage="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." name="cpLastName"/>
+
+        </li>
+      </ul>
+      
+      <h4>Tooltips Off Anchors and Elements</h4>
+			<ul>	
+				<li>
+				<span id="ttRich">rich text tooltip</span>
+				<span dojoType="dijit.Tooltip" connectId="ttRich" style="display:none;">
+					Embedded <b>bold</b> <i>RICH</i> text <span style="color:#309; font-size:x-large;">weirdness!</span>
+					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+				</span>
+				</li>
+
+				<li><a id="ttOne" href="#bogus">anchor tooltip</a>
+				<span dojoType="dijit.Tooltip" connectId="ttOne" style="display:none;">tooltip on anchor</span>
+				</li>
+				
+				<li><a id="tt2" href="#bogus">tooltip with scrolling content</a>
+				<span dojoType="dijit.Tooltip" connectId="tt2" style="display:none;">
+				  <div style="height:200px; overflow:auto">
+				  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+				  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+				  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+				  </div>
+				</span>
+				</li>
+
+			</ul>
+
+      <a id="ttThree" href="#bogus" style="position:absolute; top:10px; right: 10px">Test C3</a>
+			<span dojoType="dijit.Tooltip" connectId="ttThree" style="display:none;">tooltip on anchor</span>
+			
+			<a id="ttFour" href="#bogus" style="position:absolute; bottom:10px; right: 10px">Test C1</a>
+			<span dojoType="dijit.Tooltip" connectId="ttFour" style="display:none;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. tooltip on anchor</span>
+
+			<a id="ttFive" href="#bogus" style="position:absolute; bottom:10px; left: 10px">Test C2</a>
+			<span dojoType="dijit.Tooltip" connectId="ttFive" style="display:none;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. tooltip on anchor</span>
+
+
+      <h4>Drop Down Dialog Tooltips (a child widget)</h4>
+
+      <div dojoType="atg.widget.form.DropDownButton">
+        <span>Show Tooltip Dialog</span>
+        <div dojoType="dijit.TooltipDialog" id="tooltipDlg" title="Enter Login information">
+  				<table>
+  					<tr>
+  						<td><label for="user">User:</label></td>
+  						<td><input dojoType=atg.widget.form.TextBox type="text" name="user" ></td>
+  					</tr>
+  					<tr>
+  						<td><label for="pwd">Password:</label></td>
+  						<td><input dojoType=atg.widget.form.TextBox type="password" name="pwd"></td>
+  					</tr>
+  					<tr>
+  						<td colspan="2" align="center">
+  							<button dojoType=atg.widget.form.Button type="submit" name="submit">Login</button>
+  					</tr>
+  				</table>
+  			</div>
+  		</div>
+  		
+  		
+  		<div style="float: right; height: 300px; width: 200px; overflow:auto; border: 5px solid black">
+  		  <h4>Tooltips in Absolutely Positioned Scrolling Content</h4>
+        
+  		  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+  		  
+  		  <a id="ttFF" href="#bogus">anchor tooltip</a>
+  			
+  			<span dojoType="dijit.Tooltip" connectId="ttFF" style="display:none;">
+  			  <div style="height:100px; overflow: auto">
+  			    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      		  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      		  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      		  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  			  </div>
+  			</span>
+  			
+  		</p>
+  		  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  		  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  		  <div dojoType="atg.widget.form.DropDownButton">
+          <span>Show Tooltip Dialog</span>
+          <div dojoType="dijit.TooltipDialog" id="tooltipDlg3" title="Enter Login information">
+    				Test Dialog
+    			</div>
+    		</div>
+  		  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  		  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  		  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  		  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  		  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  		  
+  		  
+  		</div>
+  		
+  		<h4>Known Issues (if you spot something else please email <a href="mailto:jon@mediahive.com">jon@mediahive.com</a>)</h4>
+  		<ul>
+  		  <li>Tool tip sticky out thing don't work when tooltip positions to left and below of the trigger</li>
+  		  <li>Tooltip is off screen when positioned against, absolutely positioned elements (test C1 and C2)</li>
+  		</ul>
+  		
+
+	</body>
+</html>

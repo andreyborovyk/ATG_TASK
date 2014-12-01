@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!-- ===============================================================
+=== $Id: //product/DAS/version/10.0.3/Java/atg/service/idgen/sample/sample-spaces.xml#2 $$Change: 651448 $
+=== This file provides some example id spaces. See the id generator
+=== documentation for details on how id spaces work
+================================================================ -->
+
+<!DOCTYPE idgenerator
+  PUBLIC "-//Art Technology Group, Inc.//DTD Dynamo Id Generator//EN"
+  'http://www.atg.com/dtds/idgen/idgenerator_1.0.dtd'>
+
+
+<id-spaces>
+  <!-- here is a complete example using all attributes -->
+  <id-space name="full_example"
+            seed="1"
+            batch-size="1000000"
+            prefix="pre"
+            suffix="post"
+  />
+
+  <!-- generally all you need to set are these properties -->
+  <id-space name="vanilla" seed="1" batch-size="100000"/>
+
+  <!-- ATG recommends using very large batch sizes for most objects As
+       ids are Java longs (64 bit ints), you won't run out of ids for
+       millions of years even with a batch size of 1 million and 1000
+       Dynamo restarts every day:
+
+       java_long = 9223372036854775807
+       batch_size = 1000000
+       restarts = 1000 
+       daily_burn = batch_size * restarts
+       yearly_burn = daily_burn * 365.25
+       years_left = java_long / yearly_burn
+
+       years_left /* => about 25 million years!! */
+
+       BTW, the above is a legal script you can run through the POSIX
+       tool "bc".
+
+       Nevertheless, some sites prefer to see small ids for whatever
+       reason, so here is an example of a small batch size with
+       reasonable performance
+  -->
+  <id-space name="foo" seed="1" batch-size="1000"/>
+
+  <!-- you can force ids to never have gaps this way, but every time
+       you generate an id it will require an extra DB request so this is
+       not generally recommended unless you use this id space very very
+       infrequently.
+  -->
+  <id-space name="costly_id_space" seed="0" batch-size="1" />
+
+</id-spaces>
+<!-- @version $Id: //product/DAS/version/10.0.3/Java/atg/service/idgen/sample/sample-spaces.xml#2 $$Change: 651448 $ -->

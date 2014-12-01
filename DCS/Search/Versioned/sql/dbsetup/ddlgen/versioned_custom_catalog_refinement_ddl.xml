@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This is a generated file -->
+
+<!DOCTYPE schema SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="versioned_custom_catalog_refinement_ddl" description="">
+<comment> @version $Id: //product/DCS/version/10.0.3/templates/DCS/Search/common/sql/custom_catalog_refinement_ddl.xml#2 $$Change: 651448 $</comment>
+<comment>
+This file contains create table statements, which will configure 
+your database for use with the new catalog-extended refinement repository
+</comment>
+	
+	<!-- Commerce extensions to the refine config item -->
+	
+	 <table name="dcs_refcfg_custom" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+		
+		<column name="id" nullable="n" default="" i18n="n" description="">
+			<column-type db="generic" type="varchar" length="40"/>
+		</column>
+		
+		<column name="inherit_catalog" nullable="n" default="" i18n="n" description="">
+			<column-type db="generic" type="tinyint"/>
+		</column>
+		
+		
+		
+    
+	
+			<primary-key name="dcs_rfcf_custom_p">
+			<index-column column="id" order="asc" seq="1"/>
+			 <index-column seq="2" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table>
+
+		
+	  <!-- Table which links refine configs to category-infos -->
+	
+	 <table name="dcs_catinfo_refcfg" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+		
+		
+		<column name="id" nullable="n" default="" i18n="n" description="">
+			<column-type db="generic" type="varchar" length="40"/>
+		</column>	
+
+		
+		<column name="refine_config_id" nullable="n" default="" i18n="n" description="">
+			<column-type db="generic" type="varchar" length="40"/>
+		</column>
+						
+		
+		
+		
+	
+			<primary-key name="dcs_catinf_rfcfg_p">
+			<index-column column="id" order="asc" seq="1"/>
+			 <index-column seq="2" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table>
+		
+  <!-- Table which links refine configs to catalogs -->
+	
+	 <table name="dcs_catalog_refcfg" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+		
+		<column name="id" nullable="n" default="" i18n="n" description="">
+			<column-type db="generic" type="varchar" length="40"/>
+		</column>	
+
+		
+		<column name="refine_config_id" nullable="y" default="" i18n="n" description="">
+			<column-type type="varchar" length="40" db="generic"/>
+		</column>
+						
+		
+		
+		
+	
+			<primary-key name="dcs_cata_rfcfg_p">
+			<index-column column="id" order="asc" seq="1"/>
+			 <index-column seq="2" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table>
+			
+</schema>
+<!-- @version $Id:
+//product/DCS/main/templates/DCS/Search/CustomCatalogs/common/sql/custom_catalog_refinement_ddl.xml#2 $$Change: 651448 $ -->

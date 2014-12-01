@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="StockQuote_Service"
+  targetNamespace="http://www.stockquoteserviceservice.com/StockQuoteService"
+  xmlns="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:tns="http://www.stockquoteserviceservice.com/StockQuoteService"
+  xmlns:types="http://www.stockquoteserviceservice.com/StockQuoteService/types/"
+  xmlns:interface="http://www.stockquoteserviceservice.com/StockQuoteService-interface"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+<message
+      name="IngetStockQuoteRequest">
+  <part name="companySymbol"
+    type="xsd:string"/>
+</message>
+
+<message
+      name="OutgetStockQuoteResponse">
+  <part name="stockQuote"
+    type="xsd:string"/>
+</message>
+
+
+<portType
+      name="StockQuote_Service">
+  <operation
+        name="getStockQuote">
+    <input
+        message="tns:IngetStockQuoteRequest"/>
+    <output
+    message="tns:OutgetStockQuoteResponse"/>
+  </operation>
+</portType>
+
+
+
+<binding
+    name="StockQuote_ServiceBinding"
+      type="tns:StockQuote_Service">
+  <soap:binding style="rpc"
+      transport="http://schemas.xmlsoap.org/soap/http"/>
+  <operation
+        name="getStockQuote">
+    <soap:operation
+          soapAction="urn:atg-portal-demo-stockquote"/>
+    <input>
+      <soap:body
+          encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+          namespace="urn:atg-portal-demo-stockquote"
+          use="encoded"/>
+    </input>
+    <output>
+      <soap:body
+          encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+          namespace="urn:atg-portal-demo-stockquote" use="encoded"/>
+    </output>
+  </operation>
+</binding>
+
+<service
+      name="StockQuote_Service">
+  <documentation>IBM WSTK V2.4 generated service definition file</documentation>
+  <port
+      binding="interface:StockQuote_ServiceBinding"
+        name="StockQuote_ServicePort">
+    <soap:address location="http://localhost:8840/Portal/demo/soap"/>
+  </port>
+</service>
+
+</definitions>

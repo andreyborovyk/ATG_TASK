@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE gsa-template PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN" "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<!--
+$Id: //application/SearchAdmin/version/10.0.3/customizations/src/config/atg/searchadmin/TextProcessingOptionsRepository.xml#2 $$Change: 651448 $
+$Change: 651448 $$DateTime: 2011/06/07 13:55:45 $
+-->
+
+<gsa-template>
+  <header>
+    <name>TextProcessingOptionsRepository</name>
+    <author>Andrew_Gavrushenko</author>
+  </header>
+
+  <!-- Text Processing Options Set -->
+  <item-descriptor name="textProcessingOptionsSet" default="true" content="false" folder="false" use-id-for-path="false" hidden="false" expert="false" writable="true" cache-mode="simple" id-separator=":" display-property="name">
+
+    <table name="srch_tpo_sets" type="primary" id-column-name="tpo_set_id">
+      <property name="id"           column-names="tpo_set_id"    data-type="string"     required="true"/>
+      <property name="name"         column-names="tpo_set_name"  data-type="string"     required="true"/>
+      <property name="description"  column-names="tpo_set_desc"  data-type="string"     required="false"/>
+      <property name="created"      column-names="tpo_set_created"  data-type="date"       required="false"/>
+      <property name="lastModified" column-names="tpo_set_date"  data-type="date"       required="false"/>
+      <property name="level"        column-names="tpo_set_level" data-type="enumerated" required="true">
+        <option value="index"   code="13100"/>
+        <option value="content" code="13101"/>
+        <option value="sao" code="13102"/>
+      </property>
+      <property name="projectId"    column-names="tpo_set_project_id"  data-type="string"  required="false"/>
+    </table>
+
+    <table name="srch_tpo_opts" type="multi" id-column-name="tpo_opt_set_id" multi-column-name="tpo_opt_name">
+      <property name="options" column-names="tpo_opt_id" data-type="map" component-item-type="textProcessingOptionBase" cascade="delete"/>
+    </table>
+
+  </item-descriptor>
+
+  <!-- Text Processing Option -->
+  <item-descriptor name="textProcessingOptionBase" content="false" folder="false" use-id-for-path="false" hidden="false" expert="false" writable="true" cache-mode="simple" id-separator=":" display-property="name">
+
+    <table name="srch_tpo_opts" type="primary" id-column-name="tpo_opt_id">
+      <property name="id"     column-names="tpo_opt_id"     data-type="string"                   required="true"/>
+      <property name="name"   column-names="tpo_opt_name"   data-type="string"                   required="true"/>
+      <property name="TPOSet" column-names="tpo_opt_set_id" item-type="textProcessingOptionsSet" required="true"/>
+    </table>
+
+    <table name="srch_tpo_values" type="multi" id-column-name="tpo_value_opt_id" multi-column-name="tpo_value_seq">
+      <property name="values" column-names="tpo_value_item" data-type="array" component-data-type="string" required="false"/>
+    </table>
+
+  </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //application/SearchAdmin/version/10.0.3/customizations/src/config/atg/searchadmin/TextProcessingOptionsRepository.xml#2 $$Change: 651448 $-->

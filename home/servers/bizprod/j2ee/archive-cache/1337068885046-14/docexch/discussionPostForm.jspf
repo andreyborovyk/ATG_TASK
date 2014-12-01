@@ -1,0 +1,134 @@
+<%-- 
+Page:           discussionPostForm.jspf
+Gear:           Document Exchange Gear
+gearmode:       content (the default mode)
+displayMode:    full
+
+Author:         Jeff Banister / Cynthia Harris
+Description:    This page is included by displayDoc.jsp. This is the form page for 
+                submitting a new post to a discussion about a document. 
+--%>
+
+<dsp:importbean bean="/atg/portal/gear/discussion/AddPostFormHandler"/>
+<%
+
+   String gearID=gearEnv.getGear().getId();
+
+   atg.portal.framework.ColorPalette cp = gearEnv.getPage().getColorPalette();
+   String titleBGColor = cp.getGearTitleBackgroundColor();
+   String titleTextColor = cp.getGearTitleTextColor();
+   String gearBGColor = cp.getGearBackgroundColor();
+   String gearTextColor = cp.getGearTextColor();
+   
+
+   // This code is needed to override the standard bundle set by the i18n:bundle tag.
+   String discBundleName = dexpage.getDiscResourceBundle();
+   ResourceBundle discBundle = ResourceBundle.getBundle(discBundleName);
+%>
+
+<dsp:importbean bean="/atg/userprofiling/Profile"/>
+
+<i18n:message id="messageLabel" bundle="<%= discBundle %>" key="message-label"/>
+<i18n:message id="subjectLabel"  bundle="<%= discBundle %>" key="subject-label"/>
+<i18n:message id="resetButtonLabel"  bundle="<%= discBundle %>" key="reset-button-label"/>
+<i18n:message id="submitButtonLabel"  bundle="<%= discBundle %>" key="submit-button-label"/>
+<i18n:message id="noAccessMessage" bundle="<%= discBundle %>" key="no-access-message"/>
+<i18n:message id="noAccessLink"  bundle="<%= discBundle %>" key="no-access-link"/>
+<i18n:message id="postFormInstructions"  bundle="<%= discBundle %>" key="postFormInstructions"/>
+
+
+<dsp:droplet name="/atg/dynamo/droplet/Switch">
+  <dsp:param name="value" bean="AddPostFormHandler.formError"/>
+  <dsp:oparam name="true">
+    <font class="error"><UL>
+      <dsp:droplet name="/atg/dynamo/droplet/ErrorMessageForEach">
+        <dsp:param name="exceptions" bean="AddPostFormHandler.formExceptions"/>
+        <dsp:oparam name="output">
+          <LI> <dsp:getvalueof id="errorMsg" param="message">
+          <font class="error"><b><i18n:message key="<%=(String) errorMsg%>" /></b></font>
+          </dsp:getvalueof>
+        </dsp:oparam>
+      </dsp:droplet>
+    </UL></font>
+  </dsp:oparam>
+</dsp:droplet>
+
+<core:demarcateTransaction id="discussionPostFormXA">
+
+<table CELLSPACING="0" cellpadding="2" border="0">
+
+<dsp:form  method="post" action="<%= gearEnv.getOriginalRequestURI() %>">
+
+
+<!-- need hidden vars for full gear mode -->
+<input type="hidden" name="paf_dm" value="<%=gearEnv.getDisplayMode() %>" >
+<input type="hidden" name="paf_gear_id" value="<%= gearID %>" >
+<input type="hidden" name="action" value="<%=request.getParameter("action")%>" >
+
+
+      <%-- Some extra hidden variables needed if no discussion board yet exists. --%>
+      <%
+        String boardname = dexpage.getTitle(docElement);
+        String repospath = "dynamo:" + dexpage.getRepositoryPath();
+      %>
+  <core:exclusiveIf>
+    <core:ifNull value="<%= discussionid %>">
+      <dsp:input type="hidden" bean="AddPostFormHandler.createRelatedContentForum" value="true" />
+      <dsp:input type="hidden" bean="AddPostFormHandler.forumName" value="<%= boardname %>" />
+      <dsp:input type="hidden" bean="AddPostFormHandler.forumType" value="document" />
+      <dsp:input type="hidden" bean="AddPostFormHandler.gearId" value="<%= gearID %>" />
+      <dsp:input type="hidden" bean="AddPostFormHandler.contentReposPath" value="<%=repospath%>" />
+      <dsp:input type="hidden" bean="AddPostFormHandler.itemDescriptorName" value="<%= dexpage.getItemDescriptorName() %>" />
+      <dsp:input type="hidden" bean="AddPostFormHandler.idPropertyName" value="<%= dexpage.getAnnotationRefPropertyName() %>" />
+      <dsp:input type="hidden" bean="AddPostFormHandler.contentId" value="<%= docid %>" />
+    </core:ifNull>
+    <core:defaultCase>
+      <dsp:input type="hidden" bean="AddPostFormHandler.forumID" value="<%= dexpage.getDiscussionId(docElement) %>" />
+    </core:defaultCase>
+  </core:exclusiveIf>
+
+
+
+  <%-- Set successUrl & failureUrl --%>
+  <core:CreateUrl id="viewDocURL" url="<%= gearEnv.getOriginalRequestURI() %>">
+     <core:UrlParam param="paf_dm" value="full"/>
+     <core:UrlParam param="paf_dm" value="content"/>
+     <core:UrlParam param="paf_gear_id" value="<%= gearID %>"/>
+     <core:UrlParam param="documentid" value="<%= docid %>"/>
+     <core:UrlParam param="dexmode" value="oneItem"/>
+     <dsp:input type="hidden" bean="AddPostFormHandler.successUrl" value="<%= viewDocURL.getNewUrl() %>"/>
+     <dsp:input type="hidden" bean="AddPostFormHandler.failureUrl" value="<%= viewDocURL.getNewUrl() %>"/>
+   </core:CreateUrl>
+
+<tr bgcolor="#<%=gearBGColor%>">
+  <td width="20" align="right"><font class="small" color="#<%=gearTextColor%>"><B>&nbsp;<%=subjectLabel%>:</B></font></td>
+  <td colspan="2"><dsp:input type="text" bean="AddPostFormHandler.subject" size="50" maxlength="255"/></td>
+</tr>
+
+<tr bgcolor="#<%=gearBGColor%>">
+   <td colspan="3"><font class="small" color="#<%=gearTextColor%>"><B>&nbsp;<%=messageLabel%>:</B></font></td>
+</tr>
+
+<tr bgcolor="#<%=gearBGColor%>">
+<td colspan="3">&nbsp;
+   <dsp:textarea bean="AddPostFormHandler.message" cols="60" rows="12" wrap="PHYSICAL"></dsp:textarea>
+   &nbsp;&nbsp;
+</td>
+</tr>
+
+   <tr bgcolor="#<%=gearBGColor%>">
+    <td colspan="3" align="left">&nbsp;
+        <dsp:input type="submit" value="<%= submitButtonLabel %>" bean="AddPostFormHandler.add"/>&nbsp;&nbsp;&nbsp;&nbsp;<input type="reset" value="<%=resetButtonLabel%>"></td>
+
+ </dsp:form>
+
+   </tr>
+
+   <tr bgcolor="#<%=gearBGColor%>">
+      <td colspan="3"><img src="/gear/discussion/images/clear.gif" height="3" width="1" border="0"></td>
+   </tr>
+
+</table>
+
+</core:demarcateTransaction>
+<%-- @version $Id: //app/portal/version/10.0.3/docexch/docexch.war/discussionPostForm.jspf#2 $$Change: 651448 $--%>

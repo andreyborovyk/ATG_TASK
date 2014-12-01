@@ -1,0 +1,32 @@
+<DECLAREPARAM NAME="childCategory" CLASS="java.lang.Object" DESCRIPTION="The current category to display">
+
+<a href="display_category.jhtml">
+  <param name="id" value="param:childCategory.repositoryId">
+  <valueof param="childCategory.displayName">ERROR:no category name</valueof><br>  
+</a>
+
+<java>
+// This example code snippet can be used to link to a template associated with the
+// category. If this template was used in the context of the Pioneer Cycling 
+// Store these template hrefs would jump back into the bike store, we do not want that 
+// for these example pages.For these devtest pages we have just made a simple template 
+// that all categories will use. 
+/* 
+<droplet bean="/atg/dynamo/droplet/IsNull">
+  <param name="value" value="param:childCategory.template">
+  <oparam name="true">
+      <valueof param="childCategory.displayName">ERROR:no category name</valueof>
+  </oparam>
+  <oparam name="false">
+    <a href="param:childCategory.template.url">
+      <param name="id" value="param:childCategory.repositoryId">
+      <valueof param="childCategory.displayName">ERROR:no category name</valueof>
+    </a>
+  </oparam>
+</droplet>
+<br>  
+*/
+</java>
+
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/B2CCommerce/html/sample_catalog/category_fragment.jhtml#2 $$Change: 651448 $*/</java>
+

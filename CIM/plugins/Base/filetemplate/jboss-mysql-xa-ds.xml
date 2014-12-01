@@ -1,0 +1,18 @@
+<xa-datasource>
+	<jndi-name>${jndi-name}</jndi-name>
+	<xa-datasource-class>${driver-class}</xa-datasource-class>
+	<xa-datasource-property name="URL">${url}</xa-datasource-property>
+	<xa-datasource-property name="User">${username}</xa-datasource-property>
+	<xa-datasource-property name="Password">${password}</xa-datasource-property>
+	<track-connection-by-tx>true</track-connection-by-tx>
+	<exception-sorter-class-name>
+		org.jboss.resource.adapter.jdbc.vendor.MySQLExceptionSorter
+	</exception-sorter-class-name>
+	<new-connection-sql>set autocommit=1</new-connection-sql>
+	<no-tx-separate-pools>true</no-tx-separate-pools>
+	<isSameRM-override-value>false</isSameRM-override-value>
+	<metadata>
+		<type-mapping>mySQL</type-mapping>
+	</metadata>
+</xa-datasource>
+<!-- @version $Id: //product/CIM/version/10.0.3/plugins/Base/filetemplate/jboss-mysql-xa-ds.xml#2 $$Change: 651448 $-->

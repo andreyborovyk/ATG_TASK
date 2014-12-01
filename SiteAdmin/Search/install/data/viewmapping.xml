@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE gsa-template SYSTEM "dynamosystemresource:/atg/dtds/gsa/gsa_1.0.dtd">
+<gsa-template>
+<import-items>
+
+<!-- ===================================================== -->	
+<!-- === BASE SITE CONFIGURATION TEMPLATE ITEM MAPPING === -->
+<!-- ===================================================== -->
+
+<!-- ============================================================================ -->
+<!-- This item mapping will be used when a template hasn't been chosen yet, the   -->
+<!-- only property it includes is siteTemplate. Its main purpose is to allow the  -->
+<!-- template selector to be shown in the UI. It is also used to display all      -->
+<!-- properties when the siteConfiguration item has no template value set.	  -->
+<!-- ============================================================================ -->
+<!-- Custom SiteAdmin Search property service -->
+<add-item item-descriptor="propertyViewAttributeDefinition" id="SaPvadSearchContentsAssetPropertyService">
+  <set-property name="defaultValue"><![CDATA[/atg/remote/multisite/search/service/SearchContentsAssetPropertyService]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyView" id="SaPvSiteCntnt">
+  <set-property name="name"><![CDATA[SiteAdmin Search Content propertyView]]></set-property>
+  <set-property name="description"><![CDATA[SiteAdmin Search Content propertyView]]></set-property>
+  <set-property name="mode"><![CDATA[AmMmDef]]></set-property>
+  <set-property name="type"><![CDATA[map]]></set-property>
+  <set-property name="viewComponent"><![CDATA[atg.multisite.editor.view.property.SearchContentsEditor]]></set-property>
+  <set-property name="isComponentPropertyView"><![CDATA[false]]></set-property>
+  <set-property name="isDefault"><![CDATA[false]]></set-property>
+  <set-property name="attributes"><![CDATA[customAssetPropertyService=SaPvadSearchContentsAssetPropertyService]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewMapping" id="SaPvmSiteCntnt">
+  <set-property name="description"><![CDATA[SiteAdmin Search Content view mapping]]></set-property>
+  <set-property name="propertyView"><![CDATA[SaPvSiteCntnt]]></set-property>
+</add-item>
+
+</import-items>
+
+<update-item item-descriptor="itemViewMapping" id="SaIvmSiteDefaultCategory">
+  <set-property name="propertyMappings" add="true"><![CDATA[searchContents=SaPvmSiteCntnt]]></set-property>
+</update-item>
+
+</gsa-template>
+<!-- @version $Id: //product/SiteAdmin/version/10.0.3/Search/src/install/data/viewmapping.xml#1 $$Change: 651360 $ -->

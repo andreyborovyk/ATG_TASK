@@ -1,0 +1,283 @@
+<importbean bean="/atg/dynamo/droplet/Switch">
+<importbean bean="/atg/dynamo/droplet/IsNull">
+<importbean bean="/atg/commerce/ShoppingCart">
+<importbean bean="/atg/commerce/order/ShoppingCartModifier">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/commerce/pricing/UserPricingModels">
+<importbean bean="/atg/commerce/pricing/AvailableShippingMethods">
+<importbean bean="/atg/userprofiling/Profile">
+<setvalue bean="Profile.currentLocation" value="checkout">
+<html>
+<head>
+<title>Purchase Information</title>
+</head>
+
+<body>
+<a href="index.jhtml">Catalog Home</a> - 
+<a href="product_search.jhtml">Product Search</a> - 
+<a href="shoppingcart.jhtml">Shopping Cart</a> - 
+<a href="lists.jhtml">My Lists</a> - 
+<a href="comparison.jhtml">Product Comparison</a> -
+<a href="giftlist_search.jhtml">Gift List Search</a> - 
+<droplet bean="/atg/dynamo/droplet/Switch">
+  <param name="value" value="bean:/atg/userprofiling/Profile.transient">
+  <oparam name="false">
+    <a href="logout.jhtml">Logout</a>
+  </oparam>
+  <oparam name="true">
+    <a href="login.jhtml">Login</a> or <a href="register.jhtml">Register</a>
+  </oparam>
+</droplet>
+<BR>
+<i>location: <valueof bean="Profile.currentLocation"></valueof></i>
+
+<droplet name="/atg/dynamo/droplet/Switch">
+<param name="value" value="bean:ShoppingCartModifier.formError">
+<oparam name="true">
+  <font color=cc0000><STRONG><UL>
+    <droplet name="/atg/dynamo/droplet/ErrorMessageForEach">
+      <param name="exceptions" value="bean:ShoppingCartModifier.formExceptions">
+      <oparam name="output">
+	<LI> <valueof param="message"></valueof>
+      </oparam>
+    </droplet>
+    </UL></STRONG></font>
+</oparam>
+</droplet>
+
+<form action="purchase_info.jhtml" method="post">
+<input type="hidden" bean="ShoppingCartModifier.moveToConfirmationSuccessURL" value="order_confirmation.jhtml">
+<input type="hidden" bean="ShoppingCartModifier.SessionExpirationURL" value="session_expired.jhtml">
+
+<!-- Since we want to allow anonymous users to be able to checkout, we're not
+going to require approval of anyone. The approval processor that determines this
+validation relies on the Profile.approvalRequired property for this information.
+See /atg/commerce/approval/processor/CheckProfileApprovalRequirements for more information. -->
+<input type="hidden" bean="Profile.approvalRequired" value="false">
+
+<strong>Purchase Information</strong>
+
+<table>
+<tr><td colspan=20><i>Shipping Information</i></td></tr>
+
+<tr>
+<td>
+<table>
+
+<tr>
+<td>Shipping Method</td>
+<td>
+<table>
+<tr>
+<td>
+<droplet bean="AvailableShippingMethods">
+<param name="shippingGroup" value="bean:ShoppingCartModifier.shippingGroup">
+<oparam name="output">
+<select bean="ShoppingCartModifier.shippingGroup.shippingMethod">
+<droplet bean="ForEach">
+  <param name="array" value="param:availableShippingMethods">
+  <param name="elementName" value="method">
+  <oparam name="output">
+  <option value="param:method"><valueof param="method"></valueof>
+  </oparam>
+</droplet>
+</select>
+</oparam>
+</droplet>
+</td>
+
+<td colspan=20>
+<droplet bean="IsNull">
+<param name="value" value="bean:ShoppingCartModifier.shippingGroup.specialInstructions.allowPartialShipment">
+<oparam name="true">
+<droplet bean="Switch">
+<param name="value" value="bean:Profile.allowPartialShipment">
+<oparam name="true">
+<input type=checkbox checked bean="ShoppingCartModifier.shippingGroup.specialInstructions.allowPartialShipment" value="true"> Allow Partial Shipments
+</oparam>
+<oparam name="false">
+<input type=checkbox bean="ShoppingCartModifier.shippingGroup.specialInstructions.allowPartialShipment" value="true"> Allow Partial Shipments
+</oparam>
+</droplet>
+</oparam>
+<oparam name="false">
+<input type=checkbox bean="ShoppingCartModifier.shippingGroup.specialInstructions.allowPartialShipment"> Allow Partial Shipments
+</oparam>
+</droplet>
+<BR>
+<i>(<a href="allow_partial.jhtml"><param name="returnURL" value="purchase_info.jhtml">
+change profile setting</a>)</i>
+
+</td>
+</tr>
+</table>
+</td>
+</tr>
+
+<tr>
+<td>First Name:</td><td><input type=text bean="ShoppingCartModifier.shippingGroup.shippingAddress.firstName" value="bean:Profile.firstName" size=30></td>
+</tr>
+<tr>
+<td>Middle Name:</td><td><input type=text bean="ShoppingCartModifier.shippingGroup.shippingAddress.middleName" value="bean:Profile.middleName" size=30></td>
+</tr>
+<tr>
+<td>Last Name:</td><td><input type=text bean="ShoppingCartModifier.shippingGroup.shippingAddress.lastName" value="bean:Profile.lastName" size=30></td>
+</tr>
+<tr>
+<td>Email Address:</td><td><input type=text required bean="ShoppingCartModifier.shippingGroup.shippingAddress.email"  value="bean:Profile.email" size=30></td>
+</tr>
+<tr>
+<td>Phone Number:</td><td><input type=text bean="ShoppingCartModifier.shippingGroup.shippingAddress.phoneNumber" value="bean:Profile.daytimeTelephoneNumber" size=10></td>
+</tr>
+</table>
+</td>
+
+<td>
+<table>
+<tr>
+<td>Address:</td><td><input type=text bean="ShoppingCartModifier.shippingGroup.shippingAddress.address1" value="bean:Profile.defaultShippingAddress.address1" size=30></td>
+</tr>
+<tr>
+<td>Address (line 2):</td><td><input type=text bean="ShoppingCartModifier.shippingGroup.shippingAddress.address2" value="bean:Profile.defaultShippingAddress.address2" size=30></td>
+</tr>
+<tr>
+<td>City:</td><td><input type=text required bean="ShoppingCartModifier.shippingGroup.shippingAddress.city" value="bean:Profile.defaultShippingAddress.city" size=30></td>
+</tr>
+<tr>
+<td>State:</td><td><input type=text required bean="ShoppingCartModifier.shippingGroup.shippingAddress.state" value="bean:Profile.defaultShippingAddress.state" size=2 maxsize=2></td>
+</tr>
+<tr>
+<td>Postal Code:</td><td><input type=text required bean="ShoppingCartModifier.shippingGroup.shippingAddress.postalCode" value="bean:Profile.defaultShippingAddress.postalCode" size=10></td>
+</tr>
+<tr>
+<td>Country:</td><td><input type=text bean="ShoppingCartModifier.shippingGroup.shippingAddress.country" value="bean:Profile.defaultShippingAddress.country" size=10></td>
+</tr>
+</table>
+</td>
+</tr>
+
+<tr>
+<td colspan=20><i>Payment Information</i></td></tr>
+</td>
+</tr>
+
+<tr>
+<td>
+<table>
+<tr>
+<td>First Name:</td><td><input type=text required bean="ShoppingCartModifier.paymentGroup.billingAddress.firstName" value="bean:Profile.firstName" size=30></td>
+</tr>
+<tr>
+<td>Middle Name:</td><td><input type=text bean="ShoppingCartModifier.paymentGroup.billingAddress.middleName" value="bean:Profile.middleName" size=30></td>
+</tr>
+<tr>
+<td>Last Name:</td><td><input type=text required bean="ShoppingCartModifier.paymentGroup.billingAddress.lastName" value="bean:Profile.lastName" size=30></td>
+</tr>
+<tr>
+<td>Email Address:</td><td><input type=text required bean="ShoppingCartModifier.paymentGroup.billingAddress.email" value="bean:Profile.email" size=30></td>
+</tr>
+<tr>
+<td>Phone Number:</td><td><input type=text bean="ShoppingCartModifier.paymentGroup.billingAddress.phoneNumber" value="bean:Profile.daytimeTelephoneNumber" size=10></td>
+</tr>
+
+<tr>
+<td>Credit Card Type:</td>
+<td><select required bean="ShoppingCartModifier.paymentGroup.creditCardType">
+<option value="Visa">Visa
+<option value="MasterCard">Master Card
+<option value="americanExpress">American Express
+<option value="Discover">Discover
+</select>
+</td>
+</tr>
+
+<tr>
+<td>
+Number:</td><td><input type=text required bean="ShoppingCartModifier.paymentGroup.creditCardNumber" size=20 maxsize=20 value="4111111111111111">
+</td>
+</tr>
+<tr>
+<td>Expiration Date:</td>
+<td>
+Month: <select bean="ShoppingCartModifier.paymentGroup.expirationMonth">
+<option value="1">January
+<option value="2">February
+<option value="3">March
+<option value="4">April
+<option value="5">May
+<option value="6">June
+<option value="7">July
+<option value="8">August
+<option value="9">September
+<option value="10">October
+<option value="11">November
+<option value="12">December
+</select>
+Year: <select bean="ShoppingCartModifier.paymentGroup.expirationYear">
+<option value="2001">2001
+<option value="2002">2002
+<option value="2003">2003
+<option value="2004">2004
+<option value="2005">2005
+<option value="2006">2006
+<option value="2007">2007
+<option value="2008">2008
+<option value="2009">2009
+<option value="2010">2010
+</select>
+</td>
+</tr>
+
+<tr>
+<td><input type="submit" bean="ShoppingCartModifier.moveToConfirmation" value="Confirm Order"></td>
+</tr>
+
+</table>
+</td>
+
+<td>
+<table>
+<tr>
+<td>Address:</td><td><input type=text required bean="ShoppingCartModifier.paymentGroup.billingAddress.address1" value="bean:Profile.defaultBillingAddress.address1" size=30></td>
+</tr>
+<tr>
+<td>Address (line 2):</td><td><input type=text bean="ShoppingCartModifier.paymentGroup.billingAddress.address2" value="bean:Profile.defaultBillingAddress.address2" size=30></td>
+</tr>
+<tr>
+<td>City:</td><td><input type=text required bean="ShoppingCartModifier.paymentGroup.billingAddress.city" value="bean:Profile.defaultBillingAddress.city" size=30></td>
+</tr>
+<tr>
+<td>State:</td><td><input type=text required bean="ShoppingCartModifier.paymentGroup.billingAddress.state" value="bean:Profile.defaultBillingAddress.state" size=2 maxsize=2></td>
+</tr>
+<tr>
+<td>Postal Code:</td><td><input type=text required bean="ShoppingCartModifier.paymentGroup.billingAddress.postalCode" value="bean:Profile.defaultBillingAddress.postalCode" size=10></td>
+</tr>
+<tr>
+<td>Country:</td><td><input type=text bean="ShoppingCartModifier.paymentGroup.billingAddress.country" value="bean:Profile.defaultBillingAddress.country" size=10></td>
+</tr>
+
+<tr>
+<td>
+</td>
+</tr>
+
+</table>
+</td>
+</tr>
+
+<tr>
+<td>
+<table>
+
+</table>
+</td>
+</tr>
+
+</table>
+
+
+
+</form>
+</body>
+</html>
+<java>/* @version $Id: //product/B2BCommerce/version/10.0.3/release/B2BCommerce/html/sample_catalog/purchase_info.jhtml#2 $$Change: 651448 $*/</java>

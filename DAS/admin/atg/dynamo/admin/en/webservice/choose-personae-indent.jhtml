@@ -1,0 +1,32 @@
+
+<declareparam name="pricipals"> 
+<declareparam name="title"> 
+<declareparam name="principalsInfo"> 
+
+<nucleus type=import>
+  /atg/dynamo/droplet/ForEach
+  /atg/webservice/security/NucleusAccessControlFormHandler
+  /atg/dynamo/droplet/Switch
+</nucleus>
+
+<droplet name="Switch">
+  <param name="value" value="param:title">
+  <oparam name=""></oparam>
+  <param name="unset" value="">
+  <oparam name="default">
+   <P><B><valueof param="indent" valueishtml="true"/><valueof param="title">?</valueof></B><BR>
+  </oparam>
+</droplet>
+
+
+
+<droplet name="ForEach">
+  <param name="array" value="param:principals">
+  <oparam name="output">
+     <valueof param="param:element.indentStrings.&nbsp;&nbsp;&nbsp;" valueishtml="true"/><input type="checkbox" value="param:element.persona.name" bean="NucleusAccessControlFormHandler.personaIDs"><valueof param="element.name">???</valueof><BR>
+  </oparam>
+  <oparam name="empty">
+     <valueof param="param:element.indentStrings.&nbsp;&nbsp;&nbsp;" valueishtml="true"/>(none)<BR>
+  </oparam>
+</droplet>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/webservice/choose-personae-indent.jhtml#2 $$Change: 651448 $*/</java>

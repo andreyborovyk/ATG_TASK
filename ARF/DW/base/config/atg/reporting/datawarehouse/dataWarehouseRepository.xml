@@ -1,0 +1,755 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE gsa-template
+        PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN"
+        "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template>
+  <header>
+    <name>Data Warehouse Repository</name>
+  </header>
+
+  <item-descriptor name="currency" display-property="nameEn">
+    <attribute name="BasicsPriority" value="10"/>
+    <attribute name="InfoPriority" value="20"/>
+    <table name="ARF_CURRENCY" id-column-name="ID" type="primary">
+      <property name="id" column-name="ID" data-type="short" required="true" category="Info">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="name" column-name="CURRENCY_NAME" data-type="string" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="nameEn" column-name="CURRENCY_NAME_EN" data-type="string" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="ISO4217Alpha3Code" column-name="ISO4217_ALPHA3" data-type="string" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="ISO4217Num3Code" column-name="ISO4217_NUM3" data-type="int" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="startDate" column-name="RECORD_START_DATE" data-type="timestamp" required="false" category="Info">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="endDate" column-name="RECORD_END_DATE" data-type="timestamp" required="false" category="Info">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="segment" display-property="name" id-space-name="arf_segment">
+    <attribute name="BasicsPriority" value="10"/>
+    <attribute name="InfoPriority" value="20"/>
+    <attribute name="naturalKey" value="segmentId"/>
+    <table name="ARF_SEGMENT" id-column-name="ID" type="primary">
+      <property name="id" column-name="ID" data-type="short" required="true" category="Info">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="segmentId" column-name="NSEGMENT_ID" data-type="string" required="true" category="Info">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="name" column-name="SEGMENT_NAME" data-type="string" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="description" column-name="SEGMENT_DESC" data-type="string" required="false" category="Basics">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="lastUpdate" column-name="RECORD_LAST_UPDATE" data-type="timestamp" required="false" category="Info">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+      <property name="startDate" column-name="RECORD_START_DATE" data-type="timestamp" required="false" category="Info">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="endDate" column-name="RECORD_END_DATE" data-type="timestamp" required="false" category="Info">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="mostRecent" column-name="MOST_RECENT" data-type="boolean" required="true" category="Info">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property name="deleted" column-name="DELETED" data-type="boolean" required="true" category="Info">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+    </table>
+    <table name="ARF_SEGCLSTR_MBRS" type="multi" id-column-name="SEGMENT_ID">
+      <property name="clusters" column-name="SEGCLSTR_ID" data-type="set" component-item-type="segmentCluster"
+          required="false" writable="true" category="Basics">
+        <attribute name="propertySortPriority" value="30"/>
+        <attribute name="uiwriteable" value="true"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="segmentCluster" display-property="name" id-space-name="arf_segclstr">
+    <attribute name="BasicsPriority" value="10"/>
+    <attribute name="InfoPriority" value="20"/>
+    <table name="ARF_SEGCLSTR" id-column-name="ID" type="primary">
+      <property name="id" column-name="ID" data-type="int" required="true" category="Info">
+      </property>
+      <property name="name" column-name="NAME" data-type="string" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="hashValue" column-name="HASH_VALUE" data-type="string" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="length" column-name="LENGTH" data-type="int" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+    <table name="ARF_SEGCLSTR_MBRS" type="multi" id-column-name="SEGCLSTR_ID">
+      <property name="segments" column-name="SEGMENT_ID" data-type="set" component-item-type="segment"
+          required="false" writable="true" category="Basics">
+        <attribute name="propertySortPriority" value="30"/>
+        <attribute name="uiwriteable" value="true"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="stimulus" display-property="name" id-space-name="arf_stimulus">
+    <attribute name="BasicsPriority" value="10"/>
+    <attribute name="InfoPriority" value="20"/>
+    <attribute name="naturalKey" value="stimulusId"/>
+    <table name="ARF_STIMULUS" id-column-name="ID" type="primary">
+      <property name="id" column-name="ID" data-type="int" required="true" category="Info">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="stimulusId" column-name="NSTIMULUS_ID" data-type="string" required="true" category="Info">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="name" column-name="STIMULUS_NAME" data-type="string" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="description" column-name="STIMULUS_DESC" data-type="string" required="false" category="Basics">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="type" column-name="STIMULUS_TYPE" data-type="string" required="false" category="Basics">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="lastUpdate" column-name="RECORD_LAST_UPDATE" data-type="timestamp" required="false" category="Info">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+      <property name="startDate" column-name="RECORD_START_DATE" data-type="timestamp" required="false" category="Info">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="endDate" column-name="RECORD_END_DATE" data-type="timestamp" required="false" category="Info">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="mostRecent" column-name="MOST_RECENT" data-type="boolean" required="true" category="Info">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property name="deleted" column-name="DELETED" data-type="boolean" required="true" category="Info">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+    </table>
+    <table name="ARF_STIMGRP_MBRS" type="multi" id-column-name="STIMULUS_ID">
+      <property name="groups" column-name="STIMGRP_ID" data-type="set" component-item-type="stimulusGroup"
+          required="false" writable="true" category="Basics" >
+        <attribute name="propertySortPriority" value="40"/>
+        <attribute name="uiwriteable" value="true"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="stimulusGroup" display-property="name" id-space-name="arf_stimgrp">
+    <attribute name="BasicsPriority" value="10"/>
+    <attribute name="InfoPriority" value="20"/>
+    <table name="ARF_STIMGRP" id-column-name="ID" type="primary">
+      <property name="id" column-name="ID" data-type="int" required="true" category="Info">
+      </property>
+      <property name="name" column-name="NAME" data-type="string" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="hashValue" column-name="HASH_VALUE" data-type="string" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="length" column-name="LENGTH" data-type="int" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+    <table name="ARF_STIMGRP_MBRS" type="multi" id-column-name="STIMGRP_ID">
+      <property name="stimuli" column-name="STIMULUS_ID" data-type="set" component-item-type="stimulus"
+          required="false" writable="true" category="Basics">
+        <attribute name="propertySortPriority" value="40"/>
+        <attribute name="uiwriteable" value="true"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="maritalStatus" display-property="nameEn">
+    <attribute name="BasicsPriority" value="10"/>
+    <attribute name="InfoPriority" value="20"/>
+    <table name="ARF_MARITAL_STATUS" id-column-name="ID" type="primary">
+      <property name="id" column-name="ID" data-type="short" required="true" category="Info">
+      </property>
+      <property name="name" column-name="MARITAL_STATUS_NAME" data-type="string" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="nameEn" column-name="MARITAL_STATUS_NAME_EN" data-type="string" required="false" category="Basics">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="country" display-property="nameEn">
+    <attribute name="BasicsPriority" value="10"/>
+    <attribute name="InfoPriority" value="20"/>
+    <table name="ARF_GEO_COUNTRY" id-column-name="ID" type="primary">
+      <property name="id" column-name="ID" data-type="short" required="true" category="Info">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="name" column-name="COUNTRY_NAME" data-type="string" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="nameEn" column-name="COUNTRY_NAME_EN" data-type="string" required="false" category="Basics">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="ISO3166_1Alpha2Code" column-name="ISO3166_1_ALPHA2" data-type="string" required="false" category="Basics">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="ISO3166_1Alpha3Code" column-name="ISO3166_1_ALPHA3" data-type="string" required="false" category="Basics">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="ISO3166_1Num3Code" column-name="ISO3166_1_NUM3" data-type="string" required="false" category="Basics">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property name="FIPS10_4Code" column-name="FIPS10_4_CODE" data-type="string" required="false" category="Basics">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property name="startDate" column-name="RECORD_START_DATE" data-type="timestamp" required="false" category="Info">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="endDate" column-name="RECORD_END_DATE" data-type="timestamp" required="false" category="Info">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="ageGroup" display-property="nameEn">
+    <attribute name="BasicsPriority" value="10"/>
+    <attribute name="InfoPriority" value="20"/>
+    <table name="ARF_AGE_GROUP" id-column-name="ID" type="primary">
+      <property name="id" column-name="ID" data-type="short" required="true" category="Info">
+      </property>
+      <property name="name" column-name="AGE_GROUP_NAME" data-type="string" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="nameEn" column-name="AGE_GROUP_NAME_EN" data-type="string" required="false" category="Basics">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="ageMin" column-name="AGE_MIN" data-type="byte" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="ageMax" column-name="AGE_MAX" data-type="byte" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="demographic">
+    <attribute name="BasicsPriority" value="10"/>
+    <attribute name="InfoPriority" value="20"/>
+    <table name="ARF_DEMOGRAPHIC" id-column-name="ID" type="primary">
+      <property name="id" column-name="ID" data-type="short" required="true" category="Info">
+      </property>
+      <property name="gender" column-name="GENDER_ID" item-type="gender" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="ageGroup" column-name="AGE_GROUP_ID" item-type="ageGroup" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="maritalStatus" column-name="MARITAL_STATUS_ID" item-type="maritalStatus" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="region" column-name="REGION_ID" item-type="region" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="region" display-property="nameEn">
+    <attribute name="BasicsPriority" value="10"/>
+    <attribute name="InfoPriority" value="20"/>
+    <table name="ARF_GEO_REGION" id-column-name="ID" type="primary">
+      <property name="id" column-name="ID" data-type="short" required="true" category="Info">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="country" column-name="COUNTRY_ID" item-type="country" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="name" column-name="REGION_NAME" data-type="string" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="nameEn" column-name="REGION_NAME_EN" data-type="string" required="false" category="Basics">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="ISO3166_2Code" column-name="ISO3166_2_CODE" data-type="string" required="false" category="Basics">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="FIPS10_4Code" column-name="FIPS10_4_CODE" data-type="string" required="false" category="Basics">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property name="startDate" column-name="RECORD_START_DATE" data-type="timestamp" required="false" category="Info">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="endDate" column-name="RECORD_END_DATE" data-type="timestamp" required="false" category="Info">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="gender" display-property="nameEn">
+    <attribute name="BasicsPriority" value="10"/>
+    <attribute name="InfoPriority" value="20"/>
+    <table name="ARF_GENDER" id-column-name="ID" type="primary">
+      <property name="id" column-name="ID" data-type="short" required="true" category="Info">
+      </property>
+      <property name="name" column-name="GENDER_NAME" data-type="string" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="nameEn" column-name="GENDER_NAME_EN" data-type="string" required="false" category="Basics">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="language" display-property="nameEn">
+    <attribute name="BasicsPriority" value="10"/>
+    <attribute name="InfoPriority" value="20"/>
+    <table name="ARF_LANGUAGE" id-column-name="ID" type="primary">
+      <property name="id" column-name="ID" data-type="short" required="true" category="Info">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="name" column-name="LANG_NAME" data-type="string" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="nameEn" column-name="LANG_NAME_EN" data-type="string" required="false"  category="Basics">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="ISO639_1Alpha2Code" column-name="ISO639_1_ALPHA2" data-type="string" required="false"  category="Basics">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="ISO639_2Alpha3Code" column-name="ISO639_2_ALPHA3" data-type="string" required="true"  category="Basics">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="startDate" column-name="RECORD_START_DATE" data-type="timestamp" required="false" category="Info">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="endDate" column-name="RECORD_END_DATE" data-type="timestamp" required="false" category="Info">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="organization" display-property="name" id-space-name="arf_organization">
+    <attribute name="BasicsPriority" value="10"/>
+    <attribute name="InfoPriority" value="20"/>
+    <attribute name="naturalKey" value="organizationId"/>
+    <table name="ARF_ORGANIZATION" id-column-names="ID" type="primary">
+      <property name="id" column-name="ID" data-type="int" required="true" category="Info">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="organizationId" column-name="NORGANIZATION_ID" data-type="string" required="true" category="Info">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="parentOrganization" column-name="PARENT_ORG_ID" item-type="organization" required="false" category="Info">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="name" column-name="NAME" data-type="string" required="true" default="Unknown" category="Basics">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="description" column-name="DESCRIPTION" data-type="string" required="false" category="Basics">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="lastUpdate" column-name="RECORD_LAST_UPDATE" data-type="timestamp" required="false" category="Info">
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+      <property name="startDate" column-name="RECORD_START_DATE" data-type="timestamp" required="false" category="Info">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="endDate" column-name="RECORD_END_DATE" data-type="timestamp" required="false" category="Info">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property name="mostRecent" column-name="MOST_RECENT" data-type="boolean" required="true" category="Info">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property name="deleted" column-name="DELETED" data-type="boolean" required="true" default="false" category="Info">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="user" display-property="login" id-space-name="arf_user">
+    <attribute name="LoginPriority" value="10"/>
+    <attribute name="BasicsPriority" value="20"/>
+    <attribute name="EmailPriority" value="30"/>
+    <attribute name="InfoPriority" value="40"/>
+    <attribute name="naturalKey" value="userId"/>
+    <table name="ARF_USER" id-column-name="ID" type="primary">
+      <property name="id" column-name="ID" data-type="int" required="true" category="Info">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="userId" column-name="NUSER_ID" data-type="string" required="true" category="Info">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="login" column-name="LOGIN" data-type="string" required="true" default="Unknown" category="Login">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="firstName" column-name="FIRST_NAME" data-type="string" required="false" category="Basics">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="middleName" column-name="MIDDLE_NAME" data-type="string" required="false" category="Basics">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="lastName" column-name="LAST_NAME" data-type="string" required="false" category="Basics">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="email" column-name="EMAIL" data-type="string" required="false" category="Email">
+      </property>
+      <property name="dateOfBirth" column-name="DATE_OF_BIRTH" data-type="date" required="false" category="Basics">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property name="language" column-name="LANG_ID" item-type="language" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property name="gender" column-name="GENDER_ID" item-type="gender" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="homeRegion" column-name="HOME_REGION_ID" item-type="region" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+      <property name="maritalStatus" column-name="MARITAL_STATUS_ID" item-type="maritalStatus" required="true" category="Basics">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="lastUpdate" column-name="RECORD_LAST_UPDATE" data-type="timestamp" required="false" category="Info">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+      <property name="startDate" column-name="RECORD_START_DATE" data-type="timestamp" required="false" category="Info">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="endDate" column-name="RECORD_END_DATE" data-type="timestamp" required="false" category="Info">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="mostRecent" column-name="MOST_RECENT" data-type="boolean" required="true" category="Info">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property name="deleted" column-name="DELETED" data-type="boolean" required="true" default="false" category="Info">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property name="organization" column-name="ORGANIZATION_ID" item-type="organization" required="true" default="0" category="Info">
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+    </table>
+    <property name="age" data-type="int" writable="false" property-type="atg.repository.dp.TimeIntervalPropertyDescriptor" >
+        <attribute name="timeStampInterval" value="year"/>
+        <attribute name="datePropertyName1" value="dateOfBirth"/>
+     </property>
+   </item-descriptor>
+
+
+   <item-descriptor name="site" display-property="name" id-space-name="arf_site">
+    <attribute name="naturalKey" value="siteId"/>
+    <table name="ARF_SITE" id-column-name="ID" type="primary">
+      <property name="id" column-name="ID" data-type="short" required="true"></property>
+      <property name="siteId" column-name="NSITE_ID" data-type="string" required="true"></property>
+      <property name="name" column-name="NAME" data-type="string" required="true" default="Unknown"></property>
+      <property name="nameEn" column-name="NAME_EN" data-type="string" required="false"></property>
+      <property name="description" column-name="DESCRIPTION" data-type="string" required="false"></property>
+      <property name="descriptionEn" column-name="DESCRIPTION_EN" data-type="string" required="false"></property>
+      <property name="homePage" column-name="HOME_PAGE" data-type="string" required="false"></property>
+      <property name="launchDate" column-name="LAUNCH_DATE" data-type="timestamp" required="false"></property>
+      <property name="closeDate" column-name="CLOSE_DATE" data-type="timestamp" required="false"></property>
+      <property name="enabled" column-name="ENABLED" data-type="boolean" required="true" default="false"></property>
+      <property name="currencyName" column-name="CURRENCY_NAME" data-type="string" required="false"></property>
+      <property name="currencyAlpha3Code" column-name="CURRENCY_ALPHA3" data-type="string" required="false"></property>
+      <property name="languageName" column-name="LANGUAGE_NAME" data-type="string" required="false"></property>
+      <property name="languageAlpha2Code" column-name="LANGUAGE_ALPHA2" data-type="string" required="false"></property>
+      <property name="languageAlpha3Code" column-name="LANGUAGE_ALPHA3" data-type="string" required="false"></property>
+      <property name="defaultCatalogName" column-name="DEFAULT_CATALOG_NAME" data-type="string" required="false"></property>
+      <property name="lastUpdate" column-name="RECORD_LAST_UPDATE" data-type="timestamp" required="false"></property>
+      <property name="startDate" column-name="RECORD_START_DATE" data-type="timestamp" required="false"></property>
+      <property name="endDate" column-name="RECORD_END_DATE" data-type="timestamp" required="false"></property>
+      <property name="mostRecent" column-name="MOST_RECENT" data-type="boolean" required="true"></property>
+      <property name="deleted" column-name="DELETED" data-type="boolean" required="true" default="false"></property>  
+    </table>
+   </item-descriptor>
+
+
+   <item-descriptor name="userAgent" display-property="agentName" id-space-name="arf_user_agent">
+    <attribute name="naturalKey" value="userAgent"/>
+    <table name="ARF_USER_AGENT" id-column-name="ID" type="primary">
+      <property name="id" column-name="ID" data-type="short" required="true"></property>
+      <property name="userAgent" column-name="USER_AGENT" data-type="string" required="true"></property>
+      <property name="agentName" column-name="AGENT_NAME" data-type="string" required="true"></property>
+      <property name="agentDescription" column-name="AGENT_DESCRIPTION" data-type="string" required="false"></property>
+      <property name="browserName" column-name="BROWSER_NAME" data-type="string" required="true"></property>
+      <property name="browserVersion" column-name="BROWSER_VERSION" data-type="string" required="true"></property>
+      <property name="operatingSystemName" column-name="OPERATINGSYSTEM_NAME" data-type="string" required="true"></property>
+      <property name="operatingSystemVersion" column-name="OPERATINGSYSTEM_VERSION" data-type="string" required="true"></property>
+      <property name="operatingSystemArchitecture" column-name="OPERATINGSYSTEM_ARCHITECTURE" data-type="string" required="true"></property>
+      <property name="platformName" column-name="PLATFORM_NAME" data-type="string" required="true"></property>
+      <property name="security" column-name="SECURITY" data-type="string" required="true"></property>
+      <property name="compatibleFlag" column-name="COMPATIBLE_FLAG" data-type="boolean" required="true"></property>
+      <property name="geckoFlag" column-name="GECKO_FLAG" data-type="boolean" required="true"></property>
+      <property name="robot" column-name="IS_ROBOT" data-type="boolean" required="true"></property>
+      <property name="browser" column-name="IS_BROWSER" data-type="boolean" required="true"></property>
+      <property name="lastUpdate" column-name="RECORD_LAST_UPDATE" data-type="timestamp" required="false"></property>
+      <property name="startDate" column-name="RECORD_START_DATE" data-type="timestamp" required="false"></property>
+      <property name="endDate" column-name="RECORD_END_DATE" data-type="timestamp" required="false"></property>
+    </table>
+   </item-descriptor>
+
+ <item-descriptor name="referrer" display-property="referrerURL" id-space-name="arf_referrer">
+    <attribute name="naturalKey" value="referrerURL"/>
+    <table name="ARF_REFERRER" id-column-name="ID" type="primary">
+      <property name="id" column-name="ID" data-type="short" required="true"></property>
+      <property name="referrerURL" column-name="REFERRER_URL" data-type="string" required="true"></property>
+      <property name="referrerSiteName" column-name="REFERRER_SITE_NAME" data-type="string" required="true"></property>
+      <property name="referrerSiteDescription" column-name="REFERRER_SITE_DESCRIPTION" data-type="string" required="false"></property>
+      <property name="referrerURLScheme" column-name="REFERRER_URL_SCHEME" data-type="string" required="true"></property>
+      <property name="referrerURLHost" column-name="REFERRER_URL_HOST" data-type="string" required="true"></property>
+      <property name="referrerURLDomain" column-name="REFERRER_URL_DOMAIN" data-type="string" required="true"></property>
+      <property name="referrerURLDomainType" column-name="REFERRER_URL_DOMAIN_TYPE" data-type="string" required="true"></property>
+      <property name="referrerURLPath" column-name="REFERRER_URL_PATH" data-type="string" required="true"></property>
+      <property name="searchEngine" column-name="IS_SEARCH_ENGINE" data-type="boolean" required="true"></property>
+      <property name="lastUpdate" column-name="RECORD_LAST_UPDATE" data-type="timestamp" required="false"></property>
+      <property name="startDate" column-name="RECORD_START_DATE" data-type="timestamp" required="false"></property>
+      <property name="endDate" column-name="RECORD_END_DATE" data-type="timestamp" required="false"></property>
+    </table>
+   </item-descriptor>
+
+
+  <item-descriptor name="siteVisit" id-space-name="arf_site_visit">
+    <attribute name="BasicsPriority" value="10"/>
+    <attribute name="InfoPriority" value="20"/>
+    <table name="ARF_SITE_VISIT" id-column-name="SITE_VISIT_ID" type="primary">
+      <property name="id" column-name="SITE_VISIT_ID" data-type="long" required="true" category="Info">
+      </property>
+      <property name="startTimestamp" column-name="START_TIMESTAMP" data-type="timestamp" required="false" category="Info">
+        <attribute name="propertySortPriority" value="25"/>
+      </property>
+      <property name="startDay" column-name="START_DAY_ID" item-type="ARF_TIME_DAY" required="true" category="Info">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="startTime" column-name="START_TIME_ID" item-type="ARF_TIME_TOD" required="true" category="Info">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="endDay" column-name="END_DAY_ID" item-type="ARF_TIME_DAY" required="true" category="Info">
+        <attribute name="propertySortPriority" value="35"/>
+      </property>
+      <property name="endTime" column-name="END_TIME_ID" item-type="ARF_TIME_TOD" required="true" category="Info">
+        <attribute name="propertySortPriority" value="45"/>
+      </property>
+      <property name="startVisitTimestamp" column-name="START_VISIT_TIMESTAMP" data-type="timestamp" required="false" category="Info">
+        <attribute name="propertySortPriority" value="87"/>
+      </property>
+      <property name="siteVisitStartDay" column-name="SITE_VISIT_START_DAY_ID" item-type="ARF_TIME_DAY" required="true" category="Info">
+        <attribute name="propertySortPriority" value="90"/>
+      </property>
+      <property name="siteVisitStartTime" column-name="SITE_VISIT_START_TIME_ID" item-type="ARF_TIME_TOD" required="true" category="Info">
+        <attribute name="propertySortPriority" value="100"/>
+      </property>
+      <property name="siteVisitEndDay" column-name="SITE_VISIT_END_DAY_ID" item-type="ARF_TIME_DAY" required="true" category="Info">
+        <attribute name="propertySortPriority" value="110"/>
+      </property>
+      <property name="siteVisitEndTime" column-name="SITE_VISIT_END_TIME_ID" item-type="ARF_TIME_TOD" required="true" category="Info">
+        <attribute name="propertySortPriority" value="120"/>
+      </property>
+      <property name="visitEndDay" column-name="VISIT_END_DAY_ID" item-type="ARF_TIME_DAY" required="true" category="Info">
+        <attribute name="propertySortPriority" value="130"/>
+      </property>
+      <property name="visitEndTime" column-name="VISIT_END_TIME_ID" item-type="ARF_TIME_TOD" required="true" category="Info">
+        <attribute name="propertySortPriority" value="140"/>
+      </property>
+      <property name="visitor" column-name="VISITOR_ID" item-type="user" required="true" category="Info">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="visitorId" column-name="NVISITOR_ID" data-type="string" required="false" category="Info">
+        <attribute name="propertySortPriority" value="25"/>
+      </property>
+      <property name="stimulusGroup" column-name="STIMGRP_ID" item-type="stimulusGroup" required="true" category="Info">
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+      <property name="demographic" column-name="DEMOGRAPHIC_ID" item-type="demographic" required="true" category="Info">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+      <property name="site" column-name="SITE_ID" item-type="site" required="true" category="Info">
+        <attribute name="propertySortPriority" value="150"/>
+      </property>
+      <property name="entrySite" column-name="ENTRY_SITE_ID" item-type="site" required="true" category="Info">
+        <attribute name="propertySortPriority" value="160"/>
+      </property>
+      <property name="exitSite" column-name="EXIT_SITE_ID" item-type="site" required="true" category="Info">
+        <attribute name="propertySortPriority" value="170"/>
+      </property>
+      <property name="referringSite" column-name="REFERRING_SITE_ID" item-type="site" required="true" category="Info">
+        <attribute name="propertySortPriority" value="180"/>
+      </property>
+      <property name="sequence" column-name="SEQUENCE_NUM" data-type="short" required="true" category="Info">
+        <attribute name="propertySortPriority" value="190"/>
+      </property>
+      <property name="userAgent" column-name="USER_AGENT_ID" item-type="userAgent" required="true" category="Info">
+        <attribute name="propertySortPriority" value="200"/>
+      </property>
+      <property name="referrer" column-name="REFERRER_ID" item-type="referrer" required="true" category="Info">
+        <attribute name="propertySortPriority" value="210"/>
+      </property>
+      <property name="sessionId" column-name="SESSION_ID" data-type="string" required="true" category="Info">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="pageViews" column-name="NUM_PAGE_VIEWS" data-type="short" required="true" category="Info">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property name="duration" column-name="DURATION_SECONDS" data-type="int" required="true" category="Info">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property name="resourceDuration" column-name="RESOURCE_DURATION_SECONDS" data-type="int" required="true" category="Info">
+        <attribute name="propertySortPriority" value="220"/>
+      </property>
+      <property name="siteVisitDuration" column-name="SITE_VISIT_DURATION_SECONDS" data-type="int" required="true" category="Info">
+        <attribute name="propertySortPriority" value="230"/>
+      </property>
+      <property name="totalElapsedDuration" column-name="TOTAL_ELAPSED_DURATION_SECONDS" data-type="int" required="true" category="Info">
+        <attribute name="propertySortPriority" value="240"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="registration" id-space-name="arf_registration">
+    <table name="ARF_REGISTRATION" id-column-name="REGISTRATION_ID" type="primary">
+      <property name="id" column-name="REGISTRATION_ID" data-type="int"
+required="true"></property>
+      <property name="registrationTimestamp" column-name="REGISTRATION_TIMESTAMP" data-type="timestamp" required="false"/>
+      <property name="registrationDay" column-name="REGISTRATION_DAY_ID" item-type="ARF_TIME_DAY" required="true"></property>
+      <property name="registrationTime" column-name="REGISTRATION_TIME_ID" item-type="ARF_TIME_TOD" required="true"></property>
+      <property name="registrant" column-name="REGISTRANT_ID" item-type="user" required="true"></property>
+      <property name="stimulusGroup" column-name="STIMGRP_ID" item-type="stimulusGroup" required="true"></property>
+      <property name="segmentCluster" column-name="SEGCLSTR_ID" item-type="segmentCluster" required="true"></property>
+      <property name="demographic" column-name="DEMOGRAPHIC_ID" item-type="demographic" required="true"></property>
+      <property name="site" column-name="SITE_ID" item-type="site" required="true"></property>
+      <property name="siteVisit" column-name="SITE_VISIT_ID" item-type="siteVisit" required="true"></property>
+      <property name="sessionId" column-name="SESSION_ID" data-type="string" required="false"></property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="ARF_IU_USER">
+    <table name="ARF_IU_USER" id-column-name="ID" type="primary">
+      <property name="ID" column-name="ID" data-type="string" required="true"></property>
+      <property name="USER_ID" column-name="USER_ID" data-type="string" required="true"></property>
+      <property name="LOGIN" column-name="LOGIN" data-type="string" required="true"></property>
+      <property name="FIRST_NAME" column-name="FIRST_NAME" data-type="string" required="false"></property>
+      <property name="LAST_NAME" column-name="LAST_NAME" data-type="string" required="false"></property>
+      <property name="PARENT_ORG_ID" column-name="PARENT_ORG_ID" data-type="string" required="false"></property>
+      <property name="DIR_LVL_ID" column-name="DIR_LVL_ID" data-type="string" required="true"></property>
+      <property name="LAST_UPDATED" column-name="LAST_UPDATED" data-type="timestamp" required="true"></property>
+      <property name="DELETED" column-name="DELETED" data-type="boolean" required="true"></property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="ARF_IU_ORG">
+    <table name="ARF_IU_ORG" id-column-name="ID" type="primary">
+      <property name="ID" column-name="ID" data-type="string" required="true"></property>
+      <property name="ORG_ID" column-name="ORG_ID" data-type="string" required="true"></property>
+      <property name="NAME_EN" column-name="NAME_EN" data-type="string" required="true"></property>
+      <property name="DESCRIPTION_EN" column-name="DESCRIPTION_EN" data-type="string" required="false"></property>
+      <property name="PARENT_ORG_ID" column-name="PARENT_ORG_ID" data-type="string" required="false"></property>
+      <property name="DIR_LVL_ID" column-name="DIR_LVL_ID" data-type="string" required="true"></property>
+      <property name="LAST_UPDATED" column-name="LAST_UPDATED" data-type="timestamp" required="true"></property>
+      <property name="DELETED" column-name="DELETED" data-type="boolean" required="true"></property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="ARF_IU_DIR_LVL">
+    <table name="ARF_IU_DIR_LVL" id-column-name="ID" type="primary">
+      <property name="ID" column-name="ID" data-type="string" required="true"></property>
+      <property name="NAME_EN" column-name="NAME_EN" data-type="string" required="true"></property>
+      <property name="DPTH" column-name="DPTH" data-type="int" required="true"></property>
+      <property name="PARENT_ID" column-name="PARENT_ID" data-type="string" required="false"></property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="questionType" id-space-name="arf_question_type">
+    <table name="ARF_QUESTION_TYPE" type="primary" id-column-name="ID">
+      <property name="id" column-name="ID" data-type="short" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="name" column-names="NAME" data-type="string" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="nameEn" column-names="NAME_EN" data-type="string" required="false">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="questionTypeGroup" id-space-name="arf_question_type_group">
+    <table name="ARF_QUESTION_TYPE_GROUP" type="primary" id-column-names="ID">
+      <property name="id" column-name="ID" data-type="int" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="name" data-type="string" column-names="NAME" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="hashValue" data-type="string" column-names="HASH_VALUE" required="true">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="length" data-type="int" column-names="LENGTH" required="true">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+
+    <table name="ARF_QUESTION_TYPE_GROUP_MBRS" type="multi" id-column-name="QUESTION_TYPE_GROUP_ID">
+      <property name="questionTypes" column-name="QUESTION_TYPE_ID" data-type="set" component-item-type="questionType"
+          required="false" writable="true">
+        <attribute name="uiwriteable" value="true"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="numberTerm" id-space-name="arf_search_number">
+    <table name="ARF_SEARCH_NUMBER" type="primary" id-column-names="ID">
+      <property name="id" column-name="ID" data-type="int" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="quantity" data-type="string" column-names="QUANTITY" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="numberTermGroup" id-space-name="arf_search_number_group">
+    <table name="ARF_SEARCH_NUMBER_GROUP" type="primary" id-column-names="ID">
+      <property name="id" column-name="ID" data-type="int" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="name" data-type="string" column-names="NAME" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="hashValue" data-type="string" column-names="HASH_VALUE" required="true">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="length" data-type="int" column-names="LENGTH" required="true">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+
+    <table name="ARF_SEARCH_NUMBER_GROUP_MBRS" type="multi" id-column-name="SEARCH_NUMBER_GROUP_ID">
+      <property name="numbers" column-name="SEARCH_NUMBER_ID" data-type="set" component-item-type="numberTerm"
+          required="false" writable="true">
+        <attribute name="uiwriteable" value="true"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="question" id-space-name="arf_question">
+    <table name="ARF_QUESTION" type="primary" id-column-name="ID">
+      <property name="id" column-name="ID" data-type="int" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="normalizedQuestion" column-name="NORMAL_QUESTION" data-type="string" required="true"/>
+      <property name="question" column-name="QUESTION" data-type="string" required="true"/>
+      <property name="questionTypeGroup" column-name="QUESTION_TYPE_GROUP_ID" item-type="questionTypeGroup" required="true"/>
+      <property name="wordCount" column-name="WORD_COUNT" data-type="short" required="true"/>
+      <property name="numberTermGroup" column-name="QUESTION_NUMBER_GROUP_ID" item-type="numberTermGroup" required="true"/>
+    </table>
+  </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //product/ARF/version/10.0.3/ARF/DW/base/config/atg/reporting/datawarehouse/dataWarehouseRepository.xml#2 $$Change: 651448 $-->

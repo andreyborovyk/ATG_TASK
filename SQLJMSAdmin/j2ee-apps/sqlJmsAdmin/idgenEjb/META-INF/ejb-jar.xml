@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE ejb-jar PUBLIC '-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 1.1//EN' 'http://java.sun.com/j2ee/dtds/ejb-jar_1_1.dtd'>
+
+<ejb-jar>
+  <description>Id Generator</description>
+  <display-name>IdGenerator</display-name>  
+
+  <enterprise-beans>
+    
+    <session>
+      <ejb-name>IdGenerator</ejb-name>
+      <home>atg.j2ee.idgen.IdGeneratorHome</home>
+      <remote>atg.j2ee.idgen.IdGenerator</remote>
+      <ejb-class>atg.j2ee.idgen.IdGeneratorEJB</ejb-class>
+      <session-type>Stateless</session-type>
+      <transaction-type>Container</transaction-type>
+
+      <resource-ref>
+        <description>JDBC Connection Data Source</description>
+	<res-ref-name>jdbc/datasource</res-ref-name>
+	<res-type>javax.sql.DataSource</res-type>
+	<res-auth>Application</res-auth>
+      </resource-ref>      
+    </session>
+    
+  </enterprise-beans>
+
+  <assembly-descriptor>
+    <container-transaction>
+      <method>
+        <ejb-name>IdGenerator</ejb-name>
+	<method-name>*</method-name>
+      </method>
+      <trans-attribute>RequiresNew</trans-attribute>
+    </container-transaction>
+  </assembly-descriptor>
+</ejb-jar>
+<!-- @version $Id: //product/DAS/version/10.0.3/release/SQLJMSAdmin/j2ee-apps/sqlJmsAdmin/idgenEjb/META-INF/ejb-jar.xml#2 $$Change: 651448 $ -->

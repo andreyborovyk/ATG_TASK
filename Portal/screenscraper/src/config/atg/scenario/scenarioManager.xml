@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE process-manager-configuration
+        PUBLIC "-//Art Technology Group, Inc.//DTD Process Manager//EN"
+        'http://www.atg.com/dtds/processmanager/processmanager_1.0.dtd'>
+
+<!-- Scenario manager customization file that illustrates custom actions and
+     scenario grammar extensions. -->
+     
+<process-manager-configuration>
+
+  <!-- Add a custom scenario grammar extension file. -->
+  <grammar-registry>
+    <grammar-extension-file>atg.portal.gear.screenscraper.screenscraper-expression-grammar</grammar-extension-file>
+  </grammar-registry>
+
+  <!-- Add all new JMS messages to the event registry -->
+  <event-registry>
+    <event>
+      <jms-type>
+        atg.portal.gear.screenscraper.SharedModeURLChangedMessage
+      </jms-type>
+      <message-class>
+        atg.portal.gear.screenscraper.SharedModeURLChangedMessage
+      </message-class>
+      <message-context>
+        session
+      </message-context>
+      <message-scope>
+        individual
+      </message-scope>
+      <display-name-resource>
+        sharedUrlChangedName
+      </display-name-resource>
+      <description-resource>
+        sharedUrlChangedDescription
+      </description-resource>
+      <resource-bundle>
+        atg.portal.gear.screenscraper.ScreenScraperMessageSystemResources
+      </resource-bundle>
+    </event>
+
+    <event>
+      <jms-type>
+        atg.portal.gear.screenscraper.FullModeURLChangedMessage
+      </jms-type>
+      <message-class>
+        atg.portal.gear.screenscraper.FullModeURLChangedMessage
+      </message-class>
+      <message-context>
+        session
+      </message-context>
+      <message-scope>
+        individual
+      </message-scope>
+      <display-name-resource>
+        fullUrlChangedName
+      </display-name-resource>
+      <description-resource>
+        fullUrlChangedDescription
+      </description-resource>
+      <resource-bundle>
+        atg.portal.gear.screenscraper.ScreenScraperMessageSystemResources
+      </resource-bundle>
+    </event>
+  </event-registry>
+
+</process-manager-configuration>
+<!-- @version $Id: //app/portal/version/10.0.3/screenscraper/config/atg/scenario/scenarioManager.xml#2 $$Change: 651448 $ -->

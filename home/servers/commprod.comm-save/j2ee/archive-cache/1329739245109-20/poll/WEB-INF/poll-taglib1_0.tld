@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE taglib
+	PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.1//EN"
+	"http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_1.dtd">
+
+<taglib>
+  <tlibversion>1.0</tlibversion>
+  <jspversion>1.1</jspversion>
+  <shortname>poll</shortname>
+  <uri></uri>
+
+  <info>The tag library containing the Portal Poll Gear tags</info>
+
+  <!-- getPollTag -->
+  <tag>
+    <name>getPoll</name>
+    <tagclass>atg.portal.gear.poll.taglib.GetPollTag</tagclass>
+    <teiclass>atg.portal.gear.poll.taglib.GetPollTEI</teiclass>
+    <bodycontent>JSP</bodycontent>
+    <info>
+      Tag used to get the poll for a given gear ID
+    </info>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    
+    <attribute>
+      <name>pollId</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>gearId</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- GetAllPolls Tag-->
+  <tag>
+    <name>getAllPolls</name>
+    <tagclass>atg.portal.gear.poll.taglib.GetAllPollsTag</tagclass>
+    <teiclass>atg.portal.gear.poll.taglib.GetAllPollsTEI</teiclass>
+    <bodycontent>JSP</bodycontent>
+    <info>
+      Tag used to get a list of all available polls
+    </info>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+  </tag>  
+
+  <!-- setGearPoll Tag-->
+  <tag>
+    <name>setGearPoll</name>
+    <tagclass>atg.portal.gear.poll.taglib.SetGearPollTag</tagclass>
+    <teiclass>atg.portal.gear.poll.taglib.SetGearPollTEI</teiclass>
+    <bodycontent>JSP</bodycontent>
+    <info>
+      Tag used to create or update a gear/poll association record
+    </info>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>gearId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>pollId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+  </tag>  
+
+
+  <!-- deleteResponse Tag-->
+  <tag>
+    <name>deleteResponse</name>
+    <tagclass>atg.portal.gear.poll.taglib.DeleteResponseTag</tagclass>
+    <teiclass>atg.portal.gear.poll.taglib.DeleteResponseTEI</teiclass>
+    <bodycontent>JSP</bodycontent>
+    <info>
+      Tag used to delete a pollResponse item
+    </info>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>responseId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+  </tag>  
+
+  <!-- deletePoll Tag-->
+  <tag>
+    <name>deletePoll</name>
+    <tagclass>atg.portal.gear.poll.taglib.DeletePollTag</tagclass>
+    <teiclass>atg.portal.gear.poll.taglib.DeletePollTEI</teiclass>
+    <bodycontent>JSP</bodycontent>
+    <info>
+      Tag used to delete a pollitem
+    </info>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>pollId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+  </tag>  
+
+  <!-- clearPollResults Tag-->
+  <tag>
+    <name>clearPollResults</name>
+    <tagclass>atg.portal.gear.poll.taglib.ClearPollResultsTag</tagclass>
+    <teiclass>atg.portal.gear.poll.taglib.ClearPollResultsTEI</teiclass>
+    <bodycontent>JSP</bodycontent>
+    <info>
+      Tag used to clear all counts for a given poll
+    </info>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>pollId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+  </tag>  
+
+</taglib>

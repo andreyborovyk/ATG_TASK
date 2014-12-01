@@ -1,0 +1,36 @@
+proc atgCreateURLProvider {cellName} {
+
+#--------------------------------------------------------------
+# set up globals
+#--------------------------------------------------------------
+global AdminConfig
+
+# name="dynamosystemresource"
+# description="ATG URL Provider"
+# streamHandlerClassName="atg.net.www.protocol.dynamosystemresource.Handler" 
+# protocol="dynamosystemresource"
+puts "Working on cell $cellName"
+set cell [$AdminConfig  getid  /Cell:$cellName]
+set name [list name "dynamosystemresource"]
+set shcn [list streamHandlerClassName "atg.net.www.protocol.dynamosystemresource.Handler"]
+set protocol [list protocol "dynamosystemresource"]
+set urlpAttrs [list $name $shcn $protocol]
+$AdminConfig create URLProvider $cell $urlpAttrs
+$AdminConfig save
+puts "Saved configuration for cell $cellName"
+}
+
+#-----------------------------------------------------------------
+# Main
+#-----------------------------------------------------------------
+if { ($argc < 1) } {
+   puts "atgURLProvider: This script requires at least one cell name."
+   puts "Found $argc arguments: $argv"
+   puts "e.g.: atgURLProvider <cell name one> <cell name two> ..." 
+} else { 
+   foreach name $argv {
+     set cellName $name
+     puts "Processing cell $cellName"
+     atgCreateURLProvider $cellName
+   }
+}

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE gsa-template
+        PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN"
+        "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template>
+
+  <header>
+    <name>Default Portal Membership Repository</name>
+    <author>PAF Team</author>
+    <version>$Id: //app/portal/version/10.0.3/paf/config/framework/atg/portal/framework/membershipRepository.xml#2 $$Change: 651448 $</version>
+  </header>
+
+  <!-- ===================================================================== -->
+  <!-- membershipRequest                                                     -->
+  <!-- ===================================================================== -->
+  <item-descriptor name="membershipRequest" display-name-resource="itemDescriptorMembershipRequests" version-property="internalVersion">
+    <attribute name="resourceBundle" value="atg.portal.framework.PortalRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="mem_membership_req" id-column-name="id" type="primary">
+      <property category-resource="categoryInfo" name="internalVersion" display-name-resource="internalVersion" data-type="int" column-name="internal_version" writable="false" queryable="false">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="user" display-name-resource="user" item-type="user" repository="/atg/userprofiling/ProfileAdapterRepository" column-name="user_id" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="communityId" display-name-resource="communityId" data-type="string" column-name="community_id" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryBasics" name="requestType" display-name-resource="requestType" column-name="request_type" data-type="enumerated" required="true">
+        <attribute name="useCodeForValue" value="false"/>
+        <option value="subscribe" code="0"/>
+        <option value="unsubscribe" code="1"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryInfo" name="creationDate" display-name-resource="creationDate"  data-type="timestamp" column-name="creation_date" writable="false">
+        <attribute name="useNowForDefault" value="true"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //app/portal/version/10.0.3/paf/config/framework/atg/portal/framework/membershipRepository.xml#2 $$Change: 651448 $ -->

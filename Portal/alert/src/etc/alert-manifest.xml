@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE portal-manifest PUBLIC "-//Art Technology Group, Inc.//DTD Portal Manifest//EN" "http://www.atg.com/dtds/portal/framework/portal_manifest_1.0.dtd">
+
+<portal-manifest name="Alert Gear" version="1.0" author="ATG Portal Team">
+  <gear-definitions>
+    <gear-definition name="Alert" version="1.0" author="ATG Portal Team">
+      <description>Displays alerts for a specific user.</description>
+
+      <servlet-context>/gear/alert</servlet-context>
+
+      <dimensions>
+        <dimension name="height">noPreference</dimension>
+        <dimension name="width">narrow</dimension>
+      </dimensions>
+
+      <gear-modes>
+
+        <gear-mode name="content">
+          <display-modes>
+            <display-mode name="full">
+              <device-output name="html">
+                /html/alertFull.jsp
+              </device-output>
+            </display-mode>
+            <display-mode name="shared">
+              <device-output name="html">
+                /html/alertShared.jsp
+              </device-output>
+            </display-mode>
+          </display-modes>
+        </gear-mode>
+
+       <gear-mode name="instanceConfig">
+          <display-modes>
+            <display-mode name="full">
+              <device-output name="html">
+                /html/admin/instanceConfig.jsp
+              </device-output>
+            </display-mode>
+          </display-modes>
+        </gear-mode>
+
+      </gear-modes>       
+
+      
+
+      <instance-parameters>
+        <parameter name="sharedDisplayCount"  >
+          <default-value>5</default-value>
+          <description>The number of entries to show in the shared view</description>
+        </parameter>
+
+        <parameter name="aggregatedCommunityEnabled"  >
+          <default-value>false</default-value>
+          <description>Enable cross community selection of alerts.  Setting this value to false will only select alerts from the current community.</description>
+        </parameter>
+
+        <parameter name="communityEnabled"  >
+          <default-value>true</default-value>
+          <description>The default setting for showing alerts of this type.</description>
+        </parameter>
+
+        <parameter name="roleEnabled"  >
+          <default-value>false</default-value>
+          <description>The default setting for showing alerts of this type.</description>
+        </parameter>
+
+        <parameter name="organizationEnabled"  >
+          <default-value>false</default-value>
+          <description>The default setting for showing alerts of this type.</description>
+        </parameter>
+
+        <parameter name="userEnabled"  >
+          <default-value>false</default-value>
+          <description>The default setting for showing alerts of this type.</description>
+        </parameter>
+      </instance-parameters>
+
+      <user-parameters>
+        <parameter name="sharedDisplayCount"  >
+          <default-value>5</default-value>
+        </parameter>
+      </user-parameters>
+
+    </gear-definition>
+  </gear-definitions>
+</portal-manifest>
+<!-- @version $Id: //app/portal/version/10.0.3/alert/etc/alert-manifest.xml#2 $$Change: 651448 $ -->

@@ -1,0 +1,74 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="b2b_auth_cc_ddl">
+<comment><![CDATA[ @version $Id: //product/B2BCommerce/version/10.0.3/templates/MotorpriseJSP/sql/b2b_auth_cc_ddl.xml#2 $$Change: 651448 $]]></comment>
+   <table name="b2b_auth_pmnt">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="cc_auth" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="invoice_auth" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="store_crdt_auth" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="gift_crt_auth" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <primary-key name="b2b_auth_pmnt_p">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="b2b_athpmntid_f" referenced-table="dps_user">
+         <fkey-column referencing-column="id" referenced-column="id"/>
+      </foreign-key>
+      <check name="b2b_auth_pmnt1_c">
+         <check-expr expression="cc_auth in (0,1)" db="generic"/>
+      </check>
+      <check name="b2b_auth_pmnt2_c">
+         <check-expr expression="invoice_auth in (0,1)" db="generic"/>
+      </check>
+      <check name="b2b_auth_pmnt3_c">
+         <check-expr expression="store_crdt_auth in (0,1)" db="generic"/>
+      </check>
+      <check name="b2b_auth_pmnt4_c">
+         <check-expr expression="gift_crt_auth in (0,1)" db="generic"/>
+      </check>
+   </table>
+   <table name="b2b_credit_card">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="cc_first_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <column name="cc_middle_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <column name="cc_last_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <primary-key name="b2b_credit_card_p">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="b2b_credtcrdid_f" referenced-table="dps_credit_card">
+         <fkey-column referencing-column="id" referenced-column="id"/>
+      </foreign-key>
+      <index name="b2b_crcdba_idx" table="b2b_credit_card">
+         <index-column column="cc_last_name" order="asc" seq="1"/>
+      </index>
+   </table>
+</schema>
+<!-- @version $Id: //product/B2BCommerce/version/10.0.3/templates/MotorpriseJSP/sql/b2b_auth_cc_ddl.xml#2 $$Change: 651448 $ -->

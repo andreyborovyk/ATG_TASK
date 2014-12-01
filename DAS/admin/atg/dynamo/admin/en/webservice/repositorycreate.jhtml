@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+    <title>Create Repository Web Service: Select Repository Component</title>
+  </head>
+
+<java type="import">
+atg.repository.*
+</java>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+<IMG SRC="../images/admin-banner.gif" 
+     ALT="Dynamo Administration" 
+     ALIGN=TOP 
+     WIDTH="585" 
+     HEIGHT="37" 
+     BORDER="0">
+<p>
+ <a href="/">
+  admin
+ </a> / 
+ <a href="index.jhtml">
+  Web Service Administration
+ </a> / 
+ <a href="selecttype.jhtml">
+  Create Web Service
+ </a> /
+ Repository Web Service
+</p>
+
+<p>
+<java>
+// Checks for the repositoryComponent parameter. If this is the first
+// time the page is hit, then we do nothing. If this is a form action,
+// then we check to see if the repositoryComponent parameter resolves
+// to a valid repository object
+String repositoryComponent = request.getParameter("repositoryComponent");
+Object repository = null;
+
+if("null".equals(repositoryComponent) || repositoryComponent == null) {
+  // This is the first time we're here, so do nothing
+  request.setParameter("repositoryComponent", null);
+  repositoryComponent = null;
+}
+else {
+  // Check to see if the repository is valid
+  if(repositoryComponent.length() == 0) 
+    // No path entered found
+    out.println("<font color=\"red\">No path entered</font>");
+  else {
+    repository = request.resolveName(repositoryComponent);
+    if(repository == null) {
+      // No component found
+      out.println("<font color=\"red\">No component at path " + 
+  	repositoryComponent + "</font>");
+    }
+    else {
+      if(repository != null) {
+        if(!(repository instanceof Repository)) {
+          // Component found is not a Repository
+          out.println("<font color=\"red\">Component at path " + 
+  	      repositoryComponent +
+	      " is not a Repository</font>");
+        }
+        else {
+          // Otherwise, everything is cool, and we redirect to the next page
+          request.addQueryParameter("repositoryPath", repositoryComponent);
+          response.sendLocalRedirect
+	    (request.encodeURL("choosedescriptor.jhtml"), request);
+        }
+      }
+    }
+  }
+}
+</java>
+
+<h2>Create Repository Web Service</h2>
+<h1>Select Repository Component</h1>
+
+<P>
+Specify the Repository to expose as a web service by 
+entering the path name of the Repository component or
+by choosing a registered repository
+<P>
+
+<ul>
+ Enter a repository path name:
+ <!-- 
+  redirect back to here, so the java code at the top can validate the 
+  submittal 
+ -->
+ <form action="repositorycreate.jhtml">
+  <input name="repositoryComponent" type="text" 
+	 value="param:repositoryComponent" size=50/>
+  <input value="Submit" type="submit"/>
+ </form>
+ 
+ Or choose from the following registered content repositories
+ <p>
+  <ul>
+  <droplet name="/atg/dynamo/droplet/ForEach">
+    <param name="array" 
+	   value="bean:/atg/registry/ContentRepositories.initialRepositories">
+    <oparam name="output">
+      <li>
+        <a href="repositorycreate.jhtml">
+          <param name="repositoryComponent" value="param:element.absoluteName">
+          <valueof param="element.absoluteName"></valueof>
+        </a>
+      </li>
+    </oparam>
+  </droplet>
+  </ul>
+
+</ul>
+</BODY>
+</html>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/webservice/repositorycreate.jhtml#2 $$Change: 651448 $*/</java>

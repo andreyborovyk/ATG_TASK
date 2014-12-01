@@ -1,0 +1,635 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This is a generated file -->
+
+<!DOCTYPE schema SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="versioned_promotion_ddl" description="">
+<comment> @version $Id: //product/DCS/version/10.0.3/templates/DCS/sql/promotion_ddl.xml#3 $$Change: 655658 $</comment>
+
+<comment>
+Add the DCS_PRM_FOLDER table, promotionFolder
+</comment>
+  
+	 <table name="dcs_prm_folder" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="the id of the workspace that the asset exists on" nullable="n" name="workspace_id">
+				 <column-type length="40" type="varchar" db="generic"/>
+			</column>
+			<column description="the id of the branch that the asset exists on" nullable="n" name="branch_id">
+				 <column-type length="40" type="varchar" db="generic"/>
+			</column>
+			<column description="is this version the head of branch" nullable="n" name="is_head">
+				 <column-type type="one-digit" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="flag indicating that the version is deleted" nullable="n" name="version_deleted">
+				 <column-type length="1" type="numeric" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="flag indicating that version is editable" nullable="n" name="version_editable">
+				 <column-type length="1" type="numeric" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="the predecessor version number" nullable="y" name="pred_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="date the asset was checked in if not a working version" nullable="y" name="checkin_date">
+				 <column-type type="datetime" db="generic"/>
+				 <column-type type="timestamp" db="oracle"/>
+			</column>
+
+			<!-- Data Columns -->
+    
+    <column name="folder_id" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+    <column name="name" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+    <column name="parent_folder" nullable="y" default="" i18n="n" description="">
+       <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+    
+    
+  
+			<primary-key name="dcs_prm_folder_p">
+      <index-column column="folder_id" order="asc" seq="1"/>
+    	 <index-column seq="2" order="asc" column="asset_version"/>
+			</primary-key>
+			<index table="dcs_prm_folder" name="dcs_prm_folder_wsx">
+				 <index-column seq="1" order="asc" column="workspace_id"/>
+			</index>
+			<index table="dcs_prm_folder" name="dcs_prm_folder_cix">
+				 <index-column seq="1" order="asc" column="checkin_date"/>
+			</index>
+	 </table>
+  
+   
+	 <table name="dcs_promotion" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="the id of the workspace that the asset exists on" nullable="n" name="workspace_id">
+				 <column-type length="40" type="varchar" db="generic"/>
+			</column>
+			<column description="the id of the branch that the asset exists on" nullable="n" name="branch_id">
+				 <column-type length="40" type="varchar" db="generic"/>
+			</column>
+			<column description="is this version the head of branch" nullable="n" name="is_head">
+				 <column-type type="one-digit" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="flag indicating that the version is deleted" nullable="n" name="version_deleted">
+				 <column-type length="1" type="numeric" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="flag indicating that version is editable" nullable="n" name="version_editable">
+				 <column-type length="1" type="numeric" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="the predecessor version number" nullable="y" name="pred_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="date the asset was checked in if not a working version" nullable="y" name="checkin_date">
+				 <column-type type="datetime" db="generic"/>
+				 <column-type type="timestamp" db="oracle"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="promotion_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="creation_date" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="start_date" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="end_date" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="display_name" nullable="y" i18n="y" default="" description="">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="description" nullable="y" i18n="y" default="" description="">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="promotion_type" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="enabled" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint"/>
+         <column-type db="sybase" type="tinyint"/>
+      </column>
+      <column name="begin_usable" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="end_usable" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="priority" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="global" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint"/>
+         <column-type db="sybase" type="tinyint"/>
+      </column>
+      <column name="anon_profile" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint"/>
+         <column-type db="sybase" type="tinyint"/>
+      </column>
+      <column name="allow_multiple" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint"/>
+         <column-type db="sybase" type="tinyint"/>
+      </column>
+      <column name="uses" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="rel_expiration" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint"/>
+         <column-type db="sybase" type="tinyint"/>
+      </column>
+      <column name="time_until_expire" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="template" nullable="y" i18n="n" default="" description="">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+         <column name="ui_access_lvl" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="parent_folder" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="last_modified" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="timestamp"/>
+      </column>
+      <column name="pmdl_version" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+	  <column name="qualifier" nullable="y" i18n="n" default="" description="">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+   
+			<primary-key name="dcs_promotion_p">
+         <index-column column="promotion_id" order="asc" seq="1"/>
+      	 <index-column seq="2" order="asc" column="asset_version"/>
+			</primary-key>
+			<check name="dcs_promotion1_c" description="">
+         <check-expr expression="enabled in (0,1)" db="generic"/>
+      </check>
+			<check name="dcs_promotion2_c" description="">
+         <check-expr expression="global in (0,1)" db="generic"/>
+      </check>
+			<check name="dcs_promotion3_c" description="">
+         <check-expr expression="anon_profile in (0,1)" db="generic"/>
+      </check>
+			<check name="dcs_promotion4_c" description="">
+         <check-expr expression="allow_multiple in (0,1)" db="generic"/>
+      </check>
+			<check name="dcs_promotion5_c" description="">
+         <check-expr expression="rel_expiration in (0,1)" db="generic"/>
+      </check>
+			<index name="prmo_bgin_use_idx" table="dcs_promotion" description="">
+         <index-column column="begin_usable" order="asc" seq="1"/>
+      </index>
+			<index name="prmo_end_dte_idx" table="dcs_promotion" description="">
+         <index-column column="end_date" order="asc" seq="1"/>
+      </index>
+			<index name="prmo_end_use_idx" table="dcs_promotion" description="">
+         <index-column column="end_usable" order="asc" seq="1"/>
+      </index>
+			<index name="prmo_strt_dte_idx" table="dcs_promotion" description="">
+         <index-column column="start_date" order="asc" seq="1"/>
+      </index>
+			<index table="dcs_promotion" name="dcs_promotion_wsx">
+				 <index-column seq="1" order="asc" column="workspace_id"/>
+			</index>
+			<index table="dcs_promotion" name="dcs_promotion_cix">
+				 <index-column seq="1" order="asc" column="checkin_date"/>
+			</index>
+	 </table>
+   
+	 <table name="dcs_promo_media" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="promotion_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="tag" nullable="n" i18n="y" default="" description="">
+         <column-type db="generic" type="varchar" length="42"/>
+      </column>
+      <column name="media_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      
+      
+      
+      
+   
+			<primary-key name="dcs_promo_media_p">
+         <index-column column="promotion_id" order="asc" seq="1"/>
+         <index-column column="tag" order="asc" seq="2"/>
+      	 <index-column seq="3" order="asc" column="asset_version"/>
+			</primary-key>
+			<index name="promo_mdia_pid_idx" table="dcs_promo_media" description="">
+         <index-column column="promotion_id" order="asc" seq="1"/>
+      </index>
+	 </table>
+   
+	 <table name="dcs_discount_promo" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="promotion_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="calculator" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="adjuster" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="numeric" length="19" scale="7"/>
+      </column>
+      <column name="pmdl_rule" nullable="n" i18n="y" default="" description="">
+         <column-type db="generic" type="long-varchar"/>
+      </column>
+      <column name="one_use" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint"/>
+         <column-type db="sybase" type="tinyint"/>
+      </column>
+      
+      
+      
+   
+			<primary-key name="dcs_discount_pro_p">
+         <index-column column="promotion_id" order="asc" seq="1"/>
+      	 <index-column seq="2" order="asc" column="asset_version"/>
+			</primary-key>
+			<check name="dcs_discount_pro_c" description="">
+         <check-expr expression="one_use in (0, 1)" db="generic"/>
+      </check>
+	 </table>
+   
+	 <table name="dcs_promo_upsell" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="promotion_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="upsell" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="sybase" type="tinyint"/>
+         <column-type db="mssql" type="tinyint"/>
+         <column-type db="mysql" type="tinyint"/>
+      </column>
+      
+      
+      
+   
+			<primary-key name="dcs_promo_upsell_p">
+         <index-column column="promotion_id" order="asc" seq="1"/>
+      	 <index-column seq="2" order="asc" column="asset_version"/>
+			</primary-key>
+			<check name="dcs_promo_upsell_c" description="">
+         <check-expr expression="upsell in (0, 1)" db="generic"/>
+      </check>
+	 </table>
+   
+	 <table name="dcs_upsell_action" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="the id of the workspace that the asset exists on" nullable="n" name="workspace_id">
+				 <column-type length="40" type="varchar" db="generic"/>
+			</column>
+			<column description="the id of the branch that the asset exists on" nullable="n" name="branch_id">
+				 <column-type length="40" type="varchar" db="generic"/>
+			</column>
+			<column description="is this version the head of branch" nullable="n" name="is_head">
+				 <column-type type="one-digit" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="flag indicating that the version is deleted" nullable="n" name="version_deleted">
+				 <column-type length="1" type="numeric" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="flag indicating that version is editable" nullable="n" name="version_editable">
+				 <column-type length="1" type="numeric" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="the predecessor version number" nullable="y" name="pred_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="date the asset was checked in if not a working version" nullable="y" name="checkin_date">
+				 <column-type type="datetime" db="generic"/>
+				 <column-type type="timestamp" db="oracle"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="action_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="name" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="upsell_prd_grp" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="long-varchar"/>
+      </column>
+      
+   
+			<primary-key name="dcs_upsell_actn_p">
+         <index-column column="action_id" order="asc" seq="1"/>
+      	 <index-column seq="2" order="asc" column="asset_version"/>
+			</primary-key>
+			<index table="dcs_upsell_action" name="dcs_upsell_act_wsx">
+				 <index-column seq="1" order="asc" column="workspace_id"/>
+			</index>
+			<index table="dcs_upsell_action" name="dcs_upsell_act_cix">
+				 <index-column seq="1" order="asc" column="checkin_date"/>
+			</index>
+	 </table>
+   
+	 <table name="dcs_close_qualif" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="the id of the workspace that the asset exists on" nullable="n" name="workspace_id">
+				 <column-type length="40" type="varchar" db="generic"/>
+			</column>
+			<column description="the id of the branch that the asset exists on" nullable="n" name="branch_id">
+				 <column-type length="40" type="varchar" db="generic"/>
+			</column>
+			<column description="is this version the head of branch" nullable="n" name="is_head">
+				 <column-type type="one-digit" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="flag indicating that the version is deleted" nullable="n" name="version_deleted">
+				 <column-type length="1" type="numeric" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="flag indicating that version is editable" nullable="n" name="version_editable">
+				 <column-type length="1" type="numeric" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="the predecessor version number" nullable="y" name="pred_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="date the asset was checked in if not a working version" nullable="y" name="checkin_date">
+				 <column-type type="datetime" db="generic"/>
+				 <column-type type="timestamp" db="oracle"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="close_qualif_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="name" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="priority" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="qualifier" nullable="y" i18n="y" default="" description="">
+         <column-type db="generic" type="long-varchar"/>
+      </column>
+      <column name="upsell_media" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="upsell_action" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      
+      
+      
+   
+			<primary-key name="dcs_close_qualif_p">
+         <index-column column="close_qualif_id" order="asc" seq="1"/>
+      	 <index-column seq="2" order="asc" column="asset_version"/>
+			</primary-key>
+			<index table="dcs_close_qualif" name="dcs_close_qual_wsx">
+				 <index-column seq="1" order="asc" column="workspace_id"/>
+			</index>
+			<index table="dcs_close_qualif" name="dcs_close_qual_cix">
+				 <index-column seq="1" order="asc" column="checkin_date"/>
+			</index>
+	 </table>
+   
+	 <table name="dcs_prm_cls_qlf" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset (shared table)" nullable="n" name="sec_asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="promotion_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="closeness_qualif" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      
+      
+   
+	 </table>
+
+   
+	 <table name="dcs_prm_sites" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="promotion_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="site_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      
+      
+   
+	 </table>
+
+   
+	 <table name="dcs_prm_site_grps" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="promotion_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="site_group_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      
+      
+   
+	 </table>
+
+   
+	 <table name="dcs_prm_tpl_vals" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="promotion_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="placeholder" nullable="n" i18n="n" default="" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="placeholderValue" nullable="y" i18n="n" default="" description="">
+         <column-type db="generic" type="long-varchar"/>
+      </column>
+      
+      
+   
+			<primary-key name="dcs_prm_tpl_vals_p">
+         <index-column column="promotion_id" order="asc" seq="1"/>
+         <index-column column="placeholder" order="asc" seq="2"/>
+      	 <index-column seq="3" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table>
+
+   
+	 <table name="dcs_prm_cls_vals" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="close_qualif_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="placeholder" nullable="n" i18n="n" default="" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="placeholderValue" nullable="y" i18n="n" default="" description="">
+         <column-type db="generic" type="long-varchar"/>
+      </column>
+      
+      
+   
+			<primary-key name="dcs_prm_cls_vals_p">
+         <index-column column="close_qualif_id" order="asc" seq="1"/>
+         <index-column column="placeholder" order="asc" seq="2"/>
+      	 <index-column seq="3" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table>
+   
+   
+   
+   
+	 <table name="dcs_upsell_prods" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="action_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="product_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="integer"/>
+      </column>
+      
+      
+   
+			<primary-key name="dcs_upsell_prods_p">
+         <index-column column="action_id" order="asc" seq="1"/>
+         <index-column column="product_id" order="asc" seq="2"/>
+      	 <index-column seq="3" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table>
+</schema>
+<!-- @version $Id: //product/DCS/version/10.0.3/templates/DCS/sql/promotion_ddl.xml#3 $$Change: 655658 $ -->

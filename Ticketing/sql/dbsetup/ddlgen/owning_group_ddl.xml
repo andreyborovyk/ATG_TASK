@@ -1,0 +1,210 @@
+<!DOCTYPE schema  SYSTEM "http://road.atg.com/dtds/ddlgen/schema.dtd">
+<schema name="owning_group_ddl">
+<comment><![CDATA[ @version $Id: //product/Ticketing/version/10.0.3/src/sql/owning_group_ddl.xml#2 $$Change: 651448 $]]></comment>
+<comment><![CDATA[
+This file contains create table statements, which will configure 
+your database for use with ticketing owning groups.
+]]></comment>
+
+<comment><![CDATA[
+Ticketing owning group
+]]></comment>
+
+   <table name="tkt_owning_group">
+      <column name="logical_org_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+
+     <!-- The email address for the owning group. -->
+      <column name="email" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+
+      <!-- how long an agent may hold a ticket. 0 means no limit. -->
+      <column name="deallocation_mins" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+
+      <!-- used for outbound messages, to time out
+           when a user doesn't respond. 0 means no limit. -->
+      <column name="inactivity_mins" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+
+      <!-- used for inbound messages. 0 means
+           no limit.  -->
+      <column name="availability_mins" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+
+
+      <!-- Used to highlight tickets that need attention. 0 means
+           no limit.  -->
+      <column name="sla_mins" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+
+      <!-- default escalation owning group -->
+      <column name="def_esc_own_grp" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+
+      <primary-key name="tkt_own_grp_p">
+         <index-column column="logical_org_id" order="asc" seq="1"/>
+      </primary-key>
+
+      <foreign-key name="tkt_owngrp_og_f" referenced-table="dlo_logical_org" index-name="tkt_owninggroup1_x">
+         <fkey-column referencing-column="def_esc_own_grp" referenced-column="logical_org_id"/>
+      </foreign-key>
+
+      <foreign-key name="tkt_owngrp_lo_f" referenced-table="dlo_logical_org" >
+         <fkey-column referencing-column="logical_org_id" referenced-column="logical_org_id"/>
+      </foreign-key>
+   </table>
+
+   <table name="tkt_esc_own_group">
+      <column name="logical_org_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+
+      <column name="escalation_own_grp" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+
+      <primary-key name="tkt_esc_own_grp_p">
+         <index-column column="logical_org_id" order="asc" seq="1"/>
+         <index-column column="escalation_own_grp" order="asc" seq="2"/>
+      </primary-key>
+
+      <foreign-key name="tkt_escog_og_f" referenced-table="dlo_logical_org">
+         <fkey-column referencing-column="logical_org_id" referenced-column="logical_org_id"/>
+      </foreign-key>
+
+      <foreign-key name="tkt_escog_og2_f" referenced-table="dlo_logical_org" index-name="tkt_escowngroup1_x">
+         <fkey-column referencing-column="escalation_own_grp" referenced-column="logical_org_id"/>
+      </foreign-key>
+
+   </table>
+
+<comment><![CDATA[
+Ticket queue
+]]></comment>
+
+   <table name="tkt_queue">
+      <column name="logical_org_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      
+      <column name="description" nullable="y" i18n="y">
+        <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      
+      <column name="accepting" nullable="n">
+        <column-type db="generic" type="one-digit"/>
+      </column>
+
+      <!-- how long an agent may hold a ticket. 0 means no limit. -->
+      <column name="deallocation_ms" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+
+      <!-- used for outbound messages, to time out
+           when a user doesn't respond. 0 means no limit. -->
+      <column name="inactivity_ms" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+
+      <!-- used for inbound messages. 0 means
+           no limit.  -->
+      <column name="availability_ms" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+
+      <!-- Used to highlight tickets that need attention. 0 means
+           no limit.  -->
+      <column name="sla_ms" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+
+      <!-- default escalation owning group -->
+      <column name="def_esc_tkt_q" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+
+      <column name="c_req_tmout" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="c_offer_tmout" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>      
+      <column name="c_reject_tmout" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="c_disp_pol" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="c_overflow_pol" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      
+      <!-- ==================================================================================== -->
+      <!-- Contact info properties                                                              -->
+      <!-- ==================================================================================== -->
+      <column name="email" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="email_fr_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="sms" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="sms_type" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="mms" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="mms_type" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+
+      <primary-key name="tkt_tkt_q_p">
+         <index-column column="logical_org_id" order="asc" seq="1"/>
+      </primary-key>
+
+      <foreign-key name="tkt_q_esc_lo_f" referenced-table="dlo_logical_org" index-name="tkt_q_lo1_x">
+         <fkey-column referencing-column="def_esc_tkt_q" referenced-column="logical_org_id"/>
+      </foreign-key>
+
+      <foreign-key name="tkt_q_lo_f" referenced-table="dlo_logical_org" >
+         <fkey-column referencing-column="logical_org_id" referenced-column="logical_org_id"/>
+      </foreign-key>
+   </table>
+
+   <table name="tkt_esc_tkt_q">
+      <column name="logical_org_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+
+      <column name="escalation_tkt_q" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+
+      <primary-key name="tkt_q_esctktq_p">
+         <index-column column="logical_org_id" order="asc" seq="1"/>
+         <index-column column="escalation_tkt_q" order="asc" seq="2"/>
+      </primary-key>
+
+      <foreign-key name="tkt_q_esct_lo_f" referenced-table="dlo_logical_org">
+         <fkey-column referencing-column="logical_org_id" referenced-column="logical_org_id"/>
+      </foreign-key>
+
+      <foreign-key name="tkt_q_esct_lo2_f" referenced-table="dlo_logical_org" index-name="tkt_q_esclo2_x">
+         <fkey-column referencing-column="escalation_tkt_q" referenced-column="logical_org_id"/>
+      </foreign-key>
+
+   </table>
+
+</schema>
+<!-- @version $Id: //product/Ticketing/version/10.0.3/src/sql/owning_group_ddl.xml#2 $$Change: 651448 $-->

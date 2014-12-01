@@ -1,0 +1,109 @@
+<project name="starter-template" default="build" basedir=".">
+
+  <!-- Load the environment -->
+  <property environment="myenv"/>
+  <property file="${myenv.ANT_ENV}"/>      
+
+  <!-- Set project specific properties -->
+  <property name="install.dir" value="${myenv.DYNAMO_HOME}/../Portal/${ant.project.name}"/>
+  <property name="build.dir" value="${basedir}/build/${ant.project.name}" />
+
+  <!-- Build process targets -->
+  <target name="all" depends="clean,install"/>
+
+  <target name="build" depends="build-ear"/>
+
+  <target name="install" depends="build,prepare-install-dir,do-install"/>
+
+  <target name="prepare-install-dir">
+    <mkdir dir="${install.dir}"/>
+    <delete><fileset dir="${install.dir}" includes="**/*" /></delete>
+    <mkdir dir="${install.dir}/META-INF"/>
+    <mkdir dir="${install.dir}/config"/>
+  </target>
+  
+  <target name="do-install">
+    <copy file="${build.dir}/${ant.project.name}.ear" todir="${install.dir}"/>
+    <copy file="${basedir}/META-INF/MANIFEST.MF" todir="${install.dir}/META-INF"/>
+    <copy todir="${install.dir}/config"><fileset dir="${basedir}/config" includes="**/*"/></copy>
+    <copy file="${basedir}/${ant.project.name}-manifest.xml" todir="${install.dir}"/>
+  </target>
+
+  <target name="build-ear" depends="ear-uptodate">
+    <antcall target="assemble-ear"/>
+  </target>
+
+  <target name="assemble-ear" unless="ear.uptodate">
+    <antcall target="build-war"/>
+    <copy todir="${build.dir}/ear">
+      <fileset dir="${basedir}/${ant.project.name}.ear" />
+    </copy>
+    <copy todir="${build.dir}/ear" file="${build.dir}/${ant.project.name}.war"/>
+    <jar jarfile="${build.dir}/${ant.project.name}.ear" basedir="${build.dir}/ear" />
+    <delete dir="${build.dir}/ear"/>
+    <delete file="${build.dir}/${ant.project.name}.war"/>
+  </target>
+
+  <target name="ear-uptodate">
+    <uptodate property="ear.uptodate" targetfile="${build.dir}/${ant.project.name}.ear" >
+      <srcfiles dir="${basedir}/${ant.project.name}.ear" includes="**/*"/>
+      <srcfiles dir="${basedir}/${ant.project.name}.war" excludes="**/classes/*"/>
+    </uptodate>
+  </target>
+
+  <target name="build-war" depends="create-tree,copy-taglibs,build-jar">
+    <copy todir="${build.dir}/war">
+      <fileset dir="${basedir}/${ant.project.name}.war" >
+        <exclude name="**/classes/*"/>
+      </fileset>
+    </copy>
+    <copy todir="${build.dir}/war/WEB-INF/lib" file="${build.dir}/${ant.project.name}-web.jar"/>
+    <jar jarfile="${build.dir}/${ant.project.name}.war" basedir="${build.dir}/war" />
+    <delete dir="${build.dir}/war"/>
+    <delete file="${build.dir}/${ant.project.name}-web.jar"/>
+  </target>
+  
+  <target name="create-tree">
+    <mkdir dir="${build.dir}/war/WEB-INF"/>
+    <mkdir dir="${build.dir}/war/WEB-INF/lib"/>
+  </target>
+
+  <target name="copy-taglibs">
+    <copy file="${dynamo.home}/../DAS/taglib/coreTaglib/1.0/lib/coreTaglib1_0.jar" todir="${build.dir}/war/WEB-INF/lib" />
+    <copy file="${dynamo.home}/../DAS/taglib/coreTaglib/1.0/tld/coreTaglib1_0.tld" todir="${build.dir}/war/WEB-INF" />
+    <copy file="${dynamo.home}/../DAS/taglib/dspjspTaglib/1.0/lib/dspjspTaglib1_0.jar" todir="${build.dir}/war/WEB-INF/lib" />
+    <copy file="${dynamo.home}/../DAS/taglib/dspjspTaglib/1.0/tld/dspjspTaglib1_0.tld" todir="${build.dir}/war/WEB-INF" />
+    <copy file="${dynamo.home}/../Portal/taglib/pafTaglib/1.2/lib/pafTaglib1_2.jar" todir="${build.dir}/war/WEB-INF/lib" />
+    <copy file="${dynamo.home}/../Portal/taglib/pafTaglib/1.2/tld/pafTaglib1_2.tld" todir="${build.dir}/war/WEB-INF" />
+  </target>
+
+  <target name="build-jar">
+    <available property="classes.available" file="${ant.project.name}.war/WEB-INF/classes"/>
+    <antcall target="do-build-jar"/>
+  </target>
+
+  <target name="do-build-jar" if="classes.available">
+    <mkdir dir="${build.dir}/jar"/>
+    <javac srcdir="${ant.project.name}.war/WEB-INF/classes"	destdir="${build.dir}/jar" fork="yes">
+      <classpath path="${dynamo.home}/../DAS/lib/classes.jar"/>
+    </javac>
+    <copy todir="${build.dir}/jar">
+      <fileset dir="${ant.project.name}.war/WEB-INF/classes">
+        <exclude name="**/*.java"/>
+      </fileset>
+    </copy>    
+    <jar jarfile="${build.dir}/${ant.project.name}-web.jar" basedir="${build.dir}/jar"/>
+  	<delete dir="${build.dir}/jar" />
+  </target>
+
+  <!-- Clean the build environment -->
+  <target name="clean">
+    <delete dir="${basedir}/build"/>
+  </target>
+
+  <target name="distclean" depends="clean">
+    <delete dir="${install.dir}"/>
+  </target>
+
+</project>
+<!-- @version $Id: //app/portal/version/10.0.3/PDK/starter-template/build.xml#2 $$Change: 651448 $ -->

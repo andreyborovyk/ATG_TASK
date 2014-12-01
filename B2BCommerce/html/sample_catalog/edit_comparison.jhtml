@@ -1,0 +1,88 @@
+<java>
+/* 
+This page edits the contents of the user's product comparison list.
+*/
+</java>
+
+<importbean bean="/atg/userprofiling/Profile">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/BeanProperty">
+<importbean bean="/atg/commerce/catalog/comparison/ProductList">
+<importbean bean="/atg/commerce/catalog/comparison/ProductListHandler">
+<importbean bean="/atg/userprofiling/Profile">
+<setvalue bean="Profile.currentLocation" value="catalog_comparison">
+
+<html>
+<head>
+<title>Edit Product Comparison List</title>
+</head>
+
+<body>
+<a href="index.jhtml">Catalog Home</a> - 
+<a href="product_search.jhtml">Product Search</a> - 
+<a href="shoppingcart.jhtml">Shopping Cart</a> - 
+<a href="lists.jhtml">My Lists</a> - 
+Product Comparison -
+<a href="giftlist_search.jhtml">Gift List Search</a> - 
+<droplet bean="/atg/dynamo/droplet/Switch">
+  <param name="value" value="bean:/atg/userprofiling/Profile.transient">
+  <oparam name="false">
+    <a href="logout.jhtml">Logout</a>
+  </oparam>
+  <oparam name="true">
+    <a href="login.jhtml">Login</a> or <a href="register.jhtml">Register</a>
+  </oparam>
+</droplet>
+<BR>
+<i>location: <valueof bean="Profile.currentLocation"></valueof></i>
+
+<P>
+<h3>Edit Product Comparison List</h3>
+
+<P>
+This page edits the product comparison list using the standard
+<code>ProductListHandler</code> form handler.  The form handler 
+allows you to clear the list, remove specific items from the list
+by id, or remove all items for a given category or product.  This
+example demonstrates the first two uses of the form handler -- 
+clearing the list, and removing selected items by item id.
+
+<P>
+
+<FORM method="POST">
+<droplet bean="ForEach">
+  <param name="array" value="bean:ProductList.items">
+  <param name="sortProperties" value="+product.displayName">
+
+  <oparam name="empty">
+    <strong>Your product comparison list is empty.</strong>
+  </oparam>
+
+  <oparam name="outputStart">
+    <strong>Select the items you wish to remove from your comparison list:</strong>
+    <blockquote>
+  </oparam>
+
+  <oparam name="output">
+    <setvalue param="currentEntry" value="param:element">
+    <input type="checkbox" bean="ProductListHandler.entryIds" value="param:currentEntry.id">
+    <valueof param="currentEntry.product.displayName" valueishtml/><br>
+  </oparam>
+
+  <oparam name="outputEnd">
+    </blockquote>
+    <br>
+    <input type="hidden" bean="ProductListHandler.clearListSuccessURL" value="comparison.jhtml">
+    <input type="submit" bean="ProductListHandler.clearList" value="Clear List"> &nbsp;
+    <input type="hidden" bean="ProductListHandler.removeProductSuccessURL" value="comparison.jhtml">
+    <input type="submit" bean="ProductListHandler.removeEntries" value="Remove Selected Items">
+  </oparam>
+</droplet>
+</form>
+<P>
+<strong><a href="compare_search.jhtml">Search For More Products</a></strong>
+
+</body>
+</html>
+<java>/* @version $Id: //product/B2BCommerce/version/10.0.3/release/B2BCommerce/html/sample_catalog/edit_comparison.jhtml#2 $$Change: 651448 $*/</java>
+

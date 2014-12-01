@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE gsa-template
+  PUBLIC "-//Art Technology Group, Inc.//DTD Dynamo Security//EN"
+	 "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template>
+
+  <header>
+    <name>Soap Config Repository</name>
+    <author>SOAP Team</author>
+    <version>$Id: //app/portal/version/10.0.3/soapclient/config/atg/portal/gear/soapclient/SOAPRepository.xml#2 $$Change: 651448 $</version>
+  </header>
+
+  <item-descriptor name="serviceConfiguration" display-name-resource="itemDescriptorServiceConfiguration" version-property="version" cache-mode="simple" item-cache-timeout="180000">
+    <attribute name="resourceBundle" value="atg.portal.gear.soapclient.SOAPRepositoryTemplateResources"/>
+
+     <table name="soap_serv_conf" type="primary" id-column-name="service_config_id">
+
+       <property name="id" display-name-resource="id" column-name="service_config_id" writable="false" expert="true">
+       </property>
+
+       <property name="version" display-name-resource="version" column-name="version" data-type="int" writable="false" expert="true">
+       </property>
+
+       <property name="targetServiceURL" display-name-resource="targetServiceURL" column-name="target_service_url" data-type="string">
+       </property>
+
+       <property name="targetMethodName" display-name-resource="targetMethodName" column-name="target_method_name" data-type="string">
+       </property>
+
+       <property name="targetNameSpaceURI" display-name-resource="targetNameSpaceURI" column-name="namespace_url" data-type="string">
+       </property>
+
+       <property name="soapActionURI" display-name-resource="soapActionURI" column-name="soap_action_uri" data-type="string">
+       </property>
+
+       <property name="username" display-name-resource="username" column-name="username" data-type="string">
+       </property>
+
+       <property name="password" display-name-resource="password" column-name="password" data-type="string">
+       </property>
+     </table>
+
+     <table name="soap_conf_param" type="multi" id-column-name="service_config_id" multi-column-name="sequence_num">
+       <property name="serviceParameters" display-name-resource="serviceParameters" column-name="service_params" cascade="delete,update" component-item-type="serviceParameter" data-type="list">
+       </property>
+     </table>
+  </item-descriptor>
+
+  <item-descriptor name="installServiceConfiguration" display-name-resource="itemDescriptorInstallServiceConfiguration" version-property="version" cache-mode="simple" item-cache-timeout="180000">
+    <attribute name="resourceBundle" value="atg.portal.gear.soapclient.SOAPRepositoryTemplateResources"/>
+
+    <table name="soap_install_conf" type="primary" id-column-name="install_serv_id">
+
+       <property name="Id" display-name-resource="id" column-name="install_serv_id" data-type="string">
+       </property>
+   
+       <property name="gearDefinitionId" display-name-resource="gearDefinitionId" column-name="gear_def_id" data-type="string">
+         <attribute name="unique" value="true"/>
+       </property>
+
+       <property name="serviceConfig" display-name-resource="serviceConfig" column-name="service_config_id" item-type="serviceConfiguration" cascade="update,delete">
+       </property>
+
+       <property name="version" display-name-resource="version" column-name="version" writable="false" expert="true" data-type="int">
+       </property>
+
+    </table>
+  </item-descriptor>
+
+
+  <item-descriptor name="instanceServiceConfiguration" display-name-resource="itemDescriptorInstanceServiceConfiguration" version-property="version" cache-mode="simple" item-cache-timeout="180000">
+    <attribute name="resourceBundle" value="atg.portal.gear.soapclient.SOAPRepositoryTemplateResources"/>
+
+    <table name="soap_instn_conf" type="primary" id-column-name="instn_serv_id">
+
+      <property name="id" display-name-resource="id" column-name="instn_serv_id" data-type="string">
+      </property>
+
+      <property name="gearInstanceId" display-name-resource="gearInstanceId" column-name="gear_instance_id" data-type="string">
+        <attribute name="unique" value="true"/>
+      </property>
+
+      <property name="serviceConfig" display-name-resource="serviceConfig" column-name="service_config_id" item-type="serviceConfiguration" cascade="update,delete">
+      </property>
+
+      <property name="version" display-name-resource="version" column-name="version" writable="false" expert="true" data-type="int">
+      </property>
+
+    </table>
+  </item-descriptor>
+
+
+  <item-descriptor name="userServiceConfiguration" display-name-resource="itemDescriptorUserServiceConfiguration" version-property="version" cache-mode="simple" item-cache-timeout="180000">
+    <attribute name="resourceBundle" value="atg.portal.gear.soapclient.SOAPRepositoryTemplateResources"/>
+
+     <table name="soap_user_conf"  type="primary" id-column-name="user_serv_id">
+
+      <property name="id" display-name-resource="id" column-name="user_serv_id" data-type="string">
+      </property>
+
+      <property name="userId" display-name-resource="userId" column-name="user_id" data-type="string">
+      </property>
+
+      <property name="gearDefinitionId" display-name-resource="gearDefinitionId" column-name="gear_def_id" data-type="string">
+      </property>
+
+      <property name="version" display-name-resource="version" column-name="version" writable="false" expert="true" data-type="int">
+      </property>
+
+      <property name="gearInstanceId" display-name-resource="gearInstanceId" column-name="gear_instance_id">
+      </property>
+
+      <property name="serviceConfig" display-name-resource="serviceConfig" column-name="service_config_id" item-type="serviceConfiguration" cascade="update,delete">
+      </property>
+
+     </table>
+
+  </item-descriptor>
+
+  <item-descriptor name="serviceParameter" display-name-resource="itemDescriptorServiceParameter" version-property="version" cache-mode="simple" item-cache-timeout="180000">
+    <attribute name="resourceBundle" value="atg.portal.gear.soapclient.SOAPRepositoryTemplateResources"/>
+
+     <table name="soap_serv_param" type="primary" id-column-name="serv_param_id">
+
+       <property name="id" display-name-resource="id" column-name="serv_param_id" data-type="string">
+       </property>
+
+       <property name="paramName" display-name-resource="paramName" column-name="param_name" data-type="string">
+       </property>
+
+       <property name="paramType" display-name-resource="paramType" column-name="param_type" data-type="string">
+       </property>
+
+       <property name="paramValue" display-name-resource="paramValue" column-name="param_value" data-type="string">
+       </property>
+
+       <property name="version" display-name-resource="version" column-name="version" writable="false" expert="true" data-type="int">
+       </property>
+
+     </table>
+  </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //app/portal/version/10.0.3/soapclient/config/atg/portal/gear/soapclient/SOAPRepository.xml#2 $$Change: 651448 $ -->

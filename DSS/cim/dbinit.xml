@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE database-initializer SYSTEM "http://www.atg.com/dtds/dbinit_1_0.dtd">
+<database-initializer>
+
+  <schema id="allExceptCatalogsSchema">
+    
+    <sql>
+      <path>
+	<create>
+	  sql/db_components/${database}/business_process_rpt_ddl.sql
+	</create>
+	<drop>
+	  sql/uninstall/${database}/drop_business_process_rpt_ddl.sql
+	</drop>
+      </path>
+    </sql>
+    
+    <sql>
+      <path>
+	<create>
+	  sql/db_components/${database}/das_mappers.sql
+	</create>
+	<drop>
+	  sql/uninstall/${database}/drop_das_mappers.sql
+	</drop>
+      </path>
+    </sql>
+    
+    <sql>
+      <path>
+	<create>
+	  sql/db_components/${database}/dps_mappers.sql
+	</create>
+	<drop>
+	  sql/uninstall/${database}/drop_dps_mappers.sql
+	</drop>
+      </path>
+    </sql>
+
+    <sql>
+      <path>
+	<create>
+	  sql/db_components/${database}/dss_mappers.sql
+	</create>
+	<drop>
+	  sql/uninstall/${database}/drop_dss_mappers.sql
+	</drop>
+      </path>
+    </sql>
+
+    <sql>
+      <path>
+	<create>
+	  sql/db_components/${database}/markers_ddl.sql
+	</create>
+	<drop>
+	  sql/uninstall/${database}/drop_markers_ddl.sql
+	</drop>
+      </path>
+    </sql>		
+
+    <sql>
+      <path>
+	<create>
+	  sql/db_components/${database}/profile_bp_markers_ddl.sql
+	</create>
+	<drop>
+	  sql/uninstall/${database}/drop_profile_bp_markers_ddl.sql
+	</drop>
+      </path>
+    </sql>		
+
+    <sql>
+      <path>
+	<create>
+	  sql/db_components/${database}/scenario_ddl.sql
+	</create>
+	<drop>
+	  sql/uninstall/${database}/drop_scenario_ddl.sql
+	</drop>
+      </path>
+    </sql>	
+
+  </schema>
+  
+  <server-instance-type id="management">
+    <datasource id="all">
+      <schema id="allExceptCatalogsSchema"/>
+    </datasource>	
+  </server-instance-type>
+  
+  <server-instance-type id="production">
+    <datasource id="switchingCore">
+      <schema id="allExceptCatalogsSchema"/>
+    </datasource>	
+    <datasource id="nonswitchingCore">
+      <schema id="allExceptCatalogsSchema"/>
+    </datasource>	
+  </server-instance-type>
+  
+  <server-instance-type id="staging">
+    <datasource id="stagingswitchingCore">
+      <schema id="allExceptCatalogsSchema"/>
+    </datasource>	
+    <datasource id="stagingnonswitchingCore">
+      <schema id="allExceptCatalogsSchema"/>
+    </datasource>	
+  </server-instance-type>
+
+  <server-instance-type id="svcagent">
+    <datasource id="svcagent">
+      <schema id="allExceptCatalogsSchema"/>
+    </datasource> 
+  </server-instance-type>
+  
+</database-initializer>
+<!-- @version $Id: //product/DSS/version/10.0.3/release/DSS/cim/dbinit.xml#2 $$Change: 651448 $-->

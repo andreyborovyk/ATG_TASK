@@ -1,0 +1,81 @@
+<importbean bean="/atg/userprofiling/ProfileAdminFormHandler">
+<importbean bean="/atg/userprofiling/PropertyManager">
+<importbean bean="/atg/userprofiling/ProfileErrorMessageForEach">
+<importbean bean="/atg/dynamo/droplet/Switch">
+
+<declareparam name="id" value="java.lang.String" description="The RepositoryId of the Profile to View">
+
+<html>
+<head>
+<title>Edit Profile</title>
+</head>
+<body BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="images/dpsadminbanner.gif" ALT="Dynamo Personalization Administration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a href="index.jhtml">Personalization
+Administration</a>/<a href="search.jhtml">Search</a>/Search Results/Edit
+Profile<p>
+
+<blockquote>
+
+<h2>Edit Profile</h2>
+
+<form method=post action="`request.getRequestURI()`">
+
+ <droplet name="Switch">
+   <param name="value" value="bean:ProfileAdminFormHandler.formError">
+   <oparam name="true">
+    <font color=cc0000><STRONG><UL>
+     <droplet name="ProfileErrorMessageForEach">
+      <param name="exceptions" value="bean:ProfileAdminFormHandler.formExceptions">
+      <oparam name="output">
+	<LI> <valueof param="message"></valueof>
+      </oparam>
+     </droplet>
+    </UL></STRONG></font>
+   </oparam>
+ </droplet>
+
+
+  <input type="hidden" bean="ProfileAdminFormHandler.updateSuccessURL" value="search.jhtml"> 
+  <input type="hidden" bean="ProfileAdminFormHandler.deleteSuccessURL" value="search.jhtml">  
+  <input type="hidden" bean="ProfileAdminFormHandler.confirmPassword" value="false">
+  
+  <droplet bean="Switch">
+    <param name="value" value="param:id">
+    <oparam name="unset">
+        
+	<setvalue param="id" value="bean:ProfileAdminFormHandler.repositoryId"></setvalue>
+	<input type="hidden" bean="ProfileAdminFormHandler.repositoryId" value="param:id">
+        <droplet src="profiletableform.jhtml">
+	 <param name="id" value="bean:ProfileAdminFormHandler.repositoryId">
+	 <param name="passwordProperty" value="bean:PropertyManager.passwordPropertyName">
+	 <param name="loginProperty" value="bean:PropertyManager.loginPropertyName">
+	</droplet>
+    
+    </oparam>
+    <oparam name="default">
+        
+        <input type="hidden" bean="ProfileAdminFormHandler.repositoryId" value="param:id">
+	<setvalue bean="ProfileAdminFormHandler.repositoryId" value="param:id"></setvalue>
+        <droplet src="profiletableform.jhtml">
+	 <param name="id" value="param:id">
+	 <param name="passwordProperty" value="bean:PropertyManager.passwordPropertyName">
+	 <param name="loginProperty" value="bean:PropertyManager.loginPropertyName">
+	</droplet>
+
+    </oparam>
+  </droplet>
+
+  <input type="submit" bean="ProfileAdminFormHandler.update" value=" Update ">
+  <input type="submit" bean="ProfileAdminFormHandler.delete" value=" Delete ">
+  <input type="reset"  value=" Reset ">
+</form>
+ <p>
+ <superscript>*</superscript> indicates that a value is required for this attribute.<br>
+</blockquote>
+
+</body>
+</html>
+<java>/* @version $Id: //product/DPS/version/10.0.3/release/DPS/admin/atg/userprofiling/admin/en/edit.jhtml#2 $$Change: 651448 $ */</java>

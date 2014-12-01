@@ -1,0 +1,61 @@
+<JAVA>
+  String strCmpName = request.getParameter("cmpnName");
+  if ("null".equals(strCmpName)) {
+	request.setParameter("cmpnName", null);
+        strCmpName = null;
+  }
+
+  Object objResolve = null;
+
+  if (strCmpName != null) {
+    objResolve = request.resolveName(strCmpName);
+  }
+
+  if ((objResolve instanceof atg.naming.NameContext) &&
+      !"true".equals(request.getParameter("chooseContext"))) {
+    // redirect back to browse the subcontext
+    objResolve = null;
+  }
+
+  request.setParameter("resolvedCmpn", objResolve);
+
+  if (objResolve == null) {
+    // System.out.println("No obj resolve... going back to create.");
+    request.addQueryParameter("context", strCmpName); 
+    response.sendRedirect(request.encodeURL("create.jhtml"));
+  }
+
+  if (request.getAttribute("stage") != null) {
+    // attribute, which might have been set by the form,
+    // overrides request.
+    request.setParameter("stage", request.getAttribute("stage"));
+  }
+//  System.out.println("objResolve = " + objResolve);
+//  System.out.println("stage = " + request.getParameter("stage"));
+</JAVA>
+<nucleus type=import>/atg/dynamo/droplet/Switch</nucleus>
+<droplet name="Switch">
+  <param name="value" value="param:stage" >
+  <oparam name="finalconfirm">
+    <droplet src="finalconfirm.jhtml"/>
+  </oparam>
+  <oparam name="appconfig">
+    <droplet src="appconfig.jhtml"/>
+  </oparam>
+  <oparam name="sessionsec">
+    <droplet src="sessionsec.jhtml"/>
+  </oparam>
+  <oparam name="security">
+    <droplet src="security.jhtml"/>
+  </oparam>
+  <oparam name="create">
+    <droplet src="create.jhtml"/>
+  </oparam>
+  <oparam name="success">
+    <droplet src="success.jhtml"/>
+  </oparam>
+  <oparam name="default">
+    <droplet src="paramnames.jhtml"/>
+  </oparam>
+</droplet>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/webservice/createstage.jhtml#2 $$Change: 651448 $*/</java>

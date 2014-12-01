@@ -1,0 +1,15 @@
+<dms:resetBean bean="<%= entryData %>"/>
+<jsp:setProperty name="entryData" property="*"/>
+
+<core:urlParamValue id="entryIdParam" param="entryId">
+  <core:ifNotNull value="<%= entryIdParam.getValue() %>">
+    <jsp:setProperty name="entryData" property="entryId" value="<%= entryIdParam.getValue() %>"/>
+  </core:ifNotNull>
+</core:urlParamValue>
+
+<core:urlParamValue id="actionParam" param="action">
+  <core:ifNotNull value="<%= actionParam.getValue() %>">
+    <jsp:setProperty name="entryData" property="action" value="<%= actionParam.getValue() %>"/>
+  </core:ifNotNull>
+</core:urlParamValue>
+<%-- @version $Id: //product/DAS/version/10.0.3/release/SQLJMSAdmin/j2ee-apps/sqlJmsAdmin/webModule/setEntryParams.jspf#2 $$Change: 651448 $--%>

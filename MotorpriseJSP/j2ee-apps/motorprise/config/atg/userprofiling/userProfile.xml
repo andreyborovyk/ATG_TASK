@@ -1,0 +1,179 @@
+<gsa-template>
+
+  <header>
+    <name>B2B Store Organizational Model and User Profile Changes </name>
+    <author>B2B Demo Team</author>
+    <version>$Id: //product/B2BCommerce/version/10.0.3/release/MotorpriseJSP/j2ee-apps/motorprise/config/atg/userprofiling/userProfile.xml#2 $$Change: 651448 $</version>
+  </header>
+
+   <item-descriptor name="user">
+    <property name="currentOrganization" item-type="organization" hidden="true"/>
+    <property name="currentUser" item-type="user" hidden="true"/>
+
+    <table name="b2b_user_info" type="auxiliary" id-column-name="id">
+      <attribute name="resourceBundle" value="atg.projects.b2bstore.UserProfileTemplateResources"/>
+      
+      <property category-resource="categoryB2BStore" name="numOfOrders" data-type="int" default="0" column-name="num_orders"  display-name-resource="numOfOrders">
+        <attribute name="resourceBundle" value="atg.projects.b2bstore.UserProfileTemplateResources"/>
+      </property>
+      <property category-resource="categoryB2BStore" name="avgOrderAmt" data-type="double" default="0.0" column-name="avg_order_amt" display-name-resource="avgOrderAmt">
+        <attribute name="resourceBundle" value="atg.projects.b2bstore.UserProfileTemplateResources"/>
+      </property>
+    </table>
+
+    <property category-resource="categoryB2BStore" name="invoiceRequestAuthorized" data-type="boolean" display-name-resource="invoiceRequestAuthorized">
+      <derivation override-property="myInvoiceRequestAuthorized">
+        <expression>parentOrganization.invoiceRequestAuthorized</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.projects.b2bstore.UserProfileTemplateResources"/>
+      <attribute name="propertySortPriority" value="-55"/>
+    </property>
+
+    <property category-resource="categoryB2BStore" name="creditCardAuthorized" data-type="boolean" display-name-resource="creditCardAuthorized">
+      <derivation override-property="myCreditCardAuthorized">
+        <expression>parentOrganization.creditCardAuthorized</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.projects.b2bstore.UserProfileTemplateResources"/>
+      <attribute name="propertySortPriority" value="-50"/>
+    </property>
+
+    <property category-resource="categoryB2BStore" name="giftCertificateAuthorized" data-type="boolean" display-name-resource="giftCertificateAuthorized">
+      <derivation override-property="myGiftCertificateAuthorized">
+        <expression>parentOrganization.giftCertificateAuthorized</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.projects.b2bstore.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="-45"/>
+    </property>
+
+    <property category-resource="categoryB2BStore" name="storeCreditAuthorized" data-type="boolean" display-name-resource="storeCreditAuthorized">
+      <derivation override-property="myStoreCreditAuthorized">
+        <expression>parentOrganization.storeCreditAuthorized</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.projects.b2bstore.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="-40"/>
+    </property>
+
+    <table name="b2b_auth_pmnt" type="auxiliary" id-column-name="id">
+      <attribute name="resourceBundle" value="atg.projects.b2bstore.UserProfileTemplateResources"/>
+      
+      <property category-resource="categoryB2BStore" name="myInvoiceRequestAuthorized" data-type="boolean" column-name="invoice_auth" hidden="true" display-name-resource="myInvoiceRequestAuthorized">
+        <attribute name="resourceBundle" value="atg.projects.b2bstore.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="-35"/>
+      </property>
+      <property category-resource="categoryB2BStore" name="myCreditCardAuthorized" data-type="boolean" column-name="cc_auth" hidden="true" display-name-resource="myCreditCardAuthorized">
+        <attribute name="resourceBundle" value="atg.projects.b2bstore.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="-30"/>
+      </property>
+      <property category-resource="categoryB2BStore" name="myGiftCertificateAuthorized" data-type="boolean" column-name="gift_crt_auth" hidden="true" display-name-resource="myGiftCertificateAuthorized">
+        <attribute name="resourceBundle" value="atg.projects.b2bstore.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="-25"/>
+      </property>
+      <property category-resource="categoryB2BStore" name="myStoreCreditAuthorized" data-type="boolean" column-name="store_crdt_auth" hidden="true"  display-name-resource="myStoreCreditAuthorized">
+        <attribute name="resourceBundle" value="atg.projects.b2bstore.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="-20"/>
+      </property>
+    </table>
+
+    <!-- adding few more options for Motorprise -->
+    <property name="currentLocation" xml-combine="append" hidden="true">
+      <option value="product_catalog" code="9"/>
+      <option value="admin" code="10"/>
+      <option value="current_order" code="11"/>
+      <option value="my_account" code="12"/>
+    </property>
+
+  </item-descriptor>
+
+  
+  <item-descriptor name="organization">
+    <table name="b2b_org_info" type="auxiliary" id-column-name="org_id">
+      <attribute name="resourceBundle" value="atg.projects.b2bstore.UserProfileTemplateResources"/>
+      
+      <property category-resource="categoryBasics" name="myCompanyLogo" item-type="media"  column-name="logo" hidden="true" queryable="false" repository="/atg/commerce/catalog/ProductCatalog" display-name-resource="myCompanyLogo">
+        <attribute name="resourceBundle" value="atg.projects.b2bstore.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="21"/>
+      </property>
+
+      <property category-resource="categoryB2BStore" name="myInvoiceRequestAuthorized"  data-type="boolean" column-name="invoice_auth" display-name-resource="myInvoiceRequestAuthorized" hidden="true">
+        <attribute name="resourceBundle" value="atg.projects.b2bstore.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="-70"/>
+      </property>
+      <property category-resource="categoryB2BStore" name="myCreditCardAuthorized"  data-type="boolean" column-name="cc_auth" display-name-resource="myCreditCardAuthorized" hidden="true">
+        <attribute name="resourceBundle" value="atg.projects.b2bstore.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="-50"/>
+      </property>
+      <property category-resource="categoryB2BStore" name="myStoreCreditAuthorized"  data-type="boolean" column-name="store_crdt_auth" display-name-resource="myStoreCreditAuthorized" hidden="true"> 
+        <attribute name="resourceBundle" value="atg.projects.b2bstore.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="-30"/>
+      </property>
+      <property category-resource="categoryB2BStore" name="myGiftCertificateAuthorized"  data-type="boolean" column-name="gift_crt_auth" display-name-resource="myGiftCertificateAuthorized" hidden="true">
+        <attribute name="resourceBundle" value="atg.projects.b2bstore.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="-10"/>
+      </property>
+
+    </table>
+
+    <!-- Derived properties -->
+
+    <property category-resource="categoryB2BStore" name="invoiceRequestAuthorized" data-type="boolean"
+             display-name-resource="invoiceRequestAuthorized">
+      <derivation override-property="myInvoiceRequestAuthorized">
+        <expression>parentOrganization.invoiceRequestAuthorized</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.projects.b2bstore.UserProfileTemplateResources"/>
+      <attribute name="propertySortPriority" value="-80"/>
+    </property>
+
+    <property category-resource="categoryB2BStore" name="creditCardAuthorized"  data-type="boolean" 
+            display-name-resource="creditCardAuthorized">
+      <derivation override-property="myCreditCardAuthorized">
+        <expression>parentOrganization.creditCardAuthorized</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.projects.b2bstore.UserProfileTemplateResources"/>
+      <attribute name="propertySortPriority" value="-60"/>
+    </property>
+
+    <property category-resource="categoryB2BStore" name="storeCreditAuthorized"  data-type="boolean"
+            display-name-resource="storeCreditAuthorized">
+      <derivation override-property="myStoreCreditAuthorized">
+        <expression>parentOrganization.storeCreditAuthorized</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.projects.b2bstore.UserProfileTemplateResources"/>
+      <attribute name="propertySortPriority" value="-40"/>
+    </property>
+
+    <property category-resource="categoryB2BStore" name="giftCertificateAuthorized"  data-type="boolean" 
+            display-name-resource="giftCertificateAuthorized">
+      <derivation override-property="myGiftCertificateAuthorized">
+        <expression>parentOrganization.giftCertificateAuthorized</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.projects.b2bstore.UserProfileTemplateResources"/>
+      <attribute name="propertySortPriority" value="-20"/>
+    </property>
+
+    <property category-resource="categoryBasics" name="companyLogo" item-type="media"   queryable="false" repository="/atg/commerce/catalog/ProductCatalog" display-name-resource="companyLogo">
+      <derivation override-property="myCompanyLogo">
+        <expression>parentOrganization.companyLogo</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.projects.b2bstore.UserProfileTemplateResources"/>
+      <attribute name="propertySortPriority" value="21"/>
+    </property>
+  </item-descriptor>
+
+  <item-descriptor name="credit-card" display-name-resource="itemDescriptorCreditCard">
+    <attribute name="resourceBundle" value="atg.projects.b2bstore.UserProfileTemplateResources"/>
+    <table name="b2b_credit_card" type="auxiliary" id-column-name="id">
+      <property name="cardHolderFirstName" data-type="string" column-name="cc_first_name" category-resource="categoryName" display-name-resource="cardHolderFirstName">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>        
+      <property name="cardHolderMiddleName" data-type="string" column-name="cc_middle_name" category-resource="categoryName" display-name-resource="cardHolderMiddleName">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>        
+      <property name="cardHolderLastName" data-type="string" column-name="cc_last_name" category-resource="categoryName" display-name-resource="cardHolderLastName">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>   
+    </table> 
+  </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //product/B2BCommerce/version/10.0.3/release/MotorpriseJSP/j2ee-apps/motorprise/config/atg/userprofiling/userProfile.xml#2 $$Change: 651448 $ -->

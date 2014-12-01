@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<!DOCTYPE schema
+    SYSTEM 'http://road.atg.com/dtds/ddlgen/schema.dtd'>
+
+<schema name="create_service">
+  <table name="srch_tw_set">
+    <column name="tw_set_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="tw_set_name" nullable="n" i18n="y">
+      <column-type db="generic" length="200" type="varchar"/>
+    </column>
+    <column name="tw_set_desc" nullable="y" i18n="y">
+      <column-type db="generic" length="1000" type="varchar"/>
+    </column>
+    <column name="tw_set_language" nullable="n">
+      <column-type db="generic" length="200" type="varchar"/>
+    </column>
+    <column name="tw_set_readonly" nullable="y">
+      <column-type db="generic" type="one-digit"/>
+    </column>
+    <column name="tw_set_last_mod" nullable="n">
+      <column-type db="generic" type="date"/>
+    </column>
+    <primary-key name="srch_tw_set1_p">
+      <index-column column="tw_set_id" order="asc" seq="1"/>
+    </primary-key>
+    <unique name="srch_tw_set1_u">
+      <index-column column="tw_set_name" seq="1"/>
+    </unique>
+
+  </table>
+
+  <table name="srch_tw_term">
+    <column name="tw_term_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="tw_term_set_id" nullable="y">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="tw_term_name" nullable="n" i18n="y">
+      <column-type db="generic" length="200" type="varchar"/>
+    </column>
+    <column name="tw_term_weight" nullable="n">
+      <column-type db="generic" type="smallint"/>
+    </column>
+    <primary-key name="srch_tw_term1_p">
+      <index-column column="tw_term_id" order="asc" seq="1"/>
+    </primary-key>
+    <foreign-key referenced-table="srch_tw_set" name="srch_tw_set1_f" index-name="srch_tw_set1_x">
+      <fkey-column referencing-column="tw_term_set_id" referenced-column="tw_set_id"/>
+    </foreign-key>
+    <index name="srch_tw_term1_i" table="srch_tw_term">
+      <index-column column="tw_term_name" seq="1"/>
+      <index-column column="tw_term_set_id" seq="2"/>
+    </index>
+  </table>
+</schema>
+<!-- @version $Id: //application/SearchAdmin/version/10.0.3/customizations/src/sql/searchadmin_termweights_ddl.xml#2 $$Change: 651448 $-->

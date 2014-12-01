@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- ==================================================================== -->
+<!-- Scenario UI grammar extension for the Alert gear.                    -->
+<!-- ==================================================================== -->
+
+<?xcl-stylesheet resource="atg/ui/expreditor/xcl/grammar.xsl"?>
+
+<context>
+
+  <!-- Filters for poll vote events -->
+
+  <choice id="poll-vote-condition-filter">
+    <rule name="poll-event-with-poll"/>
+    <rule name="poll-vote-event-with-response"/>
+    <rule name="portal-event-with-community"/>
+    <rule name="portal-event-with-gear"/>
+    <rule name="portal-event-with-profile"/>
+  </choice>
+
+  <sequence id="poll-vote-event-filter">
+    <placeholder>
+      <choice>
+        <rule name="with-any-attributes"/>
+        <rule name="poll-vote-condition-filter"/>
+      </choice>
+    </placeholder>
+  </sequence>
+ 
+
+  <!-- ==================================================================== -->
+  <!-- Custom expression for the PollVoteMessage event.                     -->
+  <!-- ==================================================================== -->
+
+  <sequence id="event-message-atg.portal.gear.poll.PollVoteMessage">
+    <attribute name="icon"><icon path="atg/ui/process/images/generic-event.gif"/></attribute>
+    <attribute name="eventType" value="atg.portal.gear.poll.PollVoteMessage"/>
+    <attribute name="eventContext" value="request"/>
+
+    <xml-template>
+      <event-name>atg.portal.gear.poll.PollVoteMessage</event-name>
+    </xml-template>
+
+    <token><description>Poll Response Submitted</description></token>
+    <rule name="poll-vote-event-filter"/>
+  </sequence>
+
+  <sequence id="condition-message-atg.portal.gear.poll.PollVoteMessage">
+    <expression-class>atg.ui.process.expression.EventConditionExpression</expression-class>
+    <attribute name="icon"><icon path="atg/ui/process/images/generic-condition.gif"/></attribute>
+    <attribute name="checkedEventName" value="atg.portal.gear.poll.PollVoteMessage"/>
+
+    <token><description>Poll event</description></token>
+    <rule name="poll-vote-condition-filter"/>
+  </sequence>
+
+  <!-- Expression for specifying the "response" property of a poll-vote event. -->
+
+  <sequence id="poll-vote-event-with-response">
+    <expression-class>atg.ui.expreditor.LeftCoercedExpression</expression-class>
+      
+    <xml-template>
+      <filter construct="poll-vote-event-with-response" operator="eq">
+        <event-property>
+          <property-name>responseId</property-name>
+        </event-property>
+        <constant><apply-xml-templates/></constant>
+      </filter>
+    </xml-template>
+
+    <sequence>
+      <expression-class>atg.ui.expreditor.TypedSequenceExpression</expression-class>
+      <attribute name="typeClassName" value="java.lang.String"/>
+      <token><description>where response is</description></token>
+    </sequence>
+
+    <token>
+      <expression-class>atg.ui.expreditor.targeting.RepositoryItemSetExpression</expression-class>
+      <assistant-class>atg.ui.expreditor.targeting.RepositoryItemSetAssistant</assistant-class>
+      <attribute name="repositoryName" value="/atg/portal/gear/poll/PollRepository"/>
+      <attribute name="repositoryItemType" value="pollResponse"/>
+      <required/>
+      <description>Choose response...</description>
+    </token>
+  </sequence>
+
+  <!-- Expression for specifying the "poll" property of a poll-vote event. -->
+
+  <sequence id="poll-event-with-poll">
+    <expression-class>atg.ui.expreditor.LeftCoercedExpression</expression-class>
+      
+    <xml-template>
+      <filter construct="poll-event-with-poll" operator="eq">
+        <event-property>
+          <property-name>pollId</property-name>
+        </event-property>
+        <constant><apply-xml-templates/></constant>
+      </filter>
+    </xml-template>
+
+    <sequence>
+      <expression-class>atg.ui.expreditor.TypedSequenceExpression</expression-class>
+      <attribute name="typeClassName" value="java.lang.String"/>
+      <token><description>where poll is</description></token>
+    </sequence>
+
+    <token>
+      <expression-class>atg.ui.expreditor.targeting.RepositoryItemSetExpression</expression-class>
+      <assistant-class>atg.ui.expreditor.targeting.RepositoryItemSetAssistant</assistant-class>
+      <attribute name="repositoryName" value="/atg/portal/gear/poll/PollRepository"/>
+      <attribute name="repositoryItemType" value="poll"/>
+      <required/>
+      <description>Choose poll...</description>
+    </token>
+  </sequence>
+
+</context>
+<!-- @version $Id: //app/portal/version/10.0.3/poll/src/atg/portal/gear/poll/poll-expression-grammar.xml#2 $$Change: 651448 $ -->

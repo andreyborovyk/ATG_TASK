@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE gsa-template SYSTEM "dynamosystemresource:/atg/dtds/gsa/gsa_1.0.dtd">
+<gsa-template>
+  <import-items>
+
+    <!-- Defines hot solution and top solution topics that use special patterns to order the solutions by hot score and topic score respectively.
+         Parent is "System Taxonomy" topic set (id=2) -->
+    <add-item item-descriptor="TopicPattern" id="svcHotSolutionsPattern">
+      <set-property name="enabled"><![CDATA[true]]></set-property>
+      <set-property name="groups"><![CDATA[]]></set-property>
+      <set-property name="pattern"><![CDATA[!exec,numprop,/Solutions,hotScore,false,1000,true]]></set-property>
+      <set-property name="language"><![CDATA[English]]></set-property>
+    </add-item>
+
+    <add-item item-descriptor="TopicPattern" id="svcTopSolutionsPattern">
+      <set-property name="enabled"><![CDATA[true]]></set-property>
+      <set-property name="groups"><![CDATA[]]></set-property>
+      <set-property name="pattern"><![CDATA[!exec,numprop,/Solutions,topScore,false,1000,true]]></set-property>
+      <set-property name="language"><![CDATA[English]]></set-property>
+    </add-item>
+
+    <add-item item-descriptor="TopicPattern" id="svcBestBetsPattern">
+      <set-property name="enabled"><![CDATA[true]]></set-property>
+      <set-property name="groups"><![CDATA[]]></set-property>
+      <set-property name="pattern"><![CDATA[!exec,numprop,/Solutions,qOAAScore,false,1000,true]]></set-property>
+      <set-property name="language"><![CDATA[English]]></set-property>
+    </add-item>
+
+    <add-item item-descriptor="TopicSet" id="9000000">
+      <set-property name="name" value="Solution Lists"/>
+      <set-property name="displayName" value="Solution Lists"/>
+      <set-property name="description" value="Defines special topics used to build solution lists like hot solutions and top solutions."/>
+      <set-property name="children" value="9000001,9000002,9000003"/>
+      <set-property name="lastModified"><![CDATA[03/09/2006 00:00:00]]></set-property>
+    </add-item>
+    
+    <add-item item-descriptor="Topic" id="9000001">
+      <set-property name="name" value="Hot Solutions"/>
+      <set-property name="displayName" value="Hot Solutions"/>
+      <set-property name="description" value="Orders browse results by the hot solution score.  Special topic used only to build hot solutions list."/>
+      <set-property name="parent" value="9000000"/>
+      <set-property name="patterns"><![CDATA[svcHotSolutionsPattern]]></set-property>
+    </add-item>
+
+    <add-item item-descriptor="Topic" id="9000002">
+      <set-property name="name" value="Top Solutions"/>
+      <set-property name="displayName" value="Top Solutions"/>
+      <set-property name="description" value="Orders browse results by the top solution score.  Special topic used only to build hot solutions list."/>
+      <set-property name="parent" value="9000000"/>
+      <set-property name="patterns"><![CDATA[svcTopSolutionsPattern]]></set-property>
+    </add-item>
+    
+    <add-item item-descriptor="Topic" id="9000003">
+      <set-property name="name" value="Best Bet Solutions"/>
+      <set-property name="displayName" value="Best Bet Solutions"/>
+      <set-property name="description" value="Orders browse results by the best bet score.  Special topic used only to build hot solutions list."/>
+      <set-property name="parent" value="9000000"/>
+      <set-property name="patterns"><![CDATA[svcBestBetsPattern]]></set-property>
+    </add-item>
+    
+  </import-items>
+</gsa-template>
+<!-- @version $Id: //application/SearchAdmin/version/10.0.3/common/src/data/initial/atgservice-topics-data.xml#2 $$Change: 651448 $-->

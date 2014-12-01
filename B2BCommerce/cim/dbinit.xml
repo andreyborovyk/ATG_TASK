@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE database-initializer SYSTEM "http://www.atg.com/dtds/dbinit_1_0.dtd">
+<database-initializer>
+	
+  
+  <schema id="catalogSchema">
+  <sql>
+			<path>
+				<create>
+					sql/db_components/${database}/b2b_product_catalog_ddl.sql
+				</create>
+				<drop>
+					sql/uninstall/${database}/drop_b2b_product_catalog_ddl.sql
+				</drop>
+			</path>
+		</sql>
+		
+  </schema>
+  
+	<schema id="coreSchema">
+		
+		<sql>
+			<path>
+				<create>
+					sql/db_components/${database}/b2b_order_ddl.sql
+				</create>
+				<drop>
+					sql/uninstall/${database}/drop_b2b_order_ddl.sql
+				</drop>
+			</path>
+		</sql>
+		
+		<sql>
+			<path>
+				<create>
+					sql/db_components/${database}/b2b_user_ddl.sql
+				</create>
+				<drop>
+					sql/uninstall/${database}/drop_b2b_user_ddl.sql
+				</drop>
+			</path>
+		</sql>
+    
+		<sql>
+			<path>
+				<create>
+					sql/db_components/${database}/contracts_ddl.sql
+				</create>
+				<drop>
+					sql/uninstall/${database}/drop_contracts_ddl.sql
+				</drop>
+			</path>
+		</sql>
+
+		<sql>
+			<path>
+				<create>
+					sql/db_components/${database}/invoice_ddl.sql
+				</create>
+				<drop>
+					sql/uninstall/${database}/drop_invoice_ddl.sql
+				</drop>
+			</path>
+		</sql>
+
+		<sql>
+			<path>
+				<create>
+					sql/db_components/${database}/organization_ddl.sql
+				</create>
+				<drop>
+					sql/uninstall/${database}/drop_organization_ddl.sql
+				</drop>
+			</path>
+		</sql>
+	</schema>
+	
+	<server-instance-type id="production">
+		<datasource id="nonswitchingCore">
+			<schema id="coreSchema"/>
+      <schema id="catalogSchema"/>
+		</datasource>	
+		<datasource id="switchingCore">
+			<schema id="coreSchema"/>
+		</datasource>	
+    <datasource id="switchingA">
+      <schema id="catalogSchema"/>
+		</datasource>	
+    <datasource id="switchingB">
+      <schema id="catalogSchema"/>
+		</datasource>	
+	</server-instance-type>
+	<server-instance-type id="staging">
+		<datasource id="stagingnonswitchingCore">
+			<schema id="coreSchema"/>
+      <schema id="catalogSchema"/>
+		</datasource>	
+		<datasource id="stagingswitchingCore">
+			<schema id="coreSchema"/>
+		</datasource>	
+        <datasource id="stagingswitchingA">
+      <schema id="catalogSchema"/>
+		</datasource>	
+    <datasource id="stagingswitchingB">
+      <schema id="catalogSchema"/>
+		</datasource>
+	</server-instance-type>
+	
+	<server-instance-type id="management">
+		<datasource id="all">
+			<schema id="coreSchema"/>
+		</datasource>	
+	</server-instance-type>
+	
+</database-initializer>
+<!-- @version $Id: //product/B2BCommerce/version/10.0.3/release/B2BCommerce/cim/dbinit.xml#2 $$Change: 651448 $-->

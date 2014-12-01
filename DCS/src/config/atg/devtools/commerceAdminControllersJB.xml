@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE controllers
+        PUBLIC "-//Art Technology Group, Inc.//DTD Repository Admin Controllers//EN"
+        "http://www.atg.com/dtds/ui/dps/admin_controllers_1.0.dtd">
+
+<controllers>
+
+  <initial-selectors>
+    <selector-values>
+      <selector name="productComboBox" value="basicAttributes"/>
+      <selector name="categoryComboBox" value="attributes"/>
+    </selector-values>
+  </initial-selectors>
+
+  <repository-controller id="RepositoryTree">
+    <property name="displayComponentKey" value="repositoryLinkTree"/>
+  </repository-controller>
+
+  <bean-controller id="CategoryNameForm" >
+    <property name="displayComponentKey" value="categoryNameForm"/>
+    <property name="controllerSourceId" value="RepositoryTree"/>
+    <property name="itemType" value="category"/>
+    <property name="selectable" value="false"/>
+  </bean-controller>
+
+  <bean-controller id="CategoryTable" >
+    <property name="displayComponentKey" value="categoryItemTable"/>
+    <property name="controllerSourceId" value="RepositoryTree"/>
+    <property name="itemType" value="category"/>
+    <property name="selectable" value="false"/>
+    <selector-values>
+      <selector name="categoryComboBox" value="attributes"/>
+    </selector-values>
+  </bean-controller>
+
+  <bean-controller id="CategoryThumbnailEditor" >
+    <property name="displayComponentKey" value="categoryThumbnailEditor"/>
+    <property name="controllerSourceId" value="RepositoryTree"/>
+    <property name="repositoryName" value="ProductCatalog"/>
+    <property name="sourcePropertyName" value="thumbnailImage"/>
+    <property name="itemType" value="category"/>
+    <property name="selectable" value="false"/>
+    <selector-values>
+      <selector name="categoryComboBox" value="thumbnailImage"/>
+    </selector-values>
+  </bean-controller>
+
+  <bean-controller id="CategorySmallImageEditor" >
+    <property name="displayComponentKey" value="categorySmallImageEditor"/>
+    <property name="controllerSourceId" value="RepositoryTree"/>
+    <property name="repositoryName" value="ProductCatalog"/>
+    <property name="sourcePropertyName" value="smallImage"/>
+    <property name="itemType" value="category"/>
+    <property name="selectable" value="false"/>
+    <selector-values>
+      <selector name="categoryComboBox" value="smallImage"/>
+    </selector-values>
+  </bean-controller>
+
+  <bean-controller id="CategoryLargeImageEditor" >
+    <property name="displayComponentKey" value="categoryLargeImageEditor"/>
+    <property name="controllerSourceId" value="RepositoryTree"/>
+    <property name="repositoryName" value="ProductCatalog"/>
+    <property name="sourcePropertyName" value="largeImage"/>
+    <property name="itemType" value="category"/>
+    <property name="selectable" value="false"/>
+    <selector-values>
+      <selector name="categoryComboBox" value="largeImage"/>
+    </selector-values>
+  </bean-controller>
+
+  <bean-controller id="CategoryTemplateEditor" >
+    <property name="displayComponentKey" value="categoryTemplateEditor"/>
+    <property name="controllerSourceId" value="RepositoryTree"/>
+    <property name="repositoryName" value="ProductCatalog"/>
+    <property name="sourcePropertyName" value="template"/>
+    <property name="itemType" value="category"/>
+    <property name="selectable" value="false"/>
+    <selector-values>
+      <selector name="categoryComboBox" value="template"/>
+    </selector-values>
+  </bean-controller>
+
+  <bean-controller id="ProductNameForm">
+    <property name="displayComponentKey" value="productNameForm"/>
+    <property name="controllerSourceId" value="RepositoryTree"/>
+    <property name="itemType" value="product"/>
+    <property name="selectable" value="false"/> 
+  </bean-controller>
+
+  <bean-controller id="ProductThumbnailEditor">
+    <property name="displayComponentKey" value="productThumbnailEditor"/>
+    <property name="controllerSourceId" value="RepositoryTree"/>
+    <property name="repositoryName" value="ProductCatalog"/>
+    <property name="sourcePropertyName" value="thumbnailImage"/>
+    <property name="itemType" value="product"/>
+    <property name="selectable" value="false"/>
+    <selector-values>
+      <selector name="productComboBox" value="thumbnailImage"/>
+    </selector-values>
+  </bean-controller>
+
+  <bean-controller id="ProductSmallImageEditor" >
+    <property name="displayComponentKey" value="productSmallImageEditor"/>
+    <property name="controllerSourceId" value="RepositoryTree"/>
+    <property name="repositoryName" value="ProductCatalog"/>
+    <property name="sourcePropertyName" value="smallImage"/>
+    <property name="itemType" value="product"/>
+    <property name="selectable" value="false"/>
+    <selector-values>
+      <selector name="productComboBox" value="smallImage"/>
+    </selector-values>
+  </bean-controller>
+
+  <bean-controller id="ProductLargeImageEditor" >
+    <property name="displayComponentKey" value="productLargeImageEditor"/>
+    <property name="controllerSourceId" value="RepositoryTree"/>
+    <property name="repositoryName" value="ProductCatalog"/>
+    <property name="sourcePropertyName" value="largeImage"/>
+    <property name="itemType" value="product"/>
+    <property name="selectable" value="false"/>
+    <selector-values>
+      <selector name="productComboBox" value="largeImage"/>
+    </selector-values>
+  </bean-controller>
+
+  <bean-controller id="ProductTemplateEditor">
+    <property name="displayComponentKey" value="productTemplateEditor"/>
+    <property name="controllerSourceId" value="RepositoryTree"/>
+    <property name="repositoryName" value="ProductCatalog"/>
+    <property name="sourcePropertyName" value="template"/>
+    <property name="itemType" value="product"/>
+    <property name="selectable" value="false"/>
+    <selector-values>
+      <selector name="productComboBox" value="template"/>
+    </selector-values>
+  </bean-controller>
+
+  <bean-controller id="RemainingAttributesTable" >
+    <property name="displayComponentKey" value="remainingAttributesTable"/>
+    <property name="controllerSourceId" value="RepositoryTree"/>
+    <property name="itemType" value="product"/>
+    <property name="selectable" value="false"/>
+    <selector-values>
+      <selector name="productComboBox" value="allAttributes"/>
+    </selector-values>
+  </bean-controller>
+
+  <bean-controller id="SkusMultiTable" >
+    <property name="displayComponentKey" value="skusMultiTable"/>
+    <property name="controllerSourceId" value="RepositoryTree"/>
+    <property name="sourcePropertyName" value="childSKUs"/>
+    <property name="selectable" value="true"/>
+    <property name="itemType" value="product"/>
+    <selector-values>
+      <selector name="productComboBox" value="skus"/>
+    </selector-values>
+  </bean-controller>
+
+  <bean-controller id="SkuNameForm" >
+    <property name="displayComponentKey" value="skuNameForm"/>
+    <property name="controllerSourceId" value="SkusMultiTable"/>
+    <property name="selectable" value="false"/>
+    <selector-values>
+      <selector name="productComboBox" value="skus"/>
+    </selector-values>
+  </bean-controller>
+
+  <bean-controller id="SkuItemTable" >
+    <property name="displayComponentKey" value="skusItemTable"/>
+    <property name="controllerSourceId" value="SkusMultiTable"/>
+    <selector-values>
+      <selector name="productComboBox" value="skus"/>       
+    </selector-values>
+  </bean-controller>
+
+  <bean-controller id="BasicAttributesForm" >
+    <property name="displayComponentKey" value="basicAttributesForm"/>
+    <property name="controllerSourceId" value="RepositoryTree"/>
+    <property name="repositoryName" value="ProductCatalog"/>
+    <property name="itemType" value="product"/>
+    <property name="selectable" value="false"/> 
+    <selector-values>
+      <selector name="productComboBox" value="basicAttributes"/>
+    </selector-values>
+  </bean-controller>
+
+  <bean-controller id="ThumbnailViewer">
+    <property name="displayComponentKey" value="thumbnail"/>
+    <property name="controllerSourceId" value="RepositoryTree"/>
+    <property name="repositoryName" value="ProductCatalog"/>
+    <property name="sourcePropertyName" value="thumbnailImage"/>
+    <property name="itemType" value="product"/>
+    <property name="selectable" value="false"/>
+    <selector-values>
+      <selector name="productComboBox" value="basicAttributes"/>
+    </selector-values>
+  </bean-controller>
+
+</controllers>
+<!-- @version $Id: //product/DCS/version/10.0.3/templates/DCS/config/atg/devtools/commerceAdminControllersJB.xml#2 $$Change: 651448 $ -->

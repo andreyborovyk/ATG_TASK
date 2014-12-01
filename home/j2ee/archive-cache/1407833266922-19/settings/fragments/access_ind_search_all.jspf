@@ -1,0 +1,162 @@
+
+ <dsp:getvalueof id="orgId" param="organizationId"> 
+ <dsp:getvalueof id="userFname" param="firstName">
+ <dsp:getvalueof id="userLname"  param="lastName">
+ <dsp:getvalueof id="userLogin" param="login">
+ <dsp:getvalueof id="userEmail" param="email">
+
+<img src="<%= clearGif %>" height="1" width="1" border="0"><br>
+
+<table cellpadding="6" cellspacing="0" border="0" bgcolor="#BAD8EC" width="100%"><tr><td>
+
+<font class="smaller">
+<i18n:message key="acl_general_narrow_returns_by_params">
+ <i18n:messageArg value="<%=i18n_bold%>"/>
+ <i18n:messageArg value="<%=i18n_end_bold%>"/>
+</i18n:message>
+</font>
+
+<table cellpadding=0 cellspacing=0 border=0><!-- 3 cols -->
+
+<form action="<%=urlTargetJsp%>" method="GET" NAME="search">
+<tr>
+
+<input type="hidden" name="hasSearched"      value="true">
+<input type="hidden" name="userGroupType"    value='<%=request.getParameter("userGroupType")%>'>
+<input type="hidden" name="paf_page_id"      value='<%=dsp_page_id  %>'>
+<input type="hidden" name="paf_gear_id"      value='<%=dsp_gear_id  %>'>
+<input type="hidden" name="paf_page_url"     value='<%=dsp_page_url %>'>
+<input type="hidden" name="paf_community_id" value='<%=dsp_community_id %>'>
+<input type="hidden" name="mode"             value='<%=mode%>'>
+
+<% userFname  = (userFname   == null ) ? "" :userFname ; %>
+ <td><font class="smaller"><b><i18n:message key="community_members_addidividuals_firstname"/></b></font><br>
+ <font class="small"><input name="firstName" type="text" value="<%=userFname%>"/></font><br><img src="<%= clearGif %>" height="4" width="1" border="0"><br></td>
+
+
+ <td><font class="smaller">&nbsp;&nbsp;</font></td>
+
+<%  userLogin  = ( userLogin  == null ) ? "" : userLogin ; %>
+ <td><font class="smaller"><b><i18n:message key="community_members_user_name"/></b></font><br>
+ <font class="small"><input name="login" type="text" value="<%=userLogin%>"/></font><br><img src="<%= clearGif %>" height="4" width="1" border="0"><br></td>
+
+</tr>
+
+<tr>
+
+<%userLname  = (userLname  == null ) ? "" : userLname  ; %>
+ <td><font class="smaller"><b><i18n:message key="community_members_addidividuals_lastname"/></b></font><br>
+ <font class="small"><input name="lastName" type="text" value="<%=userLname%>"/></font><br><img src="<%= clearGif %>" height="4" width="1" border="0"><br></td>
+
+ <td><font class="smaller">&nbsp;&nbsp;</font></td>
+
+<% userEmail = ( userEmail == null ) ? "" : userEmail ; %>
+ <td><font class="smaller"><b><i18n:message key="community_members_addidividuals_email"/></b></font><br>
+ <font class="small"><input name="email" type="text" value="<%=userEmail%>"/></font><br><br></td>
+
+</tr>
+
+<!--  ORG PULLDOWN -->
+<tr>
+<td colspan="3" align="LEFT">
+<font  class="smaller"><b><i18n:message key="community_members_addidividuals_organization"/></b>&nbsp;</font><br>
+<font  class="small">
+  <admin:GetProfileItemsAndLevels id="organizations">
+
+ <% String selectedItem = ""; %>
+  <select name=organizationId>
+     <option value=""/><i18n:message key="community_members_addidividuals_any"/>
+        <core:ForEach id="orgs"
+                      values="<%=organizations.getItemList()%>"
+                      castClass="atg.portal.admin.ItemAndLevel"
+                      elementId="organization">
+  <% selectedItem = (  ((atg.userdirectory.Organization)organization.getItem()).getPrimaryKey().equals(orgId) ) ?
+        "selected" : "" ; 
+  %>
+<option value="<%= (String)((atg.userdirectory.Organization)organization.getItem()).getPrimaryKey()  %>" <%=selectedItem%> /><%= ((atg.userdirectory.Organization)organization.getItem()).getName() %>
+
+        </core:ForEach>
+    </select>
+
+ </admin:GetProfileItemsAndLevels>
+  <input type="hidden" name="newSearch" value="true" />
+  <input type="SUBMIT"
+         name="submit"
+         value="<%=submitLabelSearch%>" />
+   </font>
+
+
+
+</form></td>
+ </tr>
+</table>
+
+
+<%
+ if (request.getParameter("hasSearched") != null ){
+   int  numberOfUsers =  users.getSearchUserCount(
+                             (String) orgId ,
+                             (String) userFname ,
+                             (String) userLname ,
+                             (String) userLogin ,
+                             (String) userEmail);
+
+   atg.portal.admin.PagingFormHandler pagingFH = (atg.portal.admin.PagingFormHandler) atg.servlet.ServletUtil.getDynamoRequest(request).resolveName("/atg/portal/admin/PagingFormHandler");
+
+   if ( numberOfUsers > 0 ) {
+     Integer position     = pagingFH.getCurrentPositionInSearchUsers(); 
+     Integer usersPerPage = pagingFH.getShowAtATime();  
+     if ( null == position )  position = new Integer(0) ;
+     int startRange = ((Integer) usersPerPage).intValue()  * ((Integer) position).intValue();
+     int endRange   = (((Integer) position).intValue() +1) * ((Integer) usersPerPage).intValue();
+     if ( request.getParameter("newSearch") != null )  startRange = 0 ;
+     if ( startRange == 0  || numberOfUsers < startRange ) {
+         pagingFH.setCurrentPositionInSearchUsers(new Integer (0));
+         position   = pagingFH.getCurrentPositionInSearchUsers();
+         startRange = ((Integer) usersPerPage).intValue()  * ((Integer) position).intValue();
+         endRange   = (((Integer) position).intValue() +1) * ((Integer) usersPerPage).intValue();
+     }
+     Collection searchedUsers = users.getUsersForLoginAndNameAndEmailAndOrganization( 
+                                 (String) orgId,
+                                 (String) userFname, 
+                                 (String) userLname, 
+                                 (String) userLogin, 
+                                 (String) userEmail,  
+                                 startRange, endRange, sortBy);
+    pageContext.setAttribute("userList",searchedUsers , pageContext.PAGE_SCOPE);
+%>
+
+  <%@include file="access_ind_next_previous.jspf" %>
+
+</td></tr></table>
+
+<% } else {  // there are no users in search results  %>
+
+</td></tr></table>
+
+<img src="<%=clearGif%>" height="1" width="1" border="0"><br>
+
+<table cellpadding="6" cellspacing="0" border="0" bgcolor="#BAD8EC" width="100%"><tr><td>
+<font class="smaller">
+
+<i18n:message key="acl_general_no_results_from_search_params">
+ <i18n:messageArg value="<%=i18n_bold%>"/>
+ <i18n:messageArg value="<%=i18n_end_bold%>"/>
+</i18n:message>
+
+</font>
+</td></tr></table>
+
+<% 
+  } // end there are no users in search results
+} else { //END hasSearched 
+%>
+</font>
+</td></tr></table>
+<% } %>
+ </dsp:getvalueof><%--  id="userEmail" --%>
+ </dsp:getvalueof><%--  id="userLogin" --%>
+ </dsp:getvalueof><%--  id="userLname" --%>
+ </dsp:getvalueof><%--  id="userFname" --%>
+ </dsp:getvalueof><%--  id="orgId"     --%>
+<%-- @version $Id: //app/portal/version/10.0.3/paf/settings.war/fragments/access_ind_search_all.jspf#2 $$Change: 651448 $--%>

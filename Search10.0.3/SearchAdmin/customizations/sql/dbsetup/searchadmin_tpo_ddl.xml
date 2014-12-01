@@ -1,0 +1,81 @@
+<?xml version="1.0" ?>
+<!DOCTYPE schema  SYSTEM "http://road.atg.com/dtds/ddlgen/schema.dtd">
+
+<schema name="searchadmin_tpo_ddl">
+
+  <table name="srch_tpo_sets">
+    <column name="tpo_set_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="tpo_set_name" nullable="n" i18n="y">
+      <column-type db="generic" length="254" type="varchar"/>
+    </column>
+    <column name="tpo_set_desc" nullable="y" i18n="y">
+      <column-type db="generic" length="254" type="varchar"/>
+    </column>
+    <column name="tpo_set_created" nullable="y">
+      <column-type db="generic" type="date"/>
+    </column>
+    <column name="tpo_set_date" nullable="y">
+      <column-type db="generic" type="date"/>
+    </column>
+    <column name="tpo_set_level" nullable="n">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <column name="tpo_set_project_id" nullable="y">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+	
+    <primary-key name="srch_tpo_sets_p">
+      <index-column column="tpo_set_id" order="asc" seq="1"/>
+    </primary-key>
+
+    <index name="srch_tpo_sets_i1" table="srch_tpo_sets">
+      <index-column column="tpo_set_level" seq="1"/>
+    </index>
+    <index name="srch_tpo_sets_i2" table="srch_tpo_sets">
+      <index-column column="tpo_set_project_id" seq="1"/>
+    </index>
+  </table>
+
+  <table name="srch_tpo_opts">
+    <column name="tpo_opt_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="tpo_opt_name" nullable="n">
+      <column-type db="generic" length="254" type="varchar"/>
+    </column>
+    <column name="tpo_opt_set_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+
+    <primary-key name="srch_tpo_opts_p">
+      <index-column column="tpo_opt_id" order="asc" seq="1"/>
+    </primary-key>
+
+    <!-- FK is commented out because we have some problems with cascade delete
+    <foreign-key referenced-table="srch_tpo_sets" name="srch_tpo_opts_f" index-name="srch_tpo_opts_x">
+      <fkey-column referencing-column="tpo_opt_set_id" referenced-column="tpo_set_id"/>
+    </foreign-key>
+    -->
+  </table>
+
+  <table name="srch_tpo_values">
+    <column name="tpo_value_opt_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="tpo_value_item" nullable="y">
+      <column-type db="generic" length="100" type="varchar"/>
+    </column>
+    <column name="tpo_value_seq" nullable="n">
+      <column-type db="generic" type="integer"/>
+    </column>
+
+    <primary-key name="srch_tpo_values_p">
+      <index-column column="tpo_value_opt_id" order="asc" seq="1"/>
+      <index-column column="tpo_value_seq" order="asc" seq="2"/>
+    </primary-key>
+  </table>
+
+</schema>
+    <!-- @version $Id: //application/SearchAdmin/version/10.0.3/customizations/src/sql/searchadmin_tpo_ddl.xml#2 $$Change: 651448 $-->

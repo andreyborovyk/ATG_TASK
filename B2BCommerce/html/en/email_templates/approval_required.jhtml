@@ -1,0 +1,38 @@
+<!-- Title: ApprovalRequiredEmail -->
+<setvalue param="order" value="param:message.order">
+<setvalue param="profile" value="param:message.profile">
+<setvalue param="approver" value="param:message.profile.approvers[0]">
+
+<setvalue param="messageTo" value="param:approver.email">
+<setvalue param="messageReplyTo" value="DCS5Team@example.com">
+<setvalue param="messageFrom" value="DCS5Team@example.com">
+<setvalue param="messageSubject" value="Order approval required">
+<setvalue param="mailingName" value="ApprovalRequired">
+
+<p> Dear <valueof param="approver.firstName">Order Approver</valueof>
+ <valueof param="approver.lastName"></valueof>,
+
+<p>An order has been placed that requires your approval.<br>
+<p>Order id: <valueof param="order.id"></valueof> <!-- Need link to order approval page.--> <br>
+Buyer: <valueof param="profile.firstName">Valued Customer</valueof>
+ <valueof param="profile.lastName"></valueof><br>
+
+<!-- Itemized order -->
+<br>
+<droplet src="/Dynamo/commerce/en/email_templates/DisplayOrderSummary.jhtml">
+  <param name="order" value="param:order">
+  <param name="displayStockStatus" value="false">
+</droplet>
+
+<!-- Shipping information -->
+<droplet src="/Dynamo/commerce/en/email_templates/DisplayShippingInfo.jhtml">
+  <param name="order" value="param:order">
+</droplet>
+
+<!-- Payment information -->
+<droplet src="/Dynamo/commerce/en/email_templates/DisplayPaymentInfo.jhtml">
+  <param name="order" value="param:order">
+</droplet>
+
+<java>/* @version $Id: //product/B2BCommerce/version/10.0.3/release/B2BCommerce/html/en/email_templates/approval_required.jhtml#2 $$Change: 651448 $*/</java>
+

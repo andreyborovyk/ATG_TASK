@@ -1,0 +1,54 @@
+<importbean bean="/atg/demo/ratings/RatingsManager">
+<importbean bean="/atg/demo/ratings/RatingsFormHandler">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+
+Please take a moment to
+<a href="ratings-form.jhtml">
+  <param name="pagename" value="param:pagename">
+  rate this page
+</a>.
+
+<hr>
+Current ratings for this page:<p>
+<droplet name="/atg/demo/ratings/droplet/LookUp">
+  <param name="map" value="bean:RatingsManager.statsMap">
+  <param name="key" value="param:pagename">
+  <oparam name="noMatch">
+    Currently no ratings for this page, try running the StatsUpdater.
+  </oparam>
+  <oparam name="output">
+        <table border=1> <!-- begin outter table -->
+	  <tr>
+	    <td><valueof bean="RatingsFormHandler.rating1Label">no label</valueof></td>
+	    <td><valueof bean="RatingsFormHandler.rating2Label">no label</valueof></td>
+	    <td><valueof bean="RatingsFormHandler.rating3Label">no label</valueof></td>
+          </tr>
+	  <tr>
+	    <td align=right><valueof param="value.rating1Percentage"></valueof>%</td>
+	    <td align=right><valueof param="value.rating2Percentage"></valueof>%</td>
+	    <td align=right><valueof param="value.rating3Percentage"></valueof>%</td>
+          </tr>
+          <tr>
+	    <td colspan=3>
+	    <table border=1> <!-- begin inner table -->
+	      <tr>
+		<td>Comments</td>
+	      </tr>
+	      <tr>
+		<td>
+		    <droplet name="ForEach">
+		      <param name="array" value="param:value.comments">
+		      <oparam name="output">
+			<valueof param=element></valueof><br>
+   		      </oparam>
+		    </droplet>
+		</td>
+	      </tr>
+	    </table> <!-- end inner table -->
+  	    </td>
+          </tr>
+        </table> <!-- end outter table -->
+  </oparam>
+</droplet>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DASTutorial/html/ratings/form-link.jhtml#2 $$Change: 651448 $*/</java>
+

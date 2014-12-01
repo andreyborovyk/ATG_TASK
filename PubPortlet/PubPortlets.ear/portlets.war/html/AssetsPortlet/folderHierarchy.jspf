@@ -1,0 +1,33 @@
+<%--
+  Select list of a folder and its parents. Used in conjunction with AssetSearchFormHandler.
+
+  @version $Id: //product/PubPortlet/version/10.0.3/portlets.war/html/AssetsPortlet/folderHierarchy.jspf#2 $$Change: 651448 $
+  @updated $DateTime: 2011/06/07 13:55:45 $$Author: rbarbier $
+  --%>
+<!-- Begin AssetPortlet's folderHierarchy.jspf -->
+<fmt:setBundle var="assetsBundle" basename="atg.epub.portlet.AssetsPortlet.Resources"/>
+
+<div id="assetBrowserDirectoryList">
+  <table cellpadding="0" cellspacing="0" border="0" class="sideBarHierarchy">
+    <tr>
+      <td class="tableInfo">
+        <label class="formLabelNoBorderGray">
+          &nbsp; <fmt:message key="fc-current-directory" bundle="${assetsBundle}"/>:
+          <br />
+          <dspel:select bean="${assetSearchHandlerPath}.folderPath" 
+            priority="10"
+            onchange="changeSearchDirectory('searchform', '${searchActionURL}');"
+            iclass="formElement" style="margin-top: 4px;">
+            <c:forEach items="${assetSearchHandler.parentFolders}" var="parent">
+              <dspel:option label="${parent.name}" value="${parent.path}">
+                <c:out value="${parent.name}"/>
+              </dspel:option>
+            </c:forEach>
+          </dspel:select>
+        </label>
+      </td>
+    </tr>
+  </table>
+</div>
+<!-- End AssetPortlet's folderHierarchy.jspf -->
+<%-- @version $Id: //product/PubPortlet/version/10.0.3/portlets.war/html/AssetsPortlet/folderHierarchy.jspf#2 $$Change: 651448 $--%>

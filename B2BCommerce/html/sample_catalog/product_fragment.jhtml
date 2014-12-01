@@ -1,0 +1,68 @@
+<DECLAREPARAM NAME="childProduct" CLASS="java.lang.Object" DESCRIPTION="The current product to display">
+
+<java>
+/*
+ * In the following code we switch on the type of product that we are going to display.
+ * If the product is a gift certificate than it is a soft good and must be displayed
+ * with a different page.  The display_softgood_product.jhtml differs from the  
+ * display_product.jhtml in that it allows the page to take in information unique to
+ * soft goods.  This is not the recommeneded approach in a production environment.  Rather,
+ * the preferred mechansim is to use the template property of the product.  Refer to
+ * the Pioneer Cycling store on how to do this.
+ *
+ */
+</java>
+
+<droplet bean="/atg/dynamo/droplet/Switch">
+<param name="value" value="param:childProduct.displayName">
+
+  <oparam name="Gift Certificate">
+    <a href="display_softgood_product.jhtml">
+     <param name="id" value="param:childProduct.repositoryId">
+     <valueof param="childProduct.displayName">ERROR:no product name</valueof>
+    </a>
+  </oparam>
+
+  <oparam name="default">
+    <DROPLET BEAN="/atg/dynamo/droplet/ForEach">
+      <PARAM NAME="array" VALUE="param:childProduct.childSKUs">
+      <PARAM NAME="elementName" value="sku">
+      <OPARAM NAME="output">
+          <valueof param="sku.manufacturer_part_number">No part number</VALUEOF>
+      </OPARAM>
+    </DROPLET>
+    <a href="display_product.jhtml">
+     <param name="id" value="param:childProduct.repositoryId">
+     <valueof param="childProduct.displayName">ERROR:no product name</valueof>
+    </a>
+    &nbsp;<valueof param="childProduct.description"></valueof>
+  </oparam>
+
+</droplet>
+
+<BR>
+
+<java>
+// This example code snippet can be used to link to a template associated with the
+// product. If this template was used in the context of the Pioneer Cycling 
+// Store these template hrefs would jump back into the bike store, we do not want that 
+// for these example pages.For these devtest pages we have just made a simple template 
+// that all products will use. 
+/*
+<droplet bean="/atg/dynamo/droplet/IsNull">
+  <param name="value" value="param:childProduct.template">
+  <oparam name="true">
+    <valueof param="childProduct.displayName">ERROR:no product name</valueof>
+  </oparam>
+  <oparam name="false">
+    <a href="param:childProduct.template.url">
+      <param name="id" value="param:childProduct.repositoryId">
+      <valueof param="childProduct.displayName">ERROR:no product name</valueof>
+    </a>
+  </oparam>
+</droplet>
+<BR>
+*/
+</java>
+<java>/* @version $Id: //product/B2BCommerce/version/10.0.3/release/B2BCommerce/html/sample_catalog/product_fragment.jhtml#2 $$Change: 651448 $*/</java>
+

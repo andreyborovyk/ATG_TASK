@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE gsa-template
+ PUBLIC "-//Art Technology Group, Inc.//DTD Dynamo Security//EN"
+   "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+<gsa-template>
+  <header>
+    <name>TermWeightsRepository</name>
+    <author>pkouzmit</author>
+    <description>This file defines the term weight repository</description>
+  </header>
+  
+  <item-descriptor name="termWeightSet" default="true">
+    <table name="srch_tw_set" id-column-names="tw_set_id" type="primary">
+      <property name="id" column-name="tw_set_id" data-type="string" required="true"/>
+      <property name="name" column-name="tw_set_name" data-type="string" required="true"/>
+      <property name="description" column-name="tw_set_desc" data-type="string" required="false"/>
+      <property name="language" column-name="tw_set_language" data-type="string" required="true"/>
+      <property name="readonly" column-name="tw_set_readonly" data-type="boolean" required="false"/>
+      <property name="lastModified" column-name="tw_set_last_mod" required="true" data-type="date"/>
+    </table>
+    <table name="srch_tw_term" type="multi" id-column-name="tw_term_set_id">
+      <property name="termWeights" column-name="tw_term_id" cascade="delete" data-type="set"
+                component-item-type="termWeight" />
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="termWeight">
+    <table name="srch_tw_term" id-column-name="tw_term_id" type="primary">
+      <property name="id" column-name="tw_term_id" data-type="string" required="true"/>
+      <property name="set" column-name="tw_term_set_id" item-type="termWeightSet" required="false"/>
+      <property name="name" column-name="tw_term_name" data-type="string" required="true"/>
+      <property name="weight" column-name="tw_term_weight" data-type="short" required="true"/>
+    </table>
+  </item-descriptor>
+</gsa-template>
+<!-- @version $Id: //application/SearchAdmin/version/10.0.3/customizations/src/config/atg/searchadmin/TermWeightsRepository.xml#2 $$Change: 651448 $-->

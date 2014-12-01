@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE generic-activities
+        PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN"
+        "http://www.atg.com/dtds/activitymanager/activitymanager_1.0.dtd">
+
+<generic-activities>
+  <activity>
+    <id>projectBrowse</id>
+    <resource-bundle>atg.epub.activity.ActivityResources</resource-bundle>
+    <display-name-resource>projectListDisplayName</display-name-resource>
+    <description-resource>projectListDescription</description-resource>
+    <destination-page>
+      <url>/atg/bcc/process?projectView=0</url>
+      <acl>Profile$role$epubAdmin:read;Profile$role$epubSuperAdmin:read;Profile$role$epubManager:read;Profile$role$epubUser:read;</acl>
+    </destination-page>
+  </activity>
+  <activity>
+    <id>assetBrowse</id>
+    <resource-bundle>atg.epub.activity.ActivityResources</resource-bundle>
+    <display-name-resource>browseDisplayName</display-name-resource>
+    <description-resource>browseDescription</description-resource>
+    <destination-page>
+      <url>/AssetBrowse/assetBrowse.jsp</url>
+      <acl>Profile$role$epubAdmin:read;Profile$role$epubSuperAdmin:read;Profile$role$epubManager:read;Profile$role$epubUser:read;</acl>
+    </destination-page>
+  </activity>
+  <activity>
+    <id>adminConsole</id>
+    <resource-bundle>atg.epub.activity.ActivityResources</resource-bundle>
+    <display-name-resource>adminDisplayName</display-name-resource>
+    <description-resource>adminDescription</description-resource>
+    <destination-page>
+      <url>/atg/atgadmin</url>
+      <acl>Profile$role$epubAdmin:read;Profile$role$epubSuperAdmin:read;</acl>
+    </destination-page>
+  </activity>
+</generic-activities>
+<!-- @version $Id: //product/Publishing/version/10.0.3/pws/config/atg/bizui/activity/publishingActivities.xml#2 $$Change: 651448 $-->

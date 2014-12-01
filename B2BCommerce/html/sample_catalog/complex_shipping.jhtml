@@ -1,0 +1,176 @@
+<importbean bean="/atg/dynamo/droplet/Switch">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/BeanProperty">
+<importbean bean="/atg/dynamo/droplet/ErrorMessageForEach">
+<importbean bean="/atg/commerce/order/purchase/ShippingGroupDroplet">
+<importbean bean="/atg/commerce/order/purchase/ShippingGroupFormHandler">
+<importbean bean="/atg/dynamo/droplet/IsEmpty">
+<importbean bean="/atg/dynamo/droplet/IsNull">
+<importbean bean="/atg/userprofiling/Profile">
+<importbean bean="/atg/commerce/pricing/AvailableShippingMethods">
+<importbean bean="/atg/commerce/pricing/UserPricingModels">
+<importbean bean="/atg/commerce/order/purchase/CreateHardgoodShippingGroupFormHandler">
+<importbean bean="/atg/commerce/order/purchase/CreateElectronicShippingGroupFormHandler">
+
+<setvalue bean="Profile.currentLocation" value="checkout">
+<html>
+<head>
+<title>Shipping Information</title>
+</head>
+
+<body>
+<a href="index.jhtml">Catalog Home</a> - 
+<a href="product_search.jhtml">Product Search</a> - 
+<a href="shoppingcart.jhtml">Shopping Cart</a> - 
+<a href="lists.jhtml">My Lists</a> - 
+<a href="comparison.jhtml">Product Comparison</a> -
+<a href="giftlist_search.jhtml">Gift List Search</a> - 
+<droplet bean="/atg/dynamo/droplet/Switch">
+  <param name="value" value="bean:/atg/userprofiling/Profile.transient">
+  <oparam name="false">
+    <a href="logout.jhtml">Logout</a>
+  </oparam>
+  <oparam name="true">
+    <a href="login.jhtml">Login</a> or <a href="register.jhtml">Register</a>
+  </oparam>
+</droplet>
+<BR>
+<i>location: <valueof bean="Profile.currentLocation"></valueof></i><p>
+
+<java>/* Check for errors */</java>
+<droplet name="Switch">
+  <param name="value" value="bean:ShippingGroupFormHandler.formError">
+  <oparam name="true">
+    <font color=cc0000><STRONG><UL>
+      <droplet name="ErrorMessageForEach">
+        <param name="exceptions" value="bean:ShippingGroupFormHandler.formExceptions">
+        <oparam name="output">
+        <LI> <valueof param="message"></valueof>
+        </oparam>
+      </droplet>
+    </UL></STRONG></font>
+  </oparam>
+</droplet>
+
+
+<droplet bean="ShippingGroupDroplet">
+  <param name="clearShippingGroups" value="false">
+  <param name="initShippingGroups" value="false">
+  <param name="initShippingInfos" value="param:init">
+  <oparam name="output">
+  <!-- begin output -->
+
+<table border=0 cellpadding=0 cellspacing=0 width=800>
+  
+  <tr>
+    <td width=55></td>
+  <td valign="top" width=745>
+  <table border=0 cellpadding=4 width=80%>
+    <tr><td></td></tr>
+    <tr><td></td></tr>
+    <tr valign=top>
+        <td>
+        <java>/* table with multiple rows with eleven cells */</java>
+        <table border=0 cellpadding=4 cellspacing=1 width=100%>
+          <tr> 
+            <td colspan=12><span class=help>To ship a line item to another address select the address and click the "Save" button. To ship only some of the items to another address change the quanity and select the address. You must save changes individually before continuing.
+            </span></td>
+          </tr>
+          <tr bgcolor="#666666" valign=bottom>
+            <td colspan=2><span class=smallbw>Part #</span></td>
+            <td colspan=2><span class=smallbw>Name</span></td>
+            <td colspan=2 align=middle><span class=smallbw>Qty</span></td>
+            <td colspan=2 align=middle><span class=smallbw>Qty to move</span></td>
+            <td colspan=2 align=middle><span class=smallbw>Shipping address</span></td>
+            <td colspan=2><span class=smallbw>Save changes</span></td>
+
+          </tr>
+          <java>/* get the real shopping cart items */</java>
+          <droplet bean="ForEach">
+            <param name="array" value="param:order.commerceItems">
+            <oparam name="output">
+              <setvalue param="commerceItem" value="param:element">
+              <setvalue bean="ShippingGroupFormHandler.listId" value="param:commerceItem.id">
+              <droplet bean="ForEach">
+                <param name="array" value="bean:ShippingGroupFormHandler.currentList">
+                <oparam name="output">
+                  <!-- begin line item -->
+                  <setvalue param="cisiItem" value="param:element">
+                  <form action="complex_shipping.jhtml" method="post">
+                  <tr valign=top>
+                   <td><nobr><valueof param="commerceItem.auxiliaryData.catalogRef.manufacturer_part_number"></valueof></nobr></td>
+                   <td></td>
+                   <td><valueof param="commerceItem.auxiliaryData.catalogRef.displayName"></valueof></td>
+                   <td></td>
+        
+                   <td align=right><valueof param="element.quantity"></valueof></td>
+                   <td>&nbsp;</td>
+                   <td>
+                   <input type="text" size=4 value="param:element.quantity"
+                          bean="ShippingGroupFormHandler.currentList[param:index].splitQuantity"></td>
+                   <td>&nbsp;</td>
+                   <td>
+                     <select bean="ShippingGroupFormHandler.currentList[param:index].splitShippingGroupName">
+                     <droplet bean="ForEach">
+                       <param name="array" value="param:shippingGroups">
+                       <oparam name="output">
+                         <droplet bean="Switch">
+                           <param name="value" value="param:key">
+                           <oparam name="param:cisiItem.shippingGroupName">
+                             <option value="param:key" selected><valueof param="key"></valueof>
+                           </oparam>
+                           <oparam name="default">
+                             <option value="param:key" unselected><valueof param="key"></valueof>
+                           </oparam>
+                         </droplet>
+                       </oparam>
+                     </droplet>
+                     </select>
+                   </td>
+                   <td></td>
+                   <td>
+                     <input type="hidden" bean="ShippingGroupFormHandler.splitShippingInfosSuccessURL" value="complex_shipping.jhtml?init=false">
+                     <input type="hidden" priority=9 bean="ShippingGroupFormHandler.ListId" value="param:commerceItem.id">
+                     <input type=submit bean="ShippingGroupFormHandler.splitShippingInfos" value=" Save ">
+                   </td>
+                  </tr>
+                  </form>
+                  <!-- end line item -->
+                </oparam>
+              </droplet><!-- end inner ForEach -->
+            </oparam>
+          </droplet><!-- end outer ForEach -->
+
+        <tr>
+          <td colspan=12>
+          <java>/* table with one row with one cell */</java>
+          <table border=0 cellpadding=0 cellspacing=0 width=100%>
+            <tr bgcolor="#666666">
+              <td></td>
+            </tr>
+          </table>
+          </td>
+        </tr>
+      </table>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <form action="complex_shipping.jhtml" method="post">
+        <input type="hidden" bean="ShippingGroupFormHandler.applyShippingGroupsSuccessURL" value="billing.jhtml?init=true">
+        <input type=submit bean="ShippingGroupFormHandler.applyShippingGroups" value="Continue">
+        </form>
+     </td>
+   </tr>
+ </table>
+ </td>
+</tr>
+</table>
+
+  <!-- end output -->
+  </oparam>
+</droplet><!-- end ShippingGroupDroplet -->
+
+</body>
+</html>
+<java>/* @version $Id: //product/B2BCommerce/version/10.0.3/release/B2BCommerce/html/sample_catalog/complex_shipping.jhtml#2 $$Change: 651448 $*/</java>

@@ -1,0 +1,44 @@
+#!/bin/sh
+
+#
+# Check that DYNAMO_HOME and DAS_ROOT are set
+#
+PROGRAM_DIR=`dirname $0`
+. $PROGRAM_DIR/checkDynamoHome.sh
+
+#
+# Load in default environment values
+#
+. $DYNAMO_HOME/bin/dynamoEnv.sh
+
+#
+# Set extra environment variables
+#
+. $DYNAMO_HOME/localconfig/environment.sh
+
+#
+# Set RMI port to default value if it hasn't already been set
+#
+if [ "x$DYNAMO_RMI_PORT" = "x" ]; then
+  DYNAMO_RMI_PORT=8860
+fi
+
+if [ "x$DAS_ROOT" = "x" ] ; then
+    EXTRA_JAVA_ARGS=" -Datg.dynamo.modulepath=${DYNAMO_ROOT}"
+else
+    echo DAS_ROOT is $DAS_ROOT
+    EXTRA_JAVA_ARGS=" -Datg.j2eeserver.root=${DAS_ROOT} -Datg.dynamo.modulepath=${DYNAMO_ROOT}:${DAS_ROOT}"
+fi
+
+#
+# startACC
+#
+${JAVA_VM} -Xms96m -Xmx160m \
+           -Djava.security.policy=$DYNAMO_HOME/lib/java.policy \
+           -Djava.protocol.handler.pkgs=atg.net.www.protocol \
+           -Djava.naming.factory.url.pkgs=atg.jndi.url \
+           ${EXTRA_JAVA_ARGS} \
+           -cp ${DYNAMO_HOME}/lib/launcher.jar:${DYNAMO_HOME}/../DAS-UI/lib/client-stubs.jar \
+           atg.applauncher.dynamo.LocalACCLauncher \
+           -host localhost -port ${DYNAMO_RMI_PORT} -root ${DYNAMO_HOME}/.. \
+           -home ${DYNAMO_HOME}

@@ -1,0 +1,38 @@
+<%-- Page fragment that renders form success and failure messages. --%>
+
+<dsp:importbean bean="/atg/portal/admin/SuccessMessageProcessor"/>
+<dsp:importbean bean="/atg/portal/admin/FailureMessageProcessor"/>
+
+<dsp:getvalueof id="failureMessageProcessor" idtype="atg.portal.admin.I18nMessageProcessor" bean="FailureMessageProcessor">
+<dsp:getvalueof id="successMessageProcessor" idtype="atg.portal.admin.I18nMessageProcessor" bean="SuccessMessageProcessor">
+<%
+  failureMessageProcessor.localizeMessages(request, response);
+  successMessageProcessor.localizeMessages(request, response);
+%>
+
+<%-- Previous submission success/failure reporting --%>
+<dsp:getvalueof id="successMessages" idtype="java.util.List" bean="SuccessMessageProcessor.messages">
+  <core:ForEach id="successIterator"
+                values="<%=successMessages%>"
+                castClass="String"
+                elementId="successMessage">
+<img src='<%= response.encodeURL("images/info.gif")%>'>&nbsp;&nbsp;<font class="info"><%=successMessage%></font><br>
+  </core:ForEach>
+</dsp:getvalueof><%-- successMessages --%>
+
+<dsp:getvalueof id="failureMessages" idtype="java.util.List" bean="FailureMessageProcessor.messages">
+  <core:ForEach id="failureIterator"
+              values="<%=failureMessages%>"
+              castClass="String"
+              elementId="failureMessage">
+    <img src='<%=response.encodeURL("images/error.gif")%>' >&nbsp;&nbsp;<font class="error"><%=failureMessage%></font><br>
+  </core:ForEach>
+</dsp:getvalueof><%-- failureMessages --%>
+
+<%
+   failureMessageProcessor.clear();
+   successMessageProcessor.clear();
+%>
+</dsp:getvalueof><%-- successMessages --%>
+</dsp:getvalueof><%-- failureMessages --%>
+<%-- @version $Id: //app/portal/version/10.0.3/paf/admin.war/form_messages.jspf#2 $$Change: 651448 $--%>

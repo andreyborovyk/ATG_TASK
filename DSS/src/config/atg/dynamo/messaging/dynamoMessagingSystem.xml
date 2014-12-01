@@ -1,0 +1,758 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<dynamo-message-system>
+
+  <!-- patch bay definitions -->
+  <patchbay>
+
+    <message-source>
+      <nucleus-name>
+        /atg/scenario/DSSMessageSource
+      </nucleus-name>
+
+      <output-port>
+        <port-name>
+          SlotItemRequest
+        </port-name>
+        <output-destination>
+          <provider-name>
+            local
+          </provider-name>
+          <destination-name>
+            localdms:/local/DSSTopic/SlotItemRequestEvents
+          </destination-name>
+          <destination-type>
+            Topic
+          </destination-type>
+        </output-destination>
+      </output-port>
+
+      <output-port>
+        <port-name>
+          SlotItemsFilled
+        </port-name>
+        <output-destination>
+          <provider-name>
+            local
+          </provider-name>
+          <destination-name>
+            localdms:/local/DSSTopic/SlotItemsFilledEvents
+          </destination-name>
+          <destination-type>
+            Topic
+          </destination-type>
+        </output-destination>
+      </output-port>
+
+      <output-port>
+        <port-name>
+          DisableProcessEvents
+        </port-name>
+        <output-destination>
+          <destination-name>
+	    patchbay:/sqldms/DSSTopic/DisableScenarioEvents
+          </destination-name>
+          <destination-type>
+            Topic
+          </destination-type>
+        </output-destination>
+      </output-port>
+
+      <output-port>
+        <port-name>
+          ProcessEndEvents
+        </port-name>
+        <output-destination>
+          <destination-name>
+	    patchbay:/sqldms/DSSQueue/ScenarioEndEvents
+          </destination-name>
+          <destination-type>
+            Queue
+          </destination-type>
+        </output-destination>
+      </output-port> 
+     </message-source>
+
+     <message-source>
+      <nucleus-name>
+        /atg/scenario/ScenarioManager
+      </nucleus-name>
+
+      <output-port>
+        <port-name>
+          IndividualTimers
+        </port-name>
+	<!-- Uncomment this topic if any existing input ports use it
+	<output-destination>
+	  <destination-name>
+	    patchbay:/sqldms/DSSTopic/IndividualTimerEvents
+	  </destination-name>
+	  <destination-type>
+	    Topic
+	  </destination-type>
+	</output-destination>
+	-->
+	<output-destination>
+	  <destination-name>
+	    patchbay:/sqldms/DSSQueue/IndividualTimerEvents
+	  </destination-name>
+	  <destination-type>
+	    Queue
+	  </destination-type>
+	</output-destination>
+      </output-port>
+    </message-source>
+
+    <message-source>
+      <nucleus-name>
+        /atg/markers/RepositoryMarkerMessageSource
+      </nucleus-name>
+      
+      <output-port>
+        <port-name>
+	        Markers
+	      </port-name>
+        <output-destination>
+          <provider-name>
+	          local
+          </provider-name>
+          <destination-name>
+            localdms:/local/Repository/MarkerEvents
+          </destination-name>
+          <destination-type>
+            Topic
+          </destination-type>
+        </output-destination>
+      </output-port>
+    </message-source>
+
+    <message-sink>
+
+      <nucleus-name>
+        /atg/scenario/ScenarioManager
+      </nucleus-name>
+
+      <input-port>
+        <port-name>
+          IndividualEvents
+        </port-name>
+
+        <input-destination>
+    	    <provider-name>
+	          local
+	        </provider-name>
+	        <destination-name>
+	          localdms:/local/Repository/MarkerEvents
+	        </destination-name>
+	        <destination-type>
+	          Topic
+	        </destination-type>
+        </input-destination>
+
+	      <input-destination>
+	        <provider-name>
+	          local
+	        </provider-name>
+	        <destination-name>
+	          localdms:/local/DPSTopic/LoginEvents
+	        </destination-name>
+	        <destination-type>
+	          Topic
+	        </destination-type>
+	      </input-destination>
+
+	      <input-destination>
+	        <provider-name>
+	          local
+	        </provider-name>
+	        <destination-name>
+	          localdms:/local/DPSTopic/LogoutEvents
+	        </destination-name>
+	        <destination-type>
+	          Topic
+	        </destination-type>
+	      </input-destination>
+
+	      <input-destination>
+	        <provider-name>
+	          local
+	        </provider-name>
+	        <destination-name>
+	          localdms:/local/DPSTopic/RegisterEvents
+	        </destination-name>
+	        <destination-type>
+	          Topic
+	        </destination-type>
+	      </input-destination>
+
+	      <input-destination>
+	        <provider-name>
+	          local
+	        </provider-name>
+	        <destination-name>
+	          localdms:/local/DPSTopic/AdminRegisterEvents
+	        </destination-name>
+	        <destination-type>
+	          Topic
+	        </destination-type>
+	      </input-destination>
+
+	      <input-destination>
+	        <provider-name>
+	          local
+	        </provider-name>
+	        <destination-name>
+	          localdms:/local/DPSTopic/StartSessionEvents
+	        </destination-name>
+	        <destination-type>
+	          Topic
+	        </destination-type>
+	      </input-destination>
+
+	      <input-destination>
+	        <provider-name>
+	          local
+	        </provider-name>
+	        <destination-name>
+	          localdms:/local/DPSTopic/EndSessionEvents
+	        </destination-name>
+	        <destination-type>
+	          Topic
+	        </destination-type>
+	      </input-destination>
+
+	      <input-destination>
+	        <provider-name>
+	          local
+	        </provider-name>
+	        <destination-name>
+	          localdms:/local/DPSTopic/PageVisitEvents
+	        </destination-name>
+	        <destination-type>
+	          Topic
+	        </destination-type>
+	      </input-destination>
+
+	      <input-destination>
+	        <provider-name>
+	          local
+	        </provider-name>
+	        <destination-name>
+	          localdms:/local/DPSTopic/ViewItemEvents
+	        </destination-name>
+	        <destination-type>
+	          Topic
+	        </destination-type>
+	      </input-destination>
+
+	      <input-destination>
+	        <provider-name>
+	          local
+	        </provider-name>
+	        <destination-name>
+	          localdms:/local/DPSTopic/ClickThroughEvents
+	        </destination-name>
+	        <destination-type>
+	          Topic
+	        </destination-type>
+	      </input-destination>
+
+              <input-destination>
+                <provider-name>
+                  local
+                </provider-name>
+                <destination-name>
+                  localdms:/local/DPSTopic/ReferrerEvents
+                </destination-name>
+                <destination-type>
+                  Topic
+                </destination-type>
+              </input-destination>
+
+	      <input-destination>
+	        <provider-name>
+	          local
+	        </provider-name>
+	        <destination-name>
+	          localdms:/local/DPSTopic/ProfilePropertyUpdateEvents
+	        </destination-name>
+	        <destination-type>
+	          Topic
+	        </destination-type>
+	      </input-destination>
+
+	      <input-destination>
+	        <provider-name>
+	          local
+	        </provider-name>
+	        <destination-name>
+	          localdms:/local/DPSTopic/AdminProfilePropertyUpdateEvents
+	        </destination-name>
+	        <destination-type>
+	          Topic
+	        </destination-type>
+	      </input-destination>
+
+        <input-destination>
+          <provider-name>
+            local
+          </provider-name>
+          <destination-name>
+            localdms:/local/DPSTopic/ProfileUpdateEvents
+          </destination-name>
+          <destination-type>
+            Topic
+          </destination-type>
+        </input-destination>
+
+        <input-destination>
+          <provider-name>
+            local
+          </provider-name>
+          <destination-name>
+            localdms:/local/DPSTopic/AdminProfileUpdateEvents
+          </destination-name>
+          <destination-type>
+            Topic
+          </destination-type>
+        </input-destination>
+
+	      <input-destination>
+	        <provider-name>
+	          local
+	        </provider-name>
+	        <destination-name>
+	          localdms:/local/DASTopic/FormSubmissionEvents
+	        </destination-name>
+	        <destination-type>
+	          Topic
+	        </destination-type>
+	      </input-destination>
+
+	      <input-destination>
+	        <provider-name>
+	          local
+	        </provider-name>
+	        <destination-name>
+	          localdms:/local/MultiSite/SiteChangedEvents
+	        </destination-name>
+	        <destination-type>
+	          Topic
+	        </destination-type>
+	      </input-destination>
+
+
+	      <input-destination>
+	        <provider-name>
+	          local
+	        </provider-name>
+	        <destination-name>
+	          localdms:/local/DSSTopic/SlotItemRequestEvents
+	        </destination-name>
+	        <destination-type>
+	          Topic
+	        </destination-type>
+	      </input-destination>
+
+	      <input-destination>
+	        <provider-name>
+	          local
+	        </provider-name>
+	        <destination-name>
+	          localdms:/local/DSSTopic/SlotItemsFilledEvents
+	        </destination-name>
+	        <destination-type>
+	          Topic
+	        </destination-type>
+	      </input-destination>
+
+        <input-destination>
+	  <provider-name>
+	    local
+	  </provider-name>
+          <destination-name>
+            localdms:/local/MessageImporter/IndividualEvents
+          </destination-name>
+          <destination-type>
+            Topic
+          </destination-type>
+        </input-destination>
+      </input-port>
+
+      <input-port>
+        <port-name>
+          ProcessUpdates
+        </port-name>
+	      <input-destination>
+	        <destination-name>
+	          patchbay:/sqldms/DSSTopic/ScenarioUpdateEvents
+	        </destination-name>
+	        <destination-type>
+	          Topic
+	        </destination-type>
+          <durable-subscriber-name>
+            scenarioUpdates
+          </durable-subscriber-name>
+	      </input-destination>
+      </input-port>
+
+      <input-port>
+        <port-name>
+          MigrationUpdates
+        </port-name>
+        <input-destination>
+          <destination-name>
+            patchbay:/sqldms/DSSTopic/ScenarioMigrationUpdateEvents
+          </destination-name>
+          <destination-type>
+            Topic
+          </destination-type>
+          <durable-subscriber-name>
+            scenarioMigrationUpdates
+          </durable-subscriber-name>
+	</input-destination>
+      </input-port>
+    </message-sink>
+
+
+  </patchbay>
+
+  <!-- local JMS definitions -->
+  <local-jms>
+    <jndi-prefix>/local</jndi-prefix>
+
+    <topic-name>/DSSTopic/SlotItemRequestEvents</topic-name>
+    <topic-name>/DSSTopic/SlotItemsFilledEvents</topic-name>
+    <topic-name>/Repository/MarkerEvents</topic-name>
+  </local-jms>
+
+  <!-- message registry definitions -->
+  <message-registry>
+    <message-family>
+      <message-family-name>
+        atgBusinessProcess
+      </message-family-name>
+
+      <message-type>
+        <jms-type>
+          atg.business.process.stage.reached
+        </jms-type>
+        <message-class>
+          atg.markers.bp.BusinessProcessEventMessage
+        </message-class>
+    	  <message-context>
+	        session
+	      </message-context>
+	      <display-name-resource>
+	        businessProcessReached
+	      </display-name-resource>
+	      <description-resource>
+	        businessProcessReachedDescription
+	      </description-resource>
+	      <resource-bundle>
+	        atg.markers.bp.BusinessProcessTemplateResources
+	      </resource-bundle>
+      </message-type>
+
+
+    </message-family>
+    <message-family>
+      <message-family-name>
+        atgMarkers
+      </message-family-name>
+      <message-type>
+        <jms-type>
+          atg.repository.marker.added
+        </jms-type>
+        <message-class>
+          atg.markers.MarkerAddedEventMessage
+        </message-class>
+	      <message-context>
+	        session
+	      </message-context>
+	      <display-name-resource>
+	        repositoryMarkerAdded
+	      </display-name-resource>
+	      <description-resource>
+	        repositoryMarkerAddedDescription
+	      </description-resource>
+	      <resource-bundle>
+	        atg.markers.MarkerTemplateResources
+	      </resource-bundle>
+      </message-type>
+
+      <message-type>
+        <jms-type>
+          atg.repository.marker.removed
+        </jms-type>
+        <message-class>
+          atg.markers.MarkerRemovedEventMessage
+        </message-class>
+	      <message-context>
+	        session
+	      </message-context>
+	      <display-name-resource>
+	        repositoryMarkerRemoved
+	      </display-name-resource>
+	      <description-resource>
+	        repositoryMarkerRemovedDescription
+	      </description-resource>
+	      <resource-bundle>
+	        atg.markers.MarkerTemplateResources
+	      </resource-bundle>
+      </message-type>
+
+      <message-type>
+        <jms-type>
+          atg.repository.marker.replaced
+        </jms-type>
+        <message-class>
+          atg.markers.MarkerReplacedEventMessage
+        </message-class>
+	      <message-context>
+	        session
+	      </message-context>
+	      <display-name-resource>
+	        repositoryMarkerReplaced
+	      </display-name-resource>
+	      <description-resource>
+	        repositoryMarkerReplacedDescription
+	      </description-resource>
+	      <resource-bundle>
+	        atg.markers.MarkerTemplateResources
+	      </resource-bundle>
+      </message-type>
+
+
+
+      <message-type>
+        <jms-type>
+          atg.profile.marker.added
+        </jms-type>
+        <message-class>
+          atg.markers.MarkerAddedEventMessage
+        </message-class>
+    	  <message-context>
+	        session
+	      </message-context>
+	      <display-name-resource>
+	        profileMarkerAdded
+	      </display-name-resource>
+	      <description-resource>
+	        profileMarkerAddedDescription
+	      </description-resource>
+	      <resource-bundle>
+	        atg.markers.MarkerTemplateResources
+	      </resource-bundle>
+      </message-type>
+
+      <message-type>
+        <jms-type>
+          atg.profile.marker.removed
+        </jms-type>
+        <message-class>
+          atg.markers.MarkerRemovedEventMessage
+        </message-class>
+	      <message-context>
+	        session
+	      </message-context>
+	      <display-name-resource>
+	        profileMarkerRemoved
+	      </display-name-resource>
+	      <description-resource>
+	        profileMarkerRemovedDescription
+	      </description-resource>
+	      <resource-bundle>
+	        atg.markers.MarkerTemplateResources
+	      </resource-bundle>
+      </message-type>
+
+      <message-type>
+        <jms-type>
+          atg.profile.marker.replaced
+        </jms-type>
+        <message-class>
+          atg.markers.MarkerReplacedEventMessage
+        </message-class>
+	      <message-context>
+	        session
+	      </message-context>
+	      <display-name-resource>
+	        profileMarkerReplaced
+	      </display-name-resource>
+	      <description-resource>
+	        profileMarkerReplacedDescription
+	      </description-resource>
+	      <resource-bundle>
+	        atg.markers.MarkerTemplateResources
+	      </resource-bundle>
+      </message-type>
+
+
+    </message-family>
+    <message-family>
+      <message-family-name>
+        atg
+      </message-family-name>
+
+      <message-type>
+        <jms-type>
+	        atg.dss.IndividualTimer
+        </jms-type>
+	      <message-class>
+	        atg.process.dms.InstanceTimerMessage
+	      </message-class>
+        <hidden>
+          true
+        </hidden>
+      </message-type>
+
+      <message-type>
+        <jms-type>
+	        atg.dss.CollectiveTimer
+        </jms-type>
+	      <message-class>
+	        atg.process.dms.InstanceTimerMessage
+	      </message-class>
+        <hidden>
+          true
+        </hidden>
+      </message-type>
+
+      <message-type>
+        <jms-type>
+  	      atg.dss.BatchTimer
+        </jms-type>
+	      <message-class>
+	        atg.process.dms.BatchTimerMessage
+	      </message-class>
+        <hidden>
+          true
+        </hidden>
+      </message-type>
+
+      <message-type>
+        <jms-type>
+          atg.dss.ScenarioUpdate
+        </jms-type>
+	<message-class>
+	  atg.scenario.dms.ScenarioUpdateMessage
+        </message-class>
+        <hidden>
+          true
+        </hidden>
+      </message-type>
+
+      <message-type>
+        <jms-type>
+          atg.dss.ProcessUpdate
+        </jms-type>
+        <message-class>
+          atg.process.dms.ProcessUpdateMessage
+        </message-class>
+        <hidden>
+          true
+        </hidden>
+      </message-type>
+
+      <message-type>
+        <jms-type>
+          atg.dss.MigrationUpdate
+        </jms-type>
+        <message-class>
+          atg.process.dms.MigrationUpdateMessage
+        </message-class>
+        <hidden>
+          true
+        </hidden>
+      </message-type>
+
+      <message-type>
+        <jms-type>
+          atg.dss.MigrationDelete
+        </jms-type>
+        <message-class>
+          atg.process.dms.MigrationUpdateMessage
+        </message-class>
+        <hidden>
+          true
+        </hidden>
+      </message-type>
+
+      <message-type>
+        <jms-type>
+	        atg.dss.SlotItemRequest
+        </jms-type>
+	      <message-class>
+	        atg.scenario.dms.SlotItemRequestMessage
+	      </message-class>
+	      <message-context>
+	        request
+	      </message-context>
+	      <display-name-resource>
+	        slotItemRequestDisplayName
+	      </display-name-resource>
+	      <description-resource>
+	        slotItemRequestDescription
+	      </description-resource>
+	      <resource-bundle>
+	        atg.scenario.dms.MessagingSystemResources
+	      </resource-bundle>
+      </message-type>
+
+      <message-type>
+        <jms-type>
+	        atg.dss.SlotItemsFilled
+        </jms-type>
+	      <message-class>
+	        atg.scenario.dms.SlotItemsFilledMessage
+	      </message-class>
+	      <message-context>
+	        request
+	      </message-context>
+	      <display-name-resource>
+	        slotItemsFilledDisplayName
+	      </display-name-resource>
+	      <description-resource>
+	        slotItemsFilledDescription
+	      </description-resource>
+	      <resource-bundle>
+	        atg.scenario.dms.MessagingSystemResources
+	      </resource-bundle>
+      </message-type>
+
+      <message-type>
+        <jms-type>
+          atg.dss.DisableProcess
+        </jms-type>
+	<message-class>
+	  atg.process.dms.DisableProcessMessage
+        </message-class>
+        <hidden>
+          true
+        </hidden>
+      </message-type>
+
+      <message-type>
+        <jms-type>
+          atg.dss.ScenarioEnd
+        </jms-type>
+	<message-class>
+	  atg.process.dms.ProcessEndMessage
+        </message-class>
+        <display-name-resource>
+	  scenarioEndDisplayName
+        </display-name-resource>
+        <description-resource>
+          scenarioEndDescription
+        </description-resource>
+        <resource-bundle>
+          atg.scenario.dms.MessagingSystemResources
+        </resource-bundle>
+      </message-type>
+
+    </message-family>
+  </message-registry>
+
+</dynamo-message-system>
+<!-- @version $Id: //product/DSS/version/10.0.3/templates/DSS/config/atg/dynamo/messaging/dynamoMessagingSystem.xml#2 $$Change: 651448 $ -->

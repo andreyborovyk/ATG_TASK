@@ -1,0 +1,1804 @@
+/*
+	Adds cosmetic styling to Dijit.  Users may swap with a custom theme CSS file.
+*/
+
+@import url("../dijit.css");
+
+/* rewritting styles set in dojo.css (line 108) */
+h2 {
+font-size:1.1667em;
+font-weight:bold;
+line-height:1.286em;
+margin-bottom:0.643em;
+margin-top:0em;
+}
+
+
+.dj_safari .atg .dijitPopup {
+	/* -webkit-border-radius: 5px; */
+	-webkit-box-shadow: 0px 5px 10px #adadad;
+}
+
+/*
+ * Control opacity of popups
+ */
+.atg .dijitPopup {
+	border: 1px solid #9b9b9b;
+}
+.atg .dijitPopup div,
+.atg .dijitPopup table {
+	opacity: 0.95;
+}
+
+/*****
+		dijit.form.Button
+		dijit.form.DropDownButton
+		dijit.form.ComboButton
+		dijit.form.ComboBox (partial)
+ *****/
+
+.atg .dijitButtonNode {
+	/* enabled state - inner */
+	/* border:1px outset #a0a0a0; */
+	border-top: 1px solid #c2c6ca;
+	border-left: 1px solid #c2c6ca;
+	border-right: 1px solid #a1a4a7;
+	border-bottom: 1px solid #a1a4a7;
+	vertical-align: middle;
+	padding: 0.2em 0.2em;
+	background:#fafbfb url("images/buttonEnabled.png") repeat-x left bottom;
+}
+.dj_ie .atg .dijitButtonNode {
+	zoom: 1;
+	padding-bottom: 0.1em;
+	font-size: 1em;
+}
+
+/* button inner contents - labels, icons etc. */
+.atg .dijitButtonNode * {
+	display: -moz-inline-box;
+	display: inline-block;
+	vertical-align: middle;
+}
+.dj_ie .atg .dijitButtonNode * {
+	zoom: 1;
+	display:inline;
+}
+.atg .dijitButtonText {
+	padding: 0 0.3em;
+}
+
+.atg .dijitComboBox .dijitButtonNode,
+.atg .dijitSpinner .dijitButtonNode {
+	border: 0px;
+	padding: 1px .4em;	/* the inner node will be vertically centered automatically because it's in a <td> */
+}
+
+.atg .dijitA11yDownArrow,
+.atg .dijitDownArrowButton,
+.atg .dijitUpArrowButton {
+	font-size: 0.75em;
+	color: #848484;
+}
+
+
+.atg .dijitButtonDisabled .dijitButtonNode,
+.atg .dijitToggleButtonDisabled .dijitButtonNode,
+.atg .dijitDropDownButtonDisabled .dijitButtonNode,
+.atg .dijitComboButtonDisabled .dijitButtonNode,
+.atg .dijitComboBoxDisabled,
+.atg .dijitSpinnerDisabled,
+.atg .dijitSpinnerDisabled .dijitButtonNode {
+	/* disabled state - inner */
+	border: 1px solid #d5d5d5;
+	/*color:#b4b4b4;*/
+	background:#e4e4e4 url("images/buttonDisabled.png") top repeat-x;
+	opacity: 0.60; /* Safari, Opera and Mozilla */
+}
+.atg .dijitButtonDisabled .dijitButtonNode *,
+.atg .dijitToggleButtonDisabled .dijitButtonNode *,
+.atg .dijitDropDownButtonDisabled .dijitButtonNode *,
+.atg .dijitComboButtonDisabled .dijitButtonNode *,
+.atg .dijitSpinnerDisabled .dijitButtonNode * {
+	filter: gray() alpha(opacity=50); /* IE */
+}
+
+.atg .dijitButtonHover .dijitButtonNode,
+.atg .dijitToggleButtonHover .dijitButtonNode,
+.atg .dijitDropDownButtonHover .dijitButtonNode,
+.atg .dijitComboButtonHover .dijitButtonContents,
+.atg .dijitComboButtonDownArrowHover .dijitDownArrowButton,
+.atg .dijitComboBoxHover .dijitDownArrowButton,
+.atg .dijitSpinnerUpArrowHover .dijitUpArrowButton,
+.atg .dijitSpinnerDownArrowHover .dijitDownArrowButton {
+	/* hover state - inner */
+	/* TODO: change from Hover to Selected so that button is still highlighted while drop down is being used */
+	background:#f8f9fe url("images/buttonHover.png") repeat-x bottom;
+}
+
+.atg .dijitButtonActive .dijitButtonNode,
+.atg .dijitToggleButtonActive .dijitButtonNode,
+.atg .dijitDropDownButtonActive .dijitButtonNode,
+.atg .dijitComboButtonActive .dijitButtonContents,
+.atg .dijitDownArrowActive .dijitDownArrowButton,
+.atg .dijitComboBoxActive .dijitDownArrowButton {
+	/* active state - inner (for when you are pressing a normal button, or
+	 * when a toggle button is in a depressed state
+	 */
+	border-color:#366dba;
+	background: #ededed url("images/buttonActive.png") bottom repeat-x;
+}
+
+.atg .dijitToolbar {
+	border: 1px solid #9b9b9b;
+	background:#e9e9e9 url("images/buttonEnabled.png") repeat-x top;
+}
+
+.atg .dijitToolbar * {
+	padding: 0px;
+	margin: 0px;
+	/* #margin-top: -1px; */
+	/*IE*/
+}
+.dj_ie .atg .dijitToolbar {
+	padding-bottom: 1px;
+}
+
+.atg .dijitToolbar .dijitButtonNode {
+	padding: 0px;
+	margin: 0px;
+	border: 1px solid transparent;
+	background: none;
+	_margin: 1px;
+	_padding: 0px 1px 0px 1px;
+	_border: 0px;
+}
+
+.atg .dijitToolbar .dijitToggleButtonChecked .dijitButtonNode {
+	background-color:#C1D2EE;
+	border:1px solid #316AC5;
+}
+.atg .dijitToolbar .dijitToggleButtonCheckedHover .dijitButtonContents {
+	border-color: #366dba;
+	background-color:transparent;
+}
+.dj_ie6 .atg .dijitToolbar .dijitButtonNode {
+	/* workaround no transparent border support in IE6*/
+	border-color: #e9e9e9;
+}
+
+.atg .dijitToolbar .dijitButtonHover .dijitButtonNode,
+.atg .dijitToolbar .dijitToggleButtonHover .dijitButtonNode,
+.atg .dijitToolbar .dijitDropDownButtonHover .dijitButtonNode {
+	/* TODO: change this from Hover to Selected so that button is still highlighted while drop down is being used */
+	border-color: #366dba;
+	/* IE hackery */
+	_border: 1px solid #366dba;
+	_margin: -1px 0px 0px 0px;
+	_padding: 0px;
+}
+
+.dijitToolbarSeparator {
+	background: url('images/editor.gif');
+	height: 18px;
+	width: 5px;
+	padding: 0px 1px 0px 1px;
+	margin: 0px;
+}
+
+.atg .dijitToolbar .dijitToolbarSeparator {
+	background: url('images/editor.gif');
+}
+
+/* ComboBox-icon-specific */
+.atg .dijitComboBox .dijitDownArrowButtonChar {
+	/* visibility:hidden;  */
+	display:none; 
+}
+.dijit_a11y .dijitComboBox .dijitDownArrowButtonChar {
+	display:inline; 
+}
+.atg .dijitComboBox .dijitDownArrowButtonInner {
+	width:2em; 
+	height:2em; 
+	background:url("images/arrowDown.png") no-repeat center center; 
+	padding-left: 4px;
+}
+.dj_ie6 .atg .dijitComboBox .dijitDownArrowButtonInner {
+	background-image:url("images/arrowDown.gif"); 
+}
+.atg .dijitComboBoxHover .dijitDownArrowButtonInner {
+	/* TODO: url("images/arrowDownHover.png") but in IE6 it flickers some? */
+}
+
+
+/*****
+		dijit.form.NumberSpinner
+		override for the shorter stacked buttons
+ *****/
+
+.atg .dijitSpinner .dijitButtonNode {
+	padding: 0 .4em 0 .4em;
+}
+
+
+/****
+		dijit.form.TextBox
+		dijit.form.ValidationTextBox
+		dijit.form.SerializableTextBox
+		dijit.form.RangeBoundTextBox
+		dijit.form.NumberTextBox
+		dijit.form.CurrencyTextBox
+		dijit.form.NumberSpinner
+		dijit.form.ComboBox (partial)
+ ****/
+
+.atg .dijitInputField INPUT,
+.atg .dijitTextBox,
+.atg .dijitComboBox,
+.atg .dijitSpinner {
+	margin: 0em 0.1em 0.0em 0.1em;
+}
+
+.atg .dijitComboBox,
+.atg .dijitSpinner,
+.atg .dijitInlineEditor input,
+.atg .dijitTextArea {
+	/* 	For all except dijit.form.NumberSpinner:  the actual input element.
+		For TextBox, ComboBox, Spinner: the table that contains the input.
+		Otherwise the actual input element.
+	*/
+	/*background:#fff url("images/validationInputBg.png") repeat-x top left;*/
+	/*#background:#fff url('images/validationInputBg.gif') repeat-x top left; */
+	border: none;
+ 	line-height: normal;
+}
+
+.dj_safari .atg INPUT.dijitTextBox {
+	padding:0.15em 0em; /* make it roughly the same size as a validation input box */
+}
+
+.dj_ie .atg INPUT.dijitTextBox,
+.dj_ie .atg TD.dijitInputField,
+.dj_ie .atg .dijitInputField INPUT {
+	height: 1.2em; /* needed since the INPUT is position:absolute */
+}
+
+.atg .dijitComboBox .dijitButtonNode,
+.atg .dijitSpinner .dijitButtonNode {
+	/* line between the input area and the drop down button */
+	border-left:1px solid #9b9b9b;
+}
+.atg .dijitSpinner .dijitDownArrowButton {
+	border-top:1px solid #9b9b9b;	/* line between top and bottom arrow */
+}
+
+.atg .dijitTextBoxFocused,
+.atg .dijitComboBoxFocused,
+.atg .dijitSpinnerFocused {
+	/* input field when focused (ie: typing affects it) */
+	/*border-color:#366dba;*/
+}
+.atg .dijitComboBoxFocused .dijitButtonNode, .atg .dijitSpinnerFocused .dijitButtonNode {
+	/*border-left:1px solid #366dba;*/
+}
+.atg .dijitSpinnerFocused .dijitDownArrowButton {
+	/*border-top:1px solid #366dba;*/
+}
+
+.atg .dijitTextBoxError,
+.atg .dijitComboBoxError,
+.atg .dijitSpinnerError {
+	/*border:1px solid #f3d118;*/
+	/*background-color:#f9f7ba;*/
+	background-image:none;
+}
+.atg .dijitTextBoxError input,
+.atg .dijitComboBoxError input,
+.atg .dijitSpinnerError input {
+	/* background-color: transparent on an <input> doesn't work on IE6 */
+	background-color:#f9f7ba !important;
+}
+
+.atg .dijitTextBoxErrorFocused,
+.atg .dijitComboBoxErrorFocused,
+.atg .dijitSpinnerErrorFocused {
+	/*background-color:#ff6;*/
+	background-image:none;
+}
+.dj_ie6 .atg .dijitTextBoxErrorFocused input,
+.dj_ie6 .atg .dijitComboBoxErrorFocused input,
+.dj_ie6 .atg .dijitSpinnerErrorFocused input {
+	/* background-color: transparent on an <input> doesn't work on IE6 */
+	background-color:#ff6 !important;
+}
+
+/* Validation errors  */
+.atg .dijitValidationIcon {
+	/* prevent height change when widget goes from valid to invalid state, and
+	 * workaround browser (FF and safari) sizing bugs when last table column is empty or display:null
+	 */
+	display: block;
+	width: 16px;
+	height: 16px;
+	background-repeat: no-repeat;
+	background-image: url('images/warning.png');
+	visibility: hidden;
+	margin-left: 5px;
+}
+.atg .dijitValidationIconText {
+	display: none;
+}
+
+.atg .dijitTextBoxError .dijitValidationIcon,
+.atg .dijitComboBoxError .dijitValidationIcon,
+.atg .dijitSpinnerError .dijitValidationIcon {
+	visibility: visible;
+}
+
+
+/*
+ *  CheckBox and Radio Widgets,
+ *	and the CSS to embed a checkbox or radio icon inside a ToggleButton.
+ *
+ *	Order of images in the default sprite (from L to R, checkbox and radio in same image):
+ *		checkbox	normal 	 - checked
+ *							 - unchecked
+ *					disabled - checked
+ *							 - unchecked
+ *					hover 	 - checked
+ *							 - unchecked
+ *
+ *		radio		normal 	 - checked
+ *							 - unchecked
+ *					disabled - checked
+ *							 - unchecked
+ *					hover 	 - checked
+ *							 - unchecked
+*/
+
+.atg .dijitToggleButton .dijitCheckBox,
+.atg .dijitToggleButton .dijitRadio,
+.atg .dijitToggleButton .dijitCheckBoxIcon,
+.atg .dijitToggleButton .dijitRadioIcon {
+	background-image: url('images/checkmarkNoBorder.gif');
+}
+
+.atg .dijitCheckBox,
+.atg .dijitRadio,
+.atg .dijitCheckBoxIcon,		/* inside a toggle button */
+.atg .dijitRadioIcon	{		/* inside a toggle button */
+	background-image: url('images/checkmark.gif'); /* checkbox sprite image */
+	background-repeat: no-repeat;
+	width: 16px;
+	height: 16px;
+	overflow: visible; 
+	margin: 0;
+	padding: 0; 
+}
+
+.atg .dijitCheckBox,
+.atg .dijitToggleButton .dijitCheckBoxIcon {
+	/* unchecked */
+	background-position: -16px;
+}
+ 
+.atg .dijitCheckBoxChecked,
+.atg .dijitToggleButtonChecked .dijitCheckBoxIcon {
+	/* checked */
+	background-position: 0px;
+}
+
+.atg .dijitCheckBoxDisabled {
+	/* disabled */
+	background-position: -48px;
+}
+
+.atg .dijitCheckBoxCheckedDisabled {
+	/* disabled but checked */
+	background-position: -32px;
+}
+
+.atg .dijitCheckBoxHover,
+.atg .dijitCheckBoxFocused {
+	/* hovering over an unchecked enabled checkbox */
+	background-position: -80px;
+}
+
+.atg .dijitCheckBoxCheckedHover,
+		.atg .dijitCheckBoxCheckedFocused {
+	/* hovering over a checked enabled checkbox */
+	background-position: -64px;
+}
+
+.atg .dijitRadio,
+.atg .dijitToggleButton .dijitRadioIcon {
+	/* unselected */
+	background-position: -112px;
+}
+
+.atg .dijitRadioChecked,
+.atg .dijitToggleButtonChecked .dijitRadioIcon {
+	/* selected */
+	background-position: -96px;
+}
+
+.atg .dijitRadioCheckedDisabled {
+	/* selected but disabled */
+	background-position: -128px;
+}
+
+.atg .dijitRadioDisabled {
+	/* unselected and disabled */
+	background-position: -144px;
+}
+
+.atg .dijitRadioHover,
+.atg .dijitRadioFocused {
+	/* hovering over an unselected enabled radio button */
+	background-position: -176px;
+}
+
+.atg .dijitRadioCheckedHover,
+.atg .dijitRadioCheckedFocused {
+	/* hovering over a selected enabled radio button */
+	background-position: -160px;
+}
+
+/* Menu */
+.atg .dijitMenu {
+	border: 1px solid #9b9b9b;
+	margin: 0px;
+	padding: 0px;
+}
+
+.atg .dijitMenuItem {
+	background-color: #f7f7f7;
+	font: menu;
+	margin: 0;
+}
+.atg .dijitMenuPreviousButton, .atg .dijitMenuNextButton {
+	font-style: italic;
+}
+.atg .dijitMenuItem TD {
+	padding:2px;
+}
+.atg .dijitMenuItemLabel {
+  padding-right: 3px;
+}
+
+.atg .dijitMenuItemHover {
+	background-color: #8EA3C2; /* #95a0b0; #555555; #aaaaaa; #646464;  #60a1ea; #848484; */
+	color:#fff;
+}
+
+.atg .dijitMenuItemIcon {
+	min-width: 16px;
+	min-height: 16px;
+	/* padding-right: 3px; */
+}
+
+.atg .dijitMenuExpand {
+	display:none; 
+}
+.atg .dijitMenuExpandEnabled {
+	/* margin-top:4px;  */
+	width:16px; 
+	height:16px; 
+	background:url('images/arrowRight.png') no-repeat center center;
+	display:block;
+}
+.dj_ie6 .atg .dijitMenuExpandEnabled {
+	background-image:url('images/arrowRight.gif'); 
+}
+.atg .dijitMenuExpandInner {
+	display:none;
+}
+
+.atg .dijitMenuSeparator {
+	background-color: #f7f7f7;
+}
+
+/* separator can be two pixels -- set border of either one to 0px to have only one */
+.atg .dijitMenuSeparatorTop {
+	border-bottom: 1px solid #9b9b9b; /*97adcb; */
+}
+
+.atg .dijitMenuSeparatorBottom {
+	border-top: 1px solid #e8e8e8;
+}
+
+/* TitlePane */
+
+.atg .dijitTitlePane .dijitTitlePaneTitle {
+	/*background: #cccccc;
+	background:#fafafa url("images/titleBarBg.gif") repeat-x bottom left;
+	border:1px solid #bfbfbf;*/
+	padding:4px 4px 2px 4px;
+	cursor: pointer;
+}
+
+/* TODO: merge these, and all other icons to a series of background-image:() and background-position: -16*n px styles */
+.atg .dijitTitlePane .dijitArrowNode {
+	width:16px;
+	height:16px;
+	float:left;
+}
+.atg .dijitTitlePane .dijitClosed .dijitArrowNode {
+	background:url('images/icon_closeNavItem.gif') no-repeat center center; 
+	float:left;
+}
+
+.atg .dijitTitlePaneFocused .dijitTitlePaneTextNode {
+	text-decoration:underline;
+}
+
+.dj_ie6 .atg .dijitTitlePane .dijitClosed .dijitArrowNode {
+	background-image:url('images/icon_closeNavItem.gif');
+}
+.atg .dijitTitlePane .dijitOpen .dijitArrowNode {
+	background:url('images/icon_openNavItem.gif') no-repeat center center; 
+}
+.dj_ie6 .atg .dijitTitlePane .dijitOpen .dijitArrowNode {
+	background-image:url('images/icon_openNavItem.gif'); 
+}
+.atg .dijitTitlePane .dijitArrowNodeInner { 
+	visibility:hidden;
+}
+.dijit_a11y .dijitTitlePane .dijitArrowNodeInner { 
+	visibility:visible;
+}
+
+.atg .dijitTitlePaneTitle .dijitOpenCloseArrowOuter {
+	margin-right:5px;
+}
+
+.atg .dijitOpen .dijitTitlePaneTitle .dijitOpenCloseArrowOuter {
+	position:relative;
+	top:2px;
+}
+
+.atg .dijitTitlePaneContentOuter {
+/*	background: #ffffff;
+	border:1px solid #bfbfbf;
+*/	border-top: 1px solid #fff;	/* w/out this, an <h1> on the top line causes a gap between the .content and .label */
+}
+.atg .dijitTitlePaneContentInner {
+	padding:10px;
+}
+/* force hasLayout to ensure borders etc, show up */
+.dj_ie6 .atg .dijitTitlePaneContentOuter, 
+.dj_ie6 .atg .dijitTitlePane .dijitTitlePaneTitle {
+	zoom: 1; 
+}
+.atg .dijitClickableRegion {
+	background-color : #ffc !important;
+}
+
+/* Tabs */
+
+.atg .dijitTabPaneWrapper {
+	/*
+	overflow: hidden;
+	*/
+	background:#fff; 
+	border:1px solid #ccc;
+}
+
+.atg .dijitTab {
+	line-height:normal;
+	margin-right:-1px;	/* space between one tab and the next in top/bottom mode */
+	padding:0px;
+	border:1px solid #c1cdd5;
+	color: #355779;
+	background:#e2e2e2 url("images/tabEnabled.png") repeat-x;
+}
+
+.atg .dijitAlignLeft .dijitTab,
+.atg .dijitAlignRight .dijitTab {
+	margin-right:0px;
+	margin-bottom:5px;	/* space between one tab and the next in left/right mode */
+}
+
+.atg .dijitTabInnerDiv {
+	padding:6px 10px 4px 10px;
+	border-left:1px solid #fff;
+	border-bottom:1px solid #fff;
+}
+
+.atg .dijitTabHover,
+.atg .dijitTabCloseButtonHover {
+	color: #F26A1E;
+	background:#e2e2e2 url("images/tabHover.png") repeat-x bottom;
+}
+
+.dj_ie6 .atg .dijitTabHover,
+.dj_ie6 .atg .dijitTabCloseButtonHover {
+	background-image: url("images/tabHover.gif"); 
+}
+
+.atg .dijitTabChecked,
+.atg .dijitTabCloseButtonChecked
+{
+	/* the selected tab (with or without hover) */
+	background-color:#fff;
+	border-color: #ccc;
+	background-image: none;
+	color: #000;
+}
+
+/* make the active tab white on the side next to the content pane */
+.atg .dijitAlignTop .dijitTabChecked,
+.atg .dijitAlignTop .dijitTabCloseButtonChecked
+{
+	border-bottom-color:white;
+	vertical-align:bottom;
+}
+
+.atg .dijitAlignBottom .dijitTabChecked,
+.atg .dijitAlignBottom .dijitTabCloseButtonChecked
+{
+	border-top-color:white;
+	-moz-border-radius:2px 2px 0px 0px;	/* eliminate some border detritrus on moz */
+}
+
+.atg .dijitAlignLeft .dijitTabChecked,
+.atg .dijitAlignLeft .dijitTabCloseButtonChecked
+{
+	border-right-color:white;
+}
+
+.atg .dijitAlignRight .dijitTabChecked,
+.atg .dijitAlignRight .dijitTabCloseButtonChecked
+{
+	border-left-color:white;
+}
+
+
+/* make space for a positioned close button */
+.atg .dijitTab .dijitClosable {
+	position: relative; 
+	padding:6px 20px 4px 10px;
+}
+
+.atg .dijitTab .dijitClosable .closeImage {
+	position:absolute;
+	top: 7px;
+	right: 3px;
+	height: 13px;
+	width: 13px;
+	padding: 0;
+	margin: 0;
+	background: url("images/tabClose.png") no-repeat right top;
+}
+.dj_ie6 .dijitTab .dijitClosable .closeImage {
+	background-image:url("images/tabClose.gif"); 
+}
+
+.atg .dijitTabCloseButton .dijitClosable .closeImage {
+	background-image : url("images/tabClose.png");
+}
+.dj_ie6 .atg .dijitTabCloseButton .dijitClosable .closeImage {
+	background-image : url("images/tabClose.gif");
+}
+
+.atg .dijitTabCloseButtonHover .dijitClosable .closeImage {
+	background-image : url("images/tabCloseHover.png");
+}
+.dj_ie6 .atg .dijitTabCloseButtonHover .dijitClosable .closeImage {
+	background-image : url("images/tabCloseHover.gif");
+}
+
+.atg .dijitAlignLeft .dijitTab .dijitClosable {
+	padding:6px 10px 4px 20px;
+}
+
+/* correct for IE6. 
+    We cant force hasLayout as that blows out the shrink wrapped tabs
+    ..so we shim in the closeImage position properties instead
+*/
+.dj_ie6 .atg .dijitAlignLeft .dijitTab .dijitClosable .closeImage {
+	left:-20px;
+}
+
+.atg .dijitAlignBottom .dijitTab .dijitClosable .closeImage {
+	top: auto;
+	bottom: 7px;
+	right: 3px;
+}
+
+.atg .dijitAlignLeft .dijitTab .dijitClosable .closeImage {
+	top: 7px;
+	left: 3px;
+}
+
+/* SplitContainer */
+
+.atg .dijitSplitContainerSizerH {
+	background:#DEE7F4;
+	border:0;
+	border-left:1px solid #bfbfbf;
+	border-right:1px solid #bfbfbf;
+	width:7px;
+}
+
+.atg .dijitSplitContainerSizerH .thumb {
+	background:url("images/splitContainerSizerH-thumb.png") no-repeat #ccc;
+	left:1px;
+	width:3px;
+	height:17px;
+}
+
+.atg .dijitSplitContainerSizerV {
+	background:#DEE7F4;
+	border:0;
+	border-top:1px solid #bfbfbf;
+	border-bottom:1px solid #bfbfbf;
+	height:7px;
+}
+
+.atg .dijitSplitContainerSizerV .thumb {
+	background:url("images/splitContainerSizerV-thumb.png") no-repeat #ccc;
+	top:1px;
+	width:17px;
+	height:3px;
+}
+
+
+/* Dialog */
+
+.atg .dijitDialog {
+	background: #eee;
+	border: 1px solid #333;
+	-webkit-box-shadow: 0px 5px 10px #adadad;
+	max-width: 600px;
+	overflow: hidden;
+	padding: 2px;
+}
+
+.atg .dijitDialog .dijitDialogTitle {
+	border-top: none;
+	border-left: none;
+	border-right: none;
+}
+
+.atg .dijitDialog .dijitDialogPaneContent {
+	background: #ffffff;
+	border:none;
+	border-top: 1px solid #ccc; /* #cddde9;	/* w/out this, an <h1> on the top line causes a gap between the .content and .label */
+	padding:4px;
+	max-height: 400px;
+	overflow: auto;
+
+}
+
+.atg .dijitDialogTitleBar {
+	/* outer container for the titlebar of the dialog */
+	/* background: #fafafa url("images/titleBar.png") repeat-x bottom left; */
+	/* border: 1px solid #bfbfbf; */
+	background-color: #9FC6F0;
+	padding: 4px 8px 4px 0px;
+	cursor: move;
+	outline:0; /* remove this line if keyboard focus on dialog startup is an issue. tab still takes you to first focusable element */
+}
+
+.atg .dijitDialogTitle {
+	/* typography and styling of the dialog title */
+	font-weight: bold;
+	font-size: 1.3em;
+	padding: 4px 12px 4px 4px;
+	outline:0;
+}
+
+.atg .dijitDialogCloseIcon {
+	/* the default close icon for the dialog */
+	background : url("images/popupClose.gif") no-repeat right top;
+	float: right;
+	position: absolute;
+	vertical-align: middle;
+	right: 8px;
+	top: 8px;
+	height: 22px;
+	width: 22px;
+	cursor: pointer;
+}
+.dj_ie6 .atg .dijitDialogCloseIcon {
+	background-image: url("images/popupClose.gif"); 
+}
+
+.atg .dijitDialogContent {
+	/* the body of the dialog */
+	padding: 4px;
+}
+
+.atg .dijitDialogUnderlay{
+	background-color: #000;
+}
+
+/*Tooltip*/
+
+.atg .dijitTooltip,
+.atg .dijitTooltipDialog {
+	/* the outermost dom node, holding the connector and container */
+	opacity: 0.95;
+	background: transparent;	/* make the area on the sides of the arrow transparent */
+}
+
+.atg .dijitTooltipContainer {
+	/*
+		The part with the text.
+
+		NOTE: 
+			FF doesn't clip images used as CSS bgs if you specify a border
+			radius. If you use a solid color, it does. Webkit gets it right.
+			Sigh.
+		background: #ffffff url("images/popupMenuBg.gif") repeat-x bottom left;
+	*/
+	background-color: #FEFFD1;
+	border-width: 0;
+	opacity: .95;
+	padding:0.75em;
+	border: 2px solid #FDBC16;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	color: #333;
+	max-width: 400px;
+}
+
+
+.atg .dijitTooltipConnector {
+	/* the arrow piece */
+	border:0px;
+	z-index: 2;
+}
+
+/* Right Hand Connector Layout */
+
+.atg .dijitTooltipTR,
+.atg .dijitTooltipBR {
+	padding-right: 13px;
+}
+
+.dj_ie6 .atg .dijitTooltipTR,
+.dj_ie6 .atg .dijitTooltipBR
+ {
+	padding-right: 25px;
+}
+
+
+.atg .dijitTooltipBR .dijitTooltipConnector {
+	left: auto !important;
+	right: 3px;
+}
+
+.dj_ie6 .atg .dijitTooltipTR .dijitTooltipConnector,
+.dj_ie6 .atg .dijitTooltipTL .dijitTooltipConnector  {
+	background-image: url("images/tooltipConnectorDown.gif");
+}
+
+.atg .dijitTooltipBR .dijitTooltipConnector,
+.atg .dijitTooltipTR .dijitTooltipConnector {
+	/* the arrow piece for tooltips to the left of an element, bottom borders aligned */
+	right: 6px;
+	bottom: 10px;
+	background:url("images/tooltipConnectorRight.png") no-repeat top left;
+	opacity: .95;
+	width:9px;
+	height:18px;
+	z-index: 2;
+}
+
+.atg .dijitTooltipTR .dijitTooltipConnector{
+	top: 10px;
+}
+
+.dj_ie6 .atg .dijitTooltipTR .dijitTooltipConnector,
+.dj_ie6 .atg .dijitTooltipBR .dijitTooltipConnector  {
+	background-image: url("images/tooltipConnectorRight.gif");
+	right:7px;
+}
+
+
+/* Left Hand Connector Layout */
+
+.atg .dijitTooltipTL,
+.atg .dijitTooltipBL {
+	padding-left: 13px;
+}
+
+.dj_ie6 .atg .dijitTooltipTL,
+.dj_ie6 .atg .dijitTooltipBL
+ {
+	padding-left: 25px;
+}
+
+
+.atg .dijitTooltipBL .dijitTooltipConnector,
+.atg .dijitTooltipTL .dijitTooltipConnector {
+	/* the arrow piece for tooltips to the left of an element, bottom borders aligned */
+	left: 6px;
+	bottom: 10px;
+	background:url("images/tooltipConnectorLeft.png") no-repeat top left;
+	opacity: .95;
+	width:9px;
+	height:18px;
+	z-index: 2;
+}
+
+.atg .dijitTooltipTL .dijitTooltipConnector{
+	top: 10px;
+}
+
+.dj_ie6 .atg .dijitTooltipTR .dijitTooltipConnector,
+.dj_ie6 .atg .dijitTooltipBR .dijitTooltipConnector  {
+	background-image: url("images/tooltipConnectorLeft.gif");
+	left:7px;
+}
+
+
+
+/* Accordion */
+
+.atg .dijitAccordionPane-selected {
+	/* background-color:#85aeec; */
+	background-color: #e7e7e7;
+}
+
+.atg .dijitAccordionTitle{
+	/*padding:6px 6px 4px 6px;*/
+	height: auto;
+	overflow: hidden;
+	padding: 4px 0 3px;
+	cursor: pointer;
+}
+
+.atg .dijitAccordionPane .dijitAccordionTitle {
+	background:#fafafa url("images/titleBar.png") repeat-x bottom left;
+	border-top: 1px solid #A0B6D6;
+}
+
+.atg .dijitAccordionPane-selected .dijitAccordionTitle {
+	background:#fafafa url("images/titleBarSelected.png") repeat-x bottom left;
+	font-weight: bold;
+	border-top: 1px solid #ccc;
+}
+.atg .dijitAccordionPane-selected .dijitAccordionTitle .dijitAccordionText{
+	color: #000000;
+}
+.atg .dijitAccordionPaneFocused .dijitAccordionText {
+
+	/*border-left:1px solid #999;
+	border-right:1px solid #999;
+	border-top:1px solid #999; */
+}
+
+.atg .dijitAccordionPane .dijitAccordionText {
+  color: #fff;
+}
+.atg .dijitAccordionPane .dijitAccordionArrow {
+	background:url("images/icon_closeNavItem.gif") no-repeat;
+	width:15px;
+	height:15px;
+	margin: 0 0 0 3px;
+	float: left;
+}
+.dj_ie6 .atg .dijitAccordionPane .dijitAccordionArrow {
+	background-image: url("images/arrowUp.gif"); 
+}
+
+.atg .dijitAccordionPane-selected .dijitAccordionArrow {
+	background:url("images/icon_openNavItem.gif") no-repeat;
+	margin-top:0px;
+}
+.dj_ie6 .atg .dijitAccordionPane-selected .dijitAccordionArrow {
+	background-image: url("images/circleIcon.gif"); 
+}
+
+.atg .dijitAccordionPane .dijitAccordionBody {
+	background: #fff;
+	border-top: 1px solid #bfbfbf;
+}
+
+/* Tree */
+
+.atg .dijitTreeNode {
+    background-image : url('images/i.gif');
+    background-position : top left;
+    background-repeat : repeat-y;
+    margin-left: 19px;
+    zoom: 1;	/* MOW: what the heck is this doing in here? */
+}
+ 
+/* left vertical line (grid) for all nodes */
+.atg .dijitTreeIsLast {
+    background: url('images/i_half.gif') no-repeat;
+}
+
+.atg .dijitTreeIsRoot {
+    margin-left: 0;
+    background-image: none;
+}
+
+.atg .dijitTreeExpando {
+    width: 18px;
+    height: 18px;
+}
+
+.atg .dijitTreeContent {
+    min-height: 18px;
+    min-width: 18px;
+    margin-left:18px;
+    padding-top:3px;
+    padding-left:1px;
+}
+
+
+.atg .dijitTreeExpand {
+    width: 18px;
+    height: 18px;
+    background-repeat : no-repeat;
+}
+ 
+/* same style as IE selection */
+.atg .dijitTreeNodeEmphasized {
+    background-color: Highlight;
+    color: HighlightText;
+}
+
+/* don't use :focus due to opera and IE's lack of support on div's */
+.atg .dijitTreeLabelFocused {
+	outline: 1px invert dotted;
+}
+
+.atg .dijitTreeExpandoOpened {
+	background-image: url('images/treeExpand_minus.gif');
+}
+ 
+.atg .dijitTreeExpandoClosed {
+	background-image: url('images/treeExpand_plus.gif');
+}
+ 
+.atg .dijitTreeExpandoLeaf {
+	background-image: url('images/treeExpand_leaf.gif');
+}
+
+.atg .dijitTreeExpandoLoading {
+	background-image: url('images/treeExpand_loading.gif');
+}
+
+
+/* Calendar*/
+
+.atg .dijitCalendarIncrementControl {
+	/* next/prev month buttons */
+	width:16px;
+	height:16px;
+}
+.dj_ie6 .atg .dijitCalendarIncrementControl {
+	padding:.1em; 
+}
+
+.atg .dijitCalendarIncreaseInner,
+.atg .dijitCalendarDecreaseInner {
+	visibility:hidden; 
+}
+
+.atg .dijitCalendarDecrease {
+	background:url("images/arrowLeft.png") no-repeat center center; 
+}
+.dj_ie6 .atg .dijitCalendarDecrease {
+	background-image:url("images/arrowLeft.gif"); 
+}
+
+.atg .dijitCalendarIncrease {
+	background:url(images/arrowRight.png) no-repeat center center; 
+}
+.dj_ie6 .atg .dijitCalendarIncrease {
+	background-image:url("images/arrowRight.gif"); 
+}
+
+.atg table.dijitCalendarContainer {
+	font-size: 100%;
+	border-collapse: collapse; 
+	border-spacing: 0; 
+	border: 1px solid #ccc; 
+	margin: 0;
+}
+
+.atg .dijitCalendarMonthContainer th {
+	/* month header cell */
+	background:white url("images/calendarMonthLabel.png") repeat-x top;
+	padding-top:.3em;
+	padding-bottom:.1em; 
+	text-align:center; 
+}
+.dj_ie6 .atg .dijitCalendarMonthContainer th {
+	padding-top:.1em; 
+	padding-bottom:0em; 
+}
+
+.atg .dijitCalendarDayLabelTemplate {
+	/* day of week labels */
+	background:white url("images/calendarDayLabel.png") repeat-x bottom;
+	font-weight:normal;
+	padding-top:.15em;
+	padding-bottom:0em;
+	border-top: 1px solid #eeeeee;
+	color:#293a4b;
+	text-align:center;
+}
+
+.atg .dijitCalendarMonthLabel {
+	/* day of week labels */
+	color:#293a4b;
+	font-size: 0.75em;
+	font-weight: bold;
+	text-align:center;
+}
+
+.dj_ie7 .atg .dijitCalendarDateTemplate,
+.dj_ie6 .atg .dijitCalendarDateTemplate {
+	font-size: 0.8em;
+}
+
+.atg .dijitCalendarDateTemplate {
+	/* style for each day cell */
+	font-size: 0.9em;
+	font-weight: bold;
+	text-align: center;
+	padding: 0.2em 0.2em 0.3em 0.3em;
+	letter-spacing: 1px;
+}
+
+
+.atg .dijitCalendarPreviousMonth,
+.atg .dijitCalendarNextMonth 		{
+	/* days that are part of the previous or next month */
+	color:#999999;
+	background-color:#f8f8f8 !important;
+}
+
+.atg .dijitCalendarPreviousMonthDisabled,
+.atg .dijitCalendarNextMonthDisabled	{
+	/* days that are part of the previous or next month - disabled*/
+	background-color:#a4a5a6 !important;
+}
+
+.atg .dijitCalendarCurrentMonth {
+	/* days that are part of this month */
+	background-color:white !important;
+}
+
+.atg .dijitCalendarCurrentMonthDisabled {
+	/* days that are part of this month - disabled */	
+	background-color:#bbbbbc !important; 
+}
+
+.atg .dijitCalendarDisabledDate {
+	/* one or the other? */ 
+	/* background: url(images/noX.gif) no-repeat center center !important; */
+	text-decoration:line-through !important; 
+	cursor:default !important;  
+}
+
+.atg .dijitCalendarCurrentDate {
+	/* cell for today's date */
+	text-decoration:underline;
+	font-weight:bold;
+}
+
+.atg .dijitCalendarSelectedDate {
+	/* cell for the selected date */
+	background-color:#bbc4d0 !important;
+	color:black !important;
+}
+
+
+.atg .dijitCalendarYearContainer {
+	/* footer of the table that contains the year display/selector */
+	background:white url("images/calendarYearLabel.png") repeat-x bottom;
+	border-top:1px solid #ccc;
+}
+
+.atg .dijitCalendarYearLabel {
+	/* container for all of 3 year labels */
+	margin:0;
+	/*padding:0.4em 0 0.25em 0;*/
+	text-align:center;
+}
+
+.atg .dijitCalendarSelectedYear {
+	/* label for selected year */
+	color:black;
+	padding:0.2em 0.5em;
+	background-color:#bbc4d0 !important;
+}
+
+.atg .dijitCalendarNextYear, 
+.atg .dijitCalendarPreviousYear {
+	/* label for next/prev years */
+	color:black !important;
+	font-weight:normal;
+}
+
+
+
+/* inline edit boxen */
+.atg .dijitInlineValue {
+	/* span around an inline-editable value when NOT in edit mode */
+	padding:3px;
+	margin:4px;
+}
+
+
+/* MOW: trying to get this to look like a mini-dialog.  Advised? */
+.atg .dijitInlineEditor {
+	/* fieldset surrounding an inlineEditor in edit mode */
+	display: inline-block;
+	display: -moz-inline-stack;
+	#display:inline;
+	/*
+	border: solid;
+	border-color: #7788a0 #344257 #344257 #7788a0;
+	border-width:1px 2px 2px 1px;
+	-moz-border-radius:0px 2px 0px 2px;	make BL and TR corners indent on Moz so it looks like we have a shadow
+	background-color:white;
+	*/
+}
+
+.dijitInlineEditor .saveButton,
+.dijitInlineEditor .cancelButton {
+	margin:3px 3px 3px 0px;
+}
+
+
+/* spinner */
+
+.atg .dijitSpinner {}
+.atg .dijitSpinner input {
+}
+
+
+
+
+/****
+		dijit.ProgressBar
+ ****/
+ 
+.atg .dijitProgressBar {
+	margin:2px 0px 2px 0px;
+}
+
+.atg .dijitProgressBarEmpty{
+	/* outer container and background of the bar that's not finished yet*/
+	background:#ececec url("images/progressBarEmpty.png") repeat-x bottom left;
+	border-color: #84a3d1;
+}
+
+.atg .dijitProgressBarTile{
+	/* inner container for finished portion when in 'tile' (image) mode */
+	background:#cad2de url("images/progressBarFull.png") repeat-x top left;
+}
+
+.atg .dijitProgressBarLabel {
+	/* Set to a color that contrasts with both the "Empty" and "Full" parts. */
+	color:#293a4b;
+}
+
+.atg .dijitProgressBarIndeterminate .dijitProgressBarTile {
+	/* use an animated gif for the progress bar in 'indeterminate' mode */
+	background:#cad2de url("images/dijitProgressBarAnim.gif") repeat-x top left;
+}
+
+/****
+ 	SLIDER
+****/
+
+.atg .dijitHorizontalSliderProgressBar {
+	border-color: #aab0bb;
+	background: #c0c2c5 url("images/sliderFull.png") repeat-x top left;
+}
+
+.atg .dijitVerticalSliderProgressBar {
+	border-color: #aab0bb;
+	background: #c0c2c5 url("images/sliderFullVertical.png") repeat-y bottom left;
+}
+
+.atg .dijitSliderFocused .dijitHorizontalSliderProgressBar,
+.atg .dijitSliderFocused .dijitHorizontalSliderLeftBumper {
+	background-image:url("images/sliderFullFocus.png");
+}
+
+.atg .dijitSliderFocused .dijitVerticalSliderProgressBar,
+.atg .dijitSliderFocused .dijitVerticalSliderBottomBumper {
+	background-image:url("images/sliderFullVerticalFocus.png");
+}
+
+.atg .dijitVerticalSliderRemainingBar {
+	border-color: #b4b4b4;
+	background: #dcdcdc url("images/sliderEmptyVertical.png") repeat-y bottom left;
+}
+
+.atg .dijitHorizontalSliderRemainingBar {
+	border-color: #b4b4b4;
+	background: #dcdcdc url("images/sliderEmpty.png") repeat-x top left;
+}
+
+.atg .dijitSliderBar {
+	border-style: solid;
+	outline:1px; 
+	/* border-color: #b4b4b4; */
+}
+.atg .dijitSliderFocused .dijitSliderBar {
+	border-color:#677FA4;	
+}
+
+.atg .RuleMark {
+border:1px solid #B4B4B4;
+height:100%;
+line-height:0px;
+position:absolute;
+}
+
+.dijit_a11y .dijitSliderProgressBar { 
+	background-color:#333 !important; 
+}
+
+.atg .dijitHorizontalSliderImageHandle {
+	border:0px;
+	width:16px;
+	height:16px;
+	background:url("images/preciseSliderThumb.png") no-repeat center top; 
+	cursor:pointer; 
+}
+.atg .dijitSliderFocused .dijitHorizontalSliderImageHandle {
+	background-image:url("images/preciseSliderThumbFocus.png");
+	#background-image:url("images/preciseSliderThumbFocus.gif");
+}
+
+.dj_ie6 .atg .dijitHorizontalSliderImageHandle {
+	background-image:url("images/preciseSliderThumb.gif"); 
+}
+
+.atg .dijitHorizontalSliderLeftBumper {
+	border-left-width: 1px;
+	border-color: #aab0bb;
+	background: #c0c2c5 url("images/sliderFull.png") repeat-x top left;
+}
+
+.atg .dijitHorizontalSliderRightBumper {
+	background: #dcdcdc url("images/sliderEmpty.png") repeat-x top left;
+	border-color: #b4b4b4;
+	border-right-width: 1px;
+}
+
+.atg .dijitVerticalSliderImageHandle {
+	border:0px;
+	width:16px;
+	height:16px;
+	background:url("images/sliderThumb.png") no-repeat center center; 
+	cursor:pointer;
+}
+
+.atg .dijitSliderFocused .dijitVerticalSliderImageHandle {
+	background-image:url("images/sliderThumbFocus.png");
+}
+.dj_ie6 .atg .dijitSliderFocused .dijitVerticalSliderImageHandle {
+	background-image:url("images/sliderThumbFocus.gif");
+}
+
+.atg .dijitVerticalSliderBottomBumper {
+	border-bottom-width: 1px;
+	border-color: #aab0bb;
+	background: #c0c2c5 url("images/sliderFullVertical.png") repeat-y bottom left;
+}
+
+.atg .dijitVerticalSliderTopBumper {
+	background: #dcdcdc url("images/sliderEmptyVertical.png") repeat-y top left;
+	border-color: #b4b4b4;
+	border-top-width: 1px;
+}
+
+.atg .dijitHorizontalSliderIncrementIcon,
+.atg .dijitVerticalSliderIncrementIcon {
+	background:url('images/arrowUp.png') no-repeat center center;
+	width:16px; height:16px;
+	cursor:pointer;
+}
+.atg .dijitHorizontalSliderIncrementIcon {
+	background-image:url('images/arrowRight.png');
+}
+
+.atg .dijitHorizontalSliderDecrementIcon,
+.atg .dijitVerticalSliderDecrementIcon {
+	width:16px;
+	height:16px;
+	cursor:pointer; 
+	background:url('images/arrowDown.png') no-repeat center center;
+}
+.atg .dijitHorizontalSliderDecrementIcon { background-image:url('images/arrowLeft.png'); }
+
+.atg .dijitSliderButtonInner {
+	visibility:hidden;
+}
+
+.atg .dijitSliderDisabled {
+	opacity:0.6 !important;
+}
+
+.dj_ie6 .atg .dijitSliderDisabled,
+.dj_ie6 .atg .dijitSliderDisabled .RuleContainer,
+.dj_ie6 .atg .dijitSliderDisabled .dijitSliderRemainingBar,
+.dj_ie6 .atg .dijitSliderDisabled .dijitSliderProgressBar {
+	filter: gray() alpha(opacity=40);
+}
+
+/**** ICONS *****/
+
+.atg .dijitEditorIcon {
+	background-image: url('images/editor.gif'); /* editor icons sprite image */
+	background-repeat: no-repeat; 
+	width: 18px;
+	height: 18px;
+	text-align: center;
+}
+.atg .dijitEditorIconSep { background-position: 0px; }
+.atg .dijitEditorIconBackColor { background-position: -18px; }
+.atg .dijitEditorIconBold { background-position: -36px; }
+.atg .dijitEditorIconCancel { background-position: -54px; }
+.atg .dijitEditorIconCopy { background-position: -72px; }
+.atg .dijitEditorIconCreateLink { background-position: -90px; }
+.atg .dijitEditorIconCut { background-position: -108px; }
+.atg .dijitEditorIconDelete { background-position: -126px; }
+.atg .dijitEditorIconForeColor { background-position: -144px; }
+.atg .dijitEditorIconHiliteColor { background-position: -162px; }
+.atg .dijitEditorIconIndent { background-position: -180px; }
+.atg .dijitEditorIconInsertHorizontalRule { background-position: -198px; }
+.atg .dijitEditorIconInsertImage { background-position: -216px; }
+.atg .dijitEditorIconInsertOrderedList { background-position: -234px; }
+.atg .dijitEditorIconInsertTable { background-position: -252px; }
+.atg .dijitEditorIconInsertUnorderedList { background-position: -270px; }
+.atg .dijitEditorIconItalic { background-position: -288px; }
+.atg .dijitEditorIconJustifyCenter { background-position: -306px; }
+.atg .dijitEditorIconJustifyFull { background-position: -324px; }
+.atg .dijitEditorIconJustifyLeft { background-position: -342px; }
+.atg .dijitEditorIconJustifyRight { background-position: -360px; }
+.atg .dijitEditorIconLeftToRight { background-position: -378px; }
+.atg .dijitEditorIconListBulletIndent { background-position: -396px; }
+.atg .dijitEditorIconListBulletOutdent { background-position: -414px; }
+.atg .dijitEditorIconListNumIndent { background-position: -432px; }
+.atg .dijitEditorIconListNumOutdent { background-position: -450px; }
+.atg .dijitEditorIconOutdent { background-position: -468px; }
+.atg .dijitEditorIconPaste { background-position: -486px; }
+.atg .dijitEditorIconRedo { background-position: -504px; }
+.atg .dijitEditorIconRemoveFormat { background-position: -522px; }
+.atg .dijitEditorIconRightToLeft { background-position: -540px; }
+.atg .dijitEditorIconSave { background-position: -558px; }
+.atg .dijitEditorIconSpace { background-position: -576px; }
+.atg .dijitEditorIconStrikethrough { background-position: -594px; }
+.atg .dijitEditorIconSubscript { background-position: -612px; }
+.atg .dijitEditorIconSuperscript { background-position: -630px; }
+.atg .dijitEditorIconUnderline { background-position: -648px; }
+.atg .dijitEditorIconUndo { background-position: -666px; }
+.atg .dijitEditorIconWikiword { background-position: -684px; }
+
+/*
+ * IE6: can't display PNG images with gradient transparency.
+ * Want to use filter property for those images, but then need to specify a path relative
+ * to the main page, rather than relative to this file... using gifs for now
+ */
+
+.dj_ie6 .atg .dijitInputField
+{
+	/*background: url("images/validationInputBg.gif") repeat-x top left #fff;*/ 
+}
+
+/**** Disabled cursor *****/
+.atg .dijitSliderDisabled *,
+.atg .dijitDisabledClickableRegion,	/* a region the user would be able to click on, but it's disabled */
+.atg .dijitSpinnerDisabled *,
+.atg .dijitButtonDisabled *,
+.atg .dijitDropDownButtonDisabled *,
+.atg .dijitComboButtonDisabled *,
+.atg .dijitComboBoxDisabled *
+{
+	cursor: not-allowed !important;
+}
+
+/* DnD avatar-specific settings */
+/* For now it uses a default set of rules. Some other DnD classes can be modified as well. */
+.atg .dojoDndAvatar			{font-size: 75%; color: black;}
+.atg .dojoDndAvatarHeader td	{padding-left: 20px; padding-right: 4px;}
+.atg .dojoDndAvatarHeader	{background: #ccc;}
+.atg .dojoDndAvatarItem		{background: #eee;}
+.atg.dojoDndMove .dojoDndAvatarHeader	{background-image: url(images/dndNoMove.png); background-repeat: no-repeat;}
+.atg.dojoDndCopy .dojoDndAvatarHeader	{background-image: url(images/dndNoCopy.png); background-repeat: no-repeat;}
+.atg.dojoDndMove .dojoDndAvatarCanDrop .dojoDndAvatarHeader	{background-image: url(images/dndMove.png); background-repeat: no-repeat;}
+.atg.dojoDndCopy .dojoDndAvatarCanDrop .dojoDndAvatarHeader	{background-image: url(images/dndCopy.png); background-repeat: no-repeat;}
+
+.atg .dijitContentPaneLoading {
+	background:url('images/loading.gif') no-repeat left center;
+	display:block;
+	margin-left: 10px;
+	padding:12px 0 12px 25px;
+}
+
+.atg .dijitContentPaneError {
+	background:url('images/warning.png') no-repeat left center;
+	padding-left:25px; 
+}
+
+/******************************* Dojo Grids ***********************************/
+.atg .dojoxGrid {
+	position: relative;
+	background-color: #fff;
+	border-collapse: collapse;
+	font-family: Arial, sans-serif;
+	font-size:1em;
+	-moz-outline-style: none;
+	outline: none;
+}
+
+.atg .dojoxGrid table {
+	border-collapse: collapse;
+	padding: 0;
+	border:0;
+	margin:0;
+  font-size:1em;
+}
+
+.atg .dojoxGrid td {
+	-moz-outline: none;
+}
+.atg .dojoxGrid td a:link,
+.atg .dojoxGrid td a:visited{
+  text-decoration: underline;
+}
+/* master header */
+
+.atg .dojoxGrid-master-header {
+	position: relative;
+}
+
+/* master view */
+
+.atg  .dojoxGrid-master-view  {
+	position: relative;
+}
+
+/* views */
+
+.atg  .dojoxGrid-view {
+	position: absolute;
+	overflow: hidden;
+}
+
+/* header */
+
+.atg .dojoxGrid-header {
+	position: absolute;
+	overflow: hidden;
+}
+
+.atg .dojoxGrid-header {
+	background-color: #E8E8E8;
+	left: 0 !important;
+}
+
+.atg .dojoxGrid-header table {
+	text-align: center;
+	border:1px solid #C2C2C2;
+}
+
+.atg .dojoxGrid-header .dojoxGrid-cell-content {
+	text-align: center;
+
+}
+
+.atg .dojoxGrid-header .dojoxGrid-cell { 
+  border-top:0;
+  border-bottom:0;
+  border-right:1px solid #C2C2C2;
+  border-left:1px solid #C2C2C2;
+  border-color: #C2C2C2;
+  border-style:none solid;
+  border-width:0 1px;
+	margin:0;
+	background: #E8E8E8 none repeat scroll 0%;
+  font-weight:bold;
+	color: #369;
+	padding:7px 5px 7px 5px;
+	text-decoration: none;
+}
+
+.atg .dojoxGrid-header .dojoxGrid-cell-over {
+	background-image: none;
+	background: #E8E8E8 none repeat scroll 0%;
+/*	border-bottom-color: #FEBE47;*/
+	margin:0;
+	padding:7px 5px 7px 5px;
+/*	border-bottom-width: 1px;*/
+}
+
+.atg .dojoxGrid-sort-down {
+	background: url(images/sortArrowDown.gif) right no-repeat; 
+	padding-right:9px;
+	margin-left:0;
+}
+
+.atg .dojoxGrid-sort-up {
+	background: url(images/sortArrowUp.gif) right no-repeat; 
+	padding-right:9px;
+	margin-left:0;
+}
+
+/* content */
+
+.atg .dojoxGrid-scrollbox {
+	position: relative;
+	overflow: scroll;
+	background-color: white;
+	width: 100%;
+}
+
+.atg .dojoxGrid-content {
+	position: relative;
+	overflow: hidden;
+	 -moz-outline-style: none;
+	outline: none;
+}
+
+/* rowbar */
+
+.atg .dojoxGrid-rowbar { 
+	border: 0px solid;
+	border-color: #F6F4EB #ACA899 #ACA899 #F6F4EB;
+	border-top: none;
+	background: url(images/grid_dx_gradient.gif) #E8E1CF top repeat-x;
+}
+
+.atg .dojoxGrid-rowbar-inner {
+	border-top: 0px solid #F6F4EB;
+}
+
+.atg .dojoxGrid-rowbar-over {
+	background-image: none;
+	background-color: white;
+	border-top-color: #FEBE47;
+	border-bottom-color: #FEBE47;
+}
+
+.atg .dojoxGrid-rowbar-selected {
+/*	background-color: #D9E8F9;*/
+	background-image: none;
+	font-weight:bold;
+	/*background-image: url(images/grid_green_dot.gif);*/
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.atg .dojoxGrid .changedRow{
+	background-color: #c3d2e0 !important;
+}
+
+/* rows */
+
+.atg .dojoxGrid-row {
+	position: relative;
+	width:100%;
+	border: 0;
+/*	width: 9000em;*/
+}
+
+.atg .dojoxGrid-row-odd {
+	border:0;
+	background:#F6F7F9 none repeat scroll 0%;
+}
+
+.atg .dojoxGrid-row-over {
+	border-top-color: #C2C2C2;
+	border-bottom-color: #C2C2C2;
+	/*border-bottom-width: 2px;
+	padding-bottom: 0;*/
+	/*background-color: #FFDD9D;*/
+	background-color: #FFFFAD;
+}
+
+.atg .dojoxGrid-row-selected,
+.atg .dojoxGrid-row-selected td {
+	/*background-color: #D9E8F9;*/
+	font-weight:bold;
+}
+
+
+.atg .dojoxGrid table.dojoxGrid-row-table {
+	table-layout: fixed;
+	width: 0;
+}
+
+.atg .dojoxGrid-invisible {
+	visibility: hidden;
+}		
+
+.atg  .Xdojo-ie .dojoxGrid-invisible {
+	display: none;
+}		
+
+.atg .dojoxGrid-invisible td, .dojoxGrid-header .dojoxGrid-invisible td {
+	border-top-width: 0;
+	border-bottom-width: 0;
+	padding-top: 0;
+	padding-bottom: 0;
+	height: 0;
+	overflow: hidden;
+}
+
+/* cells */
+
+.atg .dojoxGrid-cell {
+  border-top:0;
+  border-bottom:0;
+  border-right:1px solid #C2C2C2;
+  border-left:1px solid #C2C2C2;
+  border-color: #C2C2C2;
+  border-style:none solid;
+  border-width:0 1px;
+	padding: 5px;
+	margin:0;
+	text-align: left;
+	/*overflow: hidden;*/
+}
+
+
+.atg .dojoxGrid-cell-focus {
+	/*border: 1px dashed blue;*/
+}
+
+.atg .dojoxGrid-cell-over {
+	/*border: 1px dotted #FEBE47;*/
+}
+
+.atg .dojoxGrid-cell-focus.dojoxGrid-cell-over {
+	/*border: 1px dotted green;*/
+	
+}
+
+.atg .dojoxGrid-cell-clip {
+	width: 100%;
+	overflow: hidden;
+	white-space:nowrap;
+	text-overflow: ellipsis;
+}
+
+/* editing */
+
+.atg .dojoxGrid-row-editing td {
+	background-color: #F4FFF4;
+}
+
+.atg .dojoxGrid-row-inserting td {
+	background-color: #F4FFF4;
+}
+.atg .dojoxGrid-row-inflight td {
+	background-color: #F2F7B7;
+}
+.atg .dojoxGrid-row-error td {
+	background-color: #F8B8B6;
+}
+
+.atg .dojoxGrid-input, .dojoxGrid-select, .dojoxGrid-textarea {
+	margin: 0;
+	padding: 0;
+	border-style: none;
+	width: 100%;
+/*  font-size: 100%;*/
+	font-family: inherit;
+}
+
+.atg .dojoxGrid-hidden-focus {
+	position: absolute;
+	left: -1000px;
+	top: -1000px;
+	height: 0px, width: 0px;
+}

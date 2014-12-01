@@ -1,0 +1,9 @@
+#!/bin/sh
+CATALINA_HOME=${TOMCAT_HOME};export CATALINA_HOME
+CATALINA_BASE="${TOMCAT_HOME}/atgbases/${SERVER_NAME}";export CATALINA_BASE
+JAVA_OPTS="-Xms512m -Xmx1024m -XX:MaxPermSize=256m -XX:MaxNewSize=256m";export JAVA_OPTS
+"${TOMCAT_HOME}/bin/catalina.sh" run $*
+
+# JPDA_ADDRESS=8000; export JPDA_ADDRESS
+# JPDA_TRANSPORT=dt_socket; export JPDA_TRANSPORT
+# "${TOMCAT_HOME}/bin/catalina.bat" jpda start %*

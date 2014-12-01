@@ -1,0 +1,110 @@
+<HTML>
+<HEAD>
+<TITLE>Shippable Groups</TITLE>
+</HEAD>
+
+<body BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="../images/dcsadminbanner.gif" ALT="Dynamo Commerce Administration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a href="../index.jhtml">Commerce</a>/<a 
+href="index.jhtml">Fulfillment</a>/ShippableGroups<p>
+
+<blockquote>
+
+<h2>Shippable Groups</h2>
+
+
+<table cellspacing=8>
+  <tr>
+    <td><a href="ShippableGroups.jhtml"><i>Refresh this page</i></a></td>
+  </tr>
+</table>
+
+<img src="../../images/bluedot.gif" width=505 height=1><p>
+
+This is a summary of the last time the HardgoodShipper ran, as well as a
+list of all shipping groups in the repository that have a state of PENDING_SHIPMENT.<p>
+
+<DROPLET bean="/atg/commerce/fulfillment/droplet/ShippableGroupsDroplet">
+
+  <OPARAM name="shipSchedule">
+    <table border="1">
+      <tr>
+	<td colspan=2>Shipper</td>
+      </tr>
+      <tr>
+	<td>Current Time</td>
+	<td><valueof param="currentTime">NA</valueof></td>
+      </tr>
+      <tr>
+	<td>Last Run</td>
+	<td><valueof param="lastRun">NA</valueof></td>
+      </tr>
+      <tr>
+	<td>Schedule</td>
+	<td><valueof param="schedule">NA</valueof></td>
+      </tr>
+    </table>
+  </OPARAM>
+
+  <OPARAM name="output">
+    <table border="1">
+      <tr>
+	<td><b>Order ID</b></td>
+	<td><b>Shipping Group Id</b></td>
+      </tr>
+    <DROPLET bean="/atg/dynamo/droplet/For">
+      <PARAM name=howMany value="param:count">
+      <OPARAM name=output>
+	<tr>
+	  <td><valueof param="orders[param:index]">no orderId</valueof></td>
+          <td><valueof param="shippingGroups[param:index]">no shippingGroupId</valueof></td>
+        </tr>
+      </OPARAM>
+    </DROPLET>
+    </table> 
+    <br>
+  </OPARAM>
+  <OPARAM name="empty">
+    <table border="1">
+      <tr>
+	<td><b>Order ID</b></td>
+	<td><b>Shipping Group Id</b></td>
+      </tr>
+      <tr>
+	<td colspan=2>There are no shippable groups.</td>
+      </tr>
+    </table>
+  </OPARAM>
+</DROPLET>
+
+<p>
+
+<img src="../../images/bluedot.gif" width=505 height=1><p>
+
+<b>Notify Fulfillment of shipment</b><p>
+
+Use this form to tell the fulfillment system that the given shipping
+group has been shipped to the customer.<br>
+<form action="Shipping.jhtml" method=POST>
+OrderId: <input rows=1 cols=20 name="orderId"><br>
+ShippingGroupId: <input rows=1 cols=20 name="shippingGroupId"><br>
+<input type=submit name="method" value="Ship..."><br>
+</form>
+
+<img src="../../images/bluedot.gif" width=505 height=1><p>
+
+<b>Print an order</b><p>
+
+<form action="PrintOrder.jhtml" method=POST>
+OrderId: <input rows=1 cols=20 name="orderId" value="param:orderId">
+<input type=submit name="method" value="Print Order"><br>
+</form>
+
+</blockquote>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/DCS/admin/atg/commerce/admin/en/fulfillment/ShippableGroups.jhtml#2 $$Change: 651448 $*/</java>
+

@@ -1,0 +1,257 @@
+<DECLAREPARAM NAME="launched" CLASS="java.lang.String" DESCRIPTION="Indicates if Launched message should be displayed">
+
+<nucleus type=import>
+  /atg/devtools/Admin
+  /java/net/InetAddress
+  /atg/dynamo/admin/Configure
+</nucleus>
+
+<java type=import>
+  atg.nucleus.DynamoEnv
+</java>
+<java>
+  atg.ui.hub.HubAdmin admin = null;
+  try {
+   admin = (atg.ui.hub.HubAdmin)
+  request.resolveName("/atg/devtools/Admin");
+  } catch ( Exception e ) {
+  // DAS-UI is probably not specified
+  }
+  
+  //
+  // NOTE: The ATG Control Center has not yet been ported to JRE 1.4, so we
+  // need to ensure that it runs on JRE 1.3 only.
+  //
+  String javaVersion = DynamoEnv.getProperty("java.version");
+  boolean isSupportedJRE = (javaVersion == null || javaVersion.startsWith("1.3") || javaVersion.startsWith("1.4") || javaVersion.startsWith("1.5") || javaVersion.startsWith("1.6"));
+
+</java>
+
+<HTML> <HEAD>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+<TITLE>ATG Control Center Administration</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="images/admin-banner.gif" ALT="Dynamo Administration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/en/start-acc<p>
+
+<blockquote>
+
+<H2>Start ACC</H2>
+
+<java>
+  if ( admin == null ) {
+</java>
+<font color=black>The Dynamo UI module is not installed.<BR>
+<P>Please restart Dynamo and be sure that the variable module DAS-UI is included in your
+DYNAMO_MODULES variable.</P>
+<P>
+The DYNAMO_MODULES variable can be set by editing the file 
+<b>&lt;DYNAMO_HOME&gt;/localconfig/environment.X</b>, where X is .bat on Windows platforms or .sh on UNIX platforms.
+</P>
+Windows Example:<BR>
+&nbsp;set DYNAMO_MODULES=%DYNAMO_MODULES%;DAS-UI<BR>
+UNIX Example:<BR>
+&nbsp;DYNAMO_MODULES=${DYNAMO_MODULES}:DAS-UI
+</font>
+<java>
+  } else {
+</java>
+<font color=red><valueof property=Admin.errorMessage valueishtml></valueof></font>
+<p>
+<code>
+<java>
+
+// Get the display from the atg.display property.  If the display
+// does not exist then set the display to the current host name.
+// The display property should be of the form "foo.atg.com:0.0". 
+// If ':' cannot be found in the display property or the display
+// property is ":0.0" then set the display to the current host name.
+// Otherwise set the display to the display property minus the 
+// ":0.0".
+String display = DynamoEnv.getProperty("atg.dynamo.display");
+String hostName = java.net.InetAddress.getLocalHost().getHostName();
+if (null != display) {
+  int index = display.indexOf(':');
+  if ((-1 == index) || (0 == index)) {
+    display = hostName;
+  }
+  else {
+    display = display.substring(0,index);
+  }
+}
+else {
+  display = hostName;
+}
+</java>
+</code>
+
+<JAVA> if (isSupportedJRE && request.resolveName("/atg/devtools/DevAgent", false) != null) { </JAVA>
+
+Start the ATG Control Center in the VM of the Dynamo server
+<code><valueof property="Configure.thisHostname"></valueof></code>.
+
+<blockquote>
+
+<DROPLET BEAN="/atg/dynamo/droplet/Switch">
+  <PARAM NAME="value" VALUE="property:Admin.hubActive">
+  <OPARAM NAME="false">
+
+    <FORM ACTION="start-acc.jhtml" METHOD="POST">
+      <INPUT TYPE="SUBMIT" NAME="Start ACC in Server VM" VALUE="Start ACC in Server VM" 
+        PROPERTY="Admin.launchHub">
+    </FORM>
+
+  </OPARAM>
+  <OPARAM NAME="true">
+    <P>ATG Control Center is now active.
+  </OPARAM>
+</DROPLET>
+
+</blockquote>
+
+<JAVA> } </JAVA>
+
+In a dedicated VM, start the ATG Control Center for the Dynamo server
+<code><valueof property="Configure.thisHostname"></valueof></code>.
+
+Starting the ACC in a dedicated VM requires more memory than starting the ACC in the Server VM.
+
+<blockquote>
+<DROPLET BEAN="/atg/dynamo/droplet/IsNull">
+  <PARAM NAME="value" VALUE="param:launched">
+  <OPARAM NAME="true">
+    <FORM ACTION="start-acc.jhtml" METHOD="POST">
+      <INPUT TYPE="hidden" NAME="launched" VALUE="true">
+      <INPUT TYPE="submit" NAME="Start ACC in Separate VM" VALUE="Start ACC in Separate VM">
+    </FORM>
+  </OPARAM>
+  <OPARAM NAME="false">
+    <P>
+
+    <JAVA>
+
+      // Get the path of the Java VM.
+      String javaHome = DynamoEnv.getProperty("java.home");
+      boolean isWindows = DynamoEnv.getProperty("os.name").startsWith("Windows");
+      String javaProgName = (isWindows ? "javaw.exe" : "java");
+      String javaVM = javaHome + File.separator + "bin" + File.separator + javaProgName;
+
+      // Get the Dynamo root and home directories.
+      String dynamoRootPath = DynamoEnv.getProperty("atg.dynamo.root");
+      File dynamoRoot = new File(dynamoRootPath).getCanonicalFile();
+      String dynamoHomePath = DynamoEnv.getProperty("atg.dynamo.home");
+      File dynamoHome = new File(dynamoHomePath).getCanonicalFile();
+
+      // Get the port number for this Dynamo's RMI server.
+      atg.service.dynamo.Configuration configuration = (atg.service.dynamo.Configuration) request.resolveName("/atg/dynamo/Configuration");
+      String rmiPort = new Integer(configuration.getRmiPort()).toString();
+
+      String jreVersion = DynamoEnv.getProperty("java.version");
+      boolean isSupportedJre = (jreVersion == null ||
+                                jreVersion.startsWith("1.3") ||
+                                jreVersion.startsWith("1.4"));
+
+      // Generate the command to run the ACC launcher.
+      String[] cmd;
+      if (isSupportedJre) {
+        cmd = new String[] {
+        javaVM,
+        "-Xms96m",
+        "-Xmx160m",
+        "-Djava.security.policy=lib" + File.separator + "java.policy",
+        "-Djava.protocol.handler.pkgs=atg.net.www.protocol",
+        "-Datg.dynamo.modulepath=" 
+          + ( isWindows ? "\"" : "")
+          + ( DynamoEnv.getProperty("atg.dynamo.modulepath") != null
+              ? DynamoEnv.getProperty("atg.dynamo.modulepath")
+              : DynamoEnv.getProperty("atg.dynamo.root") )
+          + ( isWindows ? "\"" : ""),
+        "-Djava.naming.factory.url.pkgs=atg.jndi.url",
+        "-classpath",
+        dynamoHomePath + File.separator + "lib" + File.separator + "launcher.jar" 
+	  + File.pathSeparator + dynamoRootPath + File.separator 
+          + "DAS-UI" + File.separator + "lib" + File.separator + "client-stubs.jar",
+        "atg.applauncher.dynamo.LocalACCLauncher",
+        "-host",
+        "localhost",
+        "-port",
+        rmiPort,
+        "-root",
+        dynamoRoot.getPath(),
+        "-home",
+        dynamoHome.getPath()};
+      }
+      else {
+        //
+        // If the server is running in a JRE that is not supported by the ACC,
+        // we use the startACC script to launch the ACC.
+        //
+        if (isWindows) {
+          String launcher = dynamoRoot.getPath() +
+                            File.separator + "DAS-UI" +
+                            File.separator + "bin" +
+                            File.separator + "shellLauncher.exe";
+          String script = dynamoHome.getPath() +
+                          File.separator + "bin" +
+                          File.separator + "startACC.bat";
+          cmd = new String[] {launcher, script};
+        }
+        else {
+          cmd = new String[] {
+            dynamoHome.getPath() + File.separator + "bin" + File.separator + "startACC"
+          };
+        }
+      }
+
+      try {
+        Runtime.getRuntime().exec(cmd, null, dynamoHome);
+        out.println("ATG Control Center has been launched.");
+      }
+      catch (IOException e) {
+        out.println("<B>ERROR:</B> A fatal error occurred while launching ATG Control Center.");
+      }
+    </JAVA>
+  </OPARAM>
+</DROPLET>
+
+</blockquote>
+
+<p>The ATG Control Center will be displayed on the machine
+<code>
+<java>
+out.print(display + ".");
+</java>
+</code>
+
+<DROPLET BEAN="/atg/dynamo/droplet/IsNull">
+  <PARAM NAME="value" VALUE="property:/atg/dynamo/admin/LDAPCacheLoader.accountManager">
+  <OPARAM NAME="false">    
+    <DROPLET BEAN="/atg/dynamo/droplet/Switch">
+      <PARAM NAME="value" VALUE="property:/atg/dynamo/admin/LDAPCacheLoader.accountManager.memberOfCacheEnabled">
+      <OPARAM NAME="true">
+        <H2>Reload LDAP ACL Cache</H2>
+        Use this button to refresh the permissions for accessing various ACC functionality and Admin HTML interface.
+        <blockquote>
+          <FORM ACTION="start-acc.jhtml" METHOD="POST">
+           <input type="SUBMIT" bean="/atg/dynamo/admin/LDAPCacheLoader.reload" value="re-Load">
+          </FORM>
+        </blockquote>
+      </OPARAM>
+      <OPARAM NAME="false"> <!-- cache disabled --></OPARAM>
+      <OPARAM NAME="default"> <!-- undef --> </OPARAM> 
+    </DROPLET> 
+  </OPARAM>
+  <OPARAM NAME="true"> <!-- no acct manager found --> </OPARAM>
+</DROPLET>
+</blockquote>
+
+<java>
+  } // check if admin is set
+</java>
+</BODY> </HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/start-acc.jhtml#2 $$Change: 651448 $*/</java>
+

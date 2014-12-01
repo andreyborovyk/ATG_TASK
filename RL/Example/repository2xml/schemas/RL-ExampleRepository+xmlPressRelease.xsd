@@ -1,0 +1,100 @@
+<xsd:schema elementFormDefault="qualified" targetNamespace="http://www.atg.com/ns/RL-ExampleRepository/xmlPressRelease" xmlns:xmlPressRelease="http://www.atg.com/ns/RL-ExampleRepository/xmlPressRelease" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:annotation>
+    <xsd:documentation>
+Repository Name: RL-ExampleRepository
+Item-Descriptor Name: xmlPressRelease
+Mapping File Name: None Specified
+Loaded Modules.... 
+module: Dynamo
+module: Support
+module: Local</xsd:documentation>
+  </xsd:annotation>
+  <xsd:element name="xmlPressRelease" type="xmlPressRelease:xmlPressRelease"/>
+  <xsd:complexType name="xmlPressRelease">
+    <xsd:all>
+      <xsd:element minOccurs="0" name="xmlPressRelease.type" nillable="true">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="textFileAsset"/>
+            <xsd:enumeration value="binaryFileAsset"/>
+            <xsd:enumeration value="htmlArticle"/>
+            <xsd:enumeration value="txtPressRelease"/>
+            <xsd:enumeration value="xmlPressRelease"/>
+            <xsd:enumeration value="gifImage"/>
+            <xsd:enumeration value="jpgImage"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="xmlPressRelease.content" nillable="true" type="xsd:string"/>
+      <xsd:element name="xmlPressRelease.filename" nillable="true" type="xsd:string"/>
+      <xsd:element minOccurs="0" name="xmlPressRelease.id" nillable="true" type="xsd:string"/>
+      <xsd:element minOccurs="0" name="xmlPressRelease.size" nillable="true" type="xsd:long"/>
+      <xsd:element minOccurs="0" name="xmlPressRelease.lastModified" nillable="true" type="xsd:dateTime"/>
+    </xsd:all>
+    <xsd:attribute name="ID" type="xsd:ID"/>
+    <xsd:attribute name="IDREF" type="xsd:IDREF"/>
+  </xsd:complexType>
+  <xsd:element name="string" nillable="true" type="xsd:string"/>
+  <xsd:element name="date" nillable="true" type="xsd:date"/>
+  <xsd:element name="dateTime" nillable="true" type="xsd:dateTime"/>
+  <xsd:element name="boolean" type="xsd:boolean"/>
+  <xsd:element name="integer" nillable="true" type="xsd:integer"/>
+  <xsd:element name="byte" nillable="true" type="xsd:byte"/>
+  <xsd:element name="short" nillable="true" type="xsd:short"/>
+  <xsd:element name="float" nillable="true" type="xsd:float"/>
+  <xsd:element name="double" nillable="true" type="xsd:double"/>
+  <xsd:element name="long" nillable="true" type="xsd:long"/>
+  <xsd:element name="binary" nillable="true" type="xsd:base64Binary"/>
+  <xsd:complexType name="StringArray">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" ref="xmlPressRelease:string"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="IntegerArray">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" ref="xmlPressRelease:integer"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="DateArray">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" ref="xmlPressRelease:date"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="TimestampArray">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" ref="xmlPressRelease:dateTime"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="BooleanArray">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" ref="xmlPressRelease:boolean"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="ShortArray">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" ref="xmlPressRelease:short"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="FloatArray">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" ref="xmlPressRelease:float"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="DoubleArray">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" ref="xmlPressRelease:double"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="LongArray">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" ref="xmlPressRelease:long"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="null" nillable="true" type="xmlPressRelease:null"/>
+  <xsd:complexType name="null"/>
+  <xsd:element name="itemRef">
+    <xsd:complexType>
+      <xsd:attribute name="itemRef" type="xsd:string"/>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

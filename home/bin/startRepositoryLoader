@@ -1,0 +1,109 @@
+#!/bin/sh
+
+#
+# We need to give the TemplateParser the current directory so that we
+# can write files relative to that directory.  Dynamo currently still requires
+# that it be in the home directory when it is run.
+#
+STARTDIR=`pwd`
+
+#
+# Check that DYNAMO_HOME and DAS_ROOT are set and do basic app-server
+# specific configuration.
+#
+PROGRAM_DIR=`dirname $0`
+. $PROGRAM_DIR/checkDynamoHome.sh
+DASENV=$DYNAMO_HOME/localconfig/dasEnv.sh
+if [ -f $DASENV ]; then
+  . $DASENV
+else
+  echo "Warning: $DASENV does not exist; did you run the installer?"
+  echo "         I will try to work around the problem."
+  if [ "${DAS_ROOT}" = "" ] ; then
+    DAS_ROOT=$DYNAMO_HOME/..
+  fi
+  ATGJRE=java
+  echo DAS_ROOT=$DAS_ROOT
+  echo ATGJRE=$ATGJRE
+fi
+. $DYNAMO_HOME/bin/j2eeEnv.sh
+
+DYNAMO_MODULES="DAS:DAS-UI"
+
+SERVERNAME="."
+TPARGS=""
+SERVERCONFIGPATH=""
+
+#
+# Add appropriate dir or jar to config path for TransactionManager
+#
+if [ -d ../DAS/config/dtmconfig ] ; then
+  SERVERCONFIGPATH=:../DAS/config/dtmconfig
+fi
+if [ -f ../DAS/config/dtmconfig.jar ] ; then
+  SERVERCONFIGPATH=:../DAS/config/dtmconfig.jar
+fi
+
+SERVERCONFIGPATH="${SERVERCONFIGPATH}:localconfig"
+
+while [ "x$1" != "x" ]
+do
+case $1 in
+      -s) SERVERNAME="servers/$2"
+          SERVERCONFIGPATH="${SERVERCONFIGPATH}:servers/$2/localconfig"
+          shift
+          ;;
+      -m) while [ "x$2" != "x" ]
+    do
+      case $2 in
+         -*)  break;;
+     Admin*) ADMIN_MODULES="${ADMIN_MODULES}:$2" ;;
+    *) ADDITIONAL_MODULES="${ADDITIONAL_MODULES}:$2" ;;
+      esac
+    shift
+    done;;
+       *) TPARGS="${TPARGS} $1"
+          ;;
+      esac
+  shift
+done
+
+if [ "x${ADDITIONAL_MODULES}" != "x" ] ; then
+    DYNAMO_MODULES=${DYNAMO_MODULES}:${ADDITIONAL_MODULES}
+fi
+
+#
+# Load in default environment values
+#
+. bin/dynamoEnv.sh
+
+if [ "x$THIRD_PARTY_APP_SERVER" = "x" ] ; then
+    CONFIGPATH=${CONFIGPATH}$SERVERCONFIGPATH
+else
+   if [ "${THIRD_PARTY_APP_SERVER}" = "websphere" ] ; then
+     CONFIGPATH=${CONFIGPATH}$SERVERCONFIGPATH:../DAF/config/dafconfig.jar:../DAF/config/wsconfig.jar
+   else
+     CONFIGPATH=${CONFIGPATH}$SERVERCONFIGPATH:../DAF/config/dafconfig.jar
+   fi
+fi
+
+
+if [ "x${ATG_CHECK_DEPLOY_TARGETS}" != "x" ] ; then
+    JAVA_ARGS="-Datg.check.deploy.targets=${ATG_CHECK_DEPLOY_TARGETS} ${JAVA_ARGS}"
+fi
+
+
+
+echo -------------------
+echo JAVA_ARGS:  ${JAVA_ARGS}
+echo -------------------
+${JAVA_VM} ${JAVA_ARGS} atg.applauncher.dynamo.DynamoServerLauncher -expand DYNAMO_MODULES: ${DYNAMO_MODULES}
+echo -------------------
+${JAVA_VM} ${JAVA_ARGS} atg.applauncher.dynamo.DynamoServerLauncher -expand CONFIGPATH: ${CONFIGPATH}
+echo -------------------
+echo CLASSPATH:  ${CLASSPATH}
+echo -------------------
+echo PATH:       ${PATH}
+
+${JAVA_VM} ${JAVA_ARGS} atg.repository.loader.RepositoryLoaderCmdLine -cmd startRepositoryLoader -configPath ${CONFIGPATH} ${TPARGS}
+

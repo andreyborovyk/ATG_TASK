@@ -1,0 +1,293 @@
+<HTML>
+<HEAD>
+<TITLE>Dynamo Commerce Administration</TITLE>
+</HEAD>
+<importbean bean="/atg/commerce/catalog/CatalogTools">
+<importbean bean="/atg/commerce/catalog/RunServiceFormHandler">
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A"  VLINK="#637DA6" LINK="#E87F02">
+<IMG SRC="../images/dcsadminbanner.gif" ALT="Dynamo Commerce Administration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+<a href="/">admin</a>/<a href="../index.jhtml">Commerce</a>
+<droplet bean="/atg/dynamo/droplet/Switch">
+ <param name="value" value="param:process">
+ <oparam name="UpdateCatalogProcess">
+  /Catalog Update<p>
+ </oparam>
+ <oparam name="BasicMaintProcess">
+  /Basic Catalog Maintenance<p>
+ </oparam>
+ <oparam name="VerifyProcess">
+  /Verify Catalog<p>
+ </oparam>
+</droplet>
+<droplet bean="/atg/dynamo/droplet/Switch">
+ <param name="value" value="param:process">
+ <oparam name="UpdateCatalogProcess">
+  <h2>Catalog Update</h2>
+ </oparam>
+ <oparam name="BasicMaintProcess">
+  <h2>Basic Catalog Maintenance</h2>
+ </oparam>
+ <oparam name="VerifyProcess">
+  <h2>Verify Catalog</h2>
+ </oparam>
+</droplet>
+
+<br>
+<!-- Show any errors -->
+<blockquote>
+<droplet bean="/atg/dynamo/droplet/Switch">
+ <param name="value" value="bean:RunServiceFormHandler.formError">
+ <oparam name="false">
+ </oparam>
+ <oparam name="true">
+  &nbsp;<br>
+  <span class=content_alert>The following errors occurred:</span><br>
+  <span class=content_alert><UL>
+   <droplet bean="/atg/dynamo/droplet/ErrorMessageForEach">
+    <param name="exceptions" value="bean:RunServiceFormHandler.formExceptions">
+    <oparam name="output">
+      <font color="red">
+      <LI> <valueof param="message"/>
+      </font>
+    </oparam>
+   </droplet>
+  </UL></span> 
+ </oparam>
+</droplet>
+</blockquote>
+
+<blockquote>
+  <droplet bean="/atg/dynamo/droplet/Switch">
+	  <param name="value" value="param:process">
+	  <oparam name="VerifyProcess">
+      <b><a href="/nucleus/atg/commerce/catalog/custom/CatalogVerificationService">Catalog Verification</a></b><br>
+      This service verifies catalog component relationships for correctness.<br>
+
+        <blockquote>
+        <table>
+          <tr>
+            <td valign=top><b>Catalogs:</b></td>
+            <td><valueof bean="CatalogTools.catalogProperties.ancestorCategoriesPropertyName"></valueof>,&nbsp;
+                 <valueof bean="CatalogTools.catalogProperties.allRootCategoriesPropertyName"></valueof>,&nbsp;
+                 <valueof bean="CatalogTools.catalogProperties.directAncestorCatalogsAndSelfPropertyName"></valueof>,&nbsp;
+                 <valueof bean="CatalogTools.catalogProperties.indirectAncestorCatalogsPropertyName"></valueof>
+             </td>
+          </tr>
+          <tr>
+            <td valign=top><b>Categories:</b></td>
+            <td>
+              <valueof bean="CatalogTools.catalogProperties.relatedCategoriesPropertyName"></valueof>,&nbsp;
+              <valueof bean="CatalogTools.catalogProperties.categoryInfosPropertyName"></valueof>,&nbsp;
+              <valueof bean="CatalogTools.catalogProperties.parentCategoryPropertyName"></valueof>
+            </td>
+          </tr>
+          <tr>
+            <td valign=top><b>Products:</b></td>
+            <td>
+            <valueof bean="CatalogTools.catalogProperties.relatedProductsPropertyName"></valueof>,&nbsp;
+            <valueof bean="CatalogTools.catalogProperties.catalogsRelatedProductsPropertyName"></valueof>,&nbsp;
+            <valueof bean="CatalogTools.catalogProperties.productInfosPropertyName"></valueof>,&nbsp;
+            <valueof bean="CatalogTools.catalogProperties.parentCategoryPropertyName"></valueof>
+            </td>
+          </tr>
+          <tr>
+            <td valign=top><b>Skus:</b></td>
+            <td>
+            <valueof bean="CatalogTools.catalogProperties.replacementProductsPropertyName"></valueof>,&nbsp;
+            <valueof bean="CatalogTools.catalogProperties.catalogsReplacementProductsPropertyName"></valueof>,&nbsp;
+            <valueof bean="CatalogTools.catalogProperties.skuInfosPropertyName"></valueof>
+            </td>
+            </tr>
+        </table>
+        </blockquote>
+	  </oparam>
+	  <oparam name="BasicMaintProcess">
+      The following services are executed as part of the basic catalog maintenance process.<p>
+      <droplet bean="/atg/dynamo/droplet/Compare">
+        <param name="obj1" value="bean:RunServiceFormHandler.catalogType">
+        <param name="obj2" value="custom">
+        <oparam name="equal">
+          <blockquote>
+		  
+		  <droplet bean="/atg/dynamo/droplet/Compare">
+			<param name="obj1" value="bean:RunServiceFormHandler.isAGSConfiguredToRun">
+			<param name="obj2" value="true">
+			<oparam name="equal">
+				<b>Ancestor Generator</b> &nbsp; (<a href="/nucleus/atg/commerce/catalog/custom/AncestorGeneratorService">View Service Component</a>)<br>
+				Generates computed property values used by DCS for catalog navigation and search<br>
+				<table>
+				  <tr>
+					<td width="25">&nbsp;</td>
+					<td valign=top><b>Categories:</b></td>
+					<td>
+					  <valueof bean="CatalogTools.catalogProperties.catalogsPropertyName"></valueof>,&nbsp;
+					  <valueof bean="CatalogTools.catalogProperties.ancestorCategoriesPropertyName"></valueof>,&nbsp;
+					  <valueof bean="CatalogTools.catalogProperties.parentCategoriesForCatalogPropertyName"></valueof>,&nbsp;
+					  <valueof bean="CatalogTools.catalogProperties.sitesPropertyName"></valueof>
+					</td>
+				  </tr>
+				  <tr>
+					<td width="25">&nbsp;</td>
+					<td valign=top><b>Products:</b></td>
+					<td>
+					  <valueof bean="CatalogTools.catalogProperties.catalogsPropertyName"></valueof>,&nbsp;
+					  <valueof bean="CatalogTools.catalogProperties.ancestorCategoriesPropertyName"></valueof>,&nbsp;
+					  <valueof bean="CatalogTools.catalogProperties.parentCategoriesForCatalogPropertyName"></valueof>,&nbsp;
+					  <valueof bean="CatalogTools.catalogProperties.sitesPropertyName"></valueof>
+					</td>
+				  </tr>
+				  <tr>
+					<td width="25">&nbsp;</td>
+					<td valign=top><b>Skus:</b></td>
+					<td>
+					  <valueof bean="CatalogTools.catalogProperties.catalogsPropertyName"></valueof>,&nbsp;
+					  <valueof bean="CatalogTools.catalogProperties.sitesPropertyName"></valueof>
+					</td>
+				  </tr>
+				</table>
+				<p>
+				</oparam>
+			</droplet>
+
+			<droplet bean="/atg/dynamo/droplet/Compare">
+				<param name="obj1" value="bean:RunServiceFormHandler.isCVSConfiguredToRun">
+				<param name="obj2" value="true">
+				<oparam name="equal">
+					<b>Catalog Verification</b> &nbsp; (<a href="/nucleus/atg/commerce/catalog/custom/CatalogVerificationService">View Service Component</a>)<br>
+					This process verifies catalog component relationships for correctness.<br>
+					<table>
+					  <tr>
+						<td width="25">&nbsp;</td>
+						<td valign=top><b>Catalogs:</b></td>
+					   <td>
+						<valueof bean="CatalogTools.catalogProperties.ancestorCategoriesPropertyName"></valueof>,&nbsp;
+						 <valueof bean="CatalogTools.catalogProperties.allRootCategoriesPropertyName"></valueof>,&nbsp;
+						 <valueof bean="CatalogTools.catalogProperties.directAncestorCatalogsAndSelfPropertyName"></valueof>,&nbsp;
+						 <valueof bean="CatalogTools.catalogProperties.indirectAncestorCatalogsPropertyName"></valueof>
+						</td>
+					  </tr>
+					  <tr>
+						<td width="25">&nbsp;</td>
+						<td valign=top><b>Categories:</b></td>
+						<td>
+						 <valueof bean="CatalogTools.catalogProperties.relatedCategoriesPropertyName"></valueof>,&nbsp;
+						  <valueof bean="CatalogTools.catalogProperties.categoryInfosPropertyName"></valueof>,&nbsp;
+						  <valueof bean="CatalogTools.catalogProperties.parentCategoryPropertyName"></valueof>
+						</td>
+					  </tr>
+					  <tr>
+						<td width="25">&nbsp;</td>
+						<td valign=top><b>Products:</b></td>
+						<td>
+						  <valueof bean="CatalogTools.catalogProperties.relatedProductsPropertyName"></valueof>,&nbsp;
+						  <valueof bean="CatalogTools.catalogProperties.catalogsRelatedProductsPropertyName"></valueof>,&nbsp;
+						  <valueof bean="CatalogTools.catalogProperties.productInfosPropertyName"></valueof>,&nbsp;
+						  <valueof bean="CatalogTools.catalogProperties.parentCategoriesForCatalogPropertyName"></valueof>
+						</td>
+					  </tr>
+					  <tr>
+						<td width="25">&nbsp;</td>
+						<td valign=top><b>Skus:</b></td>
+						<td>
+						  <valueof bean="CatalogTools.catalogProperties.replacementProductsPropertyName"></valueof>,&nbsp;
+						  <valueof bean="CatalogTools.catalogProperties.catalogsReplacementProductsPropertyName"></valueof>,&nbsp;
+						  <valueof bean="CatalogTools.catalogProperties.skuInfosPropertyName"></valueof>
+						</td>
+					  </tr>
+					</table>
+				</oparam>
+			</droplet>
+
+          </blockquote>
+     </oparam>
+     <oparam name="default">
+        <blockquote>
+        <b>Ancestor Generator</b> &nbsp; (<a href="/nucleus/atg/commerce/catalog/AncestorGeneratorService">View Service Component</a>)<br>
+          Generates computed property values used by DCS for catalog navigation and search<br>
+            <table>
+             <tr>
+                <td width="25">&nbsp;</td>
+                <td valign=top><b>Categories:</b></td>
+                <td><valueof bean="/atg/commerce/catalog/AncestorGeneratorService.ancestorCategoriesPropertyName"></valueof></td>
+              </tr>
+              <tr>
+                <td width="25">&nbsp;</td>
+                <td valign=top><b>Products:</b></td>
+                <td><valueof bean="/atg/commerce/catalog/AncestorGeneratorService.ancestorCategoriesPropertyName"></valueof></td>
+              </tr>
+              <tr>
+                <td width="25">&nbsp;</td>
+                <td valign=top><b>Skus:</b></td>
+                <td><valueof bean="/atg/commerce/catalog/AncestorGeneratorService.ancestorCategoriesPropertyName"></valueof></td>
+              </tr>
+            </table>
+        </blockquote>
+     </oparam>
+    </droplet>
+
+	  </oparam>
+	  <oparam name="UpdateCatalogProcess">
+
+       <a href="/nucleus/atg/commerce/catalog/custom/CatalogUpdateService">View Service Component</a><p>
+       Under normal circumstances, when the <a href="/nucleus/atg/commerce/catalog/custom/CatalogCompletionService/?propertyName=enabled">CatalogCompletionService</a>
+       is enabled , all updates using the ACC and the Repository API will trigger other dynamic updates to the catalog.
+       However, if the CatalogCompletionService is disabled or if the DCS catalog is updated outside of these processes, then this
+       service should be used to batch update the appropriate property values.
+       <p>
+       <blockquote>
+	     <table>
+		      <tr>
+                <td valign=top><b>Catalog Folder:</b></td>
+               <td>
+                <valueof bean="CatalogTools.catalogProperties.sitesPropertyName"></valueof>
+               </td>
+              </tr>
+              <tr>
+                <td valign=top><b>Catalogs:</b></td>
+               <td>
+                 <valueof bean="CatalogTools.catalogProperties.sitesPropertyName"></valueof>,&nbsp;
+                 <valueof bean="CatalogTools.catalogProperties.ancestorCategoriesPropertyName"></valueof>,&nbsp;
+                 <valueof bean="CatalogTools.catalogProperties.allRootCategoriesPropertyName"></valueof>,&nbsp;
+                 <valueof bean="CatalogTools.catalogProperties.directAncestorCatalogsAndSelfPropertyName"></valueof>,&nbsp;
+                 <valueof bean="CatalogTools.catalogProperties.indirectAncestorCatalogsPropertyName"></valueof>
+                </td>
+              </tr>
+              <tr>
+                <td valign=top><b>Categories:</b></td>
+                <td>
+                   <valueof bean="CatalogTools.catalogProperties.sitesPropertyName"></valueof>
+                </td>
+              </tr>
+        </table>
+       </blockquote>
+	  </oparam>
+  </droplet>
+</blockquote>
+
+<blockquote>
+  <form action="`request.getRequestURIWithQueryString()`" method="post">
+    <b>Catalog Repository:</b>
+    <droplet bean="/atg/dynamo/droplet/Compare">
+     <param name="obj1" value="bean:RunServiceFormHandler.catalogType">
+     <param name="obj2" value="custom">
+     <oparam name="equal">
+      <input size="40" bean="RunServiceFormHandler.repositoryPath"><br>
+     </oparam>
+     <oparam name="default">
+      <valueof bean="RunServiceFormHandler.repositoryPath"></valueof><br>
+     </oparam>
+    </droplet>
+
+   <input type="hidden" bean="RunServiceFormHandler.runProcessSuccessURL" value="viewStatus.jhtml">
+   <input type="hidden" bean="RunServiceFormHandler.runProcessErrorURL" value="`request.getRequestURIWithQueryString()`">
+   <input type="hidden" bean="RunServiceFormHandler.requestedProcess" value="param:process">
+   <br><input type="submit" bean="RunServiceFormHandler.runProcess" value="Start Process">
+  </form>
+</blockquote>
+
+<img src="../../images/bluedot.gif" width=505 height=1>
+<p>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/DCS/admin/atg/commerce/admin/en/maintenance/startService.jhtml#2 $$Change: 651448 $*/</java>

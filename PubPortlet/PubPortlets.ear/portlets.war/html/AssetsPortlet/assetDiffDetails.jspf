@@ -1,0 +1,97 @@
+<%--
+  Asset Difference Details
+  Fragment that displays diffs between 2 asset versions in either the asset or project portlet.
+
+  This fragment expects the following variables to be set in the enclosing page's scope:
+  @param cancelDiffActionURL    The destination URL if the user cancels the diff.
+  @param formHandlerPath        The path to our diff form handler.
+  @param itemMappingMode        The mode to use in biz:getItemMapping.
+
+  @version $Id $$Change $
+  @updated $DateTime $$Author $
+  --%>
+
+<!-- Begin AssetPortlet's assetDiffDetails.jsp -->
+
+<fmt:setBundle var="assetsBundle" basename="atg.epub.portlet.AssetsPortlet.Resources"/>
+
+<dspel:importbean var="diffFormHandler" bean="${formHandlerPath}"/>
+
+<portlet:actionURL var="actionURL"/>
+
+<%-- Get the repository items --%>
+<c:set value="${diffFormHandler.item1}" var="item1"/>
+<c:set value="${diffFormHandler.item2}" var="item2"/>
+
+<%-- Item 1 view mapping --%>
+<biz:getItemMapping item="${item1}" var="imap1" 
+  mode="${itemMappingMode}" propertyList="${diffFormHandler.diffProperties}">
+
+  <!-- Set the item mapping into a request scoped variable -->
+  <c:set value="${imap1}" var="imap1" scope="request"/>
+
+  <!-- Set the name of the Form's value dictionary property -->
+  <c:set target="${imap1}" property="valueDictionaryName" value="item1"/>
+
+</biz:getItemMapping>
+
+<%-- Item 2 view mapping --%>
+<biz:getItemMapping item="${item2}" var="imap2" mode="${itemMappingMode}" 
+  propertyList="${diffFormHandler.diffProperties}">
+
+  <!-- Set the item mapping into a request scoped variable -->
+  <c:set value="${imap2}" var="imap2" scope="request"/>
+
+   <!-- Set the name of the Form's value dictionary property -->
+   <c:set target="${imap2}" property="valueDictionaryName" value="item2"/>
+
+</biz:getItemMapping>
+
+<!-- Begin content. -->
+<div class="contentActions">
+  <table cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td class="blankSpace">&nbsp;</td>
+      <%-- PAGE HEADER --%>
+      <td><h2><fmt:message key="asset-diff-title" bundle="${assetsBundle}"/></h2></td>
+      <td width="100%">&nbsp;</td>
+    </tr>
+  </table>
+</div>
+
+<%-- Use the viewmapped .jsp to display the property diffs side by side --%>
+<fmt:message key="asset-version-title" bundle="${assetsBundle}" var="item1Title">
+   <fmt:param value="${diffFormHandler.versions[0]}"/>
+</fmt:message>
+<fmt:message key="asset-version-title" bundle="${assetsBundle}" var="item2Title">
+   <fmt:param value="${diffFormHandler.versions[1]}"/>
+</fmt:message>
+<dspel:form action="${actionURL}" method="post">
+  <c:forEach items="${imap1.viewMappings}" var="view1" varStatus="i">
+    <c:set value="${view1}" var="view1" scope="request"/>
+    <c:set value="${imap2.viewMappings[i.index]}" var="view2" scope="request"/>
+    <c:set value="${item1}" var="item1" scope="request"/>
+    <c:set value="${item2}" var="item2" scope="request"/>
+    <c:set value="${item1Title}" var="item1Title" scope="request"/>
+    <c:set value="${item2Title}" var="item2Title" scope="request"/>
+    <dspel:include otherContext="${view1.contextRoot}" page="${view1.uri}"/>
+ </c:forEach>
+</dspel:form>
+
+<div class="contentActions">
+  <table cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td class="blankSpace" width="100%">&nbsp;</td>
+      <td>
+        <%-- CANCEL BUTTON --%>
+        <a href='<c:out value="${cancelDiffActionURL}"/>' class="mainContentButton delete">
+          <fmt:message key="cancel-diff-button" bundle="${assetsBundle}"/>
+        </a>
+      </td>
+      <td class="blankSpace">&nbsp;</td>
+    </tr>
+  </table>
+</div>
+
+<!-- End AssetPortlet's assetDiffDetails.jsp -->
+<%-- @version $Id: //product/PubPortlet/version/10.0.3/portlets.war/html/AssetsPortlet/assetDiffDetails.jspf#2 $$Change: 651448 $--%>

@@ -1,0 +1,53 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="id_generator">
+<comment><![CDATA[ @version $Id: //product/DAS/version/10.0.3/templates/DAS/sql/id_generator.xml#2 $$Change: 651448 $]]></comment>
+   <table name="das_id_generator">
+      <column name="id_space_name" nullable="n">
+         <column-type db="generic" type="varchar" length="60"/>
+      </column>
+      <column name="seed" nullable="n">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="batch_size" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="prefix" nullable="y">
+         <column-type db="generic" type="varchar" length="10"/>
+      </column>
+      <column name="suffix" nullable="y">
+         <column-type db="generic" type="varchar" length="10"/>
+      </column>
+      <primary-key name="das_id_generator_p">
+         <index-column column="id_space_name" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="das_secure_id_gen">
+      <column name="id_space_name" nullable="n">
+         <column-type db="generic" type="varchar" length="60"/>
+      </column>
+      <column name="seed" nullable="n">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="batch_size" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="ids_per_batch" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="prefix" nullable="y">
+         <column-type db="generic" type="varchar" length="10"/>
+      </column>
+      <column name="suffix" nullable="y">
+         <column-type db="generic" type="varchar" length="10"/>
+      </column>
+      <primary-key name="das_secure_id_ge_p">
+         <index-column column="id_space_name" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+</schema>
+<!-- @version $Id: //product/DAS/version/10.0.3/templates/DAS/sql/id_generator.xml#2 $$Change: 651448 $ -->

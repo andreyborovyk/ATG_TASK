@@ -1,0 +1,278 @@
+<!-- BEGIN FILE sites.jspf -->
+<script language="Javascript" type="text/javascript">
+<!--
+
+function showIntroTextDetails(detailsDiv){
+  closeAdminDetails(detailsDiv);
+   var morelesselement = document.getElementById(detailsDiv+"_container");
+   if(morelesselement != null){
+     var morelesstext = morelesselement.innerHTML;
+     if(morelesstext.indexOf("more") > 0){
+       morelesselement.innerHTML = morelesstext.replace(/<fmt:message key="more" bundle="${depBundle}"/>/g, '<fmt:message key="less" bundle="${depBundle}"/>');
+     }
+     else{
+       morelesselement.innerHTML = morelesstext.replace(/<fmt:message key="less" bundle="${depBundle}"/>/g, '<fmt:message key="more" bundle="${depBundle}"/>');
+     }
+   }
+   
+  }
+  -->
+</script>
+
+
+<portlet:renderURL var="thisPageURL"> 
+    <portlet:param name="atg_admin_menu_group" value="deployment"/>  
+    <portlet:param name="atg_admin_menu_1" value="configuration"/>  
+    <portlet:param name="from_menu" value="true"/>  
+  </portlet:renderURL> 
+  
+  <portlet:renderURL var="topologySuccessURL"> 
+    <portlet:param name="atg_admin_menu_group" value="deployment"/>  
+    <portlet:param name="atg_admin_menu_1" value="configuration"/>  
+    <portlet:param name="from_menu" value="true"/>  
+    <portlet:param name="topology_changed" value="true"/>      
+  </portlet:renderURL> 
+  
+
+ 	<div id="intro">
+	<h2>    <fmt:message key="deployment-administration-configuration" bundle="${depBundle}"/></h2>
+
+	<p>
+	 <fmt:message key="config-main-page-intro-1" bundle="${depBundle}"/>
+ <span id="extraText_container" class="containerIconClosed adminDetails"><a href="#" onmousedown="showIntroTextDetails('extraText');"><fmt:message key="more" bundle="${depBundle}"/></a></span>
+ </p>
+  <div id="extraText" class="hierarchyPaneClosed">
+
+	<p>
+	 <fmt:message key="config-main-page-intro-2" bundle="${depBundle}"/>
+	</p>
+	<p>
+	 <fmt:message key="config-main-page-intro-3" bundle="${depBundle}"/>
+	</p>
+	<p>
+	 <fmt:message key="config-main-page-intro-4" bundle="${depBundle}"/>
+	</p>
+  </div>
+
+	</div>
+  <!-- begin content -->
+	<table cellpadding="0" cellspacing="0" border="0" width="100%">
+	
+	<tr>
+	<td width="100%">
+
+		<table cellpadding="0" cellspacing="0" border="0" width="100%" id="attributeBar">
+		<tr>
+		<td>
+		
+			<div class="attributes">
+			<br/><br/>
+			</div>
+			
+			<div class="attributeExtras">
+			<br/><br/>
+			</div>
+
+		</td>
+		</tr>
+		</table>
+
+		<div class="contentActions">
+		<table cellpadding="0" cellspacing="0" border="0" width="100%">
+		<tr>
+		<td class="blankSpace">&nbsp;</td>
+		<td><h2></h2></td>
+   	<td width="100%" class="error rightAlign"><dspel:include page="../includes/formErrors.jsp"/></td>		
+              	 <portlet:renderURL var="addSiteURL"> 
+                    <portlet:param name="atg_admin_menu_group" value="deployment"/>  
+                    <portlet:param name="atg_admin_menu_1" value="configuration"/>  
+                    <portlet:param name="add_site" value="true"/>  
+                    <portlet:param name="new_site" value="true"/>            
+                 </portlet:renderURL> 
+
+ <td class="toolBar_button"><a href="javascript:showIframe('importAction');" class="add">  <img src="<c:url context="${initParam['atg.bizui.ContextPath']}" value='/images/icon_site.gif'/>" alt='<fmt:message key="import-from-xml" bundle="${depBundle}"/>' width="16" height="16" />&nbsp;   <fmt:message key="import-from-xml" bundle="${depBundle}"/></a></td>		
+    <td class="toolBar_button"><a href="<c:out value='${addSiteURL}'/>" class="add"><img src="<c:url context="${initParam['atg.bizui.ContextPath']}" value='/images/icon_site.gif'/>" alt='<fmt:message key="add-site" bundle="${depBundle}"/>' width="16" height="16" />&nbsp;    <fmt:message key="add-site" bundle="${depBundle}"/></a></td>
+		</tr>
+		</table>
+		</div>
+		<div id="adminDeployment">
+
+		<table cellpadding="0" cellspacing="0" border="0" class="dataTableNoGrid">
+		
+		<tr>
+		<th class="leftAligned"><span class="tableHeader">        <fmt:message key="site-name" bundle="${depBundle}"/></span></th>
+		<th class="centerAligned"><span class="tableHeader">        <fmt:message key="status" bundle="${depBundle}"/></span></th>
+    <th class="centerAligned"><span class="tableHeader"><fmt:message key="site-priority-order" bundle="${depBundle}"/></span></th>
+    </tr>
+		<pws:getTargetDefs var="targets" topologyType="both"/>
+	  <c:if test="${empty targets}">  
+    <tr> 
+	   <td colspan="5" class="leftAligned">
+      <span class="adminDeployment NoData">
+          <fmt:message key="no-sites-config" bundle="${depBundle}"/>
+      </span>
+      </td>
+    </tr>
+  </c:if>
+		<pws:getTargetDefs var="surrogateTargets" topologyType="surrogate"/>
+ <c:forEach var="target" items="${targets}" varStatus="loopStatus">
+   <c:choose>
+      <c:when test="${target.primary}">
+       <tr class="overview siteAlert">			
+      </c:when>
+		  <c:when test="${loopStatus.count % 2 == 0}">
+       <tr class="alternateRowHighlight">			
+      </c:when>
+     <c:otherwise>
+		   <tr>			
+     </c:otherwise>
+  	</c:choose>
+    <c:set var="newSiteFound" value="false"/>   		
+		  <td class="leftAligned wrapNoBorder"><span class="tableInfo">
+<c:set var="target_def_id" value="${target.ID}"/>
+                  <portlet:renderURL var="siteURL"> 
+                    <portlet:param name="atg_admin_menu_group" value="deployment"/>  
+                    <portlet:param name="atg_admin_menu_1" value="configuration"/>  
+                    <portlet:param name="target_def_id" value='<%=pageContext.findAttribute("target_def_id")+""%>'/>  
+                    <portlet:param name="goto_config_details_tabs" value="true"/>  
+                 </portlet:renderURL> 
+                  <a href='<c:out value="${siteURL}"/>'>
+                   <img src="<c:url context="${initParam['atg.bizui.ContextPath']}" value='/images/icon_site.gif'/>" alt="Process" width="16" height="16" border="0" style="margin-right: 6px; vertical-align: middle;" /><c:out value="${target.displayName}"/>
+		  </a></span></td>
+		<td class="centerAligned"><span class="tableInfo">
+        <c:choose>
+                 <c:when test="${target.primary}">
+            	                   <fmt:message key="deleted" bundle="${depBundle}"/>			
+                </span></td>
+      	         </c:when>
+		       <c:when test="${target.surrogateFor == null}">
+                                   <fmt:message key="new" bundle="${depBundle}"/>		
+                       <c:set var="newSiteFound" value="true"/>   
+                </span></td>
+
+                 </c:when>
+		             <c:when test="${target.modified}">
+                     <portlet:renderURL var="diffURL">
+                     <portlet:param name="atg_admin_menu_group" value="deployment"/>
+                     <portlet:param name="atg_admin_menu_1" value="configuration"/>
+                     <portlet:param name="goto_config_details_tabs" value="true"/>
+                     <portlet:param name="config_tab_name" value="diff"/>  
+                     <portlet:param name="target_def_id" value='<%=pageContext.findAttribute("target_def_id")+""%>'/>
+                    </portlet:renderURL>    
+                    <a href='<c:out value="${diffURL}"/>'>  
+                        <fmt:message key="modified" bundle="${depBundle}"/>
+                    </a>
+                 </span></td>
+                </c:when>
+                <c:otherwise>
+                   <fmt:message key="unmodified" bundle="${depBundle}"/>
+                </span></td>
+                </c:otherwise>
+  		</c:choose>
+
+    <td class="centerAligned">
+    <c:if test="${!target.primary}">
+  <dspel:form method="post" action="${thisPageURL}" formid="moveTargetForm-${target.ID}" id="moveTargetForm-${target.ID}" name="moveTargetForm-${target.ID}">
+	  <dspel:input type="hidden" bean="${topologyFormHandlerName}.successURL" value="${thisPageURL}"/>
+  	<dspel:input type="hidden" bean="${topologyFormHandlerName}.failureURL" value="${thisPageURL}"/>
+	  <dspel:input type="hidden" bean="${topologyFormHandlerName}.targetID" value="${target.ID}"/>
+ 	 <dspel:select iclass="table" bean="${topologyFormHandlerName}.targetMoveIndex">
+   <c:forEach var='dropDownTarget' items="${surrogateTargets}" varStatus="dropDownStatus">
+ 	  	<dspel:option label="${dropDownStatus.count}" selected="${target.ID eq dropDownTarget.ID}" value="${dropDownStatus.count}"><c:out value="${dropDownStatus.count}"/></dspel:option>
+   </c:forEach>
+		</dspel:select>
+  <dspel:input type="hidden" bean="${topologyFormHandlerName}.moveTarget" value="foo" priority="-10"/>
+		&nbsp;<a href="javascript:submitForm('<c:out value="moveTargetForm-${target.ID}"/>')" class="standardButton">
+  <fmt:message key="set-lowercase" bundle="${depBundle}"/>
+  </a>
+  </dspel:form>
+ </c:if>
+		</td>
+    
+		</tr>
+
+     <c:choose>
+		  <c:when test="${loopStatus.count % 2 == 0}">
+       <tr class="alternateRowHighlight">			
+      </c:when>
+     <c:otherwise>
+		   <tr>			
+     </c:otherwise>
+  	</c:choose>
+		<td class="wrapBorder" colspan="6"><span class="tableInfo">
+    <c:out value="${target.description}"/>
+    </span></td>	
+ 		</tr>
+   </c:forEach>
+	</table>
+	</div>
+	<div class="contentActions">
+	<table cellpadding="0" cellspacing="0" border="0">
+	<tr>
+  <dspel:form method="post" action="${topologySuccessURL}" id="makeLiveForm" formid="makeLiveForm">
+    <dspel:input type="hidden" bean="${topologyFormHandlerName}.successURL" value="${topologySuccessURL}"/>
+    <dspel:input type="hidden" bean="${topologyFormHandlerName}.failureURL" value="${topologySuccessURL}"/>
+    <dspel:input type="hidden" bean="${topologyFormHandlerName}.initializeTopology"  priority="-10" value="foo"/>
+  </dspel:form>
+  <dspel:form method="post" action="${thisPageURL}" id="revertChangesForm" formid="revertChangesForm">
+    <dspel:input type="hidden" bean="${topologyFormHandlerName}.successURL" value="${thisPageURL}"/>
+    <dspel:input type="hidden" bean="${topologyFormHandlerName}.failureURL" value="${thisPageURL}"/>
+    <dspel:input type="hidden" bean="${topologyFormHandlerName}.revertTopologyChanges" priority="-10" value="foo"/>
+  </dspel:form>
+<td class="blankSpace" width="100%">&nbsp;</td>
+<pws:getTargets var="targets"/>
+<c:if test="${topoManager.surrogateModified}">
+              	 <portlet:renderURL var="makeLiveURL"> 
+                    <portlet:param name="atg_admin_menu_group" value="deployment"/>  
+                    <portlet:param name="atg_admin_menu_1" value="configuration"/>  
+                    <portlet:param name="make_changes_live" value="true"/>  
+                 </portlet:renderURL> 
+
+<c:choose>
+<c:when test="${newSiteFound}">
+ <td class="buttonImage"><a href="<c:out value='${makeLiveURL}'/>" class="mainContentButton save">    <fmt:message key="make-changes-live" bundle="${depBundle}"/></a></td>		
+</c:when>
+<c:otherwise> 
+ <td class="buttonImage"><a href="javascript:showIframe('makeChangesLiveAction');" class="mainContentButton save"><fmt:message key="make-changes-live" bundle="${depBundle}"/></a></td>		
+</c:otherwise>
+</c:choose>
+
+ <td class="buttonImage"><a href="javascript:showIframe('revertChangesAction');" class="mainContentButton delete">    <fmt:message key="revert-all-configuration-changes" bundle="${depBundle}"/></a></td>		
+</c:if>
+
+		<td width="100%" class="blankSpace">&nbsp;</td>
+	</tr>
+	</table>
+	</div>
+	
+	</td>
+	</tr>
+	</table>
+	<!-- end content -->
+    <pws:getTargetDefs var="targets" topologyType="both"/>
+     <c:forEach items="${targets}" var="target">
+     <%-- If we are primary that means we are deleted in the configuration, use primary id for modified ones--%>
+      <c:if test="${!target.primary}">
+        <c:set var="target" value="${target.surrogateFor}"/>
+       </c:if>
+  </c:forEach>
+  <script language="Javascript" type="text/javascript">
+  <!--
+  registerOnLoad(function() {init('importAction','makeChangesLiveAction','revertChangesAction');})
+   -->
+ </script>
+
+<div id="importAction" class="confirmNoteAction">
+	<dspel:iframe id="importActionIframe" page="./iframes/action_import.jsp" scrolling="no"/>
+</div>
+
+<div id="makeChangesLiveAction" class="confirmAction">
+	<dspel:iframe id="makeChangesLiveActionIframe" page="./iframes/action_make_changes_live.jsp" scrolling="no"/>
+</div>
+  
+<div id="revertChangesAction" class="confirmAction">
+	<dspel:iframe page="./iframes/action_revert_changes.jsp" scrolling="no"/>
+</div>
+
+<!-- END FILE sites.jspf -->
+<%-- @version $Id: //product/PubPortlet/version/10.0.3/portlets.war/html/DeploymentPortlet/config/sites.jspf#2 $$Change: 651448 $--%>

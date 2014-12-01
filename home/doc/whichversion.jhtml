@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>Which Version</title>
+  </head>
+
+  <body>
+    <h1>Which Version</h1>
+
+<droplet name="/atg/dynamo/droplet/Switch">
+  <param name="value" value="param:className"/>
+  <oparam name="default">
+    Class Name: <valueof param="className">???</valueof><BR>
+    Class Location: 
+<JAVA>
+        String className = request.getParameter("className");
+        String classPath = className.replace('.', '/');
+        if (!classPath.endsWith(".class")) {
+          classPath = classPath + ".class";
+        }
+
+	out.println(this.getClass().getClassLoader().getResource(classPath) + "<BR>");
+
+</JAVA>
+
+    Class Version: 
+<JAVA>
+	Class cl = Class.forName (className);
+	java.lang.reflect.Field f = null;
+
+	try {
+	  f = cl.getDeclaredField ("CLASS_VERSION");
+	}
+	catch (NoSuchFieldException e) {
+	  try {
+	    f = cl.getField("classVersion");
+	  }
+	  catch (NoSuchFieldException e2) {
+	    out.println("No CLASS_VERSION or classVersion field");
+	  }
+	}
+	if (f != null) {
+	  Object val = null;
+	  try {
+	    val = f.get (null);
+	  }
+	  catch (IllegalAccessException exc) {
+	    out.println (className + " has a CLASS_VERSION variable but it is not public.");
+	  }
+	  finally {
+	    if (val != null) {
+	      out.println (className + ".CLASS_VERSION=" + val.toString ());
+	    }
+	  }
+	}
+</JAVA>
+  </oparam>
+  <oparam name="unset">
+  </oparam>
+</droplet>
+
+
+<FORM action="whichversion.jhtml" method="POST">
+  <JAVA>String strValue = request.getParameter("className"); 
+        if (strValue == null) {
+           strValue="";
+        }
+  </JAVA>
+<P>
+  Please enter the name of a class below:<BR>
+<P>
+  Class Name: <input type="text" size="60" name="className" value="<%= strValue %>">
+</FORM>
+
+
+  </body>
+</html>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/home/doc/whichversion.jhtml#2 $$Change: 651448 $*/</java>

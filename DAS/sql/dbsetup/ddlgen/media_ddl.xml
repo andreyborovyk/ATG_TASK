@@ -1,0 +1,145 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="communication_campaign_data_ddl">
+
+  <comment>
+    @version $Id: //product/DAS/version/10.0.3/templates/DAS/sql/media_ddl.xml#2 $$Change: 651448 $
+  </comment>
+
+  <comment>
+    media content repository tables.
+  </comment>
+
+
+   <table name="media_folder">
+      <column name="folder_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="creation_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="path" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="parent_folder_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="md_folder_p">
+         <index-column column="folder_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="md_foldparnt_fl_f" referenced-table="media_folder" index-name="fldr_mfldrid_idx">
+         <fkey-column referencing-column="parent_folder_id" referenced-column="folder_id"/>
+      </foreign-key>
+      <index name="md_fldr_path_idx" table="media_folder">
+         <index-column column="path" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="media_base">
+      <column name="media_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="creation_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="path" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="parent_folder_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="media_type" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <primary-key name="media_p">
+         <index-column column="media_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="medparnt_fl_f" referenced-table="media_folder" index-name="med_mfldrid_idx">
+         <fkey-column referencing-column="parent_folder_id" referenced-column="folder_id"/>
+      </foreign-key>
+      <index name="media_path_idx" table="media_base">
+         <index-column column="path" order="asc" seq="1"/>
+      </index>
+      <index name="media_type_idx" table="media_base">
+         <index-column column="media_type" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="media_ext">
+      <column name="media_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="url" nullable="n">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="media_ext_p">
+         <index-column column="media_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="medxtmed_d_f" referenced-table="media_base">
+         <fkey-column referencing-column="media_id" referenced-column="media_id"/>
+      </foreign-key>
+   </table>
+   <table name="media_bin">
+      <column name="media_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="length" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="last_modified" nullable="n">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="data" nullable="n">
+         <column-type db="generic" type="long-varbinary"/>
+         <column-type db="db2" type="blob" length="1048576" scale=""/>
+      </column>
+      <primary-key name="media_bin_p">
+         <index-column column="media_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="medbnmed_d_f" referenced-table="media_base">
+         <fkey-column referencing-column="media_id" referenced-column="media_id"/>
+      </foreign-key>
+   </table>
+   <table name="media_txt">
+      <column name="media_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="length" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="last_modified" nullable="n">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="data" nullable="n" i18n="y">
+         <column-type db="generic" type="long-varchar"/>
+         <column-type db="db2" type="varchar" length="20480" scale=""/>
+      </column>
+      <primary-key name="media_txt_p">
+         <index-column column="media_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="medtxtmed_d_f" referenced-table="media_base">
+         <fkey-column referencing-column="media_id" referenced-column="media_id"/>
+      </foreign-key>
+   </table>
+</schema>
+<!-- @version $Id: //product/DAS/version/10.0.3/templates/DAS/sql/media_ddl.xml#2 $$Change: 651448 $-->

@@ -1,0 +1,1 @@
+dojo.provide("atg.widget.checkAll");dojo.require("atg.widget.checkAll.checkAll");dojo.registerModulePath("checkAll", "/WebUI/dijit/checkAll");dojo.registerNamespace("checkAll", "atg.widget.checkAll");

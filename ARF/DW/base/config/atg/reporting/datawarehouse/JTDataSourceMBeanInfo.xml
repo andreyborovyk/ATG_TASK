@@ -1,0 +1,701 @@
+<?xml version="1.0"?>
+<!DOCTYPE mbeanInfo 
+          PUBLIC "-//Art Technology Group, Inc.//DTD MBean Info//EN" 
+          "http://www.atg.com/dtds/management/mbeaninfo_1.0.dtd">
+<mbeanInfo type="model" className="atg.service.jdbc.MonitoredDataSource" description="JTA particpating and pooling DataSource">
+  <attributeInfos>
+    <attributeInfo name="min" description="The minimum number of objects to have pooled at start-up" type="int" readable="true" writable="false" is="false">
+      <descriptor>
+	<fields>
+	  <field name="name">min</field>
+	  <field name="descriptorType">attribute</field>
+	  <field name="displayName">min</field>
+	  <field name="getMethod">getMin</field>
+	</fields>
+      </descriptor>
+    </attributeInfo>
+    <attributeInfo name="max" description="The maximum number of objects to have pooled at any given time" type="int" readable="true" writable="false" is="false">
+      <descriptor>
+	<fields>
+	  <field name="name">max</field>
+	  <field name="descriptorType">attribute</field>
+	  <field name="displayName">max</field>
+	  <field name="getMethod">getMax</field>
+	</fields>
+      </descriptor>
+    </attributeInfo>
+    <attributeInfo name="maxFree" description="The maximum number of free objects to have pooled at any given time" type="int" readable="true" writable="false" is="false">
+      <descriptor>
+	<fields>
+	  <field name="name">maxFree</field>
+	  <field name="descriptorType">attribute</field>
+	  <field name="displayName">maxFree</field>
+	  <field name="getMethod">getMaxFree</field>
+	</fields>
+      </descriptor>
+    </attributeInfo>    
+    <attributeInfo name="blocking" description="If true, the pool blocks on check-outs that cannot be immediately fulfilled" type="boolean" readable="true" writable="false" is="false">
+      <descriptor>
+	<fields>
+	  <field name="name">blocking</field>
+	  <field name="descriptorType">attribute</field>
+	  <field name="displayName">blocking</field>
+	  <field name="getMethod">getBlocking</field>
+	</fields>
+      </descriptor>
+    </attributeInfo>
+    <attributeInfo name="checkoutBlockTime" description="The maximum time in milliseconds to block while waiting for a resource on check-out" type="long" readable="true" writable="false" is="false">
+      <descriptor>
+	<fields>
+	  <field name="name">checkoutBlockTime</field>
+	  <field name="descriptorType">attribute</field>
+	  <field name="displayName">checkoutBlockTime</field>
+	  <field name="getMethod">getCheckoutBlockTime</field>
+	</fields>
+      </descriptor>
+    </attributeInfo>
+    <attributeInfo name="maxThreadsWithResourcesOut" description="The maximum number of threads allowed to have resources out of the pool concurrently" type="int" readable="true" writable="false" is="false">
+      <descriptor>
+	<fields>
+	  <field name="name">maxThreadsWithResourcesOut</field>
+	  <field name="descriptorType">attribute</field>
+	  <field name="displayName">maxThreadsWithResourcesOut</field>
+	  <field name="getMethod">getMaxThreadsWithResourcesOut</field>
+	</fields>
+      </descriptor>
+    </attributeInfo>
+    <attributeInfo name="maxResourcesPerThread" description="The maximum number of resources any thread can have out of the pool concurrently" type="int" readable="true" writable="false" is="false">
+      <descriptor>
+	<fields>
+	  <field name="name">maxResourcesPerThread</field>
+	  <field name="descriptorType">attribute</field>
+	  <field name="displayName">maxResourcesPerThread</field>
+	  <field name="getMethod">getMaxResourcesPerThread</field>
+	</fields>
+      </descriptor>
+    </attributeInfo>
+    <attributeInfo name="creationTimeLimit" description="The maximum time allowed to create resources before the pool is disabled." type="long" readable="true" writable="false" is="false">
+      <descriptor>
+	<fields>
+	  <field name="name">creationTimeLimit</field>
+	  <field name="descriptorType">attribute</field>
+	  <field name="displayName">creationTimeLimit</field>
+	  <field name="getMethod">getCreationTimeLimit</field>
+	</fields>
+      </descriptor>
+    </attributeInfo>    
+    <attributeInfo name="maxPendingCreations" description="The maximum number of pending resource creation attempts to allow" type="int" readable="true" writable="false" is="false">
+      <descriptor>
+	<fields>
+	  <field name="name">maxPendingCreations</field>
+	  <field name="descriptorType">attribute</field>
+	  <field name="displayName">maxPendingCreations</field>
+	  <field name="getMethod">getMaxPendingCreations</field>
+	</fields>
+      </descriptor>
+    </attributeInfo>
+    <attributeInfo name="startupAttempts" description="The number of start-up attempts to make" type="int" readable="true" writable="false" is="false">
+      <descriptor>
+	<fields>
+	  <field name="name">startupAttempts</field>
+	  <field name="descriptorType">attribute</field>
+	  <field name="displayName">startupAttempts</field>
+	  <field name="getMethod">getStartupAttempts</field>
+	</fields>
+      </descriptor>
+    </attributeInfo>
+    <attributeInfo name="startupFailureSleepTime" description="The number of milliseconds to sleep between start-up attempts" type="long" readable="true" writable="false" is="false">
+      <descriptor>
+	<fields>
+	  <field name="name">startupFailureSleepTime</field>
+	  <field name="descriptorType">attribute</field>
+	  <field name="displayName">startupFailureSleepTime</field>
+	  <field name="getMethod">getStartupFailureSleepTime</field>
+	</fields>
+      </descriptor>
+    </attributeInfo>
+    <attributeInfo name="maxIdleAge" description="Maximum idle age for a resource in milliseconds" type="long" readable="true" writable="false" is="false">
+      <descriptor>
+	<fields>
+	  <field name="name">maxIdleAge</field>
+	  <field name="descriptorType">attribute</field>
+	  <field name="displayName">maxIdleAge</field>
+	  <field name="getMethod">getMaxIdleAge</field>
+	</fields>
+      </descriptor>
+    </attributeInfo>
+    <attributeInfo name="maxResourceAge" description="Maximum age for a resource" type="long" readable="true" writable="false" is="false">
+      <descriptor>
+	<fields>
+	  <field name="name">maxResourceAge</field>
+	  <field name="descriptorType">attribute</field>
+	  <field name="displayName">maxResourceAge</field>
+	  <field name="getMethod">getMaxResourceAge</field>
+	</fields>
+      </descriptor>
+    </attributeInfo>
+    <attributeInfo name="resourceClassName" description="The class name of the pooled resource" type="java.lang.String" readable="true" writable="false" is="false">
+      <descriptor>
+	<fields>
+	  <field name="name">resourceClassName</field>
+	  <field name="descriptorType">attribute</field>
+	  <field name="displayName">resourceClassName</field>
+	  <field name="getMethod">getResourceClassName</field>
+	</fields>
+      </descriptor>
+    </attributeInfo>
+    <attributeInfo name="enabled" description="If false, this pool is no longer active" type="boolean" readable="true" writable="false" is="true">
+      <descriptor>
+	<fields>
+	  <field name="name">enabled</field>
+	  <field name="descriptorType">attribute</field>
+	  <field name="displayName">enabled</field>
+	  <field name="getMethod">isEnabled</field>
+	</fields>
+      </descriptor>
+    </attributeInfo>
+    <attributeInfo name="numFreeResources" description="The number of free resources in the pool" type="int" readable="true" writable="false" is="false">
+      <descriptor>
+	<fields>
+	  <field name="name">numFreeResources</field>
+	  <field name="descriptorType">attribute</field>
+	  <field name="displayName">numFreeResources</field>
+	  <field name="getMethod">getNumFreeResources</field>
+	</fields>
+      </descriptor>
+    </attributeInfo>
+    <attributeInfo name="numTotalResources" description="The total number of resources in the pool" type="int" readable="true" writable="false" is="false">
+      <descriptor>
+	<fields>
+	  <field name="name">numTotalResources</field>
+	  <field name="descriptorType">attribute</field>
+	  <field name="displayName">numTotalResources</field>
+	  <field name="getMethod">getNumTotalResources</field>
+	</fields>
+      </descriptor>
+    </attributeInfo>
+    <attributeInfo name="numCheckedOutResources" description="The number of resources that are checked out" type="int" readable="true" writable="false" is="false">
+      <descriptor>
+	<fields>
+	  <field name="name">numCheckedOutResources</field>
+	  <field name="descriptorType">attribute</field>
+	  <field name="displayName">numCheckedOutResources</field>
+	  <field name="getMethod">getNumCheckedOutResources</field>
+	</fields>
+      </descriptor>
+    </attributeInfo>
+    <attributeInfo name="lastError" description="The last error that was seen by the resource pool" type="java.lang.String" readable="true" writable="false" is="false">
+      <descriptor>
+	<fields>
+	  <field name="name">lastError</field>
+	  <field name="descriptorType">attribute</field>
+	  <field name="displayName">lastError</field>
+	  <field name="getMethod">getLastError</field>
+	</fields>
+      </descriptor>
+    </attributeInfo>
+    <attributeInfo name="averageResourceCreationTime" description="The average time in milliseconds required to successfully create a resource for the pool" type="long" readable="true" writable="false" is="false">
+      <descriptor>
+	<fields>
+	  <field name="name">averageResourceCreationTime</field>
+	  <field name="descriptorType">attribute</field>
+	  <field name="displayName">averageResourceCreationTime</field>
+	  <field name="getMethod">getAverageResourceCreationTime</field>
+	</fields>
+      </descriptor>
+    </attributeInfo>
+    <attributeInfo name="maxSimultaneousResourcesOut" description="The most resources that were ever out of the pool at one time" type="int" readable="true" writable="false" is="false">
+      <descriptor>
+	<fields>
+	  <field name="name">maxSimultaneousResourcesOut</field>
+	  <field name="descriptorType">attribute</field>
+	  <field name="displayName">maxSimultaneousResourcesOut</field>
+	  <field name="getMethod">getMaxSimultaneousResourcesOut</field>
+	</fields>
+      </descriptor>
+    </attributeInfo>
+    <attributeInfo name="maxConcurrentThreads" description="The maximum number of threads that had resources out of the pool concurrently" type="int" readable="true" writable="false" is="false">
+      <descriptor>
+	<fields>
+	  <field name="name">maxConcurrentThreads</field>
+	  <field name="descriptorType">attribute</field>
+	  <field name="displayName">maxConcurrentThreads</field>
+	  <field name="getMethod">getMaxConcurrentThreads</field>
+	</fields>
+      </descriptor>
+    </attributeInfo>
+    <attributeInfo name="maxConcurrentResourcesPerThread" description="The maximum number of resources any thread had out of  the pool concurrently" type="int" readable="true" writable="false" is="false">
+      <descriptor>
+	<fields>
+	  <field name="name">maxConcurrentResourcesPerThread</field>
+	  <field name="descriptorType">attribute</field>
+	  <field name="displayName">maxConcurrentResourcesPerThread</field>
+	  <field name="getMethod">getMaxConcurrentResourcesPerThread</field>
+	</fields>
+      </descriptor>
+    </attributeInfo>
+    <attributeInfo name="errorCount" description="Number of SQL exceptions that have been seen" type="int" readable="true" writable="false" is="false">
+      <descriptor>
+	<fields>
+	  <field name="name">errorCount</field>
+	  <field name="descriptorType">attribute</field>
+	  <field name="displayname">errorCount</field>
+	  <field name="getMethod">getErrorCount</field>
+	</fields>
+      </descriptor>
+    </attributeInfo>
+    <attributeInfo name="commitCount" description="Returns the number of times commit() has been called" type="int" readable="true" writable="false" is="false">
+      <descriptor>
+	<fields>
+	  <field name="name">commitCount</field>
+	  <field name="descriptorType">attribute</field>
+	  <field name="displayName">commitCount</field>
+	  <field name="getMethod">getCommitCount</field>
+	</fields>
+      </descriptor>
+    </attributeInfo>
+    <attributeInfo name="rollbackCount" description="Returns the number of times rollback() has been called" type="int" readable="true" writable="false" is="false">
+      <descriptor>
+	<fields>
+	  <field name="name">rollbackCount</field>
+	  <field name="descriptorType">attribute</field>
+	  <field name="displayName">rollbackCount</field>
+	  <field name="getMethod">getRollbackCount</field>
+	</fields>
+      </descriptor>
+    </attributeInfo>
+    <attributeInfo name="createStatementCount" description="Returns the number of times createStatement() has been called" type="int" readable="true" writable="false" is="false">
+      <descriptor>
+	<fields>
+	  <field name="name">createStatementCount</field>
+	  <field name="descriptorType">attribute</field>
+	  <field name="displayName">createStatementCount</field>
+	  <field name="getMethod">getCreateStatementCount</field>
+	</fields>
+      </descriptor>
+    </attributeInfo>
+    <attributeInfo name="prepareStatementCount" description="Returns the number of times prepareStatement() has been called" type="int" readable="true" writable="false" is="false">
+      <descriptor>
+	<fields>
+	  <field name="name">prepareStatementCount</field>
+	  <field name="descriptorType">attribute</field>
+	  <field name="displayName">prepareStatementCount</field>
+	  <field name="getMethod">getPrepareStatementCount</field>
+	</fields>
+      </descriptor>
+    </attributeInfo>
+    <attributeInfo name="prepareCallCount" description="Returns the number of times prepareCall() has been called" type="int" readable="true" writable="false" is="false">
+      <descriptor>
+	<fields>
+	  <field name="name">prepareCallCount</field>
+	  <field name="descriptorType">attribute</field>
+	  <field name="displayName">prepareCallCount</field>
+	  <field name="getMethod">getPrepareCallCount</field>
+	</fields>
+      </descriptor>
+    </attributeInfo>
+    <attributeInfo name="executeQueryCount" description="Returns the number of times executeQuery() has been called" type="int"  readable="true" writable="false" is="false">
+      <descriptor>
+	<fields>
+	  <field name="name">executeQueryCount</field>
+	  <field name="descriptorType">attribute</field>
+	  <field name="displayName">executeQueryCount</field>
+	  <field name="getMethod">getExecuteQueryCount</field>
+	</fields>
+      </descriptor>
+    </attributeInfo>
+    <attributeInfo name="executeUpdateCount" description="Returns the number of times executeUpdate() has been called" type="int" readable="true" writable="false" is="false">
+      <descriptor>
+	<fields>
+	  <field name="name">executeUpdateCount</field>
+	  <field name="descriptorType">attribute</field>
+	  <field name="displayName">executeUpdateCount</field>
+	  <field name="getMethod">getExecuteUpdateCount</field>
+	</fields>
+      </descriptor>
+    </attributeInfo>
+    <attributeInfo name="executeCount" description="Returns the number of times execute() has been called" type="int" readable="true" writable="false" is="false">
+      <descriptor>
+	<fields>
+	  <field name="name">executeCount</field>
+	  <field name="descriptorType">attribute</field>
+	  <field name="displayName">executeCount</field>
+	  <field name="getMethod">getExecuteCount</field>
+	</fields>
+      </descriptor>
+    </attributeInfo>
+    <attributeInfo name="getMoreResultsCount" description="Returns the number of times getMoreResults() has been called" type="int" readable="true" writable="false" is="false">
+      <descriptor>
+	<fields>
+	  <field name="name">getMoreResultsCount</field>
+	  <field name="descriptorType">attribute</field>
+	  <field name="displayName">getMoreResultsCount</field>
+	  <field name="getMethod">getGetMoreResultsCount</field>
+	</fields>
+      </descriptor>
+    </attributeInfo>
+    <attributeInfo name="resultSetRowCount" description="Returns the number of times ResultSet.next() has been called" type="int" readable="true" writable="false" is="false">
+      <descriptor>
+	<fields>
+	  <field name="name">resultSetRowCount</field>
+	  <field name="descriptorType">attribute</field>
+	  <field name="displayName">resultSetRowCount</field>
+	  <field name="getMethod">getResultSetRowCount</field>
+	</fields>
+      </descriptor>
+    </attributeInfo>
+  </attributeInfos>
+
+  <operationInfos>
+    <operationInfo name="getMin" description="The minimum number of objects to have pooled at start-up" type="int" impact="info">
+      <descriptor>
+	<fields>
+	  <field name="name">getMin</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">getter</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="getMax" description="The maximum number of objects to have pooled at any given time" type="int" impact="info">
+      <descriptor>
+	<fields>
+	  <field name="name">getMax</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">getter</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="getMaxFree" description="The maximum number of free objects to have pooled at any given time" type="int" impact="info">
+      <descriptor>
+	<fields>
+	  <field name="name">getMaxFree</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">getter</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="getBlocking" description="If true, the pool blocks on check-outs that cannot be immediately fulfilled" type="boolean" impact="info">
+      <descriptor>
+	<fields>
+	  <field name="name">getBlocking</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">getter</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="getCheckoutBlockTime" description="The maximum time in milliseconds to block while waiting for a resource on check-out" type="long" impact="info">
+      <descriptor>
+	<fields>
+	  <field name="name">getCheckoutBlockTime</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">getter</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="getMaxThreadsWithResourcesOut" description="The maximum number of threads allowed to have resources out of the pool concurrently" type="int" impact="info">
+      <descriptor>
+	<fields>
+	  <field name="name">getMaxThreadsWithResourcesOut</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">getter</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="getMaxResourcesPerThread" description="The maximum number of resources any thread can have out of the pool concurrently" type="int" impact="info">
+      <descriptor>
+	<fields>
+	  <field name="name">getMaxResourcesPerThread</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">getter</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="getCreationTimeLimit" description="The maximum time allowed to create resources before the pool is disabled." type="long" impact="info">
+      <descriptor>
+	<fields>
+	  <field name="name">getCreationTimeLimit</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">getter</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="getMaxPendingCreations" description="The maximum number of pending resource creation attempts to allow" type="int" impact="info">
+      <descriptor>
+	<fields>
+	  <field name="name">getMaxPendingCreations</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">getter</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="getStartupAttempts" description="The number of start-up attempts to make" type="int" impact="info">
+      <descriptor>
+	<fields>
+	  <field name="name">getStartupAttempts</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">getter</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="getStartupFailureSleepTime" description="The number of milliseconds to sleep between start-up attempts" type="long" impact="info">
+      <descriptor>
+	<fields>
+	  <field name="name">getStartupFailureSleepTime</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">getter</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="getMaxIdleAge" description="Maximum idle age for a resource in milliseconds" type="long" impact="info">
+      <descriptor>
+	<fields>
+	  <field name="name">getMaxIdleAge</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">getter</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="getMaxResourceAge" description="Maximum age for a resource" type="long" impact="info">
+      <descriptor>
+	<fields>
+	  <field name="name">getMaxResourceAge</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">getter</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="getResourceClassName" description="The class name of the pooled resource" type="java.lang.String" impact="info">
+      <descriptor>
+	<fields>
+	  <field name="name">getResourceClassName</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">getter</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="isEnabled" description="If false, this pool is no longer active" type="boolean" impact="info">
+      <descriptor>
+	<fields>
+	  <field name="name">isEnabled</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">getter</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="getNumFreeResources" description="The number of free resources in the pool" type="int" impact="info">
+      <descriptor>
+	<fields>
+	  <field name="name">getNumFreeResources</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">getter</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="getNumTotalResources" description="The total number of resources in the pool" type="int" impact="info">
+      <descriptor>
+	<fields>
+	  <field name="name">getNumTotalResources</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">getter</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="getNumCheckedOutResources" description="The number of resources that are checked out" type="int" impact="info">
+      <descriptor>
+	<fields>
+	  <field name="name">getNumCheckedOutResources</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">getter</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="getLastError" description="The last error that was seen by the resource pool" type="java.lang.String" impact="info">
+      <descriptor>
+	<fields>
+	  <field name="name">getLastError</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">getter</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="getAverageResourceCreationTime" description="The average time in milliseconds required to successfully create a resource for the pool" type="long" impact="info">
+      <descriptor>
+	<fields>
+	  <field name="name">getAverageResourceCreationTime</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">getter</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="getMaxSimultaneousResourcesOut" description="The most resources that were ever out of the pool at one time" type="int" impact="info">
+      <descriptor>
+	<fields>
+	  <field name="name">getMaxSimultaneousResourcesOut</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">getter</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="getMaxConcurrentThreads" description="The maximum number of threads that had resources out of the pool concurrently" type="int" impact="info">
+      <descriptor>
+	<fields>
+	  <field name="name">getMaxConcurrentThreads</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">getter</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="getMaxConcurrentResourcesPerThread" description="The maximum number of resources any thread had out of  the pool concurrently" type="int" impact="info">
+      <descriptor>
+	<fields>
+	  <field name="name">getMaxConcurrentResourcesPerThread</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">getter</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="pruneFreeResources" description="Runs through the list of free resources and destroys all of them" type="void" impact="action">
+      <descriptor>
+	<fields>
+	  <field name="name">pruneFreeResources</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">operation</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="resetMaxSimultaneousResourcesOut" description="Resets the maxSimultaneousResourcesOut property to zero" type="void" impact="action">
+      <descriptor>
+	<fields>
+	  <field name="name">resetMaxSimultaneousResourcesOut</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">operation</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="resetMaxConcurrentThreads" description="Resets the resetMaxConcurrentThreads property to zero" type="void" impact="action">
+      <descriptor>
+	<fields>
+	  <field name="name">resetMaxConcurrentThreads</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">operation</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="resetMaxConcurrentResourcesPerThread" description="Resets the resetMaxConcurrentResourcesPerThread property to zero" type="void" impact="action">
+      <descriptor>
+	<fields>
+	  <field name="name">resetMaxConcurrentResourcesPerThread</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">operation</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="getErrorCount" description="Number of SQL exceptions that have been seen" type="int" impact="info">
+      <descriptor>
+	<fields>
+	  <field name="name">getErrorCount</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">getter</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="getCommitCount" description="Returns the number of times commit() has been called" type="int" impact="info">
+      <descriptor>
+	<fields>
+	  <field name="name">getCommitCount</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">getter</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="getRollbackCount" description="Returns the number of times rollback() has been called" type="int" impact="info">
+      <descriptor>
+	<fields>
+	  <field name="name">getRollbackCount</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">getter</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="getCreateStatementCount" description="Returns the number of times createStatement() has been called" type="int" impact="info">
+      <descriptor>
+	<fields>
+	  <field name="name">getCreateStatementCount</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">getter</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="getPrepareStatementCount" description="Returns the number of times prepareStatement() has been called" type="int" impact="info">
+      <descriptor>
+	<fields>
+	  <field name="name">getPrepareStatementCount</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">getter</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="getPrepareCallCount" description="Returns the number of times prepareCall() has been called" type="int" impact="info">
+      <descriptor>
+	<fields>
+	  <field name="name">getPrepareCallCount</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">getter</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="getExecuteQueryCount" description="Returns the number of times executeQuery() has been called" type="int" impact="info">
+      <descriptor>
+	<fields>
+	  <field name="name">getExecuteQueryCount</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">getter</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="getExecuteUpdateCount" description="Returns the number of times executeUpdate() has been called" type="int" impact="info">
+      <descriptor>
+	<fields>
+	  <field name="name">getExecuteUpdateCount</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">getter</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="getExecuteCount" description="Returns the number of times execute() has been called" type="int" impact="info">
+      <descriptor>
+	<fields>
+	  <field name="name">getExecuteCount</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">getter</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="getGetMoreResultsCount" description="Returns the number of times getMoreResults() has been called" type="int" impact="info">
+      <descriptor>
+	<fields>
+	  <field name="name">getGetMoreResultsCount</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">getter</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+    <operationInfo name="getResultSetRowCount" description="Returns the number of times ResultSet.next() has been called" type="int" impact="info">
+      <descriptor>
+	<fields>
+	  <field name="name">getResultSetRowCount</field>
+	  <field name="descriptorType">operation</field>
+	  <field name="role">getter</field>
+	</fields>
+      </descriptor>
+    </operationInfo>
+  </operationInfos>
+  <descriptor>
+    <fields>
+      <field name="name">atg.service.jdbc.MonitoredDataSource</field>
+      <field name="descriptorType">mbean</field>
+      <field name="displayName">JTDataSource</field>
+    </fields>
+  </descriptor>
+</mbeanInfo>
+<!-- @version $Id: //product/ARF/version/10.0.3/ARF/DW/base/config/atg/reporting/datawarehouse/JTDataSourceMBeanInfo.xml#2 $$Change: 651448 $-->

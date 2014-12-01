@@ -1,0 +1,54 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="caf_ddl">
+<comment><![CDATA[ @version $ $]]></comment>
+  <table name="dps_markers">
+    <column name="marker_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="marker_key" nullable="n" i18n="n">
+      <column-type db="generic" type="varchar" length="100"/>
+    </column>
+    <column name="marker_value" nullable="y" i18n="n">
+      <column-type db="generic" type="varchar" length="100"/>
+    </column>
+    <column name="marker_data" nullable="y" i18n="n">
+      <column-type db="generic" type="varchar" length="100"/>
+    </column>
+    <column name="creation_date" nullable="y">
+      <column-type db="generic" type="timestamp"/>
+    </column>
+    <column name="version" nullable="n">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <column name="marker_type" nullable="y">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <primary-key name="dps_markers_p">
+      <index-column column="marker_id" order="asc" seq="1"/>
+    </primary-key>
+  </table>
+
+  <table name="dps_usr_markers">
+    <column name="profile_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="marker_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="sequence_num" nullable="n">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <primary-key name="dps_usr_markers_p">
+      <index-column column="profile_id" order="asc" seq="1"/>
+      <index-column column="sequence_num" order="asc" seq="2"/>
+    </primary-key>
+    <foreign-key name="dpsusrmarkers_u_f" referenced-table="dps_user">
+      <fkey-column referencing-column="profile_id" referenced-column="id"/>
+    </foreign-key>
+    <foreign-key name="dpsusrmarkers_m_f" referenced-table="dps_markers" index-name="dpsusrmarkers1_ix">
+      <fkey-column referencing-column="marker_id" referenced-column="marker_id"/>
+    </foreign-key>
+  </table>
+
+</schema>
+<!-- @version $Id: //product/DSS/version/10.0.3/templates/DSS/sql/markers_ddl.xml#2 $$Change: 651448 $ -->

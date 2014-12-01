@@ -1,0 +1,77 @@
+<%-- check to make sure that the referring page has been set,
+     if not, redirect back to the main page --%>
+<core:ifNull value="<%= currentNav.getReferringPage() %>">
+  <core:redirect url="main.jsp"/>
+</core:ifNull>
+
+<dms:peekStack id="prePushStack" stack="<%= navStack %>">
+  <core:ifNotNull value="<%= prePushStack.getNavigation() %>">
+    <jsp:setProperty name="dmsContext" property="previousNavigation"
+                     value="<%= prePushStack.getNavigation() %>"/>
+  </core:ifNotNull>
+</dms:peekStack>
+
+<%-- determine if we're going forward, back or staying in place --%>
+<core:switch value="<%= currentNav.getReferringPage() %>">
+  <%-- staying in place --%>
+  <core:case value="<%= dmsContext.getCurrentPage() %>">
+    <dms:peekStack id="stack" stack="<%= navStack %>">
+      <core:ifNotNull value="<%= stack.getNavigation() %>">
+        <jsp:setProperty name="dmsContext" property="previousNavigation"
+                         value="<%= stack.getNavigation() %>"/>
+      </core:ifNotNull>
+    </dms:peekStack>
+  </core:case>
+
+  <core:defaultCase>
+    <core:exclusiveIf>
+
+      <core:ifNotNull value="<%= dmsContext.getPreviousNavigation() %>">
+        <core:exclusiveIf>
+
+	  <%-- going backwards --%>
+          <core:ifEqual object1="<%= dmsContext.getCurrentPage() %>"
+  	                object2="<%= dmsContext.getPreviousNavigation().getReferringPage() %>">
+	    <dms:popStack id="stack" stack="<%= navStack %>"/>
+	    <dms:peekStack id="stack" stack="<%= navStack %>">
+	      <core:ifNotNull value="<%= stack.getNavigation() %>">
+  	        <jsp:setProperty name="dmsContext" property="previousNavigation"
+                                 value="<%= stack.getNavigation() %>"/>
+	      </core:ifNotNull>
+            </dms:peekStack>
+          </core:ifEqual>
+
+	  <%-- going forwards --%>
+	  <core:defaultCase>
+	    <dms:pushStack stack="<%= navStack %>" navigation="<%= currentNav %>"/>
+	    <dms:peekStack id="postPushStack" stack="<%= navStack %>">
+	      <core:ifNotNull value="<%= postPushStack.getNavigation() %>">
+  	        <jsp:setProperty name="dmsContext" property="previousNavigation"
+                                 value="<%= postPushStack.getNavigation() %>"/>
+              </core:ifNotNull>
+            </dms:peekStack>
+          </core:defaultCase>
+
+        </core:exclusiveIf>
+      </core:ifNotNull>
+      
+      <%-- going forwards --%>
+      <core:defaultCase>
+	<dms:pushStack stack="<%= navStack %>" navigation="<%= currentNav %>"/>
+	<dms:peekStack id="postPushStack" stack="<%= navStack %>">
+	  <core:ifNotNull value="<%= postPushStack.getNavigation() %>">
+	    <jsp:setProperty name="dmsContext" property="previousNavigation"
+                             value="<%= postPushStack.getNavigation() %>"/>
+	  </core:ifNotNull>
+        </dms:peekStack>
+      </core:defaultCase>      
+      
+    </core:exclusiveIf>
+  </core:defaultCase>
+</core:switch>
+
+<%-- reset navigation --%>
+<dms:resetNavigation navigation="<%= currentNav %>"/>
+<jsp:setProperty name="currentNav" property="referringPage" 
+                 value="<%= dmsContext.getCurrentPage() %>"/>
+<%-- @version $Id: //product/DAS/version/10.0.3/release/SQLJMSAdmin/j2ee-apps/sqlJmsAdmin/webModule/navigation.jspf#2 $$Change: 651448 $--%>

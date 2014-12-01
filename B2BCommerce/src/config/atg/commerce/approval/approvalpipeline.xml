@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE pipelinemanager
+	PUBLIC "-//Art Technology Group, Inc.//DTD Dynamo Pipeline Manager//EN"
+	'http://www.atg.com/dtds/pipelinemanager/pipelinemanager_1.0.dtd'>
+
+<pipelinemanager>
+
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+  <!-- PipelineChain which checks if an approval is required by the -->
+  <!-- user checking out an order.                                  -->
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+  <pipelinechain name="approveOrder" transaction="TX_REQUIRED" headlink="verifyApproval">
+      <pipelinelink name="verifyApproval" transaction="TX_MANDATORY">
+        <processor jndi="/atg/commerce/approval/processor/VerifyApproval"/>
+        <transition returnvalue="1" link="runCheckRequiresApprovalChain"/>
+      </pipelinelink>
+      <pipelinelink name="runCheckRequiresApprovalChain" transaction="TX_MANDATORY">
+        <processor jndi="/atg/commerce/approval/processor/RunCheckRequiresApprovalChain"/>
+        <transition returnvalue="1" link="addApproverIdsToOrder"/>
+        <!-- This processor also returns 0 (STOP_CHAIN_EXECUTION_AND_COMMIT) if approval is not required -->
+      </pipelinelink>
+
+      <pipelinelink name="addApproverIdsToOrder" transaction="TX_MANDATORY">
+        <processor jndi="/atg/commerce/approval/processor/AddApproverIdsToOrder"/>
+        <transition returnvalue="1" link="changeOrderToPendingApproval"/>
+        <!-- This processor could return 0 (STOP_CHAIN_EXECUTION_AND_COMMIT) if not approvers defined -->
+      </pipelinelink>
+      <pipelinelink name="changeOrderToPendingApproval" transaction="TX_MANDATORY">
+        <processor jndi="/atg/commerce/approval/processor/ChangeOrderToPendingApproval"/>
+        <transition returnvalue="1" link="addApprovalSystemMessagesToOrder"/>
+      </pipelinelink>
+      <pipelinelink name="addApprovalSystemMessagesToOrder" transaction="TX_MANDATORY">
+        <processor jndi="/atg/commerce/approval/processor/AddApprovalSystemMessagesToOrder"/>
+        <transition returnvalue="1" link="addOrderToRepository"/>
+      </pipelinelink>
+      <pipelinelink name="addOrderToRepository" transaction="TX_MANDATORY">
+        <processor jndi="/atg/commerce/order/processor/AddOrderToRepository"/>
+        <transition returnvalue="1" link="sendApprovalRequiredMessage"/>
+      </pipelinelink>
+      <pipelinelink name="sendApprovalRequiredMessage" transaction="TX_MANDATORY">
+        <processor jndi="/atg/commerce/approval/processor/SendApprovalRequiredMessage"/>
+      </pipelinelink>
+  </pipelinechain>
+
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+  <!-- PipelineChain used to determine if a users order requires    -->
+  <!-- approval or not.                                             -->
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+  <pipelinechain name="checkRequiresApproval" transaction="TX_REQUIRES_NEW" headlink="checkProfileApprovalRequirements">
+      <pipelinelink name="checkProfileApprovalRequirements" transaction="TX_MANDATORY">
+        <processor jndi="/atg/commerce/approval/processor/CheckProfileApprovalRequirements"/>
+      </pipelinelink>
+  </pipelinechain>
+
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+  <!-- This chain is called when an approver approves an order      -->
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+  <pipelinechain name="orderApproved" transaction="TX_REQUIRED" headlink="addApproverIdToOrderForApproval">
+    <pipelinelink name="addApproverIdToOrderForApproval" transaction="TX_MANDATORY">
+      <processor jndi="/atg/commerce/approval/processor/AddApproverIdToOrder"/>
+      <transition returnvalue="1" link="addApproverMessagesToOrderForApproval"/>
+    </pipelinelink>
+    <pipelinelink name="addApproverMessagesToOrderForApproval" transaction="TX_MANDATORY">
+      <processor jndi="/atg/commerce/approval/processor/AddApproverMessagesToOrder"/>
+      <transition returnvalue="1" link="sendApprovalUpdateMessageForApproval"/>
+    </pipelinelink>
+    <pipelinelink name="sendApprovalUpdateMessageForApproval" transaction="TX_MANDATORY">
+      <processor jndi="/atg/commerce/approval/processor/SendApprovalUpdateMessage"/>
+    </pipelinelink>
+  </pipelinechain>
+
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+  <!-- This chain is called when an approver rejects an order       -->
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+  <pipelinechain name="orderRejected" transaction="TX_REQUIRED" headlink="addApproverIdToOrderForRejection">
+    <pipelinelink name="addApproverIdToOrderForRejection" transaction="TX_MANDATORY">
+      <processor jndi="/atg/commerce/approval/processor/AddApproverIdToOrder"/>
+      <transition returnvalue="1" link="addApproverMessagesToOrderForRejection"/>
+    </pipelinelink>
+    <pipelinelink name="addApproverMessagesToOrderForRejection" transaction="TX_MANDATORY">
+      <processor jndi="/atg/commerce/approval/processor/AddApproverMessagesToOrder"/>
+      <transition returnvalue="1" link="sendApprovalUpdateMessageForRejection"/>
+    </pipelinelink>
+    <pipelinelink name="sendApprovalUpdateMessageForRejection" transaction="TX_MANDATORY">
+      <processor jndi="/atg/commerce/approval/processor/SendApprovalUpdateMessage"/>
+    </pipelinelink>
+  </pipelinechain>
+
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+  <!-- PipelineChain used to determine if the approval "process",   -->
+  <!-- is complete.  This chain is invoked by the                   -->
+  <!-- ApprovalCompleteService to determine if approval is complete -->
+  <!-- Right now, the ApprovalCompleteAnalyzer can result in the    -->
+  <!-- order either being complete and approved or complete and     -->
+  <!-- rejected.  If it is complete and approved then a message is  -->
+  <!-- sent to both the ApprovalComplete topic as well as           -->
+  <!-- Fulfillment.  If it is not approved then a message is just   -->
+  <!-- sent to ApprovalComplete                                     -->
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+  <pipelinechain name="checkApprovalComplete" transaction="TX_REQUIRED" headlink="getApprovalCompleteParams">
+    <pipelinelink name="getApprovalCompleteParams" transaction="TX_MANDATORY">
+      <processor jndi="/atg/commerce/approval/processor/GetApprovalCompleteParams"/>
+      <transition returnvalue="1" link="approvalCompleteAnalyzer"/>
+    </pipelinelink>
+    <pipelinelink name="approvalCompleteAnalyzer" transaction="TX_MANDATORY">
+      <processor jndi="/atg/commerce/approval/processor/ApprovalCompleteAnalyzer"/>
+      <transition returnvalue="1" link="changeOrderToApproved"/>
+      <transition returnvalue="2" link="changeOrderToFailedApproval"/>
+    </pipelinelink>
+    
+    <pipelinelink name="changeOrderToFailedApproval" transaction="TX_MANDATORY">
+      <processor jndi="/atg/commerce/approval/processor/ChangeOrderToFailedApproval"/>
+      <transition returnvalue="1" link="sendApprovalCompleteMessage"/>
+    </pipelinelink>
+
+    <pipelinelink name="changeOrderToApproved" transaction="TX_MANDATORY">
+      <processor jndi="/atg/commerce/approval/processor/ChangeOrderToApproved"/>
+      <transition returnvalue="1" link="completeProcessingOrder"/>
+    </pipelinelink>
+    <pipelinelink name="completeProcessingOrder" transaction="TX_MANDATORY">
+      <processor jndi="/atg/commerce/approval/processor/CompleteProcessingOrder"/>
+      <transition returnvalue="1" link="sendApprovalCompleteMessage"/>
+    </pipelinelink>
+    
+    <pipelinelink name="sendApprovalCompleteMessage" transaction="TX_MANDATORY">
+      <processor jndi="/atg/commerce/approval/processor/SendApprovalCompleteMessage"/>
+    </pipelinelink>
+  </pipelinechain>
+
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+  <!-- PipelineChain which is called if an error occurs while       -->
+  <!-- processing an ApprovalComplete message. If an error occurs   -->
+  <!-- in the checkApprovalComplete chain above for example, then   -->
+  <!-- this chain would get executed.                               -->
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+  <pipelinechain name="checkApprovalCompleteError" transaction="TX_REQUIRES_NEW" headlink="addMessageMapperErrorToOrder">
+    <pipelinelink name="addMessageMapperErrorToOrder" transaction="TX_MANDATORY">
+      <processor jndi="/atg/commerce/approval/processor/AddMessageMapperErrorToOrder"/>
+      <transition returnvalue="1" link="changeOrderToFailed"/>
+    </pipelinelink>
+    <pipelinelink name="changeOrderToFailed" transaction="TX_MANDATORY">
+      <processor jndi="/atg/commerce/approval/processor/ChangeOrderToFailed"/>
+    </pipelinelink>
+  </pipelinechain>
+
+</pipelinemanager>
+<!-- @version $Id: //product/B2BCommerce/version/10.0.3/templates/B2BCommerce/config/atg/commerce/approval/approvalpipeline.xml#2 $$Change: 651448 $ -->

@@ -1,0 +1,82 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="b2b_product_catalog_ddl">
+<comment><![CDATA[ @version $Id: //product/B2BCommerce/version/10.0.3/templates/B2BCommerce/sql/b2b_product_catalog_ddl.xml#2 $$Change: 651448 $]]></comment>
+   <table name="dbc_manufacturer">
+      <column name="manufacturer_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="manufacturer_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="long_description" nullable="y" i18n="y">
+         <column-type db="generic" type="long-varchar"/>
+         <column-type db="db2" type="varchar" length="20480" scale=""/>
+      </column>
+      <column name="email" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <primary-key name="dbc_manufacturer_p">
+         <index-column column="manufacturer_id" order="asc" seq="1"/>
+      </primary-key>
+      <index name="dbc_man_name_idx" table="dbc_manufacturer">
+         <index-column column="manufacturer_name" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dbc_measurement">
+      <column name="sku_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="unit_of_measure" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="quantity" nullable="y">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="19" scale="7"/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+	   </column>
+      <primary-key name="dbc_measurement_p">
+         <index-column column="sku_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dbc_product">
+      <column name="product_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="manufacturer" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dbc_product_p">
+         <index-column column="product_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dbc_prodmanfctrr_f" referenced-table="dbc_manufacturer" index-name="dbc_prd_man_idx">
+         <fkey-column referencing-column="manufacturer" referenced-column="manufacturer_id"/>
+      </foreign-key>
+      <foreign-key name="dbc_prodprodct_d_f" referenced-table="dcs_product">
+         <fkey-column referencing-column="product_id" referenced-column="product_id"/>
+      </foreign-key>
+   </table>
+   <table name="dbc_sku">
+      <column name="sku_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="manuf_part_num" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dbc_sku_p">
+         <index-column column="sku_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dbc_skusku_d_f" referenced-table="dcs_sku">
+         <fkey-column referencing-column="sku_id" referenced-column="sku_id"/>
+      </foreign-key>
+      <index name="dbc_sku_prtnum_idx" table="dbc_sku">
+         <index-column column="manuf_part_num" order="asc" seq="1"/>
+      </index>
+   </table>
+</schema>
+<!-- @version $Id: //product/B2BCommerce/version/10.0.3/templates/B2BCommerce/sql/b2b_product_catalog_ddl.xml#2 $$Change: 651448 $ -->

@@ -1,0 +1,220 @@
+<HTML>
+<HEAD>
+<TITLE>Switch Product Catalog Data Source</TITLE>
+</HEAD>
+
+<importbean bean="/atg/commerce/jdbc/ProductCatalogSwitcher">
+<importbean bean="/atg/commerce/catalog/ProductCatalog">
+<importbean bean="/atg/commerce/pricing/priceLists/PriceLists">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/IsNull">
+<importbean bean="/atg/dynamo/droplet/Compare">
+<importbean bean="/atg/dynamo/droplet/Switch">
+
+<body BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="../images/dcsadminbanner.gif" ALT="Dynamo Commerce Administration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a href="../index.jhtml">Commerce</a>/
+<a href="index.jhtml">ProductCatalog-PriceLists</a>/Switch<p>
+
+<blockquote>
+
+<droplet bean="Switch">
+  <param name="value" value="bean:ProductCatalogSwitcher.formError">
+  <oparam name="true">
+  	<p>The following errors occured while preparing the switch:
+  	<ul>
+     <droplet bean="/atg/dynamo/droplet/ErrorMessageForEach">
+    <param name="exceptions" value="bean:ProductCatalogSwitcher.formExceptions">
+    <oparam name="output">
+      <font color="red">
+      <LI> <valueof param="message"/>
+      </font>
+    </oparam>
+   </droplet>
+   </ul>
+  </oparam>    
+</droplet>
+
+<h2>Switch the Product Catalog's and Price Lists's Data Source: Prepare</h2>
+
+<setvalue param="switchingDataSource" value="bean:ProductCatalogSwitcher.switchingDataSource">
+<setvalue param="productCatalogDataSource" value="bean:ProductCatalog.dataSource">
+<setvalue param="priceListsDataSource" value="bean:PriceLists.dataSource">
+
+
+<p>This form can be used to prepare the data source of the product
+catalog and the price lists for a switch.
+
+<droplet bean="IsNull">
+  <param name="value" value="param:switchingDataSource"/>
+  <oparam name="true">
+    <font color=cc0000>
+    <p><STRONG>Warning: </STRONG>
+    </font>        
+    The SwitchingDataSource defined at <code>/atg/commerce/jdbc/ProductCatalogSwitcher.switchingDataSource</code>
+    has not started.  Please check your configuration.<br>
+  </oparam>
+  <oparam name="false">
+
+    <p>Here are the available Data Sources for the Product Catalog.<br>
+    
+    <!-- Check if the product catalog is using the switching data source -->
+    <droplet bean="Compare">
+      <param name="obj1" value="param:switchingDataSource.absoluteName"/>
+      <param name="obj2" value="param:productCatalogDataSource.absoluteName"/>
+      <oparam name="greaterthan">
+        <font color=cc0000>
+        <p><STRONG>Warning: </STRONG>
+        </font>        
+        The product catalog is not configured to use the SwitchingDataSource at
+        <valueof param="switchingDataSource.absoluteName">
+          /atg/commerce/jdbc/ProductCatalogSwitcher.switchingDataSource
+        </valueof><br>
+        Please check the configuration of <code>/atg/commerce/catalog/ProductCatalog.dataSource</code><br>
+     </oparam>
+     <oparam name="lessthan">
+       <font color=cc0000>
+       <p><STRONG>Warning: </STRONG>
+       </font>        
+       The product catalog is not configured to use the SwitchingDataSource at
+       <valueof param="switchingDataSource.absoluteName">
+         /atg/commerce/jdbc/ProductCatalogSwitcher.switchingDataSource
+       </valueof>
+       <p>Please check the configuration of <code>/atg/commerce/catalog/ProductCatalog.dataSource</code><br>
+       And the configuration of <code>/atg/commerce/jdbc/ProductCatalogSwitcher.switchingDataSource</code><br>
+     </oparam>
+   </droplet>
+
+    <p>
+
+    <!-- Check if the price lists is using the switching data source -->
+    <droplet bean="Compare">
+      <param name="obj1" value="param:switchingDataSource.absoluteName"/>
+      <param name="obj2" value="param:priceListsDataSource.absoluteName"/>
+      <oparam name="greaterthan">
+        <font color=cc0000>
+        <p><STRONG>Warning: </STRONG>
+        </font>        
+        The price lists repository is not configured to use the SwitchingDataSource at
+        <valueof param="switchingDataSource.absoluteName">
+          /atg/commerce/jdbc/ProductCatalogSwitcher.switchingDataSource
+        </valueof><br>
+        Please check the configuration of <code>/atg/commerce/pricing/priceLists/PriceLists.dataSource</code><br>
+     </oparam>
+     <oparam name="lessthan">
+       <font color=cc0000>
+       <p><STRONG>Warning: </STRONG>
+       </font>        
+       The price lists repository is not configured to use the SwitchingDataSource at
+       <valueof param="switchingDataSource.absoluteName">
+         /atg/commerce/jdbc/ProductCatalogSwitcher.switchingDataSource
+       </valueof>
+       <p>Please check the configuration of <code>/atg/commerce/pricing/priceLists/PriceLists.dataSource</code><br>
+       And the configuration of <code>/atg/commerce/jdbc/ProductCatalogSwitcher.switchingDataSource</code><br>
+     </oparam>
+   </droplet>
+
+    <p>
+
+    <table border=1>
+      <tr>
+	<td><b>Name</b></td>
+	<td><b>Path</b></td>
+      </tr>
+      <droplet bean="ForEach">
+	<param name="array" value="param:switchingDataSource.dataSources">
+	<param name="elementName" value="dataSource">
+	<oparam name="empty">
+	  <tr>
+	    <td colspan=2>
+	      <font color=cc0000>
+	      <STRONG>Warning: </STRONG>
+	      </font>        
+	      No data sources.
+	    </td>
+	  </tr>
+        </oparam>
+	<oparam name="error">
+	  <tr>
+	    <td colspan=2>
+	      <font color=cc0000>
+	      <STRONG>Warning: </STRONG>
+	      </font>        
+	      <valueof param="error">There was an error.</valueof>
+	    </td>
+          </tr>
+        </oparam>
+	<oparam name="output">
+	  <tr>
+	    <td>
+		<b><valueof param="key">no name</valueof></b>
+	    </td>
+	    <td>
+		<droplet bean="IsNull">
+		  <param name="value" value="param:dataSource"/>
+		  <oparam name="true">		  
+		    <font color=cc0000>
+		    <STRONG>Warning: </STRONG>
+		    </font>
+		    Check the configuration and see the documentation. DataSource is not defined.
+		  </oparam>
+		  <oparam name="false">
+		  <java>out.println(((atg.service.jdbc.SwitchingDataSource) request.getObjectParameter("switchingDataSource")).getPathForDataSource((String) request.getParameter("key")));</java><br>
+	          </oparam>
+	        </droplet>
+	    </td>
+	  </tr>    
+        </oparam>
+      </droplet>
+    </table>
+
+    <p>The path to the switching data source is:
+    <code><valueof param="switchingDataSource.absoluteName"></valueof></code>
+
+    <p>The repositories configured to receive events that occur when this data source switches
+    are as follows.<br>
+    Please make sure this list includes all repositories using the switching data source.<br>
+    <ul>
+      <droplet bean="ForEach">
+	<param name="array" value="param:switchingDataSource.switchingDataSourceEventListeners"/>
+	<param name="elementName" value="repository"/>
+	<oparam name="output">
+	  <li><valueof param="repository.absoluteName"></valueof><br></li>
+        </oparam>
+      </droplet>
+    </ul>
+
+    <p>The data source currently being used is 
+
+    <b><valueof param="switchingDataSource.currentDataSourceName"></valueof></b>
+
+    <form action="SwitchProductCatalogDataSource.jhtml" method=POST>
+    <input type="hidden" bean="ProductCatalogSwitcher.successURL" value="SwitchProductCatalogDataSource.jhtml">
+    <input type="hidden" bean="ProductCatalogSwitcher.errorURL" value="PrepareToSwitchProductCatalog.jhtml">
+    Switch to this data source 
+    <select bean="ProductCatalogSwitcher.nextDataSource">
+      <droplet bean="ForEach">
+	<param name="array" value="param:switchingDataSource.dataSources">
+	<param name="elementName" value="dataSource">
+	<oparam name="output">
+	  <option value="param:key"><valueof param="key">Undefined</valueof>
+        </oparam>
+      </droplet>
+    </select>
+    <br>
+    <input type=submit bean="ProductCatalogSwitcher.prepareForSwitch" value="Prepare for switch">
+    
+    </form>
+    <br>
+
+  </oparam>
+</droplet> <!-- IsNull -->
+
+</blockquote>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/DCS/admin/atg/commerce/admin/en/catalog/PrepareToSwitchProductCatalog.jhtml#2 $$Change: 651448 $*/</java>
+

@@ -1,0 +1,59 @@
+<nucleus type=import>
+  /atg/dynamo/admin/Configure
+  /atg/dynamo/admin/EnvironmentConfig
+  /atg/dynamo/admin/NTServiceConfigure
+  /atg/dynamo/admin/DbConnectionPool
+  /atg/dynamo/admin/NativeDbConnectionPool
+  /atg/dynamo/droplet/ForEach
+  /atg/dynamo/droplet/Switch
+</nucleus>
+
+<!-- JDBC Connection Pools -->
+
+<H3><valueof param="title">Configure JDBC Connection Pools</valueof></H3>
+
+<blockquote>
+
+<table border=0 cellpadding=7>
+
+  <!-- Connection Pools -->
+  <tr valign=top>
+    <td width=185>
+      <!-- set the server name for the connection pool when you click -->
+      <!-- on the following link. -->
+      <a href="configure-db-pools.jhtml"
+      bean="DbConnectionPool.serverName" value="bean:Configure.serverName">
+      <param name="dynamoPool" value="true">
+      Connection Pools</a>
+    </td>
+    <td>
+      Add, delete, or configure database connection pools.
+      <br>
+      <B>current:</B>
+
+      <!-- list each connection pool name -->
+      <droplet name="ForEach">
+        <param name="array"
+         value="property:DbConnectionPool.connectionPoolNames">
+        <oparam name="output">
+
+          <!-- output the connection pool name followed by a comma -->
+          <!-- unless it is the last connection pool name. -->
+          <droplet name="Switch">
+            <param name="value" value="param:count">
+            <oparam name="param:size">
+              <valueof param="element"></valueof>
+            </oparam>
+            <oparam name="default">
+              <valueof param="element"></valueof>,
+            </oparam>
+          </droplet>
+
+        </oparam>
+      </droplet>
+    </td>
+  </tr>
+
+</table>
+</blockquote>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/configure-connection-pool-fragment.jhtml#2 $$Change: 651448 $*/</java>

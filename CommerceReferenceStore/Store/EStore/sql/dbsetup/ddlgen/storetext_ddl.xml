@@ -1,0 +1,53 @@
+<!DOCTYPE schema SYSTEM "http://road.atg.com/dtds/ddlgen/schema.dtd">
+<schema name="storetext_ddl"
+        description="Tables for the store text repository">
+          
+  <comment><![CDATA[ @version $Id: //hosting-blueprint/B2CBlueprint/version/10.0.3/EStore/sql/ddlgen/storetext_ddl.xml#2 $$Change: 651448 $]]></comment>
+
+  <table name="crs_store_text">
+    <column name="text_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    <column name="key_id" nullable="n">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+
+    <column name="text_template" nullable="y">
+      <column-type db="generic" type="varchar" length="4000"/>
+    </column>
+
+    <column name="tag" nullable="y">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    <column name="text_type">
+      <column-type db="generic" type="integer"/>
+    </column>
+
+    <primary-key name="crs_txt_key_p">
+      <index-column column="text_id" seq="1"/>
+      <index-column column="key_id" seq="2"/>
+    </primary-key>
+
+    <index name="crs_txt_key_id" table="crs_store_text">
+      <index-column column="key_id" order="asc" seq="1"/>
+    </index>
+  </table>
+
+  <table name="crs_store_long_txt">
+    <column name="text_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+    <column name="text_template" nullable="y">
+      <column-type db="generic" type="long-varchar"/>
+      <column-type db="db2" type="varchar" length="4000" scale=""/>
+    </column>
+
+    <primary-key name="crs_lng_txt_key_p">
+      <index-column column="text_id" seq="1"/>
+    </primary-key>
+  </table>
+</schema>
+<!-- @version $Id: //hosting-blueprint/B2CBlueprint/version/10.0.3/EStore/sql/ddlgen/storetext_ddl.xml#2 $$Change: 651448 $-->

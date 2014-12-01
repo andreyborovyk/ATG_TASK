@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE portal-manifest PUBLIC "-//Art Technology Group, Inc.//DTD Portal Manifest//EN" "http://www.atg.com/dtds/portal/framework/portal_manifest_1.0.dtd">
+
+<portal-manifest name="Login" version="1.0" author="ATG Portal Team">
+
+  <gear-definitions>
+    <gear-definition name="Login" version="1.0" author="ATG Portal Team">
+      <description>Login Gear</description>
+
+      <servlet-context>/gear/user_registration</servlet-context>
+
+
+      <dimensions>
+        <dimension name="height">short</dimension>
+        <dimension name="width">narrow</dimension>
+      </dimensions>
+
+      <gear-modes>
+
+        <gear-mode name="content">
+          <display-modes>
+            <display-mode name="shared">
+              <device-output name="html">/loginShared.jsp</device-output>
+              <device-output name="wml">/wml/login_wml.jsp</device-output>
+            </display-mode>
+            <display-mode name="full">
+              <device-output name="html">/loginShell.jsp</device-output>
+            </display-mode>
+          </display-modes>
+        </gear-mode>
+
+        <gear-mode name="instanceConfig">
+          <display-modes>
+            <display-mode name="full">
+              <device-output name="html">/admin/instanceConfig.jsp</device-output>
+            </display-mode>
+          </display-modes>
+        </gear-mode>
+
+      </gear-modes>
+
+     <instance-parameters>
+       <parameter name="showRegistration" >
+         <default-value>
+           true
+         </default-value>
+       </parameter>
+       <parameter name="showNameLogin" >
+         <default-value>
+           true
+         </default-value>
+       </parameter>
+       <parameter name="successURL" >
+       </parameter>
+     </instance-parameters>
+
+    </gear-definition>
+
+  </gear-definitions>
+</portal-manifest>
+<!-- @version $Id: //app/portal/version/10.0.3/user_registration/etc/user_registration-manifest.xml#2 $$Change: 651448 $ -->

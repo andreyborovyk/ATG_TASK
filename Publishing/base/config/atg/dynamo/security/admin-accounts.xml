@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- PWS privilege configuration -->
+<!-- $Id: //product/Publishing/version/10.0.3/pws/config/atg/dynamo/security/admin-accounts.xml#2 $$Change: 651448 $ -->
+
+<!DOCTYPE accounts
+        PUBLIC "-//Art Technology Group, Inc.//DTD Dynamo Accounts//EN"
+        "http://www.atg.com/dtds/security/accounts_1.0.dtd">
+
+<accounts>
+
+  <!-- Privileges associated with the Publishing menu -->
+  <privilege name="publishing-workflow-privilege">
+    <attribute name="description">Workflow: Publishing</attribute>
+  </privilege>
+  <privilege name="publishing-process-privilege">
+    <attribute name="description">Publishing: Current Process</attribute>
+  </privilege>
+  <privilege name="publishing-repository-privilege">
+    <attribute name="description">Publishing: EPublishing Repository</attribute>
+  </privilege>
+  <privilege name="publishing-file-repository-privilege">
+    <attribute name="description">Publishing: EPublishing File Repository</attribute>
+  </privilege>
+
+  <!-- Administrators get all PWS privileges -->
+  <group name="administrators-group">
+    <member-of name="publishing-workflow-privilege"/>
+    <member-of name="publishing-process-privilege"/>
+    <member-of name="publishing-repository-privilege"/>
+    <member-of name="publishing-file-repository-privilege"/>
+  </group>
+  
+</accounts>
+<!-- @version $Id: //product/Publishing/version/10.0.3/pws/config/atg/dynamo/security/admin-accounts.xml#2 $$Change: 651448 $ -->

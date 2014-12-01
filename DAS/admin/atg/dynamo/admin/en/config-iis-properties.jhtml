@@ -1,0 +1,131 @@
+
+<nucleus type=import>
+	/atg/dynamo/admin/ISAPIConfigure
+</nucleus>
+
+<java>
+
+  atg.service.dynamo.ISAPIConfig ISAPIConfigure = (atg.service.dynamo.ISAPIConfig)
+  	request.resolveName("/atg/dynamo/admin/ISAPIConfigure");
+</java>
+
+<HTML>
+<HEAD>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+<TITLE>Configure IIS Connection Module Properties</TITLE>
+
+
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="images/config-banner.gif" ALT="Dynamo Configuration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a
+href="configure-server.jhtml">Configure</a>/<a
+href="configure-server.jhtml#CM">Connection_Modules</a>/<a
+href="config-iis-scriptdir.jhtml">script_dir</a>/<a
+href="config-iis-decide.jhtml">install_or_uninstall</a>/<a
+href="config-iis-texthandle.jhtml">text_HTML</a>/load_manager
+<p>
+
+<blockquote>
+
+ <java>
+ //<setvalue bean="/atg/dynamo/admin/ISAPIConfigure.redirectPage" value="config-iis-properties.jhtml">
+ 
+ //ISAPIConfigure.setRedirectPage( "config-iis-properties.jhtml" );
+ </java>
+ <setvalue bean="/atg/dynamo/admin/ISAPIConfigure.redirectPage" value="config-iis-properties.jhtml">
+ 
+<H2>Configure IIS Connection Modules</H2><p>
+
+
+<FORM ACTION="config-iis-properties.jhtml" METHOD=GET>
+
+<p>
+
+
+Edit list of Dynamo Load Managers for this Connection Module:
+<p>
+
+<ul>
+<TABLE BORDER="1" CELLPADDING="6" CELLSPACING="0">
+	<TR>
+		<TD ALIGN=LEFT VALIGN=TOP>
+			Load Manager hostname or IP Address:
+		</TD>
+		<TD ALIGN=LEFT VALIGN=TOP>
+			Load Manager (CM Packet Server) Port:
+		</TD>
+		<TD ALIGN=LEFT VALIGN=TOP>
+			<br>
+		</TD>
+	</TR>
+
+<java>
+
+Enumeration e = ISAPIConfigure.getDynamoLoadManagers().elements();
+
+int i=0;
+
+while( e.hasMoreElements() )
+{
+    atg.service.dynamo.LoadManager lm = (atg.service.dynamo.LoadManager) e.nextElement();
+	</java>
+	<TR>
+	<TD ALIGN=LEFT VALIGN=TOP>
+	<java> out.print( lm.getName() ); </java>
+	</TD>
+	<TD ALIGN=LEFT VALIGN=TOP>
+	<java> out.print( lm.getPort() ); </java>
+	</TD>
+	<TD ALIGN=LEFT VALIGN=TOP>
+	<INPUT TYPE="submit" name="delete`lm.getName()+lm.getPort()`" property="ISAPIConfigure.removeLoadManaged"
+		submitvalue="`i++`" VALUE="Delete">
+	</td>
+	</TR>
+    <java>
+}
+	</java>
+			<TR>
+				<TD ALIGN=LEFT VALIGN=TOP>
+					<INPUT TYPE="text" property="ISAPIConfigure.newDynamoLoadManagerName" size=30 value="localhost">
+				</td>
+				<TD ALIGN=LEFT VALIGN=TOP>
+					<INPUT TYPE="text" property="ISAPIConfigure.newDynamoLoadManagerPort" SIZE="5" value=8880>
+				</td>
+				<TD ALIGN=LEFT VALIGN=top>
+					<INPUT TYPE="submit" property="ISAPIConfigure.addLoadManaged" VALUE="Add Load Manager">
+				</td>
+			</TR>
+		</TABLE>
+
+</ul>
+<br>
+</FORM>
+
+<FORM ACTION="config-iis-ref-apps.jhtml" METHOD=GET>
+
+<java>
+
+// Don't show the "Next" button until there is at least
+// one load manager
+
+if ( 0 < ISAPIConfigure.getDynamoLoadManagers().size() )
+{
+    </java>
+    <INPUT TYPE="submit" VALUE="Next">
+    <java>
+}
+</java>
+
+<p>
+<a href="config-iis-texthandle.jhtml">Back</a>
+</FORM>
+
+
+</blockquote>
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/config-iis-properties.jhtml#2 $$Change: 651448 $ */</java>
+

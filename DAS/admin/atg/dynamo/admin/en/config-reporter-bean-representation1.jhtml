@@ -1,0 +1,54 @@
+<nucleus type=import>
+  /atg/dynamo/service/ConfigurationReporter
+</nucleus>
+
+<HTML>
+<HEAD>
+  <link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+  <TITLE>BEAN REPRESENTATION REPORT</TITLE>
+</HEAD>
+
+<body>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="images/admin-banner.gif" ALT="Dynamo ConfigurationReporter" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+<a href="/">admin</a>/<a href="conf-reporter.jhtml">Configuration Reporter</a>
+
+<h2>Configuration Reporter</h2>
+
+<h3>BEAN REPRESENTATION REPORT: BASIC</h3>
+<blockquote>This report creates a serialized representation of the component hierarchy of the presently running Dynamo server.
+
+
+<form action="config-reporter-bean-representation1.jhtml" method=post>
+ <p><input type=checkbox property="ConfigurationReporter.saveJVMPropertiesInBeanSerialization">
+ Save Java Virtual Machine properties in serialization output file<br>
+ <p><input type=checkbox property="ConfigurationReporter.saveConfigurationPathInBeanSerialization">
+ Save current Configuration Path in serialization output file<br>
+ <p>Serialization output file:
+ <input type=text property="ConfigurationReporter.serializedFileName" size=60><br>
+ <p>
+ <p><input type=submit property="ConfigurationReporter.saveCurrentBeanRepresentation" value="Create Serialization Output File">
+</form>
+</blockquote>
+
+<h3>XML BEAN REPRESENTATION REPORT</h3>
+
+<blockquote>After you create a serialized Bean Representation Report in the step above, you can output the report in the form of an XML file. 
+<form action="config-reporter-bean-representation1.jhtml" method=post>
+<p><input type=checkbox property="ConfigurationReporter.outputComponentPropertiesInXML">
+Output all property values<br>
+<p>Serialization output file:
+<input type=text property="ConfigurationReporter.serializedFileName" size=60><br>
+<p>XML Output File:
+<input type=text property="ConfigurationReporter.beanRepresentationXMLFileName" size=60><br>
+<p>
+<input type=submit property="ConfigurationReporter.outputRepresentationToXML" value="Create XML File">
+<p>
+</form>
+</blockquote>
+
+<BODY>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/config-reporter-bean-representation1.jhtml#2 $$Change: 651448 $*/</java>
+

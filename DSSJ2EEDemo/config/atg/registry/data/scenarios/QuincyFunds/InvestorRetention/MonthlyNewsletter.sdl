@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE scenario
+  SYSTEM
+  "dynamosystemresource:/atg/scenario/definition/sdl.dtd">
+
+<scenario author="admin" creation-time="960937282000" enabled="false" last-modified-by="admin" modification-time="1028236632985">
+  <segment migrate-users="true">
+    <segment-name>Send Monthly Mail</segment-name>
+    <!--================================-->
+    <!--== On day 1 of the month at 12:00AM  -->
+    <!--================================-->
+    <time id="1" recurring="true">
+      <date-time-pattern>
+        <day-of-month>1</day-of-month>
+        <time-of-day>
+          <hours>12</hours>
+          <minutes>00</minutes>
+          <meridian>AM</meridian>
+        </time-of-day>
+      </date-time-pattern>
+    </time>
+    <!--================================-->
+    <!--== in group investors  -->
+    <!--================================-->
+    <condition construct="people-element" id="2">
+      <filter construct="profile-group-filter" operator="eq">
+        <subject-property>
+          <property-name>investors</property-name>
+        </subject-property>
+        <constant type="boolean">true</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Receive email is yes  -->
+    <!--================================-->
+    <condition construct="people-element" id="3">
+      <filter construct="profile-property-filter" operator="eq">
+        <subject-property>
+          <property-name>receiveEmail</property-name>
+        </subject-property>
+        <constant>yes</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Locale is en_US  -->
+    <!--================================-->
+    <condition construct="people-element" id="4">
+      <filter construct="profile-property-filter" operator="eq">
+        <subject-property>
+          <property-name>locale</property-name>
+        </subject-property>
+        <constant>en_US</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Send email with Dynamo path /QuincyFunds/en/email/monthlynewsletter.jsp  -->
+    <!--================================-->
+    <action id="5">
+      <action-name>sendEmail</action-name>
+      <action-param name="template">
+        <constant>/QuincyFunds/en/email/monthlynewsletter.jsp</constant>
+      </action-param>
+    </action>
+  </segment>
+  <segment migrate-users="true">
+    <segment-name>Send Monthly Mail FR</segment-name>
+    <!--================================-->
+    <!--== On day 1 of the month at 12:00AM  -->
+    <!--================================-->
+    <time id="1" recurring="true">
+      <date-time-pattern>
+        <day-of-month>1</day-of-month>
+        <time-of-day>
+          <hours>12</hours>
+          <minutes>00</minutes>
+          <meridian>AM</meridian>
+        </time-of-day>
+      </date-time-pattern>
+    </time>
+    <!--================================-->
+    <!--== in group investors  -->
+    <!--================================-->
+    <condition construct="people-element" id="2">
+      <filter construct="profile-group-filter" operator="eq">
+        <subject-property>
+          <property-name>investors</property-name>
+        </subject-property>
+        <constant type="boolean">true</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Receive email is yes  -->
+    <!--================================-->
+    <condition construct="people-element" id="3">
+      <filter construct="profile-property-filter" operator="eq">
+        <subject-property>
+          <property-name>receiveEmail</property-name>
+        </subject-property>
+        <constant>yes</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Locale is fr_FR  -->
+    <!--================================-->
+    <condition construct="people-element" id="4">
+      <filter construct="profile-property-filter" operator="eq">
+        <subject-property>
+          <property-name>locale</property-name>
+        </subject-property>
+        <constant>fr_FR</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Send email with Dynamo path /QuincyFunds/fr/email/monthlynewsletter.jsp  -->
+    <!--================================-->
+    <action id="5">
+      <action-name>sendEmail</action-name>
+      <action-param name="template">
+        <constant>/QuincyFunds/fr/email/monthlynewsletter.jsp</constant>
+      </action-param>
+    </action>
+  </segment>
+  <segment migrate-users="true">
+    <segment-name>Send Monthly Mail JA</segment-name>
+    <!--================================-->
+    <!--== On day 1 of the month at 12:00AM  -->
+    <!--================================-->
+    <time id="1" recurring="true">
+      <date-time-pattern>
+        <day-of-month>1</day-of-month>
+        <time-of-day>
+          <hours>12</hours>
+          <minutes>00</minutes>
+          <meridian>AM</meridian>
+        </time-of-day>
+      </date-time-pattern>
+    </time>
+    <!--================================-->
+    <!--== in group investors  -->
+    <!--================================-->
+    <condition construct="people-element" id="2">
+      <filter construct="profile-group-filter" operator="eq">
+        <subject-property>
+          <property-name>investors</property-name>
+        </subject-property>
+        <constant type="boolean">true</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Receive email is yes  -->
+    <!--================================-->
+    <condition construct="people-element" id="3">
+      <filter construct="profile-property-filter" operator="eq">
+        <subject-property>
+          <property-name>receiveEmail</property-name>
+        </subject-property>
+        <constant>yes</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Locale is ja_JP  -->
+    <!--================================-->
+    <condition construct="people-element" id="4">
+      <filter construct="profile-property-filter" operator="eq">
+        <subject-property>
+          <property-name>locale</property-name>
+        </subject-property>
+        <constant>ja_JP</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Send email with Dynamo path /QuincyFunds/ja/email/monthlynewsletter.jsp  -->
+    <!--================================-->
+    <action id="5">
+      <action-name>sendEmail</action-name>
+      <action-param name="template">
+        <constant>/QuincyFunds/ja/email/monthlynewsletter.jsp</constant>
+      </action-param>
+    </action>
+  </segment>
+  <segment migrate-users="true">
+    <segment-name>Send Monthly Mail DE</segment-name>
+    <!--================================-->
+    <!--== On day 1 of the month at 12:00AM  -->
+    <!--================================-->
+    <time id="1" recurring="true">
+      <date-time-pattern>
+        <day-of-month>1</day-of-month>
+        <time-of-day>
+          <hours>12</hours>
+          <minutes>00</minutes>
+          <meridian>AM</meridian>
+        </time-of-day>
+      </date-time-pattern>
+    </time>
+    <!--================================-->
+    <!--== in group investors  -->
+    <!--================================-->
+    <condition construct="people-element" id="2">
+      <filter construct="profile-group-filter" operator="eq">
+        <subject-property>
+          <property-name>investors</property-name>
+        </subject-property>
+        <constant type="boolean">true</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Receive email is yes  -->
+    <!--================================-->
+    <condition construct="people-element" id="3">
+      <filter construct="profile-property-filter" operator="eq">
+        <subject-property>
+          <property-name>receiveEmail</property-name>
+        </subject-property>
+        <constant>yes</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Locale is de_DE  -->
+    <!--================================-->
+    <condition construct="people-element" id="4">
+      <filter construct="profile-property-filter" operator="eq">
+        <subject-property>
+          <property-name>locale</property-name>
+        </subject-property>
+        <constant>de_DE</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Send email with Dynamo path /QuincyFunds/de/email/monthlynewsletter.jsp  -->
+    <!--================================-->
+    <action id="5">
+      <action-name>sendEmail</action-name>
+      <action-param name="template">
+        <constant>/QuincyFunds/de/email/monthlynewsletter.jsp</constant>
+      </action-param>
+    </action>
+  </segment>
+</scenario>

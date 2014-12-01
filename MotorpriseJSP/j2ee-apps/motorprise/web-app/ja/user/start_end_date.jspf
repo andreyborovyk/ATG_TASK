@@ -1,0 +1,102 @@
+<%@ taglib uri="dsp" prefix="dsp" %>
+<dsp:page>
+
+<dsp:importbean bean="/atg/commerce/order/scheduled/ScheduledOrderFormHandler"/>
+<dsp:importbean bean="/atg/dynamo/droplet/For"/>
+<dsp:importbean bean="/atg/dynamo/droplet/Switch"/>
+<dsp:importbean bean="/atg/userprofiling/Profile"/>
+
+<!-- Start date selection (borrowed from previous iteration -->
+<tr valign=top>
+  <td align=right><span class=smallb>開始日</span><br>
+  <span class="small">（mm/dd/yyyy）</span></td>
+  <td><dsp:input bean="ScheduledOrderFormHandler.complexScheduledOrderMap.startDate.userInputFields.month" maxlength="2" size="2" type="text"/>
+  <dsp:input bean="ScheduledOrderFormHandler.complexScheduledOrderMap.startDate.userInputFields.day" maxlength="2" size="2" type="text"/>
+  <dsp:input bean="ScheduledOrderFormHandler.complexScheduledOrderMap.startDate.userInputFields.year" maxlength="4" size="4" type="text"/>
+  <span class=smallb>時間</span>
+
+  <dsp:droplet name="Switch">
+  <dsp:param bean="Profile.locale" name="value"/>
+  <dsp:oparam name="en_US">
+    <dsp:select bean="ScheduledOrderFormHandler.complexScheduledOrderMap.startDate.userInputFields.hour">
+    <dsp:droplet name="For">
+      <dsp:param name="howMany" value="12"/>
+      <dsp:oparam name="output">
+        <dsp:getvalueof id="numHoursEn" idtype="Integer" param="count">      
+          <dsp:option value="<%=numHoursEn.toString()%>"/> <dsp:valueof param="count"/>
+        </dsp:getvalueof>
+      </dsp:oparam>
+    </dsp:droplet>
+    </dsp:select>
+ 
+    <dsp:select bean="ScheduledOrderFormHandler.complexScheduledOrderMap.startDate.userInputFields.ampm">
+     <dsp:option value="am"/> am
+     <dsp:option value="pm"/> pm
+    </dsp:select>
+  </dsp:oparam>
+  <dsp:oparam name="de_DE">
+    <dsp:select bean="ScheduledOrderFormHandler.complexScheduledOrderMap.startDate.userInputFields.hour">
+    <dsp:droplet name="For">
+      <dsp:param name="howMany" value="24"/>
+      <dsp:oparam name="output">
+        <dsp:getvalueof id="numHoursDe" idtype="Integer" param="count">
+          <dsp:option value="<%= numHoursDe.toString() %>"/> <dsp:valueof param="count"/>
+        </dsp:getvalueof>  
+      </dsp:oparam>
+    </dsp:droplet>
+    </dsp:select>
+  </dsp:oparam>
+  </dsp:droplet>
+  </td>
+</tr>
+          
+          
+<!-- End date... also borrowed from previous version -->
+<tr valign=top>
+     <!--<dsp:input bean="ScheduledOrderFormHandler.complexScheduledOrderMap.endDate.userInputFields.mode" type="hidden" value="definite"/>-->
+  <td align=right><span class=smallb>終了日</span><br>
+  <span class="small">（mm/dd/yyyy）</span></td>
+  <td><dsp:input bean="ScheduledOrderFormHandler.complexScheduledOrderMap.endDate.userInputFields.month" maxlength="2" size="2" type="text"/>
+  <dsp:input bean="ScheduledOrderFormHandler.complexScheduledOrderMap.endDate.userInputFields.day" maxlength="2" size="2" type="text"/>
+  <dsp:input bean="ScheduledOrderFormHandler.complexScheduledOrderMap.endDate.userInputFields.year" maxlength="4" size="4" type="text"/>
+  <span class=smallb>時間</span>
+
+  <dsp:droplet name="Switch">
+  <dsp:param bean="Profile.locale" name="value"/>
+  <dsp:oparam name="en_US">
+    <dsp:select bean="ScheduledOrderFormHandler.complexScheduledOrderMap.endDate.userInputFields.hour">
+    <dsp:droplet name="For">
+      <dsp:param name="howMany" value="12"/>
+        <dsp:oparam name="output">
+        <dsp:getvalueof id="hourEndDe" idtype="Integer" param="count">
+          <dsp:option value="<%=hourEndDe.toString()%>"/> <dsp:valueof param="count"/>
+        </dsp:getvalueof>
+
+        </dsp:oparam>
+   </dsp:droplet>
+   </dsp:select>
+  
+   <dsp:select bean="ScheduledOrderFormHandler.complexScheduledOrderMap.endDate.userInputFields.ampm">
+    <dsp:option value="am"/> am
+    <dsp:option value="pm"/> pm
+   </dsp:select>
+  </dsp:oparam>
+  <dsp:oparam name="de_DE">
+    <dsp:select bean="ScheduledOrderFormHandler.complexScheduledOrderMap.endDate.userInputFields.hour">
+    <dsp:droplet name="For">
+      <dsp:param name="howMany" value="24"/>
+      <dsp:oparam name="output">
+        <dsp:getvalueof id="hourEndEn" idtype="Integer" param="count">
+          <dsp:option value="<%=hourEndEn.toString()%>"/> <dsp:valueof param="count"/>
+        </dsp:getvalueof>          
+      </dsp:oparam>
+    </dsp:droplet>
+    </dsp:select>
+  </dsp:oparam>
+  </dsp:droplet>
+
+  <br><span class=help>終了日が指定されていない場合、オーダーの出荷日は無期限になります。</span>
+  </td>
+</tr>
+</dsp:page>
+<%-- @version $Id: //product/B2BCommerce/version/10.0.3/release/MotorpriseJSP/j2ee-apps/motorprise/web-app/ja/user/start_end_date.jspf#2 $$Change: 651448 $--%>

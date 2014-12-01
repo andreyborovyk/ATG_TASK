@@ -1,0 +1,81 @@
+<%@ taglib uri="http://www.atg.com/taglibs/daf/dspjspELTaglib1_0" prefix="dspel" %>
+<dspel:page>
+
+<html>
+<head>
+  <title>Opt Out example form page</title>
+</head>
+
+<dspel:importbean bean="/atg/userprofiling/ProfileFormHandler"/>
+<dspel:importbean bean="/atg/userprofiling/ProfileErrorMessageForEach"/>
+<dspel:importbean bean="/atg/dynamo/droplet/Switch"/>
+<dspel:importbean bean="/atg/dynamo/droplet/ForEach"/>
+
+<!-- This form should not show what the current profile attributes are so we will
+     disable the ability to extract default values from the profile. -->
+<dspel:setvalue bean="ProfileFormHandler.extractDefaultValuesFromProfile" value="true"/>
+
+<body>
+
+  <a href="optInOutExamplePage.jsp">Back to example home page</a>
+  <br/><br/>
+
+  <dspel:droplet name="Switch">
+    <dspel:param bean="ProfileFormHandler.profile.transient" name="value"/>
+    <dspel:oparam name="true">
+      You are currently not logged in. Please <a href="login.jsp?successURL=optOutTest.jsp">login</a> to change your preferences.
+    </dspel:oparam>
+
+    <dspel:oparam name="default">
+      <dspel:form action="optOutTest.jsp" method="post">
+        <dspel:input bean="ProfileFormHandler.updateSuccessURL" type="hidden" value="optOutTest.jsp"/>
+
+        <b>Please do not send me the following types of communications:
+
+        <dspel:droplet name="Switch">
+          <dspel:param bean="ProfileFormHandler.formError" name="value"/>
+          <dspel:oparam name="true">
+            <font color="cc0000"><strong><ul>
+              <dspel:droplet name="ProfileErrorMessageForEach">
+                <dspel:param bean="ProfileFormHandler.formExceptions" name="exceptions"/>
+                <dspel:oparam name="output">
+                  <li> <dspel:valueof param="message"/>
+                </dspel:oparam>
+              </dspel:droplet>
+            </ul></strong></font>
+          </dspel:oparam>
+        </dspel:droplet>
+
+        <table width="456" border="0">
+
+          <tr>
+            <td align="right"><dspel:input bean="ProfileFormHandler.value.emailOptOuts" type="checkbox" value="Newsletter_Opt_Out"/></td>
+            <td valign="middle" align="left">Newsletter</td>
+            <td align="right"><dspel:input bean="ProfileFormHandler.value.emailOptOuts" type="checkbox" value="Industry_News_Opt_Out"/></td>
+            <td valign="middle" align="left">Industry News</td>
+          </tr>
+
+          <tr>
+            <td align="right"><dspel:input bean="ProfileFormHandler.value.emailOptOuts" type="checkbox" value="Special_Deals"/></td>
+            <td valign="middle" align="left">Special Deals</td>
+            <td align="right"><dspel:input bean="ProfileFormHandler.value.emailOptOuts" type="checkbox" value="Account_Status_Opt_Out"/></td>
+            <td valign="middle" align="left">Quarterly Account Updates</td>
+          </tr>
+
+          <tr>
+            <td valign="middle" align="right"></td>
+            <td><dspel:input bean="ProfileFormHandler.update" type="submit" value="Save Changes"/></td>
+          </tr>
+
+        </table>
+
+      </dspel:form>
+    </dspel:oparam>
+  </dspel:droplet>
+
+</body>
+</html>
+
+
+</dspel:page>
+<%-- @version $Id: //application/campaigns/version/10.0/communication/common/src/web-apps/Outreach/optInOut/optOutTest.jsp#1 $$Change: 610294 $--%>

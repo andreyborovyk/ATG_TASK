@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tasks SYSTEM "http://www.atg.com/dtds/task_1_0.dtd">
+<tasks>
+
+	<task id="ProductionSelectionPersistenceCheckTask" class="atg.cim.productconfig.ProductionSelectionPersistenceCheckTask" batch="false">
+	</task>
+
+	<task id="AppServerSelectionPersistenceCheckTask" class="atg.cim.productconfig.AppServerSelectionPersistenceCheckTask" batch="false">
+	</task>
+
+	<task id="AppAssemblyOptionsSelectionPersistenceCheckTask" class="atg.cim.productconfig.AppAssemblyOptionsSelectionPersistenceCheckTask" batch="false">
+	</task>
+
+  <task id="WizardSelectTask" class="atg.cim.worker.mode.WizardSelectTask">
+    <property name="wizardInfo">
+      <input type="select" selectprovider="WizardSelectProvider">
+        <label resource-key="">Choose Wizard :</label>
+      </input>
+    </property>
+  </task>
+
+  <task id="WriteBatchFileTask" class="atg.cim.batch.WriteBatchFileTask" batch="false">
+  	<property name="filePath">
+  		<input type="path">
+  			<label>Enter Save File Path</label>
+			<validator id="AbsolutePathValidator" phase="POSTINPUT">
+			  <if-false>
+			            <command type="DISPLAY_TEXT" value="Save file path must be absolute." />
+				    <command type="REDO_INPUT"/>
+                          </if-false>
+
+			</validator>
+  		</input>
+  	</property>
+  </task>
+  <task id="PersistedFileWriter" class="atg.cim.worker.common.PersistedFileWriter"/>
+
+</tasks>
+<!-- @version $Id: //product/CIM/version/10.0.3/plugins/Base/tasks.xml#2 $$Change: 651448 $-->

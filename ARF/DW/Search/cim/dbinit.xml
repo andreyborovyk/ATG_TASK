@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE database-initializer SYSTEM "http://www.atg.com/dtds/dbinit_1_0.dtd">
+<database-initializer>
+
+	<schema id="arfSchema">
+	
+		<sql>
+			<path>
+				<create>
+					sql/db_components/${database}/search_datawarehouse_ddl.sql
+				</create>
+				<drop>
+					sql/uninstall/${database}/drop_search_datawarehouse_ddl.sql
+				</drop>
+			</path>
+		</sql>
+
+		<sql>
+			<path>
+				<create>
+				  sql/db_components/${database}/search_datawarehouse_init.sql
+				</create>
+				<drop>
+					<!-- there is no matching drop script -->
+				</drop>
+			</path>
+		</sql>
+		
+	</schema>
+
+	<server-instance-type id="datawarehouse">
+	
+		<datasource id="all">
+			<schema id="arfSchema"/>
+		</datasource>	
+		
+	</server-instance-type>
+
+</database-initializer>
+<!-- @version $Id: //product/ARF/version/10.0.3/ARF/DW/Search/cim/dbinit.xml#2 $$Change: 651448 $-->

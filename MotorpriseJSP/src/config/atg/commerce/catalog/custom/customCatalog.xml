@@ -1,0 +1,930 @@
+<!-- $Id: //product/B2BCommerce/version/10.0.3/release/MotorpriseJSP/j2ee-apps/motorprise/config/atg/commerce/catalog/custom/customCatalog.xml#2 $$Change: 651448 $ -->
+
+<gsa-template>
+
+  <!-- //////////////////////////////////// -->
+  <!--                                      -->
+  <!-- Internationalized catalog properties -->
+  <!--                                      -->
+  <!--        displayName                   -->
+  <!--                                      -->
+  <!-- //////////////////////////////////// -->
+  <item-descriptor name="catalog">
+    
+    <attribute name="categoryPresentationDerivedPriority" value="500"/>
+    
+    <table name="dcs_catalog" type="primary" id-column-name="catalog_id">
+      <!-- remove the old versions of these properties -->
+      <!-- The "remove" must be in the correct table tag or it will not work -->
+      <property name="displayName" xml-combine="remove"/>
+
+      <!-- store the english versions in the old column -->
+      <property name="displayName_en" data-type="string" column-name="display_name" required="true" queryable="true"
+                category-resource="categoryPresentation" display-name-resource="displayName">
+        <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+        <attribute name="propertySortPriority" value="-3"/>
+        <attribute name="locale" value="en"/>
+      </property>
+    </table>
+
+    <!-- create german versions in a separate table -->
+    <table name="dbc_catalog_de" type="auxiliary" id-column-name="catalog_id">
+      <property name="displayName_de" data-type="string" column-name="display_name" queryable="true" 
+                category-resource="categoryPresentation" display-name-resource="displayName">
+        <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+        <attribute name="propertySortPriority" value="-3"/>
+        <attribute name="locale" value="de"/>
+      </property>
+    </table>
+
+    <!-- create japanese versions in a separate table -->
+    <table name="dbc_catalog_ja" type="auxiliary" id-column-name="catalog_id">
+      <property name="displayName_ja" data-type="string" column-name="display_name" queryable="true" 
+                category-resource="categoryPresentation" display-name-resource="displayName">
+        <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+        <attribute name="propertySortPriority" value="-3"/>
+        <attribute name="locale" value="ja"/>
+      </property>
+    </table>
+
+    <!-- create derived properties to automatically get the correct string -->
+    <property name="displayName" data-type="string" 
+              category-resource="categoryPresentationDerived" writable="false"
+              display-name-resource="displayName" queryable="true">
+      <derivation method="firstWithLocale">
+        <expression>displayName_en</expression>
+        <expression>displayName_de</expression>
+        <expression>displayName_ja</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+      <attribute name="propertySortPriority" value="-3"/>
+      <attribute name="keyService" value="/atg/userprofiling/LocaleService"/>
+      <attribute name="defaultKey" value="en_US"/>
+    </property>
+
+  </item-descriptor>
+
+  <!-- ///////////////////////////////////// -->
+  <!--                                       -->
+  <!-- Internationalized category properties -->
+  <!--                                       -->
+  <!--        displayName                    -->
+  <!--        description                    -->
+  <!--        longDescription                -->
+  <!--        template                       -->
+  <!--        keywords                       -->
+  <!--                                       -->
+  <!-- ///////////////////////////////////// -->
+
+  <item-descriptor name="category">
+
+    <attribute name="categoryPresentationDerivedPriority" value="500"/>
+
+    <table name="dcs_category" type="primary" id-column-name="category_id">
+      <!-- remove the old versions of these properties -->
+      <!-- The "remove" must be in the correct table tag or it will not work -->
+      <property name="displayName" xml-combine="remove"/>
+      <property name="description" xml-combine="remove"/>
+      <property name="longDescription" xml-combine="remove"/>
+
+      <!-- store the english versions in the old column -->
+      <property name="displayName_en" data-type="string" column-name="display_name" required="true" queryable="true"
+                category-resource="categoryPresentation" display-name-resource="displayName">
+        <attribute name="propertySortPriority" value="-8"/>
+        <attribute name="locale" value="en"/>
+      </property>
+      <property name="description_en" data-type="string" column-name="description" queryable="true"
+                category-resource="categoryPresentation" display-name-resource="description">
+        <attribute name="propertySortPriority" value="-7"/>
+        <attribute name="locale" value="en"/>
+      </property>
+      <property name="longDescription_en" data-type="big string" column-name="long_description" queryable="true"
+                category-resource="categoryPresentation" display-name-resource="longDescription">
+        <attribute name="propertySortPriority" value="-6"/>
+        <attribute name="locale" value="en"/>
+      </property>
+    </table>
+
+    <table name="dcs_cat_media" type="auxiliary" id-column-name="category_id">
+      <property name="template" xml-combine="remove"/>
+
+      <property name="template_en" item-type="media" column-name="template_id" queryable="true"
+                category-resource="categoryPresentation" display-name-resource="template">
+        <attribute name="propertySortPriority" value="-5"/>
+        <attribute name="locale" value="en"/>
+      </property>
+    </table>
+
+    <table name="dcs_cat_keywrds" type="multi" id-column-name="category_id" multi-column-name="sequence_num">
+      <property name="keywords" xml-combine="remove"/>
+
+      <property name="keywords_en" data-type="list" component-data-type="string" column-name="keyword" 
+								category-resource="categoryPresentation" display-name-resource="keywords">
+	      <attribute name="propertySortPriority" value="-4"/>
+        <attribute name="locale" value="en"/>
+      </property>
+    </table>
+
+    <!-- create german versions in a separate table -->
+    <table name="dbc_category_de" type="auxiliary" id-column-name="category_id">
+      <property name="displayName_de" data-type="string" column-name="display_name" queryable="true" 
+                category-resource="categoryPresentation" display-name-resource="displayName">
+        <attribute name="propertySortPriority" value="-8"/>
+        <attribute name="locale" value="de"/>
+      </property>
+      <property name="description_de" data-type="string" column-name="description" queryable="true" 
+                category-resource="categoryPresentation" display-name-resource="description">
+        <attribute name="propertySortPriority" value="-7"/>
+        <attribute name="locale" value="de"/>
+      </property>
+      <property name="longDescription_de" data-type="big string" column-name="long_description" queryable="true" 
+                category-resource="categoryPresentation" display-name-resource="longDescription">
+        <attribute name="propertySortPriority" value="-6"/>
+        <attribute name="locale" value="de"/>
+      </property>
+      <property name="template_de" item-type="media" column-name="template_id" queryable="true" 
+                category-resource="categoryPresentation" display-name-resource="template">
+        <attribute name="propertySortPriority" value="-5"/>
+        <attribute name="locale" value="de"/>
+      </property>
+    </table>
+
+    <!-- create german keywords -->
+    <table name="dbc_cat_key_de" type="multi" id-column-name="category_id" multi-column-name="sequence_num">
+      <property name="keywords_de" data-type="list" component-data-type="string" column-name="keyword" 
+								category-resource="categoryPresentation" display-name-resource="keywords">
+	      <attribute name="propertySortPriority" value="-4"/>
+        <attribute name="locale" value="de"/>
+      </property>
+    </table>
+
+    <!-- create japanese versions in a separate table -->
+    <table name="dbc_category_ja" type="auxiliary" id-column-name="category_id">
+      <property name="displayName_ja" data-type="string" column-name="display_name" queryable="true" 
+                category-resource="categoryPresentation" display-name-resource="displayName">
+        <attribute name="propertySortPriority" value="-8"/>
+        <attribute name="locale" value="ja"/>
+      </property>
+      <property name="description_ja" data-type="string" column-name="description" queryable="true" 
+                category-resource="categoryPresentation" display-name-resource="description">
+        <attribute name="propertySortPriority" value="-7"/>
+        <attribute name="locale" value="ja"/>
+      </property>
+      <property name="longDescription_ja" data-type="big string" column-name="long_description" queryable="true" 
+                category-resource="categoryPresentation" display-name-resource="longDescription">
+        <attribute name="propertySortPriority" value="-6"/>
+        <attribute name="locale" value="ja"/>
+      </property>
+      <property name="template_ja" item-type="media" column-name="template_id" queryable="true" 
+                category-resource="categoryPresentation" display-name-resource="template">
+        <attribute name="propertySortPriority" value="-5"/>
+        <attribute name="locale" value="ja"/>
+      </property>
+    </table>
+
+    <!-- create japanese keywords -->
+    <table name="dbc_cat_key_ja" type="multi" id-column-name="category_id" multi-column-name="sequence_num">
+      <property name="keywords_ja" data-type="list" component-data-type="string" column-name="keyword" 
+								category-resource="categoryPresentation" display-name-resource="keywords">
+	      <attribute name="propertySortPriority" value="-4"/>
+        <attribute name="locale" value="ja"/>
+      </property>
+    </table>
+    
+    <!-- create derived properties to automatically get the correct string -->
+    <property name="displayName" data-type="string" 
+              category-resource="categoryPresentationDerived" writable="false"
+              display-name-resource="displayName" queryable="true">
+      <derivation method="firstWithLocale">
+        <expression>displayName_en</expression>
+        <expression>displayName_de</expression>
+        <expression>displayName_ja</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+      <attribute name="propertySortPriority" value="-8"/>
+      <attribute name="keyService" value="/atg/userprofiling/LocaleService"/>
+      <attribute name="defaultKey" value="en_US"/>
+    </property>
+    <property name="description" data-type="string" 
+              category-resource="categoryPresentationDerived" writable="false"
+              display-name-resource="description" queryable="true">
+      <derivation method="firstWithLocale">
+        <expression>description_en</expression>
+        <expression>description_de</expression>
+        <expression>description_ja</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+      <attribute name="propertySortPriority" value="-7"/>
+      <attribute name="keyService" value="/atg/userprofiling/LocaleService"/>			
+      <attribute name="defaultKey" value="en_US"/>
+    </property>
+    <property name="longDescription" data-type="big string" 
+              category-resource="categoryPresentationDerived" writable="false"
+              display-name-resource="longDescription" queryable="true">
+      <derivation method="firstWithLocale">
+        <expression>longDescription_en</expression>
+        <expression>longDescription_de</expression>
+        <expression>longDescription_ja</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+      <attribute name="propertySortPriority" value="-6"/>
+      <attribute name="keyService" value="/atg/userprofiling/LocaleService"/>			
+      <attribute name="defaultKey" value="en_US"/>
+    </property>
+    <property name="template" item-type="media" 
+              category-resource="categoryPresentationDerived" writable="false"
+              display-name-resource="template" queryable="true">
+      <derivation method="firstWithLocale">
+        <expression>template_en</expression>
+        <expression>template_de</expression>
+        <expression>template_ja</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+      <attribute name="propertySortPriority" value="-5"/>
+      <attribute name="keyService" value="/atg/userprofiling/LocaleService"/>			
+      <attribute name="defaultKey" value="en_US"/>
+    </property>
+    <property name="keywords" data-type="list" component-data-type="string" 
+              category-resource="categoryPresentationDerived" display-name-resource="keywords" 
+              writable="false" queryable="true">
+      <derivation method="firstWithLocale">
+        <expression>keywords_en</expression>
+        <expression>keywords_de</expression>
+        <expression>keywords_ja</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+      <attribute name="propertySortPriority" value="-4"/>
+      <attribute name="keyService" value="/atg/userprofiling/LocaleService"/>			
+      <attribute name="defaultKey" value="en_US"/>
+    </property>
+  </item-descriptor>
+
+  <!-- ///////////////////////////////////// -->
+  <!--                                       -->
+  <!-- Internationalized product properties -->
+  <!--                                       -->
+  <!--        displayName                    -->
+  <!--        description                    -->
+  <!--        longDescription                -->
+  <!--        template                       -->
+  <!--        keywords                       -->
+  <!--                                       -->
+  <!-- ///////////////////////////////////// -->
+  <item-descriptor name="product">
+
+    <attribute name="categoryPresentationDerivedPriority" value="500"/>
+
+    <table name="dcs_product" type="primary" id-column-name="product_id">
+      <!-- remove the old versions of these properties -->
+      <!-- The "remove" must be in the correct table tag or it will not work -->
+      <property name="displayName" xml-combine="remove"/>
+      <property name="description" xml-combine="remove"/>
+      <property name="longDescription" xml-combine="remove"/>
+      <property name="adminDisplayName" xml-combine="remove"/>
+
+      <!-- store the english versions in the old column -->
+      <property name="displayName_en" data-type="string" column-name="display_name" required="true" queryable="true"
+                category-resource="categoryPresentation" display-name-resource="displayName">
+        <attribute name="propertySortPriority" value="-9"/>
+        <attribute name="locale" value="en"/>
+      </property>
+      <property name="description_en" data-type="string" column-name="description" queryable="true"
+                category-resource="categoryPresentation" display-name-resource="description">
+        <attribute name="propertySortPriority" value="-7"/>
+        <attribute name="locale" value="en"/>
+      </property>
+      <property name="longDescription_en" data-type="big string" column-name="long_description" queryable="true"
+                category-resource="categoryPresentation" display-name-resource="longDescription">
+        <attribute name="propertySortPriority" value="-6"/>
+        <attribute name="locale" value="en"/>
+      </property>
+
+      <property name="adminDisplayName_en" data-type="string" column-name="admin_display" queryable="true"
+          category-resource="categoryPresentation" display-name-resource="adminDisplayName">
+	      <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+	      <attribute name="propertySortPriority" value="-8"/>
+        <attribute name="locale" value="en"/>
+      </property>
+    </table>
+
+    <table name="dcs_prd_media" type="auxiliary" id-column-name="product_id">
+      <property name="template" xml-combine="remove"/>
+
+      <property name="template_en" item-type="media" column-name="template_id" queryable="true"
+                category-resource="categoryPresentation" display-name-resource="template">
+        <attribute name="propertySortPriority" value="-5"/>
+        <attribute name="locale" value="en"/>
+      </property>
+    </table>
+
+    <table name="dcs_prd_keywrds" type="multi" id-column-name="product_id" multi-column-name="sequence_num">
+      <property name="keywords" xml-combine="remove"/>
+
+      <property name="keywords_en" data-type="list" component-data-type="string" column-name="keyword" 
+								category-resource="categoryPresentation" display-name-resource="keywords">
+	      <attribute name="propertySortPriority" value="-4"/>
+        <attribute name="locale" value="en"/>
+      </property>
+    </table>
+
+    <!-- create german versions in a separate table -->
+    <table name="dbc_product_de" type="auxiliary" id-column-name="product_id">
+      <property name="displayName_de" data-type="string" column-name="display_name" queryable="true" 
+                category-resource="categoryPresentation" display-name-resource="displayName">
+        <attribute name="propertySortPriority" value="-9"/>
+        <attribute name="locale" value="de"/>
+      </property>
+      <property name="description_de" data-type="string" column-name="description" queryable="true" 
+                category-resource="categoryPresentation" display-name-resource="description">
+        <attribute name="propertySortPriority" value="-7"/>
+        <attribute name="locale" value="de"/>
+      </property>
+      <property name="longDescription_de" data-type="big string" column-name="long_description" queryable="true" 
+                category-resource="categoryPresentation" display-name-resource="longDescription">
+        <attribute name="propertySortPriority" value="-6"/>
+        <attribute name="locale" value="de"/>
+      </property>
+      <property name="adminDisplayName_de" data-type="string" column-name="admin_display" queryable="true"
+                category-resource="categoryPresentation" display-name-resource="adminDisplayName">
+        <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+        <attribute name="propertySortPriority" value="-8"/>
+        <attribute name="locale" value="de"/>
+      </property>
+
+      <property name="template_de" item-type="media" column-name="template_id" queryable="true" 
+                category-resource="categoryPresentation" display-name-resource="template">
+        <attribute name="propertySortPriority" value="-5"/>
+        <attribute name="locale" value="de"/>
+      </property>
+    </table>
+
+    <!-- create german keywords -->
+    <table name="dbc_prd_key_de" type="multi" id-column-name="product_id" multi-column-name="sequence_num">
+      <property name="keywords_de" data-type="list" component-data-type="string" column-name="keyword" 
+								category-resource="categoryPresentation" display-name-resource="keywords">
+	      <attribute name="propertySortPriority" value="-4"/>
+        <attribute name="locale" value="de"/>
+      </property>
+    </table>
+
+    <!-- create japanese versions in a separate table -->
+    <table name="dbc_product_ja" type="auxiliary" id-column-name="product_id">
+      <property name="displayName_ja" data-type="string" column-name="display_name" queryable="true" 
+                category-resource="categoryPresentation" display-name-resource="displayName">
+        <attribute name="propertySortPriority" value="-9"/>
+        <attribute name="locale" value="ja"/>
+      </property>
+      <property name="description_ja" data-type="string" column-name="description" queryable="true" 
+                category-resource="categoryPresentation" display-name-resource="description">
+        <attribute name="propertySortPriority" value="-7"/>
+        <attribute name="locale" value="ja"/>
+      </property>
+      <property name="longDescription_ja" data-type="big string" column-name="long_description" queryable="true" 
+                category-resource="categoryPresentation" display-name-resource="longDescription">
+        <attribute name="propertySortPriority" value="-6"/>
+        <attribute name="locale" value="ja"/>
+      </property>
+      <property name="adminDisplayName_ja" data-type="string" column-name="admin_display" queryable="true"
+                category-resource="categoryPresentation" display-name-resource="adminDisplayName">
+        <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+        <attribute name="propertySortPriority" value="-8"/>
+        <attribute name="locale" value="ja"/>
+      </property>
+
+      <property name="template_ja" item-type="media" column-name="template_id" queryable="true" 
+                category-resource="categoryPresentation" display-name-resource="template">
+        <attribute name="propertySortPriority" value="-5"/>
+        <attribute name="locale" value="ja"/>
+      </property>
+    </table>
+
+    <!-- create german keywords -->
+    <table name="dbc_prd_key_ja" type="multi" id-column-name="product_id" multi-column-name="sequence_num">
+      <property name="keywords_ja" data-type="list" component-data-type="string" column-name="keyword" 
+								category-resource="categoryPresentation" display-name-resource="keywords">
+	      <attribute name="propertySortPriority" value="-4"/>
+        <attribute name="locale" value="ja"/>
+      </property>
+    </table>
+    
+    <!-- create derived properties to automatically get the correct string -->
+    <property name="displayName" data-type="string" 
+              category-resource="categoryPresentationDerived" writable="false"
+              display-name-resource="displayName" queryable="true">
+      <derivation method="firstWithLocale">
+        <expression>displayName_en</expression>
+        <expression>displayName_de</expression>
+        <expression>displayName_ja</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+      <attribute name="propertySortPriority" value="-9"/>
+      <attribute name="keyService" value="/atg/userprofiling/LocaleService"/>			
+      <attribute name="defaultKey" value="en_US"/>
+    </property>
+
+    <property name="adminDisplayName" data-type="string"
+              category-resource="categoryPresentationDerived" writable="false"
+	      display-name-resource="adminDisplayName" queryable="true">
+      <derivation method="firstWithLocale">
+        <expression>adminDisplayName_en</expression>
+        <expression>adminDisplayName_de</expression>
+        <expression>adminDisplayName_ja</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+      <attribute name="propertySortPriority" value="-8"/>
+      <attribute name="keyService" value="/atg/userprofiling/LocaleService"/>
+      <attribute name="defaultKey" value="en_US"/>
+    </property>
+
+    <property name="description" data-type="string" 
+              category-resource="categoryPresentationDerived" writable="false"
+              display-name-resource="description" queryable="true"> 
+      <derivation method="firstWithLocale">
+        <expression>description_en</expression>
+        <expression>description_de</expression>
+        <expression>description_ja</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+      <attribute name="propertySortPriority" value="-7"/>
+      <attribute name="keyService" value="/atg/userprofiling/LocaleService"/>			
+      <attribute name="defaultKey" value="en_US"/>
+    </property>
+    <property name="longDescription" data-type="big string" 
+              category-resource="categoryPresentationDerived" writable="false"
+              display-name-resource="longDescription" queryable="true">
+      <derivation method="firstWithLocale">
+        <expression>longDescription_en</expression>
+        <expression>longDescription_de</expression>
+        <expression>longDescription_ja</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+      <attribute name="propertySortPriority" value="-6"/>
+      <attribute name="keyService" value="/atg/userprofiling/LocaleService"/>			
+      <attribute name="defaultKey" value="en_US"/>
+    </property>
+    <property name="template" item-type="media" 
+              category-resource="categoryPresentationDerived" writable="false"
+              display-name-resource="template" queryable="true">
+      <derivation method="firstWithLocale">
+        <expression>template_en</expression>
+        <expression>template_de</expression>
+        <expression>template_ja</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+      <attribute name="propertySortPriority" value="-5"/>
+      <attribute name="keyService" value="/atg/userprofiling/LocaleService"/>			
+      <attribute name="defaultKey" value="en_US"/>
+    </property>
+    <property name="keywords" data-type="list" component-data-type="string" 
+              category-resource="categoryPresentationDerived" display-name-resource="keywords" 
+              writable="false" queryable="true">
+      <derivation method="firstWithLocale">
+        <expression>keywords_en</expression>
+        <expression>keywords_de</expression>
+        <expression>keywords_ja</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+      <attribute name="propertySortPriority" value="-4"/>
+      <attribute name="keyService" value="/atg/userprofiling/LocaleService"/>			
+      <attribute name="defaultKey" value="en_US"/>
+    </property>
+  </item-descriptor>
+
+  <!-- ///////////////////////////////////// -->
+  <!--                                       -->
+  <!-- Internationalized sku properties      -->
+  <!--                                       -->
+  <!--        displayName                    -->
+  <!--        description                    -->
+  <!--        template                       -->
+  <!--                                       -->
+  <!-- ///////////////////////////////////// -->
+  <item-descriptor name="sku">
+
+    <attribute name="categoryPresentationDerivedPriority" value="500"/>
+
+    <!-- SKU properties -->
+    <table name="dcs_sku" type="primary" id-column-name="sku_id">
+      <!-- remove the old versions of these properties -->
+      <!-- The "remove" must be in the correct table tag or it will not work -->
+      <property name="displayName" xml-combine="remove"/>
+      <property name="description" xml-combine="remove"/>
+
+      <!-- store the english versions in the old column -->
+      <property name="displayName_en" data-type="string" column-name="display_name" required="true" queryable="true"
+                category-resource="categoryPresentation" display-name-resource="displayName">
+        <attribute name="propertySortPriority" value="-8"/>
+        <attribute name="locale" value="en"/>
+      </property>
+      <property name="description_en" data-type="string" column-name="description" queryable="true"
+                category-resource="categoryPresentation" display-name-resource="description">
+        <attribute name="propertySortPriority" value="-7"/>
+        <attribute name="locale" value="en"/>
+      </property>
+    </table>
+
+    <table name="dcs_sku_media" type="auxiliary" id-column-name="sku_id">
+      <property name="template" xml-combine="remove"/>
+
+      <property name="template_en" item-type="media" column-name="template_id" queryable="true"
+                category-resource="categoryPresentation" display-name-resource="template">
+        <attribute name="propertySortPriority" value="-6"/>
+        <attribute name="locale" value="en"/>
+      </property>
+    </table>
+
+    <!-- create german versions in a separate table -->
+    <table name="dbc_sku_de" type="auxiliary" id-column-name="sku_id">
+      <property name="displayName_de" data-type="string" column-name="display_name" queryable="true" 
+               category-resource="categoryPresentation" display-name-resource="displayName">
+        <attribute name="propertySortPriority" value="-8"/>
+        <attribute name="locale" value="de"/>
+      </property>
+      <property name="description_de" data-type="string" column-name="description" queryable="true" 
+                category-resource="categoryPresentation" display-name-resource="description">
+        <attribute name="propertySortPriority" value="-7"/>
+        <attribute name="locale" value="de"/>
+      </property>
+      <property name="template_de" item-type="media" column-name="template_id" queryable="true" 
+                category-resource="categoryPresentation" display-name-resource="template">
+        <attribute name="propertySortPriority" value="-6"/>
+        <attribute name="locale" value="de"/>
+      </property>
+    </table>
+
+    <!-- create japanese versions in a separate table -->
+    <table name="dbc_sku_ja" type="auxiliary" id-column-name="sku_id">
+      <property name="displayName_ja" data-type="string" column-name="display_name" queryable="true" 
+               category-resource="categoryPresentation" display-name-resource="displayName">
+        <attribute name="propertySortPriority" value="-8"/>
+        <attribute name="locale" value="ja"/>
+      </property>
+      <property name="description_ja" data-type="string" column-name="description" queryable="true" 
+                category-resource="categoryPresentation" display-name-resource="description">
+        <attribute name="propertySortPriority" value="-7"/>
+        <attribute name="locale" value="ja"/>
+      </property>
+      <property name="template_ja" item-type="media" column-name="template_id" queryable="true" 
+                category-resource="categoryPresentation" display-name-resource="template">
+        <attribute name="propertySortPriority" value="-6"/>
+        <attribute name="locale" value="ja"/>
+      </property>
+    </table>
+    
+    <!-- create derived properties to automatically get the correct string -->
+    <property name="displayName" data-type="string" 
+              category-resource="categoryPresentationDerived" writable="false"
+              display-name-resource="displayName" queryable="true">
+      <derivation method="firstWithLocale">
+        <expression>displayName_en</expression>
+        <expression>displayName_de</expression>
+        <expression>displayName_ja</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+      <attribute name="propertySortPriority" value="-8"/>
+      <attribute name="keyService" value="/atg/userprofiling/LocaleService"/>			
+      <attribute name="defaultKey" value="en_US"/>
+    </property>
+
+    <property name="description" data-type="string" 
+              category-resource="categoryPresentationDerived" writable="false"
+              display-name-resource="description" queryable="true">
+      <derivation method="firstWithLocale">
+        <expression>description_en</expression>
+        <expression>description_de</expression>
+        <expression>description_ja</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+      <attribute name="propertySortPriority" value="-7"/>
+      <attribute name="keyService" value="/atg/userprofiling/LocaleService"/>			
+      <attribute name="defaultKey" value="en_US"/>
+    </property>
+    <property name="template" item-type="media" 
+              category-resource="categoryPresentationDerived" writable="false"
+              display-name-resource="template" queryable="true">
+      <derivation method="firstWithLocale">
+        <expression>template_en</expression>
+        <expression>template_de</expression>
+        <expression>template_ja</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+      <attribute name="propertySortPriority" value="-6"/>
+      <attribute name="keyService" value="/atg/userprofiling/LocaleService"/>			
+      <attribute name="defaultKey" value="en_US"/>
+    </property>
+  </item-descriptor>
+
+  <!-- ///////////////////////////////////// -->
+  <!--                                       -->
+  <!-- Internationalized sku-link properties -->
+  <!--                                       -->
+  <!--        displayName                    -->
+  <!--        description                    -->
+  <!--                                       -->
+  <!-- ///////////////////////////////////// -->
+  <item-descriptor name="sku-link">
+
+    <attribute name="categoryPresentationDerivedPriority" value="500"/>
+
+    <table name="dcs_sku_link" type="primary" id-column-name="sku_link_id">
+      <!-- remove the old versions of these properties -->
+      <!-- The "remove" must be in the correct table tag or it will not work -->
+      <property name="displayName" xml-combine="remove"/>
+      <property name="description" xml-combine="remove"/>
+
+      <!-- store the english versions in the old column -->
+      <property name="displayName_en" data-type="string" column-name="display_name" required="true" queryable="true"
+                category-resource="categoryPresentation" display-name-resource="displayName">
+        <attribute name="propertySortPriority" value="-8"/>
+        <attribute name="locale" value="en"/>
+      </property>
+      <property name="description_en" data-type="string" column-name="description" queryable="true"
+                category-resource="categoryPresentation" display-name-resource="description">
+        <attribute name="propertySortPriority" value="-7"/>
+        <attribute name="locale" value="en"/>
+      </property>
+    </table>
+
+    <!-- create german versions in a separate table -->
+    <table name="dbc_sku_link_de" type="auxiliary" id-column-name="sku_link_id">
+      <property name="displayName_de" data-type="string" column-name="display_name" queryable="true" 
+                category-resource="categoryPresentation" display-name-resource="displayName">
+        <attribute name="propertySortPriority" value="-8"/>
+        <attribute name="locale" value="de"/>
+      </property>
+      <property name="description_de" data-type="string" column-name="description" queryable="true" 
+                category-resource="categoryPresentation" display-name-resource="description">
+        <attribute name="propertySortPriority" value="-7"/>
+        <attribute name="locale" value="de"/>
+      </property>
+    </table>
+
+    <!-- create japanese versions in a separate table -->
+    <table name="dbc_sku_link_ja" type="auxiliary" id-column-name="sku_link_id">
+      <property name="displayName_ja" data-type="string" column-name="display_name" queryable="true" 
+                category-resource="categoryPresentation" display-name-resource="displayName">
+        <attribute name="propertySortPriority" value="-8"/>
+        <attribute name="locale" value="ja"/>
+      </property>
+      <property name="description_ja" data-type="string" column-name="description" queryable="true" 
+                category-resource="categoryPresentation" display-name-resource="description">
+        <attribute name="propertySortPriority" value="-7"/>
+        <attribute name="locale" value="ja"/>
+      </property>
+    </table>
+    
+    <!-- create derived properties to automatically get the correct string -->
+    <property name="displayName" data-type="string" 
+              category-resource="categoryPresentationDerived" writable="false"
+              display-name-resource="displayName" queryable="true">
+      <derivation method="firstWithLocale">
+        <expression>displayName_en</expression>
+        <expression>displayName_de</expression>
+        <expression>displayName_ja</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+      <attribute name="propertySortPriority" value="-8"/>
+      <attribute name="keyService" value="/atg/userprofiling/LocaleService"/>			
+      <attribute name="defaultKey" value="en_US"/>
+    </property>
+
+    <property name="description" data-type="string" 
+              category-resource="categoryPresentationDerived" writable="false"
+              display-name-resource="description" queryable="true">
+      <derivation method="firstWithLocale">
+        <expression>description_en</expression>
+        <expression>description_de</expression>
+        <expression>displayName_ja</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+      <attribute name="propertySortPriority" value="-7"/>
+      <attribute name="keyService" value="/atg/userprofiling/LocaleService"/>			
+      <attribute name="defaultKey" value="en_US"/>
+    </property>
+  </item-descriptor>
+
+  <!-- /////////////////////////////////////// -->
+  <!--                                         -->
+  <!-- Internationalized configurableProperty  -->
+  <!--                                         -->
+  <!--        displayName                      -->
+  <!--        description                      -->
+  <!--                                         -->
+  <!-- /////////////////////////////////////// -->
+  <item-descriptor name="configurableProperty">
+
+    <attribute name="categoryPresentationDerivedPriority" value="500"/>
+
+    <table name="dcs_config_prop" type="primary" id-column-name="config_prop_id">
+      <!-- remove the old versions of these properties -->
+      <!-- The "remove" must be in the correct table tag or it will not work -->
+      <property name="displayName" xml-combine="remove"/>
+      <property name="description" xml-combine="remove"/>
+
+      <!-- store the english versions in the old column -->
+      <property name="displayName_en" data-type="string" column-name="display_name" required="true" queryable="true"
+                category-resource="categoryPresentation" display-name-resource="displayName">
+        <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+        <attribute name="propertySortPriority" value="-8"/>
+        <attribute name="locale" value="en"/>
+      </property>
+      <property name="description_en" data-type="string" column-name="description" queryable="true"
+                category-resource="categoryPresentation" display-name-resource="description">
+        <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+        <attribute name="propertySortPriority" value="-7"/>
+        <attribute name="locale" value="en"/>
+      </property>
+    </table>
+
+    <!-- create german versions in a separate table -->
+    <table name="dbc_config_prop_de" type="auxiliary" id-column-name="config_prop_id">
+      <property name="displayName_de" data-type="string" column-name="display_name" queryable="true" 
+                category-resource="categoryPresentation" display-name-resource="displayName">
+        <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+        <attribute name="propertySortPriority" value="-8"/>
+        <attribute name="locale" value="de"/>
+      </property>
+      <property name="description_de" data-type="string" column-name="description" queryable="true" 
+                category-resource="categoryPresentation" display-name-resource="description">
+        <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+        <attribute name="propertySortPriority" value="-7"/>
+        <attribute name="locale" value="de"/>
+      </property>
+    </table>
+
+    <!-- create japanese versions in a separate table -->
+    <table name="dbc_config_prop_ja" type="auxiliary" id-column-name="config_prop_id">
+      <property name="displayName_ja" data-type="string" column-name="display_name" queryable="true" 
+                category-resource="categoryPresentation" display-name-resource="displayName">
+        <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+        <attribute name="propertySortPriority" value="-8"/>
+        <attribute name="locale" value="ja"/>
+      </property>
+      <property name="description_ja" data-type="string" column-name="description" queryable="true" 
+                category-resource="categoryPresentation" display-name-resource="description">
+        <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+        <attribute name="propertySortPriority" value="-7"/>
+        <attribute name="locale" value="ja"/>
+      </property>
+    </table>
+    
+    <!-- create derived properties to automatically get the correct string -->
+    <property name="displayName" data-type="string" 
+              category-resource="categoryPresentationDerived" writable="false"
+              display-name-resource="displayName" queryable="true">
+      <derivation method="firstWithLocale">
+        <expression>displayName_en</expression>
+        <expression>displayName_de</expression>
+        <expression>displayName_ja</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+      <attribute name="propertySortPriority" value="-8"/>
+      <attribute name="keyService" value="/atg/userprofiling/LocaleService"/>			
+      <attribute name="defaultKey" value="en_US"/>
+    </property>
+
+    <property name="description" data-type="string" 
+              category-resource="categoryPresentationDerived" writable="false"
+              display-name-resource="description" queryable="true">
+      <derivation method="firstWithLocale">
+        <expression>description_en</expression>
+        <expression>description_de</expression>
+        <expression>description_ja</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+      <attribute name="propertySortPriority" value="-7"/>
+      <attribute name="keyService" value="/atg/userprofiling/LocaleService"/>			
+      <attribute name="defaultKey" value="en_US"/>
+    </property>
+  </item-descriptor>
+
+  <!-- ///////////////////////////////////// -->
+  <!--                                       -->
+  <!-- Internationalized configurationOption  -->
+  <!--                                       -->
+  <!--        displayName                    -->
+  <!--        description                    -->
+  <!--        price                       -->
+  <!--                                       -->
+  <!-- ///////////////////////////////////// -->
+  <item-descriptor name="configurationOption">
+
+    <attribute name="categoryPresentationDerivedPriority" value="500"/>
+
+    <table name="dcs_config_opt" type="primary" id-column-name="config_opt_id">
+      <!-- remove the old versions of these properties -->
+      <!-- The "remove" must be in the correct table tag or it will not work -->
+      <property name="displayName" xml-combine="remove"/>
+      <property name="description" xml-combine="remove"/>
+      <property name="price" xml-combine="remove"/>
+
+      <!-- store the english versions in the old column -->
+      <property name="displayName_en" data-type="string" column-name="display_name" required="true" queryable="true"
+                category-resource="categoryBasics" display-name-resource="displayName">
+        <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+        <attribute name="propertySortPriority" value="-8"/>
+        <attribute name="locale" value="en"/>
+      </property>
+      <property name="description_en" data-type="string" column-name="description" queryable="true"
+                category-resource="categoryBasics" display-name-resource="description">
+        <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+        <attribute name="propertySortPriority" value="-7"/>
+        <attribute name="locale" value="en"/>
+      </property>
+      <property name="price_en" data-type="double" column-name="price" queryable="true"
+                category-resource="categoryPricing" display-name-resource="price">
+        <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+        <attribute name="propertySortPriority" value="-6"/>
+        <attribute name="locale" value="en_US"/>
+      </property>
+    </table>
+
+    <!-- create german versions in a separate table -->
+    <table name="dbc_config_opt_de" type="auxiliary" id-column-name="config_opt_id">
+      <property name="displayName_de" data-type="string" column-name="display_name" queryable="true" 
+                category-resource="categoryBasics" display-name-resource="displayName">
+        <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+        <attribute name="propertySortPriority" value="-8"/>
+        <attribute name="locale" value="de"/>
+      </property>
+      <property name="description_de" data-type="string" column-name="description" queryable="true" 
+                category-resource="categoryBasics" display-name-resource="description">
+        <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+        <attribute name="propertySortPriority" value="-7"/>
+        <attribute name="locale" value="de"/>
+      </property>
+      <property name="price_de" data-type="double" column-name="price" queryable="true" 
+                category-resource="categoryPricing" display-name-resource="price">
+        <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+        <attribute name="propertySortPriority" value="-6"/>
+        <attribute name="locale" value="de_DE"/>
+      </property>
+    </table>
+
+    <!-- create japanese versions in a separate table -->
+    <table name="dbc_config_opt_ja" type="auxiliary" id-column-name="config_opt_id">
+      <property name="displayName_ja" data-type="string" column-name="display_name" queryable="true" 
+                category-resource="categoryBasics" display-name-resource="displayName">
+        <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+        <attribute name="propertySortPriority" value="-8"/>
+        <attribute name="locale" value="ja"/>
+      </property>
+      <property name="description_ja" data-type="string" column-name="description" queryable="true" 
+                category-resource="categoryBasics" display-name-resource="description">
+        <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+        <attribute name="propertySortPriority" value="-7"/>
+        <attribute name="locale" value="ja"/>
+      </property>
+      <property name="price_ja" data-type="double" column-name="price" queryable="true" 
+                category-resource="categoryPricing" display-name-resource="price">
+        <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+        <attribute name="propertySortPriority" value="-6"/>
+        <attribute name="locale" value="ja_JP"/>
+      </property>
+    </table>
+
+    <!-- create derived properties to automatically get the correct string -->
+    <property name="displayName" data-type="string" 
+              category-resource="categoryPresentationDerived" writable="false"
+              display-name-resource="displayName" queryable="true">
+      <derivation method="firstWithLocale">
+        <expression>displayName_en</expression>
+        <expression>displayName_de</expression>
+        <expression>displayName_ja</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+      <attribute name="propertySortPriority" value="-8"/>
+      <attribute name="keyService" value="/atg/userprofiling/LocaleService"/>			
+      <attribute name="defaultKey" value="en_US"/>
+    </property>
+    <property name="description" data-type="string" 
+              category-resource="categoryPresentationDerived" writable="false"
+              display-name-resource="description" queryable="true">
+      <derivation method="firstWithLocale">
+        <expression>description_en</expression>
+        <expression>description_de</expression>
+        <expression>description_ja</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+      <attribute name="propertySortPriority" value="-7"/>
+      <attribute name="keyService" value="/atg/userprofiling/LocaleService"/>
+      <attribute name="defaultKey" value="en_US"/>
+    </property>
+    <property  name="price" data-type="double" 
+            category-resource="categoryPresentationDerived" writable="false"
+            display-name-resource="price" queryable="true" >
+      <derivation method="firstWithLocale">
+        <expression>price_en</expression>
+        <expression>price_de</expression>
+        <expression>price_ja</expression>
+      </derivation>
+      <attribute name="resourceBundle" value="atg.projects.b2bstore.CustomCatalogTemplateResources"/>
+      <attribute name="propertySortPriority" value="-6"/>
+      <attribute name="keyService" value="/atg/userprofiling/LocaleService"/>
+      <attribute name="defaultKey" value="en_US"/>
+    </property>
+  </item-descriptor>
+
+<!-- END INTERNATIONALIZATION -->
+</gsa-template>
+<!-- @version $Id: //product/B2BCommerce/version/10.0.3/release/MotorpriseJSP/j2ee-apps/motorprise/config/atg/commerce/catalog/custom/customCatalog.xml#2 $$Change: 651448 $ -->

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE gsa-template
+    PUBLIC "-//Art Technology Group, Inc.//DTD Dynamo Security//EN"
+    "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+<gsa-template>
+  <header>
+    <name>TermDictionaryRepository</name>
+    <author>pkouzmit</author>
+    <description>This file defines the dictionary repository</description>
+  </header>
+
+  <!--
+    Item descriptor: Dictionary
+  -->
+  <item-descriptor name="termParentNode" sub-type-property="nodeType" >
+    <table name="srch_dic_tr_pt" type="primary" id-column-name="dic_tr_pt_id">
+      <property name="id" column-name="dic_tr_pt_id" required="true" data-type="string"/>
+      <property name="nodeType" column-name="dic_tr_pt_type" data-type="enumerated">
+        <option value="termDictionary" code="13160"/>
+        <option value="term" code="13161"/>
+      </property>
+    </table>
+    <table name="srch_dic_trm" type="multi" id-column-name="dic_trm_pt_id" multi-column-name="dic_trm_seq">
+      <property name="children" column-name="dic_trm_id" cascade="delete" data-type="list"
+                component-item-type="term" />
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="termDictionary" default="true" super-type="termParentNode"
+      sub-type-value="termDictionary">
+    <table name="srch_dic_dict" id-column-name="dic_dict_id" type="auxiliary">
+      <property name="id" column-name="dic_dict_id" required="true" data-type="string"/>
+      <property name="name" column-name="dic_dict_name" required="true" data-type="string"/>
+      <property name="description" column-name="dic_dict_desc" required="false" data-type="string"/>
+      <property name="language" column-name="dic_dict_language" required="true" data-type="string"/>
+      <property name="loadMode" column-name="dic_dict_load_mode" required="true" data-type="string"/>
+      <property name="adapterName" column-name="dict_adapter_name" required="false" data-type="string"/>
+      <property name="maxTermExpansion" column-name="dic_dict_max_exp" required="false" data-type="int"/>
+      <property name="lastModified" column-name="dic_dict_last_mod" required="true" data-type="date"/>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="term" super-type="termParentNode" sub-type-value="term">
+    <table name="srch_dic_trm" id-column-name="dic_trm_id" type="auxiliary">
+      <property name="id" column-name="dic_trm_id" required="true" data-type="string"/>
+      <property name="parentNode" column-name="dic_trm_pt_id" required="false" item-type="termParentNode"/>
+      <property name="name" column-name="dic_trm_name" required="true" data-type="string"/>
+      <property name="propagate" column-name="dic_trm_propagate" required="true" data-type="boolean"/>
+      <property name="speechPart" column-name="dic_trm_spch_part" required="true" data-type="string"/>
+      <property name="phraseType" column-name="dic_trm_phr_type" required="true" data-type="string"/>
+      <property name="weight" column-name="dic_trm_weight" required="false" data-type="short"/>
+      <property name="seq" column-name="dic_trm_seq" data-type="int"/>
+      <!-- Used for uniqueness checking -->
+      <property name="normalizedName" column-name="dic_trm_norm_name" required="true" data-type="string"/>
+    </table>
+    <table name="srch_dic_syn" type="multi" id-column-name="dic_syn_pt_id">
+      <property name="synonyms" column-name="dic_syn_id" cascade="delete" data-type="set"
+                component-item-type="synonym" />
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="synonym">
+    <table name="srch_dic_syn" id-column-names="dic_syn_id" type="primary">
+      <property name="id" column-name="dic_syn_id" required="true" data-type="string"/>
+      <property name="parentTerm" column-name="dic_syn_pt_id" required="false" item-type="term"/>
+      <property name="name" column-name="dic_syn_name" required="true" data-type="string"/>
+      <property name="relationship" column-name="dic_syn_relation" required="true" data-type="string"/>
+      <property name="speechPart" column-name="dic_syn_spch_part" required="false" data-type="string"/>
+      <property name="phraseType" column-name="dic_syn_phr_type" required="true" data-type="string"/>
+      <property name="language" column-name="dic_syn_language" required="false" data-type="string"/>
+      <property name="weight" column-name="dic_syn_weight" required="false" data-type="short"/>
+      <!-- Used for uniqueness checking -->
+      <property name="normalizedName" column-name="dic_syn_norm_name" required="true" data-type="string"/>
+    </table>
+  </item-descriptor>
+  
+</gsa-template>
+<!-- @version $Id: //application/SearchAdmin/version/10.0.3/customizations/src/config/atg/searchadmin/TermDictionaryRepository.xml#2 $$Change: 651448 $-->

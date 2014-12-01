@@ -1,0 +1,311 @@
+/* <ATGCOPYRIGHT>
+ * Copyright (C) 1998-2011 Art Technology Group, Inc.
+ * All Rights Reserved.  No use, copying or distribution of this
+ * work may be made except in accordance with a valid license
+ * agreement from Art Technology Group.  This notice must be
+ * included on all copies, modifications and derivatives of this
+ * work.
+ *
+ * Art Technology Group (ATG) MAKES NO REPRESENTATIONS OR WARRANTIES
+ * ABOUT THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT. ATG SHALL NOT BE
+ * LIABLE FOR ANY DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING,
+ * MODIFYING OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+ *
+ * "Dynamo" is a trademark of Art Technology Group, Inc. </ATGCOPYRIGHT>
+ */
+package atg.integrations.taxware;
+
+import java.io.IOException;
+
+/** <p>Defines the record def for the individual TaxWare "taxcommon" API
+ * input record.
+ *
+ * <p>This class is used as the record definition for a TaxRequest object.
+ *
+ *
+ * @see RecordDef
+ * @see TaxRequest
+ * @author cmore
+ * @version $Id: //product/DCS/version/10.0.3/Java/atg/integrations/taxware/InputRecordDef.java#2 $$Change: 651448 $
+ * @updated $DateTime: 2011/06/07 13:55:45 $$Author: rbarbier $
+ */
+
+public
+class InputRecordDef extends RecordDef {
+  //-------------------------------------
+  // Class version string
+
+  public static String CLASS_VERSION = "$Id: //product/DCS/version/10.0.3/Java/atg/integrations/taxware/InputRecordDef.java#2 $$Change: 651448 $";
+
+  /** Create an input record def. */
+  InputRecordDef() {
+    super(260);                 // approx
+  }
+
+  /** Initialize the field definitions to the field of the
+  * TaxWare "taxcommon" API. */
+  protected void initializeFieldDefs() {
+    // individual input record layout
+    addFieldDef("SYSTEMIND", 1);
+    addFieldDef("LANGCODE", LANGCODESIZE);
+    addFieldDef("COMPANYID", COMPIDSIZE);
+    addFieldDef("DIVISIONCODE", NEWDIVCODESIZE);
+    addFieldDef("SHIPFROMCOUNTRY", COUNTRYCODESIZE);
+    addFieldDef("SHIPFROMTERRITORY", TERRITORYCODESIZE);
+    addFieldDef("SHIPFROMPROVINCE", PROVINCESIZE);
+    addFieldDef("SHIPFROMCOUNTYNAME", LOCNAMESIZE);
+    addFieldDef("SHIPFROMCOUNTYCODE", CNTYCODESIZE);
+    addFieldDef("SHIPFROMCITY", CITYSIZE);
+    addFieldDef("SHIPFROMPOSTALCODE", POSTALCODESIZE);
+    addFieldDef("SHIPFROMZIPEXT", ZIPEXTSIZE);
+    addFieldDef("SHIPFROMGEO", GEOCODESIZE);
+    addFieldDef("DSTCOUNTRY", COUNTRYCODESIZE);
+    addFieldDef("DSTTERRITORY", TERRITORYCODESIZE);
+    addFieldDef("DSTPROVINCE", PROVINCESIZE);
+    addFieldDef("DSTCOUNTYNAME", LOCNAMESIZE);
+    addFieldDef("DSTCOUNTYCODE", CNTYCODESIZE);
+    addFieldDef("DSTCITY", CITYSIZE);
+    addFieldDef("DSTPOSTALCODE", POSTALCODESIZE);
+    addFieldDef("DSTZIPEXT", ZIPEXTSIZE);
+    addFieldDef("DSTGEO", GEOCODESIZE);
+    addFieldDef("DSTSECPROVINCE", PROVINCESIZE);
+    addFieldDef("DSTSECCNTYCODE", CNTYCODESIZE);
+    addFieldDef("DSTSECCNTYNAME", LOCNAMESIZE);
+    addFieldDef("DSTSECCITYNAME", CITYSIZE);
+    addFieldDef("DSTSECPOSTALCODE", POSTALCODESIZE);
+    addFieldDef("DSTSECZIPEXT", ZIPEXTSIZE);
+    addFieldDef("DSTSECGEO", GEOCODESIZE);
+    addFieldDef("ORGNCOUNTRY", COUNTRYCODESIZE);
+    addFieldDef("ORGNTERRITORY", TERRITORYCODESIZE);
+    addFieldDef("ORGNPROVINCE", PROVINCESIZE);
+    addFieldDef("ORGNCOUNTYNAME", LOCNAMESIZE);
+    addFieldDef("ORGNCOUNTYCODE", CNTYCODESIZE);
+    addFieldDef("ORGNCITY", CITYSIZE);
+    addFieldDef("ORGNPOSTALCODE", POSTALCODESIZE);
+    addFieldDef("ORGNZIPEXT", ZIPEXTSIZE);
+    addFieldDef("ORGNGEO", GEOCODESIZE);
+    addFieldDef("POACOUNTRY", COUNTRYCODESIZE);
+    addFieldDef("POATERRITORY", TERRITORYCODESIZE);
+    addFieldDef("POAPROVINCE", PROVINCESIZE);
+    addFieldDef("POACOUNTYNAME", LOCNAMESIZE);
+    addFieldDef("POACOUNTYCODE", CNTYCODESIZE);
+    addFieldDef("POACITY", CITYSIZE);
+    addFieldDef("POAPOSTALCODE", POSTALCODECODESIZE);
+    addFieldDef("POAZIPEXT", ZIPEXTSIZE);
+    addFieldDef("POAGEO", GEOCODESIZE);
+    addFieldDef("INVOICEDTOCOUNTRY", COUNTRYCODESIZE);
+    addFieldDef("INVOICEDTOTERRITORY", TERRITORYCODESIZE);
+    addFieldDef("INVOICEDTOPROVINCE", PROVINCESIZE);
+    addFieldDef("INVOICEDTOCOUNTYNAME", LOCNAMESIZE);
+    addFieldDef("INVOICEDTOCOUNTYCODE", CNTYCODESIZE);
+    addFieldDef("INVOICEDTOCITY", CITYSIZE);
+    addFieldDef("INVOICEDTOPOSTALCODE", POSTALCODESIZE);
+    addFieldDef("INVOICEDTOZIPEXT", ZIPEXTSIZE);
+    addFieldDef("INVOICEDTOGEO", GEOCODESIZE);
+    addFieldDef("POT", CHARSIZE);
+    addFieldDef("TAXINGLOC", CHARSIZE);
+    addFieldDef("CALCULATIONMODE", CHARSIZE);
+    addFieldDef("TRANSACTIONTYPE", CHARSIZE);
+    addFieldDef("WTAXCODE", CODESIZE);
+    addFieldDef("TAXTYPE", CHARSIZE);
+    addFieldDef("TAXPNT", DATESIZE, FieldDefinition.DATE_FTYPE);
+    addFieldDef("DELIVERYDATE", DATESIZE, FieldDefinition.DATE_FTYPE);
+    addFieldDef("MODEOFTRANSPORT", MODEOFTRANSSIZE);
+    addFieldDef("COMMODCODE", NEWPRODCODESIZE);
+    addFieldDef("CREDITINDICATOR", CHARSIZE, FieldDefinition.BOOL_SPACE_OR_ONE_FTYPE);
+    addFieldDef("COUNTRYREASONCODE", REASONCODESIZE);
+    addFieldDef("PROVINCEREASONCODE", REASONCODESIZE);
+    addFieldDef("COUNTYREASONCODE", REASONCODESIZE);
+    addFieldDef("CITYREASONCODE", REASONCODESIZE);
+    addFieldDef("COUNTRYTAXCERTNO", TAXCERTNOSIZE);
+    addFieldDef("PROVINCETAXCERTNO", TAXCERTNOSIZE);
+    addFieldDef("COUNTYTAXCERTNO", TAXCERTNOSIZE);
+    addFieldDef("CITYTAXCERTNO", TAXCERTNOSIZE);
+    addFieldDef("EXMPTALL", CHARSIZE);
+    addFieldDef("EXMPTCOUNTRY", CHARSIZE);
+    addFieldDef("EXMPTTERRITORY", CHARSIZE);
+    addFieldDef("EXMPTPROVINCE", CHARSIZE);
+    addFieldDef("EXMPTCOUNTY", CHARSIZE);
+    addFieldDef("EXMPTCITY", CHARSIZE);
+    addFieldDef("EXMPTSECPROVINCE", CHARSIZE);
+    addFieldDef("EXMPTSECCOUNTY", CHARSIZE);
+    addFieldDef("EXMPTSECCITY", CHARSIZE);
+    addFieldDef("EXMPTDIST", CHARSIZE);
+    addFieldDef("DOCUMENTNUMBER", DOCNUMBERSIZE);
+    addFieldDef("CURRENCYCODE1", CURRENCYCODESIZE);
+    addFieldDef("CURRENCYCODE2", CURRENCYCODESIZE);
+    addFieldDef("AUDFILEIND", CHARSIZE);
+    addFieldDef("EXEMPTUSEFLAG", CHARSIZE);
+    addFieldDef("CRITFLG", CHARSIZE);
+    addFieldDef("STEPPROCFLG", CHARSIZE);
+    addFieldDef("CUSTOMERNUMBER", CUSTOMERSIZE);
+    addFieldDef("CONTRACTNUMBER", CONTRACTSIZE);
+    addFieldDef("COSTCENTER", COSTCENTERSIZE);
+    addFieldDef("LOCNCODE", LOCATCODESIZE);
+    addFieldDef("UNITOFMEASURE", UNITOFMEASURESIZE);
+    addFieldDef("DESCR", DESCRIPTIONSIZE);
+    addFieldDef("ENDPROC", CHARSIZE);
+    addFieldDef("INVSAMIND", CHARSIZE);
+    addFieldDef("RECOVIND", CHARSIZE);
+    addFieldDef("RESERVED", CHARSIZE);
+    addFieldDef("ACCTREF", ACCTREFSIZE);
+    addFieldDef("ORIGINDOCNUM", DOCNUMBERSIZE);
+    addFieldDef("DOCTYPE", DOCTYPESIZE);
+    addFieldDef("AGNTIND", CHARSIZE);
+    addFieldDef("AGNTID", AGENTIDSIZE);
+    addFieldDef("COUNTRYOFORIGIN", COUNTRYCODESIZE);
+    addFieldDef("REGIONOFORIGIN", REGIONORIGINSIZE);
+    addFieldDef("DELIVERYTERM", DELIVERYTERMSSIZE);
+    addFieldDef("PORTOFLOAD", PORTOFLOADSIZE);
+    addFieldDef("NATOFTRANSCODE", NOTCSIZE);
+    addFieldDef("DISTSALEIND", CHARSIZE);
+    addFieldDef("ZONETAXFREE", CHARSIZE);
+    addFieldDef("ORIGINCURRENCYCODE", CURRENCYCODESIZE);
+    addFieldDef("DSTCURRENCYCODE", CURRENCYCODESIZE);
+    addFieldDef("STATISTPROCEDURE", STATPROCEDURESIZE);
+    addFieldDef("SUPPLUNIT", SUPPLUNITSSIZE);
+    addFieldDef("CORRECTCODE", CHARSIZE);
+    addFieldDef("REVERSECHRGIND", CHARSIZE);
+    addFieldDef("NEWMEANSOFTRNSPRT", CHARSIZE);
+    addFieldDef("BOECD", CODESIZE);
+    addFieldDef("AFFILIATION", CHARSIZE);
+    addFieldDef("CSA", CHARSIZE);
+    addFieldDef("LICIND", CHARSIZE);
+    addFieldDef("DROPSHIPIND", CHARSIZE);
+    addFieldDef("CUSTNAME", CUSTOMERSIZE);
+    addFieldDef("TAXSELPARM", CHARSIZE);
+    addFieldDef("PARTNUM", PARTNUMSIZE);
+    addFieldDef("FISCALDATE", DATESIZE, FieldDefinition.DATE_FTYPE);
+    addFieldDef("MISCINFO", NEWMISCINFOSIZE);
+    addFieldDef("USENEXPROIND", CHARSIZE);
+    addFieldDef("EXTRAIND1", CHARSIZE);
+    addFieldDef("EXTRAIND2", CHARSIZE);
+    addFieldDef("EXTRAIND3", CHARSIZE);
+    addFieldDef("AUDFILETYPE", CHARSIZE);
+    addFieldDef("BILLTOCUSTNAME", CUSTOMERNAMESIZE);
+    addFieldDef("BILLTOCUSTID", CUSTOMERIDSIZE);
+    addFieldDef("SERVIND", CHARSIZE);
+    addFieldDef("ROUNDIND", CHARSIZE);
+    addFieldDef("GENIND", CHARSIZE);
+    addFieldDef("MOVEMENTCODE", CHARSIZE);
+    addFieldDef("STORAGECODE", CHARSIZE);
+    addFieldDef("PRODCODECONV", CHARSIZE);
+    addFieldDef("PRODCODETYPE", CHARSIZE);
+    addFieldDef("COUNTRYSLSUSE", CHARSIZE);
+    addFieldDef("TERRITORYSLSUSE", CHARSIZE);
+    addFieldDef("PROVINCESLSUSE", CHARSIZE);
+    addFieldDef("COUNTYSLSUSE", CHARSIZE);
+    addFieldDef("CITYSLSUSE", CHARSIZE);
+    addFieldDef("SECPROVINCESLSUSE", CHARSIZE);
+    addFieldDef("SECCOUNTYSLSUSE", CHARSIZE);
+    addFieldDef("SECCITYSLSUSE", CHARSIZE);
+    addFieldDef("DISTSLSUSE", CHARSIZE);
+    addFieldDef("NOTAXIND", CHARSIZE);
+    addFieldDef("NOCOUNTRYTAX", CHARSIZE);
+    addFieldDef("NOTERRITORYTAX", CHARSIZE);
+    addFieldDef("NOPROVINCETAX", CHARSIZE);
+    addFieldDef("NOCOUNTYTAX", CHARSIZE);
+    addFieldDef("NOCITYTAX", CHARSIZE);
+    addFieldDef("NOSECCOUNTYTAX", CHARSIZE);
+    addFieldDef("NOSECCITYTAX", CHARSIZE);
+    addFieldDef("NOSECPROVINCETAX", CHARSIZE);
+    addFieldDef("NODISTTAX", CHARSIZE);
+    addFieldDef("INOUTCITYLIMITS", CHARSIZE     );
+    addFieldDef("INOUTCILIMSHTO", CHARSIZE);
+    addFieldDef("INOUTCILIMSHFR", CHARSIZE);
+    addFieldDef("INOUTCILIMPOO", CHARSIZE);
+    addFieldDef("INOUTCILIMPOA", CHARSIZE);
+    addFieldDef("INOUTCILIMBITO", CHARSIZE);
+    addFieldDef("PLACEBUSNSHTO", CHARSIZE);
+    addFieldDef("PLACEBUSNSHFR", CHARSIZE);
+    addFieldDef("PLACEBUSNPOO", CHARSIZE);
+    addFieldDef("PLACEBUSNPOA", CHARSIZE);
+    addFieldDef("SHORTLONAMEIND", CHARSIZE);
+    addFieldDef("SELLERREGNUM", AGENTREGNUMBERSIZE);
+    addFieldDef("BUYERREGNUM", AGENTREGNUMBERSIZE);
+    addFieldDef("REPORTEXCLDIND", CHARSIZE);
+    addFieldDef("WORKORD", WORKORDSIZE);
+    addFieldDef("FACILITYSFCODE", CODESIZE);
+    addFieldDef("FACILITYSTCODE", CODESIZE);
+    addFieldDef("ACCTREFEXT", CHARSIZE);
+    addFieldDef("BILLTOCUSTIDEXT", IDEXTSIZE);
+    addFieldDef("DOCUMENTNUMBEREXT", DOCEXTSIZE);
+    addFieldDef("TERMLOCATIONCODE", LOCATCODESIZE);
+    addFieldDef("LICNOCOUNTRY", LICNOSIZE);
+    addFieldDef("LICNOPROV", LICNOSIZE);
+    addFieldDef("LICNOCOUNTY", LICNOSIZE);
+    addFieldDef("LICNOCITY", LICNOSIZE);
+    addFieldDef("ODOMETERREADING", ODOMETERSIZE);
+    addFieldDef("DATESTART", DATESIZE);
+    addFieldDef("DATEEND", DATESIZE);
+    addFieldDef("AGENTREGNUMPOS", AGENTREGNUMBERSIZE);
+    addFieldDef("RESERVED2", 446);
+    addFieldDef("BASISPERC2", BASISPERCSIZE, FieldDefinition.BASISPERC_FTYPE);
+    addFieldDef("COUNTRY2EXEMPTAMT", SMTXAMTSIZE, FieldDefinition.SMTXAMT_FTYPE);
+    addFieldDef("COUNTRY2REASONCODE", REASONCODESIZE);
+    addFieldDef("EXEMPTCOUNTRY2", CHARSIZE);
+    addFieldDef("OVERRATECOUNTRY2", NEWRATESIZE);
+    addFieldDef("OVERAMTCOUNTRY2", SMTXAMTSIZE, FieldDefinition.SMTXAMT_FTYPE);
+    addFieldDef("RECOVERPCTCOUNTRY2", NEWRATESIZE);
+    addFieldDef("CARRIERNAME1", NAMESIZE);
+    addFieldDef("CARRIERNAME2", NAME2SIZE);
+    addFieldDef("VENDORNAME1", NAMESIZE);
+    addFieldDef("VENDORNAME2", NAME2SIZE);
+    addFieldDef("TRANTIME", TRANTIMESIZE);
+    addFieldDef("GROSSVOLUME", GROSSVOLSIZE);
+    addFieldDef("OVERAMTCOUNTRY", SMTXAMTSIZE, FieldDefinition.SMTXAMT_FTYPE);
+    addFieldDef("OVERAMTTERRITORY", SMTXAMTSIZE, FieldDefinition.SMTXAMT_FTYPE);
+    addFieldDef("OVERAMTPROVINCE", SMTXAMTSIZE, FieldDefinition.SMTXAMT_FTYPE);
+    addFieldDef("OVERAMTCOUNTY", SMTXAMTSIZE, FieldDefinition.SMTXAMT_FTYPE);
+    addFieldDef("OVERAMTCITY", SMTXAMTSIZE, FieldDefinition.SMTXAMT_FTYPE);
+    addFieldDef("OVERAMTDIST", SMTXAMTSIZE, FieldDefinition.SMTXAMT_FTYPE);
+    addFieldDef("OVERAMTSECPROVINCE", SMTXAMTSIZE, FieldDefinition.SMTXAMT_FTYPE);
+    addFieldDef("OVERAMTSECCOUNTY", SMTXAMTSIZE, FieldDefinition.SMTXAMT_FTYPE);
+    addFieldDef("OVERAMTSECCITY", SMTXAMTSIZE, FieldDefinition.SMTXAMT_FTYPE);
+    addFieldDef("OVERRATECOUNTRY", NEWRATESIZE);
+    addFieldDef("OVERRATETERRITORY", NEWRATESIZE);
+    addFieldDef("OVERRATEPROVINCE", NEWRATESIZE);
+    addFieldDef("OVERRATECOUNTY", NEWRATESIZE);
+    addFieldDef("OVERRATECITY", NEWRATESIZE);
+    addFieldDef("OVERRATEDIST", NEWRATESIZE);
+    addFieldDef("OVERRATESECPROVINCE", NEWRATESIZE);
+    addFieldDef("OVERRATESECCOUNTY", NEWRATESIZE);
+    addFieldDef("OVERRATESECCITY", NEWRATESIZE);
+    addFieldDef("NUMITEMS", NEWNITEMSIZE);
+    addFieldDef("INVOICELINENO", INVLINENOSIZE);
+    addFieldDef("LINEITEMAMT", SMTXAMTSIZE, FieldDefinition.SMTXAMT_FTYPE);
+    addFieldDef("TAXAMT", SMTXAMTSIZE, FieldDefinition.SMTXAMT_FTYPE);
+    addFieldDef("DISCOUNTAMT", SMTXAMTSIZE, FieldDefinition.SMTXAMT_FTYPE);
+    addFieldDef("FRGHTAMT", SMTXAMTSIZE, FieldDefinition.SMTXAMT_FTYPE);
+    addFieldDef("INSURANCEAMTLOCAL", SMTXAMTSIZE, FieldDefinition.SMTXAMT_FTYPE);
+    addFieldDef("COUNTRYEXEMPTAMT", SMTXAMTSIZE, FieldDefinition.SMTXAMT_FTYPE);
+    addFieldDef("TERRITORYEXEMPTAMT", SMTXAMTSIZE, FieldDefinition.SMTXAMT_FTYPE);
+    addFieldDef("PROVINCEEXEMPTAMT", SMTXAMTSIZE, FieldDefinition.SMTXAMT_FTYPE);
+    addFieldDef("COUNTYEXEMPTAMT", SMTXAMTSIZE, FieldDefinition.SMTXAMT_FTYPE);
+    addFieldDef("CITYEXEMPTAMT", SMTXAMTSIZE, FieldDefinition.SMTXAMT_FTYPE);
+    addFieldDef("DISTEXEMPTAMT", SMTXAMTSIZE, FieldDefinition.SMTXAMT_FTYPE);
+    addFieldDef("SECPROVINEXEMPTAMT", SMTXAMTSIZE, FieldDefinition.SMTXAMT_FTYPE);
+    addFieldDef("SECCOUNTYEXEMPTAMT", SMTXAMTSIZE, FieldDefinition.SMTXAMT_FTYPE);
+    addFieldDef("SECCITYEXEMPTAMT", SMTXAMTSIZE, FieldDefinition.SMTXAMT_FTYPE);
+    addFieldDef("INSAMTFOREIGN", SMTXAMTSIZE, FieldDefinition.SMTXAMT_FTYPE);
+    addFieldDef("SHIPAMTFOREIGN", SMTXAMTSIZE, FieldDefinition.SMTXAMT_FTYPE);
+    addFieldDef("CONTRACTAMT", SMTXAMTSIZE, FieldDefinition.SMTXAMT_FTYPE);
+    addFieldDef("INSTALLAMT", SMTXAMTSIZE, FieldDefinition.SMTXAMT_FTYPE);
+    addFieldDef("BASISPERC", BASISPERCSIZE, FieldDefinition.BASISPERC_FTYPE);
+    addFieldDef("CURRENCYCONVFACTOR", CURRCONFACTSIZE);
+    addFieldDef("NETMASS", NETMASSSIZE);
+    addFieldDef("SHIPFRCURRCONVFACT", CURRCONFACTSIZE);
+    addFieldDef("DSTCURRCONVFACT", CURRCONFACTSIZE);
+    addFieldDef("RECOVERPCT", NEWRATESIZE, FieldDefinition.SMTXAMT_FTYPE);
+    addFieldDef("EXPONENT", VOLUMEEXPSIZE);
+    addFieldDef("PRECISIONFACTLIC", VOLUMEEXPSIZE);
+    addFieldDef("OVAMTCOUNTRYPF", VOLUMEEXPSIZE);
+    addFieldDef("OVAMTTERRITORYPF", VOLUMEEXPSIZE);
+    addFieldDef("OVAMTPROVINCEPF", VOLUMEEXPSIZE);
+    addFieldDef("OVAMTCOUNTYPF", VOLUMEEXPSIZE);
+    addFieldDef("OVAMTCITYPF", NUMLINEITEMSIZE);
+  }
+  
+}

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE portal-manifest PUBLIC "-//Art Technology Group, Inc.//DTD Portal Manifest//EN" "http://www.atg.com/dtds/portal/framework/portal_manifest_1.0.dtd">
+
+<portal-manifest name="Repository View" version="2.0" author="ATG Portal Team">
+  <gear-definitions>
+    <gear-definition name="Repository View" version="2.0" author="ATG Portal Team">
+      <description>Repository View Gear</description>
+
+      <servlet-context>/gear/repview</servlet-context>
+
+      <dimensions>
+        <dimension name="height">noPreference</dimension>
+        <dimension name="width">noPreference</dimension>
+      </dimensions>
+
+      <gear-modes>
+        <gear-mode name="content">
+          <display-modes>
+            <display-mode name="shared">
+              <device-output name="html">/html/content/RepViewShared.jsp</device-output>
+            </display-mode>
+            <display-mode name="full">
+              <device-output name="html">/html/content/RepViewFull.jsp</device-output>
+            </display-mode>
+          </display-modes>
+        </gear-mode>
+
+        <gear-mode name="userConfig">
+          <display-modes>
+            <display-mode name="full">
+              <device-output name="html">/html/userConfig/UserConfig.jsp</device-output>
+            </display-mode>
+          </display-modes>
+        </gear-mode>
+
+        <gear-mode name="installConfig">
+          <display-modes>
+            <display-mode name="full">
+              <device-output name="html">/html/installConfig/installConfig.jsp</device-output>
+            </display-mode>
+          </display-modes>
+        </gear-mode>
+
+        <gear-mode name="instanceConfig">
+          <display-modes>
+            <display-mode name="full">
+              <device-output name="html">/html/config/instanceConfig.jsp</device-output>
+            </display-mode>
+          </display-modes>
+        </gear-mode>
+
+      </gear-modes>
+
+      <instance-parameters>
+       <parameter name="repositoryPath"/>
+       <parameter name="itemDescriptorName"/>
+       <parameter name="dateStyle">
+         <default-value>
+           medium
+         </default-value>
+       </parameter>
+       <parameter name="timeStyle">
+         <default-value>
+           notShown
+         </default-value>
+       </parameter>
+       <parameter name="resourceBundle">
+         <default-value>
+         atg.portal.gear.repview.RepViewResources
+         </default-value>
+       </parameter>
+       <parameter name="displayColumnHeaders">
+         <default-value>
+           true
+         </default-value>
+       </parameter>
+       <parameter name="displayMainItemLink">
+         <default-value>
+           true
+         </default-value>
+       </parameter>
+       <parameter name="shortListDisplayPropertyNames">
+         <default-value>
+	   ALL
+         </default-value>
+       </parameter>
+       <parameter name="fullListDisplayPropertyNames">
+         <default-value>
+	   ALL
+         </default-value>
+       </parameter>
+       <parameter name="detailDisplayPropertyNames">
+         <default-value>
+	   ALL
+         </default-value>
+       </parameter>
+       <parameter name="featuredItemDisplayPropertyNames">
+         <default-value>
+	   ALL
+         </default-value>
+       </parameter>
+       <parameter name="shortListTargeter"/>
+       <parameter name="featuredItemTargeter"/>
+       <parameter name="fullListTargeter"/>
+
+       <parameter name="displayShortList">
+         <default-value>
+	    true
+         </default-value>
+       </parameter>
+       <parameter name="displayFeaturedItem">
+         <default-value>
+	    true
+         </default-value>
+       </parameter>
+       <parameter name="displayMoreItemsLink">
+         <default-value>
+	    true
+         </default-value>
+       </parameter>
+       <parameter name="customItemDisplayPage"/>      
+       <parameter name="customFeaturedItemDisplayPage"/>      
+       <parameter name="delegateConfig">
+         <default-value>
+	    false
+         </default-value>
+       </parameter>
+      </instance-parameters>
+
+      <user-parameters>
+       <parameter name="shortListSize">
+         <default-value>
+	   3
+         </default-value>
+       </parameter>
+       <parameter name="shortListSortProperty"/>
+       <parameter name="shortListReverseSort">
+         <default-value>
+	   false
+         </default-value>
+       </parameter>
+       <parameter name="fullListSize">
+         <default-value>
+	   15
+         </default-value>
+       </parameter>
+      </user-parameters>
+    </gear-definition>
+
+
+  </gear-definitions>
+
+</portal-manifest>
+<!-- @version $Id: //app/portal/version/10.0.3/repview/gear-manifests/RepViewManifest.xml#2 $$Change: 651448 $ -->

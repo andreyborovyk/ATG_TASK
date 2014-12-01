@@ -1,0 +1,57 @@
+#!/bin/sh
+
+PROGRAM=`basename $0`
+
+# This script is intended to be run from the DCS_HOME/demo/copyData 
+# directory.
+# 
+# To run this from DCS_HOME/demo/copyData, you must make sure that
+# the DYNAMO_HOME environment variable is set to your Dynamo home
+# installation.  You must have DYNAMO_HOME/bin added to your PATH
+# environment variable.  You must have the jdbc classes added to
+# your CLASSPATH environment variable.
+# 
+# Issue the command:
+# copyDBTables CopyDCSDemoData.properties 
+
+usage()
+{
+   echo "USAGE: $PROGRAM [properties_file]"
+}
+
+MAINCLASS=atg.common.util.CopyDBTables
+MKDIR="mkdir -p"
+
+#--------------------------------------
+# Load common vars
+#--------------------------------------
+. ${DYNAMO_HOME}/bin/commonVars.sh
+
+
+#--------------------------------------
+# Load in default environment values
+#--------------------------------------
+. ${DYNAMO_HOME}/bin/dynamoEnv.sh
+
+#--------------------------------------
+# Check to see if usage is in order
+#--------------------------------------
+if [ $# -lt 1 ] ; then
+    echo "Insufficient arguments"
+    usage
+    exit 0
+fi
+if [ "$1" = "-help"  ] ; then
+    usage
+    exit 0
+fi
+
+#--------------------------------------
+# Set the properties file variable
+#--------------------------------------
+PROPERTIESFILE=$1
+
+#--------------------------------------
+# Run it
+#--------------------------------------
+${JAVA_VM} ${JAVA_ARGS} ${MAINCLASS} ${PROPERTIESFILE}

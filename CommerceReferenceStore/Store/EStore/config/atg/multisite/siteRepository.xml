@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE gsa-template
+        PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN"
+        "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template xml-combine="append">
+
+  <header xml-combine="replace">
+    <name>ATG Store Site Repository extension</name>
+    <author>ATG</author>
+    <version>$Id: //hosting-blueprint/B2CBlueprint/version/10.0.3/EStore/config/atg/multisite/siteRepository.xml#2 $$Change: 651448 $</version>
+  </header>
+
+  <item-descriptor name="siteConfiguration" xml-combine="append">
+    <attribute name="categoryEmailPriority" value="540"/>
+    <attribute name="categoryPresentationPriority" value="510"/>
+    <attribute name="categoryAppearancePriority" value="520"/>
+    <attribute name="categoryLocalizationPriority" value="530"/>
+
+    <table name="crs_site_attribute" type="auxiliary" id-column-name="id">
+      
+      <property name="resourceBundle" data-type="string" column-name="resource_bundle" display-name-resource="resourceBundle" category-resource="categoryPresentation">
+        <attribute name="resourceBundle" value="atg.projects.store.multisite.StoreSiteRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      
+      <property name="newProductThresholdDays" data-type="int" column-name="prod_threshold" display-name-resource="newProductThreshold"  category-resource="categoryCommerce">
+        <attribute name="resourceBundle" value="atg.projects.store.multisite.StoreSiteRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="160"/>
+      </property>
+      
+      <property name="defaultPageSize" data-type="int" column-name="page_size" display-name-resource="defaultPageSize" category-resource="categoryPresentation">
+        <attribute name="resourceBundle" value="atg.projects.store.multisite.StoreSiteRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      
+      <property name="cssFile" data-type="string" column-name="css_file" display-name-resource="cssFile" category-resource="categoryAppearance">
+        <attribute name="resourceBundle" value="atg.projects.store.multisite.StoreSiteRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+
+      <property name="largeSiteIcon" data-type="string" column-name="large_site_icon" display-name-resource="largeSiteIcon" category-resource="categoryAppearance">
+        <attribute name="resourceBundle" value="atg.projects.store.multisite.StoreSiteRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+
+      <property name="defaultCountry" data-type="string" column-name="default_country_code" display-name-resource="defaultCountry" category-resource="categoryLocalization">
+        <attribute name="resourceBundle" value="atg.projects.store.multisite.StoreSiteRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      
+      <property name="emailAFriendEnabled" data-type="boolean" column-name="emailafriend" display-name-resource="emailAFriendEnabled" category-resource="categoryEmail">
+        <attribute name="resourceBundle" value="atg.projects.store.multisite.StoreSiteRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      
+      <property name="backInStockFromAddress" data-type="string" column-name="backinstock_addr" display-name-resource="backInStockFromAddress" category-resource="categoryEmail">
+        <attribute name="resourceBundle" value="atg.projects.store.multisite.StoreSiteRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      
+      <property name="newPasswordFromAddress" data-type="string" column-name="newpass_addr" display-name-resource="newPasswordFromAddress" category-resource="categoryEmail">
+        <attribute name="resourceBundle" value="atg.projects.store.multisite.StoreSiteRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      
+      <property name="orderConfirmationFromAddress" data-type="string" column-name="orderconfirm_addr" display-name-resource="orderConfirmationFromAddress" category-resource="categoryEmail">
+        <attribute name="resourceBundle" value="atg.projects.store.multisite.StoreSiteRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+      
+      <property name="orderShippedFromAddress" data-type="string" column-name="ordershipped_addr" display-name-resource="orderShippedFromAddress" category-resource="categoryEmail">
+        <attribute name="resourceBundle" value="atg.projects.store.multisite.StoreSiteRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="100"/>
+      </property>
+      
+      <property name="promotionEmailAddress" data-type="string" column-name="promo_addr" display-name-resource="promotionEmailAddress" category-resource="categoryEmail">
+        <attribute name="resourceBundle" value="atg.projects.store.multisite.StoreSiteRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="120"/>
+      </property>
+      
+    </table>
+    
+    <table name="crs_bill_codes" type="multi" id-column-name="id" multi-column-name="sequence_num">
+      <property name="billableCountries" column-name="country_codes" data-type="list" component-data-type="string" display-name-resource="billableCountries" category-resource="categoryCommerce">
+        <attribute name="resourceBundle" value="atg.projects.store.multisite.StoreSiteRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="120"/>
+      </property>
+    </table>
+    	
+	<table name="crs_non_bill_codes" type="multi" id-column-name="id" multi-column-name="sequence_num">
+      <property name="nonBillableCountries" column-name="country_codes" data-type="list" component-data-type="string" display-name-resource="nonBillableCountries" category-resource="categoryCommerce">
+        <attribute name="resourceBundle" value="atg.projects.store.multisite.StoreSiteRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="130"/>
+      </property>
+    </table>
+
+    <table name="crs_ship_codes" type="multi" id-column-name="id" multi-column-name="sequence_num">
+      <property name="shippableCountries" column-name="country_codes" data-type="list" component-data-type="string" display-name-resource="shippableCountries" category-resource="categoryCommerce">
+        <attribute name="resourceBundle" value="atg.projects.store.multisite.StoreSiteRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="140"/>
+      </property>
+    </table>
+    
+    <table name="crs_non_ship_codes" type="multi" id-column-name="id" multi-column-name="sequence_num">
+      <property name="nonShippableCountries" column-name="country_codes" data-type="list" component-data-type="string" display-name-resource="nonShippableCountries" category-resource="categoryCommerce">
+        <attribute name="resourceBundle" value="atg.projects.store.multisite.StoreSiteRepositoryTemplateResources"/>
+        <attribute name="propertySortPriority" value="150"/>
+      </property>
+    </table>
+    
+  </item-descriptor>
+</gsa-template>
+<!-- @version $Id: //hosting-blueprint/B2CBlueprint/version/10.0.3/EStore/config/atg/multisite/siteRepository.xml#2 $$Change: 651448 $-->

@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>formLeak - Control</title>
+
+	
+</head>
+
+<body>
+
+This is identical to the formLeak version, only with this one we create and then remove div nodes, this will not leak in sIEve.
+
+
+<div id="holder">
+</div>
+<script type="text/javascript" charset="utf-8">
+    for( var x = 0; x <= 10000; x++ ) {
+        var a = document.createElement('div');
+        var b = document.getElementById('holder').appendChild(a);
+        document.getElementById('holder').innerHTML = '';
+    }
+</script>
+
+</body>
+</html>

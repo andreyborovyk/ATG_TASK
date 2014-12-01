@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE pipelinemanager
+	PUBLIC "-//Art Technology Group, Inc.//DTD Dynamo Pipeline Manager//EN"
+	'http://www.atg.com/dtds/pipelinemanager/pipelinemanager_1.0.dtd'>
+
+<pipelinemanager>
+
+  <pipelinechain name="addInvoice" transaction="TX_REQUIRED" headlink="sendDssAddMsg">
+    <pipelinelink name="sendDssAddMsg" transaction="TX_MANDATORY">
+      <processor jndi="/atg/commerce/invoice/pipeline/GenerateScenarioCreateEvent"/>
+    </pipelinelink>
+  </pipelinechain>
+
+  <pipelinechain name="updateInvoice" transaction="TX_REQUIRED" headlink="sendDssUpdateMsg">
+    <pipelinelink name="sendDssUpdateMsg" transaction="TX_MANDATORY">
+      <processor jndi="/atg/commerce/invoice/pipeline/GenerateScenarioUpdateEvent"/>
+    </pipelinelink>
+  </pipelinechain>
+
+  <pipelinechain name="removeInvoice" transaction="TX_REQUIRED" headlink="sendDssRemoveMsg">
+    <pipelinelink name="sendDssRemoveMsg" transaction="TX_MANDATORY">
+      <processor jndi="/atg/commerce/invoice/pipeline/GenerateScenarioRemoveEvent"/>
+    </pipelinelink>
+  </pipelinechain>
+
+  <pipelinechain name="initializeInvoice" transaction="TX_REQUIRED" headlink="copyInvoiceRequestProperties">
+    <pipelinelink name="copyInvoiceRequestProperties" transaction="TX_MANDATORY">
+      <processor jndi="/atg/commerce/invoice/pipeline/CopyInvoiceRequestProperties"/>
+      <transition returnvalue="1" link="computePaymentDueDate"/>
+    </pipelinelink>
+    <pipelinelink name="computePaymentDueDate" transaction="TX_MANDATORY">
+      <processor jndi="/atg/commerce/invoice/pipeline/ComputePaymentDueDate"/>
+    </pipelinelink>
+  </pipelinechain>
+
+</pipelinemanager>
+<!-- @version $Id: //product/B2BCommerce/version/10.0.3/templates/B2BCommerce/config/atg/commerce/invoice/pipeline/invoicePipeline.xml#2 $$Change: 651448 $ -->

@@ -1,0 +1,98 @@
+<!-- Title: FulfillmentEmail -->
+<importbean bean="/atg/dynamo/droplet/Switch">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/IsNull">
+<importbean bean="/atg/commerce/pricing/PriceItem">
+
+<setvalue param="messageSubject" value="Your order has shipped!">
+<java>/*
+<setvalue param="messageFrom" value="DCS5Team@example.com">
+<setvalue param="messageReplyTo" value="DCS5Team@example.com">
+*/</java>
+<setvalue param="mailingName" value="OrderShipped">
+
+<setvalue param="order" value="param:message.order">
+<setvalue param="shippingGroup" value="param:message.shippingGroup">
+<setvalue param="profile" value="param:message.profile">
+
+<p> Dear <valueof param="profile.firstName">Valued Customer</valueof>
+ <valueof param="profile.lastName"></valueof>,
+
+<p>The confirmation number for your order is: 
+<valueof param="order.id">Not defined</valueof>
+
+<p>The following pieces of your order have shipped.
+
+<!-- Shipping information -->
+<table>
+<tr valign=top>
+  <td>
+      <b>These items shipped:</b><br>
+      <droplet bean="ForEach">
+	<param name="array" value="param:shippingGroup.commerceItemRelationships">
+	<param name="elementName" value="itemRel">
+	<oparam name="empty">
+	  There were no items in this shipping group.
+	</oparam>
+	<oparam name="output">
+	  <droplet bean="Switch">
+	    <param name="value" value="param:itemRel.relationshipTypeAsString">
+	    <oparam name="SHIPPINGQUANTITY">
+	      <valueof param="itemRel.quantity">No quantity specified</valueof> of
+	    </oparam> 
+	    <oparam name="SHIPPINGQUANTITYREMAINING">
+	      The rest of 
+	    </oparam> 
+          </droplet>
+	      <valueof param="itemRel.commerceItem.auxiliaryData.catalogRef.displayName">No display name.</valueof>
+	  <br>
+       </oparam>
+     </droplet>
+ </td>
+ <td>    
+     <p><b>Using this information:</b><br>
+     <droplet bean="Switch">
+       <param name="value" value="param:shippingGroup.shippingGroupClassType">
+       <oparam name="hardgoodShippingGroup">
+	 <i>Ship via <valueof param="shippingGroup.shippingMethod">No shipping method</valueof> to:</i><BR>
+	 <valueof param="shippingGroup.shippingAddress.firstName"></valueof> 
+	 <valueof param="shippingGroup.shippingAddress.lastName"></valueof><BR>
+	 <valueof param="shippingGroup.shippingAddress.address1"></valueof> 
+	 <valueof param="shippingGroup.shippingAddress.address2"></valueof><BR>
+	 <valueof param="shippingGroup.shippingAddress.city"></valueof>, 
+	 <valueof param="shippingGroup.shippingAddress.state"></valueof> 
+	 <valueof param="shippingGroup.shippingAddress.postalCode"></valueof><BR>
+       </oparam>
+       <oparam name="electronicShippingGroup">
+	 <i>Ship via email to:</i><BR>
+	 <valueof param="shippingGroup.emailAddress">unknown email address</valueof><BR>
+       </oparam>
+     </droplet>
+ </td>
+</tr>
+<tr></tr>
+</table>
+
+<p>Please verify the following information.
+
+<hr>
+
+<!-- Itemized order -->
+<br>
+<droplet src="DisplayOrderSummary.jhtml">
+  <param name="order" value="param:order">
+  <param name="displayStockStatus" value="false">
+</droplet>
+
+<!-- Shipping information -->
+<droplet src="DisplayShippingInfo.jhtml">
+  <param name="order" value="param:order">
+</droplet>
+
+<!-- Payment information -->
+<droplet src="DisplayPaymentInfo.jhtml">
+  <param name="order" value="param:order">
+</droplet>
+
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/Fulfillment/html/emails/ShippingGroupShipped.jhtml#2 $$Change: 651448 $*/</java>
+

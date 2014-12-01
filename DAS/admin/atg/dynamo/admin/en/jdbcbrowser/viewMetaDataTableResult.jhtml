@@ -1,0 +1,29 @@
+<nucleus type=import>
+	/atg/dynamo/admin/jdbcbrowser/MetaDataRequest
+	/atg/dynamo/admin/jdbcbrowser/MetaDataTableDroplet
+	/atg/dynamo/admin/jdbcbrowser/ResultSetDroplet
+</nucleus>
+
+<html>
+<title>Metadata Listing of
+<valueof property="MetaDataRequest.operation"></valueof></title>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+<IMG SRC="images/jdbc-banner.gif" ALT="JDBC Browser" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+<a href="/">admin</a>/<a href="index.jhtml">JDBC Browser</a>/Metadata
+<h1>Metadata Listing of
+<valueof property="MetaDataRequest.operation"></valueof></h1>
+
+<droplet name="MetaDataTableDroplet">
+<param name="metaDataRequest" value="property:MetaDataRequest.request">
+<param name="resultSetParameterName" value="resultSet">
+<oparam name="display">
+  <droplet name="ResultSetDroplet">
+  </droplet>
+</oparam>
+</droplet>
+
+</body>
+</html>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/jdbcbrowser/viewMetaDataTableResult.jhtml#2 $$Change: 651448 $ */</java>
+

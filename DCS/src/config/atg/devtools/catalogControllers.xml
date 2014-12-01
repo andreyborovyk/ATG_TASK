@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE controllers
+        PUBLIC "-//Art Technology Group, Inc.//DTD Repository Admin
+Controllers//EN"
+        "http://www.atg.com/dtds/ui/dps/admin_controllers_1.0.dtd">
+
+<controllers>
+
+  <initial-selectors>
+    <selector-values>
+      <selector name="catalogChooser" value="properties"/>
+      <selector name="productChooser" value="properties"/>
+      <selector name="categoryChooser" value="properties"/>
+      <selector name="categoryImageChooser" value="small"/>
+      <selector name="productImageChooser" value="small"/>
+    </selector-values>
+  </initial-selectors>
+
+  <repository-controller id="catalogTreeController">
+    <property name="displayComponentKey" value="catalogTree"/>
+  </repository-controller>
+
+  <bean-controller id="catalogPropertiesController" >
+    <property name="displayComponentKey" value="catalogPropertiesTable"/>
+    <property name="controllerSourceId" value="catalogTreeController"/>
+    <property name="itemType" value="catalog"/>
+    <selector-values>
+      <selector name="catalogChooser" value="properties"/>
+    </selector-values>
+  </bean-controller>
+
+  <bean-controller id="catalogUsageController" >
+    <property name="displayComponentKey" value="catalogUsageList"/>
+    <property name="controllerSourceId" value="catalogTreeController"/>
+    <property name="itemType" value="catalog"/>
+    <selector-values>
+      <selector name="catalogChooser" value="usage"/>
+    </selector-values>
+  </bean-controller>
+
+  <bean-controller id="categoryPropertiesController" >
+    <property name="displayComponentKey" value="categoryPropertiesTable"/>
+    <property name="controllerSourceId" value="catalogTreeController"/>
+    <property name="itemType" value="category"/>
+    <selector-values>
+      <selector name="categoryChooser" value="properties"/>
+    </selector-values>
+  </bean-controller>
+
+  <bean-controller id="categoryLargeImagesController" >
+    <property name="displayComponentKey" value="categoryLargeImagesTable"/>
+    <property name="controllerSourceId" value="catalogTreeController"/>
+    <property name="itemType" value="category"/>
+    <property name="sourcePropertyName" value="largeImage"/>
+    <selector-values>
+      <selector name="categoryChooser" value="images"/>
+      <selector name="categoryImageChooser" value="large"/>
+    </selector-values>
+  </bean-controller>
+
+  <bean-controller id="categorySmallImagesController" >
+    <property name="displayComponentKey" value="categorySmallImagesTable"/>
+    <property name="controllerSourceId" value="catalogTreeController"/>
+    <property name="itemType" value="category"/>
+    <property name="sourcePropertyName" value="smallImage"/>
+    <selector-values>
+      <selector name="categoryChooser" value="images"/>
+      <selector name="categoryImageChooser" value="small"/>
+    </selector-values>
+  </bean-controller>
+
+  <bean-controller id="categoryThumbnailImagesController" >
+    <property name="displayComponentKey" value="categoryThumbnailImagesTable"/>
+    <property name="controllerSourceId" value="catalogTreeController"/>
+    <property name="itemType" value="category"/>
+    <property name="sourcePropertyName" value="thumbnailImage"/>
+    <selector-values>
+      <selector name="categoryChooser" value="images"/>
+      <selector name="categoryImageChooser" value="thumbnail"/>
+    </selector-values>
+  </bean-controller>
+
+  <bean-controller id="productPropertiesController" >
+    <property name="displayComponentKey" value="productPropertiesTable"/>
+    <property name="controllerSourceId" value="catalogTreeController"/>
+    <property name="itemType" value="product"/>
+    <selector-values>
+      <selector name="productChooser" value="properties"/>
+    </selector-values>
+  </bean-controller>
+
+  <bean-controller id="productLargeImagesController" >
+    <property name="displayComponentKey" value="productLargeImagesTable"/>
+    <property name="controllerSourceId" value="catalogTreeController"/>
+    <property name="itemType" value="product"/>
+    <property name="sourcePropertyName" value="largeImage"/>
+    <selector-values>
+      <selector name="productChooser" value="images"/>
+      <selector name="productImageChooser" value="large"/>
+    </selector-values>
+  </bean-controller>
+
+  <bean-controller id="productSmallImagesController" >
+    <property name="displayComponentKey" value="productSmallImagesTable"/>
+    <property name="controllerSourceId" value="catalogTreeController"/>
+    <property name="itemType" value="product"/>
+    <property name="sourcePropertyName" value="smallImage"/>
+    <selector-values>
+      <selector name="productChooser" value="images"/>
+      <selector name="productImageChooser" value="small"/>
+    </selector-values>
+  </bean-controller>
+
+  <bean-controller id="productThumbnailImagesController" >
+    <property name="displayComponentKey" value="productThumbnailImagesTable"/>
+    <property name="controllerSourceId" value="catalogTreeController"/>
+    <property name="itemType" value="product"/>
+    <property name="sourcePropertyName" value="thumbnailImage"/>
+    <selector-values>
+      <selector name="productChooser" value="images"/>
+      <selector name="productImageChooser" value="thumbnail"/>
+    </selector-values>
+  </bean-controller>
+
+  <bean-controller id="productCrossController" >
+    <property name="displayComponentKey" value="productCrossTable"/>
+    <property name="controllerSourceId" value="catalogTreeController"/>
+    <property name="itemType" value="product"/>
+    <selector-values>
+      <selector name="productChooser" value="cross"/>
+    </selector-values>
+  </bean-controller>
+
+  <bean-controller id="productInfoPropertiesController" >
+    <property name="displayComponentKey" value="productInfoPropertiesTable"/>
+    <property name="controllerSourceId" value="catalogTreeController"/>
+    <property name="itemType" value="product"/>
+    <selector-values>
+      <selector name="productChooser" value="cross"/>
+    </selector-values>
+  </bean-controller>
+
+  <bean-controller id="crossSellImageController" >
+    <property name="displayComponentKey" value="crossSellImageList"/>
+    <property name="controllerSourceId" value="catalogTreeController"/>
+    <property name="itemType" value="product"/>
+    <property name="sourcePropertyName" value="fixedRelatedProducts"/>
+    <selector-values>
+      <selector name="productChooser" value="cross"/>
+    </selector-values>
+  </bean-controller>
+
+  <bean-controller id="crossSellGroupImageController" >
+    <property name="displayComponentKey" value="crossSellGroupImageList"/>
+    <property name="controllerSourceId" value="catalogTreeController"/>
+    <property name="itemType" value="product"/>
+    <property name="sourcePropertyName" value="dynamicRelatedProducts"/>
+    <selector-values>
+      <selector name="productChooser" value="cross"/>
+    </selector-values>
+  </bean-controller>
+<!--
+  <bean-controller id="crossSellCatalogImageController" >
+    <property name="displayComponentKey" value="crossSellCatalogImageList"/>
+    <property name="controllerSourceId" value="catalogTreeController"/>
+    <property name="itemType" value="product-info"/>
+    <property name="sourcePropertyName" value="catalogsRelatedProducts"/>
+    <selector-values>
+      <selector name="productChooser" value="cross"/>
+    </selector-values>
+  </bean-controller>
+-->
+  <bean-controller id="productSkuMultiController" >
+    <property name="displayComponentKey" value="productSkuMultiTable"/>
+    <property name="controllerSourceId" value="catalogTreeController"/>
+    <property name="itemType" value="product"/>
+    <property name="sourcePropertyName" value="childSKUs"/>
+    <property name="selectable" value="true"/>
+    <selector-values>
+      <selector name="productChooser" value="skus"/>
+    </selector-values>
+  </bean-controller>
+
+  <bean-controller id="productSkuController" >
+    <property name="displayComponentKey" value="productSkuTable"/>
+    <property name="controllerSourceId" value="productSkuMultiController"/>
+    <selector-values>
+      <selector name="productChooser" value="skus"/>
+    </selector-values>
+  </bean-controller>
+
+  <bean-controller id="productUsageController" >
+    <property name="displayComponentKey" value="productUsageList"/>
+    <property name="controllerSourceId" value="catalogTreeController"/>
+    <property name="itemType" value="product"/>
+    <selector-values>
+      <selector name="productChooser" value="usage"/>
+    </selector-values>
+  </bean-controller>
+
+</controllers>
+<!-- @version $Id: //product/DCS/version/10.0.3/templates/DCS/config/atg/devtools/catalogControllers.xml#2 $$Change: 651448 $ -->

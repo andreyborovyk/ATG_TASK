@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This is a generated file -->
+
+<!DOCTYPE schema SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="versioned_commerce_site_ddl" description="Tables for the DCS Custom Catalog site repository">
+<comment>
+This file contains create table statements, which will configure
+your database for use MultiSite
+</comment>
+
+  
+	 <table name="dcs_site" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+
+    <column name="id" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    <column name="catalog_id" nullable="y" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+    <column name="list_pricelist_id" nullable="y" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+    <column name="sale_pricelist_id" nullable="y" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+    
+    
+  
+			<primary-key name="dcs_site_p">
+      <index-column column="id" seq="1" order="asc"/>
+    	 <index-column seq="2" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table>
+</schema>
+<!-- @version $Id: //product/DCS/version/10.0.3/templates/DCS/sql/commerce_site_ddl.xml#2 $$Change: 651448 $-->

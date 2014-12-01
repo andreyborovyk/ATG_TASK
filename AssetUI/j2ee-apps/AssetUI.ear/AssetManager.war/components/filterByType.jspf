@@ -1,0 +1,114 @@
+<%-- 
+ filterByType.jspf
+
+ Display a drop-down menu of types and filter the list by the chosen one. 
+ The selection is set into the sessionInfo
+
+ parameters:
+    filter         the selected filter type
+
+ page variables:
+    sessionInfo    the session info object
+    filterPickList the types to put in the pick list.  A list of objects of type ItemTypeCount
+--%>
+
+
+  <%-- unpack the param(s) --%>
+  <dspel:getvalueof var="filter" param="filter"/>
+
+  <c:if test="${not empty filter}">
+
+    <c:set target="${sessionInfo}"
+           property="currentFilterType"
+           value="${filter}"/>
+
+    <c:if test='${filter eq "all"}'>
+      <c:set target="${sessionInfo}"
+             property="currentFilterType"
+             value="${null}"/>
+    </c:if>
+
+  </c:if>
+
+  <script type="text/javascript" > 
+    //
+    // Switch the type to filter by
+    //
+    function changeFilter() {
+      var selectedFilter = document.getElementById("filterby").value;
+      <c:url var="selectURL" value="${requestScope.managerConfig.page}"/>
+      var theurl = "<c:out value='${selectURL}'/>?filter=" + selectedFilter;
+      document.location = theurl;
+    }
+  </script>
+
+  <fmt:message key="common.filterBy" />
+  <c:choose>
+    <c:when test="${not empty disableTypeFilter}">
+      <select id="filterby" disabled="true">
+        <c:choose>
+          <c:when test="${empty sessionInfo.currentFilterType}">
+            <option value="all" selected><fmt:message key="multiEdit.allFilterTypes"/></option>
+          </c:when>
+          <c:otherwise>
+            <option value="<c:out value='${sessionInfo.currentFilterType}'/>" selected><c:out value="${sessionInfo.currentFilterTypeDisplayName}"/></option>
+          </c:otherwise>
+        </c:choose>      
+      </select>
+    </c:when>
+    <c:otherwise>
+      <select id="filterby" onchange="changeFilter()">
+        <c:choose>
+          <c:when test="${empty sessionInfo.currentFilterType}">
+            <option value="all" selected><fmt:message key="multiEdit.allFilterTypes"/></option>
+          </c:when>
+          <c:otherwise>
+            <option value="all"><fmt:message key="multiEdit.allFilterTypes"/></option>
+          </c:otherwise>
+        </c:choose> 
+
+
+        <dspel:droplet name="/atg/dynamo/droplet/ForEach">
+          <dspel:param name="array" value="${filterPickList}" />
+
+          <dspel:oparam name="output">
+            <dspel:getvalueof id="element" param="element"/>
+            <dspel:getvalueof id="typename" param="element.name"/>
+            <dspel:getvalueof id="displayname" param="element.displayName"/>
+
+            <c:choose>
+              <c:when test="${typename eq sessionInfo.currentFilterType}">
+                <c:set var="currentFilterTypeFound" value="true"/>
+                <option value="<c:out value='${typename}'/>" selected>
+                  <c:out value="${displayname}"/>
+                </option>
+              </c:when>
+              <c:otherwise>
+                <option value="<c:out value='${typename}'/>">
+                  <c:out value="${displayname}"/>
+                </option>
+              </c:otherwise>
+            </c:choose>
+          </dspel:oparam>
+        </dspel:droplet>
+      </select>
+
+
+      <%-- 
+        If we were previously filtered by a type that is not in the list, things get wiggy.
+        So, if we do have a non-null, non-all filter criteria, and we didn't find the currentFilterType in the list 
+        of types, then force an unfilter
+      --%>
+      <c:if test="${empty currentFilterTypeFound and (not empty sessionInfo.currentFilterType and sessionInfo.currentFilterType ne 'all')}">
+        <c:set target="${sessionInfo}" property="currentFilterType" value="${null}"/>
+        <script type="text/javascript" > 
+          document.getElementById("filterby").value = "all";
+        </script>
+      </c:if>
+
+    </c:otherwise>
+  </c:choose>
+
+<br />
+
+<%-- @version $Id: //product/AssetUI/version/10.0.3/src/web-apps/AssetManager/components/filterByType.jspf#2 $$Change: 651448 $--%>

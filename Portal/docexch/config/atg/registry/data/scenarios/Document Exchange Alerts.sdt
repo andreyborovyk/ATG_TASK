@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE scenario
+  SYSTEM
+  "dynamosystemresource:/atg/scenario/definition/sdl.dtd">
+
+<scenario author="admin" creation-time="999469479356" enabled="false" last-modified-by="admin" modification-time="1005954526588">
+  <segment migrate-users="true">
+    <segment-name>Document Created Alert</segment-name>
+    <!--================================-->
+    <!--== Document Created  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.portal.gear.docexch.DocumentCreatedMessage</event-name>
+    </event>
+    <!--================================-->
+    <!--== Send alert (Document Created Alert Recipients)  -->
+    <!--================================-->
+    <action id="2">
+      <action-name>sendAlert</action-name>
+      <action-param construct="sendAlert-to-event-community" name="recipientType">
+        <constant>alert_community</constant>
+      </action-param>
+      <action-param name="recipientID" placeholder-name="Document Created Alert Recipients">
+        <event-property construct="event-property">
+          <property-name>communityId</property-name>
+        </event-property>
+      </action-param>
+    </action>
+  </segment>
+  <segment migrate-users="true">
+    <segment-name>Document Updated Alert</segment-name>
+    <!--================================-->
+    <!--== Document Updated  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.portal.gear.docexch.DocumentUpdatedMessage</event-name>
+    </event>
+    <!--================================-->
+    <!--== Send alert (Document Updated Alert Recipients)  -->
+    <!--================================-->
+    <action id="2">
+      <action-name>sendAlert</action-name>
+      <action-param construct="sendAlert-to-event-community" name="recipientType">
+        <constant>alert_community</constant>
+      </action-param>
+      <action-param name="recipientID" placeholder-name="Document Updated Alert Recipients">
+        <event-property construct="event-property">
+          <property-name>communityId</property-name>
+        </event-property>
+      </action-param>
+    </action>
+  </segment>
+  <segment migrate-users="true">
+    <segment-name>Document Deleted Alert</segment-name>
+    <!--================================-->
+    <!--== Document Deleted  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.portal.gear.docexch.DocumentDeletedMessage</event-name>
+    </event>
+    <!--================================-->
+    <!--== Send alert (Document Deleted Alert Recipients)  -->
+    <!--================================-->
+    <action id="2">
+      <action-name>sendAlert</action-name>
+      <action-param construct="sendAlert-to-event-community" name="recipientType">
+        <constant>alert_community</constant>
+      </action-param>
+      <action-param name="recipientID" placeholder-name="Document Deleted Alert Recipients">
+        <event-property construct="event-property">
+          <property-name>communityId</property-name>
+        </event-property>
+      </action-param>
+    </action>
+  </segment>
+</scenario>

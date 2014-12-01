@@ -1,0 +1,26 @@
+<java>         
+/* -------------------------------------------------------
+ * Display an address 
+ * ------------------------------------------------------- */
+</java>
+<importbean bean="/atg/dynamo/droplet/IsEmpty">
+<importbean bean="/atg/dynamo/droplet/Switch">
+
+<DECLAREPARAM NAME="address" 
+              CLASS="java.lang.Object" 
+              DESCRIPTION="A ContactInfo Repository Item to display">
+
+<valueof param="address.address1"></valueof><br>
+<droplet bean="IsEmpty">
+  <param name="value" value="param:address.address2">
+  <oparam name="false">
+    <valueof param="address.address2"></valueof><br>
+  </oparam>
+</droplet>    
+<valueof param="address.city"></valueof>,
+<valueof param="address.state"></valueof>
+<valueof param="address.postalCode"></valueof>
+<br>
+<valueof param="address.country"></valueof>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/B2CCommerce/html/sample_catalog/display_address.jhtml#2 $$Change: 651448 $*/</java>
+

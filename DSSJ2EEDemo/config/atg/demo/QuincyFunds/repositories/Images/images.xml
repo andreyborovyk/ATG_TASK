@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE gsa-template SYSTEM  "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template>
+  <header>
+    <name>Image SQL Content Repository</name>
+    <author>Felix</author>
+    <version></version>
+  </header>
+
+  <!-- IMAGE DESCRIPTOR -->
+ 
+  <item-descriptor name="image" content="true"
+    display-name-resource="itemDescriptorImage"
+    last-modified-property="lastModified"
+    content-length-property="length"
+    use-id-for-path="true"
+    folder-id-property="parent"
+    content-name-property="name"
+    content-path-property="relativePath"
+    content-property="imageContent">
+
+    <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.ImagesRepository"/>
+
+    <table name="dss_qf_img" type="primary" id-column-name="id">
+      <property name="author" column-name="author" data-type="string" display-name-resource="author" description-resource="authorShortDescription" queryable="true">
+        <attribute name="resourceBundle" value="atg.adapter.html.Descriptors"/>
+        <attribute name="uiwritable" value="false"/>
+      </property>
+      <property name="description" column-name="description" data-type="string" display-name-resource="description" description-resource="descriptionShortDescription" queryable="true">
+        <attribute name="resourceBundle" value="atg.adapter.html.Descriptors"/>
+        <attribute name="uiwritable" value="false"/>
+      </property>
+      <property name="lastModified" data-type="timestamp" column-name="lastModified" display-name-resource="lastModified" description-resource="lastModifiedShortDescription" queryable="true">
+        <attribute name="resourceBundle" value="atg.adapter.html.Descriptors"/>
+        <attribute name="uiwritable" value="false"/>
+      </property>
+      <property name="length" column-name="length" data-type="long" display-name-resource="length" description-resource="lengthShortDescription" queryable="true">
+        <attribute name="resourceBundle" value="atg.adapter.html.Descriptors"/>
+        <attribute name="uiwritable" value="false"/>
+      </property>
+      <property name="name" column-name="name" data-type="string" display-name-resource="name" description-resource="nameShortDescription" required="true" queryable="true">
+        <attribute name="resourceBundle" value="atg.adapter.html.Descriptors"/>
+        <attribute name="uiwritable" value="false"/>
+      </property>
+      <property name="parent" column-name="parentFolder" item-type="image_folder" display-name-resource="parentFolder" description-resource="parentFolderShortDescription">
+        <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.Descriptors"/>
+        <attribute name="uiwritable" value="false"/>
+      </property>
+      <property name="relativePath" column-name="relativePath" data-type="string" display-name-resource="relativePath" description-resource="relativePathShortDescription" queryable="true">
+        <attribute name="resourceBundle" value="atg.adapter.html.Descriptors"/>
+        <attribute name="uiwritable" value="false"/>
+      </property>
+      <property name="title" column-name="title" data-type="string" display-name-resource="title" description-resource="titleShortDescription" queryable="true">
+        <attribute name="resourceBundle" value="atg.adapter.html.Descriptors"/>
+        <attribute name="uiwritable" value="false"/>
+      </property>
+      <property name="alt" column-name="alt" data-type="string" display-name-resource="alt" description-resource="altShortDescription" queryable="true">
+        <attribute name="uiwritable" value="false"/></property>
+      <property name="imageURL" column-name="imageURL" data-type="string" display-name-resource="imageURL" description-resource="imageURLShortDescription" queryable="true">
+        <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.Descriptors"/>
+        <attribute name="uiwritable" value="false"/>
+      </property>
+      <property name="dimensions" column-name="dimensions" data-type="string" display-name-resource="dimensions" description-resource="dimensionsShortDescription" queryable="true">
+        <attribute name="uiwritable" value="false"/></property>
+    </table>
+
+      <property name="imageContent" column-name="file_content" property-type="atg.repository.FilePropertyDescriptor" display-name-resource="content" description-resource="contentShortDescription" queryable="false">
+        <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.Descriptors"/>
+        <attribute name="uiwritable" value="false"/>
+      </property>
+
+    <table name="dss_qf_img_types" type="multi" id-column-name="id" multi-column-name="seq_num">
+      <property name="types" column-name="types" data-type="array" component-data-type="string" display-name-resource="types" description-resource="typeShortDescription">
+        <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.Descriptors"/>
+        <attribute name="uiwritable" value="false"/>
+      </property>
+    </table>
+             
+  </item-descriptor>
+
+  <!-- FOLDER DESCRIPTOR -->
+
+  <item-descriptor name="image_folder"
+    display-name-resource="itemDescriptorImageFolder"
+    folder="true"
+    use-id-for-path="true"
+    content-name-property="name"
+    folder-id-property="parentFolder">
+    
+    <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.ImagesRepository"/>
+
+    <table name="dss_qf_img_fldr" type="primary" id-column-name="id">
+      <property name="parentFolder" column-name="parentFolder" item-type="image_folder" display-name-resource="parentFolder" description-resource="parentFolderShortDescription">
+        <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.Descriptors"/>
+      </property>
+      <property name="name" column-name="name" data-type="string" display-name-resource="folderName" description-resource="folderNameShortDescription">
+        <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.Descriptors"/>
+      </property>
+    </table>
+
+  </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //product/DSS/version/10.0.3/release/DSSJ2EEDemo/config/atg/demo/QuincyFunds/repositories/Images/images.xml#2 $$Change: 651448 $ -->

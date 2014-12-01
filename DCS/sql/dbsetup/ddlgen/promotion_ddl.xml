@@ -1,0 +1,384 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="promotion_ddl">
+<comment><![CDATA[ @version $Id: //product/DCS/version/10.0.3/templates/DCS/sql/promotion_ddl.xml#3 $$Change: 655658 $]]></comment>
+
+<comment><![CDATA[
+Add the DCS_PRM_FOLDER table, promotionFolder
+]]></comment>
+  <table name="dcs_prm_folder">
+    <!-- The ID  -->
+    <column name="folder_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <!-- name -->
+    <column name="name" nullable="n">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+    <column name="parent_folder" nullable="y">
+       <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+    <primary-key name="dcs_prm_folder_p">
+      <index-column column="folder_id" order="asc" seq="1"/>
+    </primary-key>
+    <foreign-key name="dcs_prm_prntfol_f" referenced-table="dcs_prm_folder" index-name="prm_prntfol_idx">
+      <fkey-column referencing-column="parent_folder" referenced-column="folder_id"/>
+    </foreign-key>
+  </table>
+  
+   <table name="dcs_promotion">
+      <column name="promotion_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="creation_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <column name="start_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <column name="end_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <column name="display_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="promotion_type" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="enabled" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="begin_usable" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <column name="end_usable" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <column name="priority" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="global" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="anon_profile" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="allow_multiple" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="uses" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="rel_expiration" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <column name="time_until_expire" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="template" nullable="y" i18n="n">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+         <column name="ui_access_lvl" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="parent_folder" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="last_modified" nullable="y">
+         <column-type db="generic" type="timestamp"/>
+      </column>
+      <column name="pmdl_version" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+	  <column name="qualifier" nullable="y" i18n="n">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      
+      <primary-key name="dcs_promotion_p">
+         <index-column column="promotion_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dcs_prm_fol_f" referenced-table="dcs_prm_folder" index-name="promo_folder_idx">
+         <fkey-column referencing-column="parent_folder" referenced-column="folder_id"/>
+      </foreign-key>
+      <check name="dcs_promotion1_c">
+         <check-expr expression="enabled in (0,1)" db="generic"/>
+      </check>
+      <check name="dcs_promotion2_c">
+         <check-expr expression="global in (0,1)" db="generic"/>
+      </check>
+      <check name="dcs_promotion3_c">
+         <check-expr expression="anon_profile in (0,1)" db="generic"/>
+      </check>
+      <check name="dcs_promotion4_c">
+         <check-expr expression="allow_multiple in (0,1)" db="generic"/>
+      </check>
+      <check name="dcs_promotion5_c">
+         <check-expr expression="rel_expiration in (0,1)" db="generic"/>
+      </check>
+      <index name="prmo_bgin_use_idx" table="dcs_promotion">
+         <index-column column="begin_usable" order="asc" seq="1"/>
+      </index>
+      <index name="prmo_end_dte_idx" table="dcs_promotion">
+         <index-column column="end_date" order="asc" seq="1"/>
+      </index>
+      <index name="prmo_end_use_idx" table="dcs_promotion">
+         <index-column column="end_usable" order="asc" seq="1"/>
+      </index>
+      <index name="prmo_strt_dte_idx" table="dcs_promotion">
+         <index-column column="start_date" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dcs_promo_media">
+      <column name="promotion_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="tag" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="42"/>
+      </column>
+      <column name="media_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcs_promo_media_p">
+         <index-column column="promotion_id" order="asc" seq="1"/>
+         <index-column column="tag" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcs_prommdmed_d_f" referenced-table="dcs_media" index-name="promo_mdia_mid_idx">
+         <fkey-column referencing-column="media_id" referenced-column="media_id"/>
+      </foreign-key>
+      <foreign-key name="dcs_prompromtn_d_f" referenced-table="dcs_promotion">
+         <fkey-column referencing-column="promotion_id" referenced-column="promotion_id"/>
+      </foreign-key>
+      <index name="promo_mdia_pid_idx" table="dcs_promo_media">
+         <index-column column="promotion_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dcs_discount_promo">
+      <column name="promotion_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="calculator" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="adjuster" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="7"/>
+      </column>
+      <column name="pmdl_rule" nullable="n" i18n="y">
+         <column-type db="generic" type="long-varchar"/>
+      </column>
+      <column name="one_use" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+      </column>
+      <primary-key name="dcs_discount_pro_p">
+         <index-column column="promotion_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dcs_discpromtn_d_f" referenced-table="dcs_promotion">
+         <fkey-column referencing-column="promotion_id" referenced-column="promotion_id"/>
+      </foreign-key>
+      <check name="dcs_discount_pro_c">
+         <check-expr expression="one_use in (0, 1)" db="generic"/>
+      </check>
+   </table>
+   <table name="dcs_promo_upsell">
+      <column name="promotion_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="upsell" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="sybase" type="tinyint" />
+         <column-type db="mssql" type="tinyint" />
+         <column-type db="mysql" type="tinyint" />
+      </column>
+      <primary-key name="dcs_promo_upsell_p">
+         <index-column column="promotion_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dcs_proupsell_d_f" referenced-table="dcs_promotion">
+         <fkey-column referencing-column="promotion_id" referenced-column="promotion_id"/>
+      </foreign-key>
+      <check name="dcs_promo_upsell_c">
+         <check-expr expression="upsell in (0, 1)" db="generic"/>
+      </check>
+   </table>
+   <table name="dcs_upsell_action">
+      <column name="action_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="name" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="upsell_prd_grp" nullable="y">
+         <column-type db="generic" type="long-varchar"/>
+      </column>
+      <primary-key name="dcs_upsell_actn_p">
+         <index-column column="action_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dcs_close_qualif">
+      <column name="close_qualif_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="name" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="priority" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="qualifier" nullable="y" i18n="y">
+         <column-type db="generic" type="long-varchar"/>
+      </column>
+      <column name="upsell_media" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="upsell_action" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcs_close_qualif_p">
+         <index-column column="close_qualif_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dcs_cq_media_d_f" referenced-table="dcs_media" index-name="dcs_closequalif2_x">
+         <fkey-column referencing-column="upsell_media" referenced-column="media_id"/>
+      </foreign-key>
+      <foreign-key name="dcs_cq_action_d_f" referenced-table="dcs_upsell_action" index-name="dcs_closequalif1_x">
+         <fkey-column referencing-column="upsell_action" referenced-column="action_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcs_prm_cls_qlf">
+      <column name="promotion_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="closeness_qualif" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <foreign-key name="dcs_promo_cq_d_f" referenced-table="dcs_promotion" index-name="dcs_prm_cls_qlf2_x">
+         <fkey-column referencing-column="promotion_id" referenced-column="promotion_id"/>
+      </foreign-key>
+      <foreign-key name="dcs_prmclsqlf_d_f" referenced-table="dcs_close_qualif" index-name="dcs_prm_cls_qlf1_x">
+         <fkey-column referencing-column="closeness_qualif" referenced-column="close_qualif_id"/>
+      </foreign-key>
+   </table>
+
+   <table name="dcs_prm_sites">
+      <column name="promotion_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="site_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <foreign-key name="dcs_prm_sites1_d_f" referenced-table="dcs_promotion" index-name="dcs_prm_sites1_x">
+         <fkey-column referencing-column="promotion_id" referenced-column="promotion_id"/>
+      </foreign-key>
+      <foreign-key name="dcs_prm_sites2_d_f" referenced-table="site_configuration" index-name="dcs_prm_sites2_x">
+         <fkey-column referencing-column="site_id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+
+   <table name="dcs_prm_site_grps">
+      <column name="promotion_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="site_group_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <foreign-key name="dcs_prm_sgrps1_d_f" referenced-table="dcs_promotion" index-name="dcs_prm_sgrps1_x">
+         <fkey-column referencing-column="promotion_id" referenced-column="promotion_id"/>
+      </foreign-key>
+      <foreign-key name="dcs_prm_sgrps2_d_f" referenced-table="site_group" index-name="dcs_prm_sgrps2_x">
+         <fkey-column referencing-column="site_group_id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+
+   <table name="dcs_prm_tpl_vals">
+      <column name="promotion_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="placeholder" nullable="n" i18n="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="placeholderValue" nullable="y" i18n="n">
+         <column-type db="generic" type="long-varchar"/>
+      </column>
+      <primary-key name="dcs_prm_tpl_vals_p">
+         <index-column column="promotion_id" order="asc" seq="1"/>
+         <index-column column="placeholder" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcs_prmtplvals_d_f" referenced-table="dcs_promotion">
+         <fkey-column referencing-column="promotion_id" referenced-column="promotion_id"/>
+      </foreign-key>
+   </table>
+
+   <table name="dcs_prm_cls_vals">
+      <column name="close_qualif_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="placeholder" nullable="n" i18n="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="placeholderValue" nullable="y" i18n="n">
+         <column-type db="generic" type="long-varchar"/>
+      </column>
+      <primary-key name="dcs_prm_cls_vals_p">
+         <index-column column="close_qualif_id" order="asc" seq="1"/>
+         <index-column column="placeholder" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcs_prmclsvals_d_f" referenced-table="dcs_close_qualif">
+         <fkey-column referencing-column="close_qualif_id" referenced-column="close_qualif_id"/>
+      </foreign-key>
+   </table>
+   
+   
+   
+   <table name="dcs_upsell_prods">
+      <column name="action_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="product_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <primary-key name="dcs_upsell_prods_p">
+         <index-column column="action_id" order="asc" seq="1"/>
+         <index-column column="product_id" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcs_ups_prod_d_f" referenced-table="dcs_product" index-name="dcs_upsellprods1_x">
+         <fkey-column referencing-column="product_id" referenced-column="product_id"/>
+      </foreign-key>
+   </table>
+</schema>
+<!-- @version $Id: //product/DCS/version/10.0.3/templates/DCS/sql/promotion_ddl.xml#3 $$Change: 655658 $ -->

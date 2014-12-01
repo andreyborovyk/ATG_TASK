@@ -1,0 +1,274 @@
+<!DOCTYPE schema  SYSTEM "http://road.atg.com/dtds/ddlgen/schema.dtd">
+<schema name="discussion_ddl">
+<comment><![CDATA[ @version $Id: //app/portal/version/10.0.3/discussion/sql/discussion_ddl.xml#3 $$Change: 655658 $]]></comment>
+   <table name="dtg_board">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="50"/>
+         <column-type db="db2" type="varchar" length="40" scale=""/>
+         <column-type db="mssql" type="varchar" length="40" scale=""/>
+      <column-type db="sybase" type="varchar" length="40"/>
+</column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="owner" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="delete_flag" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="number" length="1" scale="0"/>
+         <column-type db="db2" type="numeric" length="1" scale="0"/>
+         <column-type db="mssql" type="numeric" length="1" scale="0"/>
+      <column-type db="sybase" type="tinyint"/>
+</column>
+      <column name="board_type" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="num_posts" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="last_post_time" nullable="n">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="creation_date" nullable="n">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="version" nullable="n" default="0">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <primary-key name="dtg_boardpk">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+      <check name="dlt_flag_is_bool">
+         <check-expr expression="delete_flag in (0,1)" db="generic"/>
+      </check>
+   </table>
+   <table name="dtg_thread">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="userid" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="subject" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="100"/>
+      </column>
+      <column name="content" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="2000"/>
+         <column-type db="mssql" type="varchar" length="2000" scale=""/>
+      </column>
+      <column name="message_board" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="parent_thread" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="ultimate_thread" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="children_qty" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="topic_resp_flag" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="number" length="1" scale="0"/>
+         <column-type db="db2" type="numeric" length="1" scale="0"/>
+         <column-type db="mssql" type="numeric" length="1" scale="0"/>
+      <column-type db="sybase" type="tinyint"/>
+</column>
+      <column name="delete_flag" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="number" length="1" scale="0"/>
+         <column-type db="db2" type="numeric" length="1" scale="0"/>
+         <column-type db="mssql" type="numeric" length="1" scale="0"/>
+      <column-type db="sybase" type="tinyint"/>
+</column>
+      <column name="creation_date" nullable="n">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="version" nullable="n" default="0">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <primary-key name="dtg_thread_p">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dtg_thread1_f" referenced-table="dtg_board" index-name="dtg_threadboardix">
+         <fkey-column referencing-column="message_board" referenced-column="id"/>
+      </foreign-key>
+      <foreign-key name="dtg_thread2_f" referenced-table="dtg_thread" index-name="dtg_threadparentix">
+         <fkey-column referencing-column="parent_thread" referenced-column="id"/>
+      </foreign-key>
+      <foreign-key name="dtg_thread3_f" referenced-table="dtg_thread" index-name="dtg_threadultix">
+         <fkey-column referencing-column="ultimate_thread" referenced-column="id"/>
+      </foreign-key>
+      <check name="resp_flag_enum">
+         <check-expr expression="topic_resp_flag in (0,1,2)" db="generic"/>
+      </check>
+      <check name="thr_dlt_flag_bool">
+         <check-expr expression="delete_flag in (0,1)" db="generic"/>
+      </check>
+   </table>
+   <table name="dtg_gear_boards">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="gear_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="message_board_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dtg_gearboardspk">
+         <index-column column="gear_id" order="asc" seq="1"/>
+         <index-column column="message_board_id" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dtg_gear_boards1_f" referenced-table="dtg_board" index-name="dtg_gearboardix">
+         <fkey-column referencing-column="message_board_id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="dtg_usr_gear_board">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="gear_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="message_board_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="user_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dtg_usrgearbrdpk">
+         <index-column column="user_id" order="asc" seq="1"/>
+         <index-column column="gear_id" order="asc" seq="2"/>
+         <index-column column="message_board_id" order="asc" seq="3"/>
+      </primary-key>
+      <foreign-key name="dtg_usr_gear_bo1_f" referenced-table="dtg_board" index-name="dtg_usrgrbrdbrdix">
+         <fkey-column referencing-column="message_board_id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <sql>
+      <sql-db db="mssql">
+      
+go
+        
+      </sql-db> 
+      <sql-db db="sybase">
+      
+go
+        
+      </sql-db> 
+   </sql>
+   <view name="dtg_view_search" description="">
+      <view-db db="oracle">
+         <view-params>
+            <view-param name="gear_id"/>
+            <view-param name="id"/>
+            <view-param name="userid"/>
+            <view-param name="subject"/>
+            <view-param name="content"/>
+            <view-param name="message_board"/>
+            <view-param name="parent_thread"/>
+            <view-param name="ultimate_thread"/>
+            <view-param name="children_qty"/>
+            <view-param name="topic_resp_flag"/>
+            <view-param name="delete_flag"/>
+            <view-param name="creation_date"/>
+         </view-params>
+         <view-body><![CDATA[
+   SELECT b.gear_id, t.id, t.userid, t.subject, t.content, t.message_board,
+   t. parent_thread,t. ultimate_thread, t.children_qty, t.topic_resp_flag ,
+   t.delete_flag, t.creation_date
+   FROM
+     dtg_thread t, dtg_gear_boards b WHERE t.message_board = b.message_board_id
+         ]]></view-body>
+      </view-db>
+<view-db db="mssql">
+         <view-params>
+            <view-param name="gear_id"/>
+            <view-param name="id"/>
+            <view-param name="userid"/>
+            <view-param name="subject"/>
+            <view-param name="content"/>
+            <view-param name="message_board"/>
+            <view-param name="parent_thread"/>
+            <view-param name="ultimate_thread"/>
+            <view-param name="children_qty"/>
+            <view-param name="topic_resp_flag"/>
+            <view-param name="delete_flag"/>
+            <view-param name="creation_date"/>
+         </view-params>
+         <view-body><![CDATA[
+  SELECT b.gear_id, t.id, t.userid, t.subject, t.content, t.message_board,
+    t. parent_thread, t. ultimate_thread, t.children_qty, t.topic_resp_flag,
+    t.delete_flag, t.creation_date
+  FROM
+    dtg_thread t, dtg_gear_boards b 
+  WHERE t.message_board = b.message_board_id
+         ]]></view-body>
+      </view-db>
+<view-db db="mysql">
+         <view-params>
+            <view-param name="gear_id"/>
+            <view-param name="id"/>
+            <view-param name="userid"/>
+            <view-param name="subject"/>
+            <view-param name="content"/>
+            <view-param name="message_board"/>
+            <view-param name="parent_thread"/>
+            <view-param name="ultimate_thread"/>
+            <view-param name="children_qty"/>
+            <view-param name="topic_resp_flag"/>
+            <view-param name="delete_flag"/>
+            <view-param name="creation_date"/>
+         </view-params>
+         <view-body><![CDATA[
+  SELECT b.gear_id, t.id, t.userid, t.subject, t.content, t.message_board,
+    t. parent_thread, t. ultimate_thread, t.children_qty, t.topic_resp_flag,
+    t.delete_flag, t.creation_date
+  FROM
+    dtg_thread t, dtg_gear_boards b 
+  WHERE t.message_board = b.message_board_id
+         ]]></view-body>
+      </view-db>
+<view-db db="db2">
+         <view-body><![CDATA[
+   SELECT b.gear_id, t.id, t.userid, t.subject, t.content, t.message_board, t. parent_thread,t. ultimate_thread, t.children_qty, t.topic_resp_flag ,t.delete_flag, t.creation_date
+   FROM
+     dtg_thread t, dtg_gear_boards b WHERE t.message_board = b.message_board_id
+         ]]></view-body>
+      </view-db>
+<view-db db="sybase">
+         <view-params>
+            <view-param name="gear_id"/>
+            <view-param name="id"/>
+            <view-param name="userid"/>
+            <view-param name="subject"/>
+            <view-param name="content"/>
+            <view-param name="message_board"/>
+            <view-param name="parent_thread"/>
+            <view-param name="ultimate_thread"/>
+            <view-param name="children_qty"/>
+            <view-param name="topic_resp_flag"/>
+            <view-param name="delete_flag"/>
+            <view-param name="creation_date"/>
+         </view-params>
+         <view-body><![CDATA[
+  SELECT b.gear_id, t.id, t.userid, t.subject, t.content, t.message_board,
+    t. parent_thread, t. ultimate_thread, t.children_qty, t.topic_resp_flag,
+    t.delete_flag, t.creation_date
+  FROM
+    dtg_thread t, dtg_gear_boards b 
+  WHERE t.message_board = b.message_board_id
+         ]]></view-body>
+      </view-db>
+   </view>
+</schema>
+<!-- @version $Id: //app/portal/version/10.0.3/discussion/sql/discussion_ddl.xml#3 $$Change: 655658 $ -->

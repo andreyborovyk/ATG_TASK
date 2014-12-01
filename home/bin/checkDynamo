@@ -1,0 +1,193 @@
+#!/bin/sh
+
+#################################################################
+# Parameters
+#
+# The timeout in milliseconds of the socket attempting to connect
+# to the URL
+#
+TIMEOUT=10000
+
+#
+# The number of seconds between retrying the URL 
+#
+RETRYINTERVAL=30
+
+#
+#################################################################
+
+PROGRAM=`basename $0`
+
+usage()
+{
+    echo "USAGE: $PROGRAM [server-name] [-url url] {-email} {-restart [-password password] [-user user]}"
+    echo "     [-url url]    URL to check if server is still running (required)"
+    echo "     -email        Send email notification if URL check fails"
+    echo "     -restart      Restart the server if URL check fails"
+    echo "     [-user user]  Name of administrator"
+    echo "     [-password password]  Administrator password"
+    echo "     -verbose      Output additional information during this command\n"
+}
+
+#
+# Check that DYNAMO_HOME and DAS_ROOT are set
+#
+PROGRAM_DIR=`dirname $0`
+. $PROGRAM_DIR/checkDynamoHome.sh
+
+######################################################################
+#
+# Parse command line arguments
+#
+if [ $# -eq 0 ] ; then
+    echo "Insufficient arguments"
+    usage
+    exit 1
+fi
+
+case $1 in
+      -*) SERVER="default-server";;
+       *) SERVER=$1
+	  shift;;
+esac
+
+RESTART=0
+VERBOSE=0
+while [ "x$1" != "x" ]
+do
+case $1 in
+     -url) if [ $2 ] ; then
+		    URL=$2
+		    shift
+		fi;;
+     -email) EMAIL=1;;
+     -restart) RESTART=1;;
+     -password) if [ $2 ] ; then
+		    PASSWORD=$2
+		    shift
+		fi;;
+     -user) if [ $2 ] ; then
+		    USER=$2
+		    shift
+		fi;;
+     -verbose) VERBOSE=1;;		
+     -help) usage; exit 0;;
+     -*)  echo "Unknown option: $1"; usage; exit 1;; 
+     *) echo "Unknown argument: $1"; usage; exit 1;; 
+    esac
+shift
+done
+
+#
+# Check that -url was specified
+#
+if [ $URL ] ; then
+
+#
+# If -restart is specified then -user and -password must also be
+# provided
+#
+AUTHORIZED=0
+if [ $PASSWORD ] && [ $USER ] ; then
+	  AUTHORIZED=1
+fi
+
+if [ $RESTART -eq 1 ] && [ $AUTHORIZED -eq 0 ] ; then
+	echo "User and password must both be provided, if restart is specified"
+	exit 1;
+fi
+
+else 
+     echo "-url option is required"
+     usage
+     exit 1
+fi
+
+#
+#######################################################################
+
+#
+# Load in default environment values
+#
+. bin/dynamoEnv.sh
+. bin/commonVars.sh
+
+COMMANDLINE="checkDynamo $SERVER -url $URL -timeout $TIMEOUT "    
+COMMAND="${JAVA_VM} atg.service.dynamo.CommandController $COMMANDLINE"
+
+#######################################################################
+# 
+#
+check()
+{
+    if [ $VERBOSE -eq 0 ] ; then
+	$COMMAND > /dev/null 2>&1
+    else $COMMAND
+    fi
+
+    RESULT=$?
+    
+    case $RESULT in
+        0)   echo "$DATE: Dynamo $SERVER up and running"
+             exit 0
+             ;;
+        1)   echo "ERROR: in launching: $COMMAND" 
+             exit 1;;
+        *)   failure_msg="$ATTEMPT: $DATE: Dynamo failed URL check: 
+                          $SERVER -- Result: $RESULT -- "
+                case $RESULT in
+                   2)   failure_msg="$failure_msg Unsuccessful HTTP request"
+                        ;;
+                   3)   failure_msg="$failure_msg Unknown Host"
+                        ;;
+                   4)   failure_msg="$failure_msg IOException 
+                                     (Connection Refused?)"
+                        ;;
+                   *)   failure_msg="$failure_msg Unexpected result code"
+                        ;;
+                 esac
+             echo $failure_msg
+
+             # Email notification that the URL check failed
+             if test $EMAIL  && test "x$EMAILDEST" != $EMAILDEST ; then
+                echo $failure_msg | $MAILER -s "Dynamo $SERVER error" $EMAILDEST
+	     fi
+             ;;
+      esac
+	    
+}
+
+#
+#######################################################################
+
+
+ATTEMPT="ATTEMPT 1"
+check
+echo "$ATTEMPT: $DATE: retrying in $RETRYINTERVAL seconds"
+sleep $RETRYINTERVAL
+
+ATTEMPT="ATTEMPT 2"
+check
+echo "$ATTEMPT: $DATE: retrying in $RETRYINTERVAL seconds"
+sleep $RETRYINTERVAL
+
+ATTEMPT="DYNAMO HARD DOWN"
+check
+echo "$ATTEMPT: $DATE: Dynamo failed URL check: $SERVER"
+
+if [ $RESTART -eq 1 ] ; then		
+   if test $EMAIL && test "x$EMAILDEST" != $EMAILDEST ; then
+     echo "$ATTEMPT: $DATE: Restarting Dynamo: $SERVER" | $MAILER -s "Dynamo $SERVER restart" $EMAILDEST
+   fi 
+
+   if [ "x$SERVER" = "xdefault-server" ] ; then
+       COMMAND="bin/stopDynamo -restart -password $PASSWORD -user $USER" 
+   else COMMAND="bin/stopDynamo $SERVER -restart -password $PASSWORD -user $USER" 
+   fi
+	
+   $COMMAND < /dev/null
+
+   exit $?
+   fi
+
+exit 1

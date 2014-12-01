@@ -1,0 +1,185 @@
+<%-- Should only be included from createstage.jhtml. --%>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+    <title>Create Web Service: Create EAR File</title>
+  </head>
+<nucleus type=import>
+        /atg/dynamo/droplet/ForEach
+	/atg/dynamo/admin/GetMethod
+	/atg/dynamo/admin/CreateWebService
+        /atg/dynamo/droplet/Switch
+</nucleus>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+<IMG SRC="../images/admin-banner.gif" ALT="Dynamo Administration"
+     ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<droplet name="GetMethod">
+  <param name="object" value="bean:CreateWebService.resolvedComponent">
+  <param name="methodName" value="bean:CreateWebService.methodName">
+  <oparam name="error">
+     <JAVA> request.addQueryParameter("context",
+	      request.getParameter("cmpnName")); 
+            response.sendRedirect(request.encodeURL("selecttype.jhtml"));
+     </JAVA>
+  </oparam>
+  <oparam name="output">
+  <setvalue bean="CreateWebService.method" value="param:method"/>
+
+
+<a href="/">admin</a> / <a href="index.jhtml">Web Service
+	Administration</a> / Create Web Service</p><p>
+
+    <h2>Create Web Service</h2>
+    <h1>Create EAR File</h1>
+
+<blockquote>
+
+<!--
+<setvalue bean="CreateWebService.method" value="param:method"/>
+<setvalue bean="CreateWebService.parameterNamesAsString" 
+          value="param:paramNamesString"/>
+-->
+
+<B>Current Selections</B><BR>
+<TABLE border=0>
+<TR><TD>&nbsp;&nbsp;&nbsp;</TD><TD>
+  <droplet name="Switch">
+   <param name="value" value="bean:CreateWebService.JMSType">
+   <oparam name="default">
+     JMS Type: <valueof bean="CreateWebService.JMSType">???</valueof>
+   </oparam>
+   <oparam name="unset">
+     Nucleus Component: <valueof bean="CreateWebService.componentName">???</valueof><BR>
+    Method: <valueof bean="CreateWebService.methodName">???</valueof><BR>
+    Parameter Names: <valueof bean="CreateWebService.parameterNamesAsString">(none)</valueof>
+   <BR>
+   </oparam>
+  </droplet>
+  EAR File: <valueof bean="CreateWebService.EARFileAbsolutePath">???</valueof><BR>
+  Servlet Name: <valueof bean="CreateWebService.servletName">???</valueof><BR>  
+  Host: <valueof bean="CreateWebService.host">(dynamic)</valueof><BR>
+  Port: <valueof bean="CreateWebService.port">(dynamic)</valueof><BR>
+  <droplet name="Switch">
+    <param name="value" value="bean:CreateWebService.EARFileExists">
+    <oparam name="false">
+     Application Name: <valueof bean="CreateWebService.applicationName">???</valueof><BR>
+    </oparam>
+  </droplet>
+  Web Module URI: <valueof bean="CreateWebService.effectiveWebURI">???</valueof><BR>
+  <droplet name="Switch">
+    <param name="value" value="bean:CreateWebService.existingWebURI">
+    <oparam name="*new*">
+     Context Root: <valueof bean="CreateWebService.contextRoot">???</valueof><BR>
+    </oparam>
+  </droplet>
+  Session: <valueof bean="CreateWebService.sessionEnabled">???</valueof><BR>
+  Security: <valueof bean="CreateWebService.securityEnabled">???</valueof><BR>
+  <droplet name="Switch">
+   <param name="value" value="bean:CreateWebService.securityEnabled">
+   <oparam name="false"></oparam>
+   <oparam name="true">
+     <%-- Need to add some setvalues here, maybe. --%>
+     Security Functional Name: <valueof bean="CreateWebService.functionalName">???</valueof><BR>
+   </oparam>
+ </droplet>
+
+</TD></TR>
+</TABLE>
+
+<P>
+<B>Create EAR File</B><BR>
+To create the EAR containing your Web Service, verify that the
+above values are correct, then click Create EAR File.
+
+<P>
+
+<droplet name="ForEach">
+  <param name="array" value="bean:CreateWebService.formExceptions">
+  <oparam name="output">
+    <font color="red"><valueof param="element">???</valueof></font><P>
+  </oparam>
+</droplet>
+
+
+
+<form action="finalconfirm.jhtml" method="POST">
+ <input type="hidden" bean="CreateWebService.componentName"
+	value="bean:CreateWebService.componentName" priority="1"/>
+ <input type="hidden" bean="CreateWebService.methodName"
+	value="bean:CreateWebService.methodName" priority="1"/>
+ <input type="hidden" 
+  name="paramNamesString"
+  value="bean:CreateWebService.parameterNamesAsString">
+ <input type="hidden" 
+  value="bean:CreateWebService.parameterNamesAsString"
+  bean="CreateWebService.parameterNamesAsString">
+ <input type="hidden" 
+  value="bean:CreateWebService.EARFileName"
+  bean="CreateWebService.EARFileName">
+ <input type="hidden" 
+  value="bean:CreateWebService.contextRoot"
+  bean="CreateWebService.contextRoot">
+ <input type="hidden" 
+  value="bean:CreateWebService.host"
+  bean="CreateWebService.host">
+ <input type="hidden" 
+  value="bean:CreateWebService.port"
+  bean="CreateWebService.port">
+ <input type="hidden" 
+  value="bean:CreateWebService.sessionAndSecurity"
+  bean="CreateWebService.sessionAndSecurity">
+<droplet name="Switch">
+  <param name="value" value="bean:CreateWebService.securityEnabled">
+  <param name="unset" value="">
+  <oparam name="default">
+    <input type="hidden" 
+     value="bean:CreateWebService.functionalName"
+     bean="CreateWebService.functionalName">
+  </oparam>
+</droplet>
+
+
+
+ <input type="hidden" name="cmpnName" value="bean:CreateWebService.componentName"/>
+ <input type="hidden" name="methodName" value="bean:CreateWebService.methodName"/>
+ <input type="hidden" bean="CreateWebService.successURL" value="success.jhtml">
+ <input type="hidden" bean="CreateWebService.failureURL" value="finalconfirm.jhtml">
+
+<table border=0>
+
+ <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+ <tr><td><droplet name="Switch">
+		  <param name="value" value="bean:CreateWebService.securityEnabled">
+                  <param name="funcName" value="bean:CreateWebService.functionalName">
+		  <oparam name="false"><input type="submit" value="Previous" submitValue="sessionsec.jhtml" bean="CreateWebService.back"></oparam>
+		  <oparam name="true"><JAVA>
+                    //System.out.println("finalconfirm.jhtml: funcName = "
+                    //                   + request.getParameter("funcName"));
+                    request.addQueryParameter("choose", "true");
+                    request.addQueryParameter("funcName",
+                          request.getParameter("funcName"));
+                    if ("true".equals(request.getParameter("fromEditSec"))) {
+                      request.setParameter("url", request.encodeURL(
+                          "edit-sec-item.jhtml"));
+                    }
+                    else {
+                      request.setParameter("url", request.encodeURL(
+                          "browsesecurity.jhtml"));
+                    }
+                    //System.out.println("finalconfirm.jhtml: url = " + request.getParameter("url"));
+                  </JAVA><input type="submit" value="Previous" submitValue="param:url" bean="CreateWebService.back"></oparam>
+       </droplet></td><td align="right"><input type="submit" value="Create EAR File" bean="CreateWebService.create"></td></tr>
+</table> 
+</form>
+
+</blockquote>
+
+  </oparam>
+</droplet>
+
+  </BODY>
+</html>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/webservice/finalconfirm.jhtml#2 $$Change: 651448 $*/</java>

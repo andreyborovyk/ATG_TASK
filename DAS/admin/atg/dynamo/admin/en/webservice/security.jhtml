@@ -1,0 +1,142 @@
+<!-- security.jhtml -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+    <title>Web Service Wizard: Security Configuration</title>
+  </head>
+<nucleus type=import>
+        /atg/dynamo/droplet/ForEach
+	/atg/dynamo/admin/GetMethod
+	/atg/dynamo/admin/CreateWebService
+        /atg/dynamo/droplet/Switch
+</nucleus>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+<IMG SRC="../images/admin-banner.gif" ALT="Dynamo Administration"
+     ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<droplet name="GetMethod">
+  <param name="object" value="bean:CreateWebService.resolvedComponent">
+  <param name="methodName" value="bean:CreateWebService.methodName">
+  <oparam name="error">
+     <JAVA> request.addQueryParameter("context",
+	      request.getParameter("cmpnName")); 
+            response.sendRedirect(request.encodeURL("selecttype.jhtml"));     </JAVA>
+  </oparam>
+  <oparam name="output">
+
+
+<a href="/">admin</a> / <a href="index.jhtml">Web Service
+	Administration</a> / <a href="selecttype.jhtml">Web Service
+	Wizard</a> / <a href="selectmethod.jhtml"><param name="cmpnName" value="bean:CreateWebService.componentName">Select A Method</a></p><p>
+
+    <h1>Web Service Wizard: Security Configuration </h1>
+
+<blockquote>
+
+
+<B>Nucleus Component Selected: </B><valueof bean="CreateWebService.componentName">???</valueof><BR>
+<B>Method Selected: </B><valueof bean="CreateWebService.methodName">???</valueof><BR>
+<B>Parameter Names: </B><valueof bean="CreateWebService.parameterNamesAsString">(none)</valueof><BR>
+<B>EAR File: </B><valueof bean="CreateWebService.EARFileName">???</valueof><BR>
+<B>Context Root: </B><valueof bean="CreateWebService.contextRoot">???</valueof><BR>
+<B>Host: </B><valueof bean="CreateWebService.host">(dynamic)</valueof><BR>
+<B>Port: </B><valueof bean="CreateWebService.port">(dynamic)</valueof><P>&nbsp;<P>
+
+To accept the default values, just click on "Next".<P>
+
+To override the default argument values, edit them below and then click on "Next" :
+
+<P>&nbsp;<P>
+
+
+<form action="createstage.jhtml" method="POST">
+ <input type="hidden" bean="CreateWebService.componentName"
+	value="bean:CreateWebService.componentName" priority="1"/>
+ <input type="hidden" bean="CreateWebService.methodName"
+	value="bean:CreateWebService.methodName" priority="1"/>
+ <input type="hidden" 
+  name="paramNamesString"
+  value="bean:CreateWebService.parameterNamesAsString">
+ <input type="hidden" 
+  value="bean:CreateWebService.parameterNamesAsString"
+  bean="CreateWebService.parameterNamesAsString">
+ <input type="hidden" 
+  value="bean:CreateWebService.EARFileName"
+  bean="CreateWebService.EARFileName">
+ <input type="hidden" 
+  value="bean:CreateWebService.contextRoot"
+  bean="CreateWebService.contextRoot">
+ <input type="hidden" 
+  value="bean:CreateWebService.host"
+  bean="CreateWebService.host">
+ <input type="hidden" 
+  value="bean:CreateWebService.port"
+  bean="CreateWebService.port">
+ <input type="hidden" 
+  value="bean:CreateWebService.sessionAndSecurity"
+  bean="CreateWebService.sessionAndSecurity">
+
+ <input type="hidden"
+  bean="CreateWebService.validateSecurity"
+  value="true">
+
+
+ <input type="hidden" name="cmpnName" value="bean:CreateWebService.componentName"/>
+ <input type="hidden" name="methodName" value="bean:CreateWebService.methodName"/>
+ <input type="hidden" bean="CreateWebService.successURL"
+value="finalconfirm.jhtml">
+ <input type="hidden" bean="CreateWebService.failureURL" value="security.jhtml">
+
+<table border=0>
+
+  <tr><td align="RIGHT">Functional Name&nbsp;</td>
+      <td><input type="text" size="40" bean="CreateWebService.functionalName">
+        <droplet name="Switch">
+	  <param name="value" value="bean:CreateWebService.propertyExceptions.functionalName">
+          <oparam name="unset"></oparam>
+          <oparam name="default">
+             <font color="red"><valueof param="value.message">???</valueof></font><br>
+          </oparam>
+        </droplet>
+</td></tr>
+
+  <tr><td align="RIGHT">SecurityPolicy&nbsp;</td>
+      <td><input type="text" size="40" bean="CreateWebService.securityPolicy">
+        <droplet name="Switch">
+	  <param name="value" value="bean:CreateWebService.propertyExceptions.securityPolicy">
+          <oparam name="unset"></oparam>
+          <oparam name="default">
+             <font color="red"><valueof param="value.message">???</valueof></font><br>
+          </oparam>
+        </droplet>
+</td></tr>
+
+
+
+  <tr><td align="RIGHT">AccessControlList&nbsp;</td>
+      <td><input type="text" size="40" bean="CreateWebService.ACLString">
+        <droplet name="Switch">
+	  <param name="value" value="bean:CreateWebService.propertyExceptions.ACLString">
+          <oparam name="unset"></oparam>
+          <oparam name="default">
+             <font color="red"><valueof param="value.message">???</valueof></font><br>
+          </oparam>
+        </droplet>
+</td></tr>
+
+
+ <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+ <tr><td align="right">&nbsp;</td><td align="right"><input type="submit" value="Back" submitValue="sessionsec.jhtml" bean="CreateWebService.back">&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="Next" bean="CreateWebService.submit"></td></tr>
+</table> 
+</form>
+
+</blockquote>
+
+  </oparam>
+</droplet>
+
+  </BODY>
+</html>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/webservice/security.jhtml#2 $$Change: 651448 $*/</java>

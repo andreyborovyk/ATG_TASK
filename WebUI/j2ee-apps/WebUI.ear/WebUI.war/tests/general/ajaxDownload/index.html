@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>File Download Test</title>
+	<script type="text/javascript" src="/dojo-1/dojo/dojo.js.uncompressed.js" djConfig="isDebug: true, parseOnLoad: true"></script>
+
+		<script type="text/javascript" src="/WebUI/atg.js"></script>
+
+		
+		<script type="text/javascript" src="/dojo-1/dojo-fixes.js"></script>
+
+    <script type="text/javascript">
+      
+      dojo.addOnLoad(function(){
+                
+        //dojo.connect(dojo.byId('testSubmit'), 'onclick', xhrSubmit);
+        
+        formLink = dojo.byId('formLink');
+        dojo.connect(formLink, 'onclick', xhrSubmit);
+        
+      });
+      
+      function xhrSubmit(evt){
+        
+        evt.preventDefault();
+        console.debug(evt.target);
+        
+        dojo.xhrPost({
+                form: evt.target.parentNode,
+                handleAs: 'json',
+                load: function(response, ioArgs) {
+                           console.debug(response);  
+                           dojo.byId('downloadLink').href=response.link;
+                           dojo.byId('downloadLink').innerHTML=response.text;
+                         },
+                error: function(response, ioArgs) {
+                         console.error("HTTP status code: ", ioArgs.xhr.status);
+                         return response; // 
+                         }          
+        });
+        
+      }
+      
+    
+      
+      
+      
+    </script>
+    
+</head>
+
+<body>
+<h1>AJAX Flow File Download Sandbox</h1>
+
+
+<h3>No Ajax solution?</h3>
+<p>We could use AJAX to submit the form, the response would then be passed back to the ajax call back function.  There are a number of options for then recreating a file from that returned data and forcing the browser to initiate the file download process.  I have not prototyped this however since the client side requirements are prohibitive.  There is a basic command in Ie called SaveAs which works well, and in modern Gecko browsers you can use XPConnect to achieve the same effect - the issue is that for XPConnect to work the browser admin settings need to be considerably customized and that's just not acceptable in this situation.  On top of that we also run the risk that the returned file data size could be MB, which might crash the JS engine trying to handle it.  We need an alternative approach that uses the native browser file download mechanism.</p>
+
+<hr />
+
+<iframe name="iframeEeek" src="test.html" style="width: 400px; height: 100px; border: 1px solid red; float: right">
+</iframe>
+
+<h3>Form that submits a file request to a (what will be hidden) iframe</h3>
+
+<form action="testFile.xls" method="post" accept-charset="utf-8" id="testForm" target="iframeEeek">
+  <input name="var1" value="foo" />
+  <input name="var2" value="bar" />
+  <input type="submit" value="Get Download &rarr;" id="testSubmit" />
+</form>
+
+<h3>If there is an error in the file download creation, we'll handle errors by returning a HTML file to the iframe with JS that sends an error message to the parent page</h3>
+
+<form action="error.html" method="post" accept-charset="utf-8" id="testForm" target="iframeEeek">
+  <input name="var1" value="foo" />
+  <input name="var2" value="bar" />
+  <input type="submit" value="Show Error Handling &rarr;" id="testSubmit" />
+</form>
+<p id="error" style="color: red"></p>
+
+
+
+<h3>This form returns a download, but we'll put a big JSP delay at the top of the file and see what feedback the user gets that something is happening</h3>
+
+<form action="delay.jsp" method="post" accept-charset="utf-8" id="testForm" target="iframeEeek">
+  <input name="var1" value="foo" />
+  <input name="var2" value="bar" />
+  <input type="submit" value="Show Slow Download &rarr;" id="testSubmit" />
+</form>
+
+<hr />
+
+<h3>This form returns a link, which the handler function turns into a link that can be clicked or right clicked to download it.</h3>
+
+<form action="link.jsp" method="post" accept-charset="utf-8" id="formLink">
+  <input name="var1" value="foo" />
+  <input name="var2" value="bar" />
+  <input type="submit" value="Download Link &rarr;" />
+</form>
+
+<a href="" id="downloadLink"></a>
+
+
+</body>
+</html>

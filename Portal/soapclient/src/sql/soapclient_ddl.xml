@@ -1,0 +1,142 @@
+<!DOCTYPE schema  SYSTEM "http://road.atg.com/dtds/ddlgen/schema.dtd">
+<schema name="soapclient_ddl">
+<comment><![CDATA[ @version $Id: //app/portal/version/10.0.3/soapclient/sql/soapclient_ddl.xml#2 $$Change: 651448 $]]></comment>
+   <table name="soap_serv_conf">
+      <column name="service_config_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="target_service_url" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="target_method_name" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="namespace_url" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="soap_action_uri" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="username" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="password" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="soap_serv_conf_p">
+         <index-column column="service_config_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="soap_serv_param">
+      <column name="serv_param_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="param_name" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="param_type" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="param_value" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="version" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <primary-key name="soap_serv_param_p">
+         <index-column column="serv_param_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="soap_conf_param">
+      <column name="service_config_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="service_params" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="soap_conf_param_p">
+         <index-column column="service_config_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="soap_conf_param1_f" referenced-table="soap_serv_conf">
+         <fkey-column referencing-column="service_config_id" referenced-column="service_config_id"/>
+      </foreign-key>
+      <foreign-key name="soap_conf_param2_f" referenced-table="soap_serv_param" index-name="soap_conf_param1_i">
+         <fkey-column referencing-column="service_params" referenced-column="serv_param_id"/>
+      </foreign-key>
+   </table>
+   <table name="soap_install_conf">
+      <column name="install_serv_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="gear_def_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="service_config_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <primary-key name="soap_install_con_p">
+         <index-column column="install_serv_id" order="asc" seq="1"/>
+      </primary-key>
+      <unique name="soap_install_con_u">
+         <index-column column="gear_def_id" order="asc" seq="1"/>
+      </unique>
+   </table>
+   <table name="soap_instn_conf">
+      <column name="instn_serv_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="gear_instance_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="service_config_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <primary-key name="soap_instn_conf_p">
+         <index-column column="instn_serv_id" order="asc" seq="1"/>
+      </primary-key>
+      <unique name="soap_instn_conf_u">
+         <index-column column="gear_instance_id" order="asc" seq="1"/>
+      </unique>
+   </table>
+   <table name="soap_user_conf">
+      <column name="user_serv_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="user_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="gear_def_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="gear_instance_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="service_config_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="soap_user_conf_p">
+         <index-column column="user_serv_id" order="asc" seq="1"/>
+      </primary-key>
+      <index name="soap_user_conf_idx" table="soap_user_conf">
+         <index-column column="user_id" order="asc" seq="1"/>
+         <index-column column="gear_instance_id" order="asc" seq="2"/>
+      </index>
+   </table>
+</schema>
+<!-- @version $Id: //app/portal/version/10.0.3/soapclient/sql/soapclient_ddl.xml#2 $$Change: 651448 $ -->

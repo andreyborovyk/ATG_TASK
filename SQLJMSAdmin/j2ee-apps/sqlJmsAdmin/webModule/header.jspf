@@ -1,0 +1,11 @@
+<%@ page errorPage="error.jsp" %>
+
+<%@ taglib uri="/dmsAdminTaglib" prefix="dms" %>
+<%@ taglib uri="/coreTaglib" prefix="core" %>
+<jsp:useBean id="dmsContext" scope="request" class="atg.sqljmsadmin.taglib.DMSAdminContext"/>
+<jsp:useBean id="navStack" scope="session" class="java.util.Stack"/>
+<jsp:useBean id="currentNav" scope="session" class="atg.sqljmsadmin.taglib.DMSNavigationState"/>
+<jsp:useBean id="entryData" scope="session" class="atg.sqljmsadmin.taglib.UpdateInfoBean"/>
+
+<%@ include file="setEntryParams.jspf" %>
+<%-- @version $Id: //product/DAS/version/10.0.3/release/SQLJMSAdmin/j2ee-apps/sqlJmsAdmin/webModule/header.jspf#2 $$Change: 651448 $--%>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE scenario
+  SYSTEM
+  "dynamosystemresource:/atg/scenario/definition/sdl.dtd">
+
+<scenario author="admin" creation-time="1018879960718" enabled="false" last-modified-by="admin" modification-time="1018879965124">
+  <segment migrate-users="true">
+    <segment-name>User Registration</segment-name>
+    <!--================================-->
+    <!--== Registers  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.dps.Register</event-name>
+    </event>
+    <!--================================-->
+    <!--== Send email /portal/settings/email/PortalWelcome.jsp  -->
+    <!--================================-->
+    <action id="2">
+      <action-name>sendEmail</action-name>
+      <action-param name="template">
+        <constant>/portal/settings/email/PortalWelcome.jsp</constant>
+      </action-param>
+    </action>
+  </segment>
+</scenario>

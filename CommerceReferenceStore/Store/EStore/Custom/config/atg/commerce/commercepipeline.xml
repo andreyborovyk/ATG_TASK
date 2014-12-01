@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+ 
+
+<pipelinemanager> 
+
+   <pipelinechain name="processOrder" transaction="TX_REQUIRED" headlink="executeValidateForCheckoutChain">
+   
+             <pipelinelink name="sendFulfillmentMessage" transaction="TX_MANDATORY"  xml-combine='replace'>
+            <processor jndi="/atg/commerce/order/processor/SendFulfillmentMessage"/>
+             <transition returnvalue="1" link="updateProfileWithSubscription"/>
+        </pipelinelink>
+       
+         <pipelinelink name="updateProfileWithSubscription" transaction="TX_MANDATORY">
+            <processor jndi="/com/vam/UpdateProfileWithSubscription"/>
+             </pipelinelink>
+       
+      
+    </pipelinechain>
+</pipelinemanager>
+ 

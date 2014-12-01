@@ -1,0 +1,6 @@
+# CIM Headless Mode inputs.  Edit values as needed and execute with cim -batch /path/to/this.file
+atg.cim.database.CreateSchemaTask.cimDatasourceId=nonswitchingCore
+atg.cim.database.CreateSchemaTask.datasourceProperties=url=jdbc:mysql://localhost/production_core,port=3306,databaseType=mysql,driverPathsAsString=@DYNAMO_ROOT@/MySQL/mysql-connector-java-5.1.15-bin.jar,,,username=admin,alias=nonswitchingCore,jndiName=ATGProductionDS,databaseName=crs,hostname=localhost,password=admin
+atg.cim.database.CreateSchemaTask.execute()
+atg.cim.database.ImportDataTask.cimDatasourceId=nonswitchingCore
+atg.cim.database.ImportDataTask.execute()

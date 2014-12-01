@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE scenario
+  SYSTEM
+  "dynamosystemresource:/atg/scenario/definition/sdl.dtd">
+
+<scenario author="admin" creation-time="1020847638663" enabled="true" last-modified-by="admin" modification-time="1020876232289">
+  <segment migrate-users="true">
+    <segment-name>Alert community users</segment-name>
+    <!--================================-->
+    <!--== Gear Added To Community  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.portal.messaging.CommunityGearAddedMessage</event-name>
+    </event>
+    <!--================================-->
+    <!--== Send alert to event's community leader  -->
+    <!--================================-->
+    <action id="2">
+      <action-name>sendAlert</action-name>
+      <action-param construct="sendAlert-to-event-community-leader" name="recipientType">
+        <constant>alert_community_leader</constant>
+      </action-param>
+      <action-param name="recipientID">
+        <event-property construct="event-property">
+          <property-name>communityId</property-name>
+        </event-property>
+      </action-param>
+    </action>
+  </segment>
+</scenario>

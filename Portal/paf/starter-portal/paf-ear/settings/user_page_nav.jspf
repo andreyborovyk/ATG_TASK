@@ -1,0 +1,81 @@
+<%@ taglib uri="/paf-taglib" prefix="paf" %>
+<%@ taglib uri="/core-taglib" prefix="core" %>
+<%@ taglib uri="/dsp" prefix="dsp" %>
+<%@ taglib uri="/admin-taglib" prefix="admin" %>
+<%@ taglib uri="/jakarta-i18n-1.0" prefix="i18n" %>
+
+
+<paf:setFrameworkLocale/>
+
+<i18n:bundle baseName="atg.portal.admin.UserSettingsResource" localeAttribute="userLocale" changeResponseLocale="false" />
+
+<dsp:page>
+
+
+<paf:RegisteredUserBarrier/>
+
+
+<dsp:getvalueof id="dsp_page_url" idtype="java.lang.String"     param="paf_page_url">
+
+
+<paf:RegisteredUserBarrier/>
+
+<core:CreateUrl id="basePageURL" url="./user.jsp">
+ <paf:encodeUrlParam param="paf_page_url" value="<%=dsp_page_url%>"/>
+
+<style type="text/css">
+ .sub_nav_reg { color:0000cc; }
+ .sub_nav_sel { color:000000; text-decoration:none; }
+</style>
+
+<% 
+ String basicClass  = ( highLight.equals("basic")  ) ? "sub_nav_sel" : "sub_nav_reg";
+ String gearsClass  = ( highLight.equals("gears")  ) ? "sub_nav_sel" : "sub_nav_reg";
+ String layoutClass = ( highLight.equals("layout") ) ? "sub_nav_sel" : "sub_nav_reg";
+ String colorClass  = ( highLight.equals("color")  ) ? "sub_nav_sel" : "sub_nav_reg";
+%>
+<table cellpadding="1" cellspacing="0" border="0" bgcolor="#666666" width="100%"><tr><td>
+<table cellpadding="4" cellspacing="0" border="0" bgcolor="#BAD8EC" width="100%"><tr><td>
+<font class="pageheader_edit"> <img src='images/write.gif' height="15" width="28" alt="" border="0">
+ <core:IfNotNull value="<%=userAdminEnv.getPage()%>">
+  <i18n:message key="user_pages_edit_nav_title"/>&nbsp;<%= userAdminEnv.getPage().getName()%>
+ </core:IfNotNull>
+</td></tr></table>
+</td></tr></table>
+
+
+<table cellpadding="4" cellspacing="0" border="0" bgcolor="#96C1DF" width="100%"><tr><td><font class="smaller">
+<core:CreateUrl id="urlmode2" url="./user.jsp">
+  <paf:encodeUrlParam param="paf_page_url" value="<%=dsp_page_url%>"/>
+  <core:urlParam param="mode" value="2"/>
+<a href='<%=portalServletResponse.encodePortalURL(urlmode2.getNewUrl())%>' class="<%=basicClass%>"><i18n:message key="user_pages_edit_nav_link_basic"/></a>
+</core:CreateUrl>
+<i18n:message key="user_pages_edit_nav_seperator"/>
+<core:CreateUrl id="urlmode3" url="./user.jsp">
+  <paf:encodeUrlParam param="paf_page_url" value="<%=dsp_page_url%>"/>
+  <core:urlParam param="mode" value="3"/>
+&nbsp;<a href='<%=portalServletResponse.encodePortalURL(urlmode3.getNewUrl())%>' class="<%=gearsClass%>"><i18n:message key="user_pages_edit_nav_link_gears"/></a>
+</core:CreateUrl>
+<i18n:message key="user_pages_edit_nav_seperator"/>
+<core:CreateUrl id="urlmode4" url="./user.jsp">
+  <paf:encodeUrlParam param="paf_page_url" value="<%=dsp_page_url%>"/>
+  <core:urlParam param="mode" value="4"/>
+&nbsp;<a href='<%=portalServletResponse.encodePortalURL(urlmode4.getNewUrl())%>' class="<%=layoutClass%>"><i18n:message key="user_pages_edit_nav_link_layout"/></a>
+</core:CreateUrl>
+<i18n:message key="user_pages_edit_nav_seperator"/>
+<core:CreateUrl id="urlmode5" url="./user.jsp">
+  <paf:encodeUrlParam param="paf_page_url" value="<%=dsp_page_url%>"/>
+  <core:urlParam param="mode" value="5"/>
+&nbsp;<a href='<%=portalServletResponse.encodePortalURL(urlmode5.getNewUrl())%>' class="<%=colorClass%>"><i18n:message key="user_pages_edit_nav_link_color"/></a>
+</core:CreateUrl>
+
+</font></span></td>
+</tr>
+</table>
+</core:CreateUrl>
+
+</dsp:getvalueof>
+
+</dsp:page>  
+     
+<%-- @version $Id: //app/portal/version/10.0.3/paf/settings.war/user_page_nav.jspf#2 $$Change: 651448 $--%>

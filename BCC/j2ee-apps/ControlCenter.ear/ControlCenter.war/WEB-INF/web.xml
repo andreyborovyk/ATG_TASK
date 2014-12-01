@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Servlet 2.4 deployment descriptor for a web application.  See the indicated XSD
+     for more information about the contents of this file. -->
+
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee" version="2.4"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
+         http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+  <description>
+    BCC
+  </description>
+
+  <display-name>
+    BCC
+  </display-name>
+
+  <!-- This is the name of the "parent web application", i.e. an application
+       that has a SessionNameContextServlet defined in it which will define the
+       session scope for this web application. -->
+  <context-param>
+    <param-name>atg.session.parentContextName</param-name>
+    <param-value>/dyn</param-value>
+  </context-param>
+
+  <!-- If context-root is set here, then ServletContextWebAppRegistry will use
+       this setting as the context root for this web application.  This must
+       match the context-root setting in application.xml. -->
+  <context-param>
+    <param-name>context-root</param-name>
+    <param-value>ControlCenter</param-value>
+  </context-param>
+
+  <!-- Turn off preview for this app -->
+  <context-param>
+    <param-name>atg.preview</param-name>
+    <param-value>false</param-value>
+  </context-param>
+ 
+  <!-- This filter invokes the DAF servlet pipeline.  It is intended to
+       eliminate the need for dsp:page tags in JSPs.  (Unfortunately, this
+       functionality is not fully implemented as of ATG 7.0, so dsp:page
+       tags are also still required.) -->
+  <filter>
+    <filter-name>PageFilter</filter-name>
+    <filter-class>atg.filter.dspjsp.PageFilter</filter-class>
+  </filter>   
+
+  <!-- This filter is responsible for adding full caching headers to static
+       content (images, js files, etc.) -->
+  <filter>
+    <filter-name>AddCacheHeadersFilter</filter-name>
+    <filter-class>atg.filter.AddCacheHeadersFilter</filter-class>
+    <init-param>
+      <param-name>patterns</param-name>
+      <param-value>.*\.png,.*\.gif,.*\.jpg,.*\.js,.*\.ico,.*\.css</param-value>
+    </init-param>
+    <init-param>
+      <param-name>gzipPatterns</param-name>
+      <param-value>.*\.js,.*\.css</param-value>
+    </init-param>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>PageFilter</filter-name>
+    <url-pattern>*.jsp</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>PageFilter</filter-name>
+    <url-pattern>/ExportServlet</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>PageFilter</filter-name>
+    <url-pattern>/ImportServlet</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>PageFilter</filter-name>
+    <url-pattern>/UploadFileServlet</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>AddCacheHeadersFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+  <listener>
+    <listener-class>atg.web.assetmanager.transfer.UploadSessionListener</listener-class>
+  </listener>
+
+  <!-- Configure the Nucleus Servlet. This servlet definition is required in
+       each web application that uses Dynamo functionality.  When mapped, it
+       exposes the Nucleus component browser, but should not be mapped to any
+       paths on a live site. -->
+  <servlet>
+    <servlet-name>NucleusServlet</servlet-name>
+    <servlet-class>atg.nucleus.servlet.NucleusServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <!-- Servlet used by the AssetManager export function for downloading a file
+       to a client -->  
+  <servlet>
+    <servlet-name>ExportServlet</servlet-name>
+    <servlet-class>atg.web.assetmanager.transfer.ExportServlet</servlet-class>
+    <init-param>
+      <param-name>PARAM_TRANSFER_SERVICE_PATH</param-name>
+      <param-value>/atg/remote/assetmanager/transfer/service/TransferService</param-value>
+    </init-param>
+  </servlet>
+
+  <!-- Servlet used by the AssetManager import function for uploading a file
+       from a client -->
+  <servlet>
+    <servlet-name>ImportServlet</servlet-name>
+    <servlet-class>atg.web.assetmanager.transfer.ImportServlet</servlet-class>
+    <init-param>
+      <param-name>PARAM_TRANSFER_SERVICE_PATH</param-name>
+      <param-value>/atg/remote/assetmanager/transfer/service/TransferService</param-value>
+    </init-param>
+  </servlet>
+
+  <!-- Servlet used by AssetManager property editors for uploading files from
+       a client -->  
+  <servlet>
+    <servlet-name>UploadFileServlet</servlet-name>
+    <servlet-class>atg.web.assetmanager.editor.UploadFileServlet</servlet-class>
+    <init-param>
+      <param-name>PARAM_ASSETEDITOR_SERVICE_PATH</param-name>
+      <param-value>/atg/remote/assetmanager/editor/service/AssetEditorService</param-value>
+    </init-param>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>ExportServlet</servlet-name>
+    <url-pattern>/ExportServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>ImportServlet</servlet-name>
+    <url-pattern>/ImportServlet</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>UploadFileServlet</servlet-name>
+    <url-pattern>/UploadFileServlet</url-pattern>
+  </servlet-mapping>
+
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+
+  <!-- Workaround for PR 145366 -->  
+  <jsp-config>
+    <taglib>
+      <taglib-uri>http://java.sun.com/jsp/jstl/core</taglib-uri>
+      <taglib-location>/WEB-INF/tld/c.tld</taglib-location>
+    </taglib>
+  </jsp-config>
+  
+</web-app>
+<!-- @version $Id: //product/BCC/version/10.0.3/src/web-apps/ControlCenter/WEB-INF/web.xml#2 $$Change: 651448 $-->

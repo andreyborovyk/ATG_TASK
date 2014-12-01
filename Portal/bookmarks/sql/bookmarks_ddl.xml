@@ -1,0 +1,77 @@
+<!DOCTYPE schema  SYSTEM "http://road.atg.com/dtds/ddlgen/schema.dtd">
+<schema name="bookmarks_ddl">
+<comment><![CDATA[ @version $Id: //app/portal/version/10.0.3/bookmarks/sql/bookmarks_ddl.xml#2 $$Change: 651448 $]]></comment>
+   <table name="bmg_bookmark_node">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="type" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="number" length="20" scale="0"/>
+      </column>
+      <column name="name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="100"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="500"/>
+         <column-type db="mssql" type="varchar" length="500" scale=""/>
+      </column>
+      <column name="add_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="last_visit" nullable="y">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="last_modified" nullable="y">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <primary-key name="bmg_bookmarknodepk">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="bmg_folder_child">
+      <column name="folder_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="number" length="20" scale="0"/>
+      </column>
+      <column name="child" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="bmg_folderchildpk">
+         <index-column column="folder_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <!-- CREATE INDEX bmg_folderchildidx ON bmg_folder_child(folder_id) -->
+      <foreign-key name="bmg_folder_chil1_f" referenced-table="bmg_bookmark_node" index-name="bmg_fdchildchildix">
+         <fkey-column referencing-column="child" referenced-column="id"/>
+      </foreign-key>
+      <foreign-key name="bmg_folder_chil2_f" referenced-table="bmg_bookmark_node">
+         <fkey-column referencing-column="folder_id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="bmg_bookmark">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="link" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="300"/>
+         <column-type db="mssql" type="varchar" length="300" scale=""/>
+      </column>
+      <primary-key name="bmg_bookmarkpk">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="bmg_bookmark1_f" referenced-table="bmg_bookmark_node">
+         <fkey-column referencing-column="id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+</schema>
+<!-- @version $Id: //app/portal/version/10.0.3/bookmarks/sql/bookmarks_ddl.xml#2 $$Change: 651448 $ -->

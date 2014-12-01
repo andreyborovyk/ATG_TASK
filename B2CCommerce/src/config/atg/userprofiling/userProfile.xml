@@ -1,0 +1,46 @@
+<gsa-template xml-combine="append">
+
+  <header>
+    <name>B2C User Profile Changes </name>
+    <author>Commerce Team</author>
+    <version>$Id: //product/DCS/version/10.0.3/templates/B2CCommerce/config/atg/userprofiling/userProfile.xml#2 $$Change: 651448 $</version>
+  </header>
+
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+  <!-- Additions to the "user" item descriptor for B2C applications -->
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+  <item-descriptor name="user">
+    <table name="dps_usr_creditcard" type="multi" id-column-name="user_id" multi-column-name="tag">
+      <property category-resource="categoryCommercePayment" name="creditCards" data-type="map"
+                component-item-type="credit-card" column-name="credit_card_id" cascade="update,delete" display-name-resource="creditCards">
+        <attribute name="resourceBundle" value="atg.commerce.UserProfileTemplateResources" /> 
+      </property>
+    </table>
+
+
+    <table name="dps_user_address" type="auxiliary" id-column-name="id">
+      <property category-resource="categoryCommerceAddressAndPhone" name="billingAddress" item-type="contactInfo" column-name="billing_addr_id"
+                cascade="insert,update" display-name-resource="billingAddress">
+        <attribute name="resourceBundle" value="atg.commerce.UserProfileTemplateResources" /> 
+        <attribute name="propertySortPriority" value="-5"/>
+      </property>
+
+      <property category-resource="categoryCommerceAddressAndPhone" name="shippingAddress" item-type="contactInfo" column-name="shipping_addr_id"
+                cascade="insert,update" display-name-resource="shippingAddress">
+        <attribute name="resourceBundle" value="atg.commerce.UserProfileTemplateResources" /> 
+        <attribute name="propertySortPriority" value="-4"/>
+	    </property>
+    </table>
+
+    <table name="dps_other_addr" type="multi" id-column-name="user_id" multi-column-name="tag">
+      <property category-resource="categoryCommerceAddressAndPhone" name="secondaryAddresses" data-type="map"
+                cascade="update" component-item-type="contactInfo" column-name="address_id" display-name-resource="secondaryAddresses">
+        <attribute name="resourceBundle" value="atg.commerce.UserProfileTemplateResources" /> 
+        <attribute name="propertySortPriority" value="-3"/>
+	    </property>
+    </table>
+      
+  </item-descriptor>
+</gsa-template>
+<!-- @version $Id: //product/DCS/version/10.0.3/templates/B2CCommerce/config/atg/userprofiling/userProfile.xml#2 $$Change: 651448 $ -->

@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+		"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<title>Dojo ComboBox Widget Test</title>
+
+	<script type="text/javascript" src="/dojo-1/dojo/dojo.js"
+	djConfig="isDebug: true, parseOnLoad: true, extraLocale: ['de-de', 'en-us']"></script>
+	
+
+	<script type="text/javascript">
+	
+	  dojo.require("dijit._Widget");
+    dojo.require("dijit._Templated");
+		dojo.require("dojo.data.ItemFileReadStore");
+		dojo.require("dojo.parser");	// scan page for widgets and instantiate them
+
+	  dojo.registerModulePath("atg.widget", "/WebUI/dijit");
+    dojo.require("atg.widget.form.ValidationTextBox");
+    dojo.require("atg.widget.form._FormWidget");
+		dojo.require("atg.widget.form.simpleCombo");
+
+	</script>
+  
+  	
+	<style type="text/css">
+
+		@import "/WebUI/css/cssFramework.css";
+		
+		@import "/dojo-1/dijit/themes/atg/atg.css";
+		
+		/* From CommerceAssist.css */
+		
+		span.required {
+    color:#339900;
+    cursor:default;
+    font-size:1em;
+    font-weight:bold;
+    padding:20px;
+    }
+    span.requiredStar {
+    color:#000;
+    cursor:default;  
+    font-size:1.2em;
+    font-weight:bold;
+    }
+		
+	</style>
+	
+</head>
+
+<body class="atg">
+<h1>Dojo ComboBox Widget Test</h1>
+
+	<p>ComboBox #1: inlined data, autoComplete=true, default value of Iowa, pageSize=30</p>
+	<label for="setvaluetest">US State test 1: </label>
+	<select id="setvaluetest"
+			name="state1"
+			dojoType="atg.widget.form.simpleCombo"
+			class="medium"
+			style="width:50%;"
+			name="foo.bar1"
+			autoComplete="true"
+			onChange="dojo.byId('oc1').value=arguments[0]"
+			pageSize="30"
+	>
+		<option>Alabama</option>
+		<option>Alaska</option>
+		<option>American Samoa</option>
+		<option>Arizona</option>
+		<option>Arkansas</option>
+		<option>Armed Forces Europe</option>
+		<option>Armed Forces Pacific</option>
+		<option>Armed Forces the Americas</option>
+		<option>California</option>
+		<option>Colorado</option>
+		<option>Connecticut</option>
+		<option>Delaware</option>
+		<option>District of Columbia</option>
+		<option>Federated States of Micronesia</option>
+		<option>Florida</option>
+		<option>Georgia</option>
+		<option>Guam</option>
+		<option>Hawaii</option>
+		<option>Idaho</option>
+		<option>Illinois</option>
+		<option>Indiana</option>
+		<option selected>Iowa</option>
+		<option>Kansas</option>
+		<option>Kentucky</option>
+		<option>Louisiana</option>
+		<option>Maine</option>
+		<option>Marshall Islands</option>
+		<option>Maryland</option>
+		<option>Massachusetts</option>
+		<option>Michigan</option>
+		<option>Minnesota</option>
+		<option>Mississippi</option>
+		<option>Missouri</option>
+		<option>Montana</option>
+		<option>Nebraska</option>
+		<option>Nevada</option>
+		<option>New Hampshire</option>
+		<option>New Jersey</option>
+		<option>New Mexico</option>
+		<option>New York</option>
+		<option>North Carolina</option>
+		<option>North Dakota</option>
+		<option>Northern Mariana Islands</option>
+		<option>Ohio</option>
+		<option>Oklahoma</option>
+		<option>Oregon</option>
+		<option>Pennsylvania</option>
+		<option>Puerto Rico</option>
+		<option>Rhode Island</option>
+		<option>South Carolina</option>
+		<option>South Dakota</option>
+		<option>Tennessee</option>
+		<option>Texas</option>
+		<option>Utah</option>
+		<option>Vermont</option>
+		<option>Virgin Islands, U.S.</option>
+		<option>Virginia</option>
+		<option>Washington</option>
+		<option>West Virginia</option>
+		<option>Wisconsin</option>
+		<option>Wyoming</option>
+	</select>
+	onChange:<input id="oc1" disabled value="not fired yet!" />
+
+
+</body>
+</html>

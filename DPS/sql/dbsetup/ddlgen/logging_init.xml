@@ -1,0 +1,98 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="logging_init">
+<comment><![CDATA[ @version $Id: //product/DPS/version/10.0.3/templates/DPS/sql/logging_init.xml#3 $$Change: 655658 $]]></comment>
+<comment><![CDATA[
+This file contains SQL statements which will initialize the
+DPS logging/reporting tables.
+]]></comment>
+<comment><![CDATA[
+Set names of the default user event types, and 
+initialize the log entry id counters
+]]></comment>
+   <sql>
+      <sql-db db="oracle">
+      <![CDATA[
+	INSERT INTO dps_event_type (id, name) VALUES (0, 'newsession');
+	INSERT INTO dps_event_type (id, name) VALUES (1, 'sessionexpiration');
+	INSERT INTO dps_event_type (id, name) VALUES (2, 'login');
+	INSERT INTO dps_event_type (id, name) VALUES (3, 'registration');
+	INSERT INTO dps_event_type (id, name) VALUES (4, 'logout');
+	INSERT INTO dps_log_id (tablename, nextid)
+	VALUES ('dps_user_event', 0);
+	INSERT INTO dps_log_id (tablename, nextid)
+	VALUES ('dps_request', 0);
+	INSERT INTO dps_log_id (tablename, nextid)
+	VALUES ('dps_con_req', 0);
+	COMMIT;
+        ]]>
+      </sql-db> 
+      <sql-db db="mssql">
+      <![CDATA[
+	BEGIN TRANSACTION
+	INSERT INTO dps_event_type (id, name) VALUES (0, 'newsession')
+	INSERT INTO dps_event_type (id, name) VALUES (1, 'sessionexpiration')
+	INSERT INTO dps_event_type (id, name) VALUES (2, 'login')
+	INSERT INTO dps_event_type (id, name) VALUES (3, 'registration')
+	INSERT INTO dps_event_type (id, name) VALUES (4, 'logout')
+	INSERT INTO dps_log_id (tablename, nextid)
+	VALUES ('dps_user_event', 0)
+
+	INSERT INTO dps_log_id (tablename, nextid)
+	VALUES ('dps_request', 0)
+
+	INSERT INTO dps_log_id (tablename, nextid)
+	VALUES ('dps_con_req', 0)
+	COMMIT
+        ]]>
+      </sql-db> 
+      <sql-db db="mysql">
+      <![CDATA[
+	START TRANSACTION;
+	INSERT INTO dps_event_type (id, name) VALUES (0, 'newsession');
+	INSERT INTO dps_event_type (id, name) VALUES (1, 'sessionexpiration');
+	INSERT INTO dps_event_type (id, name) VALUES (2, 'login');
+	INSERT INTO dps_event_type (id, name) VALUES (3, 'registration');
+	INSERT INTO dps_event_type (id, name) VALUES (4, 'logout');
+	INSERT INTO dps_log_id (tablename, nextid) VALUES ('dps_user_event', 0);
+	INSERT INTO dps_log_id (tablename, nextid) VALUES ('dps_request', 0);
+	INSERT INTO dps_log_id (tablename, nextid) VALUES ('dps_con_req', 0);
+	COMMIT;
+        ]]>
+      </sql-db> 
+      <sql-db db="db2">
+      <![CDATA[
+	INSERT INTO dps_event_type (id, name) VALUES (0, 'newsession');
+	INSERT INTO dps_event_type (id, name) VALUES (1, 'sessionexpiration');
+	INSERT INTO dps_event_type (id, name) VALUES (2, 'login');
+	INSERT INTO dps_event_type (id, name) VALUES (3, 'registration');
+	INSERT INTO dps_event_type (id, name) VALUES (4, 'logout');
+	INSERT INTO dps_log_id (tablename, nextid)
+	VALUES ('dps_user_event', 0);
+
+	INSERT INTO dps_log_id (tablename, nextid)
+	VALUES ('dps_request', 0);
+
+	INSERT INTO dps_log_id (tablename, nextid)
+	VALUES ('dps_con_req', 0);
+        ]]>
+      </sql-db> 
+      <sql-db db="sybase">
+      <![CDATA[
+	INSERT INTO dps_event_type (id, name) VALUES (0, 'newsession')
+	INSERT INTO dps_event_type (id, name) VALUES (1, 'sessionexpiration')
+	INSERT INTO dps_event_type (id, name) VALUES (2, 'login')
+	INSERT INTO dps_event_type (id, name) VALUES (3, 'registration')
+	INSERT INTO dps_event_type (id, name) VALUES (4, 'logout')
+	INSERT INTO dps_log_id (tablename, nextid)
+	VALUES ('dps_user_event', 0)
+
+	INSERT INTO dps_log_id (tablename, nextid)
+	VALUES ('dps_request', 0)
+
+	INSERT INTO dps_log_id (tablename, nextid)
+	VALUES ('dps_con_req', 0)
+        ]]>
+      </sql-db> 
+   </sql>
+</schema>
+<!-- @version $Id: //product/DPS/version/10.0.3/templates/DPS/sql/logging_init.xml#3 $$Change: 655658 $ -->

@@ -1,0 +1,85 @@
+<!DOCTYPE schema  SYSTEM "http://road.atg.com/dtds/ddlgen/schema.dtd">
+<schema name="communities_ddl">
+<comment><![CDATA[ @version $Id: //app/portal/version/10.0.3/communities/sql/communities_ddl.xml#2 $$Change: 651448 $]]></comment>
+   <table name="fcg_usercomm_rel">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="community_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="number" length="20" scale="0"/>
+      </column>
+      <primary-key name="fcg_usercomm_pk">
+         <index-column column="id" order="asc" seq="1"/>
+         <index-column column="community_id" order="asc" seq="2"/>
+      </primary-key>
+   </table>
+   <table name="fcg_added_mapper">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="tstamp" nullable="y">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="favorite_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="gear_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="community_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="user_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="msg_type" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <index name="fcg_addmap_comid" table="fcg_added_mapper">
+         <index-column column="community_id" order="asc" seq="1"/>
+      </index>
+      <index name="fcg_addmap_gearid" table="fcg_added_mapper">
+         <index-column column="gear_id" order="asc" seq="1"/>
+      </index>
+      <index name="fcg_addmap_usrid" table="fcg_added_mapper">
+         <index-column column="user_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="fcg_remove_mapper">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="tstamp" nullable="y">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="favorite_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="gear_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="community_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="user_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="msg_type" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <index name="fcg_remmap_comid" table="fcg_remove_mapper">
+         <index-column column="community_id" order="asc" seq="1"/>
+      </index>
+      <index name="fcg_remmap_gearid" table="fcg_remove_mapper">
+         <index-column column="gear_id" order="asc" seq="1"/>
+      </index>
+      <index name="fcg_remmap_usrid" table="fcg_remove_mapper">
+         <index-column column="user_id" order="asc" seq="1"/>
+      </index>
+   </table>
+</schema>
+<!-- @version $Id: //app/portal/version/10.0.3/communities/sql/communities_ddl.xml#2 $$Change: 651448 $ -->

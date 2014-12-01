@@ -1,0 +1,153 @@
+
+
+      <c:choose>
+        <c:when test="${(loop.count % 2) == 0}">
+          <tr class="alt">
+        </c:when>
+        <c:otherwise>
+          <tr>
+        </c:otherwise>
+      </c:choose>
+    
+      <c:choose>
+        <c:when test="${!catalogview && priceListFormHandler.assetType == 'product' && rowasset.itemDescriptor.itemDescriptorName != 'product'}">
+          <td>&nbsp &nbsp <c:out value="${rowname}"/></td>
+        </c:when>
+        <c:otherwise>
+          <td><c:out value="${rowname}"/></td>
+        </c:otherwise>
+      </c:choose>
+
+      <c:set var="cellInfoPath" value="${priceListHandlerPath}.currentPriceCellInfoRow[${rowIndex}]"/>
+      <dspel:getvalueof var="cellInfoBeans" bean="${cellInfoPath}"/>
+      <%--
+          Loop through each price cell in this pricelist row.
+      --%>
+      <c:forEach items="${cellInfoBeans}" var="cellInfos" varStatus="innerLoop">
+        <c:set var="colIndex" value="${innerLoop.index}"/>
+        <dspel:getvalueof var="isInheritPrice" bean="${cellInfoPath}[${colIndex}].inherit"/>
+        <dspel:getvalueof var="isVolumePrice" bean="${cellInfoPath}[${colIndex}].volumePrice"/>
+        <dspel:getvalueof var="isInheritVolumePrice" bean="${cellInfoPath}[${colIndex}].inheritVolumePrice"/>
+        <dspel:getvalueof var="inheritListPrice" bean="${cellInfoPath}[${colIndex}].inheritListPrice"/>
+        <dspel:getvalueof var="priceId" bean="${cellInfoPath}[${colIndex}].priceId"/>
+        <dspel:getvalueof var="inheritPriceId" bean="${cellInfoPath}[${colIndex}].inheritPriceId"/>
+        <dspel:getvalueof var="inheritPriceListId" bean="${cellInfoPath}[${colIndex}].inheritPriceListId"/>
+        <dspel:getvalueof var="inheritIndex" bean="${cellInfoPath}[${colIndex}].inheritIndex"/>
+
+        <c:set var="uniqueID" value="${rowid}.${colIndex}"/>
+        <c:choose>
+          <c:when test="${catalogView}">
+            <c:set var="inheritUniqueID" value="${inheritPriceListId}.${colIndex}"/>
+          </c:when>
+          <c:otherwise>
+            <c:set var="inheritUniqueID" value="${rowid}.${inheritIndex}"/>
+          </c:otherwise>
+        </c:choose>
+
+       <%-- set the class for this cell's html elements --%>
+        <c:set var="volPriceId" value=""/>
+        <c:choose>
+          <c:when test="${isInheritPrice}">
+            <c:set var="inheritClass" value=""/>
+            <c:set var="userPriceClass" value="valueHidden"/>
+            <c:set var="volumePriceClass" value="valueHidden"/>
+          </c:when>
+          <c:when test="${!isInheritPrice && isVolumePrice}">
+            <c:set var="inheritClass" value="valueHidden"/>
+            <c:set var="userPriceClass" value="valueHidden"/>
+            <c:set var="volumePriceClass" value=""/>
+            <c:set var="volPriceId" value="${priceId}"/>
+         </c:when>
+          <c:otherwise>
+            <c:set var="inheritClass" value="valueHidden"/>
+            <c:set var="userPriceClass" value=""/>
+            <c:set var="volumePriceClass" value="valueHidden"/>
+          </c:otherwise>
+        </c:choose>
+
+
+        <%-- 
+             [x] the inherit checkbox 
+        --%>
+        <td id="inherit_<c:out value='${uniqueID}'/>" class="checkBoxCell center leftSeparator">
+          <c:choose>
+            <c:when test="${editable}">
+              <dspel:input id="inputInherit_${uniqueID}" type="checkbox" bean="${cellInfoPath}[${colIndex}].inherit" onclick="priceBoxClicked(event)" priority="${formpriority}"/>
+            </c:when>
+            <c:when test="${isInheritPrice}">
+              <div class="checkBoxIcon"></div>
+            </c:when>
+          </c:choose>
+        </td>
+
+
+        <%-- 
+            the middle value area of the cell
+        --%>
+
+        <td id="value_<c:out value='${uniqueID}'/>" class="value" >
+
+          <%-- the inherited value (hidden if overriden) --%>
+          <div id="iValue_<c:out value='${uniqueID}'/>" class="<c:out value='${inheritClass}'/>">
+             <c:choose>
+              <c:when test="${isInheritVolumePrice}">
+                <a href="#" onclick="showVolumeDialog(event,'<c:out value='${inheritPriceId}'/>','<c:out value='${inheritUniqueID}'/>',<c:out value='${editable}'/>)" class="volumeLink">Volume Price</a>
+              </c:when>
+              <c:otherwise>
+                <c:out value="${inheritListPrice}"/>
+              </c:otherwise>
+            </c:choose>
+          </div>
+
+          <%-- the overriden list price (hidden if inherited or if volume price) --%>
+          <div id="userPrice_<c:out value='${uniqueID}'/>" class="<c:out value='${userPriceClass}'/>" >
+            <c:choose>
+              <c:when test="${editable}">
+                <dspel:input id="inputPrice_${uniqueID}" type="textfield" iclass="formTextField number" 
+                   bean="${cellInfoPath}[${colIndex}].listPrice" oninput="userPriceKeyPress(event)" onpropertychange="userPriceKeyPress(event)" onblur="handleEmptyPrice(event)" priority="${formpriority}" />
+              </c:when>
+              <c:otherwise>
+                   <dspel:valueof bean="${cellInfoPath}[${colIndex}].listPrice"/>
+              </c:otherwise>
+            </c:choose>
+          </div>
+
+          <%-- the overriden volume price (hidden if inherited or if list price) --%>
+	  <div id="volPricing_<c:out value='${uniqueID}'/>" class="<c:out value='${volumePriceClass}'/>" >
+            <a href="#" onclick="showVolumeDialog(event,'<c:out value='${volPriceId}'/>','<c:out value='${uniqueID}'/>',<c:out value='${editable}'/>)" class="volumeLink">Volume Price</a>
+          </div>
+        </td>
+
+
+        <%-- 
+            [x] the volume checkbox 
+        --%>
+        <td id="volume_<c:out value='${uniqueID}'/>" class="checkBoxCell center">
+           <c:choose>
+            <c:when test="${editable}">
+              <dspel:input type="checkbox"  id="inputVolume_${uniqueID}" bean="${cellInfoPath}[${colIndex}].volumePrice" onclick="priceBoxClicked(event)" priority="${formpriority}"/>
+            </c:when>
+            <c:when test="${isVolumePrice}">
+              <div class="checkBoxIcon"></div>
+            </c:when>
+          </c:choose>
+          <c:choose>
+            <c:when test="${isInheritVolumePrice}">
+              <dspel:input id="volPriceInfo_${uniqueID}" type="hidden"
+                   bean="${cellInfoPath}[${colIndex}].inheritVolumePriceInfo" priority="${formpriority}"/>
+            </c:when>
+            <c:otherwise>
+              <dspel:input id="volPriceInfo_${uniqueID}" type="hidden"
+                   bean="${cellInfoPath}[${colIndex}].volumePriceInfo" priority="${formpriority}"/>
+            </c:otherwise>
+          </c:choose>
+
+          <dspel:input id="modified_${uniqueID}" type="checkbox" 
+                   bean="${cellInfoPath}[${colIndex}].modified" style="display:none" priority="${formpriority}" />
+
+        </td>
+
+      </c:forEach>
+
+      </tr>
+<%-- @version $Id: //product/DCS-UI/version/10.0.3/Versioned/src/web-apps/DCS-UI-Versioned/assetEditor/priceTableRow.jspf#2 $$Change: 651448 $--%>

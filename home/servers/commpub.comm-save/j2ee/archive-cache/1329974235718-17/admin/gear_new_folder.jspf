@@ -1,0 +1,81 @@
+<paf:setFrameworkLocale />
+
+<i18n:bundle baseName="atg.portal.admin.PortalAdminResources" localeAttribute="userLocale" changeResponseLocale="false" />
+
+<dsp:page>
+
+<font class="smaller">
+<dsp:form action="gear.jsp" method="POST">
+
+<input type="hidden" name="mode" value="<%=mode%>">
+
+
+
+    <table cellpadding="1" cellspacing="0" border="0" bgcolor="#666666" width="100%"><tr><td>
+	<table cellpadding="4" cellspacing="0" border="0" bgcolor="#999999" width="100%"><tr><td>
+	<font class="pageheader"><i18n:message key="admin-gears-new-folder-label"/>
+	</td></tr></table>
+	</td></tr></table>
+	
+	<table cellpadding="4" cellspacing="0" border="0" bgcolor="#EAEEF0" width="100%"><tr><td>
+	<font class="smaller"><i18n:message key="admin-gears-infotext-new-folder"/>
+<br>
+	</td></tr></table>
+<img src='<%=clearGif %>' height="1" width="1" ><br>
+
+
+<table  cellspacing="0" cellpadding="4" border="0" bgcolor="#c9d1d7" width="100%">
+
+<tr>
+<td valign="top" width="200"><font class="smaller">
+
+<i18n:message key="admin-gears-new-folder-name"/>
+
+</td>
+<td width="80%">
+<dsp:input type="text" bean="GearFolder.folderName"  value=""/>
+</td></tr>
+<tr>
+<td>&nbsp;</td>
+<td>
+<!-- call to getAllItems to get root gear definition folder -->
+<admin:GetAllItems id="items">
+ <dsp:input type="hidden" bean="GearFolder.parentFolder" value="<%=items.getRootGearDefinitionFolder().getId() %>"/>
+</admin:GetAllItems>
+
+<core:CreateUrl id="gearFolderURL"      url="/portal/admin/gear.jsp">
+ <core:UrlParam param="mode" value="3"/>
+<dsp:input type="hidden" bean="GearFolder.failureURL" value="<%= gearFolderURL.getNewUrl() %>"/>
+</core:CreateUrl>
+
+<core:CreateUrl id="gearNewURL"      url="/portal/admin/gear.jsp">
+ <core:UrlParam param="mode" value="1"/>
+<dsp:input type="hidden" bean="GearFolder.successURL" value="<%= gearNewURL.getNewUrl() %>"/>
+</core:CreateUrl>
+
+<i18n:message id="done12" key="done" /><dsp:input type="submit" bean="GearFolder.create" value="<%= done12 %>" name="Create"/>
+<dsp:input type="hidden" bean="GearFolder.create" value="<%= done12 %>" name="Create"/>
+
+<br> <br>
+
+</dsp:form>
+
+</font>
+
+</td>
+</tr>
+</table>
+
+<!--
+<i18n:message key="admin-helpertext-newgearfolderA"/><br>
+<i18n:message key="admin-helpertext-newgearfolderB"/><br>
+<i18n:message key="admin-helpertext-newgearfolderC"/>
+
+-->
+
+
+</body>
+</html>
+</dsp:page>
+<%-- @version $Id: //app/portal/version/10.0.3/paf/admin.war/gear_new_folder.jspf#2 $$Change: 651448 $--%>
+

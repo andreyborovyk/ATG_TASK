@@ -1,0 +1,49 @@
+<dsp:importbean var="webUIConfig" bean="/atg/web/Configuration"/>
+
+<title><fmt:message key="title" bundle="${bundle}"/></title>
+<link rel="icon" href="<c:url value='/images/favicon.ico'/>" type="image/x-icon" />
+<link rel="shortcut icon" href="<c:url value='/images/favicon.ico'/>" type="image/x-icon" />
+<link rel="stylesheet" href="/WebUI/dijit/previewLauncher/templates/previewPicker.css" type="text/css" media="all" />
+<link rel="stylesheet" type="text/css" media="all" href="/dojo-1/dojo/resources/dojo.css"></link>
+<link rel="stylesheet" type="text/css" media="all" href="/dojo-1/dijit/themes/atg/atg.css"></link> 
+
+<style type="text/css" media="all">
+ <!--
+ @import url("<c:url value='/templates/style/css/style.jsp'/>");
+ @import url("<c:url value='/templates/style/css/calendar.jsp' />");
+ @import url("<c:url value='/templates/style/css/validation.css'/>");
+ @import url("<c:url value='/templates/style/css/assetPickerStyle.jsp'/>");
+ -->
+ </style>
+
+<script language="JavaScript" type="text/javascript" src="<c:url value='/templates/page/html/scripts/scripts.js' />">
+</script>
+<script language="JavaScript" type="text/javascript" src="<c:url value='/templates/page/html/scripts/calendar_date.js' />">
+</script>
+<script language="JavaScript" type="text/javascript" src="<c:url value='/templates/page/html/scripts/calendar_validation.js'/>">
+</script>
+<script language="JavaScript" type="text/javascript" src="<c:url value='/templates/page/html/scripts/calendar_functions.js' />">
+</script>
+<script language="JavaScript" type="text/javascript" src="<c:url value='/templates/page/html/scripts/calendar_html.js'/>">
+</script>
+<script language="JavaScript" type="text/javascript" src="<c:url value='/templates/page/html/scripts/calendarInstance1.js'/>">
+</script>
+<script language="JavaScript" type="text/javascript" src="<c:url value='/templates/page/html/scripts/calendarInstance2.js'/>">
+</script>
+<script language="JavaScript" type="text/javascript" src="<c:url value='/templates/page/html/scripts/calendarStyles1.js'/>">
+</script>
+<script language="JavaScript" type="text/javascript" src="<c:url value='/templates/page/html/scripts/atg-ui_validation.js'/>">
+</script>
+<script language="JavaScript" type="text/javascript" src="<c:url value='/templates/page/html/scripts/asset_view_functions.js'/>">
+</script>
+<script language="JavaScript" type="text/javascript" src="/dojo-1/dojo/dojo.js.uncompressed.js">
+</script>
+<script language="JavaScript" type="text/javascript" src="/dojo-1/dijit/dijit.js">
+</script>
+<!--script language="JavaScript" type="text/javascript" src="/dojo-1/dojo-fixes.js">
+</script-->
+<script language="JavaScript" type="text/javascript" src="<c:url context='${webUIConfig.contextRoot}' value='/atg.js'/>">
+</script>
+<%@ include file="../scripts/calendarI18n.jspf" %>
+
+<%-- @version $Id: //product/BIZUI/version/10.0.3/web-apps/bizui/templates/page/html/includes/head.jspf#3 $$Change: 657381 $--%>

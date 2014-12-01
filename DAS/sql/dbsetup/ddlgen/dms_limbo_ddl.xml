@@ -1,0 +1,210 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="dms_limbo_ddl">
+<comment><![CDATA[ @version $Id: //product/DAS/version/10.0.3/templates/DAS/sql/dms_limbo_ddl.xml#2 $$Change: 651448 $]]></comment>
+<comment><![CDATA[
+This table is where limbo instance/clients identify themselves. 
+--
+There should only be one entry in this table for each Dynamo 
+running PatchBay with message delays enabled.
+]]></comment>
+   <table name="dms_limbo">
+      <column name="limbo_name" nullable="n">
+         <column-type db="generic" type="varchar" length="250"/>
+      </column>
+      <column name="limbo_id" nullable="n">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+         <column-type db="mssql" type="bigint" length="" scale=""/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <primary-key name="limbo_pk">
+         <index-column column="limbo_name" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+<comment><![CDATA[
+The following four tables comprise the parts of the stored 
+messages.
+]]></comment>
+   <table name="dms_limbo_msg">
+      <column name="msg_id" nullable="n">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+         <column-type db="mssql" type="bigint" length="" scale=""/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="limbo_id" nullable="n">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+         <column-type db="mssql" type="bigint" length="" scale=""/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="delivery_date" nullable="n">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+         <column-type db="mssql" type="bigint" length="" scale=""/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="delivery_count" nullable="n">
+         <column-type db="generic" type="numeric" length="2" scale="0"/>
+         <column-type db="sybase" type="tinyint" />
+         <column-type db="mssql" type="tinyint" />
+		 <column-type db="mysql" type="tinyint"/>
+      </column>
+      <column name="msg_src_name" nullable="n">
+         <column-type db="generic" type="varchar" length="250"/>
+      </column>
+      <column name="port_name" nullable="n">
+         <column-type db="generic" type="varchar" length="250"/>
+      </column>
+      <column name="msg_class" nullable="n">
+         <column-type db="generic" type="varchar" length="250"/>
+      </column>
+      <column name="msg_class_type" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="sybase" type="tinyint" />
+         <column-type db="mssql" type="tinyint" />
+		 <column-type db="mysql" type="tinyint"/>
+      </column>
+      <column name="jms_type" nullable="y">
+         <column-type db="generic" type="varchar" length="250"/>
+      </column>
+      <column name="jms_expiration" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+         <column-type db="mssql" type="bigint" length="" scale=""/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="jms_correlationid" nullable="y">
+         <column-type db="generic" type="varchar" length="250"/>
+      </column>
+      <primary-key name="limbo_msg_pk">
+         <index-column column="msg_id" order="asc" seq="1"/>
+      </primary-key>
+      <index name="dms_limbo_read_idx" table="dms_limbo_msg">
+         <index-column column="limbo_id" order="asc" seq="1"/>
+         <index-column column="delivery_date" order="asc" seq="2"/>
+      </index>
+   </table>
+<comment><![CDATA[
+If serialized reply-to destinations are known to be small enough, 
+this binary column's size can be reduced for efficiency.  The size 
+here has been chosen to work with local dms and SQL-JMS.
+]]></comment>
+   <table name="dms_limbo_replyto">
+      <column name="msg_id" nullable="n">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+         <column-type db="mssql" type="bigint" length="" scale=""/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="jms_replyto" nullable="y">
+         <column-type db="generic" type="varbinary" length="500"/>
+         <column-type db="db2" type="blob" length="500" scale=""/>
+      </column>
+      <primary-key name="limbo_replyto_pk">
+         <index-column column="msg_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+<comment><![CDATA[
+If serialized message bodies are known to be small enough, this 
+binary column's size can be reduced for efficiency.  The size here 
+has been chosen to work with almost all types of messages but may 
+be larger than necessary.  Actual usage analysis is recommended for 
+finding the optimal binary column size.
+]]></comment>
+   <table name="dms_limbo_body">
+      <column name="msg_id" nullable="n">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+         <column-type db="mssql" type="bigint" length="" scale=""/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="msg_body" nullable="y">
+         <column-type db="generic" type="long-varbinary"/>
+         <column-type db="db2" type="blob" length="32768" scale=""/>
+      </column>
+      <primary-key name="limbo_body_pk">
+         <index-column column="msg_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+<comment><![CDATA[
+This table represents a map of properties for messages stored 
+above, i.e.  there can be multiple rows in this table for a single 
+row in the preceeding tables.
+]]></comment>
+   <table name="dms_limbo_props">
+      <column name="msg_id" nullable="n">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+         <column-type db="mssql" type="bigint" length="" scale=""/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="prop_name" nullable="n">
+         <column-type db="generic" type="varchar" length="250"/>
+      </column>
+      <column name="prop_value" nullable="n">
+         <column-type db="generic" type="varchar" length="250"/>
+      </column>
+      <primary-key name="limbo_props_pk">
+         <index-column column="msg_id" order="asc" seq="1"/>
+         <index-column column="prop_name" order="asc" seq="2"/>
+      </primary-key>
+   </table>
+   <table name="dms_limbo_ptypes">
+      <column name="msg_id" nullable="n">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="prop_name" nullable="n">
+         <column-type db="generic" type="varchar" length="250"/>
+      </column>
+      <column name="prop_type" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="sybase" type="tinyint" />
+         <column-type db="mssql" type="tinyint" />
+		 <column-type db="mysql" type="tinyint"/>
+      </column>
+      <primary-key name="dms_limbo_ptypes_p">
+         <index-column column="msg_id" order="asc" seq="1"/>
+         <index-column column="prop_name" order="asc" seq="2"/>
+      </primary-key>
+   </table>
+   <table name="dms_limbo_delay">
+      <column name="msg_id" nullable="n">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="delay" nullable="n">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="max_attempts" nullable="n">
+         <column-type db="generic" type="numeric" length="2" scale="0"/>
+		 <column-type db="mysql" type="tinyint"/>
+      </column>
+      <column name="failure_port" nullable="n">
+         <column-type db="generic" type="varchar" length="250"/>
+      </column>
+      <column name="jms_timestamp" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="jms_deliverymode" nullable="y">
+         <column-type db="generic" type="numeric" length="10" scale="0"/>
+         <column-type db="sybase" type="integer" />         
+		 <column-type db="mysql" type="integer"/>
+      </column>
+      <column name="jms_priority" nullable="y">
+         <column-type db="generic" type="numeric" length="10" scale="0"/>
+         <column-type db="sybase" type="integer" />
+		 <column-type db="mysql" type="integer"/>
+      </column>
+      <column name="jms_messageid" nullable="y">
+         <column-type db="generic" type="varchar" length="250"/>
+      </column>
+      <column name="jms_redelivered" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="sybase" type="tinyint" />     
+		  <column-type db="mysql" type="tinyint"/>		 
+      </column>
+      <column name="jms_destination" nullable="y">
+         <column-type db="generic" type="varbinary" length="500"/>
+      </column>
+      <primary-key name="limbo_delay_pk">
+         <index-column column="msg_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+</schema>
+<!-- @version $Id: //product/DAS/version/10.0.3/templates/DAS/sql/dms_limbo_ddl.xml#2 $$Change: 651448 $ -->

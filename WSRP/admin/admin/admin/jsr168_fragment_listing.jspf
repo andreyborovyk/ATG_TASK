@@ -1,0 +1,56 @@
+
+
+<table cellpadding="1" cellspacing="0" border="0" bgcolor="#666666" width="100%"><tr><td>
+	<table cellpadding="4" cellspacing="0" border="0" bgcolor="#999999" width="100%"><tr><td>
+	        <font class="pageheader">
+            <fmt:message key="wsrp-producer-admin-import-portlets" bundle="${producerAdminbundle}"/>
+    </td></tr></table>
+</td></tr></table>
+
+	<%-- helper text --%>
+
+	<table cellpadding="4" cellspacing="0" border="0" bgcolor="#EAEEF0" width="100%"><tr><td>
+    	<font class="smaller">
+        <fmt:message key="wsrp-producer-admin-import-portlets-info" bundle="${producerAdminbundle}"/><br>
+	</td></tr></table>
+
+    <table cellpadding="4" cellspacing="0" border="0" width="100%" bgcolor="#c9d1d7">
+
+	<font class="smaller">
+	<img src="<%=clearGif%>" height="1" width="7" border="0"><br>
+    <!--this table bounds the list of available jsr168 Portlets-->
+	<table cellpadding="4" cellspacing="0" border="0" width="100%" bgcolor="#c9d1d7">
+    <tr><td>
+
+	<!--this table generates the list-->
+	<table cellpadding="0" cellspacing="0" border="0">
+
+    <dspel:getvalueof id="gear" idtype="atg.portal.framework.Gear[]" bean="ProducerAdminFormHandler.jsr168PortletObjects">
+            <c:set var="counterforGear" value="0"/>
+                <c:forEach var="GearDefinition" items="${gear}" varStatus="status">
+                  <c:set var="counterforGear" value="${counterforGear+1}"/>
+                      <c:if test="${status.index==0}">
+                      </c:if>
+
+                         <tr><td colspan="2"></td></tr>
+                         <tr>
+	                        <td nowrap width="200"><font class="smaller">&nbsp;
+                                <c:out value="${GearDefinition.name}"/></font></td><td nowrap width="200">
+                                 <c:url var="importPortletUrl" value="/configProducer.jsp">
+	                                <c:param name="mode" value="7"/>&nbsp;&nbsp;
+                                </c:url>&nbsp;&nbsp;
+                                <dspel:a href="${importPortletUrl}">
+			                        <font class="smaller"><fmt:message key="import-portlet-definition" bundle="${producerAdminbundle}"/>
+                                    <dspel:param name="id" value="${GearDefinition.id}"/>
+                                </dspel:a>
+                            </font>
+                          </td></tr>
+                </c:forEach>
+                <c:if test="${counterforGear == 0}">
+                    <font class="smaller"><fmt:message key="no-jsr168-portlets" bundle="${producerAdminbundle}"/></font>
+                </c:if>
+        </dspel:getvalueof>
+	   </table>
+	</td></tr></table>
+  </td></tr></table>
+<%-- @version $Id: //product/WSRP/version/10.0.3/admin/admin/admin/jsr168_fragment_listing.jspf#2 $$Change: 651448 $--%>

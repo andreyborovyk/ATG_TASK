@@ -1,0 +1,61 @@
+      <dsp:oparam name="output">
+
+        <%
+        // If this parameter is called, then we know that there are items.
+        itemsExist = true;
+        %>
+
+	<dsp:getvalueof id="itemToDisplay" idtype="atg.repository.RepositoryItem" param="element">
+
+	
+	<core:exclusiveIf>
+	    <core:ifNotNull value="<%= customFeaturedItemDisplayPage %>">
+		<dsp:include page="<%= customFeaturedItemDisplayPage%>" flush="false">
+		  <dsp:param name="itemToDisplay" value="<%= itemToDisplay %>"/>
+                </dsp:include>
+	    </core:ifNotNull>
+	    <core:defaultCase>
+                <table>
+                  <tr>
+                    <td colspan=2 align="left"><font class="large_bold">	 
+           	    <%= itemToDisplay.getItemDisplayName() %>	
+                    </font></td>
+                  </tr>    
+           
+                  <rpv:propertyList id="proplist"
+                                    displayType="featuredItem"
+                                    item="<%= itemToDisplay %>"
+                                    itemDescriptorName="<%= itemDescName %>" 
+                                    gearEnv="<%= gearEnv %>">
+                     <core:forEach id="properties"
+                                   values="<%= proplist.getDisplayProperties() %>"
+                                   castClass="atg.beans.DynamicPropertyDescriptor"
+                                   elementId="prop">
+                       <% String propToDisplay = proplist.getDisplayPropertyNames()[properties.getIndex()]; %>
+                       <tr>
+                         <td align="right"><font class="small"><%= prop.getDisplayName() 
+				%><i18n:message key="keyValSeparator">:</i18n:message></td>
+                         <td><font class="small"><%@ include file="renderProperty.jspf" %></font></td>
+                       </tr>
+                     </core:forEach>
+                   </rpv:propertyList>
+           
+                </table>
+
+	    </core:defaultCase>
+	</core:exclusiveIf>
+        </dsp:getvalueof>
+      </dsp:oparam>
+
+      <dsp:oparam name="empty">
+        <i18n:message key="emptyText">
+          <i18n:messageArg value="FeaturedItem"/>
+        </i18n:message></br>
+      </dsp:oparam>
+
+      <dsp:oparam name="error">
+        <i18n:message key="errorText">
+          <i18n:messageArg value="FeaturedItem"/>
+        </i18n:message></br>
+      </dsp:oparam>
+<%-- @version $Id$$Change$--%>

@@ -1,0 +1,25 @@
+<%@ taglib prefix="c"       uri="http://java.sun.com/jstl/core" %>
+<%@ taglib prefix="fmt"     uri="http://java.sun.com/jstl/fmt" %>
+<%@ taglib prefix="dspel"   uri="http://www.atg.com/taglibs/daf/dspjspELTaglib1_0" %>
+
+<dspel:page>
+<dspel:importbean var="profile" bean="/atg/userprofiling/Profile"/>
+
+<html>
+  <head>
+    <title>test page</title>
+  </head>
+  <body>
+    <dspel:getvalueof id="profile" idtype="atg.userprofiling.Profile" bean="Profile">
+    Hello
+      <c:if test="${!profile.transient}">
+        <dspel:getvalueof id="firstName" idtype="java.lang.String" bean="Profile.firstName">
+          <c:out value="${firstName}"/>!
+        </dspel:getvalueof>
+      </c:if>
+    </dspel:getvalueof>
+  </body>
+</html>
+</dspel:page>
+<%-- @version $Id: //application/campaigns/version/10.0/communication/common/src/web-apps/Outreach/index.jsp#1 $$Change: 610294 $--%>
+

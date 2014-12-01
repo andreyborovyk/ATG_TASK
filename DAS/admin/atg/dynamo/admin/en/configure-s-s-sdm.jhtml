@@ -1,0 +1,136 @@
+
+<nucleus type=import>
+	/atg/dynamo/admin/Configure
+</nucleus>
+
+<java>
+  atg.service.dynamo.ServerConfig configure = (atg.service.dynamo.ServerConfig) request.resolveName("/atg/dynamo/admin/Configure");
+</java>
+
+<HTML>
+<HEAD>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+<TITLE>Configure Servlet Dispatch Map</TITLE>
+
+
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="images/config-banner.gif" ALT="Dynamo Configuration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+
+
+<a href="/">admin</a>/<a href="configure-server.jhtml">Configure</a>/<a href="configure-server-services.jhtml">Servers</a>/Servlet_dispatch_map<p>
+
+<blockquote>
+
+<h3>Server: <i><valueof property=Configure.serverName></valueof></i></h3>
+
+<H2>Configure Servlet Dispatch Map</H2>
+
+The <code>dispatcherServiceMap</code> property of the
+<code>/atg/dynamo/Configuration</code> component maps servlets to
+URIs. When a request comes in that matches a URI in the list, the
+request is passed to the servlet in the list. You can add a servlet to
+the list of dispatched servlets by specifying the URI and the servlet
+path value.
+
+<FORM ACTION="configure-s-s-sdm.jhtml" METHOD=GET>
+
+<input name="currentProperties" property="Configure.currentProperties" type=hidden value="dispatcherServiceMap">
+
+(currently
+
+<java>
+    if ( !configure.isDefaultServer() && !configure.isUsingDefault("dispatcherServiceMap") )
+	    out.println( " not " );
+</java>
+
+using defaults)
+
+<p>
+
+		<b>Servlet Dispatch Map</b><br>
+<blockquote>
+<TABLE BORDER="1" CELLPADDING="6" CELLSPACING="0">
+	<TR>
+		<TH>
+			URI
+		</TH>
+		<TH>
+			Path to Servlet
+		</TH>
+		<TH>&nbsp</TH>
+	</TR>
+
+
+<java>
+        // Retrieve the service map
+	Properties ht = configure.getDispatcherServiceMap();
+	if (ht == null) ht = new Properties();
+	Enumeration e = ht.keys();
+	while( e.hasMoreElements() )
+	{
+		String	key = (String) e.nextElement(),
+				value = ht.get( key ).toString();
+</java>
+		<TR>
+			<TD ALIGN=LEFT VALIGN=TOP>
+				<java> out.print( key ); </java>
+			</TD>
+			<TD ALIGN=LEFT VALIGN=TOP>
+				<java> out.print( value ); </java>
+			</TD>
+			<TD ALIGN=LEFT VALIGN=TOP>
+				<INPUT TYPE="submit" name="delete`key`" property="Configure.deleteDispatcherService"
+					submitvalue="`key`" VALUE="Delete">
+			</TD>
+		</TR>
+<java>
+	}
+</java>
+
+	<TR>
+		<TD ALIGN=LEFT VALIGN=BOTTOM>
+		  Specify the URI key for new servlet:<br>
+		  <INPUT TYPE="text" NAME="newDispatcherServiceURI" size=30>
+		</TD>
+		<TD ALIGN=LEFT VALIGN=BOTTOM>
+		  Specify the path to new servlet:<br>
+		  <INPUT TYPE="text" NAME="newDispatcherServicePath" size=30>
+		</TD>
+		<TD ALIGN=LEFT VALIGN=BOTTOM>
+			<INPUT TYPE="submit" property="Configure.addDispatcherService" VALUE="Add">
+		</TD>
+	</TR>
+</TABLE>
+
+<br>
+
+<java>
+if ( !configure.isDefaultServer() && !configure.isUsingDefault("dispatcherServiceMap") )
+{
+</java>
+    <INPUT TYPE="submit" property="Configure.applyDefault" VALUE="Use Defaults">
+<java>
+}
+</java>
+</blockquote>
+</form>
+<!--<INPUT TYPE="reset" VALUE="Reset Form">-->
+<p>
+<hr>
+<b>Change Server</b>
+<p>
+<droplet src="SelectServer.jhtml">
+    <param name="returnURL" value="configure-s-s-sdm.jhtml">
+</droplet>
+<p><valueof property=Configure.serverConfiguredText></valueof>
+<p><a href="configure-server-services.jhtml">Back</a><br>
+
+</blockquote>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/configure-s-s-sdm.jhtml#2 $$Change: 651448 $ */</java>
+

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE gsa-template
+        PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN"
+        "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template>
+
+  <item-descriptor name="user" sub-type-property="userType" query-cache-size="20">
+    
+    <table name="dps_user" type="primary" id-column-name="id">
+    
+      <property xml-combine="replace" category-resource="categoryBasics" name="userType" data-type="enumerated" default="userTypeGuest" column-name="user_type" display-name-resource="userType">
+        <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.UserProfileTemplateResources"/>
+        <attribute name="useCodeForValue" value="false"/>
+        <option resource="userTypeInvestor" code="1"/>
+        <option resource="userTypeBroker" code="2"/>
+        <option resource="userTypeGuest" code="3"/>
+      </property>
+     </table>
+
+    <table name="dss_qf_user" type="auxiliary" id-column-name="id">
+      <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.UserProfileTemplateResources"/>
+
+      <property category-resource="categoryQuincyFundsPreferences" name="numberNewsItems" data-type="int" default="4" column-name="number_news_items" 
+          display-name-resource="numberNewsItems">
+        <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.UserProfileTemplateResources"/>
+      </property>
+      <property category-resource="categoryQuincyFundsPreferences" name="numberFeatureItems" data-type="int" default="3" column-name="num_feature_items" 
+          display-name-resource="numberFeatureItems">
+        <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.UserProfileTemplateResources"/>
+      </property>
+      <property category-resource="categoryQuincyFundsPreferences" name="brokerId" data-type="string" column-name="broker_id" display-name-resource="brokerId">
+        <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.UserProfileTemplateResources"/>
+      </property>
+      <property category-resource="categoryQuincyFundsInvestmentGoals"  name="strategy" data-type="enumerated" default="strategyConservative" column-name="strategy"
+                  description-resource="strategyDescription" display-name-resource="strategy">
+        <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.UserProfileTemplateResources"/>
+        <attribute name="useCodeForValue" value="false"/>
+        <option resource="strategyConservative" code="1"/>
+        <option resource="strategyModerate" code="2"/>
+        <option resource="strategyAggressive" code="3"/>
+	      <attribute name="PropertySortPriority" value="-2"/>
+      </property>
+      <property category-resource="categoryQuincyFundsInvestmentGoals" name="goals" data-type="enumerated" default="goalsLongTerm" column-name="goals"
+                description-resource="goalsDescription" display-name-resource="goals" >
+        <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.UserProfileTemplateResources"/>
+
+        <attribute name="useCodeForValue" value="false"/>
+        <option resource="goalsLongTerm" code="1"/>
+        <option resource="goalsShortTerm" code="2"/>
+        <option resource="goalsRetirementFocus" code="3"/>
+	      <attribute name="propertySortPriority" value="-4"/>
+      </property>
+      <property category-resource="categoryQuincyFundsInvestmentGoals" name="actualStrategy" data-type="enumerated" default="strategyConservative" column-name="actual_strategy" 
+                description-resource="actualStrategyDescription" display-name-resource="actualStrategy" >
+        <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.UserProfileTemplateResources"/>
+        <attribute name="useCodeForValue" value="false"/>
+        <option resource="strategyConservative" code="1"/>
+        <option resource="strategyModerate" code="2"/>
+        <option resource="strategyAggressive" code="3"/>
+	      <attribute name="propertySortPriority" value="-1"/>
+      </property>
+      <property category-resource="categoryQuincyFundsInvestmentGoals" name="actualGoals" data-type="enumerated" default="goalsLongTerm" column-name="actual_goals"
+        description-resource="actualGoalsDescription" display-name-resource="actualGoals">
+        <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.UserProfileTemplateResources"/>
+        <attribute name="useCodeForValue" value="false"/>
+        <option resource="goalsLongTerm" code="1"/>
+        <option resource="goalsShortTerm" code="2"/>
+        <option resource="goalsRetirementFocus" code="3"/>
+	      <attribute name="propertySortPriority" value="-3"/>
+      </property>
+      <property category-resource="categoryQuincyFundsBehaviorTracking" name="aggressiveIndex" data-type="int" default="0" column-name="aggressive_index"
+          description-resource="aggressiveIndexDescription" display-name-resource="aggressiveIndex">
+        <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.UserProfileTemplateResources"/>
+      </property>
+      <property category-resource="categoryQuincyFundsPrivileges" name="pubPrivileges" data-type="enumerated" default="pubPrivilegesNone" column-name="pub_privileges" display-name-resource="pubPrivileges">
+        <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.UserProfileTemplateResources"/>
+        <attribute name="useCodeForValue" value="false"/>
+        <option resource="pubPrivilegesNone" code="1"/>
+        <option resource="pubPrivilegesAuthor" code="2"/>
+        <option resource="pubPrivilegesEditor" code="3"/>
+      </property>
+    </table>
+
+    <table name="dss_qf_interest" type="multi" id-column-name="id" multi-column-name="sequence_num">
+      <property category-resource="categoryQuincyFundsPreferences" name="interests" data-type="array" component-data-type="string" column-name="interest" 
+          display-name-resource="interests">
+        <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.UserProfileTemplateResources"/>
+      </property>
+    </table>
+
+    <table name="dss_qf_fund_list" type="multi" id-column-name="id" multi-column-name="sequence_num">
+      <property category-resource="categoryQuincyFundsInvestments" name="fundList" data-type="array" component-data-type="string" column-name="fund_identifier"
+          description-resource="fundListDescription" display-name-resource="fundList">
+        <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.UserProfileTemplateResources"/>
+        <attribute name="uiwritable" value="false"/>
+      </property>
+    </table>
+
+    <table name="dss_qf_fund_share" type="multi" id-column-name="id" multi-column-name="sequence_num">
+      <property category-resource="categoryQuincyFundsInvestments" name="fundShares" data-type="array" component-data-type="int" column-name="share_count"
+          description-resource="fundSharesDescription" display-name-resource="fundShares">
+        <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.UserProfileTemplateResources"/>
+        <attribute name="uiwritable" value="false"/>
+      </property>
+    </table>
+
+    <table name="dss_qf_fnds_viewd" type="multi" id-column-name="id" multi-column-name="sequence_num">
+      <property category-resource="categoryQuincyFundsBehaviorTracking" name="fundsViewed" data-type="array" component-data-type="string" 
+          column-name="fund_identifier" display-name-resource="fundsViewed">
+        <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.UserProfileTemplateResources"/>
+      </property>
+    </table>
+
+    <!-- The offerCode is transient. -->	
+    <property category-resource="categoryQuincyFundsBehaviorTracking" name="offerCode" data-type="string" display-name-resource="offerCode">
+      <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.UserProfileTemplateResources"/>
+    </property>
+
+  </item-descriptor>
+
+  <item-descriptor name="investor" super-type="user" sub-type-value="investor">
+    <table name="dss_qf_investor" type="auxiliary" id-column-name="id">
+      <property category-resource="categoryQuincyFundsInvestorProperties" name="assetValue" data-type="float" default="0.0" column-name="asset_value" description-resource="investorPropertiesDescription" display-name-resource="assetValue">
+	<attribute name="resourceBundle" value="atg.projects.dssj2eedemo.UserProfileTemplateResources"/>	  </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="broker" super-type="user" sub-type-value="broker">
+    <table name="dss_qf_broker" type="auxiliary" id-column-name="id">
+      <property category-resource="categoryQuincyFundsBrokerProperties" name="commissionPercentage" data-type="int" default="5" column-name="commission_pct" description-resource="brokerPropertiesDescription" display-name-resource="commissionPercentage">
+        <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.UserProfileTemplateResources"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //product/DSS/version/10.0.3/release/DSSJ2EEDemo/config/atg/userprofiling/userProfile.xml#2 $$Change: 651448 $ -->

@@ -1,0 +1,179 @@
+ <table border="0" cellpadding="0" cellspacing="0" width="100%">
+ <tr bgcolor="<%="#"+gearTitleBackgroundColor%>">
+   <td><font class="smaller" color="<%="#"+gearTitleTextColor%>">&nbsp;&nbsp;
+
+
+  &nbsp;<i18n:message key="template_header_welcome_param">
+          <i18n:messageArg value="<%=greetingName%>"/>
+        </i18n:message>
+   </font></td><td align="center" valign="bottom">
+
+  <%@ include file="header_page_tabs.jspf" %>
+
+   </td>
+ </tr>
+ <tr>
+   <td valign="top" colspan="2">
+  <table border="0" cellpadding="0" cellspacing="0" width="100%">
+    <tr>
+   <td width="100%" bgcolor="#eeeeee"><img src="/portal/layoutTemplates/images/clear.gif" width="1" height="1" border="0"></td>
+    </tr>
+
+    <tr>
+   <td width="100%" bgcolor="#cccccc" >
+     <table border="0" cellpadding="0" cellspacing="0" width="100%">
+    <tr>
+      <td></td> 
+
+
+
+  <td bgcolor="#cccccc" width="22"><img src="/portal/layoutTemplates/images/45_trans_right.gif" width="22" height="17" border="0"></td>
+       <td bgcolor="#cccccc" NOWRAP ><nobr><font class="smaller"><a href="#favorite" style="text-decoration:none"
+        onmouseover="CSAction(new Array(/*CMP*/'2D55DE0'));return true;"
+        onclick="CSAction(new Array(/*CMP*/'2D55DE0'));return true;"
+        csclick="2DF1FD1"
+<%--  onmouseout="CSAction(new Array('2E52BB2'));" csout="2E52BB2" --%>
+><font class="smaller" color="#333333"><b><i18n:message key="template_header_link_favorite_communities"/></b></font></a></font></nobr></td>
+
+       <td bgcolor="#cccccc" width="22"><img src="/portal/layoutTemplates/images/45_trans_right.gif" width="22" height="17" border="0"></td>
+
+
+
+<%
+String  hidePersonalize = "false";
+if ( request.getParameter("paf_default_view") != null ) {
+   hidePersonalize = request.getParameter("paf_default_view") ;
+ }
+
+%>
+
+ <core:If value='<%= pafEnv.getCommunity().isAllowPersonalizedPages() &&  (! hidePersonalize.equals("true"))  && (!  currPage.isFixed() ) %>' >
+  
+        <core:CreateUrl id="fullSettingsUrl" url="/portal/settings/gears.jsp">
+        
+         <core:If value="<%= currPage.isPersonalizedPage()%>">
+        <core:UrlParam param="paf_ppage_id" value="<%= currPage.getId() %>"/>
+         </core:If>
+         <core:If value="<%= ! currPage.isPersonalizedPage()%>">
+        <core:UrlParam param="paf_page_id" value="<%= currPage.getId() %>"/>
+         </core:If>
+        
+       
+         <core:If value="<%= pafEnv.getCommunity().isPersonalizedCommunity()%>">
+        <core:UrlParam param="paf_pcommunity_id" value="<%= ((atg.portal.framework.PersonalizedCommunity) pafEnv.getCommunity()).getPersonalizedCommunityId() %>"/>
+         </core:If>
+        <core:If value="<%=! pafEnv.getCommunity().isPersonalizedCommunity()%>">
+         <core:UrlParam param="paf_community_id" value="<%= pafEnv.getCommunity().getId() %>"/>
+        </core:If>
+        
+       <paf:encodeUrlParam param="paf_page_url" value="<%= pafEnv.getOriginalRequestURI() %>"/>
+       <td bgcolor="#cccccc" NOWRAP><nobr><a href="<%= fullSettingsUrl.getNewUrl() %>" style="text-decoration:none"><font class="smaller" color="#333333"><b><i18n:message key="template_header_link_customize"/></b></font></a></nobr></td>
+       <td bgcolor="#cccccc" width="22"><img src="/portal/layoutTemplates/images/45_trans_right.gif" width="22" height="17" border="0"></td>
+        </core:CreateUrl>
+
+      </core:If>
+
+      <%-- END CAN PERSONALIZE IS TRUE --%>
+
+
+
+  <core:CreateUrl id="fullGearUrl" url="<%=pafEnv.getUpdateProfileURI()%>">
+    <core:UrlParam param="col_pb"  value="<%= pageBackgroundColor %>"/>
+    <core:UrlParam param="col_pt"  value="<%= pageTextColor %>"/>
+    <core:UrlParam param="col_gtb" value="<%= gearTitleBackgroundColor %>"/>
+    <core:UrlParam param="col_gtt" value="<%= gearTitleTextColor %>"/>
+    <core:UrlParam param="col_gb"  value="<%= gearBackgroundColor %>"/>
+    <core:UrlParam param="col_gt"  value="<%= gearTextColor %>"/>
+    <paf:encodeUrlParam param="successURL" value="<%= pafEnv.getOriginalRequestURI() %>"/>
+   <td bgcolor="#cccccc" NOWRAP><nobr><a href="<%= fullGearUrl.getNewUrl() %>" style="text-decoration:none"><font class="smaller" color="#333333"><b><i18n:message key="template_header_link_my_info"/></b></font></a></nobr></td>
+   <td bgcolor="#cccccc" align="right" width="22"><img src="/portal/layoutTemplates/images/45_trans_left.gif" width="22" height="17" border="0"></td>
+  </core:CreateUrl>
+
+ <core:If value="<%= ! pafEnv.getCommunity().isPersonalizedCommunity()%>">
+
+  <%--  ALERTS  --%>
+   <core:CreateUrl id="alertsUrl" url="/portal/settings/alerts.jsp">
+    <core:UrlParam param="paf_community_id"  value="<%= pafEnv.getCommunity().getId() %>"/>
+    <core:UrlParam param="paf_page_url"  value="<%= pafEnv.getPageURI(currPage) %>"/>
+   <td bgcolor="#cccccc" NOWRAP><nobr><a href="<%= alertsUrl.getNewUrl() %>" style="text-decoration:none"><font class="smaller" color="#333333"><b><i18n:message key="template_header_link_my_alerts"/></b></font></a></nobr></td>
+   <td bgcolor="#cccccc" align="right" width="22"><img src="/portal/layoutTemplates/images/45_trans_left.gif" width="22" height="17" border="0"></td>
+   </core:CreateUrl>
+ </core:If>
+
+
+      <td width="95%">&nbsp;</td><!-- dont remove -->
+
+      <% 
+      String sourceCommunityId = pafEnv.getCommunity().getId();
+      if(pafEnv.getCommunity().isPersonalizedCommunity())
+        sourceCommunityId = ((atg.portal.framework.PersonalizedCommunity)pafEnv.getCommunity()).getSourceCommunity().getId();
+      %>
+
+<paf:hasCommunityRole  roles="leader,page-manager,gear-manager,user-manager,settings-manager">
+     <%--  IF CAN LEADER IS TRUE --%>
+     <core:CreateUrl id="fullLeaderUrl" url="/portal/settings/community_settings.jsp">
+       <core:UrlParam param="paf_page_id" value="<%= currPage.getId() %>"/>
+       <core:UrlParam param="paf_community_id" value="<%= sourceCommunityId %>"/>
+   <paf:encodeUrlParam param="paf_page_url" value="<%=pafEnv.getCommunityURI(sourceCommunityId)%>"/>
+
+  <core:If value='<%= request.getParameter("paf_default_view") %>' >
+    <td NOWRAP><nobr><b><font class="smaller" color="#cc0000"><i18n:message key="template_header_link_admin_preview"/></font></b></nobr></td>
+    <td><img src="/portal/layoutTemplates/images/four_dots_vert.gif" height="16" width="11" border="0"></td>
+  </core:If>
+    <td NOWRAP><nobr><b><a style="text-decoration:none" href="<%=fullLeaderUrl.getNewUrl()%>"><font class="smaller" color="#333333"><i18n:message key="template_header_link_administer"/></font></a></b></nobr></td>
+
+    <td><img src="/portal/layoutTemplates/images/four_dots_vert.gif" height="16" width="11" border="0"></td>
+    </core:CreateUrl>
+     <%-- END IF CAN LEADER IS TRUE --%>
+</paf:hasCommunityRole>
+
+
+  <%-- IF CAN ENROLL IN COMMUNITY --%>
+
+  <core:If value="<%=pafEnv.getCommunity().isAllowMembershipRequest() && !pafEnv.isLeader()%>">
+	  <core:ExclusiveIf>
+   	   <core:If value="<%=pafEnv.isMember()%>">
+	   <core:CreateUrl id="memRequestUrl" url="/portal/settings/membership_unsubscribe.jsp">
+    	   <core:UrlParam param="paf_community_id"  value="<%= pafEnv.getCommunity().getId()%>"/>
+    	   <paf:encodeUrlParam param="origURL"  value="<%= pafEnv.getOriginalRequestURI()%>"/>
+ <td NOWRAP><nobr><b><a style="text-decoration:none" href="<%=memRequestUrl.getNewUrl()%>"><font class="smaller" color="#333333"><i18n:message key="template_header_link_unsubscribe"/></font></a></b></nobr></td>
+ <td><img src="/portal/layoutTemplates/images/four_dots_vert.gif" height="16" width="11" border="0"></td>
+ </core:CreateUrl>
+
+   		   </core:If>
+   		   <core:DefaultCase>
+		    <core:CreateUrl id="memRequestUrl" url="/portal/settings/membership_request.jsp">
+    			    <core:UrlParam param="paf_community_id"  value="<%= pafEnv.getCommunity().getId()%>"/>
+    			    <core:UrlParam param="origURL"  value="<%= pafEnv.getOriginalRequestURI()%>"/>
+       		<td NOWRAP><nobr><b><a style="text-decoration:none" href="<%=memRequestUrl.getNewUrl()%>"><font class="smaller" color="#333333"><i18n:message key="template_header_link_become_member"/></font></a></b></nobr></td>
+
+       		<td><img src="/portal/layoutTemplates/images/four_dots_vert.gif" height="16" width="11" border="0"></td>
+       </core:CreateUrl>
+   		   </core:DefaultCase>
+   		   </core:ExclusiveIf>
+  		 </core:If>
+
+
+       <core:CreateUrl id="logoutURL" url="<%=pafEnv.getLogoutURI()%>">
+      <core:UrlParam param="successURL" value="<%= pafEnv.getCommunityURI(pafEnv.getCommunity()) %>"/>
+    			<core:UrlParam param="col_pb"  value="<%= pageBackgroundColor %>"/>
+    			<core:UrlParam param="col_pt"  value="<%= pageTextColor %>"/>
+    			<core:UrlParam param="col_gtb" value="<%= gearTitleBackgroundColor%>"/>
+    			<core:UrlParam param="col_gtt" value="<%= gearTitleTextColor %>"/>
+    			<core:UrlParam param="col_gb"  value="<%=gearBackgroundColor %>"/>
+    			<core:UrlParam param="col_gt"  value="<%=gearTextColor %>"/>
+      <td NOWRAP><a href="<%= logoutURL.getNewUrl() %>"><img src="/portal/layoutTemplates/images/arrow_up_right.gif" height="16" width="16" border="0"></a></td>
+      <td nowrap><nobr><b><a href="<%= logoutURL.getNewUrl() %>" style="text-decoration:none"><font class="smaller" color="#333333"><i18n:message key="template_header_link_log_out"/>&nbsp;&nbsp;&nbsp;</font></a></b></nobr></td>
+       </core:CreateUrl>
+
+      </tr>
+     </table>
+   </td>
+    </tr>
+    <tr>
+   <td width="100%"  bgcolor="#999999"><img src="/portal/layoutTemplates/images/clear.gif" width="1" height="1" border="0"></td>
+    </tr>
+  </table></td>
+ </tr>
+</table>
+<%-- @version $Id: //app/portal/version/10.0.3/templates/layoutTemplates.war/web/html/header_links_logged_in.jspf#2 $$Change: 651448 $--%>

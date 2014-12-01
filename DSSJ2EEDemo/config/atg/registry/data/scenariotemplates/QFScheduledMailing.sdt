@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE scenario
+  SYSTEM
+  "dynamosystemresource:/atg/scenario/definition/sdl.dtd">
+
+<scenario modification-time="963343218142" enabled="false" author="admin" creation-time="963343218142">
+  <segment>
+    <segment-name>Send Mail</segment-name>
+    <!--================================-->
+    <!--== On (Mailing Date) at 2:00AM  -->
+    <!--================================-->
+    <time id="1">
+      <date-time-pattern>
+        <date placeholder-name="Mailing Date">
+          <month>7</month>
+          <day>11</day>
+          <year>2001</year>
+        </date>
+        <time-of-day>
+          <hours>2</hours>
+          <minutes>00</minutes>
+          <meridian>AM</meridian>
+        </time-of-day>
+      </date-time-pattern>
+    </time>
+    <!--================================-->
+    <!--== Receive email is yes  -->
+    <!--================================-->
+    <condition id="2" construct="people-element">
+      <filter operator="eq" construct="profile-property-filter">
+        <subject-property>
+          <property-name>receiveEmail</property-name>
+        </subject-property>
+        <constant>yes</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== in group (Mailing Group)  -->
+    <!--================================-->
+    <condition id="3" construct="people-element">
+      <filter operator="eq" construct="profile-group-filter">
+        <subject-property>
+          <property-name placeholder-name="Mailing Group">investors</property-name>
+        </subject-property>
+        <constant type="boolean">true</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Send email (Email)  -->
+    <!--================================-->
+    <action id="4">
+      <action-name>sendEmail</action-name>
+      <action-param name="template">
+        <constant placeholder-name="Email">/QuincyFunds/en/email/monthlynewsletter.jsp</constant>
+      </action-param>
+    </action>
+  </segment>
+</scenario>

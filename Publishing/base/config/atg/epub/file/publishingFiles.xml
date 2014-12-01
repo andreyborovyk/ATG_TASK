@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE gsa-template
+        PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN"
+        "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+ 
+<gsa-template>
+
+  <header>
+    <name>PublishingFiles</name>
+    <author>Manny Parasirakis</author>
+    <version>$Id: //product/Publishing/version/10.0.3/pws/config/atg/epub/file/publishingFiles.xml#2 $$Change: 651448 $</version>
+  </header>
+
+  <!-- *********************************** -->
+  <!--   Content Folder Item Definition    -->
+  <!-- *********************************** -->
+  <item-descriptor name="fileFolder" display-name-resource="itemDescriptorFileFolder"
+      folder="true" content-name-property="name" folder-id-property="parentFolder"
+      display-property="name" item-cache-size="1000" query-cache-size="500">
+
+    <attribute name="resourceBundle" value="atg.epub.file.FileRepositoryResources"/>
+
+    <attribute name="icon" value="folderIcon"/>
+    <attribute name="epubIcon" value="folderIcon"/>
+    <attribute name="epubIconBundle" value="atg.epub.file.FileRepositoryResources"/>
+    <attribute name="iconSwf" value="folderIconSwf"/>
+    <attribute name="largeIconSwf" value="folderLargeIconSwf"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="epub_file_folder" type="primary" id-column-name="folder_id">
+      <!-- categoryInfo -->
+      <property name="id" column-name="folder_id" data-type="string"
+          category-resource="categoryInfo" display-name-resource="folderId">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="acl" column-name="acl" data-type="big string" expert="true"
+          category-resource="categoryInfo" display-name-resource="acl">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+
+      <!-- categoryBasics -->
+      <property name="name" column-name="folder_name" data-type="string" required="true"
+          category-resource="categoryBasics" display-name-resource="folderName">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="parentFolder" column-name="parent_folder" item-type="fileFolder"
+          category-resource="categoryBasics" display-name-resource="parentFolder">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- *********************************** -->
+  <!--   File Content Item Definition      -->
+  <!--   ( super type for items )          -->
+  <!-- *********************************** -->
+  <item-descriptor name="fileAsset" sub-type-property="type"
+      content="true" content-property="content"
+      content-name-property="filename" folder-id-property="parentFolder"
+      content-length-property="size" last-modified-property="lastModified"
+      display-property="filename" display-name-resource="itemDescriptorFileAsset"
+      item-cache-size="1000" query-cache-size="500">
+
+    <attribute name="resourceBundle" value="atg.epub.file.FileRepositoryResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+    <attribute name="categoryDataPriority" value="30"/>
+
+    <!-- transient properties -->
+    <property name="path" property-type="atg.epub.file.FilePathPropertyDescriptor"
+        category-resource="categoryBasics" display-name-resource="path">
+      <attribute name="propertySortPriority" value="70"/>
+    </property>
+
+    <!-- categoryData -->    
+    <property name="content" property-type="atg.epub.file.VersionFilePropertyDescriptor"
+	  category-resource="categoryData" display-name-resource="content">
+      <attribute name="pathPrefix" value="{atg.dynamo.home}/Publishing/versionFileStore"/>
+      <attribute name="propertySortPriority" value="10"/>
+      <attribute name="repositoryFormHandlerSettable" value="false"/>
+    </property>
+   
+    <table name="epub_file_asset" type="primary" id-column-name="file_asset_id">
+      <!-- categoryInfo -->
+      <property name="id" column-name="file_asset_id" data-type="string"
+          category-resource="categoryInfo" display-name-resource="fileAssetId">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="type" column-name="type" data-type="enumerated"
+          category-resource="categoryInfo" display-name-resource="type">
+        <attribute name="propertySortPriority" value="20"/>
+        <attribute name="useCodeForValue" value="false"/>
+        <option value="textFileAsset" code="8500"/>
+        <option value="binaryFileAsset" code="8501"/>
+        <option value="personalization" code="8502"/>
+        <option value="configurationFile" code="8503"/>
+        <option value="targeter" code="8600"/>
+        <option value="contentGroup" code="8601"/>
+        <option value="profileGroup" code="8602"/>
+        <option value="slot" code="8603"/>
+        <option value="scenario" code="8604"/>
+        <option value="segment" code="8605"/>
+        <option value="utility" code="8606"/>
+        <option value="wwwTextFileAsset" code="8700"/>
+        <option value="wwwBinaryFileAsset" code="8701"/>
+        <option value="webApplicationTextFile" code="8800"/>
+        <option value="webApplicationBinaryFile" code="8801"/>
+        <option value="javaServerPage" code="8802"/>
+      </property>
+      <property name="acl" column-name="acl" data-type="big string" expert="true"
+          category-resource="categoryInfo" display-name-resource="acl">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+
+      <!-- categoryBasics -->
+      <property name="filename" column-name="filename" data-type="string" required="true"
+          category-resource="categoryBasics" display-name-resource="filename">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="lastModified" column-name="last_modified" data-type="timestamp" expert="true"
+          category-resource="categoryBasics" display-name-resource="lastModified">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="size" column-name="size_bytes" data-type="long" expert="true"
+          category-resource="categoryBasics" display-name-resource="size">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property name="checksum" column-name="checksum" data-type="long" expert="true"
+          category-resource="categoryBasics" display-name-resource="checksum">
+        <attribute name="propertySortPriority" value="55"/>
+      </property>
+      <property name="parentFolder" column-name="parent_folder" item-type="fileFolder"
+          category-resource="categoryBasics" display-name-resource="parentFolder">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- *********************************** -->
+  <!--   Text Item Definitions             -->
+  <!-- *********************************** -->
+  <item-descriptor name="textFileAsset" super-type="fileAsset" sub-type-value="textFileAsset"
+      content="true" content-property="content" display-name-resource="itemDescriptorTextFileAsset"
+      item-cache-size="1000" query-cache-size="500">
+    <attribute name="resourceBundle" value="atg.epub.file.FileRepositoryResources"/>
+  </item-descriptor>
+
+  <!-- *********************************** -->
+  <!--   Binary Item Definitions           -->
+  <!-- *********************************** -->
+  <item-descriptor name="binaryFileAsset" super-type="fileAsset" sub-type-value="binaryFileAsset"
+      content="true" content-property="content" display-name-resource="itemDescriptorBinaryFileAsset"
+      item-cache-size="1000" query-cache-size="500">
+    <attribute name="resourceBundle" value="atg.epub.file.FileRepositoryResources"/>
+  </item-descriptor>
+
+  <!-- *********************************** -->
+  <!-- ConfigurationFile Item Definitions  -->
+  <!-- *********************************** -->
+  <item-descriptor name="configurationFile" super-type="textFileAsset"
+      content="true" sub-type-value="configurationFile"
+      display-name-resource="itemDescriptorConfigurationFile"
+      item-cache-size="1000" query-cache-size="500">
+    <attribute name="resourceBundle" value="atg.epub.file.FileRepositoryResources"/>
+  </item-descriptor>
+
+  <!-- *********************************** -->
+  <!--   Personalization Item Definitions  -->
+  <!-- *********************************** -->
+  <item-descriptor name="personalization" super-type="configurationFile"
+      content="true" sub-type-value="personalization"
+      display-name-resource="itemDescriptorPersonalization"
+      item-cache-size="1000" query-cache-size="500">
+    <attribute name="resourceBundle" value="atg.epub.file.FileRepositoryResources"/>
+  </item-descriptor>
+
+  <!-- *********************************** -->
+  <!--   Scenario Item Definition          -->
+  <!-- *********************************** -->
+  <item-descriptor name="scenario" super-type="personalization"
+      sub-type-value="scenario" content="true"
+      display-name-resource="itemDescriptorScenario"
+      item-cache-size="1000" query-cache-size="500">
+    <attribute name="resourceBundle" value="atg.epub.file.FileRepositoryResources"/>
+    <attribute name="icon" value="scenarioIcon"/>
+    <attribute name="epubIcon" value="scenarioIcon"/>
+    <attribute name="epubIconBundle" value="atg.epub.file.FileRepositoryResources"/>
+    <attribute name="iconSwf" value="scenarioIconSwf"/>
+    <attribute name="largeIconSwf" value="scenarioLargeIconSwf"/>
+  </item-descriptor>
+
+  <!-- *********************************** -->
+  <!--   Targeter Item Definition          -->
+  <!-- *********************************** -->
+  <item-descriptor name="targeter" super-type="personalization"
+      sub-type-value="targeter" content="true"
+      display-name-resource="itemDescriptorTargeter"
+      item-cache-size="1000" query-cache-size="500">
+    <attribute name="resourceBundle" value="atg.epub.file.FileRepositoryResources"/>
+    <attribute name="icon" value="targeterIcon"/>
+    <attribute name="epubIcon" value="targeterIcon"/>
+    <attribute name="epubIconBundle" value="atg.epub.file.FileRepositoryResources"/>
+    <attribute name="iconSwf" value="targeterIconSwf"/>
+    <attribute name="largeIconSwf" value="targeterLargeIconSwf"/>
+  </item-descriptor>
+
+  <!-- *********************************** -->
+  <!--   Content Group Item Definition     -->
+  <!-- *********************************** -->
+  <item-descriptor name="contentGroup" super-type="personalization"
+      sub-type-value="contentGroup" content="true"
+      display-name-resource="itemDescriptorContentGroup"
+      item-cache-size="1000" query-cache-size="500">
+    <attribute name="resourceBundle" value="atg.epub.file.FileRepositoryResources"/>
+    <attribute name="icon" value="contentGroupIcon"/>
+    <attribute name="epubIcon" value="contentGroupIcon"/>
+    <attribute name="epubIconBundle" value="atg.epub.file.FileRepositoryResources"/>
+    <attribute name="iconSwf" value="contentGroupIconSwf"/>
+    <attribute name="largeIconSwf" value="contentGroupLargeIconSwf"/>
+  </item-descriptor>
+
+  <!-- *********************************** -->
+  <!--   Profile Group Item Definition     -->
+  <!-- *********************************** -->
+  <item-descriptor name="profileGroup" super-type="personalization"
+      sub-type-value="profileGroup" content="true"
+      display-name-resource="itemDescriptorProfileGroup"
+      item-cache-size="1000" query-cache-size="500">
+    <attribute name="resourceBundle" value="atg.epub.file.FileRepositoryResources"/>
+    <attribute name="icon" value="profileGroupIcon"/>
+    <attribute name="epubIcon" value="profileGroupIcon"/>
+    <attribute name="epubIconBundle" value="atg.epub.file.FileRepositoryResources"/>
+    <attribute name="iconSwf" value="profileGroupIconSwf"/>
+    <attribute name="largeIconSwf" value="profileGroupLargeIconSwf"/>
+  </item-descriptor>
+
+  <!-- ***********************************  -->
+  <!--   User Segment Item Definition       -->
+  <!-- ***********************************  -->
+  <item-descriptor name="segment" super-type="profileGroup"
+      sub-type-value="segment" content="true"
+      display-name-resource="itemDescriptorSegment"
+      item-cache-size="1000" query-cache-size="500">
+    <attribute name="resourceBundle" value="atg.epub.file.FileRepositoryResources"/>
+    <attribute name="icon" value="segmentIcon"/>
+    <attribute name="iconSwf" value="segmentIconSwf"/>
+    <attribute name="largeIconSwf" value="segmentLargeIconSwf"/>
+  </item-descriptor>
+
+  <!-- *********************************** -->
+  <!--   Slot Item Definition              -->
+  <!-- *********************************** -->
+  <item-descriptor name="slot" super-type="personalization" sub-type-value="slot"
+      content="true" display-name-resource="itemDescriptorSlot"
+      item-cache-size="1000" query-cache-size="500">
+    <attribute name="resourceBundle" value="atg.epub.file.FileRepositoryResources"/>
+    <attribute name="icon" value="slotIcon"/>
+    <attribute name="epubIcon" value="slotIcon"/>
+    <attribute name="epubIconBundle" value="atg.epub.file.FileRepositoryResources"/>
+    <attribute name="iconSwf" value="slotIconSwf"/>
+    <attribute name="largeIconSwf" value="slotLargeIconSwf"/>
+  </item-descriptor>
+
+  <!-- *********************************** -->
+  <!--   Utility Item Definition           -->
+  <!-- *********************************** -->
+  <item-descriptor name="utility" super-type="configurationFile" sub-type-value="utility"
+      content="true" display-name-resource="itemDescriptorUtility"
+      item-cache-size="1000" query-cache-size="500">
+    <attribute name="deployable" value="false" data-type="boolean"/>
+    <attribute name="resourceBundle" value="atg.epub.file.FileRepositoryResources"/>
+  </item-descriptor>
+
+  <!-- ********************************************* -->
+  <!--   webApplicationTextFile Item Definition      -->
+  <!-- ********************************************* -->
+  <item-descriptor name="webApplicationTextFile" super-type="textFileAsset"
+      sub-type-value="webApplicationTextFile" content="true"
+      display-name-resource="itemDescriptorWebApplicationTextFile"
+      item-cache-size="1000" query-cache-size="500">
+    <attribute name="resourceBundle" value="atg.epub.file.FileRepositoryResources"/>
+  </item-descriptor>
+
+  <!-- ********************************************* -->
+  <!--   webApplicationBinaryFile Item Definition    -->
+  <!-- ********************************************* -->
+  <item-descriptor name="webApplicationBinaryFile" super-type="binaryFileAsset"
+      sub-type-value="webApplicationBinaryFile" content="true"
+      display-name-resource="itemDescriptorWebApplicationBinaryFile"
+      item-cache-size="1000" query-cache-size="500">
+    <attribute name="resourceBundle" value="atg.epub.file.FileRepositoryResources"/>
+  </item-descriptor>
+
+  <!-- ********************************************* -->
+  <!--   javaServerPage Item Definition              -->
+  <!-- ********************************************* -->
+  <item-descriptor name="javaServerPage" super-type="webApplicationTextFile"
+      sub-type-value="javaServerPage" content="true"
+      display-name-resource="itemDescriptorJavaServerPage"
+      item-cache-size="1000" query-cache-size="500">
+    <attribute name="resourceBundle" value="atg.epub.file.FileRepositoryResources"/>
+    <attribute name="iconSwf" value="jspFileIconSwf"/>
+    <attribute name="largeIconSwf" value="jspFileLargeIconSwf"/>
+  </item-descriptor>
+
+  <!-- ******************************************* -->
+  <!--   wwwTextFileAsset Item Definition          -->
+  <!-- ******************************************* -->
+  <item-descriptor name="wwwTextFileAsset" super-type="textFileAsset"
+      sub-type-value="wwwTextFileAsset" content="true"
+      display-name-resource="itemDescriptorWWWTextFileAsset"
+      item-cache-size="1000" query-cache-size="500">
+    <attribute name="resourceBundle" value="atg.epub.file.FileRepositoryResources"/>
+    <attribute name="icon" value="wwwTextFileIcon"/>
+    <attribute name="iconSwf" value="wwwTextFileIconSwf"/>
+    <attribute name="largeIconSwf" value="wwwTextFileLargeIconSwf"/>
+  </item-descriptor>
+
+
+  <!-- ********************************************* -->
+  <!--   wwwBinaryFileAsset Item Definition          -->
+  <!-- ********************************************* -->
+  <item-descriptor name="wwwBinaryFileAsset" super-type="binaryFileAsset"
+      sub-type-value="wwwBinaryFileAsset" content="true"
+      display-name-resource="itemDescriptorWWWBinaryFileAsset"
+      item-cache-size="1000" query-cache-size="500">
+    <attribute name="resourceBundle" value="atg.epub.file.FileRepositoryResources"/>
+    <attribute name="icon" value="wwwBinaryFileIcon"/>
+    <attribute name="iconSwf" value="wwwBinaryFileIconSwf"/>
+    <attribute name="largeIconSwf" value="wwwBinaryFileLargeIconSwf"/>
+  </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //product/Publishing/version/10.0.3/pws/config/atg/epub/file/publishingFiles.xml#2 $$Change: 651448 $ -->

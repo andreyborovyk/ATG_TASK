@@ -1,0 +1,143 @@
+<HTML>
+<HEAD>
+<TITLE>Inventory</TITLE>
+</HEAD>
+
+<importbean bean="/atg/commerce/inventory/InventoryFormHandler">
+<importbean bean="/atg/dynamo/droplet/IsNull">
+
+<body BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="../images/dcsadminbanner.gif" ALT="Dynamo Commerce Administration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a href="../index.jhtml">Commerce</a>/Inventory<p>
+
+<blockquote>
+<H2>Inventory</H2>
+
+<setvalue bean="InventoryFormHandler.lowerBound" value="param:lowerBound">
+<setvalue bean="InventoryFormHandler.upperBound" value="param:upperBound">
+<droplet bean="IsNull">
+  <param name="value" value="param:batchNumber">
+  <oparam name="false">
+    <setvalue bean="InventoryFormHandler.batchNumber" value="param:batchNumber">
+  </oparam>
+  <oparam name="true">
+    <setvalue bean="InventoryFormHandler.batchNumber" value="0">
+  </oparam>
+</droplet>
+
+<table cellspacing=8>
+  <tr>
+    <td><a href="index.jhtml"><i>Refresh this page</i>
+	  <param name="lowerBound" value="bean:InventoryFormHandler.lowerBound">
+	  <param name="upperBound" value="bean:InventoryFormHandler.upperBound">
+	  <param name="batchNumber" value="bean:InventoryFormHandler.batchNumber">
+	</a></td>
+    <td><a href="#update">Update Inventory</a></td>
+    <td><a href="#notify">Inventory Update Notification</a></td>
+  </tr>
+</table>
+
+<font color=cc0000><STRONG>
+   <valueof bean="InventoryFormHandler.errorMessage"></valueof><br>
+</STRONG></font>
+
+<p>
+
+<img src="../../images/bluedot.gif" width=505 height=1><p>
+
+<b>Display Inventory</b><p>
+
+<form action="index.jhtml" method=POST>
+
+The following table displays the inventory information for each item in
+the product catalog. The items are listed alphabetically by display
+name. Use <i>Previous</i> and <i>Next</i> to scroll through all the items.
+
+You can filter the table to list only items with Names that are
+alphabetically between
+<input rows=1 cols=15 name="lowerBound" bean="InventoryFormHandler.lowerBound">
+and
+<input rows=1 cols=15 name="upperBound" bean="InventoryFormHandler.upperBound">
+<input type=submit value="View...">
+
+</form>
+
+<DROPLET src="DisplayInventory.jhtml">
+  <PARAM name="lowerBound" value="bean:InventoryFormHandler.lowerBound">
+  <PARAM name="upperBound" value="bean:InventoryFormHandler.upperBound">
+  <PARAM name="batchNumber" value="bean:InventoryFormHandler.batchNumber">
+</DROPLET>
+  
+<p>
+
+<img src="../../images/bluedot.gif" width=505 height=1><p>
+
+<b><A NAME="update">Update Inventory</A></b><p>
+
+Use this section to change the inventory values associated with each
+item. Enter the SKU ID for the item and the new value. Then select the
+level, threshold, a status, or a date that you want to change. Select
+increase or decrease to adjust the current value by the amount entered
+in the New Value field.<br>
+
+<form action="index.jhtml" method=POST>
+<b>Sku id:</b> <input rows=1 cols=30 bean="InventoryFormHandler.SKU" value="">
+<br><b>New value:</b> <input rows=1 cols=30 bean="InventoryFormHandler.newValue" value="">
+<br>
+<table>
+  <tr>
+    <td valign="top">
+	<input type=radio bean="InventoryFormHandler.changedProperty" value="stockLevel" checked>stockLevel<br>
+	<input type=radio bean="InventoryFormHandler.changedProperty" value="backorderLevel">backorderLevel<br>
+	<input type=radio bean="InventoryFormHandler.changedProperty" value="preorderLevel">preorderLevel<br>
+	<input type=radio bean="InventoryFormHandler.changedProperty" value="stockThreshold">stockThreshold<br>
+	<input type=radio bean="InventoryFormHandler.changedProperty" value="backorderThreshold">backorderThreshold<br>
+	<input type=radio bean="InventoryFormHandler.changedProperty" value="preorderThreshold">preorderThreshold<br>
+	<input type=radio bean="InventoryFormHandler.changedProperty" value="availabilityStatus">availabilityStatus<br>
+	<input type=radio bean="InventoryFormHandler.changedProperty" value="availabilityDate">availabilityDate<br>
+    </td>
+    <td valign="top">
+	<input type=radio bean="InventoryFormHandler.setType" value="set" checked>set<br>
+	<input type=radio bean="InventoryFormHandler.setType" value="increase">increase<br>
+	<input type=radio bean="InventoryFormHandler.setType" value="decrease">decrease<br>
+	<i>"set" is assumed if changing a threshold, a status, or a date</i><br>
+    </td>
+  </tr>
+</table>
+
+<input type=hidden name="lowerBound" value="bean:InventoryFormHandler.lowerBound">
+<input type=hidden name="upperBound" value="bean:InventoryFormHandler.upperBound">
+<input type=hidden name="batchNumber" value="bean:InventoryFormHandler.batchNumber" number>
+<input type=submit bean="InventoryFormHandler.changeInventory" value="Update...">
+</form>
+
+
+<img src="../../images/bluedot.gif" width=505 height=1><p>
+
+<b><A NAME="notify">Inventory Update Notification</A></b><p>
+
+Use this section to notify the Dynamo Commerce Server of updated
+inventory items. A JMS message will be sent as notification. Enter a SKU
+ID for each item with new inventory available. Separate the SKU IDs with
+spaces.<br>
+
+<form action="index.jhtml" method=POST>
+Sku Ids: 
+<input type=textarea rows=2 cols=40 bean="InventoryFormHandler.updatedItemIdString" value="">
+<br><br>
+<input type=hidden name="lowerBound" value="bean:InventoryFormHandler.lowerBound">
+<input type=hidden name="upperBound" value="bean:InventoryFormHandler.upperBound">
+<input type=hidden name="batchNumber" value="bean:InventoryFormHandler.batchNumber" number>
+<input type=submit bean="InventoryFormHandler.updateInventory" value="Notify...">
+</form>
+
+<img src="../../images/bluedot.gif" width=505 height=1><p>
+
+</blockquote>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/DCS/admin/atg/commerce/admin/en/inventory/index.jhtml#2 $$Change: 651448 $*/</java>
+

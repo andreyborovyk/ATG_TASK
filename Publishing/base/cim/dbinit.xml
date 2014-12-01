@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE database-initializer SYSTEM "http://www.atg.com/dtds/dbinit_1_0.dtd">
+<database-initializer>
+
+  <schema id="versionedSchema">
+
+    <sql>
+      <path>
+	<create>
+	  sql/db_components/${database}/internal_user_profile_ddl.sql
+	</create>
+	<drop>
+	  sql/uninstall/${database}/drop_internal_user_profile_ddl.sql
+	</drop>
+      </path>
+    </sql>
+
+    <sql>
+      <path>
+	<create>
+	  sql/db_components/${database}/publishing_ddl.sql
+	</create>
+	<drop>
+	  sql/uninstall/${database}/drop_publishing_ddl.sql
+	</drop>
+      </path>
+    </sql>
+
+    <sql>
+      <path>
+	<create>
+	  sql/db_components/${database}/versioned_file_repository_ddl.sql
+	</create>
+	<drop>
+	  sql/uninstall/${database}/drop_versioned_file_repository_ddl.sql
+	</drop>
+      </path>
+    </sql>
+
+    <sql>
+      <path>
+	<create>
+	  sql/db_components/${database}/versioned_process_data_ddl.sql
+	</create>
+	<drop>
+	  sql/uninstall/${database}/drop_versioned_process_data_ddl.sql
+	</drop>
+      </path>
+    </sql>
+
+    <sql>
+      <path>
+	<create>
+	  sql/db_components/${database}/versionmanager_ddl.sql
+	</create>
+	<drop>
+	  sql/uninstall/${database}/drop_versionmanager_ddl.sql
+	</drop>
+      </path>
+    </sql>
+
+    <sql>
+      <path>
+	<create>
+	  sql/db_components/${database}/workflow_ddl.sql
+	</create>
+	<drop>
+	  sql/uninstall/${database}/drop_workflow_ddl.sql
+	</drop>
+      </path>
+    </sql>
+    
+    <data-import>
+      <repository-path>/atg/epub/file/PublishingFileRepository</repository-path>
+      <import-file-path>/Publishing/base/install/epub-file-repository-data.xml</import-file-path>
+      <user>publishing</user>
+      <workspace>workspace</workspace>
+      <comment>initial_data_import</comment>			
+    </data-import>		
+  </schema>
+  <schema id="repoLoader">
+      <repository-loader post-cleanup="true">
+        <files>
+        	<src-module>DSS</src-module>
+        	<config-path>atg/registry/data/scenarios/DSS</config-path>
+        	<file-pattern>*.sdl</file-pattern>
+              </files>
+              <files>
+        	<src-module>DSS</src-module>
+        	<config-path>atg/registry/data/scenarios/recorders</config-path>
+        	<file-pattern>*.sdl</file-pattern>
+        </files>
+        <file-mapping>/atg/epub/file/typemappers/ScenarioTypeMapping</file-mapping>
+        <folder-mapping>/atg/epub/file/typemappers/FileFolderTypeMapping</folder-mapping>
+      </repository-loader>
+  </schema>
+
+  <server-instance-type id="management">
+    
+    <datasource id="management">
+      <schema id="versionedSchema"/>
+      <schema id="repoLoader"/>
+    </datasource>	
+    
+  </server-instance-type>
+
+  <server-instance-type id="svcagent">
+    
+    <datasource id="svcagent">
+      <schema id="versionedSchema"/>
+    </datasource>	
+    
+  </server-instance-type>
+
+  
+</database-initializer>
+<!-- @version $Id: //product/Publishing/version/10.0.3/cim/dbinit.xml#2 $$Change: 651448 $-->

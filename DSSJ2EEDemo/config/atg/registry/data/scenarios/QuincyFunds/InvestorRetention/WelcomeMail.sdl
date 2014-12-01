@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE scenario
+  SYSTEM
+  "dynamosystemresource:/atg/scenario/definition/sdl.dtd">
+
+<scenario author="admin" creation-time="960937282000" enabled="true" last-modified-by="admin" modification-time="1028236820204">
+  <segment migrate-users="true">
+    <segment-name>New Members</segment-name>
+    <!--================================-->
+    <!--== Registers  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.dps.Register</event-name>
+    </event>
+    <!--================================-->
+    <!--== Wait 5 minutes  -->
+    <!--================================-->
+    <time id="2">
+      <time-delay units="minutes">5</time-delay>
+    </time>
+    <!--================================-->
+    <!--== in group investors  -->
+    <!--================================-->
+    <condition construct="people-element" id="3">
+      <filter construct="profile-group-filter" operator="eq">
+        <subject-property>
+          <property-name>investors</property-name>
+        </subject-property>
+        <constant type="boolean">true</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Receive email is yes  -->
+    <!--================================-->
+    <condition construct="people-element" id="4">
+      <filter construct="profile-property-filter" operator="eq">
+        <subject-property>
+          <property-name>receiveEmail</property-name>
+        </subject-property>
+        <constant>yes</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Locale is en_US  -->
+    <!--================================-->
+    <condition construct="people-element" id="5">
+      <filter construct="profile-property-filter" operator="eq">
+        <subject-property>
+          <property-name>locale</property-name>
+        </subject-property>
+        <constant>en_US</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Email address is defined  -->
+    <!--================================-->
+    <condition construct="people-element" id="6">
+      <filter construct="profile-property-filter" operator="isNotNull">
+        <subject-property>
+          <property-name>email</property-name>
+        </subject-property>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Send email with Dynamo path /QuincyFunds/en/email/welcome.jsp  -->
+    <!--================================-->
+    <action id="7">
+      <action-name>sendEmail</action-name>
+      <action-param name="template">
+        <constant>/QuincyFunds/en/email/welcome.jsp</constant>
+      </action-param>
+    </action>
+    <fork id="8">
+      <branch id="8.1">
+        <!--================================-->
+        <!--== Logs in  -->
+        <!--================================-->
+        <event id="8.1.1">
+          <event-name>atg.dps.Login</event-name>
+        </event>
+      </branch>
+      <branch id="8.2">
+        <!--================================-->
+        <!--== Wait 30 days  -->
+        <!--================================-->
+        <time id="8.2.1">
+          <time-delay units="days">30</time-delay>
+        </time>
+        <!--================================-->
+        <!--== Send email with Dynamo path /QuincyFunds/en/email/newmemberoffer.jsp  -->
+        <!--================================-->
+        <action id="8.2.2">
+          <action-name>sendEmail</action-name>
+          <action-param name="template">
+            <constant>/QuincyFunds/en/email/newmemberoffer.jsp</constant>
+          </action-param>
+        </action>
+      </branch>
+    </fork>
+  </segment>
+  <segment migrate-users="true">
+    <segment-name>New Members FR</segment-name>
+    <!--================================-->
+    <!--== Registers  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.dps.Register</event-name>
+    </event>
+    <!--================================-->
+    <!--== Wait 5 minutes  -->
+    <!--================================-->
+    <time id="2">
+      <time-delay units="minutes">5</time-delay>
+    </time>
+    <!--================================-->
+    <!--== in group investors  -->
+    <!--================================-->
+    <condition construct="people-element" id="3">
+      <filter construct="profile-group-filter" operator="eq">
+        <subject-property>
+          <property-name>investors</property-name>
+        </subject-property>
+        <constant type="boolean">true</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Receive email is yes  -->
+    <!--================================-->
+    <condition construct="people-element" id="4">
+      <filter construct="profile-property-filter" operator="eq">
+        <subject-property>
+          <property-name>receiveEmail</property-name>
+        </subject-property>
+        <constant>yes</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Locale is fr_FR  -->
+    <!--================================-->
+    <condition construct="people-element" id="5">
+      <filter construct="profile-property-filter" operator="eq">
+        <subject-property>
+          <property-name>locale</property-name>
+        </subject-property>
+        <constant>fr_FR</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Email address is defined  -->
+    <!--================================-->
+    <condition construct="people-element" id="6">
+      <filter construct="profile-property-filter" operator="isNotNull">
+        <subject-property>
+          <property-name>email</property-name>
+        </subject-property>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Send email with Dynamo path /QuincyFunds/fr/email/welcome.jsp  -->
+    <!--================================-->
+    <action id="7">
+      <action-name>sendEmail</action-name>
+      <action-param name="template">
+        <constant>/QuincyFunds/fr/email/welcome.jsp</constant>
+      </action-param>
+    </action>
+    <fork id="8">
+      <branch id="8.1">
+        <!--================================-->
+        <!--== Logs in  -->
+        <!--================================-->
+        <event id="8.1.1">
+          <event-name>atg.dps.Login</event-name>
+        </event>
+      </branch>
+      <branch id="8.2">
+        <!--================================-->
+        <!--== Wait 30 days  -->
+        <!--================================-->
+        <time id="8.2.1">
+          <time-delay units="days">30</time-delay>
+        </time>
+        <!--================================-->
+        <!--== Send email with Dynamo path /QuincyFunds/fr/email/newmemberoffer.jsp  -->
+        <!--================================-->
+        <action id="8.2.2">
+          <action-name>sendEmail</action-name>
+          <action-param name="template">
+            <constant>/QuincyFunds/fr/email/newmemberoffer.jsp</constant>
+          </action-param>
+        </action>
+      </branch>
+    </fork>
+  </segment>
+  <segment migrate-users="true">
+    <segment-name>New Members JA</segment-name>
+    <!--================================-->
+    <!--== Registers  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.dps.Register</event-name>
+    </event>
+    <!--================================-->
+    <!--== Wait 5 minutes  -->
+    <!--================================-->
+    <time id="2">
+      <time-delay units="minutes">5</time-delay>
+    </time>
+    <!--================================-->
+    <!--== in group investors  -->
+    <!--================================-->
+    <condition construct="people-element" id="3">
+      <filter construct="profile-group-filter" operator="eq">
+        <subject-property>
+          <property-name>investors</property-name>
+        </subject-property>
+        <constant type="boolean">true</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Receive email is yes  -->
+    <!--================================-->
+    <condition construct="people-element" id="4">
+      <filter construct="profile-property-filter" operator="eq">
+        <subject-property>
+          <property-name>receiveEmail</property-name>
+        </subject-property>
+        <constant>yes</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Locale is ja_JP  -->
+    <!--================================-->
+    <condition construct="people-element" id="5">
+      <filter construct="profile-property-filter" operator="eq">
+        <subject-property>
+          <property-name>locale</property-name>
+        </subject-property>
+        <constant>ja_JP</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Email address is defined  -->
+    <!--================================-->
+    <condition construct="people-element" id="6">
+      <filter construct="profile-property-filter" operator="isNotNull">
+        <subject-property>
+          <property-name>email</property-name>
+        </subject-property>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Send email with Dynamo path /QuincyFunds/ja/email/welcome.jsp  -->
+    <!--================================-->
+    <action id="7">
+      <action-name>sendEmail</action-name>
+      <action-param name="template">
+        <constant>/QuincyFunds/ja/email/welcome.jsp</constant>
+      </action-param>
+    </action>
+    <fork id="8">
+      <branch id="8.1">
+        <!--================================-->
+        <!--== Logs in  -->
+        <!--================================-->
+        <event id="8.1.1">
+          <event-name>atg.dps.Login</event-name>
+        </event>
+      </branch>
+      <branch id="8.2">
+        <!--================================-->
+        <!--== Wait 30 days  -->
+        <!--================================-->
+        <time id="8.2.1">
+          <time-delay units="days">30</time-delay>
+        </time>
+        <!--================================-->
+        <!--== Send email with Dynamo path /QuincyFunds/ja/email/newmemberoffer.jsp  -->
+        <!--================================-->
+        <action id="8.2.2">
+          <action-name>sendEmail</action-name>
+          <action-param name="template">
+            <constant>/QuincyFunds/ja/email/newmemberoffer.jsp</constant>
+          </action-param>
+        </action>
+      </branch>
+    </fork>
+  </segment>
+  <segment migrate-users="true">
+    <segment-name>New Members DE</segment-name>
+    <!--================================-->
+    <!--== Registers  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.dps.Register</event-name>
+    </event>
+    <!--================================-->
+    <!--== Wait 5 minutes  -->
+    <!--================================-->
+    <time id="2">
+      <time-delay units="minutes">5</time-delay>
+    </time>
+    <!--================================-->
+    <!--== in group investors  -->
+    <!--================================-->
+    <condition construct="people-element" id="3">
+      <filter construct="profile-group-filter" operator="eq">
+        <subject-property>
+          <property-name>investors</property-name>
+        </subject-property>
+        <constant type="boolean">true</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Receive email is yes  -->
+    <!--================================-->
+    <condition construct="people-element" id="4">
+      <filter construct="profile-property-filter" operator="eq">
+        <subject-property>
+          <property-name>receiveEmail</property-name>
+        </subject-property>
+        <constant>yes</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Locale is de_DE  -->
+    <!--================================-->
+    <condition construct="people-element" id="5">
+      <filter construct="profile-property-filter" operator="eq">
+        <subject-property>
+          <property-name>locale</property-name>
+        </subject-property>
+        <constant>de_DE</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Email address is defined  -->
+    <!--================================-->
+    <condition construct="people-element" id="6">
+      <filter construct="profile-property-filter" operator="isNotNull">
+        <subject-property>
+          <property-name>email</property-name>
+        </subject-property>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Send email with Dynamo path /QuincyFunds/de/email/welcome.jsp  -->
+    <!--================================-->
+    <action id="7">
+      <action-name>sendEmail</action-name>
+      <action-param name="template">
+        <constant>/QuincyFunds/de/email/welcome.jsp</constant>
+      </action-param>
+    </action>
+    <fork id="8">
+      <branch id="8.1">
+        <!--================================-->
+        <!--== Logs in  -->
+        <!--================================-->
+        <event id="8.1.1">
+          <event-name>atg.dps.Login</event-name>
+        </event>
+      </branch>
+      <branch id="8.2">
+        <!--================================-->
+        <!--== Wait 30 days  -->
+        <!--================================-->
+        <time id="8.2.1">
+          <time-delay units="days">30</time-delay>
+        </time>
+        <!--================================-->
+        <!--== Send email with Dynamo path /QuincyFunds/de/email/newmemberoffer.jsp  -->
+        <!--================================-->
+        <action id="8.2.2">
+          <action-name>sendEmail</action-name>
+          <action-param name="template">
+            <constant>/QuincyFunds/de/email/newmemberoffer.jsp</constant>
+          </action-param>
+        </action>
+      </branch>
+    </fork>
+  </segment>
+</scenario>

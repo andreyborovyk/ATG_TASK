@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+<web-app>
+<display-name>Dynamo WSRP4ATG Generic Proxy Portlet</display-name>
+<description>A portlet which demonstrates WSRP integration with ATG Relationship Management.</description>
+<!-- Context Root                     -->
+<!--                                  -->
+<!-- Context root of web application. -->
+<context-param>
+   <param-name>context-root</param-name>
+   <param-value>/portlet/WSRPProxyPortlet</param-value>
+</context-param>
+<context-param>
+<param-name>atg.session.parentContextName</param-name>
+<param-value>/dyn</param-value>
+<description>The name of the DAF context.</description>
+</context-param>
+<context-param>
+<param-name>atg.dafear.bootstrapContextName</param-name>
+<param-value>/dyn</param-value>
+<description>
+      The name of the DAF bootstrap WAR context.
+    </description>
+</context-param>
+<filter>
+<filter-name>DynamoServerPageFilter</filter-name>
+<display-name>DynamoServerPageFilter</display-name>
+<description>This filter invokes the dynamo application framework servlet pipeline.</description>
+<filter-class>atg.filter.dspjsp.PageFilter</filter-class>
+</filter>
+<filter-mapping>
+<filter-name>DynamoServerPageFilter</filter-name>
+<url-pattern>/*</url-pattern>
+</filter-mapping>
+<servlet>
+<servlet-name>NucleusServlet</servlet-name>
+<display-name>NucleusServlet</display-name>
+<description>Initializes nucleus in the current web application.</description>
+<servlet-class>atg.nucleus.servlet.NucleusServlet</servlet-class>
+<load-on-startup>1</load-on-startup>
+</servlet>
+<servlet>
+<servlet-name>WSRPProxyPortlet</servlet-name>
+<servlet-class>atg.portal.portletstandard.PortletServlet</servlet-class>
+<init-param>
+<param-name>portlet-guid</param-name>
+<param-value>WSRPProxyPortlet</param-value>
+</init-param>
+<init-param>
+<param-name>portlet-class</param-name>
+<param-value>atg.wsrp.consumer.ProxyPortlet</param-value>
+</init-param>
+</servlet>
+<servlet>
+<servlet-name>WSRP4ATGProxyPortlet</servlet-name>
+<servlet-class>atg.portal.portletstandard.PortletServlet</servlet-class>
+<init-param>
+<param-name>portlet-guid</param-name>
+<param-value>proxy-portlet.war.WSRP4ATGProxyPortlet</param-value>
+</init-param>
+<init-param>
+<param-name>portlet-class</param-name>
+<param-value>atg.wsrp.consumer.ProxyPortlet</param-value>
+</init-param>
+</servlet>
+<servlet-mapping>
+<servlet-name>NucleusServlet</servlet-name>
+<url-pattern>/nucleus</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+<servlet-name>WSRPProxyPortlet</servlet-name>
+<url-pattern>/WSRPProxyPortlet/*</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+<servlet-name>WSRP4ATGProxyPortlet</servlet-name>
+<url-pattern>/WSRP4ATGProxyPortlet/*</url-pattern>
+</servlet-mapping>
+<error-page>
+<exception-type>java.lang.Exception</exception-type>
+<location>/error.jsp</location>
+</error-page>
+<error-page>
+<error-code>500</error-code>
+<location>/error.jsp</location>
+</error-page>
+</web-app>
+<!-- @version $Id: //product/WSRP/version/10.0.3/consumer/proxyPortlet/proxyPortlet/WEB-INF/web.xml#2 $$Change: 651448 $-->

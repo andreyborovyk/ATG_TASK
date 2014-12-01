@@ -1,0 +1,35 @@
+<%-- Page fragment that renders form success and failure messages. --%>
+
+<dspel:importbean bean="/atg/portal/admin/SuccessMessageProcessor" var="SuccessMessageProcessor"/>
+<dspel:importbean bean="/atg/portal/admin/FailureMessageProcessor" var="FailureMessageProcessor"/>
+
+
+<dspel:getvalueof var="failureMessageProcessor" vartype="atg.portal.admin.I18nMessageProcessor" bean="FailureMessageProcessor">
+<dspel:getvalueof var="successMessageProcessor" vartype="atg.portal.admin.I18nMessageProcessor" bean="SuccessMessageProcessor">
+<%
+    ((atg.portal.admin.I18nMessageProcessor)pageContext.getAttribute("failureMessageProcessor")).localizeMessages(request, response);
+    ((atg.portal.admin.I18nMessageProcessor)pageContext.getAttribute("successMessageProcessor")).localizeMessages(request, response);
+%>
+
+<%-- Previous submission success/failure reporting --%>
+
+  <c:forEach items="${successMessageProcessor.messages}" var="successMessage">
+    <img src='<%= response.encodeURL("images/info.gif")%>'/>&nbsp;&nbsp;<font class="info">
+    <c:out value="${successMessage}"/>
+    </font><br>
+  </c:forEach>
+
+
+  <c:forEach items="${failureMessageProcessor.messages}" var="failureMessage">
+    <img src='<%=response.encodeURL("images/error.gif")%>'/>&nbsp;&nbsp;<font class="error">
+    <c:out value="${failureMessage}"/>
+    </font><br>
+  </c:forEach>
+
+<%
+    ((atg.portal.admin.I18nMessageProcessor)pageContext.getAttribute("failureMessageProcessor")).clear();
+    ((atg.portal.admin.I18nMessageProcessor)pageContext.getAttribute("successMessageProcessor")).clear();
+%>
+</dspel:getvalueof><%-- successMessages --%>
+</dspel:getvalueof><%-- failureMessages --%>
+<%-- @version $Id: //product/WSRP/version/10.0.3/consumer/proxyPortlet/proxyPortlet/form_messages.jspf#2 $$Change: 651448 $--%>

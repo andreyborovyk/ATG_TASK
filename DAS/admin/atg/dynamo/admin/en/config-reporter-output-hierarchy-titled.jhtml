@@ -1,0 +1,42 @@
+<nucleus type=import>
+  /atg/dynamo/service/ConfigurationReporter
+</nucleus>
+
+<HTML>
+<HEAD>
+  <link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+  <TITLE>COMPONENT LIST</TITLE>
+</HEAD>
+
+<body>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="images/admin-banner.gif" ALT="Dynamo ConfigurationReporter" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+<a href="/">admin</a>/<a href="conf-reporter.jhtml">Configuration Reporter</a>
+
+<h2>Configuration Reporter</h2>
+
+<h3>OUTPUT DYNAMO COMPONENT HIERARCHY TO FILE</h3>
+
+<blockquote>
+The Configuration Reporter will browse the Dynamo hierarchy of components, starting at the root, and output the names of all components to an output file. You can then use the output file to create a custom HTML Component Browser Report, Bean Representation Report, or Property Representation Report.
+
+<p>You can exclude components and directories from the output file by including them in the input field below, or by adding them to the <code>restrictedComponents</code> 
+property of the <code>/atg/dynamo/service/ConfigurationReporter</code> component.  Components that are marked as restricted will not be included in the output file of component names.  Neither will the names of the children of restricted components if the component is a directory.
+
+<p>The directory of the output file must already exist.  Any file of the same name 
+will be overwritten.
+
+<form action="config-reporter-output-hierarchy-titled.jhtml" method=post>
+ Output File:
+ <input type=text property="ConfigurationReporter.componentFileName" size=60><br>
+ <p>List of Restricted Components:
+ <input type=text property="ConfigurationReporter.restrictedComponents" size=60><br>    
+ <p><input type=submit property="ConfigurationReporter.outputDynamoComponentHierarchy" value="Create Dynamo Component File">
+</form>
+</blockquote>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/config-reporter-output-hierarchy-titled.jhtml#2 $$Change: 651448 $*/</java>
+

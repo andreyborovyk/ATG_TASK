@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<endpoints xmlns='http://java.sun.com/xml/ns/jax-rpc/ri/runtime' version='1.0'>
+  <endpoint
+    name='Markup'
+    interface='oasis.names.tc.wsrp.v1.wsdl.WSRP_v1_Markup_PortType'
+    implementation='atg.wsrp.producer.webservice.MarkupWebService'
+    tie='oasis.names.tc.wsrp.v1.wsdl.WSRP_v1_Markup_PortType_Tie'
+    model='/WEB-INF/model.gz'
+    wsdl='/WEB-INF/wsrp_service.wsdl'
+    service='{urn:oasis:names:tc:wsrp:v1:wsdl}WSRPService'
+    port='{urn:oasis:names:tc:wsrp:v1:wsdl}WSRPBaseService'
+    urlpattern='/producer/Markup'/>
+  <endpoint
+    name='PortletManagement'
+    interface='oasis.names.tc.wsrp.v1.wsdl.WSRP_v1_PortletManagement_PortType'
+    implementation='atg.wsrp.producer.webservice.PortletManagementWebService'
+    tie='oasis.names.tc.wsrp.v1.wsdl.WSRP_v1_PortletManagement_PortType_Tie'
+    model='/WEB-INF/model.gz'
+    wsdl='/WEB-INF/wsrp_service.wsdl'
+    service='{urn:oasis:names:tc:wsrp:v1:wsdl}WSRPService'
+    port='{urn:oasis:names:tc:wsrp:v1:wsdl}WSRPPortletManagementService'
+    urlpattern='/producer/PortletManagement'/>
+  <endpoint
+    name='Registration'
+    interface='oasis.names.tc.wsrp.v1.wsdl.WSRP_v1_Registration_PortType'
+    implementation='atg.wsrp.producer.webservice.RegistrationWebService'
+    tie='oasis.names.tc.wsrp.v1.wsdl.WSRP_v1_Registration_PortType_Tie'
+    model='/WEB-INF/model.gz'
+    wsdl='/WEB-INF/wsrp_service.wsdl'
+    service='{urn:oasis:names:tc:wsrp:v1:wsdl}WSRPService'
+    port='{urn:oasis:names:tc:wsrp:v1:wsdl}WSRPRegistrationService'
+    urlpattern='/producer/Registration'/>
+  <endpoint
+    name='ServiceDescription'
+    interface='oasis.names.tc.wsrp.v1.wsdl.WSRP_v1_ServiceDescription_PortType'
+    implementation='atg.wsrp.producer.webservice.ServiceDescriptionWebService'
+    tie='oasis.names.tc.wsrp.v1.wsdl.WSRP_v1_ServiceDescription_PortType_Tie'
+    model='/WEB-INF/model.gz'
+    wsdl='/WEB-INF/wsrp_service.wsdl'
+    service='{urn:oasis:names:tc:wsrp:v1:wsdl}WSRPService'
+    port='{urn:oasis:names:tc:wsrp:v1:wsdl}WSRPServiceDescriptionService'
+    urlpattern='/producer/ServiceDescription'/>
+</endpoints>
+<!-- @version $Id: //product/WSRP/version/10.0.3/producer/producer/producer/WEB-INF/jaxrpc-ri-runtime.xml#2 $$Change: 651448 $-->

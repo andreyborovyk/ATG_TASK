@@ -1,0 +1,201 @@
+<nucleus type=import>
+  /atg/dynamo/admin/Configure
+  /atg/dynamo/admin/NSAPIConfigure
+  /atg/dynamo/droplet/ForEach
+  /atg/dynamo/droplet/Switch
+</nucleus>
+
+<java>
+  atg.service.dynamo.NSAPIConfig NSAPIConfigure =
+   (atg.service.dynamo.NSAPIConfig)
+   request.resolveName("/atg/dynamo/admin/NSAPIConfigure");
+
+  // turn on debug logging
+  //NSAPIConfigure.setLoggingDebug(true);
+
+  // reset to clear out any cached values.  this is to ensure that
+  // if this is a Windows machine we get the latest values from the
+  // registry.
+  NSAPIConfigure.winReset();
+</java>
+
+<HTML>
+<HEAD>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+<TITLE>Configure Server</TITLE>
+
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="images/config-banner.gif" ALT="Dynamo Configuration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/Configure<p>
+
+<blockquote>
+<h2>Configuration Manager</h2>
+
+<br>
+
+<h3>Configure Dynamo Servers</h3>
+
+This feature allows you to modify the configuration for an individual
+server, or modify the default configuration used for ALL your Dynamo
+servers on the machine
+<code><valueof property="Configure.thisHostname"></valueof></code>.
+Please choose the configuration to edit:
+
+<p>
+
+<blockquote>
+
+<table border="0" cellpadding="2" cellspacing="0">
+
+  <droplet name="ForEach">
+    <param name="array" value="property:Configure.serverNames">
+
+    <oparam name="output">
+      <tr>
+        <droplet name="Switch">
+          <param name="value" value="param:element">
+
+          <!-- original -->
+          <oparam name="original">
+            <td valign=middle align=left>
+              <a href="configure-server-services.jhtml"
+               bean="Configure.serverName" value="original">original</a>
+            </td>
+            <td>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(originally installed Dynamo)
+            </td>
+          </oparam>
+
+          <!-- default configuration -->
+          <oparam name="default configuration">
+            <td>
+              <a href="configure-server-services.jhtml"
+               bean="Configure.serverName"
+               value="param:element">default configuration</a>
+            </td>
+            <td>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(for all Dynamo servers)
+            </td>
+          </oparam>
+
+          <!-- all other servers -->
+          <oparam name="default">
+            <td>
+              <a href="configure-server-services.jhtml"
+               bean="Configure.serverName"
+               value="param:element"><valueof param="element"></valueof></a>
+            </td>
+            <td>&nbsp;</td>
+        </oparam>
+      </droplet>
+    </td>
+  </tr>
+    </oparam>
+  </droplet>
+
+</table>
+
+<br>
+<a href="config-individual.jhtml">Add, Delete, or Reset Servers</a>
+
+</blockquote>
+
+<droplet bean="Switch">
+  <param name="value" value="bean:/atg/dynamo/Configuration.dynamoAppServer">
+     <oparam name="true">
+
+
+<!-- Install Connection Modules -->
+
+<br>
+<br>
+<a name="CM">
+<h3>Install Dynamo Connection Modules for an HTTP Server</h3>
+</a>
+<p>
+
+Please choose which Connection Module you would like to install on the machine
+<code><valueof property="Configure.thisHostname"></valueof></code>.
+
+<droplet bean="/atg/dynamo/droplet/Switch">
+  <param name="value" value="bean:NSAPIConfigure.windows">
+  <oparam name="true">
+
+  <!-- This is a Windows machine. NES and IIS could be  -->
+  <!-- installed.  If NES is installed provide link for configuring     -->
+  <!-- Connection Module for NES.  Otherwise alert user that NES is not -->
+  <!-- installed.  Same thing should be done for IIS but for now we do  -->
+  <!-- not know how to do that so we just provide the link.             -->
+
+    <!-- Set the minimum version of Sun ONE Web Server we support. -->
+    <setvalue property=NSAPIConfigure.minVersion value=6.0>
+
+    <ul>
+
+    <droplet bean="/atg/dynamo/droplet/Switch">
+      <param name="value" value="bean:NSAPIConfigure.numWinVersions">
+      <oparam name="0">
+      <!-- supported versions of Sun ONE Web Server -->
+      <!-- are not installed                        -->
+        <li>
+          <font color=red>
+             Sun ONE Connection Module cannot be installed.
+             A Sun ONE Web Server of version
+             <valueof property=NSAPIConfigure.minVersion></valueof>
+             or greater must be installed.
+          </font>
+        </li>
+      </oparam>
+
+      <oparam name="default">
+      <!-- supported versions of Sun ONE Web Server -->
+      <!-- are installed                            -->
+        <li>
+          <a href="config-cms-path.jhtml"><b>Sun ONE</b> Connection Module</a>
+        </li>
+      </oparam>
+
+    </droplet>
+
+    <!-- IIS -->
+    <li>
+      <a href="config-iis-scriptdir.jhtml"><b>IIS</b> Connection Module</a>
+    </li>
+    </ul>
+
+  </oparam>
+
+  <oparam name="false">
+
+  <!-- This is a UNIX machine. Provide link for configuring Connection -->
+  <!-- Module for NES.  There is no way to determine beforehand on a   -->
+  <!-- UNIX machine if NES is installed.                               -->
+
+    <ul>
+    <li>
+
+      <a href="config-cms-path.jhtml"><b>Sun ONE</b> Connection Module</a>
+
+    </li>
+    </ul>
+
+  </oparam>
+</droplet>
+
+<!-- Note about Apache which could be installed on almost any platform. -->
+
+<P>Note: To install 
+a Connection Module for an Apache HTTP server, see the
+<A HREF="../../docs/" target="docs">Dynamo Administration Guide</A>.</P>
+
+<p>&nbsp</p>
+
+</oparam>
+</droplet>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/configure-server.jhtml#2 $$Change: 651448 $ */</java>

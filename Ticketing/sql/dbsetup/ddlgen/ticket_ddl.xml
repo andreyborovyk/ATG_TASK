@@ -1,0 +1,1018 @@
+<!DOCTYPE schema  SYSTEM "http://road.atg.com/dtds/ddlgen/schema.dtd">
+<schema name="ticket_ddl">
+<comment><![CDATA[ @version $Id: //product/Ticketing/version/10.0.3/src/sql/ticket_ddl.xml#2 $$Change: 651448 $]]></comment>
+<comment><![CDATA[
+This file contains create table statements, which will configure 
+your database for use with the new ticketing schema.
+]]></comment>
+
+
+
+
+<comment><![CDATA[
+Ticketing sub status
+]]></comment>
+
+  <table name="tkt_sub_status">
+    <column name="sub_status_id" nullable="n">
+         <column-type db="generic" type="integer"/>   
+    </column>
+    <column name="sub_status_name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="80"/>
+    </column>
+    <!-- enumerated type -->
+    <column name="parent_status" nullable="n">
+         <column-type db="generic" type="integer"/>   
+    </column>
+    <primary-key name="tkt_sub_status_p">
+       <index-column column="sub_status_id" order="asc" seq="1"/>
+    </primary-key>
+  </table>
+
+
+
+<comment><![CDATA[
+Ticketing reason
+]]></comment>
+
+  <table name="tkt_reason">
+    <column name="reason_id" nullable="n">
+         <column-type db="generic" type="integer"/>   
+    </column>
+    <column name="reason_name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="80"/>
+    </column>
+    <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+    </column>
+    <primary-key name="tkt_reason_p">
+       <index-column column="reason_id" order="asc" seq="1"/>
+    </primary-key>
+  </table>
+
+
+  <comment><![CDATA[
+Activity Data table
+]]></comment>
+  <table name="tkt_ads_act_data">
+      <column name="act_data_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>		
+      <column name="creation_time" nullable="n">
+         <column-type db="oracle" type="timestamp"/>
+         <column-type db="generic" type="datetime"/>
+      </column>
+	  
+	  <!-- the type of the activity data  -->
+      <column name="type" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+
+      <primary-key name="tkt_ads_act_data_p">
+         <index-column column="act_data_id" order="asc" seq="1"/>
+      </primary-key>
+  </table>
+
+
+<comment><![CDATA[
+Ticketing customer details
+]]></comment>
+
+    <!-- === Section 4.1.4: Customer Details -->
+   <table name="tkt_cust_details">
+      <column name="cust_details_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+
+      <!-- Need firstname/lastname/etc here? -->
+      <column name="first_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+
+      <column name="last_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+
+      <!-- Possible name field, maybe extracted from an email
+           address or some such.  -->
+      <column name="full_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="80"/>
+      </column>
+
+      <column name="email_address" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+
+      <column name="phone_numbers" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      
+      <column name="mobile" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      
+      <column name="address" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      
+      <column name="city" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      
+      <column name="state_code" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+
+      <column name="country" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+
+      <column name="postal_code" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+
+      <primary-key name="tkt_customer_p">
+         <index-column column="cust_details_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+
+
+<comment><![CDATA[
+Fundmental ticket table
+]]></comment>
+
+   <table name="tkt_ticket">
+
+      <!-- === Section 4.1.1: Creation and Identification === -->
+      <column name="ticket_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="creation_time" nullable="n">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="last_mod_time" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle" type="timestamp"/>
+      </column>
+
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+
+
+      <column name="extern_ticket_id" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+
+      <column name="external_system" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+
+
+      <!-- A temporary field used as an input for
+        querying for matching profiles. -->
+      <column name="inbound_chan_addr" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+
+      <!-- enumeration -->
+      <column name="application" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+
+      <!-- do we need this, now? Or can we just use same-session logic. -->
+      <column name="is_mergeable" nullable="n">
+         <column-type db="generic" type="one-digit"/>
+      </column>
+
+
+      <!-- === Section 4.1.2: Channel Details === -->
+
+      <!-- enumerated type -->
+      <column name="creation_channel" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+
+      <!-- enumerated type -->
+      <column name="default_out_chan" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+
+      <!-- ???derived property for most recent channel??? -->
+
+
+      <!-- === Section 4.1.3: Status === -->
+
+      <!-- sub-status, reference to tkt_sub_status -->
+      <column name="sub_status_id" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+
+
+      <!-- ???just an integer??? Need an enum? -->
+      <column name="escalation_level" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+
+      <column name="escalation_count" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+
+      <column name="has_pending_owner" nullable="n">
+         <column-type db="generic" type="one-digit"/>
+      </column>
+
+      <column name="pending_time" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle" type="timestamp"/>
+      </column>
+
+
+      <!--  the time at which a ticket will be released
+            from the currently assigned agent. -->
+      <column name="release_time" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle" type="timestamp"/>
+      </column>
+
+      <column name="priority" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+
+
+      <!-- Need derived property to status (calculated from substatus)? -->
+
+      <!-- Activities list in separate table -->
+
+
+
+
+      <!-- === Section 4.1.4: Customer Details === -->
+
+      <column name="user_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+
+      <column name="cust_details_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+
+
+      <!-- === Section 4.1.5: Routing Details === -->
+
+      <column name="due_time" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle" type="timestamp"/>
+      </column>
+
+      <column name="owning_group_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+
+      <column name="group_assn_act_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+
+      <!-- Don't need group_assign_history... it's derived. -->
+
+      <!-- === Section 4.1.6:  Agent Assignment Details === -->
+
+
+      <column name="owning_agent_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+
+      <column name="agent_assn_act_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+
+      <!-- ??? need derived property 'push activity outstanding' ??? -->
+
+      <!-- === Section 4.1.7:  Associated Ticket === -->
+
+      <column name="orig_ticket_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+
+      <column name="dup_of_ticket_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+
+
+      <!-- === This replaces the work in progress stuff elsewhere. === -->
+
+      <column name="work_in_progress" nullable="y">
+         <column-type db="generic" type="long-varbinary"/>
+         <column-type db="db2" type="blob" length="1048576" scale=""/>
+      </column>
+
+		<column name="in_progress_act_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      
+      <column name="sla_base_timestamp" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle" type="timestamp"/>
+      </column>
+ 
+      <column name="pushable" nullable="n" default="0">
+         <column-type db="generic" type="one-digit"/>
+      </column>
+ 
+      <column name="loaded" nullable="y">
+         <column-type db="generic" type="one-digit"/>
+      </column>
+ 
+      <column name="loaded_timestamp" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle" type="timestamp"/>
+       </column>
+      
+
+      <!-- Don't need assignment_history... it's derived. -->
+
+      <primary-key name="tkt_ticket_p">
+         <index-column column="ticket_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="tkt_ticket_cust_f" referenced-table="tkt_cust_details" index-name="tkt_ticket_cus1_ix">
+         <fkey-column referencing-column="cust_details_id" referenced-column="cust_details_id"/>
+      </foreign-key>
+<!--
+      <foreign-key name="tkt_t_grp_assn_f" referenced-table="tkt_act_owngrp" index-name="tkt_ticket_cus2_ix">
+         <fkey-column referencing-column="group_assn_act_id" referenced-column="activity_id"/>
+      </foreign-key>
+      <foreign-key name="tkt_t_agnt_assn_f" referenced-table="tkt_act_ownagnt" index-name="tkt_ticket_cus3_ix">
+         <fkey-column referencing-column="agent_assn_act_id" referenced-column="activity_id"/>
+      </foreign-key>
+-->
+      <foreign-key name="tkt_ticket_orig_f" referenced-table="tkt_ticket" index-name="tkt_ticket_cus4_ix">
+         <fkey-column referencing-column="orig_ticket_id" referenced-column="ticket_id"/>
+      </foreign-key>
+      <foreign-key name="tkt_ticket_ndup_f" referenced-table="tkt_ticket" index-name="tkt_ticket_cus5_ix">
+         <fkey-column referencing-column="dup_of_ticket_id" referenced-column="ticket_id"/>
+      </foreign-key>
+      <foreign-key name="tkt_ticket_sub_f" referenced-table="tkt_sub_status" index-name="tkt_ticket_cus6_ix">
+         <fkey-column referencing-column="sub_status_id" referenced-column="sub_status_id"/>
+      </foreign-key>
+      <index name="tkt_pending_tm_ix" table="tkt_ticket">
+         <index-column column="pending_time" order="asc" seq="1"/>
+      </index>
+      <index name="tkt_release_tm_ix" table="tkt_ticket">
+         <index-column column="release_time" order="asc" seq="1"/>
+      </index>
+      <index name="tkt_own_agent_ix" table="tkt_ticket">
+         <index-column column="owning_agent_id" order="asc" seq="1"/>
+      </index>
+   </table>
+
+
+
+<comment><![CDATA[
+The base ticket activity
+]]></comment>
+   <!-- === Section 5.1: Base Activity === -->
+   <table name="tkt_activity">
+      <column name="activity_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="ticket_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+
+      <!-- the type of the ticket  -->
+      <column name="type" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+
+      <column name="creation_time" nullable="n">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle" type="timestamp"/>
+      </column>
+
+      <column name="agent_profile_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+
+      <column name="application" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+
+      <!-- need more than 254 here? -->
+      <column name="heading" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+
+      <!-- ?4000 enough? -->
+      <column name="abstract" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="4000"/>
+      </column>
+
+      <column name="reason_id" nullable="y">
+         <column-type db="generic" type="integer"/>   
+      </column>
+	  
+	<column name="in_progress" nullable="y">
+         <column-type db="generic" type="one-digit"/>
+      </column>
+	  
+	<column name="act_data_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+
+      <primary-key name="tkt_activity_p">
+         <index-column column="activity_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="tkt_act_ticket_f" referenced-table="tkt_ticket" index-name="tkt_act_ticket1_ix">
+         <fkey-column referencing-column="ticket_id" referenced-column="ticket_id"/>
+      </foreign-key>
+      <foreign-key name="tkt_act_reason_f" referenced-table="tkt_reason" index-name="tkt_act_reason_ix">
+         <fkey-column referencing-column="reason_id" referenced-column="reason_id"/>
+      </foreign-key>
+	 <foreign-key name="tkt_act_data_f" referenced-table="tkt_ads_act_data" index-name="tkt_act_data_ix">
+         <fkey-column referencing-column="act_data_id" referenced-column="act_data_id"/>
+      </foreign-key>
+   </table>
+
+<comment><![CDATA[
+Ticket Queue Assignment Activity
+]]></comment>
+
+
+  <!-- === Section 5.2.1: Ticket Queue Assignment === -->
+  <table name="tkt_act_owngrp">
+      <column name="activity_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+
+      <column name="owning_group_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+
+      <column name="sla_minutes" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+
+      <column name="completion_time" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle" type="timestamp"/>
+      </column>
+
+      <primary-key name="tkt_act_owngrp_p">
+         <index-column column="activity_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="tkt_a_grp_act_f" referenced-table="tkt_activity">
+         <fkey-column referencing-column="activity_id" referenced-column="activity_id"/>
+      </foreign-key>
+
+  </table>
+
+
+<comment><![CDATA[
+Owning Agent Assignment Activity
+]]></comment>
+
+  <!-- === Section 5.2.2: Owning Agent Assignment === -->
+  <table name="tkt_act_ownagnt">
+      <column name="activity_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="owning_agent_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="completion_time" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="is_push" nullable="n">
+         <column-type db="generic" type="one-digit"/>
+      </column>
+      <primary-key name="tkt_act_ownagnt_p">
+         <index-column column="activity_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="tkt_a_agnt_act_f" referenced-table="tkt_activity">
+         <fkey-column referencing-column="activity_id" referenced-column="activity_id"/>
+      </foreign-key>
+  </table>
+
+
+<comment><![CDATA[
+Work Note Activity
+]]></comment>
+
+  <!-- === Section 5.2.3: Work Note === -->
+  <table name="tkt_act_worknote">
+      <column name="activity_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <!-- ?4000 enough? -->
+      <column name="text_content" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="4000"/>
+      </column>
+      <column name="is_public" nullable="n">
+         <column-type db="generic" type="one-digit"/>
+      </column>
+      <column name="user_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="tkt_act_wrknt_p">
+         <index-column column="activity_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="tkt_a_wrknt_act_f" referenced-table="tkt_activity">
+         <fkey-column referencing-column="activity_id" referenced-column="activity_id"/>
+      </foreign-key>
+  </table>
+
+
+<comment><![CDATA[
+Status Change Activity
+]]></comment>
+
+  <!-- === Section 5.2.4: Status Change Event === -->
+  <table name="tkt_act_statc">
+      <column name="activity_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="prev_sub_status" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="new_sub_status" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+
+      <!-- derived properties for status from sub-status? -->
+      <primary-key name="tkt_act_statc_p">
+         <index-column column="activity_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="tkt_a_statc_act_f" referenced-table="tkt_activity">
+         <fkey-column referencing-column="activity_id" referenced-column="activity_id"/>
+      </foreign-key>
+      <foreign-key name="tkt_a_statc_sub_f" referenced-table="tkt_sub_status" index-name="tkt_a_statc_su1_ix">
+         <fkey-column referencing-column="new_sub_status" referenced-column="sub_status_id"/>
+      </foreign-key>
+      <foreign-key name="tkt_a_statc_su2_f" referenced-table="tkt_sub_status" index-name="tkt_a_statc_su2_ix">
+         <fkey-column referencing-column="prev_sub_status" referenced-column="sub_status_id"/>
+      </foreign-key>
+  </table>
+
+
+  <!-- === Section 5.2.4: Status Change Event === -->
+  <table name="tkt_act_escal">
+      <column name="activity_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="prev_esc_level" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="new_esc_level" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+
+      <!-- derived properties for status from sub-status? -->
+      <primary-key name="tkt_act_esc_p">
+         <index-column column="activity_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="tkt_a_esc_act_f" referenced-table="tkt_activity">
+         <fkey-column referencing-column="activity_id" referenced-column="activity_id"/>
+      </foreign-key>
+  </table>
+
+
+
+<comment><![CDATA[
+Outbound Message Activity
+]]></comment>
+
+  <!-- === Section 5.2.5: Outbound Message === -->
+  <table name="tkt_act_message">
+      <column name="activity_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="channel" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+
+      <column name="from_address" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="has_attachments" nullable="y">
+        <column-type db="generic" type="one-digit"/>
+       </column>
+      <column name="to_address" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="cc_address" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="bcc_address" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+
+      <column name="reply_to_addr" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="subject" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="body_text" nullable="y" i18n="y">
+         <column-type db="generic" type="long-varchar"/>
+         <column-type db="db2" type="varchar" length="20480" scale=""/>
+      </column>
+      <column name="due_time" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="char_encoding" nullable="y">
+         <column-type db="generic" type="varchar" length="20"/>
+      </column>
+      <column name="is_text_only" nullable="y">
+         <column-type db="generic" type="one-digit"/>
+      </column>
+      <!-- derived properties for status from sub-status? -->
+      <primary-key name="tkt_act_mess_p">
+         <index-column column="activity_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="tkt_a_mess_act_f" referenced-table="tkt_activity">
+         <fkey-column referencing-column="activity_id" referenced-column="activity_id"/>
+      </foreign-key>
+  </table>
+
+<comment><![CDATA[
+Attachment Activity
+]]></comment>
+
+  <!-- === Section 5.2.5.1: Attachment === -->
+  <table name="tkt_attachment">
+      <column name="attachment_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <!-- ?254 enough for a filename? -->
+      <column name="filename" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+
+      <column name="mime_type" nullable="n">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="encoding" nullable="n">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="encoded_content" nullable="n">
+         <column-type db="generic" type="long-varbinary"/>
+         <column-type db="db2" type="blob" length="1048576" scale=""/>
+      </column>
+      <!-- derived properties for status from sub-status? -->
+      <primary-key name="tkt_attach_p">
+         <index-column column="attachment_id" order="asc" seq="1"/>
+      </primary-key>
+  </table>
+
+<comment><![CDATA[
+Profile Created Activity
+]]></comment>
+
+  <table name="tkt_act_pcreate">
+    <column name="id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="profile_id" nullable="n" i18n="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+  </table>
+
+
+<comment><![CDATA[
+Password Changed Activity
+]]></comment>
+
+  <table name="tkt_act_pswchange">
+    <column name="id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="profile_id" nullable="n" i18n="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+  </table>
+
+
+<comment><![CDATA[
+Profile Update Activity
+]]></comment>
+
+  <table name="tkt_update_prof">
+    <column name="id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="updated_item_id" nullable="y" i18n="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+  </table>
+
+<comment><![CDATA[
+Property Updates
+]]></comment>
+  <table name="tkt_upd_props">
+    <column name="id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="update_type" nullable="n">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <column name="activity_id" nullable="y" i18n="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="property_name" nullable="y" i18n="n">
+      <column-type db="generic" type="varchar" length="100"/>
+    </column>
+    <column name="old_value" nullable="y" i18n="n">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="new_value" nullable="y" i18n="n">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="version" nullable="n">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <primary-key name="csrt_upd_prof_p">
+      <index-column column="id" order="asc" seq="1"/>
+    </primary-key>
+  </table>
+
+
+<comment><![CDATA[
+List of Ticket Attachments
+]]></comment>
+
+  <table name="tkt_attch_list">
+      <column name="activity_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+
+      <column name="idx" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+
+      <column name="attachment_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+
+      <primary-key name="tkt_attchl_p">
+         <index-column column="activity_id" order="asc" seq="1"/>
+         <index-column column="idx" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="tkt_attchl_a_f" referenced-table="tkt_activity">
+         <fkey-column referencing-column="activity_id" referenced-column="activity_id"/>
+      </foreign-key>
+      <foreign-key name="tkt_attchl_at_f" referenced-table="tkt_attachment" index-name="tkt_attchl_at1_ix">
+         <fkey-column referencing-column="attachment_id" referenced-column="attachment_id"/>
+      </foreign-key>
+  </table>
+
+<comment><![CDATA[
+Related Tickets
+]]></comment>
+
+   <!-- === From Section 4.1.7: Associated Tickets, related tickets === -->
+   <table name="tkt_related">
+      <column name="ticket_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="related_ticket_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="idx" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <primary-key name="tkt_related_p">
+         <index-column column="ticket_id" order="asc" seq="1"/>
+         <index-column column="idx" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="tkt_related_t_f" referenced-table="tkt_ticket">
+         <fkey-column referencing-column="ticket_id" referenced-column="ticket_id"/>
+      </foreign-key>
+      <foreign-key name="tkt_related_t2_f" referenced-table="tkt_ticket" index-name="tkt_related_t2_ix">
+         <fkey-column referencing-column="related_ticket_id" referenced-column="ticket_id"/>
+      </foreign-key>
+   </table>
+
+
+<comment><![CDATA[
+External Reference
+]]></comment>
+
+
+  <!-- Section 4.1.8.1: External reference -->
+
+   <table name="tkt_ext_ref">
+      <column name="external_ref_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="extern_ref" nullable="n">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+
+      <column name="last_used_time" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle" type="timestamp"/>
+      </column>
+
+      <column name="activity_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+
+      <primary-key name="tkt_ext_ref_p">
+         <index-column column="external_ref_id" order="asc" seq="1"/>
+      </primary-key>
+
+      <foreign-key name="tkt_extr_a_f" referenced-table="tkt_activity" index-name="tkt_extr_a1_ix">
+         <fkey-column referencing-column="activity_id" referenced-column="activity_id"/>
+      </foreign-key>
+   </table>
+
+  <table name="tkt_extref_list">
+      <column name="ticket_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+
+      <column name="idx" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+
+      <column name="external_ref_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+
+
+      <primary-key name="tkt_extrl_p">
+         <index-column column="ticket_id" order="asc" seq="1"/>
+         <index-column column="idx" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="tkt_extrl_t_f" referenced-table="tkt_ticket">
+         <fkey-column referencing-column="ticket_id" referenced-column="ticket_id"/>
+      </foreign-key>
+      <foreign-key name="tkt_extrl_x_f" referenced-table="tkt_ext_ref" index-name="tkt_extrl_x1_ix">
+         <fkey-column referencing-column="external_ref_id" referenced-column="external_ref_id"/>
+      </foreign-key>
+  </table>
+
+
+
+
+   <!-- === From Section 5.2.7: Web Ticket Creation === -->  
+   <!-- === From Section 5.2.8: Call Ticket Creation === -->  
+  <table name="tkt_act_map">
+      <column name="activity_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+
+      <column name="key_name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+
+      <column name="value_text" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+
+      <foreign-key name="tkt_actmap_a_f" referenced-table="tkt_activity" index-name="tkt_actmap_a1_ix">
+         <fkey-column referencing-column="activity_id" referenced-column="activity_id"/>
+      </foreign-key>
+  </table>  
+
+<comment><![CDATA[
+Ticketing reason context
+]]></comment>
+
+  <table name="tkt_rea_context">
+    <column name="rea_context_id" nullable="n">
+         <column-type db="generic" type="integer"/>   
+    </column>
+    <column name="context_name" nullable="n">
+         <column-type db="generic" type="varchar" length="80"/>
+    </column>
+    <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+    </column>
+
+    <column name="default_reason_id" nullable="y">
+         <column-type db="generic" type="int"/>
+    </column>
+
+    <primary-key name="tkt_rea_context_p">
+       <index-column column="rea_context_id" order="asc" seq="1"/>
+    </primary-key>
+
+    <foreign-key name="tkt_reactx_rea_f" referenced-table="tkt_reason" index-name="tkt_reactx_rea1_x" >
+       <fkey-column referencing-column="default_reason_id" referenced-column="reason_id"/>
+    </foreign-key>
+  </table>
+
+  <table name="tkt_rea_ctx_list">
+      <column name="reason_id" nullable="n">
+         <column-type db="generic" type="int"/>
+      </column>
+
+      <column name="idx" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+
+      <column name="rea_context_id" nullable="n">
+         <column-type db="generic" type="int"/>
+      </column>
+
+      <primary-key name="tkt_reactxl_p">
+         <index-column column="rea_context_id" order="asc" seq="1"/>
+         <index-column column="idx" order="asc" seq="2"/>
+      </primary-key>
+
+      <foreign-key name="tkt_reactxl_r_f" referenced-table="tkt_reason" index-name="tkt_reactxl_r1_ix">
+         <fkey-column referencing-column="reason_id" referenced-column="reason_id"/>
+      </foreign-key>
+      <foreign-key name="tkt_reactxl_c_f" referenced-table="tkt_rea_context">
+         <fkey-column referencing-column="rea_context_id" referenced-column="rea_context_id"/>
+      </foreign-key>
+  </table>
+
+  <table name="tkt_q_stats">
+      <column name="tkt_q_stats_id" nullable="n">
+         <column-type db="generic" type="int"/>
+      </column>
+ 
+      <column name="tkt_q_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+ 
+      <column name="request_count" nullable="n">
+         <column-type db="generic" type="int"/>
+      </column>
+ 
+      <column name="hit_count" nullable="n">
+         <column-type db="generic" type="int"/>
+      </column>
+ 
+      <column name="miss_count" nullable="n">
+         <column-type db="generic" type="int"/>
+      </column>
+ 
+      <column name="release_count" nullable="n">
+         <column-type db="generic" type="int"/>
+      </column>
+ 
+      <primary-key name="tkt_q_stats_p">
+         <index-column column="tkt_q_stats_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+  
+  <table name="tkt_dist_srv_stat">
+      <column name="server_stats_id" nullable="n">
+         <column-type db="generic" type="int"/>
+      </column>
+ 
+      <column name="server_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+ 
+      <column name="update_duration" nullable="n">
+         <column-type db="generic" type="bigint"/>
+      </column>
+ 
+      <column name="last_updated" nullable="n">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle" type="timestamp"/>
+      </column>
+
+      <primary-key name="server_stats_p">
+         <index-column column="server_stats_id" order="asc" seq="1"/>
+      </primary-key>
+      
+  </table>
+  
+  <table name="tkt_q_stat_set">
+      <column name="server_stats_id" nullable="n">
+         <column-type db="generic" type="int"/>
+      </column>
+
+      <column name="tkt_q_stats_id" nullable="n">
+         <column-type db="generic" type="int"/>
+      </column>
+
+      <primary-key name="srv_tkt_q_p">
+         <index-column column="server_stats_id" order="asc" seq="1"/>
+         <index-column column="tkt_q_stats_id" order="asc" seq="2"/>
+      </primary-key>
+
+      <foreign-key name="svr_tkt_q_srv_f" referenced-table="tkt_dist_srv_stat" >
+         <fkey-column referencing-column="server_stats_id" referenced-column="server_stats_id"/>
+      </foreign-key>
+      <foreign-key name="svr_tkt_q_f" referenced-table="tkt_q_stats" index-name="svr_tkt_q_srv_ix">
+         <fkey-column referencing-column="tkt_q_stats_id" referenced-column="tkt_q_stats_id"/>
+      </foreign-key>
+  </table>
+
+  
+</schema>
+
+<!-- @version $Id: //product/Ticketing/version/10.0.3/src/sql/ticket_ddl.xml#2 $$Change: 651448 $ -->

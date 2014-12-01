@@ -1,0 +1,196 @@
+<!DOCTYPE schema SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="multisite_ddl" description="Tables for the estore multisite repository">
+  <comment><![CDATA[ @version $Id: //edu/ILT-Courses/main/COMM/StudentFiles/COM/setup/copy-files/apps/MyStore/EStore/sql/dbsetup/ddlgen/multisite_ddl.xml#3 $$Change: 635816 $]]></comment>
+
+  <table name="crs_site_attribute">
+
+    <column name="id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+    <column name="resource_bundle" nullable="y">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+    
+    <column name="prod_threshold" nullable="y">
+      <column-type db="generic" type="integer"/>
+    </column>
+    
+    <column name="page_size" nullable="y">
+      <column-type db="generic" type="integer"/>
+    </column>
+    
+    <column name="css_file" nullable="y">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+
+    <column name="large_site_icon" nullable="y">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+
+    <column name="default_country_code" nullable="y">
+      <column-type db="generic" type="varchar" length="2"/>
+    </column>
+    
+    <column name="emailafriend" nullable="y">
+      <column-type db="generic" type="one-digit"/>
+    </column>
+
+    <column name="backinstock_addr" nullable="y">
+      <column-type db="generic" type="varchar" length="50"/>
+    </column>
+    
+    <column name="newpass_addr" nullable="y">
+      <column-type db="generic" type="varchar" length="50"/>
+    </column>
+    
+    <column name="orderconfirm_addr" nullable="y">
+      <column-type db="generic" type="varchar" length="50"/>
+    </column>
+    
+    <column name="ordershipped_addr" nullable="y">
+      <column-type db="generic" type="varchar" length="50"/>
+    </column>
+    
+    <column name="promo_addr" nullable="y">
+      <column-type db="generic" type="varchar" length="50"/>
+    </column>
+    
+    <primary-key name="crs_site_attr_p">
+      <index-column column="id"/>
+    </primary-key>
+    
+  </table>
+
+  <table name="crs_bill_codes">
+    
+    <column name="id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+  	<column name="country_codes" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+    <column name="sequence_num" nullable="n">
+      <column-type db="generic" type="integer"/>
+      <column-type db="oracle" type="integer"/>
+    </column>
+    
+    <primary-key name="crs_bill_codes_p">
+      <index-column column="id" seq="1"/>
+      <index-column column="sequence_num" seq="2"/>
+    </primary-key>
+    
+    <foreign-key name="crs_bill_codes_f" referenced-table="site_configuration">
+      <fkey-column referencing-column="id" referenced-column="id"/>
+    </foreign-key>
+    
+  </table>  
+  
+  <table name="crs_non_bill_codes">
+    
+    <column name="id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+  	<column name="country_codes" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+    <column name="sequence_num" nullable="n">
+      <column-type db="generic" type="integer"/>
+      <column-type db="oracle" type="integer"/>
+    </column>
+    
+    <primary-key name="crs_non_bill_c_p">
+      <index-column column="id" seq="1"/>
+      <index-column column="sequence_num" seq="2"/>
+    </primary-key>
+    
+    <foreign-key name="crs_non_bill_c_f" referenced-table="site_configuration">
+      <fkey-column referencing-column="id" referenced-column="id"/>
+    </foreign-key>
+    
+  </table>  
+
+  <table name="crs_ship_codes">
+    
+    <column name="id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+  	<column name="country_codes" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+    <column name="sequence_num" nullable="n">
+      <column-type db="generic" type="integer"/>
+      <column-type db="oracle" type="integer"/>
+    </column>
+    
+    <primary-key name="crs_ship_codes_p">
+      <index-column column="id" seq="1"/>
+      <index-column column="sequence_num" seq="2"/>
+    </primary-key>
+    
+    <foreign-key name="crs_ship_codes_f" referenced-table="site_configuration">
+      <fkey-column referencing-column="id" referenced-column="id"/>
+    </foreign-key> 
+       
+  </table>  
+  
+  <table name="crs_non_ship_codes">
+    
+    <column name="id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+  	<column name="country_codes" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+    <column name="sequence_num" nullable="n">
+      <column-type db="generic" type="integer"/>
+      <column-type db="oracle" type="integer"/>
+    </column>
+    
+    <primary-key name="crs_non_ship_c_p">
+      <index-column column="id" seq="1"/>
+      <index-column column="sequence_num" seq="2"/>
+    </primary-key>
+    
+    <foreign-key name="crs_non_ship_c_f" referenced-table="site_configuration">
+      <fkey-column referencing-column="id" referenced-column="id"/>
+    </foreign-key> 
+       
+  </table> 
+  
+  <table name="crs_site_languages">
+    
+    <column name="id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+    <column name="languages" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+    <column name="sequence_num" nullable="n">
+      <column-type db="generic" type="integer"/>
+      <column-type db="oracle" type="integer"/>
+    </column>
+    
+    <primary-key name="crs_site_lang_p">
+      <index-column column="id" seq="1"/>
+      <index-column column="sequence_num" seq="2"/>
+    </primary-key>
+    
+    <foreign-key name="crs_site_lang_f" referenced-table="site_configuration">
+      <fkey-column referencing-column="id" referenced-column="id"/>
+    </foreign-key>
+        
+  </table>
+
+</schema>
+<!-- @version $Id: //edu/ILT-Courses/main/COMM/StudentFiles/COM/setup/copy-files/apps/MyStore/EStore/sql/dbsetup/ddlgen/multisite_ddl.xml#3 $$Change: 635816 $-->

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tasks SYSTEM "http://www.atg.com/dtds/task_1_0.dtd">
+<tasks>
+
+  <task id="PreviewScenarioManagerTask" class="atg.cim.productconfig.serverinstance.scenariomanager.ScenarioEditorServerTask">
+    <property name="hostname">
+         <value>${PreviewScenarioManagerProvider.scenarioEditorHostname}</value>
+              <input type="text">
+                <label>Enter Hostname:</label>
+                <validator id="CannotBeBlankValidator" phase="POSTINPUT">
+                  <if-false>
+                    <command type="DISPLAY_TEXT" value="Hostname cannot be blank."/>
+                    <command type="REDO_INPUT"/>
+                  </if-false>
+                </validator>
+              </input>              
+    </property>
+    <property name="port">
+     <value>${PreviewScenarioManagerProvider.scenarioEditorPort}</value>
+              <input type="text">
+                <label>Enter Port:</label>
+                <validator id="CannotBeBlankValidator" phase="POSTINPUT">
+                  <if-false>
+                    <command type="DISPLAY_TEXT" value="Port cannot be blank."/>
+                    <command type="REDO_INPUT"/>
+                  </if-false>
+                </validator>
+              </input>              
+    </property>
+           <property name="scenarioEditor">
+                <value>true</value>
+              </property>  
+    
+   </task>
+   
+   <task id="InternalManagementScenarioManagerTask" class="atg.cim.productconfig.serverinstance.scenariomanager.ScenarioEditorServerTask">
+    <property name="hostname">
+         <value>${InternalManagementScenarioManagerProvider.scenarioEditorHostname}</value>
+              <input type="text">
+                <label>Enter Hostname:</label>
+                <validator id="CannotBeBlankValidator" phase="POSTINPUT">
+                  <if-false>
+                    <command type="DISPLAY_TEXT" value="Hostname cannot be blank."/>
+                    <command type="REDO_INPUT"/>
+                  </if-false>
+                </validator>
+              </input>              
+    </property>
+    <property name="port">
+     <value>${InternalManagementScenarioManagerProvider.scenarioEditorPort}</value>
+              <input type="text">
+                <label>Enter Port:</label>
+                <validator id="CannotBeBlankValidator" phase="POSTINPUT">
+                  <if-false>
+                    <command type="DISPLAY_TEXT" value="Port cannot be blank."/>
+                    <command type="REDO_INPUT"/>
+                  </if-false>
+                </validator>
+              </input>              
+    </property>
+           <property name="scenarioEditor">
+                <value>true</value>
+              </property>  
+    
+   </task>
+   
+     <task id="ProductionScenarioManagerTask" class="atg.cim.productconfig.serverinstance.scenariomanager.ScenarioEditorServerTask">
+    <property name="hostname">
+         <value>${ProductionScenarioManagerProvider.scenarioEditorHostname}</value>
+              <input type="text">
+                <label>Enter Hostname:</label>
+                <validator id="CannotBeBlankValidator" phase="POSTINPUT">
+                  <if-false>
+                    <command type="DISPLAY_TEXT" value="Hostname cannot be blank."/>
+                    <command type="REDO_INPUT"/>
+                  </if-false>
+                </validator>
+              </input>              
+    </property>
+    <property name="port">
+     <value>${ProductionScenarioManagerProvider.scenarioEditorPort}</value>
+              <input type="text">
+                <label>Enter Port:</label>
+                <validator id="CannotBeBlankValidator" phase="POSTINPUT">
+                  <if-false>
+                    <command type="DISPLAY_TEXT" value="Port cannot be blank."/>
+                    <command type="REDO_INPUT"/>
+                  </if-false>
+                </validator>
+              </input>              
+    </property>
+           <property name="scenarioEditor">
+                <value>true</value>
+              </property>  
+    
+   </task>
+
+   <task id="StagingScenarioManagerTask" class="atg.cim.productconfig.serverinstance.scenariomanager.ScenarioEditorServerTask">
+     <property name="hostname">
+       <value>${StagingScenarioManagerProvider.scenarioEditorHostname}</value>
+       <input type="text">
+         <label>Enter Hostname:</label>
+         <validator id="CannotBeBlankValidator" phase="POSTINPUT">
+           <if-false>
+             <command type="DISPLAY_TEXT" value="Hostname cannot be blank."/>
+             <command type="REDO_INPUT"/>
+           </if-false>
+         </validator>
+       </input>              
+     </property>
+     <property name="port">
+       <value>${StagingScenarioManagerProvider.scenarioEditorPort}</value>
+       <input type="text">
+         <label>Enter Port:</label>
+         <validator id="CannotBeBlankValidator" phase="POSTINPUT">
+           <if-false>
+             <command type="DISPLAY_TEXT" value="Port cannot be blank."/>
+             <command type="REDO_INPUT"/>
+           </if-false>
+         </validator>
+       </input>              
+     </property>
+     <property name="scenarioEditor">
+       <value>true</value>
+     </property>  
+     
+   </task>
+   
+     <task id="GlobalScenarioTask" class="atg.cim.productconfig.serverinstance.scenariomanager.ScenarioEditorServerTask">
+    <property name="hostname">
+              <input type="text">
+                <label>Enter Hostname:</label>
+                <validator id="CannotBeBlankValidator" phase="POSTINPUT">
+                  <if-false>
+                    <command type="DISPLAY_TEXT" value="Hostname cannot be blank."/>
+                    <command type="REDO_INPUT"/>
+                  </if-false>
+                </validator>
+              </input>              
+    </property>
+    <property name="port">
+              <input type="text">
+                <label>Enter Port:</label>
+                <validator id="CannotBeBlankValidator" phase="POSTINPUT">
+                  <if-false>
+                    <command type="DISPLAY_TEXT" value="Port cannot be blank."/>
+                    <command type="REDO_INPUT"/>
+                  </if-false>
+                </validator>
+              </input>              
+    </property>
+    <property name="scenarioEditor">
+                <value>false</value>
+              </property>  
+    
+   </task>
+   
+  <task id="WriteScenarioXMLTask" class="atg.cim.productconfig.serverinstance.scenariomanager.ScenarioServerXMLWriterTask"/>
+   
+  <task id="ClearGlobalServersTask" class="atg.cim.productconfig.serverinstance.scenariomanager.ClearGlobalServersTask"/>
+   
+   
+</tasks>
+<!-- @version $Id: //product/Publishing/version/10.0.3/cim/tasks.xml#2 $$Change: 651448 $-->

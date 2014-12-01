@@ -1,0 +1,67 @@
+
+ <table border="0" cellpadding="0" cellspacing="0" width="100%">
+    <tr bgcolor="#<%= gearTitleBackgroundColor%>">
+      <td><font class="smaller" color="#<%= gearTitleTextColor %>">&nbsp;&nbsp;
+
+ </font></td><td align="center" valign="bottom">
+   
+  <%@ include file="header_page_tabs.jspf" %>
+
+      </td>
+    </tr>
+    <tr>
+      <td valign="top" colspan="2">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+          <tr>
+            <td width="100%" bgcolor="#eeeeee"><img src="/portal/layoutTemplates/images/clear.gif" width="1" height="1" border="0"></td>
+          </tr>
+
+          <tr>
+            <td width="100%" bgcolor="#cccccc" >
+              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td></td> 
+
+
+
+
+                  <td width="95%">&nbsp;</td><!-- dont remove -->
+
+
+<%
+ String loginMessage = "";
+
+%>
+
+ <core:CreateUrl id="loginSuccessURL" url="<%= pafEnv.getOriginalRequestURI() %>">
+       <core:UrlParam param="paf_dm" value='<%= request.getParameter("paf_dm")%>'/>
+       <core:UrlParam param="paf_gear_id" value='<%= request.getParameter("paf_gear_id")%>'/>
+       <core:UrlParam param="paf_gm" value='<%= request.getParameter("paf_gm")%>'/>
+
+
+ <core:CreateUrl id="loginURL" url="<%=pafEnv.getLoginURI(false)%>">
+       <paf:encodeUrlParam param="successURL" value="<%= loginSuccessURL.getNewUrl() %>"/>
+       <paf:encodeUrlParam param="userMessage" value="<%= loginMessage %>"/>
+       <core:UrlParam param="col_pb"  value="<%=pageBackgroundColor%>"/>
+       <core:UrlParam param="col_pt"  value="<%= pageTextColor %>"/>
+       <core:UrlParam param="col_gtb" value="<%= gearTitleBackgroundColor %>"/>
+       <core:UrlParam param="col_gtt" value="<%= gearTitleTextColor%>"/>
+       <core:UrlParam param="col_gb"  value="<%= gearBackgroundColor %>"/>
+       <core:UrlParam param="col_gt"  value="<%= gearTextColor%>"/>
+       <td><a href="<%= loginURL.getNewUrl() %>"><img src="/portal/layoutTemplates/images/arrow_up_right.gif" height="16" width="16" border="0"></a></td>
+       <td nowrap><b><a href="<%= loginURL.getNewUrl() %>" style="text-decoration:none"><font class="smaller" color="#333333"><i18n:message key="template_header_link_log_in"/>&nbsp;&nbsp;&nbsp;</font></a></b></td>
+   </core:CreateUrl>
+  </core:CreateUrl>
+
+   </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td width="100%"  bgcolor="#999999"><img src="/portal/layoutTemplates/images/clear.gif" width="1" height="1" border="0"></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+<%-- @version $Id: //app/portal/version/10.0.3/templates/layoutTemplates.war/web/html/header_links_logged_out.jspf#2 $$Change: 651448 $--%>

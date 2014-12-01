@@ -1,0 +1,64 @@
+
+
+ <font class="small">
+  <i18n:message key="search_paging_show_x2y_of_z_param">
+   <i18n:messageArg value="<%= new Integer(searchHandler.getStartCount()).toString() %>"/>
+   <i18n:messageArg value="<%= new Integer(searchHandler.getEndCount()).toString() %>"/>
+   <i18n:messageArg value="<%= new Integer(searchHandler.getTotalResultsNum()).toString() %>"/>
+  </i18n:message>
+ </font>
+
+<br>
+
+<core:CreateUrl  id="searchResultsURL" url="<%= gearEnv.getOriginalRequestURI() %>">
+          <core:UrlParam param="paf_gear_id" value="<%= gearEnv.getGear().getId() %>"/>
+          <core:UrlParam param="paf_dm" value="full"/>
+
+<font class="smaller"><i18n:message key="search_paging_item_info_page"/>&nbsp;</font>
+<font class="smaller">
+
+<dsp:droplet name="For">
+  <dsp:param name="howMany" bean="RepositoryPortalSearchFormHandler.totalResultsPageNum" />
+  <dsp:oparam name="output">
+    <dsp:getvalueof id="count" idtype="java.lang.Integer" param="count">
+     <core:ExclusiveIf>
+      <core:IfEqual int1="<%= searchHandler.getCurrentResultPageNum() %>" int2="<%= count.intValue() %>">
+        <font class="smaller_bold"><%= count %></font>&nbsp;
+      </core:IfEqual>
+      <core:IfNotEqual int1="<%= searchHandler.getCurrentResultPageNum() %>" int2="<%= count.intValue() %>">
+         <font class="smaller"><dsp:a href="<%= searchResultsURL.getNewUrl() %>" 
+               bean="RepositoryPortalSearchFormHandler.currentResultPageNum"
+               value="<%= count %>"><%= count %></dsp:a></font>&nbsp;
+      </core:IfNotEqual>
+     </core:ExclusiveIf>
+    </dsp:getvalueof>
+  </dsp:oparam>
+</dsp:droplet>
+
+</font>&nbsp;&nbsp;&nbsp;&nbsp;
+
+<font class="small"><nobr>
+<%-- previous link --%>
+<core:ifNotEqual int1="<%= searchHandler.getCurrentResultPageNum() %>" int2="<%= 1 %>">
+
+ <dsp:a href="<%= searchResultsURL.getNewUrl() %>" 
+       bean="RepositoryPortalSearchFormHandler.currentResultPageNum"
+       value="<%= new Integer(searchHandler.getCurrentResultPageNum()-1) %>"><i18n:message key="search_paging_link_previous"/></dsp:a>&nbsp;&nbsp;&nbsp;
+
+</core:ifNotEqual>
+<%-- end previous link --%>
+
+<%-- NEXT link --%>
+<core:ifNotEqual int1="<%= searchHandler.getCurrentResultPageNum() %>"
+                 int2="<%= searchHandler.getTotalResultsPageNum() %>">
+
+<dsp:a href="<%= searchResultsURL.getNewUrl() %>" 
+        bean="RepositoryPortalSearchFormHandler.currentResultPageNum"
+        value="<%= new Integer(searchHandler.getCurrentResultPageNum()+1) %>"><i18n:message key="search_paging_link_next"/></dsp:a>
+
+</core:ifNotEqual>
+<%-- end NEXT link --%>
+</nobr></font>
+</core:CreateUrl>
+<br><br>
+<%-- @version $Id: //app/portal/version/10.0.3/search/search.war/html/pageNavigation.jspf#2 $$Change: 651448 $--%>

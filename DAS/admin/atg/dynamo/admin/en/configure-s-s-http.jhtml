@@ -1,0 +1,130 @@
+
+<nucleus type=import>
+	/atg/dynamo/admin/Configure
+</nucleus>
+
+<java>
+  atg.service.dynamo.ServerConfig configure = (atg.service.dynamo.ServerConfig) request.resolveName("/atg/dynamo/admin/Configure");
+  atg.service.dynamo.ServerConfig defaultCfg = (atg.service.dynamo.ServerConfig) request.resolveName("/atg/dynamo/admin/DefaultConfigure");
+</java>
+
+<HTML>
+<HEAD>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+<TITLE>Configure Serverina</TITLE>
+
+
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="images/config-banner.gif" ALT="Dynamo Configuration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a href="configure-server.jhtml">Configure</a>/<a href="configure-server-services.jhtml">Servers</a>/Internal_HTTP_service<p>
+
+
+
+<blockquote>
+
+<font color=red><valueof property=Configure.errorMsg></valueof></font><p>
+<setvalue property=Configure.errorMsg>
+
+<h3>Server: <i><valueof property=Configure.serverName></valueof></i></h3>
+
+<H2>Configure Serverina</H2>
+Dynamo includes Serverina, a built-in HTTP server. Serverina is an efficient, lightweight HTTP server that enables a Dynamo server to directly serve pages using HTTP and HTTPS.  Serverina does not require the use of Dynamo Connection Modules or any commercial HTTP server.
+
+<FORM ACTION="configure-server-services.jhtml" METHOD=POST>
+
+<input name="currentProperties" property="Configure.currentProperties" type=hidden value="httpEnabled">
+<input name="currentProperties" property="Configure.currentProperties" type=hidden value="httpPort">
+<input name="currentProperties" property="Configure.currentProperties" type=hidden value="httpsEnabled">
+<input name="currentProperties" property="Configure.currentProperties" type=hidden value="httpsPort">
+
+(currently
+
+<java>
+  if ( !configure.isDefaultServer() &&
+       ( !configure.isUsingDefault("httpEnabled") ||
+         !configure.isUsingDefault("httpPort") ) )
+  {
+    out.println( " not " );
+  }
+</java>
+
+using defaults)
+
+<p>
+<INPUT TYPE="checkbox" property="Configure.httpEnabled"> <b>Enable Serverina</b>
+    <java>
+    if ( !configure.isDefaultServer() && !configure.isUsingDefault("httpEnabled") )
+    {
+        out.println( " (default: " + defaultCfg.getHttpPort() + ")" );
+    }
+    </java>
+    <br>
+		<ul>
+		HTTP Port:
+        <java>
+        if ( !configure.isDefaultServer() && !configure.isUsingDefault("httpPort") )
+        {
+            out.println( " (default: " + defaultCfg.getHttpPort() + ")" );
+        }
+        </java>
+		<br>
+		<INPUT TYPE="text" property="Configure.httpPort">
+</ul>
+<p>
+<INPUT TYPE="checkbox" property="Configure.httpsEnabled"> <b>Enable Secure Serverina</b>
+    <java>
+    if ( !configure.isDefaultServer() && !configure.isUsingDefault("httpsEnabled") )
+    {
+        out.println( " (default: " + defaultCfg.getHttpsPort() + ")" );
+    }
+    </java>
+    <br>
+        <ul>
+		HTTPS Port:
+        <java>
+        if ( !configure.isDefaultServer() && !configure.isUsingDefault("httpsPort") )
+        {
+            out.println( " (default: " + defaultCfg.getHttpsPort() + ")" );
+        }
+        </java>
+		<br>
+		<INPUT TYPE="text" property="Configure.httpsPort">
+<p>
+
+<INPUT TYPE="submit" property="Configure.applyChanges" value="Apply Changes">
+
+<java>
+  if ( !configure.isDefaultServer() && 
+       ( !configure.isUsingDefault("httpEnabled") ||
+         !configure.isUsingDefault("httpPort") ||
+         !configure.isUsingDefault("httpsEnabled") ||
+         !configure.isUsingDefault("httpsPort") ) )
+  {
+</java>
+    <INPUT TYPE="submit" property="Configure.applyDefault" VALUE="Use Defaults">
+<java>
+  }
+</java>
+<p>
+Note: You must restart Dynamo for changes to take effect.
+</ul>
+</form>
+<p>
+<hr>
+<b>Change Server</b><p>
+<valueof property=Configure.serverConfiguredText></valueof>
+<p>
+<droplet src="SelectServer.jhtml">
+    <param name="returnURL" value="configure-s-s-http.jhtml">
+</droplet>
+<a href="configure-server-services.jhtml">Back</a><br>
+
+</blockquote>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/configure-s-s-http.jhtml#2 $$Change: 651448 $ */</java>
+

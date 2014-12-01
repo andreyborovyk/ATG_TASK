@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data-warehouse-dimension-loader-definition>
+  <data-warehouse-repository repository="/atg/reporting/datawarehouse/WarehouseRepository">
+
+    <data-warehouse-repository-item item="searchRule" natural-key="searchRuleId">
+      <property-mappings>
+        <warehouse-property name="name" conversion-component="/atg/reporting/datawarehouse/process/converter/SearchRuleNameItemConverter">
+          <production-property name="RefinementRepository.searchRule"  conversion-context-name="searchRule"/>
+        </warehouse-property>
+      </property-mappings>
+    </data-warehouse-repository-item>
+
+  </data-warehouse-repository>
+</data-warehouse-dimension-loader-definition>
+<!-- @version $Id: //product/DCS/version/10.0.3/DW/Search/config/atg/reporting/datawarehouse/process/definition/DimensionProperties.xml#2 $$Change: 651448 $-->

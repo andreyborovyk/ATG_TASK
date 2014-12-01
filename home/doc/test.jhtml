@@ -1,0 +1,92 @@
+<!--
+  This is a test page you can use to make sure that dynamo is serving
+  pages correctly.  It validates that session tracking is working properly,
+  displays the headers that are in the request, displays the DRP server's
+  port id (if it is active) to help determine how this session was load
+  balanced.
+
+  It should not be used as a style guide for writing new pages.
+  -->
+<java type="import">javax.servlet.http.*</java><java>
+/*
+ * This uses the standard javasoft session tracking API and page compilation
+ * interfaces
+ */
+HttpSession s = request.getSession (true);
+
+Integer count;
+synchronized (s) {
+  count = (Integer) s.getValue ("visitCounter");
+  if (count == null) count = new Integer (0);
+  else count = new Integer(count.intValue() + 1);
+  s.putValue ("visitCounter", count);
+}
+
+/* Set a cookie to make sure that our cookies are being returned properly */
+response.addCookie(new Cookie("countCookie", String.valueOf(count)));
+</java>
+
+
+<html>
+<head><title>Test Page</title></head>
+<h1>Test Page</h1>
+Here's a simple link back to <a href="test.jhtml">this page</a>.
+<p>You have previously viewed this page <java type=print>count</java> times in this session.
+<p>
+Your session id is: <java type=print>request.getSession(true).getId()</java>
+<p>
+This is <java type=print>request.getSession(true).isNew() ? "" : "not "</java> 
+a new session.
+<p>
+<java>
+  if (!request.isRequestedSessionIdValid()) {
+    </java>
+       This request came in with an invalid session id of:
+          <java type=print>atg.servlet.ServletUtil.escapeHtmlString(request.getRequestedSessionId())</java>
+       which came from a 
+          <java type=print>request.isRequestedSessionIdFromUrl() ? " URL argument" : ""</java>
+          <java type=print>request.isRequestedSessionIdFromCookie() ? " cookie" : ""</java>
+	.	
+    <java>
+  }
+  else {
+     </java>
+      Your session id came from
+      <java>
+      if (request.isRequestedSessionIdFromUrl()) {
+        if (request.isRequestedSessionIdFromCookie())
+	  out.print(" both a URL argument and a cookie");
+	else out.print(" a URL argument");
+      }
+      else if (request.isRequestedSessionIdFromCookie())
+        out.print(" a cookie");
+      else
+        out.print(" neither a URL or a cookie");
+  }
+</java>
+<p>
+<droplet name="/atg/dynamo/droplet/Switch">
+  <param name="value" value="property:/atg/dynamo/Configuration.drpEnabled">
+  <oparam name="true">
+    This dynamo's hostname is: <valueof
+    property="/atg/dynamo/server/DrpServer.hostName">not set</valueof>
+    and it's drp port is: <valueof property="/atg/dynamo/server/DrpServer.port">
+    </valueof>
+  </oparam>
+  <oparam name="false">
+    Your drp server is not enabled
+  </oparam>
+</droplet>
+<p>
+Here is the state from this request:
+<pre>
+<java>
+  // use escapeHtmlString to display '<', '&', etc. properly and to prevent
+  // cross-site scripting attacks.
+  out.print(atg.servlet.ServletUtil.escapeHtmlString(request.toString()));
+</java>
+</pre>
+
+</html>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/home/doc/test.jhtml#2 $$Change: 651448 $ */</java>
+

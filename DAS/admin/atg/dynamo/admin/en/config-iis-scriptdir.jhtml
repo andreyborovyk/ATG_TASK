@@ -1,0 +1,51 @@
+<nucleus type=import>
+	/atg/dynamo/admin/ISAPIConfigure
+</nucleus>
+
+<java>
+  atg.service.dynamo.ISAPIConfig ISAPIConfigure = (atg.service.dynamo.ISAPIConfig)
+  	request.resolveName("/atg/dynamo/admin/ISAPIConfigure");
+ 
+</java>
+
+<HTML>
+<HEAD>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+<TITLE>Configure IIS Connection Module</TITLE>
+
+
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="images/config-banner.gif" ALT="Dynamo Configuration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a href="configure-server.jhtml">Configure</a>/<a href="configure-server.jhtml#CM">Connection_Modules</a>/script_dir<p>
+<p>
+
+<blockquote>
+
+<H2>Configure Dynamo Connection Modules for an IIS HTTP Server</H2><p>
+
+<FORM ACTION="config-iis-decide.jhtml" METHOD=POST>
+
+<!-- Display error message and then clear it. -->
+<font color=red><valueof property=ISAPIConfigure.errorMessage valueishtml></valueof></font>
+<setvalue property=ISAPIConfigure.errorMessage>
+<p>
+
+Enter the script directory of your IIS installation:<BR>
+
+<INPUT TYPE="text" property=ISAPIConfigure.scriptDir SIZE=60><p>
+<INPUT TYPE="submit" VALUE="Next">
+</FORM>
+
+
+<p>
+This might be:<p>
+C:\InetPub\scripts
+
+
+</blockquote>
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/config-iis-scriptdir.jhtml#2 $$Change: 651448 $*/</java>

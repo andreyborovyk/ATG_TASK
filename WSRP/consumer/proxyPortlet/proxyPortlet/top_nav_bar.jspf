@@ -1,0 +1,133 @@
+<%-- top navigation bar which will be included for all the four UI screens--%>
+
+<%@ page import="atg.portal.framework.GearDefinition"%>
+
+
+<SCRIPT language="JavaScript">
+    function submitForm1()
+    {
+        if(document.forms[1].name=='configForm1')
+            document.configForm1.submit();
+    }
+    function submitForm2()
+    {
+        if(document.forms[1].name=='configForm2')
+            document.configForm2.submit();
+        else
+            document.configForm1.submit();
+    }
+    function submitForm3()
+    {
+        if(document.forms.length=='3' && document.forms[2].name=='configForm3')
+            document.configForm3.submit();
+        else if(document.forms.length=='2' && document.forms[1].name=='configForm2')
+            document.configForm2.submit();
+        else
+            document.configForm1.submit();
+    }
+</SCRIPT>
+
+<%-- get all internationalized strings that will be used for this navigation bar --%>
+
+<fmt:bundle basename="atg.wsrp.consumer.ProxyPortletInstallConfigResources">
+
+<dspel:importbean bean="/atg/wsrp/consumer/ProducerFormHandler"/>
+
+
+<%! GearDefinition gearDef; %>
+
+<%    gearDef = atg.portal.framework.Utilities.getPortalRepositoryTools().
+            getGearDefinition((String)request.getAttribute(atg.portal.framework.RequestAttributes.GEAR_DEFINITION)); %>
+
+<%!
+    String getRelativeUrl(String url)
+    {
+        StringBuffer sb = new StringBuffer(gearDef.getServletContext());
+        sb.append(url);
+        return sb.toString();
+    }
+%>
+
+<%
+    //gearDef = pafEnv.getGearDefinition();
+    gearDef = atg.portal.framework.Utilities.getPortalRepositoryTools().
+            getGearDefinition((String)request.getAttribute(atg.portal.framework.RequestAttributes.GEAR_DEFINITION));
+
+    //String origURI= getRelativeUrl("/InstallConfig.jsp");
+    String geardefID = gearDef.getId();
+
+    String configPage = request.getParameter("config_page");
+    if (configPage == null)
+       configPage = "Producer1";
+%>
+
+  <table cellpadding="1" cellspacing="0" border="0" bgcolor="#666666" width="100%"><tr><td>
+    <table cellpadding="4" cellspacing="0" border="0" bgcolor="#BAD8EC" width="100%"><tr><td>
+      <font class="pageheader_edit"><img src='images/write.gif' height="15" width="28" alt="" border="0">
+      <fmt:message key="installConfigMainHeading">
+        <c:set var="gearDefName"><%=gearDef.getName(response.getLocale())%></c:set>
+        <fmt:param value="${gearDefName}"/>
+      </fmt:message>
+    </td></tr></table>
+  </td></tr></table>
+
+
+  <c:if test="${ProducerFormHandler.registrationRequired eq false && param['config_page'] eq 'Producer3'}" >
+  <% configPage = "Producer4"; %>
+  </c:if>
+
+<%
+    String style1 = (configPage.equals("Producer1")) ? " style='text-decoration:none;color:#000000;font-weight:700'" : " class='smaller'";
+    String style2 = (configPage.equals("Producer2")) ? " style='text-decoration:none;color:#000000;font-weight:700'" : " class='smaller'";
+    String style3 = (configPage.equals("Producer3")) ? " style='text-decoration:none;color:#000000;font-weight:700'" : " class='smaller'";
+    String style4 = (configPage.equals("Producer4")) ? " style='text-decoration:none;color:#000000;font-weight:700'" : " class='smaller'";
+%>
+
+  <table bgcolor="#cccccc" width="100%" border="0" cellspacing="0" cellpadding="4">
+
+    <!-- begin form -->
+    <dspel:form action="/InstallConfig.jsp" method="post" name="form1" formid="topFrm">
+
+    <tr>
+      <td>
+
+    <!-- WSRP Producer -->
+    <%--<c:set var="origURI"><%=getRelativeUrl("/InstallConfig.jsp") %></c:set>--%>
+    <a href="
+        <c:url value="/InstallConfig.jsp">
+	    <c:param name="paf_dm" value="full"/>
+	    <c:param name="paf_gm" value="installConfig"/>
+        <c:set var="gear_def_id"><%=geardefID %></c:set>
+	    <c:param name="paf_gear_def_id" value="${gear_def_id}"/>
+	    <c:param name="config_page" value="Producer1"/>
+        </c:url>
+        ">
+    <font <%= style1 %> color="#0000FF"><fmt:message key="producer-link"/></font></a>
+    <input type="hidden" name="config_page" value="Producer1"/>
+
+    <font class="small">&nbsp;|&nbsp;</font>
+
+	<!-- Configure Producer -->
+    <a href="javascript:submitForm1()"><font <%= style2 %> color="#0000FF"><fmt:message key="config-link"/></font></a>
+      <input type="hidden" name="config_page" value="Producer2"/>
+
+
+    <font class="small">&nbsp;|&nbsp;</font>
+
+    <!-- Register Producer -->
+    <a href="javascript:submitForm2()"><font <%= style3 %> color="#0000FF"><fmt:message key="register-link"/></font></a>
+    <input type="hidden" name="config_page" value="Producer3"/>
+
+    <font class="small">&nbsp;|&nbsp;</font>
+
+	<!-- Manage Portlets -->
+    <a href="javascript:submitForm3()"><font <%= style4 %> color="#0000FF"><fmt:message key="manage-link"/></font></a>
+    <input type="hidden" name="config_page" value="Producer4"/>
+
+     </td>
+    </tr>
+    </dspel:form>
+   </table>
+
+</fmt:bundle>
+<%-- @version $Id: //product/WSRP/version/10.0.3/consumer/proxyPortlet/proxyPortlet/top_nav_bar.jspf#2 $$Change: 651448 $--%>

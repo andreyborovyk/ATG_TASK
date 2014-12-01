@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE repository-admins
+        PUBLIC "-//Art Technology Group, Inc.//DTD Repository Admin Registration//EN"
+        "http://www.atg.com/dtds/ui/dps/admins_1.0.dtd">
+
+<repository-admins>
+
+  <default-admin id="PublishingRepository">
+    <display-name bundle="atg.epub.PublishingResources" resource="publishingRepositoryDisplayName" />
+    <task>EPublishing</task>
+    <repository-name>Publishing</repository-name>
+    <privilege>publishing-repository-privilege</privilege>
+  </default-admin>
+
+  <default-admin id="PublishingFileRepository">
+    <display-name bundle="atg.epub.PublishingResources" resource="publishingFileRepositoryDisplayName" />
+    <task>EPublishing</task>
+    <repository-name>PublishingFiles</repository-name>
+    <privilege>publishing-file-repository-privilege</privilege>
+  </default-admin>
+
+  <custom-admin id="ProfileRepositoryAdmin">
+    <standard-bean-displays>
+      <bean-display type="epub-media" class="atg.ui.repository.EPubMediaEditor">
+        <property name="externalExcludedTableProperties" value="path, version, mimeType, data"/>
+        <property name="internalBinaryExcludedTableProperties" value="path, version, mimeType,data, length,url"/>
+        <property name="internalTextExcludedTableProperties" value="path, version, data, mimeType,length, url"/>
+      </bean-display>
+    </standard-bean-displays>
+    <create-bean-displays>
+      <bean-display type="epub-media" class="atg.ui.repository.EPubMediaEditor">
+        <property name="externalExcludedTableProperties" value="path, version, mimeType, data"/>
+        <property name="internalBinaryExcludedTableProperties" value="path, version, mimeType,data, length,url"/>
+        <property name="internalTextExcludedTableProperties" value="path, version, data, mimeType,length, url"/>
+      </bean-display>
+    </create-bean-displays>
+  </custom-admin>
+
+
+</repository-admins>
+<!-- @version $Id: //product/Publishing/version/10.0.3/pws/config/atg/devtools/admins.xml#2 $$Change: 651448 $ -->

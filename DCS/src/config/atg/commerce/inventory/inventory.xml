@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE gsa-template
+        PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN"
+        "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template>
+
+  <header>
+    <name>Dynamo Commerce Server Inventory</name>
+    <author>DCS Team</author>
+    <version>$Id: //product/DCS/version/10.0.3/templates/DCS/config/atg/commerce/inventory/inventory.xml#2 $$Change: 651448 $</version>
+  </header>
+
+  <item-descriptor name="inventory" display-property="displayName" item-cache-size="1000" query-cache-size="1000" version-property="version" id-space-name="inventory" 
+      cache-mode="disabled" display-name-resource="itemDescriptorInventory">
+    <attribute name="resourceBundle" value="atg.commerce.InventoryTemplateResources"/>
+  
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categorySchedulePriority" value="20"/>
+    <attribute name="categoryInventoryLevelsPriority" value="30"/>
+    <attribute name="categoryInventoryWarningPriority" value="40"/>
+    <attribute name="categoryInfoPriority" value="50"/>
+  
+    <table name="dcs_inventory" type="primary" id-column-name="inventory_id">
+      <property category-resource="categoryInfo" name="version" data-type="int" column-name="version" cache-mode="disabled" group="stockLevel" display-name-resource="version">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="-2"/>
+      </property>
+      <property category-resource="categoryInfo" name="inventoryLock" data-type="string" column-name="inventory_lock" group="admin" display-name-resource="inventoryLock">
+        <attribute name="propertySortPriority" value="-2"/>
+      </property>
+      <property category-resource="categoryInfo" name="creationDate" data-type="timestamp" column-name="creation_date" group="admin" display-name-resource="creationDate">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="useNowForDefault" value="true"/>
+        <attribute name="propertySortPriority" value="-2"/>
+      </property>
+      <property category-resource="categorySchedule" name="startDate" data-type="timestamp" column-name="start_date" group="admin" display-name-resource="startDate">
+        <attribute name="propertySortPriority" value="-2"/>
+      </property>
+      <property category-resource="categorySchedule" name="endDate" data-type="timestamp" column-name="end_date" group="admin" display-name-resource="endDate">
+        <attribute name="propertySortPriority" value="-1"/>
+      </property>
+      <property category-resource="categoryBasics" name="displayName" data-type="string" column-name="display_name" required="true" group="admin" display-name-resource="name">
+        <attribute name="propertySortPriority" value="-4"/>
+      </property>
+      <property category-resource="categoryBasics" name="description" data-type="string" column-name="description" group="admin" display-name-resource="description">
+        <attribute name="propertySortPriority" value="-1"/>
+      </property>
+      <property category-resource="categoryBasics" name="catalogRefId" data-type="string" column-name="catalog_ref_id" required="true" group="admin"
+                     editor-class="atg.ui.commerce.SkuItemStringEditor" display-name-resource="catalogRefId">
+        <attribute name="unique" value="true"/>
+        <attribute name="propertySortPriority" value="-3"/>
+      </property>
+      <property category-resource="categoryBasics" name="availabilityStatus" data-type="enumerated" default="availabilityStatusDerived" column-name="avail_status" required="true" group="stockLevel" display-name-resource="availabilityStatus">
+        <attribute name="useCodeForValue" value="true"/>
+        <option resource="availabilityStatusInstock" code="1000"/>
+        <option resource="availabilityStatusOutOfStock" code="1001"/>
+        <option resource="availabilityStatusPreorderable" code="1002"/>
+        <option resource="availabilityStatusBackorderable" code="1003"/>
+        <option resource="availabilityStatusDerived" code="1004"/>
+	      <option resource="availabilityStatusDiscontinued" code="1005"/>
+        <attribute name="propertySortPriority" value="-2"/>
+      </property>
+      <property category-resource="categoryBasics" name="availabilityDate" data-type="timestamp" column-name="availability_date" group="availability" display-name-resource="availabilityDate">
+        <attribute name="propertySortPriority" value="-1"/>
+      </property>
+      <property category-resource="categoryInventoryLevels" name="stockLevel" data-type="long" column-name="stock_level" cache-mode="disabled" group="stockLevel" display-name-resource="stockLevel">
+        <attribute name="propertySortPriority" value="-3"/>
+      </property>
+      <property category-resource="categoryInventoryLevels" name="backorderLevel" data-type="long" column-name="backorder_level" cache-mode="disabled" group="backorderLevel" display-name-resource="backorderLevel">
+        <attribute name="propertySortPriority" value="-2"/>
+      </property>
+      <property category-resource="categoryInventoryLevels" name="preorderLevel" data-type="long" column-name="preorder_level" cache-mode="disabled" group="preorderLevel" display-name-resource="preorderLevel">
+        <attribute name="propertySortPriority" value="-1"/>
+      </property>
+      <property category-resource="categoryInventoryWarning" name="stockThreshold" data-type="long" column-name="stock_thresh" group="threshold" display-name-resource="stockThreshold">
+        <attribute name="propertySortPriority" value="-3"/>
+      </property>
+      <property category-resource="categoryInventoryWarning" name="backorderThreshold" data-type="long" column-name="backorder_thresh" group="threshold" display-name-resource="backorderThreshold">
+        <attribute name="propertySortPriority" value="-2"/>
+      </property>
+      <property category-resource="categoryInventoryWarning" name="preorderThreshold" data-type="long" column-name="preorder_thresh" group="threshold" display-name-resource="preorderThreshold">
+        <attribute name="propertySortPriority" value="-1"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //product/DCS/version/10.0.3/templates/DCS/config/atg/commerce/inventory/inventory.xml#2 $$Change: 651448 $ -->

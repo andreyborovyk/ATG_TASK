@@ -1,0 +1,91 @@
+<java>
+  // Display properties of all the tabs for one task configuration
+  //
+  // Input parameter:
+  //   task - a TaskConfiguration object
+</java>
+
+<importbean bean="/atg/dynamo/droplet/ForEach">
+
+<blockquote>
+  <droplet bean="ForEach">
+    <param name="array" value="param:task.tabIds">
+    <param name="elementName" value="tabId">
+    <oparam name="output">
+<java>
+      // <setvalue param="tab" value="param:task.tabs.`request.getParameter("tabId")`">
+      request.setParameter("tab", request.getObjectParameter("task.tabs." + request.getParameter("tabId")));
+</java>
+      <b>Tab <valueof param="tabId"/></b><br>
+      <table>
+        <tr>
+        <td valign=top>page</td><td valign=top><valueof param="tab.page"/></td>
+        </tr><tr>
+        <td valign=top>configuration</td><td valign=top><valueof param="tab.configurationPath"/></td>
+        </tr><tr>
+        <td valign=top>display name</td><td valign=top><valueof param="tab.displayName"/></td>
+        </tr><tr>
+        <td valign=top>display name resource</td><td valign=top><valueof param="tab.displayNameResource"/></td>
+        </tr><tr>
+        <td valign=top>resource bundle</td><td valign=top><valueof param="tab.resourceBundle"/></td>
+        </tr><tr>
+        <td valign=top>asset editor page</td><td valign=top><valueof param="tab.editorConfiguration.page"/></td>
+        </tr><tr>
+        <td valign=top>asset editor webAppName</td><td valign=top><valueof param="tab.editorConfiguration.webAppName"/></td>
+        </tr><tr>
+        <td valign=top>asset editor resource bundle</td><td valign=top><valueof param="tab.editorConfiguration.resourceBundle"/></td>
+        </tr><tr>
+        <td valign=top valign=top>operations</td><td valign=top><valueof param="tab.operations"/></td>
+        </tr><tr>
+        <td valign=top>view order</td><td valign=top><valueof param="tab.viewIds"/></td>
+        </tr><tr>
+        <td valign=top>initial view</td><td valign=top><valueof param="tab.initialView"/></td>
+        </tr>
+      </table>
+      <blockquote>
+        <droplet bean="ForEach">
+          <param name="array" value="param:tab.views">
+          <param name="elementName" value="view">
+          <oparam name="output">
+            <b>View <valueof param="view.id"/></b><br>
+            <table>
+              <tr>
+              <td valign=top>page</td><td valign=top><valueof param="view.page"/></td>
+              </tr><tr>
+              <td valign=top>configuration</td><td valign=top><valueof param="view.configurationPath"/></td>
+              </tr><tr>
+              <td valign=top>display name</td><td valign=top><valueof param="view.displayName"/></td>
+              </tr><tr>
+              <td valign=top>display name resource</td><td valign=top><valueof param="view.displayNameResource"/></td>
+              </tr><tr>
+              <td valign=top>resource bundle</td><td valign=top><valueof param="view.resourceBundle"/></td>
+              </tr><tr>
+              <td valign=top>asset editor page</td><td valign=top><valueof param="view.editorConfiguration.page"/></td>
+              </tr><tr>
+              <td valign=top>asset editor webAppName</td><td valign=top><valueof param="view.editorConfiguration.webAppName"/></td>
+              </tr><tr>
+              <td valign=top>asset editor resource bundle</td><td valign=top><valueof param="view.editorConfiguration.resourceBundle"/></td>
+              </tr><tr>
+              <td valign=top>operations</td><td valign=top><valueof param="view.operations"/></td>
+              </tr><tr>
+              <td valign=top>item types</td>
+              <td valign=top>
+                <droplet bean="ForEach">
+                  <param name="array" value="param:view.itemTypes">
+                  <param name="elementName" value="type">
+                  <oparam name="output">
+                    <valueof param="type"/><br>
+                  </oparam>
+                </droplet>
+              </td>
+              </tr>
+            </table>
+          </oparam>
+        </droplet>
+      </blockquote>
+    </oparam>
+  </droplet>
+</blockquote>
+
+<%-- @version $Id: //product/AssetUI/version/10.0.3/src/admin/atg/assetmanager/admin/en/TaskConfigurationTabs.jhtml#2 $$Change: 651448 $ --%>
+<java>/* @version $Id: //product/AssetUI/version/10.0.3/src/admin/atg/assetmanager/admin/en/TaskConfigurationTabs.jhtml#2 $$Change: 651448 $*/</java>

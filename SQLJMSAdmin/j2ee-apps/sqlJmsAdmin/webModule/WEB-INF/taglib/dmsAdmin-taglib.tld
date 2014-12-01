@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE taglib
+	PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.1//EN"
+	"http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_1.dtd">
+
+<taglib>
+  <tlibversion>1.0</tlibversion>
+  <jspversion>1.1</jspversion>
+  <shortname>dmsAdmin</shortname>
+  <uri></uri>
+
+  <tag>
+    <name>admin</name>
+    <tagclass>atg.sqljmsadmin.taglib.DMSAdminTag</tagclass>
+    <teiclass>atg.sqljmsadmin.taglib.DMSAdminTEI</teiclass>
+    <bodycontent>JSP</bodycontent>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>client</name>
+    <tagclass>atg.sqljmsadmin.taglib.DMSClientTag</tagclass>
+    <teiclass>atg.sqljmsadmin.taglib.DMSClientTEI</teiclass>
+    <bodycontent>JSP</bodycontent>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>clientId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>queue</name>
+    <tagclass>atg.sqljmsadmin.taglib.DMSQueueTag</tagclass>
+    <teiclass>atg.sqljmsadmin.taglib.DMSQueueTEI</teiclass>
+    <bodycontent>JSP</bodycontent>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>queueId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>queueEntry</name>
+    <tagclass>atg.sqljmsadmin.taglib.DMSQueueEntryTag</tagclass>
+    <teiclass>atg.sqljmsadmin.taglib.DMSQueueEntryTEI</teiclass>
+    <bodycontent>JSP</bodycontent>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>queueId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>messageId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>topic</name>
+    <tagclass>atg.sqljmsadmin.taglib.DMSTopicTag</tagclass>
+    <teiclass>atg.sqljmsadmin.taglib.DMSTopicTEI</teiclass>
+    <bodycontent>JSP</bodycontent>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>topicId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>topicSubscription</name>
+    <tagclass>atg.sqljmsadmin.taglib.DMSTopicSubscriptionTag</tagclass>
+    <teiclass>atg.sqljmsadmin.taglib.DMSTopicSubscriptionTEI</teiclass>
+    <bodycontent>JSP</bodycontent>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>topicSubscriptionId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>topicEntry</name>
+    <tagclass>atg.sqljmsadmin.taglib.DMSTopicEntryTag</tagclass>
+    <teiclass>atg.sqljmsadmin.taglib.DMSTopicEntryTEI</teiclass>
+    <bodycontent>JSP</bodycontent>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>topicSubscriptionId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>messageId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>message</name>
+    <tagclass>atg.sqljmsadmin.taglib.DMSMessageTag</tagclass>
+    <teiclass>atg.sqljmsadmin.taglib.DMSMessageTEI</teiclass>
+    <bodycontent>JSP</bodycontent>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>messageId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>removeEntityBean</name>
+    <tagclass>atg.sqljmsadmin.taglib.RemoveEntityBeanTag</tagclass>
+    <teiclass>atg.sqljmsadmin.taglib.RemoveEntityBeanTEI</teiclass>
+    <bodycontent>JSP</bodycontent>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>entityBean</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>resetNavigation</name>
+    <tagclass>atg.sqljmsadmin.taglib.ResetNavigationTag</tagclass>
+    <bodycontent>JSP</bodycontent>
+
+    <attribute>
+      <name>navigation</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>setNavigationParam</name>
+    <tagclass>atg.sqljmsadmin.taglib.SetNavigationParamTag</tagclass>
+    <bodycontent>JSP</bodycontent>
+
+    <attribute>
+      <name>navigation</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>param</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>paramValue</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>dateFormat</name>
+    <tagclass>atg.sqljmsadmin.taglib.DateFormatTag</tagclass>
+    <teiclass>atg.sqljmsadmin.taglib.DateFormatTEI</teiclass>
+    <bodycontent>JSP</bodycontent>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>date</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>popStack</name>
+    <tagclass>atg.sqljmsadmin.taglib.PopStackTag</tagclass>
+    <teiclass>atg.sqljmsadmin.taglib.PopStackTEI</teiclass>
+    <bodycontent>JSP</bodycontent>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>stack</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>pushStack</name>
+    <tagclass>atg.sqljmsadmin.taglib.PushStackTag</tagclass>
+    <bodycontent>JSP</bodycontent>
+
+    <attribute>
+      <name>stack</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>navigation</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>peekStack</name>
+    <tagclass>atg.sqljmsadmin.taglib.PeekStackTag</tagclass>
+    <teiclass>atg.sqljmsadmin.taglib.PeekStackTEI</teiclass>
+    <bodycontent>JSP</bodycontent>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>stack</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>clearStack</name>
+    <tagclass>atg.sqljmsadmin.taglib.ClearStackTag</tagclass>
+    <bodycontent>JSP</bodycontent>
+
+    <attribute>
+      <name>stack</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>resetBean</name>
+    <tagclass>atg.sqljmsadmin.taglib.ResetBeanTag</tagclass>
+    <bodycontent>JSP</bodycontent>
+
+    <attribute>
+      <name>bean</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>encodeCompoundKey</name>
+    <tagclass>atg.sqljmsadmin.taglib.EncodeCompoundKeyTag</tagclass>
+    <teiclass>atg.sqljmsadmin.taglib.EncodeCompoundKeyTEI</teiclass>
+    <bodycontent>JSP</bodycontent>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>long1</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>long2</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>decodeCompoundKey</name>
+    <tagclass>atg.sqljmsadmin.taglib.DecodeCompoundKeyTag</tagclass>
+    <teiclass>atg.sqljmsadmin.taglib.DecodeCompoundKeyTEI</teiclass>
+    <bodycontent>JSP</bodycontent>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>encodedKey</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>addToArray</name>
+    <tagclass>atg.sqljmsadmin.taglib.ArrayBuilderTag</tagclass>
+    <bodycontent>JSP</bodycontent>
+
+    <attribute>
+      <name>arrayList</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>value</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>addToQueue</name>
+    <tagclass>atg.sqljmsadmin.taglib.AddToQueueTag</tagclass>
+    <teiclass>atg.sqljmsadmin.taglib.AddToQueueTag$AddToQueueTEI</teiclass>
+    <bodycontent>JSP</bodycontent>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>messageIds</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>queue</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>duplicateMessages</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>addToTopic</name>
+    <tagclass>atg.sqljmsadmin.taglib.AddToTopicTag</tagclass>
+    <teiclass>atg.sqljmsadmin.taglib.AddToTopicTag$AddToTopicTEI</teiclass>
+    <bodycontent>JSP</bodycontent>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>messageIds</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>topic</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>duplicateMessages</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+</taglib>

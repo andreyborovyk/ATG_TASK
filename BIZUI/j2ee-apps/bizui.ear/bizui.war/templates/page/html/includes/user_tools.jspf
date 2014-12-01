@@ -1,0 +1,79 @@
+<div id="contentHeader">
+  <div id="alert"></div>
+
+  <div id="contentHeaderRight">
+  <pws:getCurrentContext var="context"/>
+
+  <div class="currentProject"><fmt:message key="current-project" bundle="${bundle}"/>
+    <c:choose>
+
+      <c:when test='${context.process == null}'>
+        <span><fmt:message key="no-current-project" bundle="${bundle}"/></span>
+      </c:when>
+
+      <c:otherwise>
+
+        <biz:getProcessURL var="processInfo" process="${context.process}"/>
+        <c:choose>
+
+          <c:when test='${processInfo.page != null}'>
+            <paf:context var="portalContext"/>
+            <c:set target="${portalContext}" property="page" value="${processInfo.page}"/>
+            <paf:encodeURL var="prjURL" url="${processInfo.URL}" context="${portalContext}">
+              <pafrt:param name="projectView" value="<%=new Integer(5)%>"/> <%-- 5 is the project details page --%>
+            </paf:encodeURL>
+          </c:when>
+
+          <c:otherwise>
+            <c:set var="prjURL" value="${processInfo.URL}"/>
+          </c:otherwise>
+
+        </c:choose>
+
+        <dsp:a href='${prjURL}' title="${context.process.description}">
+          <span><c:out value='${context.process.displayName}'/></span>
+        </dsp:a>
+
+      </c:otherwise>
+
+    </c:choose>
+  </div>
+
+  <div class="currentTask"><fmt:message key="current-task" bundle="${bundle}"/>
+    <c:choose>
+      <c:when test='${context.task == null}'>
+        <span><fmt:message key="no-current-task" bundle="${bundle}"/></span>
+      </c:when>
+
+      <c:otherwise>
+
+        <biz:getTaskURL var="taskInfo" task="${context.task}"/>
+        <c:choose>
+
+          <c:when test='${taskInfo.page != null}'>
+            <paf:context var="portalContext"/>
+            <c:set target="${portalContext}" property="page" value="${taskInfo.page}"/>
+            <paf:encodeURL var="taskURL" url="${taskInfo.URL}" context="${portalContext}">
+              <pafrt:param name="projectView" value="<%=new Integer(5)%>"/> <%-- 5 is the project details page --%>
+            </paf:encodeURL>
+          </c:when>
+
+          <c:otherwise>
+            <c:set var="taskURL" value="${taskInfo.URL}"/>
+          </c:otherwise>
+
+        </c:choose>
+
+        <web-ui:getWorkflowElementDisplayName var="taskDisplayName" element="${context.task.taskDescriptor}"/>
+        <web-ui:getWorkflowElementDescription var="taskDescription" element="${context.task.taskDescriptor}"/>
+        <dsp:a href="${taskURL}" title="${taskDescription}">
+          <span><c:out value='${taskDisplayName}'/></span>
+        </dsp:a>
+
+      </c:otherwise>
+
+    </c:choose>
+  </div>
+  </div>
+</div>
+<%-- @version $Id: //product/BIZUI/version/10.0.3/web-apps/bizui/templates/page/html/includes/user_tools.jspf#2 $$Change: 651448 $--%>

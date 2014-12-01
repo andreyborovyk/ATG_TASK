@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE process-manager-configuration
+        PUBLIC "-//Art Technology Group, Inc.//DTD Process Manager//EN"
+        'http://www.atg.com/dtds/processmanager/processmanager_1.0.dtd'>
+
+<process-manager-configuration>
+
+  <!-- 
+  Register the grammar for the order percentage comparison condition 
+  -->
+
+  <grammar-registry>
+    <grammar-extension-file>
+      atg.projects.b2bstore.scenario.grammar-extensions
+    </grammar-extension-file>
+  </grammar-registry>
+
+  <action-registry>
+    <action>
+      <action-name>
+        Compute Average Order Total
+      </action-name>
+      <action-class>
+        atg.projects.b2bstore.order.AverageOrderAction
+      </action-class>
+      <resource-bundle>
+        atg.projects.b2bstore.scenario.UserResources
+      </resource-bundle>
+      <display-name-resource>
+        AvgOrderTotal.displayName
+      </display-name-resource>
+      <description-resource>
+        AvgOrderTotal.description
+      </description-resource>
+      <action-execution-policy>
+        individual
+      </action-execution-policy>
+      <action-error-response>
+        continue
+      </action-error-response>
+      <action-parameter>
+        <action-parameter-name>
+          priceInfo
+        </action-parameter-name>
+        <action-parameter-class>
+          java.lang.Double
+        </action-parameter-class>
+        <display-name-resource>
+          AvgOrderTotal.priceInfo.displayName
+        </display-name-resource>
+        <required>
+          true
+        </required>
+        <description-resource>
+          AvgOrderTotal.priceInfo.description
+        </description-resource>
+      </action-parameter>
+    </action>
+
+    <!-- Action to send an object over a SOAP request -->
+    <!-- Used in Motorprise to demonstrate sending of -->
+    <!-- orders as an XML document.                   -->
+    <action>
+      <action-name>
+        Send Object As XML via SOAP
+      </action-name>
+      <action-class>
+        atg.projects.b2bstore.soap.SendObjectAsXML
+      </action-class>
+      <action-configuration>
+        /atg/scenario/configuration/SendObjectAsXMLConfiguration
+      </action-configuration>
+      <resource-bundle>
+        atg.projects.b2bstore.scenario.UserResources
+      </resource-bundle>
+      <display-name-resource>
+        sendObjectAsXML.displayName
+      </display-name-resource>
+      <description-resource>
+        sendObjectAsXML.description
+      </description-resource>
+      <action-execution-policy>
+        collective
+      </action-execution-policy>
+      <action-error-response>
+        delete
+      </action-error-response>
+
+      <!-- Parameter that indicates the object that will -->
+      <!-- be marshalled to XML.                         -->
+      <action-parameter>
+        <action-parameter-name>
+          marshalObject
+        </action-parameter-name>
+        <action-parameter-class>
+          java.lang.Object
+        </action-parameter-class>
+        <display-name-resource>
+          sendObjectAsXML.marshalObject.displayName
+        </display-name-resource>
+        <required>
+          true
+        </required>
+        <description-resource>
+          sendObjectAsXML.marshalObject.description
+        </description-resource>
+      </action-parameter>
+      <!-- This is the key that will be passed to the -->
+      <!-- to the ObjectMarshallerDispatcher service  -->
+      <!-- The key is used to determine which         -->
+      <!-- marshaller to use.                         -->
+      <action-parameter>
+        <action-parameter-name>
+          marshalKey
+        </action-parameter-name>
+        <action-parameter-class>
+          java.lang.String
+        </action-parameter-class>
+        <display-name-resource>
+          sendObjectAsXML.marshalKey.displayName
+        </display-name-resource>
+        <required>
+          false
+        </required>
+        <description-resource>
+          sendObjectAsXML.marshalKey.description
+        </description-resource>
+      </action-parameter>
+    </action>
+
+  </action-registry>
+
+  <!-- 
+  Register a custom condition class to handle order price percentage
+  comparisons.  It is an instance of a fairly general class for doing
+  percentage comparisons between two numbers, but in the grammar we are
+  going to constrain the condition to compare some aspect of the current
+  order price to another value.  The same filter class could be used to
+  compare arbitrary numbers to each other by specifying another condition
+  with a different condition-name and a less restricted grammar. 
+  -->
+
+  <condition-registry>
+    <condition>
+      <condition-name>orderPricePercentComparison</condition-name>
+      <filter-class>atg.projects.b2bstore.scenario.PercentageComparisonFilter</filter-class>
+      <resource-bundle>atg.projects.b2bstore.scenario.UserResources</resource-bundle>
+      <display-name-resource>orderPricePercentComparison.displayName</display-name-resource>
+      <description-resource>orderPricePercentComparison.description</description-resource>
+
+      <!-- 
+      The action-parameter tags specify positional parameters that will
+      be passed to the filter class's initialize() method.  
+      -->
+
+      <action-parameter>
+        <action-parameter-name>
+	  testValue
+  	</action-parameter-name>
+        <action-parameter-class>
+	  java.lang.Number
+	</action-parameter-class>
+	<display-name-resource>
+	  orderPricePercentComparison.testValue.displayName
+	</display-name-resource>
+	<required>
+	  true
+	</required>
+        <description-resource>
+	  orderPricePercentComparison.testValue.description
+	</description-resource>
+      </action-parameter>
+
+      <action-parameter>
+        <action-parameter-name>
+	  comparisonType
+  	</action-parameter-name>
+        <action-parameter-class>
+	  java.lang.String
+	</action-parameter-class>
+	<display-name-resource>
+	  orderPricePercentComparison.comparisonType.displayName
+	</display-name-resource>
+	<required>
+	  true
+	</required>
+        <description-resource>
+	  orderPricePercentComparison.comparisonType.description
+	</description-resource>
+      </action-parameter>
+
+      <action-parameter>
+        <action-parameter-name>
+	  percentage
+  	</action-parameter-name>
+        <action-parameter-class>
+	  java.lang.Integer
+	</action-parameter-class>
+	<display-name-resource>
+	  orderPricePercentComparison.percentage.displayName
+	</display-name-resource>
+	<required>
+	  true
+	</required>
+        <description-resource>
+	  orderPricePercentComparison.percentage.description
+	</description-resource>
+      </action-parameter>
+
+      <action-parameter>
+        <action-parameter-name>
+	  percentageType
+  	</action-parameter-name>
+        <action-parameter-class>
+	  java.lang.String
+	</action-parameter-class>
+	<display-name-resource>
+	  orderPricePercentComparison.percentageType.displayName
+	</display-name-resource>
+	<required>
+	  true
+	</required>
+        <description-resource>
+	  orderPricePercentComparison.percentageType.description
+	</description-resource>
+      </action-parameter>
+
+      <action-parameter>
+        <action-parameter-name>
+	  baseValue
+  	</action-parameter-name>
+        <action-parameter-class>
+	  java.lang.Number
+	</action-parameter-class>
+	<display-name-resource>
+	  orderPricePercentComparison.baseValue.displayName
+	</display-name-resource>
+	<required>
+	  true
+	</required>
+        <description-resource>
+	  orderPricePercentComparison.baseValue.description
+	</description-resource>
+      </action-parameter>
+
+    </condition>
+  </condition-registry>
+
+</process-manager-configuration>
+<!-- @version $Id: //product/B2BCommerce/version/10.0.3/release/MotorpriseJSP/j2ee-apps/motorprise/config/atg/scenario/scenarioManager.xml#2 $$Change: 651448 $ -->

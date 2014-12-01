@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE database-initializer SYSTEM "http://www.atg.com/dtds/dbinit_1_0.dtd">
+<database-initializer>
+	<schema id="coreSchema">
+		<sql>
+			<path>
+				<create>
+					sql/db_components/${database}/search_topics_ddl.sql
+				</create>
+				<drop>
+					sql/uninstall/${database}/drop_search_topics_ddl.sql
+				</drop>
+			</path>
+		</sql>
+		
+
+		<data-import>
+			<repository-path>/atg/searchadmin/TopicRepository</repository-path>
+			<import-file-path>/DAF/Search/Topics/data/initial/topics-data.xml</import-file-path>
+		</data-import>			
+		
+	</schema>
+	<server-instance-type id="production">
+		<datasource id="switchingCore">
+			<schema id="coreSchema"/>
+		</datasource>	
+		<datasource id="nonswitchingCore">
+			<schema id="coreSchema"/>
+		</datasource>	
+	</server-instance-type>
+	<server-instance-type id="staging">
+		<datasource id="stagingswitchingCore">
+			<schema id="coreSchema"/>
+		</datasource>	
+		<datasource id="stagingnonswitchingCore">
+			<schema id="coreSchema"/>
+		</datasource>	
+	</server-instance-type>
+
+  <server-instance-type id="svcagent">
+    <datasource id="svcagent">
+      <schema id="coreSchema"/>
+    </datasource>
+  </server-instance-type>
+  <server-instance-type id="management_service_db">
+    <datasource id="management">
+      <schema id="coreSchema"/>
+    </datasource>
+  </server-instance-type>
+</database-initializer>
+<!-- @version $Id: //product/DAF/version/10.0.3/Search/Topics/src/cim/dbinit.xml#2 $$Change: 651448 $-->

@@ -1,0 +1,49 @@
+#!/bin/sh
+
+#
+# Check that DYNAMO_HOME and DAS_ROOT are set and do basic app-server
+# specific configuration.
+#
+PROGRAM_DIR=`dirname $0`
+. $PROGRAM_DIR/checkDynamoHome.sh
+DASENV=$DYNAMO_HOME/localconfig/dasEnv.sh
+if [ -f $DASENV ]; then
+  . $DASENV
+else
+  echo "Warning: $DASENV does not exist; did you run the installer?"
+  echo "         I will try to work around the problem."
+  if [ "${DAS_ROOT}" = "" ] ; then
+    DAS_ROOT=$DYNAMO_HOME/..
+  fi
+  ATGJRE=java
+  echo DAS_ROOT=$DAS_ROOT
+  echo ATGJRE=$ATGJRE
+fi
+. $DYNAMO_HOME/bin/j2eeEnv.sh
+
+if [ "x$DAS_ROOT" != "x" ] ; then
+  DYNAMO_MODULES="J2EEAPI:DAS:DAS-UI:Portal.paf"
+else
+  DYNAMO_MODULES="DAS:DAS-UI:Portal.paf"
+fi
+
+#
+# Load in default environment values
+#
+. bin/dynamoEnv.sh
+
+#echo -------------------
+#echo JAVA_ARGS:  ${JAVA_ARGS}
+#echo -------------------
+#echo DYNAMO_MODULES: ${DYNAMO_MODULES}
+#echo -------------------
+#echo CONFIGPATH: ${CONFIGPATH}
+#echo -------------------
+#echo CLASSPATH:  ${CLASSPATH}
+#echo -------------------
+#echo PATH:       ${PATH}
+
+${JAVA_VM} ${JAVA_ARGS} atg.portal.deploy.PortletDeployTool $*
+
+
+

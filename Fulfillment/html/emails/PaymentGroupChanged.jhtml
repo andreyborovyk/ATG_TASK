@@ -1,0 +1,103 @@
+<!-- Title: FulfillmentEmail -->
+<importbean bean="/atg/dynamo/droplet/Switch">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/IsNull">
+<importbean bean="/atg/commerce/pricing/PriceItem">
+
+<setvalue param="messageSubject" value="Payment update!">
+<java>/*
+<setvalue param="messageFrom" value="DCS5Team@example.com">
+<setvalue param="messageReplyTo" value="DCS5Team@example.com">
+*/</java>
+<setvalue param="mailingName" value="PaymentGroupChanged">
+
+<setvalue param="order" value="param:message.order">
+<setvalue param="paymentGroups" value="param:message.paymentGroups">
+<setvalue param="profile" value="param:message.profile">
+
+<p> Dear <valueof param="profile.firstName">Valued Customer</valueof>
+ <valueof param="profile.lastName"></valueof>,
+
+<p>The confirmation number for this order is: 
+<valueof param="order.id">(Please contact customer service.)</valueof>
+
+<hr>
+
+<p>
+<droplet bean="ForEach">
+  <param name="array" value="param:paymentGroups">
+  <param name="elementName" value="paymentGroup">
+  <oparam name="outputStart">
+    <droplet bean="Switch">
+      <param name="value" value="param:message.subType">
+      <oparam name="PaymentGroupCredited">
+	<setvalue param="messageSubject" value="Payment has been credited!">
+	Payment has been credited to:<br>
+      </oparam>
+      <oparam name="PaymentGroupDebited">
+	<setvalue param="messageSubject" value="Payment has been received!">
+	Payment has been received for:<br>
+      </oparam>
+      <oparam name="PaymentGroupDebitFailed">
+	<setvalue param="messageSubject" value="Payment has failed!">
+	Payment has failed for:<br>
+      </oparam>
+      <oparam name="default">
+	<setvalue param="messageSubject" value="Payment has been updated!">
+	Payment has been updated for:<br>	
+      </oparam>
+    </droplet>
+  </oparam>
+  <oparam name="output">
+    <droplet bean="Switch">
+      <param name="value" value="param:paymentGroup.paymentMethod">
+      <oparam name="creditCard">
+	<valueof param="paymentGroup.creditCardType"></valueof> #
+	<valueof param="paymentGroup.creditCardNumber" creditcard groupingsize="4">no number</valueof> :
+      </oparam>
+      <oparam name="giftCertificate">
+	Gift Certificate # <valueof param="paymentGroup.giftCertificateNumber"></valueof> : 
+      </oparam>
+    </droplet>
+    <droplet bean="Switch">
+      <param name="value" value="param:message.subType">
+      <oparam name="PaymentGroupCredited">
+	    Amount Credited = <valueof param="paymentGroup.amountCredited" currency></valueof><br>	
+      </oparam>
+      <oparam name="PaymentGroupDebited">
+	    Amount = <valueof param="paymentGroup.amountDebited" currency></valueof><br>	
+      </oparam>
+      <oparam name="PaymentGroupDebitFailed">
+	    Amount = <valueof param="paymentGroup.amount" currency></valueof><br>	
+      </oparam>
+      <oparam name="default">
+	    New Amount = <valueof param="paymentGroup.amount" currency></valueof><br>	
+      </oparam>
+    </droplet>
+  </oparam>
+  <oparam name="empty">
+    <setvalue param="messageSubject" value="Payment has been updated!">
+    Payment has been updated.<br>    
+  </oparam>
+</droplet>
+
+
+<!-- Itemized order -->
+<br>
+<droplet src="DisplayOrderSummary.jhtml">
+  <param name="order" value="param:order">
+  <param name="displayStockStatus" value="false">
+</droplet>
+
+<!-- Shipping information -->
+<droplet src="DisplayShippingInfo.jhtml">
+  <param name="order" value="param:order">
+</droplet>
+
+<!-- Payment information -->
+<droplet src="DisplayPaymentInfo.jhtml">
+  <param name="order" value="param:order">
+</droplet>
+
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/Fulfillment/html/emails/PaymentGroupChanged.jhtml#2 $$Change: 651448 $*/</java>
+

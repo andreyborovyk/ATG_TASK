@@ -1,0 +1,41 @@
+<nucleus type=import>
+	/atg/dynamo/admin/CreateWebService
+        /atg/dynamo/droplet/Switch
+</nucleus>
+
+<B>Current Selections</B><BR>
+<TABLE border=0>
+<TR><TD>&nbsp;&nbsp;&nbsp;</TD><TD>
+  <droplet name="Switch">
+   <param name="value" value="bean:CreateWebService.JMSType">
+   <oparam name="default">
+     JMS Type: <valueof bean="CreateWebService.JMSType">???</valueof>
+   </oparam>
+   <oparam name="unset">
+     Nucleus Component: <valueof bean="CreateWebService.componentName">???</valueof><BR>
+    Method: <valueof bean="CreateWebService.methodName">???</valueof><BR>
+    Parameter Names: <valueof bean="CreateWebService.parameterNamesAsString">(none)</valueof><BR>
+   </oparam>
+  </droplet>
+  EAR File: <valueof bean="CreateWebService.EARFileAbsolutePath">???</valueof><BR>
+  Servlet Name: <valueof bean="CreateWebService.servletName">???</valueof><BR>  
+  Host: <valueof bean="CreateWebService.host">(dynamic)</valueof><BR>
+  Port: <valueof bean="CreateWebService.port">(dynamic)</valueof><BR>
+  <droplet name="Switch">
+    <param name="value" value="bean:CreateWebService.EARFileExists">
+    <oparam name="false">
+     Application Name: <valueof bean="CreateWebService.applicationName">???</valueof><BR>
+    </oparam>
+  </droplet>
+  Web Module URI: <valueof bean="CreateWebService.effectiveWebURI">???</valueof><BR>
+  <droplet name="Switch">
+    <param name="value" value="bean:CreateWebService.existingWebURI">
+    <oparam name="*new*">
+     Context Root: <valueof bean="CreateWebService.contextRoot">???</valueof><BR>
+    </oparam>
+  </droplet>
+  Session: <valueof bean="CreateWebService.sessionEnabled">???</valueof><BR>
+  Security: <valueof bean="CreateWebService.securityEnabled">???</valueof><BR>
+</TD></TR>
+</TABLE>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/webservice/curselections.jhtml#2 $$Change: 651448 $*/</java>

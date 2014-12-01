@@ -1,0 +1,81 @@
+<!--
+	@version $Id: //app/portal/version/10.0.3/communities/config/atg/registry/data/mappers/FavoriteRemovedSqlLogger.xml#2 $$Change: 651448 $
+-->
+
+<mapper>
+  <registry-descriptor>
+      <id>/FavoriteRemovedSqlLogger.xml</id>
+      <displayname>Favorite Community Removed SQL Mapper</displayname>
+      <description>Favorite Community Removed SQL Mapper</description>
+  </registry-descriptor>
+
+  <input-filter context="jms">
+      <value>atg.portal.gear.communities.FavoriteRemovedMessage</value>
+  </input-filter>
+
+  <data-listener>/atg/reporting/dataset/FavoriteRemovedLoggerQueue</data-listener>
+
+  <database>
+    <transaction-manager>/atg/dynamo/transaction/TransactionManager</transaction-manager>
+    <datasource>dynamo:/atg/dynamo/service/jdbc/JTDataSource</datasource>
+    <table>
+      <name>fcg_remove_mapper</name>
+      <display-name>Favorite Community Removed Sql Mapper</display-name>
+      <mappings>
+        <dataset-mapping hidden="true">
+          <display-name>Dataset Id</display-name>
+          <column>id</column>
+          <type>java.lang.String</type>
+          <property>datasetId</property>
+        </dataset-mapping>
+
+        <timestamp-mapping hidden="true">
+          <display-name>Time Stamp</display-name>
+          <column>tstamp</column>
+          <type>java.sql.Timestamp</type>
+          <property>timestamp</property>
+        </timestamp-mapping>
+                                         
+        <property-mapping>
+          <display-name>Favorite Name</display-name>
+          <column>favorite_name</column>
+          <type>java.lang.String</type>
+          <property>context.message.favoriteName</property>
+        </property-mapping>
+
+	<repository-item-mapping> 
+          <display-name>Gear Id</display-name>
+          <column>gear_id</column>
+          <type>java.lang.String</type>
+          <property>context.message.gearId</property>
+          <component>/atg/portal/framework/PortalRepository</component>
+	</repository-item-mapping> 
+
+        <repository-item-mapping>
+          <display-name>Community Id</display-name>
+          <column>community_id</column>
+          <type>java.lang.String</type>
+          <property>context.message.communityId</property>
+          <component>/atg/portal/framework/PortalRepository</component>
+	</repository-item-mapping> 
+			
+        <repository-item-mapping>
+          <display-name>Profile Id</display-name>
+          <column>user_id</column>
+          <type>java.lang.String</type>
+          <property>context.message.profileId</property>
+          <component>/atg/userprofiling/ProfileAdapterRepository</component>
+	</repository-item-mapping> 
+			
+        <property-mapping>
+          <display-name>Message Type</display-name>
+          <column>msg_type</column>
+          <type>java.lang.String</type>
+          <property>context.message.messageType</property>
+        </property-mapping>
+
+     </mappings>
+   </table>
+ </database>
+</mapper>
+<!-- @version $Id: //app/portal/version/10.0.3/communities/config/atg/registry/data/mappers/FavoriteRemovedSqlLogger.xml#2 $$Change: 651448 $ -->

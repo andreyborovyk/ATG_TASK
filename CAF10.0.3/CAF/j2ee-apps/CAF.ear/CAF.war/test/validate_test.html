@@ -1,0 +1,116 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<script language="JavaScript" src="../scripts/atg-ui_validation.js"></script>
+<script language="JavaScript" src="../scripts/calendar_date.js"></script>
+<script language="JavaScript" src="../scripts/calendar_functions.js"></script>
+<script language="JavaScript" src="../scripts/calendar_validation.js"></script>
+<title>Validation Test Harness</title>
+
+<script language="JavaScript">
+function validate() {
+  var testValue = document.getElementById("inputText").value;
+  var validationType = document.getElementById("validationType").value;
+  var validationMin = document.getElementById("minValue").value;
+  var validationMax = document.getElementById("maxValue").value;
+  var i18n = document.getElementById("i18n").value;
+  var validationInput = document.getElementById("inputText").id;
+  
+  var validationMessage = null;
+  var validationResult = "";
+  
+  if ((testValue == null) || (testValue == ""))
+    alert("Enter the String to be validated");
+  else {
+    testValue = escapeString(testValue);
+    if ((validationMin != "") || (validationMax != ""))
+      validationString = validationType + "(\"" + testValue + "\"," + validationMin + "," + validationMax + ")";
+    else if ((i18n != "") && (validationInput != null))
+      validationString = validationType + "(\"" + testValue + "\",\"" + i18n + "\",\"" + validationInput + "\")";
+    else
+      validationString = validationType + "(\"" + testValue + "\")";
+    
+    validationMessage = eval(validationString);
+    if (validationMessage != validationCode.SUCCESS) {
+      validationResult = "Validation NOT Successful: ";
+    }
+    alert(validationResult + validationMessage);
+  }
+}
+
+function escapeString(testValue) {
+  var regExp = /\'/g;
+  testValue = testValue.replace(regExp, "\\\'");  
+  
+  regExp = /\"/g;
+  testValue = testValue.replace(regExp, "\\\"");  
+  return testValue;
+}
+</script>
+
+</head>
+
+<body>
+
+<form method="POST" action="">
+<table border="0" style="border-collapse: collapse" width="60%" id="table1">
+  <tr>
+  <td colspan="3"><font face="Tahoma" style="font-size:32px;font-weight:normal">atg</font><font face="Tahoma" style="font-size:28px">&nbsp;&nbsp;JavaScript Validation Test Harness</font><br><br></td>
+  </tr>
+  <tr>
+    <td>
+      <font face="Tahoma" style="font-size:12px">Enter Validation String</font><br>
+      <input id="inputText" type="text" name="Test" size="20"
+      style="font-family: Tahoma; font-size: 10pt">
+    </td>
+    <td>
+      <font face="Tahoma" style="font-size:12px">i18n Format</font><br>
+      <input id="i18n" type="text" name="i18n" size="10" value=""
+      style="font-family: Tahoma; font-size: 10pt">
+    </td>
+    <td>
+    </td>
+  </tr>
+  <tr>
+  <td colspan="3"><br></td>
+  </tr>
+  <tr>
+    <td>    
+      <font face="Tahoma" style="font-size:12px">Select Validation Type</font><br>
+      <select size="1" id="validationType" name="validationType">
+      <option value="atgValidation_validateDate">Date</option>
+      <option value="atgValidation_validateEmailAddress">E-mail Address</option>
+      <option value="atgValidation_validateURL">URL</option>
+      <option value="atgValidation_validateAlphaCharacters">Alpha Characters</option>
+      <option value="atgValidation_validateAlphaNumericCharacters">Alphanumeric Characters</option>
+      <option value="atgValidation_validateNumericCharacters">Numeric Characters</option>
+      <option value="atgValidation_validateNoSpecialCharacters">Special Characters</option>
+      <option value="atgValidation_validateMinMaxLength">Character Length</option>
+      <option value="atgValidation_validateNumericRange">Numeric Range</option>
+      </select>
+    </td>
+    <td>
+      <font face="Tahoma" style="font-size:12px">Min</font><br>
+      <input id="minValue" type="text"  name="Min" size="5"
+      style="font-family: Tahoma; font-size: 10pt">
+    </td>
+    <td>
+      <font face="Tahoma" style="font-size:12px">Max</font><br>
+      <input id="maxValue" type="text" name="Max" size="5"
+      style="font-family: Tahoma; font-size: 10pt">
+    </td>
+  </tr>
+  <tr>
+  <td colspan="3"><br></td>
+  </tr>
+  <tr>
+  <td colspan="3"><input type="button" value="Validate" onclick="validate()" name="Button1"></td>
+  </tr>
+</table>
+</form>
+
+</body>
+
+</html>

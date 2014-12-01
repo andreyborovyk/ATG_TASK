@@ -1,0 +1,53 @@
+              <dsp:droplet name="/atg/dynamo/droplet/Switch">
+                <dsp:param name="value" param="hasPrev"/>
+      
+                <dsp:oparam name="true">
+                  <dsp:getvalueof id="startparam" param="prevStart">
+                  <core:CreateUrl id="prevUrl" url="<%= gearEnv.getOriginalRequestURI() %>">
+                    <core:UrlParam param="prevpaf_dm" value="full"/>
+                    <core:UrlParam param="paf_dm" value="full"/>
+                    <core:UrlParam param="paf_gm" value="content"/>
+                    <core:UrlParam param="paf_gear_id" 
+                     value="<%= gearEnv.getGear().getId() %>"/>
+                    <core:UrlParam param="start" value="<%= startparam %>"/>
+                    <core:UrlParam param="dexmode" value="list"/>
+                    <paf:encodeUrlParam param="sortProperty" value='<%= request.getParameter("sortProperty") %>'/>
+                    <core:UrlParam param="sortDirection" value='<%= request.getParameter("sortDirection") %>'/>
+                      &nbsp;<a href="<%= prevUrl.getNewUrl() %>" class="gear_content"><font 
+                      class="small_bold"><i18n:message key="previousLinkText"/> 
+                    <dsp:valueof param="prevHowMany"></dsp:valueof></font></a>
+                  </core:CreateUrl>
+                  
+                  <%-- Draw the pipe seperator only if we have both prev & next --%>
+                  <dsp:droplet name="/atg/dynamo/droplet/Switch">
+                    <dsp:param name="value" param="hasNext"/>
+                    <dsp:oparam name="true">
+                      <font>&nbsp;|</font>
+                    </dsp:oparam>
+                  </dsp:droplet>
+                  </dsp:getvalueof>
+                </dsp:oparam>
+              </dsp:droplet>
+      
+              <dsp:droplet name="/atg/dynamo/droplet/Switch">
+                <dsp:param name="value" param="hasNext"/>
+                <dsp:oparam name="true">
+                  <dsp:getvalueof id="startparam" param="nextStart">
+                  <core:CreateUrl id="nextUrl" 
+                  url="<%= gearEnv.getOriginalRequestURI() %>">
+                  <core:UrlParam param="paf_dm" value="full"/>
+                  <core:UrlParam param="paf_gm" value="content"/>
+                  <core:UrlParam param="paf_gear_id" 
+                  value="<%= gearEnv.getGear().getId() %>"/>
+                  <core:UrlParam param="start" value="<%= startparam %>"/>
+                  <core:UrlParam param="dexmode" value="list"/>
+                  <paf:encodeUrlParam param="sortProperty" value='<%= request.getParameter("sortProperty") %>'/>
+                  <core:UrlParam param="sortDirection" value='<%= request.getParameter("sortDirection") %>'/>
+                    &nbsp;<a href="<%= nextUrl.getNewUrl() %>" class="gear_content"><font
+                    class="small_bold"><i18n:message key="nextLinkText"/>
+                  <dsp:valueof param="nextHowMany"></dsp:valueof></font></a>
+                  </core:CreateUrl>
+                  </dsp:getvalueof>
+                </dsp:oparam>
+              </dsp:droplet>
+<%-- @version $Id: //app/portal/version/10.0.3/docexch/docexch.war/prevNext.jspf#2 $$Change: 651448 $--%>

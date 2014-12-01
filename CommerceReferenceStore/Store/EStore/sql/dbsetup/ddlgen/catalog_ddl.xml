@@ -1,0 +1,488 @@
+<!DOCTYPE schema SYSTEM "http://road.atg.com/dtds/ddlgen/schema.dtd">
+<schema name="catalog_ddl" description="tables for the daf deployment repository">
+
+<comment><![CDATA[ @version $Id: //hosting-blueprint/B2CBlueprint/version/10.0.3/EStore/sql/ddlgen/catalog_ddl.xml#2 $$Change: 651448 $]]></comment>
+
+  <sql>
+    <sql-db db="oracle">
+      <![CDATA[alter session set NLS_LENGTH_SEMANTICS='CHAR';]]>
+    </sql-db>
+  </sql>
+
+  <table name="crs_sku">
+    <column name="sku_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="ship_exempt" nullable="y">
+      <column-type db="generic" type="one-digit"/> 
+    </column>
+    <column name="gift_wrap_el" nullable="y">
+      <column-type db="generic" type="one-digit"/> 
+    </column>
+    <column name="admin_display" nullable="y" i18n="y">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+    <column name="max_quantity" nullable="y">
+      <column-type db="generic" type="integer"/>
+      <column-type db="oracle" type="integer"/>
+    </column>
+    <primary-key name="crs_sku_p">
+      <index-column column="sku_id"/>
+    </primary-key>
+    <foreign-key name="crs_sku_f" referenced-table="dcs_sku">
+      <fkey-column referencing-column="sku_id" referenced-column="sku_id"/>
+    </foreign-key>
+    <check name="crs_sku_c">
+      <check-expr expression="ship_exempt in (0,1)" db="generic"/>
+    </check>
+    <check name="crs_sku_c2">
+      <check-expr expression="gift_wrap_el in (0,1)" db="generic"/>
+    </check>
+  </table>
+  
+  <table name="crs_clothing_sku">
+    <column name="sku_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="sku_size" nullable="y" i18n="y">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+    <column name="color" nullable="y" i18n="y">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+    <column name="color_swatch" nullable="y">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <primary-key name="crs_clothing_p">
+      <index-column column="sku_id"/>
+    </primary-key>
+    <foreign-key name="crs_clothing_f" referenced-table="dcs_sku">
+      <fkey-column referencing-column="sku_id" referenced-column="sku_id"/>
+    </foreign-key>
+    <foreign-key name="crs_sku_fswch" referenced-table="dcs_media" index-name="crs_sku1_x">
+      <fkey-column referencing-column="color_swatch" referenced-column="media_id"/>
+    </foreign-key>
+  </table>
+  
+  <table name="crs_furniture_sku">
+    <column name="sku_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="color_swatch" nullable="y">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="wood_finish" nullable="y" i18n="y">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+    <primary-key name="crs_furniture_p">
+      <index-column column="sku_id"/>
+    </primary-key>
+    <foreign-key name="crs_furniture_f" referenced-table="dcs_sku">
+      <fkey-column referencing-column="sku_id" referenced-column="sku_id"/>
+    </foreign-key>
+    <foreign-key name="crs_sku_fswch2" referenced-table="dcs_media" index-name="crs_sku2_x">
+      <fkey-column referencing-column="color_swatch" referenced-column="media_id"/>
+    </foreign-key>
+  </table>
+
+  <table name="crs_promo_content">
+    <column name="promo_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="version" nullable="n">
+      <column-type db="generic" type="integer"/>
+      <column-type db="oracle" type="integer"/>
+    </column>
+    <column name="creation_date" nullable="y">
+      <column-type db="generic" type="timestamp"/>
+    </column>
+    <column name="start_date" nullable="y">
+      <column-type db="generic" type="timestamp"/>
+    </column>
+    <column name="end_date" nullable="y">
+      <column-type db="generic" type="timestamp"/>
+    </column>
+    <column name="marketing_priority" nullable="y">
+      <column-type db="generic" type="integer"/>
+      <column-type db="oracle" type="integer"/>
+    </column>
+    <column name="display_name" nullable="y" i18n="y">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+    <column name="description" nullable="y" i18n="y">
+      <column-type db="generic" type="varchar" length="1000"/>
+    </column>
+    <column name="long_description" nullable="y" i18n="y">
+      <column-type db="generic" type="long-varchar"/>
+      <column-type db="db2" type="varchar" length="4000" scale=""/>
+    </column>
+    <column name="image_url" nullable="y">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+    <column name="template_id" nullable="y">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="path" nullable="y" i18n="y">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+    <column name="parent_folder_id" nullable="y">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="category_id" nullable="y">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="product_id" nullable="y">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="site_id" nullable="y">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="link_text" nullable="y" i18n="y">
+      <column-type db="generic" type="varchar" length="256"/>
+    </column>
+    <column name="link_url" nullable="y">
+      <column-type db="generic" type="varchar" length="256"/>
+    </column>
+    <column name="promotion_id" nullable="y">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <primary-key name="crs_promo_ctn_p">
+      <index-column column="promo_id"/>
+    </primary-key>
+    <foreign-key name="crs_promo_ctn_fmed" referenced-table="dcs_media" index-name="crs_promcontent1_x">
+      <fkey-column referencing-column="template_id" referenced-column="media_id"/>
+    </foreign-key>
+    <foreign-key name="crs_promo_ctn_ffol" referenced-table="dcs_folder" index-name="crs_promcontent2_x">
+      <fkey-column referencing-column="parent_folder_id" referenced-column="folder_id"/>
+    </foreign-key>
+    <foreign-key name="crs_promo_ctn_fctg" referenced-table="dcs_category" index-name="crs_promcontent3_x">
+      <fkey-column referencing-column="category_id" referenced-column="category_id"/>
+    </foreign-key>
+    <foreign-key name="crs_promo_ctn_fprd" referenced-table="dcs_product" index-name="crs_promcontent4_x">
+      <fkey-column referencing-column="product_id" referenced-column="product_id"/>
+    </foreign-key>
+    <foreign-key name="crs_promo_ctn_fpro" referenced-table="dcs_promotion" index-name="crs_promcontent5_x">
+      <fkey-column referencing-column="promotion_id" referenced-column="promotion_id"/>
+    </foreign-key>
+  </table>
+  
+  <table name="crs_category">
+    <column name="category_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="feature_promo_id" nullable="y">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="title_image_id" nullable="y">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <primary-key name="crs_category_p">
+      <index-column column="category_id"/>
+    </primary-key>
+    <foreign-key name="crs_category_fctg" referenced-table="dcs_category">
+      <fkey-column referencing-column="category_id" referenced-column="category_id"/>
+    </foreign-key>
+    <foreign-key name="crs_category_ffpr" referenced-table="crs_promo_content" index-name="crs_category1_x">
+      <fkey-column referencing-column="feature_promo_id" referenced-column="promo_id"/>
+    </foreign-key>
+    <foreign-key name="crs_category_fmed" referenced-table="dcs_media" index-name="crs_category3_x">
+      <fkey-column referencing-column="title_image_id" referenced-column="media_id"/>
+    </foreign-key>
+  </table>
+
+  <table name="crs_cat_rel_prod">
+    <column name="category_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="sequence_num" nullable="n">
+      <column-type db="generic" type="integer"/>
+      <column-type db="oracle" type="integer"/>
+    </column>
+    <column name="product_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <primary-key name="crs_cat_relprod_p">
+      <index-column column="category_id" seq="1"/>
+      <index-column column="sequence_num" seq="2"/>
+    </primary-key>
+    <foreign-key name="crs_cat_relprod_fc" referenced-table="dcs_category">
+      <fkey-column referencing-column="category_id" referenced-column="category_id"/>
+    </foreign-key>
+    <foreign-key name="crs_cat_relprod_fp" referenced-table="dcs_product" index-name="crs_cat_relprod1_x">
+      <fkey-column referencing-column="product_id" referenced-column="product_id"/>
+    </foreign-key>
+  </table>    
+
+  <table name="crs_prod_seen_in">
+    <column name="seen_in_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="version" nullable="n">
+      <column-type db="generic" type="integer"/>
+      <column-type db="oracle" type="integer"/>
+    </column>
+    <column name="source_date" nullable="y">
+      <column-type db="generic" type="timestamp"/>
+    </column>
+    <column name="display_name" nullable="y" i18n="y">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+    <!-- Override to "text" for SQL Server if we ever support it -->
+    <column name="description" nullable="y" i18n="y">
+      <column-type db="generic" type="varchar" length="4000"/>
+    </column>
+    <column name="source_name" nullable="y" i18n="y">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+    <primary-key name="crs_prod_seen_in_p">
+      <index-column column="seen_in_id"/>
+    </primary-key>
+  </table>
+
+  <table name="crs_product">
+    <column name="product_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="is_new" nullable="y">
+      <column-type db="generic" type="one-digit"/> 
+    </column>
+    <!--column name="special" nullable="y">
+      <column-type db="generic" type="one-digit"/> 
+    </column-->
+    <column name="promo_tagline" nullable="y" i18n="y">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+    <column name="brief_description" nullable="y" i18n="y">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+    <column name="title_image_id" nullable="y">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="promo_image_id" nullable="y">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="detail_image_id" nullable="y">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <!-- Override to "text" for SQL Server if we ever support it -->
+    <column name="usage_instructions" nullable="y" i18n="y">
+      <column-type db="generic" type="varchar" length="4000"/>
+    </column>
+    <!-- Override to "text" for SQL Server if we ever support it -->
+    <column name="as_seen_in" nullable="y">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="preorderable" nullable="y">
+      <column-type db="generic" type="one-digit"/> 
+    </column>
+    <column name="preord_end_date" nullable="y">
+      <column-type db="generic" type="timestamp"/>
+    </column>
+    <column name="use_inv_for_preord" nullable="y">
+      <column-type db="generic" type="one-digit"/> 
+    </column>
+    <column name="email_frnd_enabled" nullable="y">
+      <column-type db="generic" type="one-digit"/> 
+    </column>
+    <primary-key name="crs_product_p">
+      <index-column column="product_id"/>
+    </primary-key>
+    <foreign-key name="crs_product_fpro" referenced-table="dcs_product">
+      <fkey-column referencing-column="product_id" referenced-column="product_id"/>
+    </foreign-key>
+    <foreign-key name="crs_product_ftmd" referenced-table="dcs_media" index-name="crs_product1_x">
+      <fkey-column referencing-column="title_image_id" referenced-column="media_id"/>
+    </foreign-key>
+    <foreign-key name="crs_product_fpmd" referenced-table="dcs_media" index-name="crs_product2_x">
+      <fkey-column referencing-column="promo_image_id" referenced-column="media_id"/>
+    </foreign-key>
+    <foreign-key name="crs_product_fsee" referenced-table="crs_prod_seen_in" index-name="crs_product3_x">
+      <fkey-column referencing-column="as_seen_in" referenced-column="seen_in_id"/>
+    </foreign-key>
+    <foreign-key name="crs_product_fdmd" referenced-table="dcs_media" index-name="crs_product4_x">
+      <fkey-column referencing-column="detail_image_id" referenced-column="media_id"/>
+    </foreign-key>
+    <check name="crs_product_c">
+      <check-expr expression="is_new in (0,1)" db="generic"/>
+    </check>
+    <!--check name="crs_product_c2">
+      <check-expr expression="special in (0,1)" db="generic"/>
+    </check-->
+    <check name="crs_product_c3">
+      <check-expr expression="preorderable in (0,1)" db="generic"/>
+    </check>
+    <check name="crs_product_c4">
+      <check-expr expression="use_inv_for_preord in (0,1)" db="generic"/>
+    </check>
+  </table>
+
+  <table name="crs_discount_promo">
+    <column name="promotion_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="qualifier" nullable="n">
+      <column-type db="generic" type="integer"/>
+      <column-type db="oracle" type="integer"/>
+    </column>
+    <primary-key name="crs_discount_pro_p">
+      <index-column column="promotion_id"/>
+    </primary-key>
+    <foreign-key name="crs_discount_pro_f" referenced-table="dcs_promotion">
+      <fkey-column referencing-column="promotion_id" referenced-column="promotion_id"/>
+    </foreign-key>
+  </table>
+
+  <table name="crs_feature">
+    <column name="feature_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="version" nullable="n">
+      <column-type db="generic" type="integer"/>
+      <column-type db="oracle" type="integer"/>
+    </column>
+    <column name="feature_name" nullable="y" i18n="y">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+    <column name="start_date" nullable="y">
+      <column-type db="generic" type="timestamp"/>
+    </column>
+    <column name="end_date" nullable="y">
+      <column-type db="generic" type="timestamp"/>
+    </column>
+    <column name="display_name" nullable="y" i18n="y">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+    <column name="description" nullable="y" i18n="y">
+      <column-type db="generic" type="varchar" length="1000"/>
+    </column>
+    <!-- Override to "text" for SQL Server if we ever support it -->
+    <column name="long_description" nullable="y" i18n="y">
+      <column-type db="generic" type="varchar" length="4000"/>
+    </column>
+    <column name="title_image_id" nullable="y">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="small_image_id" nullable="y">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="large_image_id" nullable="y">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="hidden" nullable="y">
+      <column-type db="generic" type="one-digit"/> 
+    </column>
+    <primary-key name="crs_feature_p">
+      <index-column column="feature_id"/>
+    </primary-key>
+    <foreign-key name="crs_feature_fl" referenced-table="dcs_media" index-name="crs_feature1_x">
+      <fkey-column referencing-column="large_image_id" referenced-column="media_id"/>
+    </foreign-key>
+    <foreign-key name="crs_feature_fs" referenced-table="dcs_media" index-name="crs_feature2_x">
+      <fkey-column referencing-column="small_image_id" referenced-column="media_id"/>
+    </foreign-key>
+    <foreign-key name="crs_feature_ft" referenced-table="dcs_media" index-name="crs_feature3_x">
+      <fkey-column referencing-column="title_image_id" referenced-column="media_id"/>
+    </foreign-key>
+    <check name="crs_feature_c">
+      <check-expr expression="hidden in (0,1)" db="generic"/>
+    </check>
+  </table>
+
+  <table name="crs_prd_features">
+    <column name="product_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="sequence_num" nullable="n">
+      <column-type db="generic" type="integer"/>
+      <column-type db="oracle" type="integer"/>
+    </column>
+    <column name="feature_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <primary-key name="crs_prd_features_p">
+      <index-column column="product_id" seq="1"/>
+      <index-column column="sequence_num" seq="2"/>
+    </primary-key>
+    <foreign-key name="crs_prd_featres_ff" referenced-table="crs_feature" index-name="crs_prdfeatures1_x">
+      <fkey-column referencing-column="feature_id" referenced-column="feature_id"/>
+    </foreign-key>
+    <foreign-key name="crs_prd_featres_fp" referenced-table="dcs_product">
+      <fkey-column referencing-column="product_id" referenced-column="product_id"/>
+    </foreign-key>
+  </table>
+
+  <table name="crs_prd_tips">
+    <column name="product_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="sequence_num" nullable="n">
+      <column-type db="generic" type="integer"/>
+      <column-type db="oracle" type="integer"/>
+    </column>
+    <column name="tip_text" nullable="n" i18n="y">
+      <column-type db="generic" type="varchar" length="2000"/>
+    </column>
+    <primary-key name="crs_prd_tips_p">
+      <index-column column="product_id" seq="1"/>
+      <index-column column="sequence_num" seq="2"/>
+    </primary-key>
+    <foreign-key name="crs_prd_tips_f" referenced-table="dcs_product">
+      <fkey-column referencing-column="product_id" referenced-column="product_id"/>
+    </foreign-key>
+  </table>
+  
+  <table name="crs_prd_ship_cntry">
+    <column name="product_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="country" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <primary-key name="crs_prd_shp_cnt_p">
+      <index-column column="product_id" seq="1"/>
+      <index-column column="country" seq="2"/>
+    </primary-key>
+    <foreign-key name="crs_prd_shp_cnt_f" referenced-table="dcs_product">
+      <fkey-column referencing-column="product_id" referenced-column="product_id"/>
+    </foreign-key>
+  </table>
+  
+  <table name="crs_prd_nshp_cntry">
+    <column name="product_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="country" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <primary-key name="crs_prd_nshp_cnt_p">
+      <index-column column="product_id" seq="1"/>
+      <index-column column="country" seq="2"/>
+    </primary-key>
+    <foreign-key name="crs_prd_nshp_cnt_f" referenced-table="dcs_product">
+      <fkey-column referencing-column="product_id" referenced-column="product_id"/>
+    </foreign-key>
+  </table>
+  
+  <table name="crs_catalog">
+    <column name="catalog_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="root_nav_cat" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <primary-key name="crs_catalog_p">
+      <index-column column="catalog_id" seq="1"/>
+    </primary-key>
+    <foreign-key name="crs_catalog_f" referenced-table="dcs_category" index-name="crs_ctlrtnavcat1_x">
+      <fkey-column referencing-column="root_nav_cat" referenced-column="category_id"/>
+    </foreign-key>
+  </table>
+  
+  <sql>
+    <sql-db db="oracle">
+      <![CDATA[alter session set NLS_LENGTH_SEMANTICS='BYTE';]]>
+    </sql-db>
+  </sql>
+
+</schema>
+<!-- @version $Id: //hosting-blueprint/B2CBlueprint/version/10.0.3/EStore/sql/ddlgen/catalog_ddl.xml#2 $$Change: 651448 $-->

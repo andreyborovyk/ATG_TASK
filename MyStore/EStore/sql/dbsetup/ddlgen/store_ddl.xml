@@ -1,0 +1,55 @@
+<!DOCTYPE schema SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="store_ddl" description="Tables for the estore store repository">
+  <comment><![CDATA[ @version $Id: //edu/ILT-Courses/main/COMM/StudentFiles/COM/setup/copy-files/apps/MyStore/EStore/sql/dbsetup/ddlgen/store_ddl.xml#3 $$Change: 635816 $]]></comment>
+
+  <table name="crs_store_location">
+    <column name="store_id" nullable="n" i18n="y">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="site_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="store_name" nullable="n" i18n="y">
+      <column-type db="generic" type="varchar" length="250"/>
+    </column>
+    <column name="address_1" nullable="y" i18n="y">
+      <column-type db="generic" type="varchar" length="50"/>
+    </column>
+    <column name="address_2" nullable="y" i18n="y">
+      <column-type db="generic" type="varchar" length="50"/>
+    </column>
+    <column name="address_3" nullable="y" i18n="y">
+      <column-type db="generic" type="varchar" length="50"/>
+    </column>
+    <column name="city" nullable="y" i18n="y">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="county" nullable="y" i18n="y">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="state" nullable="y" i18n="y">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="postal_code" nullable="y">
+      <column-type db="generic" type="varchar" length="10"/>
+    </column>
+    <column name="country" nullable="y" i18n="y">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="phone_number" nullable="y">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="fax_number" nullable="y">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="email" nullable="y">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <primary-key name="crs_store_locatn_p">
+      <index-column column="store_id"/>
+    </primary-key>
+  </table>
+  
+
+</schema>
+<!-- @version $Id: //edu/ILT-Courses/main/COMM/StudentFiles/COM/setup/copy-files/apps/MyStore/EStore/sql/dbsetup/ddlgen/store_ddl.xml#3 $$Change: 635816 $-->

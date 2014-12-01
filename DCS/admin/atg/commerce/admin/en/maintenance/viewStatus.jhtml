@@ -1,0 +1,163 @@
+<HTML>
+<HEAD>
+<TITLE>Dynamo Commerce Administration</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A"  VLINK="#637DA6" LINK="#E87F02">
+<IMG SRC="../images/dcsadminbanner.gif" ALT="Dynamo Commerce Administration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+<importbean bean="/atg/commerce/catalog/CatalogTools">
+<importbean bean="/atg/commerce/catalog/CatalogMaintenanceService">
+<importbean bean="/atg/commerce/catalog/RunServiceFormHandler">
+
+<a href="/">admin</a>/<a href="../index.jhtml">Commerce</a>/Maintenance Log
+<PARAM NAME="showLevel" VALUE="param:showLevel 99">
+
+<h2>Catalog Maintenance Last Execution Log</h2>
+<br>
+<blockquote>
+
+  This information is only relative to the last execution of Catalog Maintenance on this server.
+  The displayed log is maintained in volatile memory and cannot be viewed here once Dynamo is recycled. 
+  However, the information is persisted in the standard Dynamo logs. 
+
+</blockquote>
+<blockquote>
+
+
+   <table border="0" cellpadding="2">
+	 <tr valign="top">
+	   <td><b>Repository processed</b></td>
+	   <td> <valueof bean="CatalogMaintenanceService.lastRepository.repositoryName"></valueof></td>
+	 </tr>
+	 <tr valign="top">
+	   <td><b>Start Time</b></td>
+     <td>
+      <droplet bean="/atg/dynamo/droplet/Switch">
+        <param name="value" value="bean:CatalogMaintenanceService.lastExecutionStartTime">
+        <oparam name="0">
+          &nbsp;
+        </oparam>
+        <oparam name="default">
+          <valueof bean="CatalogMaintenanceService.lastExecutionStartTime" date="MM/dd/yyyy hh:mm:ss"></valueof>
+        </oparam>
+       </droplet>
+      </td>
+	 </tr>
+	 <tr valign="top">
+	   <td><b>Finish Time</b></td>
+	   <td>
+      <droplet bean="/atg/dynamo/droplet/Switch">
+        <param name="value" value="bean:CatalogMaintenanceService.lastExecutionFinishTime">
+        <oparam name="0">
+          still executing &nbsp;<a href="viewStatus.jhtml">Refresh Status</a>
+        </oparam>
+        <oparam name="default">
+          <valueof bean="CatalogMaintenanceService.lastExecutionFinishTime" date="MM/dd/yyyy hh:mm:ss"></valueof>
+        </oparam>
+       </droplet>
+      </td>
+	 </tr>
+	 </table>
+   </form>
+</blockquote>
+<blockquote>
+  <b>Message Totals:</b><br>
+    <droplet bean="/atg/dynamo/droplet/Compare">
+      <param name="obj1" value="param:showLevel">
+      <param name="obj2" value="99">
+      <oparam name="equal">
+        All Messages:&nbsp;<valueof bean="CatalogMaintenanceService.totalNumberOfMessages"></valueof>,&nbsp;&nbsp;
+      </oparam>
+      <oparam name="default">
+        <a href="viewStatus.jhtml"><param name="showLevel" value="99">All Messages</a>:&nbsp;<valueof bean="CatalogMaintenanceService.totalNumberOfMessages"></valueof>,&nbsp;&nbsp;
+      </oparam>
+    </droplet>
+    <droplet bean="/atg/dynamo/droplet/Compare">
+      <param name="obj1" value="param:showLevel">
+      <param name="obj2" value="2">
+      <oparam name="equal">
+        Errors:&nbsp;<valueof bean="CatalogMaintenanceService.totalNumberOfErrorMessages"></valueof>,&nbsp;&nbsp;
+      </oparam>
+      <oparam name="default">
+        <a href="viewStatus.jhtml"><param name="showLevel" value="2">Errors:</a>&nbsp;<valueof bean="CatalogMaintenanceService.totalNumberOfErrorMessages"></valueof>,&nbsp;&nbsp;
+      </oparam>
+    </droplet>
+    <droplet bean="/atg/dynamo/droplet/Compare">
+      <param name="obj1" value="param:showLevel">
+      <param name="obj2" value="0">
+      <oparam name="equal">
+        Warnings:&nbsp;<valueof bean="CatalogMaintenanceService.totalNumberOfWarningMessages"></valueof>,&nbsp;&nbsp;
+      </oparam>
+      <oparam name="default">
+        <a href="viewStatus.jhtml"><param name="showLevel" value="0">Warnings:</a>&nbsp;<valueof bean="CatalogMaintenanceService.totalNumberOfWarningMessages"></valueof>,&nbsp;&nbsp;
+      </oparam>
+    </droplet>
+    <droplet bean="/atg/dynamo/droplet/Compare">
+      <param name="obj1" value="param:showLevel">
+      <param name="obj2" value="1">
+      <oparam name="equal">
+        Information:&nbsp;<valueof bean="CatalogMaintenanceService.totalNumberOfInfoMessages"></valueof>
+      </oparam>
+      <oparam name="default">
+        <a href="viewStatus.jhtml"><param name="showLevel" value="1">Information:</a>&nbsp;<valueof bean="CatalogMaintenanceService.totalNumberOfInfoMessages"></valueof>
+      </oparam>
+    </droplet>
+</blockquote>
+<blockquote>
+  <droplet bean="/atg/dynamo/droplet/ForEach">
+    <param name="array" value="bean:CatalogMaintenanceService.allMessages">
+    <param name="elementName" value="CMSMessage">
+    <param name="sortProperties" value="+time">
+    <oparam name="output">
+    <droplet bean="/atg/dynamo/droplet/Compare">
+      <param name="obj1" value="param:showLevel">
+      <param name="obj2" value="99">
+      <oparam name="equal">
+          <droplet bean="/atg/dynamo/droplet/Switch">
+            <param name="value" value="param:CMSMessage.level">
+            <oparam name="2">
+              <font color="red">**** Error ****
+            </oparam>
+            <oparam name="0">
+              <font color="green">*** Warning ***
+            </oparam>
+          </droplet>
+          <valueof param="CMSMessage.time" date="hh:mm:ss"></valueof>&nbsp;
+          <valueof param="CMSMessage.messageText"></valueof><br>
+          </font>
+      </oparam>
+      <oparam name="default">
+
+
+      <droplet bean="/atg/dynamo/droplet/Switch">
+        <param name="value" value="param:CMSMessage.level">
+        <oparam name="param:showLevel">
+          <droplet bean="/atg/dynamo/droplet/Switch">
+            <param name="value" value="param:CMSMessage.level">
+            <oparam name="2">
+              <font color="red">**** Error ****
+            </oparam>
+            <oparam name="0">
+              <font color="green">*** Warning ***
+            </oparam>
+          </droplet>
+          <valueof param="CMSMessage.time" date="hh:mm:ss"></valueof>&nbsp;
+          <valueof param="CMSMessage.messageText"></valueof><br>
+          </font>
+        </oparam>
+      </droplet>
+      </oparam>
+
+     </droplet>
+
+    </oparam>
+  </droplet>
+</blockquote>
+
+<img src="../../images/bluedot.gif" width=505 height=1>
+<p>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/DCS/admin/atg/commerce/admin/en/maintenance/viewStatus.jhtml#2 $$Change: 651448 $*/</java>
+

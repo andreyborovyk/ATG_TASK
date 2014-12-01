@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC
+	"-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+	"http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+  <display-name>XML Protocol Gear</display-name>
+  <description>XML Protocol Gear</description>
+
+  <!-- Context Parameters                                             -->
+  <!--                                                                -->
+  <!--                                                                -->
+
+  <!-- Context Root                                                   -->
+  <!--                                                                -->
+  <!-- Context root of web application.                               -->
+  <context-param>
+    <param-name>context-root</param-name>
+    <param-value>/gear/xmlprotocol</param-value>
+  </context-param>
+
+  <!-- DAF context name                                               -->
+  <!--                                                                -->
+  <!--                                                                -->
+  <context-param>
+    <param-name>atg.session.parentContextName</param-name>
+    <param-value>/dyn</param-value>
+    <description>The name of the DAF context.</description>
+  </context-param>
+
+  <context-param>
+    <param-name>atg.dafear.bootstrapContextName</param-name>
+    <param-value>/dyn</param-value>
+    <description>
+      The name of the DAF bootstrap WAR context.
+    </description>
+  </context-param>
+
+  <!-- Filters                                                        -->
+  <!--                                                                -->
+  <!--                                                                -->
+  <filter>
+    <filter-name>IncludeFilter</filter-name>
+    <display-name>IncludeFilter</display-name>
+    <description>Responsible for security gear contents from outside access.</description>
+    <filter-class>atg.portal.servlet.IncludeFilter</filter-class>
+    <init-param>
+      <param-name>allowedUrlPatterns</param-name>
+      <param-value>
+        /templates/*
+        /data/*      
+      </param-value>
+    </init-param>
+  </filter>
+
+  <!-- Dynamo Server Page Filter                                      -->
+  <!--                                                                -->
+  <!-- This filter invokes the dynamo application framework           -->
+  <!-- servlet pipeline.                                              -->
+  <filter>
+    <filter-name>DynamoServerPageFilter</filter-name>
+    <display-name>DynamoServerPageFilter</display-name>
+    <description>This filter invokes the dynamo application framework servlet pipeline.</description>
+    <filter-class>atg.filter.dspjsp.PageFilter</filter-class>
+  </filter>
+
+  <!-- Filter Mappings                                                -->
+  <!--                                                                -->
+  <!--                                                                -->
+  <filter-mapping>
+    <filter-name>DynamoServerPageFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>IncludeFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!-- Servlets                                                   -->
+  <!--                                                            -->
+  <!--                                                            -->
+
+  <!-- NucleusServlet                                                --> 
+  <!--                                                               --> 
+  <!-- Configure the Nucleus Servlet. This servlet definition is     -->
+  <!-- required in each web application that uses dynamo             -->
+  <!-- functionality.  When mapped, it exposes the nucleus component -->
+  <!-- browser, but should not be mapped to any paths on a live site.-->
+  <servlet>
+    <servlet-name>NucleusServlet</servlet-name>
+    <servlet-class>atg.nucleus.servlet.NucleusServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+
+  <!-- Taglibs                                                    -->
+  <!--                                                            -->
+  <!--                                                            -->
+  <taglib>
+    <taglib-uri>/paf-taglib</taglib-uri>
+    <taglib-location>/WEB-INF/pafTaglib1_2.tld</taglib-location>
+  </taglib>
+  <taglib>
+    <taglib-uri>/core-taglib</taglib-uri>
+    <taglib-location>/WEB-INF/coreTaglib1_0.tld</taglib-location>
+  </taglib>
+  <taglib>
+    <taglib-uri>/dsp</taglib-uri>
+    <taglib-location>/WEB-INF/dspjspTaglib1_0.tld</taglib-location>
+  </taglib>
+  <taglib>
+    <taglib-uri>/xmlprotocoltaglib</taglib-uri>
+    <taglib-location>/WEB-INF/xmlprotocolTaglib1_0.tld</taglib-location>
+  </taglib>
+  <taglib>
+    <taglib-uri>/jakarta-i18n-1.0</taglib-uri>
+    <taglib-location>/WEB-INF/i18n.tld</taglib-location>
+  </taglib>
+  
+</web-app>
+<!-- @version $Id: //app/portal/version/10.0.3/xmlprotocol/xmlprotocol.war/WEB-INF/web.xml#2 $$Change: 651448 $ -->

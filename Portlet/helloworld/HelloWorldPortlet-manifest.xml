@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE portal-manifest PUBLIC "-//Art Technology Group, Inc.//DTD Portal Manifest//EN" "http://www.atg.com/dtds/portal/framework/portal_manifest_1.0.dtd">
+<portal-manifest version="1.0" author="ATG Portlet Deploy Tool" name="HelloWorldPortlet" >
+  <gear-definitions>
+    <gear-definition name="HelloWorldPortlet" version="1.0" author="ATG Portlet Deploy Tool">
+      <description>A portlet which demonstrates integration with ATG Relationship Management.</description>
+      <servlet-context>/portlet/HelloWorldPortlet</servlet-context>
+      <dimensions>
+	<dimension name="height">noPreference</dimension>
+	<dimension name="width">narrow</dimension>
+      </dimensions>
+      <gear-modes>
+	<gear-mode name="content">
+	  <display-modes>
+	    <display-mode name="shared">
+	      <device-output name="html">/HelloWorldPortlet</device-output> 
+	    </display-mode>
+	    <display-mode name="full">
+	      <device-output name="html">/HelloWorldPortlet</device-output>
+	    </display-mode>
+	  </display-modes>
+	</gear-mode>
+      </gear-modes>
+      <jps-portlet value="true">
+	<portlet-guid value="HelloWorldPortlet"></portlet-guid>
+      </jps-portlet>
+      <instance-parameters>
+	<parameter name="path">
+	  <default-value>/index.jsp</default-value>
+	</parameter>
+	<parameter name="atg.portlet-class">
+	  <default-value>atg.portlet.DispatchPortlet</default-value>
+	</parameter>  
+      </instance-parameters>
+    </gear-definition>
+  </gear-definitions>
+</portal-manifest>
+<!-- @version $Id: //app/portal/version/10.0.3/portlet/helloworld/helloworld/WEB-INF/portlets/HelloWorldPortlet-manifest.xml#2 $$Change: 651448 $ -->

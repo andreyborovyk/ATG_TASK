@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE scenario
+  SYSTEM
+  "dynamosystemresource:/atg/scenario/definition/sdl.dtd">
+
+<scenario author="admin" creation-time="960937282000" enabled="true" last-modified-by="admin" modification-time="1028233337647">
+  <segment migrate-from="963339369053" migrate-users="true">
+    <segment-name>Signup Test</segment-name>
+    <!--================================-->
+    <!--== Session starts  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.dps.StartSession</event-name>
+    </event>
+    <fork id="2" randomized="true">
+      <branch id="2.1" weight="0.5" weight-type="floating">
+        <!-- 50% -->
+        <!--================================-->
+        <!--== Add items to slot QFHomePageSlot named Images:image:/repositories/Images/en_US/promo-signup.html  -->
+        <!--================================-->
+        <action id="2.1.2">
+          <action-name>fillSlot</action-name>
+          <action-param name="slot">
+            <nucleus-property>
+              <nucleus-path>/atg/registry/Slots/QFHomePageSlot</nucleus-path>
+            </nucleus-property>
+          </action-param>
+          <action-param name="ids">
+            <array type="java.lang.String[]">
+              <constant>/repositories/Images/en_US/promo-signup.html</constant>
+            </array>
+          </action-param>
+        </action>
+        <fork id="2.1.3">
+          <branch id="2.1.3.1">
+            <!--================================-->
+            <!--== Registers  -->
+            <!--================================-->
+            <event id="2.1.3.1.1">
+              <event-name>atg.dps.Register</event-name>
+            </event>
+            <!--================================-->
+            <!--== Record audit trail with label Standard Signup in dataset QF Signups  -->
+            <!--================================-->
+            <action id="2.1.3.1.2">
+              <action-name>recordAuditTrail</action-name>
+              <action-param name="label">
+                <constant>Standard Signup</constant>
+              </action-param>
+              <action-param name="dataset">
+                <constant>/qfsignups.xml</constant>
+              </action-param>
+            </action>
+          </branch>
+          <branch id="2.1.3.2">
+            <!--================================-->
+            <!--== Session ends  -->
+            <!--================================-->
+            <event id="2.1.3.2.1">
+              <event-name>atg.dps.EndSession</event-name>
+            </event>
+            <!--================================-->
+            <!--== Record audit trail with label Standard Dropout in dataset QF Signups  -->
+            <!--================================-->
+            <action id="2.1.3.2.2">
+              <action-name>recordAuditTrail</action-name>
+              <action-param name="label">
+                <constant>Standard Dropout</constant>
+              </action-param>
+              <action-param name="dataset">
+                <constant>/qfsignups.xml</constant>
+              </action-param>
+            </action>
+          </branch>
+          <branch id="2.1.3.3">
+            <!--================================-->
+            <!--== Logs in  -->
+            <!--================================-->
+            <event id="2.1.3.3.1">
+              <event-name>atg.dps.Login</event-name>
+            </event>
+          </branch>
+        </fork>
+      </branch>
+      <branch id="2.2" weight="0.5" weight-type="floating">
+        <!-- 50% -->
+        <!--================================-->
+        <!--== Add items to slot QFHomePageSlot named Images:image:/repositories/Images/en_US/promo-signup-agg.html  -->
+        <!--================================-->
+        <action id="2.2.2">
+          <action-name>fillSlot</action-name>
+          <action-param name="slot">
+            <nucleus-property>
+              <nucleus-path>/atg/registry/Slots/QFHomePageSlot</nucleus-path>
+            </nucleus-property>
+          </action-param>
+          <action-param name="ids">
+            <array type="java.lang.String[]">
+              <constant>/repositories/Images/en_US/promo-signup-agg.html</constant>
+            </array>
+          </action-param>
+        </action>
+        <fork id="2.2.3">
+          <branch id="2.2.3.1">
+            <!--================================-->
+            <!--== Registers  -->
+            <!--================================-->
+            <event id="2.2.3.1.1">
+              <event-name>atg.dps.Register</event-name>
+            </event>
+            <!--================================-->
+            <!--== Record audit trail with label Aggressive Signup in dataset QF Signups  -->
+            <!--================================-->
+            <action id="2.2.3.1.2">
+              <action-name>recordAuditTrail</action-name>
+              <action-param name="label">
+                <constant>Aggressive Signup</constant>
+              </action-param>
+              <action-param name="dataset">
+                <constant>/qfsignups.xml</constant>
+              </action-param>
+            </action>
+          </branch>
+          <branch id="2.2.3.2">
+            <!--================================-->
+            <!--== Session ends  -->
+            <!--================================-->
+            <event id="2.2.3.2.1">
+              <event-name>atg.dps.EndSession</event-name>
+            </event>
+            <!--================================-->
+            <!--== Record audit trail with label Aggressive Dropout in dataset QF Signups  -->
+            <!--================================-->
+            <action id="2.2.3.2.2">
+              <action-name>recordAuditTrail</action-name>
+              <action-param name="label">
+                <constant>Aggressive Dropout</constant>
+              </action-param>
+              <action-param name="dataset">
+                <constant>/qfsignups.xml</constant>
+              </action-param>
+            </action>
+          </branch>
+          <branch id="2.2.3.3">
+            <!--================================-->
+            <!--== Logs in  -->
+            <!--================================-->
+            <event id="2.2.3.3.1">
+              <event-name>atg.dps.Login</event-name>
+            </event>
+          </branch>
+        </fork>
+      </branch>
+    </fork>
+  </segment>
+</scenario>

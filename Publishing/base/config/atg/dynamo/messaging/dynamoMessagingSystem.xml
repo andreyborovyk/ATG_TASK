@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<dynamo-message-system>
+
+  <!-- patch bay definitions -->
+  <patchbay>
+
+    <message-source>
+      <nucleus-name>
+        /atg/epub/workflow/process/WorkflowProcessManager
+      </nucleus-name>
+
+      <output-port>
+        <port-name>
+          IndividualTimers
+        </port-name>
+        <output-destination>
+          <destination-name>
+            patchbay:/sqldms/EPubQueue/IndividualTimerEvents
+          </destination-name>
+          <destination-type>
+            Queue
+          </destination-type>
+        </output-destination>
+      </output-port>
+    </message-source>
+
+    <message-source>
+      <nucleus-name>
+        /atg/epub/workflow/WorkflowMessageSource
+      </nucleus-name>
+
+      <output-port>
+        <port-name>
+          WorkflowEvents
+        </port-name>
+        <output-destination>
+          <provider-name>
+            local
+          </provider-name>
+          <destination-name>
+            localdms:/local/EPubTopic/WorkflowManagerEvents
+          </destination-name>
+          <destination-type>
+            Topic
+          </destination-type>
+        </output-destination>
+      </output-port>
+    </message-source>
+
+    <message-source>
+      <nucleus-name>
+        /atg/epub/version/VMMessageSender
+      </nucleus-name>
+
+      <output-port>
+        <port-name>
+          DEFAULT
+        </port-name>
+        <output-destination>
+          <destination-name>
+            patchbay:/sqldms/EPubTopic/VersionManagerEvents
+          </destination-name>
+          <destination-type>
+            Topic
+          </destination-type>
+        </output-destination>
+      </output-port>
+    </message-source>
+
+    <message-source>
+      <nucleus-name>
+        /atg/epub/messaging/PublishingMessageSource
+      </nucleus-name>
+
+      <output-port>
+        <port-name>
+          DeploymentStatus
+        </port-name>
+
+        <output-destination>
+          <provider-name>
+            local
+          </provider-name>
+          <destination-name>
+            localdms:/local/EPubTopic/WorkflowManagerEvents
+          </destination-name>
+          <destination-type>
+            Topic
+          </destination-type>
+        </output-destination>
+      </output-port>
+
+      <output-port>
+        <port-name>
+          PublishingStatus
+        </port-name>
+
+        <output-destination>
+          <provider-name>
+            local
+          </provider-name>
+          <destination-name>
+            localdms:/local/EPubTopic/WorkflowManagerEvents
+          </destination-name>
+          <destination-type>
+            Topic
+          </destination-type>
+        </output-destination>
+      </output-port>
+      
+      <output-port>
+        <port-name>
+          WorkflowStatus
+        </port-name>
+
+        <output-destination>
+          <provider-name>
+            local
+          </provider-name>
+          <destination-name>
+            localdms:/local/EPubTopic/WorkflowManagerEvents
+          </destination-name>
+          <destination-type>
+            Topic
+          </destination-type>
+        </output-destination>
+      </output-port>
+      
+    </message-source>
+
+    <message-sink>
+      <nucleus-name>
+        /atg/epub/workflow/process/WorkflowProcessManager
+      </nucleus-name>
+
+      <input-port>
+        <port-name>
+          IndividualEvents
+        </port-name>
+        <input-destination>
+          <provider-name>
+            local
+          </provider-name>
+          <destination-name>
+            localdms:/local/EPubTopic/WorkflowManagerEvents
+          </destination-name>
+          <destination-type>
+            Topic
+          </destination-type>
+        </input-destination>
+      </input-port>
+
+      <input-port>
+        <port-name>
+          ProcessUpdates
+        </port-name>
+        <input-destination>
+          <destination-name>
+            patchbay:/sqldms/EPubTopic/WorkflowUpdateEvents
+          </destination-name>
+          <destination-type>
+            Topic
+          </destination-type>
+          <durable-subscriber-name>
+            workflowUpdates
+          </durable-subscriber-name>
+        </input-destination>
+      </input-port>
+
+      <input-port>
+        <port-name>
+          MigrationUpdates
+        </port-name>
+        <input-destination>
+          <destination-name>
+            patchbay:/sqldms/EPubTopic/WorkflowMigrationUpdateEvents
+          </destination-name>
+          <destination-type>
+            Topic
+          </destination-type>
+          <durable-subscriber-name>
+            scenarioMigrationUpdates
+          </durable-subscriber-name>
+        </input-destination>
+      </input-port>
+    </message-sink>
+
+  </patchbay>
+
+  <!-- local JMS definitions -->
+  <local-jms>
+    <jndi-prefix>/local</jndi-prefix>
+
+    <topic-name>/EPubTopic/WorkflowManagerEvents</topic-name>
+  </local-jms>
+
+  <!-- message registry definitions -->
+  <message-registry>
+    <message-family>
+      <message-family-name>
+        atg
+      </message-family-name>
+
+      <message-type>
+        <jms-type>
+          atg.workflow.StartWorkflow
+        </jms-type>
+        <message-class>
+          atg.workflow.StartWorkflowMessage
+        </message-class>
+        <message-context>
+          request
+        </message-context>
+        <hidden>
+          true
+        </hidden>
+      </message-type>
+
+      <message-type>
+        <jms-type>
+          atg.workflow.TaskOutcome
+        </jms-type>
+        <message-class>
+          atg.workflow.TaskOutcomeMessage
+        </message-class>
+        <message-context>
+          request
+        </message-context>
+        <hidden>
+          true
+        </hidden>
+      </message-type>
+    </message-family>
+    
+    <message-family>
+      <message-family-name>
+        atgVM
+      </message-family-name>
+
+      <message-type>
+        <jms-type>
+          atg.versionmanager.messaging.Checkin
+        </jms-type>
+        <message-class>
+          atg.versionmanager.messaging.CheckinMessage
+        </message-class>
+        <hidden>
+          true
+        </hidden>
+      </message-type>
+
+      <message-type>
+        <jms-type>
+          atg.versionmanager.messaging.Checkout
+        </jms-type>
+        <message-class>
+          atg.versionmanager.messaging.CheckoutMessage
+        </message-class>
+        <hidden>
+          true
+        </hidden>
+      </message-type>
+    </message-family>
+
+    <message-family>
+      <message-family-name>
+        ATGDeployment
+      </message-family-name>
+
+      <message-type>
+        <jms-type>
+          atg.deployment.DeploymentStatus
+        </jms-type>
+        <message-class>
+          atg.deployment.server.messaging.DeploymentStatusMessage
+        </message-class>
+        <hidden>
+          true
+        </hidden>
+      </message-type>
+    </message-family>    
+
+    <message-family>
+      <message-family-name>
+        ATGPublishing
+      </message-family-name>
+
+      <message-type>
+        <jms-type>
+          atg.epub.PublishingStatus
+        </jms-type>
+        <message-class>
+          atg.epub.messaging.PublishingStatusMessage
+        </message-class>
+        <hidden>
+          true
+        </hidden>
+      </message-type>
+
+      <message-type>
+        <jms-type>
+          atg.epub.WorkflowStatus
+        </jms-type>
+        <message-class>
+          atg.epub.messaging.PublishingWorkflowMessage
+        </message-class>
+        <hidden>
+          true
+        </hidden>
+      </message-type>
+    </message-family>    
+  </message-registry>
+
+</dynamo-message-system>
+<!-- @version $Id: //product/Publishing/version/10.0.3/pws/config/atg/dynamo/messaging/dynamoMessagingSystem.xml#2 $$Change: 651448 $ -->

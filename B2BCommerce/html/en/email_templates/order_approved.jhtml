@@ -1,0 +1,35 @@
+<!-- Title: OrderApprovedEmail -->
+<setvalue param="order" value="param:message.order">
+<setvalue param="profile" value="param:message.profile">
+<setvalue param="orderOwnerProfile" value="param:message.orderOwnerProfile">
+
+<setvalue param="messageTo" value="param:orderOwnerProfile.email">    
+<setvalue param="messageFrom" value="DCS5Team@example.com">
+<setvalue param="messageReplyTo" value="DCS5Team@example.com">
+<setvalue param="messageSubject" value="Order Approved">
+<setvalue param="mailingName" value="OrderApproved">
+
+<p>Dear <valueof param="orderOwnerProfile.firstName">Valued Customer</valueof>
+ <valueof param="orderOwnerProfile.lastName"></valueof>,<br>
+
+<p>Order #<valueof param="order.id">No order id.</valueof> has been approved and placed.<br>
+
+<!-- Itemized order -->
+<br>
+<droplet src="/Dynamo/commerce/en/email_templates/DisplayOrderSummary.jhtml">
+  <param name="order" value="param:order">
+  <param name="displayStockStatus" value="false">
+</droplet>
+
+<!-- Shipping information -->
+<droplet src="/Dynamo/commerce/en/email_templates/DisplayShippingInfo.jhtml">
+  <param name="order" value="param:order">
+</droplet>
+
+<!-- Payment information -->
+<droplet src="/Dynamo/commerce/en/email_templates/DisplayPaymentInfo.jhtml">
+  <param name="order" value="param:order">
+</droplet>
+
+<java>/* @version $Id: //product/B2BCommerce/version/10.0.3/release/B2BCommerce/html/en/email_templates/order_approved.jhtml#2 $$Change: 651448 $*/</java>
+

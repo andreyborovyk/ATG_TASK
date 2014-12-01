@@ -1,0 +1,27 @@
+<java>
+
+String languages = request.getHeader("ACCEPT-LANGUAGE");
+String result = "en";
+if (languages != null) {
+    for (;;) {
+      String attempt = languages.substring(0,2);
+      // check attempt
+      String path = request.getRealPath("/atg/dynamo/admin/" + attempt);
+      if ( (new java.io.File (path)).isDirectory() ) {
+        // success
+        result = attempt;
+        break;
+      }
+      int index = languages.indexOf(",");
+      if (index == -1)
+        break;
+      languages = languages.substring(index+1);
+    }
+}
+
+response.sendLocalRedirect(response.encodeURL("atg/dynamo/admin/" +
+    result + "/"), request);
+
+</java>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/index.jhtml#2 $$Change: 651448 $*/</java>
+

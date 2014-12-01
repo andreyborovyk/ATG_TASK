@@ -1,0 +1,120 @@
+<java>
+/* 
+This page displays a table comparing attributes of all the products
+in the user's product comparison list.
+*/
+</java>
+
+<importbean bean="/atg/userprofiling/Profile">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/BeanProperty">
+<importbean bean="/atg/commerce/catalog/comparison/ProductList">
+<importbean bean="/atg/userprofiling/Profile">
+<setvalue bean="Profile.currentLocation" value="catalog_comparison">
+
+<html>
+<head>
+<title>Product Comparison</title>
+</head>
+
+<body>
+<a href="index.jhtml">Catalog Home</a> - 
+<a href="product_search.jhtml">Product Search</a> - 
+<a href="shoppingcart.jhtml">Shopping Cart</a> - 
+<a href="lists.jhtml">My Lists</a> - 
+Product Comparison -
+<a href="giftlist_search.jhtml">Gift List Search</a> - 
+<droplet bean="/atg/dynamo/droplet/Switch">
+  <param name="value" value="bean:/atg/userprofiling/Profile.transient">
+  <oparam name="false">
+    <a href="logout.jhtml">Logout</a>
+  </oparam>
+  <oparam name="true">
+    <a href="login.jhtml">Login</a> or <a href="register.jhtml">Register</a>
+  </oparam>
+</droplet>
+<BR>
+<i>location: <valueof bean="Profile.currentLocation"></valueof></i>
+
+<P>
+<h3>Compare Products</h3>
+
+<P>
+This page displays a table comparing selected properties of the products
+in the user's product comparison list.  The properties to display, and the 
+column headings for each column, are configured through the <code>TableInfo</code> 
+component at <code>/atg/commerce/catalog/comparison/TableInfo</code> in
+Nucleus.  We don't necessarily know the property names when we write the
+JHTML for the table, so we use the <code>BeanProperty</code> droplet to 
+render the value in each table cell based on the property names we see 
+at runtime.
+
+<P>
+
+The <code>ProductList</code> bean holds a reference to this table description
+object, allowing us to ask it for the list of columns to display and to manage
+column sorting information if we want this table to be sortable by clicking
+on its column headings.  (To keep the sample catalog simple, the table in this 
+page is not sortable.  Refer to the Dynamo documentation on using the 
+<code>TableInfo</code> component for detailed information on how to create 
+sortable tables in JHTML.)
+
+<P>
+<droplet bean="ForEach">
+  <param name="array" value="bean:ProductList.items">
+  <param name="sortProperties" value="+product.displayName">
+
+  <!-- If no entries in the list, tell the user -->
+  <oparam name="empty">
+    <strong>Your product comparison list is empty.</strong>
+  </oparam>
+
+  <!-- Display table headings using TableInfo class -->
+  <oparam name="outputStart">
+    <table border="1" cellpadding="5" cellspacing="1">
+    <tr>
+    <droplet bean="ForEach">
+      <param name="array" value="bean:ProductList.tableColumns">
+      <param name="sortProperties" value="">
+      <oparam name="output">
+	<td><strong><valueof param="element.name"/></strong></td>
+      </oparam>
+    </droplet>	  
+    </tr>
+  </oparam>
+
+  <!-- Display one table row for each item -->
+  <oparam name="output">
+    <setvalue param="currentProduct" value="param:element">
+    <tr>
+    <droplet bean="ForEach">
+      <param name="array" value="bean:ProductList.tableColumns">
+      <param name="sortProperties" value="">
+      <oparam name="output">
+	<td>
+	  <droplet bean="BeanProperty">
+	    <param name="bean" value="param:currentProduct">
+	    <param name="propertyName" value="param:element.property">
+	    <oparam name="output"><valueof param="propertyValue" valueishtml/></oparam>
+	  </droplet>
+	</td>
+      </oparam>
+    </droplet>	  
+    </tr>
+  </oparam>
+
+  <!-- Close the table -->
+  <oparam name="outputEnd">
+    </table>
+  </oparam>
+</droplet>
+
+<P>
+<strong><a href="edit_comparison.jhtml">Edit Comparison List</a></strong>
+<P>
+<strong><a href="compare_search.jhtml">Search For More Products</a></strong>
+
+</body>
+</html>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/DCS/html/sample_catalog/comparison.jhtml#2 $$Change: 651448 $*/</java>
+

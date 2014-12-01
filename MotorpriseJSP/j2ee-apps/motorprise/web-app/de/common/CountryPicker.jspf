@@ -1,0 +1,23 @@
+<%-- 
+This page fragment generates a series of dsp:option tags, one for each
+country we want to let the user select as part of an address.  
+--%>
+
+<%@ taglib uri="dsp" prefix="dsp" %>
+<dsp:importbean bean="/atg/dynamo/droplet/ForEach"/>
+
+<dsp:page>
+
+<%-- Iterate over the list of known destinations and generate an option tag for each --%>
+<dsp:droplet name="/atg/dynamo/droplet/ForEach">
+  <dsp:param name="array" bean="/atg/commerce/util/CountryList_de.places"/>
+  <dsp:param name="elementName" value="country"/>  
+  <dsp:oparam name="output">
+    <dsp:getvalueof id="code" idtype="String" param="country.code">
+      <dsp:option value="<%=code%>"/><dsp:valueof valueishtml="<%=true%>" param="country.displayName"/>
+    </dsp:getvalueof>
+  </dsp:oparam>
+</dsp:droplet>
+
+</dsp:page>
+<%-- @version $Id$$Change$--%>

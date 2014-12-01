@@ -1,0 +1,312 @@
+<pipelinemanager>
+
+  <pipelinechain name="submitOrder" transaction="TX_REQUIRED" headlink="fetchOrder">
+    <pipelinelink name="fetchOrder" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/FetchOrderProcessor"/>
+      <transition returnvalue="1" link="lookupOrder"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupOrder" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/OrderLookupProcessor"/>
+      <transition returnvalue="1" link="checkOrderExists"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="checkOrderExists" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/WarehouseItemExistsProcessor"/>
+      <transition returnvalue="1" link="ignoreSubmitOrder"/>
+      <!-- WAREHOUSE_ITEM_EXISTS -->
+      <transition returnvalue="2" link="createOrderId"/>
+      <!-- WAREHOUSE_ITEM_DOES_NOT_EXISTS -->		
+    </pipelinelink>
+    <pipelinelink name="createOrderId" transaction="TX_MANDATORY">
+      <processor
+        jndi="/atg/reporting/datawarehouse/process/CreateOrderIdProcessor"/>
+      <transition returnvalue="1" link="createLineItems"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="createLineItems" transaction="TX_MANDATORY">
+      <processor
+        jndi="/atg/reporting/datawarehouse/process/CreateLineItemsProcessor"/>
+      <transition returnvalue="1" link="calculateLineItemsGrossRevenue"/>
+      <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="calculateLineItemsGrossRevenue" transaction="TX_MANDATORY">
+      <processor
+        jndi="/atg/reporting/datawarehouse/process/LineItemsGrossRevenueCalculatorProcessor"/>
+      <transition returnvalue="1" link="allocateTax"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="allocateTax" transaction="TX_MANDATORY">
+      <processor
+        jndi="/atg/reporting/datawarehouse/process/TaxAllocatorProcessor"/>
+      <transition returnvalue="1" link="allocateShipping"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="allocateShipping" transaction="TX_MANDATORY">
+      <processor
+        jndi="/atg/reporting/datawarehouse/process/ShippingAllocatorProcessor"/>
+      <transition returnvalue="1" link="allocateOrderDiscount"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="allocateOrderDiscount" transaction="TX_MANDATORY">
+      <processor
+        jndi="/atg/reporting/datawarehouse/process/OrderDiscountAllocatorProcessor"/>
+      <transition returnvalue="1" link="calculateManualAdjustments"/>
+      <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="calculateManualAdjustments" transaction="TX_MANDATORY">
+      <processor
+        jndi="/atg/reporting/datawarehouse/process/ManualAdjustmentsCalculatorProcessor"/>
+      <transition returnvalue="1" link="allocateManualAdjustmentsDebit"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="allocateManualAdjustmentsDebit" transaction="TX_MANDATORY">
+      <processor
+        jndi="/atg/reporting/datawarehouse/process/ManualAdjustmentsDebitAllocatorProcessor"/>
+      <transition returnvalue="1" link="allocateManualAdjustmentsCredit"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="allocateManualAdjustmentsCredit" transaction="TX_MANDATORY">
+      <processor
+        jndi="/atg/reporting/datawarehouse/process/ManualAdjustmentsCreditAllocatorProcessor"/>
+      <transition returnvalue="1" link="calculateLineItemsDiscountAmount"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="calculateLineItemsDiscountAmount" transaction="TX_MANDATORY">
+      <processor
+        jndi="/atg/reporting/datawarehouse/process/LineItemDiscountAmountCalculatorProcessor"/>
+      <transition returnvalue="1" link="calculateLineItemsMarkdownDiscountAmount"/>
+      <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="calculateLineItemsMarkdownDiscountAmount" transaction="TX_MANDATORY">
+      <processor
+        jndi="/atg/reporting/datawarehouse/process/LineItemMarkdownDiscountCalculatorProcessor"/>
+      <transition returnvalue="1" link="calculateLocalOrderDiscountAmountTotal"/>
+      <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="calculateLocalOrderDiscountAmountTotal" transaction="TX_MANDATORY">
+      <processor
+        jndi="/atg/reporting/datawarehouse/process/LocalOrderDiscountAmountTotalProcessor"/>
+      <transition returnvalue="1" link="calculateLineItemsPriceOverride"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="calculateLineItemsPriceOverride" transaction="TX_MANDATORY">
+      <processor
+        jndi="/atg/reporting/datawarehouse/process/LineItemPriceOverrideProcessor"/>
+      <transition returnvalue="1" link="calculateLineItemNetRevenue"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="calculateLineItemNetRevenue" transaction="TX_MANDATORY">
+      <processor
+        jndi="/atg/reporting/datawarehouse/process/LineItemNetRevenueCalculatorProcessor"/>
+      <transition returnvalue="1" link="calculateOrderNetRevenue"/>
+      <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="calculateOrderNetRevenue" transaction="TX_MANDATORY">
+      <processor
+        jndi="/atg/reporting/datawarehouse/process/OrderNetRevenueCalculatorProcessor"/>
+      <transition returnvalue="1" link="calculateLocalOrderNetRevenueTotal"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="calculateLocalOrderNetRevenueTotal" transaction="TX_MANDATORY">
+      <processor
+        jndi="/atg/reporting/datawarehouse/process/LocalOrderNetRevenueTotalProcessor"/>
+      <transition returnvalue="1" link="convertCurrency"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="convertCurrency" transaction="TX_MANDATORY">
+      <processor
+        jndi="/atg/reporting/datawarehouse/process/CurrencyConverterProcessor"/>
+      <transition returnvalue="1" link="lookupBillingRegion"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupBillingRegion" transaction="TX_MANDATORY">
+      <processor
+        jndi="/atg/reporting/datawarehouse/process/BillingRegionLookupProcessor"/>
+      <transition returnvalue="1" link="lookupSubmittedSite"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupSubmittedSite" transaction="TX_MANDATORY">
+      <processor
+        jndi="/atg/reporting/datawarehouse/process/OrderSubmittedSiteLookupProcessor"/>
+      <transition returnvalue="1" link="lookupOriginSite"/>
+    </pipelinelink>
+    <pipelinelink name="lookupOriginSite" transaction="TX_MANDATORY">
+      <processor
+        jndi="/atg/reporting/datawarehouse/process/OrderOriginSiteLookupProcessor"/>
+      <transition returnvalue="1" link="lookupSiteVisit"/>
+    </pipelinelink>
+    <pipelinelink name="lookupSiteVisit" transaction="TX_MANDATORY">
+      <processor
+        jndi="/atg/reporting/datawarehouse/process/SiteVisitLookupProcessor"/>
+      <transition returnvalue="1" link="lookupInternalUser"/>
+    </pipelinelink>
+    <pipelinelink name="lookupInternalUser" transaction="TX_MANDATORY">
+      <processor
+        jndi="/atg/reporting/datawarehouse/process/InternalUserLookupProcessor"/>
+      <transition returnvalue="1" link="lookupOriginOfOrder"/>
+    </pipelinelink>
+    <pipelinelink name="lookupOriginOfOrder" transaction="TX_MANDATORY">
+      <processor
+        jndi="/atg/reporting/datawarehouse/process/OriginOfOrderLookupProcessor"/>
+      <transition returnvalue="1" link="lookupSalesChannel"/>
+    </pipelinelink>
+    <pipelinelink name="lookupSalesChannel" transaction="TX_MANDATORY">
+      <processor
+        jndi="/atg/reporting/datawarehouse/process/SalesChannelLookupProcessor"/>
+      <transition returnvalue="1" link="lookupDay"/> 
+    </pipelinelink>
+    <pipelinelink name="lookupDay" transaction="TX_MANDATORY">
+      <processor
+        jndi="/atg/reporting/datawarehouse/process/DayLookupPipelineProcessor"/>
+      <transition returnvalue="1" link="lookupTime"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupTime" transaction="TX_MANDATORY">
+      <processor
+        jndi="/atg/reporting/datawarehouse/process/TimeLookupPipelineProcessor"/>
+      <transition returnvalue="1" link="lookupLocalCurrency"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupLocalCurrency" transaction="TX_MANDATORY">
+      <processor
+        jndi="/atg/reporting/datawarehouse/process/LocalCurrencyLookupProcessor"/>
+      <transition returnvalue="1" link="lookupCustomer"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupCustomer" transaction="TX_MANDATORY">
+      <processor
+        jndi="/atg/reporting/datawarehouse/process/CustomerLookupProcessor"/>
+      <transition returnvalue="1" link="lookupCustomerDemographic"/>
+      <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupCustomerDemographic" transaction="TX_MANDATORY">
+      <processor
+        jndi="/atg/reporting/datawarehouse/process/DemographicLookupProcessor"/>
+      <transition returnvalue="1" link="lookupPromotionGroup"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupPromotionGroup" transaction="TX_MANDATORY">
+      <processor
+        jndi="/atg/reporting/datawarehouse/process/PromotionGroupLookupProcessor"/>
+      <transition returnvalue="1" link="lookupSegmentCluster"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupSegmentCluster" transaction="TX_MANDATORY">
+      <processor
+        jndi="/atg/reporting/datawarehouse/process/SegmentClusterLookupPipelineProcessor"/>
+      <transition returnvalue="1" link="runLineItemPipelineChain"/>
+    </pipelinelink>
+    <pipelinelink name="runLineItemPipelineChain" transaction="TX_MANDATORY">
+      <processor
+        jndi="/atg/reporting/datawarehouse/process/LineItemPipelineProcessor"/>
+      <transition returnvalue="1" link="createPromotions"/>
+    </pipelinelink>
+    <pipelinelink name="createPromotions" transaction="TX_MANDATORY">
+      <processor
+        jndi="/atg/reporting/datawarehouse/process/CreatePromotionsProcessor"/>
+      <transition returnvalue="1" link="runPromotionUsagePipelineChain"/>
+    </pipelinelink>
+    <pipelinelink name="runPromotionUsagePipelineChain" transaction="TX_MANDATORY">
+      <processor
+        jndi="/atg/reporting/datawarehouse/process/PromotionPipelineProcessor"/>
+    </pipelinelink>
+    <pipelinelink name="ignoreSubmitOrder" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/NoOpProcessor"/>
+      <!-- terminating processor when a switch terminates in one case, but not the others -->
+    </pipelinelink>	
+  </pipelinechain>
+
+  <!-- Pipeline chain for loading line items -->
+  <pipelinechain name="lineItem" transaction="TX_REQUIRED" headlink="lookupProduct">
+    <pipelinelink name="lookupProduct" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/ProductLookupProcessor"/>
+      <transition returnvalue="1" link="lookupSku"/>
+    </pipelinelink>
+    <pipelinelink name="lookupSku" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SkuLookupProcessor"/>
+      <transition returnvalue="1" link="lookupCategory"/>
+    </pipelinelink>
+    <pipelinelink name="lookupCategory" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/CategoryLookupProcessor"/>
+      <transition returnvalue="1" link="listOrderStimuli"/>
+    </pipelinelink>
+    <pipelinelink name="listOrderStimuli" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/OrderStimulusListingProcessor"/>
+      <transition returnvalue="1" link="lookupStimulusGroup"/>
+    </pipelinelink> <!-- RETCODE_OK -->
+    <pipelinelink name="lookupStimulusGroup" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/StimulusGroupLookupPipelineProcessor"/>
+      <transition returnvalue="1" link="lookupShippingRegion"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupShippingRegion" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/ShippingRegionLookupProcessor"/>
+      <transition returnvalue="1" link="lookupQuestion"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupQuestion" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/LineItemQuestionProcessor"/>
+      <transition returnvalue="1" link="lookupItemAddedSite"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupItemAddedSite" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/LineItemAddedSiteLookupProcessor"/>
+      <transition returnvalue="1" link="logLineItem"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="logLineItem" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/LineItemLoggerProcessor"/>
+      <transition returnvalue="1" link="tailLineItemProcessor"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="tailLineItemProcessor" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/TailLineItemProcessor"/>
+    </pipelinelink>
+  </pipelinechain>
+
+  <pipelinechain name="exchangeRate" transaction="TX_REQUIRED" headlink="dayLookupProcessor">
+    <pipelinelink name="dayLookupProcessor" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/exchangerate/DayLookupProcessor"/>
+      <transition returnvalue="1" link="sourceCurrencyLookupProcessor"/> 
+    </pipelinelink>
+    <pipelinelink name="sourceCurrencyLookupProcessor" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/exchangerate/SourceCurrencyLookupProcessor"/>
+      <transition returnvalue="1" link="destinationCurrencyLookupProcessor"/> 
+    </pipelinelink>
+    <pipelinelink name="destinationCurrencyLookupProcessor" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/exchangerate/DestinationCurrencyLookupProcessor"/>
+      <transition returnvalue="1" link="loadExchangeRate"/> 
+    </pipelinelink>
+    <pipelinelink name="loadExchangeRate" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/exchangerate/LoadExchangeRateProcessor"/>
+    </pipelinelink>
+  </pipelinechain>
+
+  <!-- Pipeline chain for filling promotion usage facts -->
+  <pipelinechain name="promotionUsage" transaction="TX_REQUIRED" headlink="lookupPromotion">
+    <pipelinelink name="lookupPromotion" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/PromotionLookupProcessor"/>
+      <transition returnvalue="1" link="convertPromotionCurrency"/>
+    </pipelinelink>
+    <pipelinelink name="convertPromotionCurrency" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/PromotionCurrencyConverterProcessor"/>
+      <transition returnvalue="1" link="checkOrderCommerceItemExists"/>
+    </pipelinelink>
+
+    <pipelinelink name="checkOrderCommerceItemExists" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/PromotionCommerceItemExistsProcessor"/>
+      <transition returnvalue="1" link="lookupPromotionSku"/>
+      <!-- WAREHOUSE_ITEM_EXISTS -->
+      <transition returnvalue="2" link="getUnspecifiedPromotionSku"/>
+      <!-- WAREHOUSE_ITEM_DOES_NOT_EXISTS -->
+    </pipelinelink>
+
+    <pipelinelink name="lookupPromotionSku" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/PromotionSkuLookupProcessor"/>
+      <transition returnvalue="1" link="lookupPromotionProduct"/>
+    </pipelinelink>
+    <pipelinelink name="lookupPromotionProduct" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/PromotionProductLookupProcessor"/>
+      <transition returnvalue="1" link="lookupPromotionCategory"/>
+    </pipelinelink>
+    <pipelinelink name="lookupPromotionCategory" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/PromotionCategoryLookupProcessor"/>
+      <transition returnvalue="1" link="logPromotionUsage"/>
+    </pipelinelink>
+
+    <pipelinelink name="getUnspecifiedPromotionSku" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/PromotionUnspecifiedSkuAssignmentProcessor"/>
+      <transition returnvalue="1" link="getUnspecifiedPromotionProduct"/>
+    </pipelinelink>
+    <pipelinelink name="getUnspecifiedPromotionProduct" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/PromotionUnspecifiedProductAssignmentProcessor"/>
+      <transition returnvalue="1" link="getUnspecifiedPromotionCategory"/>
+    </pipelinelink>
+    <pipelinelink name="getUnspecifiedPromotionCategory" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/PromotionUnspecifiedCategoryAssignmentProcessor"/>
+      <transition returnvalue="1" link="logPromotionUsage"/>
+    </pipelinelink>
+
+    <pipelinelink name="logPromotionUsage" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/PromotionUsageLoggerProcessor"/>
+    </pipelinelink>
+  </pipelinechain>
+</pipelinemanager>
+<!-- $Id: //product/DCS/version/10.0.3/DW/config/atg/reporting/datawarehouse/process/pipeline.xml#2 $ -->
+<!-- @version $Id: //product/DCS/version/10.0.3/DW/config/atg/reporting/datawarehouse/process/pipeline.xml#2 $$Change: 651448 $-->

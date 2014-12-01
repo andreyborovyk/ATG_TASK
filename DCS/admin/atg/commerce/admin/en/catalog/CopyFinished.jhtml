@@ -1,0 +1,46 @@
+<HTML>
+<HEAD>
+<TITLE>Copy Finished</TITLE>
+</HEAD>
+
+<importbean bean="/atg/commerce/jdbc/ProductCatalogCopierForm">
+<importbean bean="/atg/dynamo/droplet/Switch">
+
+<body BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="../images/dcsadminbanner.gif" ALT="Dynamo Commerce Administration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a href="../index.jhtml">Commerce</a>/
+<a href="index.jhtml">ProductCatalog-PriceLists</a>/Copy<p>
+
+<blockquote>
+
+<H2>Copy finished.</H2>
+
+<droplet bean="Switch">
+  <param name="value" value="bean:ProductCatalogCopierForm.formError">
+  <oparam name="false">
+    <p>The data was copied succesfully.
+  </oparam>
+  <oparam name="true">
+  	<p>The following errors occured while copying data:
+  	<ul>
+     <droplet bean="/atg/dynamo/droplet/ErrorMessageForEach">
+    <param name="exceptions" value="bean:ProductCatalogCopierForm.formExceptions">
+    <oparam name="output">
+      <font color="red">
+      <LI> <valueof param="message"/>
+      </font>
+    </oparam>
+   </droplet>
+   </ul>
+   <p><valueof bean="ProductCatalogCopierForm.DBCopier.commandOutput"></valueof>
+  </oparam>    
+</droplet>
+
+</blockquote>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/DCS/admin/atg/commerce/admin/en/catalog/CopyFinished.jhtml#2 $$Change: 651448 $*/</java>
+

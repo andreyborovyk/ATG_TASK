@@ -1,0 +1,25 @@
+<%@ taglib prefix="c"     uri="http://java.sun.com/jstl/core"           %>
+<%@ taglib prefix="dspel" uri="http://www.atg.com/taglibs/daf/dspjspELTaglib1_0" %>
+
+<dspel:page>
+<dspel:importbean var="profile" bean="/atg/userprofiling/Profile"/>
+
+<html>
+  <head>
+    <title>Test page displaying the user's opt ins</title>
+  </head>
+  <body>
+    <dspel:getvalueof id="profile" idtype="atg.userprofiling.Profile" bean="Profile"/>
+    <dspel:tomap var="currentUser" value="${profile.dataSource}"/>
+    
+    <P>Here are your opt ins: 
+    <c:forEach var="optInItem" items="${currentUser.emailOptIns}" varStatus="loopInfo">
+      <c:if test="${loopInfo.index > 0}">
+        ,
+      </c:if>
+      <c:out value="${optInItem}"/>  <!- lists the individual opt-in -->
+    </c:forEach>
+  </body>
+</html>
+</dspel:page>
+<%-- @version $Id: //application/campaigns/version/10.0/communication/common/src/web-apps/Outreach/collections/listOptIns.jsp#1 $$Change: 610294 $--%>

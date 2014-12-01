@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE gsa-template PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN" "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+<gsa-template>
+    <header>
+        <name>ProfileAdapterRepository</name>
+    </header>
+    <item-descriptor name="user">
+    <table name="mys_user_subscription" type="multi" id-column-name="id">
+    <property name="subscriptions" column-name="subscription_id" data-type="set" 
+    																												component-item-type="subscription" cascade='insert,update,delete'/>
+    </table>
+    </item-descriptor>
+    <item-descriptor name="subscription">
+    <table name="mys_subscription" type="primary" id-column-name="subscription_id">
+    <property name="subscription-product" column-name="product_Id" 
+    				item-type="product" repository="/atg/commerce/catalog/ProductCatalog"/>
+    		<property name="subscription-sku" column-name="sku_id" 
+    				item-type="sku" repository="/atg/commerce/catalog/ProductCatalog"/>
+   			 <property name="startDate" column-name="start_date" data-type="date"/>
+   			 <property name="endDate" column-name="end_date"  data-type="date"/>
+    </table>
+    </item-descriptor>
+   
+</gsa-template>

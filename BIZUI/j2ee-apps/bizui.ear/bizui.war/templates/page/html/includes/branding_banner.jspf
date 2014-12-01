@@ -1,0 +1,130 @@
+<script type="text/javascript" >
+
+  function showUtilities() {
+    var divRef = document.getElementById('utilDD');
+    if (divRef.className == "show") {
+      divRef.className = "hide";
+    }
+    else {
+      divRef.className = "show";
+    }
+  }
+</script>
+
+
+<%-- the Utilities menu --%>
+<dsp:importbean var="bizuiConfig" bean="/atg/bizui/Configuration"/>
+
+<%-- set the reporting URL --%>
+<dspel:droplet name="/atg/dynamo/droplet/ComponentExists">
+  <dspel:param name="path" value="/atg/cognos/Configuration"/>
+  <dspel:oparam name="true">
+    <c:set var="reportingUnavailable" value="${false}"/>
+    <c:set var="reportingURL"><dspel:valueof bean="/atg/cognos/Configuration.gatewayURI"/></c:set>
+    <c:if test="${empty reportingURL}">
+      <!-- Reporting available but a valid URL wasnt found -->
+      <c:set var="reportingUnavailable" value="${true}"/>
+    </c:if>
+  </dspel:oparam>
+  <dspel:oparam name="false">
+    <!-- Reporting not available -->
+    <c:set var="reportingUnavailable" value="${true}"/>
+  </dspel:oparam>
+</dspel:droplet>
+
+<%-- set the documentation URL from the utilities menu configuration --%>
+<c:catch var="docsUnavailable">
+  <c:set var="docsURL" value="${bizuiConfig.headerUtilitiesMenu.docsURL}"/>
+</c:catch>
+<%-- not found in the configuration use the default value for documentation URL --%>
+<c:if test="${not empty docsUnavailable or empty docsURL}">
+  <c:set var="docsURL" value="http://www.atg.com/repositories/ContentCatalogRepository_en/manuals/ATG9.1"/>
+</c:if>
+<%-- set the about URL from the utilities menu configuration --%>
+<c:catch var="aboutUnavailable">
+  <c:set var="aboutURL" value="${bizuiConfig.headerUtilitiesMenu.aboutURL}"/>
+</c:catch>
+<%-- not found in the configuration use the default value for about URL --%>
+<c:if test="${not empty aboutUnavailable or empty aboutURL}">
+  <c:url var="aboutURL" context="${contextPath}" value="/about.jsp"/>
+</c:if>
+
+<!-- the utilities menu's div element -->
+<div id="utilDD" class="hide">
+  <ul>
+    <%-- Display the reporting menu item --%>
+    <c:if test="${not reportingUnavailable}">
+    <li class="reporting">
+      <a href="<c:out value='${reportingURL}' escapeXml='${false}'/>"
+         target="_blank"
+         onclick="showUtilities();">
+        <fmt:message key="utilities-label-reports" bundle="${bundle}"/>
+      </a>
+    </li>
+    </c:if>
+    <%-- Display the documentation menu item --%>
+    <li class="docs">
+      <a href="<c:out value='${docsURL}' escapeXml='${false}'/>"
+         target="_blank"
+         onclick="showUtilities();">
+        <fmt:message key="utilities-label-docs" bundle="${bundle}"/>
+      </a>
+    </li>
+    <%-- Display the BCC about menu item --%>
+    <li class="about">
+      <a href="#"
+         onclick="showUtilities();popup('<c:out value="${aboutURL}" escapeXml="${false}"/>', 'AboutWindow', 400, 440); return false;">
+        <fmt:message key="utilities-label-about" bundle="${bundle}"/>
+      </a>
+    </li>
+  </ul>
+</div>
+
+<div id="globalHeader">
+  <div id="logoHeader">
+
+    <div id="logoHeaderRight">
+
+      <c:choose>
+        <c:when test="${profile.transient == false}">
+
+          <c:set var="firstName"><dsp:valueof bean="Profile.firstName"/></c:set>
+          <c:set var="lastName"><dsp:valueof bean="Profile.lastName"/></c:set>
+          <fmt:message key="page-message-logged-in" bundle="${bundle}">
+            <fmt:param value="${firstName}" />
+            <fmt:param value="${lastName}" />
+          </fmt:message>
+
+          <span>|</span>
+
+          <a href="#" class="utils" onclick="showUtilities();return false;">
+            <fmt:message key="page-label-utilities" bundle="${bundle}"/>
+          </a>
+
+          <span>|</span>
+
+          <a class="home" href='/atg/bcc/home'><fmt:message key="page-label-bcchome" bundle="${bundle}" /></a>
+
+          <span>|</span>
+
+          <a class="logout" href='<c:out value="${logoutURL}"/>'><fmt:message key="page-label-logout" bundle="${bundle}" /></a>
+
+        </c:when>
+
+        <c:otherwise>
+          <a href='<c:out value="${loginURL}"/>'><fmt:message key="page-label-login" bundle="${bundle}"/></a><br/>&nbsp;
+        </c:otherwise>
+      </c:choose>
+
+    </div>
+
+    <a href='/atg/bcc/home'>
+      <div id="logoHeaderLeft">
+        <h1><fmt:message key="product-header-title" bundle="${bundle}"/></h1>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<%-- @version $Id: //product/BIZUI/version/10.0.3/web-apps/bizui/templates/page/html/includes/branding_banner.jspf#2 $$Change: 651448 $--%>

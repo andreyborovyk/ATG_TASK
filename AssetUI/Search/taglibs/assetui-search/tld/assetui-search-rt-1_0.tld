@@ -1,0 +1,886 @@
+<?xml version="1.0"?>
+
+<!-- ======================================================================= -->
+<!-- Tag Library Descriptor for the ASSETUI-SEARCH tag library               -->
+<!-- ======================================================================= -->
+
+<!DOCTYPE taglib
+  PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN"
+  "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
+
+<taglib>
+  <tlib-version>1.0</tlib-version>
+  <jsp-version>1.2</jsp-version>
+  <short-name>assetui-serch_rt</short-name>
+  <uri>http://www.atg.com/taglibs/assetui-search_rt</uri>
+  <display-name>ASSETUI-SEARCH Tags (RT version)</display-name>
+  <description>ASSETUI-SEARCH RT 1.0 tag library</description>
+
+  <!-- ===================================================================== -->
+    <!-- GetSearchConfigurationDimensionValues -->
+  <tag>
+    <name>getSearchConfigurationDimensionValues</name>
+    <tag-class>atg.assetui.search.taglib.GetSearchConfigurationDimensionValuesTag</tag-class>
+    <body-content>JSP</body-content>
+    <description>getSearchConfigurationDimensionValues</description>
+
+    <attribute>
+      <name>searchConfig</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+
+    <!-- IsSearchDimensionTreeContainsService -->
+  <tag>
+    <name>isSearchDimensionTreeContainsService</name>
+    <tag-class>atg.assetui.search.testing.taglib.IsSearchDimensionTreeContainsServiceTag</tag-class>
+    <body-content>JSP</body-content>
+    <description>isSearchDimensionTreeContainsService</description>
+
+    <attribute>
+      <name>service</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+
+    <!-- GetDimensionDisplayValue -->
+  <tag>
+    <name>getDimensionDisplayValue</name>
+    <tag-class>atg.assetui.search.testing.taglib.GetDimensionDisplayValueTag</tag-class>
+    <body-content>JSP</body-content>
+    <description>getDimensionDisplayValue</description>
+
+    <attribute>
+      <name>service</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>value</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+
+    <!-- Highlighting -->
+  <tag>
+    <name>highlighting</name>
+    <tag-class>atg.assetui.search.testing.taglib.HighlightingTag</tag-class>
+    <body-content>JSP</body-content>
+    <description>Highlighting</description>
+
+    <attribute>
+      <name>pattern</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>text</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>hclass</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+
+  <!-- ===================================================================== -->
+    <!-- getDimensionValueChoices -->
+  <tag>
+    <name>getDimensionValueChoices</name>
+    <tag-class>atg.assetui.search.taglib.GetDimensionValueChoicesTag</tag-class>
+    <tei-class>atg.assetui.search.taglib.GetDimensionValueChoicesTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>Gets the list of choices for available dimension values</description>
+
+    <attribute>
+      <name>item</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>the item getting dimension values for</description>
+    </attribute>
+
+    <attribute>
+      <name>parentItem</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>if item is transient, pass parent in separately</description>
+    </attribute>
+
+    <attribute>
+      <name>searchDimensionManagerComponentPath</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>override the nucleus path to the search dimension manager service.</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>the map of dimension values and the display name of the parent search dimension</description>
+    </attribute>
+  </tag>
+
+
+  <!-- ===================================================================== -->
+    <!-- getDimensionValueChoices -->
+  <tag>
+    <name>getSearchDimensionChoices</name>
+    <tag-class>atg.assetui.search.taglib.GetSearchDimensionChoicesTag</tag-class>
+    <tei-class>atg.assetui.search.taglib.GetSearchDimensionChoicesTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>Gets the array of choices for available search dimensions</description>
+
+    <attribute>
+      <name>item</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>the item getting dimension services for</description>
+    </attribute>
+
+    <attribute>
+      <name>parentItem</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>the parent of the item getting dimension services for</description>
+    </attribute>
+
+    <attribute>
+      <name>searchDimensionManagerComponentPath</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>override the nucleus path to the search dimension manager service.</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>the map of search dimensions</description>
+    </attribute>
+  </tag>
+
+
+
+  <!-- ===================================================================== -->
+    <!-- getMaxFolderChildrenTag -->
+  <tag>
+    <name>getMaxFolderChildren</name>
+    <tag-class>atg.assetui.search.taglib.GetMaxFolderChildrenTag</tag-class>
+    <tei-class>atg.assetui.search.taglib.GetMaxFolderChildrenTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>Gets max number of folder children allowed.</description>
+
+    <attribute>
+      <name>item</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>the item getting dimension services for</description>
+    </attribute>
+
+    <attribute>
+      <name>searchDimensionManagerComponentPath</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>override the nucleus path to the search dimension manager service.</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>the max number of allowable children</description>
+    </attribute>
+  </tag>
+
+
+  <!-- ===================================================================== -->
+    <!-- getLocaleName -->
+  <tag>
+    <name>getLocaleName</name>
+    <tag-class>atg.assetui.search.taglib.GetLocaleNameTag</tag-class>
+    <tei-class>atg.assetui.search.taglib.GetLocaleNameTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>Gets the locale display name for a given locale string from the LanguageDimensionService</description>
+
+    <attribute>
+      <name>locale</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The locale string</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The locale display name</description>
+    </attribute>
+  </tag>
+
+
+  <!-- ===================================================================== -->
+    <!-- getIndexedPropertyValues tag -->
+  <tag>
+    <name>getIndexedPropertyValues</name>
+    <tag-class>atg.assetui.search.taglib.GetIndexedPropertyValuesTag</tag-class>
+    <body-content>JSP</body-content>
+    <description>Gets a sorted list of indexed properties</description>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Sets the name of the attribute that will hold the results</description>
+    </attribute>
+  </tag>
+
+
+  <!-- ===================================================================== -->
+    <!-- getAllOthersIdTag -->
+  <tag>
+    <name>getAllOthersId</name>
+    <tag-class>atg.assetui.search.taglib.GetAllOthersIdTag</tag-class>
+    <tei-class>atg.assetui.search.taglib.GetAllOthersIdTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>Gets id of the child search config or folder with the 'all others' dimension value.</description>
+
+    <attribute>
+      <name>item</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>the parent folder of the search configs and folders</description>
+    </attribute>
+
+    <attribute>
+      <name>searchDimensionManagerComponentPath</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>override the nucleus path to the search dimension manager service.</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>the id of the child search config or folder with all-others dimension value</description>
+    </attribute>
+  </tag>
+
+
+  <!-- ===================================================================== -->
+    <!-- isChildDimensionServiceAvailableTag -->
+  <tag>
+    <name>isChildDimensionServiceAvailable</name>
+    <tag-class>atg.assetui.search.taglib.IsChildDimensionServiceAvailableTag</tag-class>
+    <tei-class>atg.assetui.search.taglib.IsChildDimensionServiceAvailableTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>A simple tag which indicates whether or not child dimension folders can be created for a specified dimensionFolder</description>
+
+    <attribute>
+      <name>item</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>the dimension folder item</description>
+    </attribute>
+
+    <attribute>
+      <name>parentItem</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>if item is transient, pass parent in separately</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>boolean</description>
+    </attribute>
+  </tag>
+
+  <!-- ===================================================================== -->
+  <!-- getLanguageDisplayName -->
+
+  <tag>
+    <name>getLanguageDisplayName</name>
+    <tag-class>atg.assetui.search.taglib.GetLanguageDisplayNameTag</tag-class>
+    <tei-class>atg.assetui.search.taglib.GetLanguageDisplayNameTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>A simple tag which retrive language display name based on searchConfig and his parent</description>
+
+    <attribute>
+      <name>searchConfig</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>searchConfig item</description>
+    </attribute>
+
+    <attribute>
+      <name>parentItem</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>parent item</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>language name</description>
+    </attribute>
+  </tag>
+
+  <!-- ===================================================================== -->
+  <!-- getRankingPropertySummary -->
+  <tag>
+    <name>getRankingPropertySummary</name>
+    <tag-class>atg.assetui.search.taglib.GetRankingPropertySummaryTag</tag-class>
+    <body-content>JSP</body-content>
+    <description>Tag returns ranking property summary</description>
+
+    <attribute>
+      <name>item</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>ranking property repository item</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>ranking property summary</description>
+    </attribute>
+
+    <attribute>
+      <name>bundle</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>resource bundle</description>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>getExclusionRules</name>
+    <tag-class>atg.assetui.search.testing.taglib.GetExclusionRulesTag</tag-class>
+    <body-content>JSP</body-content>
+    <description>Tag returns exclusion rules</description>
+
+    <attribute>
+      <name>queryRules</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>query rule list search testing response</description>
+    </attribute>
+
+    <attribute>
+      <name>ruleAppendix</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>query rule appendix</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>exclusion rules</description>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>getPositioningRules</name>
+    <tag-class>atg.assetui.search.testing.taglib.GetPositioningRulesTag</tag-class>
+    <body-content>JSP</body-content>
+    <description>Tag returns positioning rules</description>
+
+    <attribute>
+      <name>queryActions</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>query action list from search testing response</description>
+    </attribute>
+
+    <attribute>
+      <name>ruleAppendix</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>query rule appendix</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>positioning rules</description>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>getRedirectionRules</name>
+    <tag-class>atg.assetui.search.testing.taglib.GetRedirectionRulesTag</tag-class>
+    <body-content>JSP</body-content>
+    <description>Tag returns redirection rules</description>
+
+    <attribute>
+      <name>queryActions</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>query action list from search testing response</description>
+    </attribute>
+
+    <attribute>
+      <name>ruleAppendix</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>query rule appendix</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>redirection rules</description>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>getExcludedItems</name>
+    <tag-class>atg.assetui.search.testing.taglib.GetAffectedItemsTag</tag-class>
+    <body-content>JSP</body-content>
+    <description>Tag retrieves items excluded by rule</description>
+
+    <attribute>
+      <name>queryRuleBean</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Bean with current rule data</description>
+    </attribute>
+
+    <attribute>
+      <name>rules</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The list of exclusion rules</description>
+    </attribute>
+
+    <attribute>
+      <name>searchResults</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Results of search test</description>
+    </attribute>
+
+    <attribute>
+      <name>idPropertyName</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Name of ID property of items affected by the rule</description>
+    </attribute>
+
+    <attribute>
+      <name>displaynamePropertyName</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Name of displayname property of items affected by the rule</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Variable name to store result</description>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>getRepositionedItems</name>
+    <tag-class>atg.assetui.search.testing.taglib.GetAffectedItemsTag</tag-class>
+    <body-content>JSP</body-content>
+    <description>Tag retrieves items excluded by rule</description>
+
+    <attribute>
+      <name>queryRuleBean</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Bean with current rule data</description>
+    </attribute>
+
+    <attribute>
+      <name>rules</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The list of positioning rules</description>
+    </attribute>
+
+    <attribute>
+      <name>searchResults</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Results of search test</description>
+    </attribute>
+
+    <attribute>
+      <name>idPropertyName</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Name of ID property of items affected by the rule</description>
+    </attribute>
+    
+    <attribute>
+      <name>displaynamePropertyName</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Name of displayname property of items affected by the rule</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Variable name to store result</description>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>getContainerSize</name>
+    <tag-class>atg.assetui.search.testing.taglib.GetContainerSizeTag</tag-class>
+    <body-content>JSP</body-content>
+    <description>Retrieves size of the given Collection or Map</description>
+
+    <attribute>
+      <name>container</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The given Collection or Map instance</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Variable name to store size</description>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>getSearchAdminQueryRules</name>
+    <tag-class>atg.assetui.search.testing.taglib.GetSearchAdminQueryRulesTag</tag-class>
+    <body-content>JSP</body-content>
+    <description>Retrieves Search Admin Query Rules</description>
+
+    <attribute>
+      <name>ruleAppendix</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>List of AppendixRule instances</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Variable name to store size</description>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>getTrackedItemOutcomes</name>
+    <tag-class>atg.assetui.search.testing.taglib.GetTrackedItemOutcomesTag</tag-class>
+    <body-content>JSP</body-content>
+    <description>Retrieves Tracked Item Outcome Info</description>
+
+    <attribute>
+      <name>diagnostics</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Items Tracking Diagnostic</description>
+    </attribute>
+
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Variable name to store map of stages to items and outcomes</description>
+    </attribute>
+
+    <attribute>
+      <name>varByItem</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Variable name to store map of items to outcomes</description>
+    </attribute>
+
+    <attribute>
+      <name>scope</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Variable name to store scope</description>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>propertyDisplayNameResolver</name>
+    <tag-class>atg.assetui.search.testing.taglib.PropertyDisplayNameResolver</tag-class>
+    <body-content>jsp</body-content>
+    <description>Retrieves display name of the particular property by its name</description>
+    <attribute>
+      <name>propertyName</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>the name of the property</description>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>the name of the variable to store the display name</description>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>propertyValueDisplayTextResolver</name>
+    <tag-class>atg.assetui.search.testing.taglib.PropertyValueDisplayTextResolverTag</tag-class>
+    <body-content>jsp</body-content>
+    <description>Retrieves the display text for the value of the particular property</description>
+    <attribute>
+      <name>propertyName</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>the name of the property</description>
+    </attribute>
+    <attribute>
+      <name>propertyValue</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>the value of the property</description>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>the name of the variable to store the display text</description>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>displayConstraint</name>
+    <tag-class>atg.assetui.search.testing.taglib.DisplayConstraintTag</tag-class>
+    <body-content>jsp</body-content>
+    <attribute>
+      <name>constraints</name>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>constraint</name>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>resourceBundle</name>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>stringStartsWith</name>
+    <tag-class>atg.assetui.search.testing.taglib.StringStartsWithTag</tag-class>
+    <body-content>jsp</body-content>
+    <attribute>
+      <name>string</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>prefix</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>hasFacetBeenModified</name>
+    <tag-class>atg.assetui.search.testing.taglib.HasFacetBeenModifiedTag</tag-class>
+    <body-content>JSP</body-content>
+    <description>Retrieves TRUE if facet has been modified</description>
+    <attribute>
+      <name>facetId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Category id</description>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Variable name to store TRUE|FALSE</description>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>getSentenceFeature</name>
+    <tag-class>atg.assetui.search.testing.taglib.GetSentenceFeatureTag</tag-class>
+    <body-content>JSP</body-content>
+    <description>Retrieves TRUE if facet has been modified</description>
+    <attribute>
+      <name>features</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>List of sentence features</description>
+    </attribute>
+    <attribute>
+      <name>featureName</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Name of sentence features</description>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Variable name to store feature value</description>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>getContentItem</name>
+    <tag-class>atg.assetui.search.testing.taglib.GetContentItemTag</tag-class>
+    <body-content>JSP</body-content>
+    <description>Sends viewInContext request to retrieve content item</description>
+    <attribute>
+      <name>documentUrl</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Url of document</description>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Variable name to store feature value</description>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>getLanguageName</name>
+    <tag-class>atg.assetui.search.testing.taglib.GetLanguageNameTag</tag-class>
+    <body-content>JSP</body-content>
+    <description>Sends viewInContext request to retrieve content item</description>
+    <attribute>
+      <name>language</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>language from Routing</description>
+    </attribute>
+    <attribute>
+      <name>languageISO</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>language in ISO format</description>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Variable name to store language name</description>
+    </attribute>
+  </tag>
+  
+  <tag>
+    <name>isGroupExcluded</name>
+    <tag-class>atg.assetui.search.testing.taglib.IsGroupExcludedTag</tag-class>
+    <body-content>JSP</body-content>
+    <description>Checks whole list of subitems and if all subitems are excluded then group is excluded.</description>
+    <attribute>
+      <name>subItems</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>List of subitems</description>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Variable name to store language name</description>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>getTrackedItemOutcomeText</name>
+    <tag-class>atg.assetui.search.testing.taglib.GetTrackedItemOutcomeTextTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <name>item</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  
+  <tag>
+    <name>getTracedResults</name>
+    <tag-class>atg.assetui.search.testing.taglib.GetTracedResultsTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <name>resultItems</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>tracedItems</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  
+</taglib>

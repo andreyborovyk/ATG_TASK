@@ -1,0 +1,773 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="user_ddl">
+<comment><![CDATA[ @version $Id: //product/DPS/version/10.0.3/templates/DPS/sql/user_ddl.xml#2 $$Change: 651448 $]]></comment>
+<comment><![CDATA[
+This file contains create table statements, which will configure 
+your database for use with the new DPS schema.
+]]></comment>
+
+<comment><![CDATA[
+Add the organization definition.  
+It's out of place, but since dps_user references it, 
+it's got to be defined up here
+]]></comment>
+   <table name="dps_organization">
+      <column name="org_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="parent_org" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dps_organization_p">
+         <index-column column="org_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dps_orgnparnt_rg_f" referenced-table="dps_organization" index-name="dps_orgparent_org">
+         <fkey-column referencing-column="parent_org" referenced-column="org_id"/>
+      </foreign-key>
+   </table>
+<comment><![CDATA[
+Default Profile User Template
+]]></comment>
+
+<comment><![CDATA[
+Basic user info.  
+
+note: the password field size must be at a minimum 35 characters 
+      if DPS stores a hash of the password and not the actual value.
+]]></comment>
+   <table name="dps_user">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="login" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="auto_login" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="sybase" type="tinyint" />
+		 <column-type db="mysql" type="tinyint"/>
+      </column>
+      <column name="password" nullable="y">
+         <column-type db="generic" type="varchar" length="35"/>
+      </column>
+      <column name="member" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="sybase" type="tinyint" />
+		 <column-type db="mysql" type="tinyint"/>
+      </column>
+      <column name="first_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="middle_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="last_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="user_type" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="locale" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="lastactivity_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="lastpwdupdate" nullable="y">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="generatedpwd" nullable="y">
+	     <column-type db="generic" type="one-digit" />
+      </column>
+      <column name="registration_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="email" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="email_status" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="receive_email" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="last_emailed" nullable="y">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="gender" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="date_of_birth" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="mysql" type="date"/>
+      </column>
+      <column name="securityStatus" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dps_user_p">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+      <unique name="dps_user_u">
+         <index-column column="login" order="asc" seq="1"/>
+      </unique>
+      <check name="dps_user1_c">
+         <check-expr expression="auto_login in (0,1)" db="generic"/>
+      </check>
+      <check name="dps_user2_c">
+         <check-expr expression="member in (0,1)" db="generic"/>
+      </check>
+   </table>
+   <table name="dps_contact_info" description="user contact info">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="user_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="prefix" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <column name="first_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="oracle" type="varchar2" length="100" scale=""/>
+         <column-type db="db2" type="varchar" length="100" scale=""/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <column name="middle_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="oracle" type="varchar2" length="100" scale=""/>
+         <column-type db="db2" type="varchar" length="100" scale=""/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <column name="last_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="oracle" type="varchar2" length="100" scale=""/>
+         <column-type db="db2" type="varchar" length="100" scale=""/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <column name="suffix" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <column name="job_title" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="100"/>
+         <column-type db="mssql" type="nvarchar" length="100" scale=""/>
+      </column>
+      <column name="company_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <column name="address1" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="50"/>
+         <column-type db="mssql" type="nvarchar" length="50" scale=""/>
+      </column>
+      <column name="address2" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="50"/>
+         <column-type db="mssql" type="nvarchar" length="50" scale=""/>
+      </column>
+      <column name="address3" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="50"/>
+         <column-type db="mssql" type="nvarchar" length="50" scale=""/>
+      </column>
+      <column name="city" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="30"/>
+         <column-type db="mssql" type="nvarchar" length="30" scale=""/>
+      </column>
+      <column name="state" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="20"/>
+         <column-type db="mssql" type="nvarchar" length="20" scale=""/>
+      </column>
+      <column name="postal_code" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="10"/>
+         <column-type db="mssql" type="nvarchar" length="10" scale=""/>
+      </column>
+      <column name="county" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <column name="country" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <column name="phone_number" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="30"/>
+         <column-type db="mssql" type="nvarchar" length="30" scale=""/>
+      </column>
+      <column name="fax_number" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="30"/>
+         <column-type db="mssql" type="nvarchar" length="30" scale=""/>
+      </column>
+      <primary-key name="dps_contact_info_p">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dps_user_address">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="home_addr_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="billing_addr_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="shipping_addr_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dps_user_address_p">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dps_usrddrssid_f" referenced-table="dps_user">
+         <fkey-column referencing-column="id" referenced-column="id"/>
+      </foreign-key>
+      <index name="dps_usr_adr_shp_id" table="dps_user_address">
+         <index-column column="shipping_addr_id" order="asc" seq="1"/>
+      </index>
+      <index name="dps_usr_blng_ad_id" table="dps_user_address">
+         <index-column column="billing_addr_id" order="asc" seq="1"/>
+      </index>
+      <index name="dps_usr_home_ad_id" table="dps_user_address">
+         <index-column column="home_addr_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dps_other_addr">
+      <column name="user_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="tag" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="42"/>
+      </column>
+      <column name="address_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dps_other_addr_p">
+         <index-column column="user_id" order="asc" seq="1"/>
+         <index-column column="tag" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dps_othrddrusr_d_f" referenced-table="dps_user">
+         <fkey-column referencing-column="user_id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="dps_mailing" description="Email Table - Persist TemplateEmail, Status (Pending, Inprogress, Canceled or Complete)">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="subject" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="80"/>
+      </column>
+      <column name="uniq_server_id" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="from_address" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="replyto" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="template_URL" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="alt_template_URL" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="batch_exec_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="cc" nullable="y">
+         <column-type db="generic" type="long-varchar"/>
+         <column-type db="oracle" type="varchar2" length="4000" scale=""/>
+         <column-type db="db2" type="varchar" length="4096" scale=""/>
+         <column-type db="mssql" type="varchar" length="2000" scale=""/>
+      </column>
+      <column name="bcc" nullable="y">
+         <column-type db="generic" type="long-varchar"/>
+         <column-type db="oracle" type="varchar2" length="4000" scale=""/>
+         <column-type db="db2" type="varchar" length="4096" scale=""/>
+         <column-type db="mssql" type="varchar" length="2000" scale=""/>
+      </column>
+      <column name="send_as_html" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="send_as_text" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="params" nullable="y">
+         <column-type db="generic" type="long-varbinary"/>
+         <column-type db="db2" type="blob" length="1048576" scale=""/>
+      </column>
+      <column name="start_time" nullable="y">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="end_time" nullable="y">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="status" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="num_profiles" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="num_sent" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="num_bounces" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="num_soft_bounces" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="num_errors" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="num_skipped" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="fill_from_templ" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="sybase" type="tinyint" />
+		 <column-type db="mysql" type="tinyint"/>
+      </column>
+      <column name="is_batched" nullable="y">
+         <column-type db="generic" type="one-digit"/>
+      </column>
+      <column name="ignore_fatigue" nullable="y">
+         <column-type db="generic" type="one-digit"/>
+      </column>
+      <column name="batch_size" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <primary-key name="dps_mailing_p">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dps_mail_trackdata" description="Email Table - Represents Tracking Data NV Pairs to be associated with the email mailing">
+      <column name="mailing_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="map_key" nullable="n">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="map_value" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dps_mail_trackd_p">
+         <index-column column="mailing_id" order="asc" seq="1"/>
+         <index-column column="map_key" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dps_mail_trackd_f" referenced-table="dps_mailing">
+         <fkey-column referencing-column="mailing_id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="dps_mail_batch" description="Email Table - Represents a portion of a TemplateEmail mailing (dps_mailing)">
+      <column name="mailing_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="start_idx" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="uniq_server_id" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="start_time" nullable="y">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="end_time" nullable="y">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="status" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="num_profiles" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="num_sent" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="num_bounces" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="num_errors" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="num_skipped" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="is_summarized" nullable="y">
+        <column-type db="generic" type="one-digit"/>
+      </column>
+      <primary-key name="dps_mail_batch_p">
+         <index-column column="mailing_id" order="asc" seq="1"/>
+         <index-column column="start_idx" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dps_mailbatch_d_f" referenced-table="dps_mailing">
+         <fkey-column referencing-column="mailing_id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+
+   <table name="dps_mail_server" description="Email Table - Represents
+a server available for distributed emails.">
+      <column name="uniq_server_id" nullable="n">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="last_updated" nullable="y">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <primary-key name="dps_mail_server_p">
+         <index-column column="uniq_server_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+
+
+   <table name="dps_user_mailing" description="all users that received dps_mailing">
+      <column name="mailing_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="user_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="idx" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <primary-key name="dps_user_mailing_p">
+         <index-column column="mailing_id" order="asc" seq="1"/>
+         <index-column column="user_id" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dps_usrmmalng_d_f" referenced-table="dps_mailing">
+         <fkey-column referencing-column="mailing_id" referenced-column="id"/>
+      </foreign-key>
+      <foreign-key name="dps_usrmlngusr_d_f" referenced-table="dps_user" index-name="dps_u_mail_uid">
+         <fkey-column referencing-column="user_id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="dps_email_address" description="Targeted email can send to email_address.  Profile is not required.">
+      <column name="mailing_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="email_address" nullable="n">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="idx" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <primary-key name="dps_email_addres_p">
+         <index-column column="mailing_id" order="asc" seq="1"/>
+         <index-column column="idx" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dps_emldmalng_d_f" referenced-table="dps_mailing">
+         <fkey-column referencing-column="mailing_id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+<comment><![CDATA[
+Organizations/roles
+]]></comment>
+   <table name="dps_role" description="role">
+      <column name="role_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="type" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="version" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+         <column-type db="db2" type="varchar" length="40" scale=""/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dps_role_p">
+         <index-column column="role_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+<comment><![CDATA[
+Extending the user profile to include references 
+to the roles that are assigned to this user
+]]></comment>
+   <table name="dps_user_roles">
+      <column name="user_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="atg_role" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dps_user_roles_p">
+         <index-column column="user_id" order="asc" seq="1"/>
+         <index-column column="atg_role" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dps_usrrlsatg_rl_f" referenced-table="dps_role" index-name="dps_usr_roles_id">
+         <fkey-column referencing-column="atg_role" referenced-column="role_id"/>
+      </foreign-key>
+      <foreign-key name="dps_usrrlsusr_d_f" referenced-table="dps_user">
+         <fkey-column referencing-column="user_id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="dps_org_role" description="roles for a given organization">
+      <column name="org_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="atg_role" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dps_org_role_p">
+         <index-column column="org_id" order="asc" seq="1"/>
+         <index-column column="atg_role" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dps_orgrlorg_d_f" referenced-table="dps_organization">
+         <fkey-column referencing-column="org_id" referenced-column="org_id"/>
+      </foreign-key>
+      <foreign-key name="dps_orgrlatg_rl_f" referenced-table="dps_role" index-name="dps_org_rolerole">
+         <fkey-column referencing-column="atg_role" referenced-column="role_id"/>
+      </foreign-key>
+   </table>
+   <table name="dps_role_rel_org" description="organizational role object">
+      <column name="organization" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="role_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dps_role_rel_org_p">
+         <index-column column="organization" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dps_rolrorgnztn_f" referenced-table="dps_organization">
+         <fkey-column referencing-column="organization" referenced-column="org_id"/>
+      </foreign-key>
+      <foreign-key name="dps_rolrlrgrol_d_f" referenced-table="dps_role" index-name="dps_role_rel_org">
+         <fkey-column referencing-column="role_id" referenced-column="role_id"/>
+      </foreign-key>
+   </table>
+   <table name="dps_relativerole" description="relative roles for an organization">
+      <column name="role_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="dps_function" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="relative_to" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dps_relativerole_p">
+         <index-column column="role_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dps_reltreltv_t_f" referenced-table="dps_organization" index-name="dps_relativerole">
+         <fkey-column referencing-column="relative_to" referenced-column="org_id"/>
+      </foreign-key>
+      <foreign-key name="dps_reltvrlrol_d_f" referenced-table="dps_role">
+         <fkey-column referencing-column="role_id" referenced-column="role_id"/>
+      </foreign-key>
+   </table>
+   <table name="dps_user_org" description="members of an organization">
+      <column name="organization" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="user_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dps_user_org_p">
+         <index-column column="organization" order="asc" seq="1"/>
+         <index-column column="user_id" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dps_usrrgorgnztn_f" referenced-table="dps_organization">
+         <fkey-column referencing-column="organization" referenced-column="org_id"/>
+      </foreign-key>
+      <foreign-key name="dps_usrrgusr_d_f" referenced-table="dps_user" index-name="dps_usr_orgusr_id">
+         <fkey-column referencing-column="user_id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="dps_user_org_anc" description="user's ancestor organizations">
+      <column name="user_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="anc_org" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dps_user_org_anc_p">
+         <index-column column="user_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dps_usrranc_rg_f" referenced-table="dps_organization" index-name="dps_usr_org_ancanc">
+         <fkey-column referencing-column="anc_org" referenced-column="org_id"/>
+      </foreign-key>
+      <foreign-key name="dps_usrrgncusr_d_f" referenced-table="dps_user">
+         <fkey-column referencing-column="user_id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="dps_org_chldorg" description="organization's child organizations">
+      <column name="org_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="child_org_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dps_org_chldorg_p">
+         <index-column column="org_id" order="asc" seq="1"/>
+         <index-column column="child_org_id" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dps_orgcchild_rg_f" referenced-table="dps_organization" index-name="dps_org_chldorg_id">
+         <fkey-column referencing-column="child_org_id" referenced-column="org_id"/>
+      </foreign-key>
+      <foreign-key name="dps_orgcorg_d_f" referenced-table="dps_organization">
+         <fkey-column referencing-column="org_id" referenced-column="org_id"/>
+      </foreign-key>
+   </table>
+   <table name="dps_org_ancestors" description="organization's ancestor organizations">
+      <column name="org_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="anc_org" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dps_org_ancestor_p">
+         <index-column column="org_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dps_orgnanc_rg_f" referenced-table="dps_organization" index-name="dps_org_ancanc_org">
+         <fkey-column referencing-column="anc_org" referenced-column="org_id"/>
+      </foreign-key>
+      <foreign-key name="dps_orgnorg_d_f" referenced-table="dps_organization">
+         <fkey-column referencing-column="org_id" referenced-column="org_id"/>
+      </foreign-key>
+   </table>
+<comment><![CDATA[
+Adding the folder information
+]]></comment>
+   <table name="dps_folder" description="base folder class">
+      <column name="folder_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="type" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+         <column-type db="db2" type="varchar" length="40" scale=""/>
+      </column>
+      <column name="parent" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dps_folder_p">
+         <index-column column="folder_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dps_foldrparnt_f" referenced-table="dps_folder" index-name="dps_folderparent">
+         <fkey-column referencing-column="parent" referenced-column="folder_id"/>
+      </foreign-key>
+   </table>
+   <table name="dps_child_folder" description="child folders">
+      <column name="folder_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="child_folder_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dps_child_folder_p">
+         <index-column column="folder_id" order="asc" seq="1"/>
+         <index-column column="child_folder_id" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dps_chilchild_fl_f" referenced-table="dps_folder" index-name="dps_chld_fldr_fld">
+         <fkey-column referencing-column="child_folder_id" referenced-column="folder_id"/>
+      </foreign-key>
+      <foreign-key name="dps_chilfoldr_d_f" referenced-table="dps_folder">
+         <fkey-column referencing-column="folder_id" referenced-column="folder_id"/>
+      </foreign-key>
+   </table>
+   <table name="dps_rolefold_chld" description="role folder class">
+      <column name="rolefold_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="role_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dps_rolefold_chl_p">
+         <index-column column="rolefold_id" order="asc" seq="1"/>
+         <index-column column="role_id" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dps_rolfrolfld_d_f" referenced-table="dps_folder">
+         <fkey-column referencing-column="rolefold_id" referenced-column="folder_id"/>
+      </foreign-key>
+      <foreign-key name="dps_rolfrol_d_f" referenced-table="dps_role" index-name="dps_rolfldchldrole">
+         <fkey-column referencing-column="role_id" referenced-column="role_id"/>
+      </foreign-key>
+   </table>
+<comment><![CDATA[
+Adding the previous password information
+]]></comment>
+   <table name="dps_user_prevpwd">
+	     <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="seq_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="prevpwd" nullable="y">
+         <column-type db="generic" type="varchar" length="35"/>
+      </column>
+      <primary-key name="dps_prevpwd_p">
+         <index-column column="id" order="asc" seq="1"/>
+         <index-column column="seq_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dps_prvpwd_d_f" referenced-table="dps_user">
+         <fkey-column referencing-column="id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+
+</schema>
+<!-- @version $Id: //product/DPS/version/10.0.3/templates/DPS/sql/user_ddl.xml#2 $$Change: 651448 $ -->

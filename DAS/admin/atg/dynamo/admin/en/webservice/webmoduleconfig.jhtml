@@ -1,0 +1,204 @@
+<%-- Should only be included from createstage.jhtml. --%>
+<!-- sessionsec.jhtml -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<nucleus type=import>
+        /atg/dynamo/droplet/ForEach
+	/atg/dynamo/admin/GetMethod
+	/atg/dynamo/admin/CreateWebService
+        /atg/dynamo/droplet/Switch
+</nucleus>
+
+<setvalue param="CreateWebService" value="bean:CreateWebService">
+<JAVA>
+  if ("true".equals(request.getParameter("CreateWebService.EARFileExists")))
+  {
+    request.setParameter("title", "Web Application Settings");
+  }
+  else {
+    request.setParameter("title", "Enterprise & Web Application Settings");
+  }
+
+</JAVA>
+
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+    <title>Create Web Service: <valueof param="title"></valueof></title>
+  </head>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+<IMG SRC="../images/admin-banner.gif" ALT="Dynamo Administration"
+     ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+
+<droplet name="GetMethod">
+  <param name="object" value="bean:CreateWebService.resolvedComponent">
+  <param name="methodName" value="bean:CreateWebService.methodName">
+  <oparam name="error">
+     <JAVA>
+            response.sendRedirect(request.encodeURL("selecttype.jhtml"));
+     </JAVA>
+  </oparam>
+  <oparam name="output">
+
+
+<a href="/">admin</a> / <a href="index.jhtml">Web Service
+	Administration</a> / Create Web Service</p><p>
+
+    <h2>Create Web Service</h2>
+    <h1><valueof param="title"></valueof></h1>
+
+<blockquote>
+
+<B>Current Selections</B><BR>
+<TABLE border=0>
+<TR><TD>&nbsp;&nbsp;&nbsp;</TD><TD>
+  <droplet name="Switch">
+   <param name="value" value="bean:CreateWebService.JMSType">
+   <oparam name="default">
+     JMS Type: <valueof bean="CreateWebService.JMSType">???</valueof>
+   </oparam>
+   <oparam name="unset">
+     Nucleus Component: <valueof bean="CreateWebService.componentName">???</valueof><BR>
+    Method: <valueof bean="CreateWebService.methodName">???</valueof><BR>
+    Parameter Names: <valueof bean="CreateWebService.parameterNamesAsString">(none)</valueof>
+   <BR>
+   </oparam>
+  </droplet>
+  EAR File: <valueof bean="CreateWebService.EARFileAbsolutePath">???</valueof><BR>
+  Servlet Name: <valueof bean="CreateWebService.servletName">???</valueof><BR>  
+  Host: <valueof bean="CreateWebService.host">(dynamic)</valueof><BR>
+  Port: <valueof bean="CreateWebService.port">(dynamic)</valueof><BR>
+
+</TD></TR>
+</TABLE>
+
+
+<form action="sessionsec.jhtml" method="POST">
+
+<droplet name="Switch">
+  <param name="value" value="bean:CreateWebService.EARFileExists">
+  <oparam name="false">
+    <BR><B>Enterprise Application</B>
+
+    <table border=0 cellpadding=0>
+      <tr valign="center">
+       <td align="right">Application Name</td>
+       <td><input type="text" size="40" bean="CreateWebService.applicationName" required="true"></td>
+      </tr>
+      <tr valign="center">
+       <td align="right">Application Description(optional)</td>
+       <td><input type="text" size="40" bean="CreateWebService.applicationDescription"></td>
+      </tr>
+
+    </table>
+  </oparam>
+</droplet>
+
+<BR><B>Web Application</B>
+
+<droplet name="ForEach">
+  <param name="array" value="bean:CreateWebService.formExceptions">
+  <oparam name="output">
+    <font color="red"><valueof param="element">???</valueof></font><P>
+  </oparam>
+</droplet>
+
+
+ <droplet name="Switch">
+     <param name="value" value="bean:CreateWebService.EARFileWebURIs">
+     <param name="unset" value=" ">
+     <param name="empty" value=" ">
+     <oparam name="default"><P>
+        An ear file named "<valueof bean="CreateWebService.EARFileName">?</valueof> "already exists. If you previously generated your web service in this ear file
+and wish to regenerate it, please select the war file containing your
+web service.
+        </oparam>
+      </droplet> 
+
+
+
+ <input type="hidden" bean="CreateWebService.componentName"
+	value="bean:CreateWebService.componentName" priority="1"/>
+ <input type="hidden" bean="CreateWebService.methodName"
+	value="bean:CreateWebService.methodName" priority="1"/>
+ <input type="hidden" 
+  name="paramNamesString"
+  value="bean:CreateWebService.parameterNamesAsString">
+ <input type="hidden" 
+  value="bean:CreateWebService.parameterNamesAsString"
+  bean="CreateWebService.parameterNamesAsString">
+ <input type="hidden" 
+  value="bean:CreateWebService.EARFileName"
+  bean="CreateWebService.EARFileName">
+ <input type="hidden" 
+  value="bean:CreateWebService.host"
+  bean="CreateWebService.host">
+ <input type="hidden" 
+  value="bean:CreateWebService.port"
+  bean="CreateWebService.port">
+
+ <input type="hidden" bean="CreateWebService.successURL" value="sessionsec.jhtml">
+
+<table border=0 cellpadding=0>
+
+  <droplet name="ForEach">
+    <param name="array" value="bean:CreateWebService.EARFileWebURIs">
+    <oparam name="output">
+      <tr valign="CENTER"><td><input type="radio" bean="CreateWebService.existingWebURI"
+value="param:element"></td><td>Add to Existing Web Application <valueof param="element">?</valueof></td></tr>
+    </oparam>
+    <oparam name="outputEnd">
+          <tr valign="CENTER"><td><input type="radio" bean="CreateWebService.existingWebURI" value="*new*"></td><td>Create New Web Module:</td></tr>
+        <tr><td>&nbsp;</td><td><table border=0 cellpadding=0>
+    </oparam>
+  </droplet>
+
+
+<tr valign="center"><td align="right">
+Web Module URI</td><td><input type="text" bean="CreateWebService.webURI" size="40"></td></tr>
+
+<tr valign="center"><td align="right">
+Web Module Context Root</td><td><input type="text" bean="CreateWebService.contextRoot" size="40"></td></tr>
+
+<tr valign="center"><td align="right">
+Web Module Display Name</td><td><input type="text" bean="CreateWebService.webAppDisplayName" size="40"></td></tr>
+
+<tr valign="center"><td align="right">
+Web Module Description(optional)</td><td><input type="text" bean="CreateWebService.webAppDescription" size="40"></td></tr>
+
+
+      <droplet name="Switch">
+        <param name="value" value="bean:CreateWebService.EARFileWebURIs">
+        <param name="unset" value=" ">
+        <param name="empty" value=" ">
+        <oparam name="default">
+          </table></td></tr>
+        </oparam>
+      </droplet>
+
+ <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+ <tr>
+ <td colspan=2>
+ <droplet name="Switch">
+ <param name="value" value="bean:CreateWebService.repositoryMethod">
+ <oparam name="false">
+   <input type="submit" value="Previous" submitValue="appconfig.jhtml" bean="CreateWebService.back">
+ </oparam>
+ <oparam name="true">
+   <input type="submit" value="Previous" submitValue="itemappconfig.jhtml" bean="CreateWebService.back">
+ </oparam>
+ </droplet>
+ &nbsp;&nbsp;&nbsp;&nbsp;
+ <input type="submit" value="Next" bean="CreateWebService.submit"></td></tr>
+</table> 
+</form>
+
+</blockquote>
+
+  </oparam>
+</droplet>
+
+  </BODY>
+</html>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/webservice/webmoduleconfig.jhtml#2 $$Change: 651448 $*/</java>

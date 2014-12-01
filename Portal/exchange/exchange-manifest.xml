@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE portal-manifest PUBLIC "-//Art Technology Group, Inc.//DTD Portal Manifest//EN" "http://www.atg.com/dtds/portal/framework/portal_manifest_1.0.dtd">
+
+<portal-manifest name="Outlook" version="1.0" author="ATG Portal Team">
+
+  <gear-definitions>
+    <gear-definition name="Outlook" version="1.0" author="ATG Portal Team">
+      <description>Access your Microsoft Outlook Web Access server</description>
+
+      <servlet-context>/gear/exchange</servlet-context>
+
+      <dimensions>
+        <dimension name="height">noPreference</dimension>
+        <dimension name="width">narrow</dimension>
+      </dimensions>
+
+      <gear-modes>
+
+        <gear-mode name="content">
+          <display-modes>
+            <display-mode name="shared">
+              <device-output name="html">/shared.jsp</device-output>
+            </display-mode>
+          </display-modes>
+        </gear-mode>
+
+         <gear-mode name="installConfig">
+          <display-modes>           
+            <display-mode name="full">
+              <device-output name="html">/installConfig.jsp</device-output> 
+            </display-mode>
+          </display-modes>
+        </gear-mode>
+
+       <gear-mode name="userConfig">
+          <display-modes>
+            <display-mode name="full">
+              <device-output name="html">/userConfig.jsp</device-output>
+            </display-mode>
+          </display-modes>
+        </gear-mode>
+
+      </gear-modes>
+
+     <instance-parameters>
+
+     <parameter name="hostURL">
+        <default-value>http://exchange.example.com/exchange</default-value>
+        <description>Microsoft Outlook Web Access Server URL</description>
+     </parameter>
+
+     <parameter name="proxyURL">
+        <default-value>http://localhost:8840/gear/exchange/proxy.jsp</default-value>
+        <description>The protocol and host part of the URL for the proxy page</description>
+     </parameter>
+       
+     </instance-parameters> 
+
+     <user-parameters>
+
+     <parameter name="showInbox" >
+        <default-value>true</default-value>
+        <description>Show a link for Inbox</description>
+     </parameter>
+
+     <parameter name="showCalendar"  >
+        <default-value>true</default-value>
+        <description>Show a link for Calendar</description>
+     </parameter>
+
+     <parameter name="showContacts"  >
+        <default-value>true</default-value>
+        <description>Show a link for Contacts</description>
+     </parameter>
+
+     <parameter name="showTasks"  >
+        <default-value>true</default-value>
+        <description>Show a link for Tasks</description>
+     </parameter>
+
+     <parameter name="userID">
+        <default-value></default-value>
+        <description>The user's Microsoft Outlook Web Access user ID</description>
+     </parameter>
+  
+    <parameter name="password">
+        <default-value></default-value>
+        <description>The user's Microsoft Outlook Web Access password</description>
+    </parameter>
+    </user-parameters>
+
+    </gear-definition>
+
+  </gear-definitions>
+</portal-manifest>
+<!-- @version $Id: //app/portal/version/10.0.3/exchange-passthrough/exchange-manifest.xml#2 $$Change: 651448 $ -->

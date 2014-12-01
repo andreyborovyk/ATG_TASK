@@ -1,0 +1,109 @@
+<%--
+  This page fragment resolves the following default propertyView button attributes:
+    addButtonText
+    deleteButtonText
+    editItemButtonText
+    clearItemButtonText
+    buttonText
+
+  @param   mpv   A request scoped, MappedPropertyView item for this view
+  
+  @version $Id: //product/BIZUI/version/10.0.3/jsp-src/views/property/includes/buttonAttributes.jspf#2 $$Change: 651448 $
+  @updated $DateTime: 2011/06/07 13:55:45 $$Author $
+  --%>
+
+<%@ include file="resourceBundleResolver.jspf" %>
+<fmt:setBundle var="resourceBundle" basename="${bundleName}"/>
+
+<%--
+  CASE 1: Static text defined in the repository
+--%>
+<c:set var="addButtonText"
+       value="${mpv.attributes.addButtonText}" />
+<c:set var="deleteButtonText"
+       value="${mpv.attributes.deleteButtonText}" />
+<c:set var="editItemButtonText"
+       value="${mpv.attributes.editItemButtonText}" />
+<c:set var="clearItemButtonText"
+       value="${mpv.attributes.clearItemButtonText}" />
+<c:set var="buttonText"
+       value="${mpv.attributes.buttonText}" />
+
+<%-- Check to see if the resource bundle exists --%>
+<c:if test="${!empty resourceBundle.resourceBundle}">
+  <%--
+    CASE 2: Default keys
+  --%>
+  <c:set var="addButtonTextKey" 
+         value="${mpv.view.itemMapping.itemName}.${mpv.propertyName}.${mpv.mode}.addButtonText" />
+  <c:set var="deleteButtonTextKey" 
+         value="${mpv.view.itemMapping.itemName}.${mpv.propertyName}.${mpv.mode}.deleteButtonText" />
+  <c:set var="editItemButtonTextKey" 
+         value="${mpv.view.itemMapping.itemName}.${mpv.propertyName}.${mpv.mode}.editItemButtonText" />
+  <c:set var="clearItemButtonTextKey" 
+         value="${mpv.view.itemMapping.itemName}.${mpv.propertyName}.${mpv.mode}.clearItemButtonText" />
+  <c:set var="buttonTextKey" 
+         value="${mpv.view.itemMapping.itemName}.${mpv.propertyName}.${mpv.mode}.buttonText" />
+
+  <%--
+    CASE 3: Res keys defined in the ViewMappingRepository
+  --%>
+  <c:if test="${!empty mpv.attributes.addButtonTextRes}">
+    <c:set var="addButtonTextKey" 
+           value="${mpv.attributes.addButtonTextRes}" />
+  </c:if>
+  <c:if test="${!empty mpv.attributes.deleteButtonTextRes}">
+    <c:set var="deleteButtonTextKey" 
+           value="${mpv.attributes.deleteButtonTextRes}" />
+  </c:if>
+  <c:if test="${!empty mpv.attributes.editItemButtonTextRes}">
+    <c:set var="editItemButtonTextKey" 
+           value="${mpv.attributes.editItemButtonTextRes}" />
+  </c:if>
+  <c:if test="${!empty mpv.attributes.clearItemButtonTextRes}">
+    <c:set var="clearItemButtonTextKey" 
+           value="${mpv.attributes.clearItemButtonTextRes}" />
+  </c:if>
+  <c:if test="${!empty mpv.attributes.buttonTextRes}">
+    <c:set var="buttonTextKey" 
+           value="${mpv.attributes.buttonTextRes}" />
+  </c:if>
+  
+  <%-- Check to see if thses keys exist in the bundle. If not, set to null --%>
+  <fmt:message var="addButtonText"       bundle="${resourceBundle}" key="${addButtonTextKey}"/>
+  <fmt:message var="deleteButtonText"    bundle="${resourceBundle}" key="${deleteButtonTextKey}"/>
+  <fmt:message var="editItemButtonText"  bundle="${resourceBundle}" key="${editItemButtonTextKey}"/>
+  <fmt:message var="clearItemButtonText" bundle="${resourceBundle}" key="${clearItemButtonTextKey}"/>
+  <fmt:message var="buttonText"          bundle="${resourceBundle}" key="${buttonTextKey}"/>
+  <%
+    try {
+      if (((String)pageContext.getAttribute("addButtonText")).indexOf(
+          (String)pageContext.getAttribute("addButtonTextKey")) != -1) {
+        pageContext.setAttribute("addButtonText", null);
+      }
+      if (((String)pageContext.getAttribute("deleteButtonText")).indexOf(
+          (String)pageContext.getAttribute("deleteButtonTextKey")) != -1) {
+        pageContext.setAttribute("deleteButtonText", null);
+      }
+      if (((String)pageContext.getAttribute("editItemButtonText")).indexOf(
+          (String)pageContext.getAttribute("editItemButtonTextKey")) != -1) {
+        pageContext.setAttribute("editItemButtonText", null);
+      }
+      if (((String)pageContext.getAttribute("clearItemButtonText")).indexOf(
+          (String)pageContext.getAttribute("clearItemButtonTextKey")) != -1) {
+        pageContext.setAttribute("clearItemButtonText", null);
+      }
+      if (((String)pageContext.getAttribute("buttonText")).indexOf(
+          (String)pageContext.getAttribute("buttonTextKey")) != -1) {
+        pageContext.setAttribute("buttonText", null);
+      }
+    } catch (Exception e) { System.out.println(e); }
+  %>
+  <c:set var="addButtonText"         value="${addButtonText}" />
+  <c:set var="deleteButtonText"      value="${deleteButtonText}" />
+  <c:set var="editItemButtonText"    value="${editItemButtonText}" />
+  <c:set var="clearItemButtonText"   value="${clearItemButtonText}" />
+  <c:set var="buttonText"            value="${buttonText}" />
+</c:if>
+
+<%-- @version $Id: //product/BIZUI/version/10.0.3/jsp-src/views/property/includes/buttonAttributes.jspf#2 $$Change: 651448 $--%>

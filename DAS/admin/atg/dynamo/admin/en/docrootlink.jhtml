@@ -1,0 +1,45 @@
+<droplet name="/atg/dynamo/droplet/Switch">
+  <param name="hostname" value="property:/atg/dynamo/server/HttpServer.hostName">
+  <param name="port" value="property:/atg/dynamo/server/HttpServer.port">
+  <param name="value" value="property:/atg/dynamo/server/HttpServer.enabled">
+  <oparam name="true"><java>
+      String demoPath = request.getParameter("demoPath");
+      /* Send the request over to the internal web server */
+      if (demoPath != null)
+        response.sendRedirect("http://" + request.getParameter("hostname") + ":" +
+      			      request.getParameter("port") + request.getParameter("path") +
+                              "?demoPath=" + demoPath);
+      else
+        response.sendRedirect("http://" + request.getParameter("hostname") + ":" +
+      	  		      request.getParameter("port") + request.getParameter("path"));
+    </java>
+  </oparam>
+  <oparam name="false">
+    <droplet name="/atg/dynamo/droplet/Switch">
+    <param name="value" value="property:/atg/dynamo/Configuration.dynamoAppServer">
+    <oparam name="true">
+      <head><title>Doc root link</title>
+        <link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+      </head>
+      <body>
+        <h1>Internal server disabled</h1>
+        You've followed a link to the internal web server which is disabled
+        in this configuration.  The path you are looking for: <valueof param="path">/</valueof> 
+        may be accessible from the web server connected to Dynamo.  Try 
+        entering this URL by hand.
+      </body>
+    </oparam>
+    <oparam name="false"><java>
+      Nucleus nucleus = Nucleus.getGlobalNucleus();
+      atg.service.dynamo.Configuration config = 
+        (atg.service.dynamo.Configuration) 
+          nucleus.resolveName("/atg/dynamo/Configuration");
+      response.sendRedirect(config.getDefaultDynamoPrefix() +
+                            request.getParameter("path"));
+      </java>
+    </oparam>
+    </droplet>
+  </oparam>
+</droplet>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/docrootlink.jhtml#2 $$Change: 651448 $ */</java>
+

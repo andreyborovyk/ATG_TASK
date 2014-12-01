@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE env PUBLIC "-//Art Technology Group, Inc.//DTD Repository
+Ouput Specifier 1.0//EN" "http://www.atg.com/dtds/searchadmin/TextProcessingOptions.dtd">
+
+<!--
+$Id: //application/SearchAdmin/version/10.0.3/customizations/src/config/atg/searchadmin/repository/service/TextProcessingOptions.xml#2 $$Change: 651448 $
+$Change: 651448 $$DateTime: 2011/06/07 13:55:45 $
+-->
+
+<env>
+<categories>
+<basic>basic</basic>
+<advanced>basic advanced topic</advanced>
+<all>basic advanced indexing topic query</all>
+<query>query</query>
+</categories>
+
+<!--
+Processing Options
+basic -
+topic - Topic options (can be used during indexing or categorize requests)
+indexing - content item indexing options
+query - Query options
+-->
+
+<option label="Input language:" desc="Specifies the language in which the input (content item or query) is assumed to be written." 
+name="language" type="enum" display="dropdown" category="basic" level="content" query="true">
+<value>Arabic</value>
+<value>Bokmal</value>
+<value>Bulgarian</value>
+<value>Catalan</value>
+<value>Chinese</value>
+<value>Czech</value>
+<value>Danish</value>
+<value>Dutch</value>
+<value default="true">English</value>
+<value>English (United Kingdom)</value>
+<value>Estonian</value>
+<value>Finnish</value>
+<value>French</value>
+<value>French (Canada)</value>
+<value>German</value>
+<value>Greek</value>
+<value>Hungarian</value>
+<value>Icelandic</value>
+<value>Italian</value>
+<value>Japanese</value>
+<value>Korean</value>
+<value>Latvian</value>
+<value>Lithuanian</value>
+<value>Nynorsk</value>
+<value>Polish</value>
+<value>Portuguese</value>
+<value>Portuguese (Brazil)</value>
+<value>Romanian</value>
+<value>Russian</value>
+<value>Slovak</value>
+<value>Spanish</value>
+<value>Swedish</value>
+<value>Thai</value>
+<value>Turkish</value>
+<value>Ukrainian</value>
+<value>Vietnamese</value>
+<value>Other</value>
+</option>
+
+<option label="Dictionary adaptors:" desc="Specifies what dictionary extensions should be utilized when processing the query. Typically, an adaptor consists
+of modifications to the term expansions that reflect a different usage of the term in a domain."
+name="context" type="mvenum" display="msdropdown" category="query" level="none" query="true">
+<value>HR</value>
+<value>aerospace</value>
+<value>airlines</value>
+<value>apparel</value>
+<value>appliances</value>
+<value>automotive</value>
+<value>business</value>
+<value>computer</value>
+<value>cooking</value>
+<value>crafts</value>
+<value>ecommerce</value>
+<value>financial</value>
+<value>food</value>
+<value>healthcare</value>
+<value>hotels</value>
+<value>housewares</value>
+<value>insurance</value>
+<value>jewelry</value>
+<value>legal</value>
+<value>manufacturing</value>
+<value>media</value>
+<value>personal_care</value>
+<value>pets</value>
+<value>sports_outdoors</value>
+<value>telecommunications</value>
+<value>tools</value>
+<value>toys</value>
+<value>yard_garden</value>
+</option>
+
+<option label="Metatags:" desc="Specifies metatag names to be included in the index. Virtual document sets that can be used to constrain searches are created for each value of the metatag names listed here. Metatag names should be entered into the field with no formatting or punctuation. Separate multiple entries with a carriage return."
+name="metatag" type="string" display="textarea" category="basic" level="content" query="false">
+</option>
+
+<option label="Exclude metatags:" desc="Specifies values of the metatag names above that should not become virtual document sets. To exclude metatag values, type nameoftag=value to be excluded in the field. Example: author=anonymous. Separate multiple entries with a carriage return."
+name="metatagExclude" type="string" display="textarea" category="basic" level="content" query="false">
+</option>
+
+<option label="Integer property metatags:" desc="Allows you to constrain searches to documents with a specific integer value. For example, if documents have a date metatag with a value of the document's creation date, searches can be limited to documents created on a specific date or across a range of dates. Metatag names with integer values should be entered into this field without formatting or punctuation. Example: date. Separate multiple entries with a carriage return."
+name="metatagNumberProp" type="string" display="textarea" category="basic" level="content" query="false">
+</option>
+
+<option label="String property metatags:" desc="Allows you to set name/value pairs as document properties so that searches can be constrained to documents with a specified value. For example, if documents contain author metatags with authorname as the metatag value, typing the term author into this field will allow you constrain a search to documents by a specific author. Separate multiple entries with a carriage return."
+name="metatagStringProp" type="string" display="textarea" category="basic" level="content" query="false">
+</option>
+
+<option label="Text property metatags:" desc="Same as a String property metatag except that the content is always treated as a single value - the metatag delimiters have no effect."
+name="metatagTextProp" type="string" display="textarea" category="basic" level="content" query="false">
+</option>
+
+<option label="Enum property metatags:" desc="Allows you to set name/enumerated value pairs as document properties so that searches can be constrained to documents with a specified value. For example, if documents contain status metatags with a small set of values, typing the term status into this field will allow you constrain a search to documents by a specific status. Separate multiple entries with a carriage return."
+name="metatagEnumProp" type="string" display="textarea" category="basic" level="content" query="false">
+</option>
+
+<option label="Floating point property metatags:" desc="Allows you to constrain searches to documents with a specific floating point (real) value. For example, if documents have a price metatag with a value of the document's product price, searches can be limited to documents with a specific price or across a range of pricess. Metatag names with floating point values should be entered into this field without formatting or punctuation. Example: price. Separate multiple entries with a carriage return."
+name="metatagFloatProp" type="string" display="textarea" category="basic" level="content" query="false">
+</option>
+
+<option label="Informational property metatags:" desc="Defines a meta-tag as an informational property, whose only purpose is for returning in search or browse results.
+These properties can not be used for constraints or faceted search."
+name="metatagInfoProp" type="string" display="textarea" category="basic" level="content" query="false">
+</option>
+
+<option label="Terminology property metatags:" desc="Specifies a meta-tag that is a property whose value can be used as terminology, such as for automatic constraints from natural language queries."
+name="metatagTermProp" type="string" display="textarea" category="basic" level="content" query="false">
+</option>
+
+<option label="Disable NLP rulebase packages:" desc="Controls whether an NLP rulebase package is disabled. All packages are enabled by default"
+name="packageDisable" type="string" display="textarea" category="advanced" level="index" query="false">
+</option>
+
+<option label="Enable NLP rules:" desc="Controls whether a set of NLP rulebase rules is enabled and used for processing. Some rules, for example client-specific rules,
+are disabled by default and placed in rulesets, which must be enabled with this option."
+name="ruleEnable" type="string" display="textarea" category="advanced" size="60" level="index" query="true">
+<value default="true">Numbers</value>
+<value default="true">AlphaNumeric</value>
+<value default="true">InternetId</value>
+<value default="true">medium</value>
+<value default="false">heavy</value>
+</option>
+
+<option label="Enable query rules:" desc="Query rules may optionally be assigned to groups, which means they are disabled by default
+and can be enabled with this option."
+name="queryRuleEnable" type="string" display="textarea" category="query" level="none" query="true" >
+</option>
+
+<option label="Disable query rules:" desc="Query rules may optionally be assigned to groups, which means they are disabled by default
+and can be enabled with queryRuleEnable. Since rules may be in multiple groups, use this option
+to disable some rules that have been enabled."
+name="queryRuleDisable" type="string" display="textarea" category="query" level="none" query="true" >
+</option>
+
+<option label="Enable topic patterns:" desc="Topic patterns may optionally be assigned to groups, which means they are disabled by default
+and can be enabled with this option."
+name="topicEnable" type="string" display="textarea" category="topic" query="true" level="content">
+</option>
+
+<option label="Disable topic patterns:" desc="Topic patterns may optionally be assigned to groups, which means they are disabled by default
+and can be enabled with topicEnable. Since rules may be in multiple groups, use this option
+to disable some rules that have been enabled."
+name="topicDisable" type="string" display="textarea" category="topic" query="true" level="content">
+</option>
+
+<option label="Topic limit per doc:" desc="Controls the maximum number of topics to assign to a single content item." 
+name="topicMaximum" type="int" display="input" category="topic" query="true" level="content">
+<value min="0" max="1000" inc="1" default="true">10</value>
+</option>
+
+<option label="Topic relevance threshold:" desc="Relevance is the percent of total possible pattern hits (weights) for
+one topic. The total is computed by multiplying the input units (e.g., sentences)
+by the maximum topic weight (i.e., 100). Topics that have a relevance below this
+option's value will not be assigned."
+name="topicRelevance" type="int" display="input" category="topic" query="true" level="content">
+<value  min="0" max="100" inc="1" default="true">1</value>
+</option>
+
+<option label="Topic confidence threshold:" desc="Confidence is the percent of total topic pattern hits (weights). Topics
+that have a confidence below this option's value will not be assigned."
+name="topicConfidence" type="int" display="input" category="topic" query="true" level="content">
+<value min="0" max="100" inc="1" default="true">0</value>
+</option>
+
+<option label="Topic inheritance:" desc="Controls whether to enforce inheritance on document/solution topic assignments. Inheritance in this 
+context means that a document can only be assigned to a category if it is also assigned to its parent and its ancestry. Categories with no rules are excluded
+from this mechanism."
+name="topicInheritance" type="bool" display="checkbox" category="topic" query="false" level="content">
+<value default="true">false</value>
+<value>true</value>
+</option>
+
+<option label="Topic property patterns only:" desc="Controls whether to use property (meta tag) patterns only when assigning topics to content items. If true, no textual patterns will be used."
+name="topicPropOnly" type="bool" display="checkbox" category="topic" query="false" level="content">
+<value default="true">false</value>
+<value>true</value>
+</option>
+
+<!-- PAs never really die, but we are disabling these options for now because PAs are not in active use
+currently. See bug 151377
+
+<option label="Topic limit per PA:" desc="Controls the maximum number of topics to assign to a preferred answer."
+name="topicMaximumPA" type="int" display="input" category="topic" query="false" level="content">
+<value min="0" max="1000" inc="1" default="true">10</value>
+</option>
+
+<option label="Topic relevance threshold for PAs:" desc="Relevance is the percent of total possible pattern hits (weights) for
+one topic. The total is computed by multiplying the input units (e.g., sentences)
+by the maximum topic weight (i.e., 100). Topics that have a relevance below this
+option's value will not be assigned to preferred answers."
+name="topicRelevancePA" type="int" display="input" category="topic" query="false" level="content">
+<value  min="0" max="100" inc="1" default="true">1</value>
+</option>
+
+<option label="Topic confidence threshold for PAs:" desc="Confidence is the percent of total topic pattern hits (weights). Topics
+that have a confidence below this option's value will not be assigned to PAs."
+name="topicConfidencePA" type="int" display="input" category="topic" query="false" level="content">
+<value min="0" max="100" inc="1" default="true">0</value>
+</option>
+
+<option label="Topic inheritance for PAs:" desc="Controls whether to enforce inheritance on preferred answer assignments. Inheritance in this 
+context means that a document can only be assigned to a category if it is also assigned to its parent and its ancestry. Categories with no rules are excluded
+from this mechanism."
+name="topicInheritancePA" type="bool" display="checkbox" category="topic" query="false" level="content">
+<value default="true">false</value>
+<value>true</value>
+</option>
+
+<option label="Topic property patterns only for PAs:" desc="Controls whether to use property (meta tag) patterns only when assigning topics to preferred answers.  If true, no textual patterns will be used."
+name="topicPropOnlyPA" type="bool" display="checkbox" category="topic" query="false" level="content">
+<value default="true">false</value>
+<value>true</value>
+</option>
+
+-->
+
+<option label="Index scheme:" desc="Controls whether the index is compressed or uncompressed."
+name="indexScheme" type="enum" display="dropdown" category="advanced" level="index" query="false">
+<value>uncompressed</value>
+<value default="true">compressed</value>
+</option>
+
+<option label="Major index mode:" desc="Controls whether content items are actually indexed for retrieval. If none, items are stored but are not retrievable. If sentence, items are indexed and retrieved by sentence. If document, items are indexed and retrieved as a whole."
+name="index" type="enum" display="dropdown" category="advanced" level="content" query="false">
+<value default="true">sentence</value>
+<value>paragraph</value>
+<value>text</value>
+<value>document</value>
+<value>none</value>
+</option>
+
+<option label="Index rich documents as images:" desc="Controls what rich content file extensions will be indexed as images rather than converted text. Enter values in lower-case." 
+name="indexImageFile" type="string" display="textarea" category="advanced" level="content" query="false">
+<value default="true">ppt</value>
+<value default="true">pptx</value>
+<value default="true">vsd</value>
+</option>
+
+<option label="Store source document:" desc="Controls whether the indexed document's source is stored in the file store."
+name="storeSource" type="bool" display="checkbox" category="advanced" level="index" query="false">
+<value default="true">true</value>
+<value>false</value>
+</option>
+
+<option label="Index Item URLs:" desc="Controls whether the URL of the index items (documents) are indexed as a special text field called role:url, thus making it searchable if enabled in your active sentence or solution zones."
+ name="indexItemURLs" type="bool" display="checkbox" category="advanced" query="false" level="content">
+<value default="true">false</value>
+<value>true</value>
+</option>
+
+<option label="Index content maximum:" desc="Limits the maximum size of the content indexed from a file. File contents
+that exceed this limit are truncated and ignored. For PDF, this limit is in terms of the extracted text. 
+For all other formats, this is in terms of the HTML, including that created from the rich content conversion."
+name="indexContentMax" type="int" display="input" category="indexing" level="index" query="false">
+<value min="1000" max="50000000" inc="10000" default="true">1000000</value>
+</option>
+
+<option label="Stop-word threshold:" desc="Controls what terms are treated as stop-words (skipped during indexing).
+Words with term weights below this threshold are stop-words, and are
+not stored or indexed."
+name="indexStopThresh" type="int" display="input" category="indexing" level="index" query="false">
+<value min="0" max="100" inc="1" default="true">0</value>
+</option>
+
+<option label="Index term limit:" desc="Limits the maximum number of times a term can be indexed."
+name="indexTermMax" type="int" display="input" category="indexing" level="index" query="false">
+<value min="0" max="100000000" inc="10000" default="true">1000000</value>
+</option>
+
+<option label="Index term threshold:" desc="Controls what terms are stored but not indexed. Words with term weights below
+this threshold are not indexed, but are stored in the term vectors."
+name="indexTermThresh" type="int" display="input" category="indexing" level="index" query="false">
+<value min="1" max="100" inc="1" default="true">5</value>
+</option>
+
+<option label="Document normalization minimum:" desc="Specifies the minimum normalization value for document weighting."
+name="docNormMin" type="int" display="input" category="indexing" level="index" query="false">
+<value min="1" max="100" inc="1" default="true">20</value>
+</option>
+
+<option label="Maximum sentence size:" desc="The system attempts to split sentences that have more than twice the number of tokens specified here.
+The system uses conjoining punctuation (e.g., ; or --) to split the sentences, but
+will not create a resulting sentence that is smaller than the value in this field."
+name="sentenceMaxSize" type="integer" display="input" category="indexing" level="index" query="false">
+<value min="0" max="100000" inc="1" default="true">50</value>
+</option>
+
+<option label="Minimum sentence size:" desc="The system attempts to prepend sentences that have fewer than the number of tokens specified here
+to the following sentence, if the following sentence is in the same parent region."
+name="sentenceMinSize" type="int" display="input" category="indexing" level="index" query="false">
+<value min="0" max="100" inc="1" default="true">4</value>
+</option>
+
+<option label="Use tags as features:" desc="If a sentence is contained in a tag name from this list, then the sentence is
+assigned a feature of that name. A sentence can be assigned multiple features.
+If a value for this option is of the form tag=X, then the sentence
+is given the feature X rather than the feature tag."
+name="featureZones" type="string" display="textarea" category="indexing" level="content" query="false">
+</option>
+
+<option label="Store features for sentences with certain terms:" desc="These features are stored with the sentence if it contains a word with the feature."
+name="featureSentenceTerms" type="string" display="textarea" category="indexing" level="index" query="false">
+<value default="true">hasURL</value>
+<value default="true">hasMoney</value>
+<value default="true">hasSpeed</value>
+<value default="true">hasEmail</value>
+<value default="true">hasPhoneNum</value>
+</option>
+
+<option label="Metatag delimiters:" desc="Lists the characters that will be interpreted as separators for metatag values."
+name="metatagDelim" type="string" display="input" category="advanced" level="content" query="false">
+</option>
+
+<option label="Normalize metatags:" desc="By default, metatags that are used as virtual document sets will preserve the case of the names and values. Since document sets are case-sensitive, names and values with different case strings will become different document sets. Setting this option to true will downcase the names and values of the metatags. If true, metatag excludes and constraints must be lower-case."
+name="metatagNorm" type="bool" display="checkbox" category="advanced" level="content" query="false">
+<value default="true">false</value>
+<value>true</value>
+</option>
+
+<option label="Metatag summary:" desc="Lists the names of the meta tags that can designate document summary information to store in the index. The content of the first meta tag with one of these name attributes will be used as the static document summary."
+name="metatagSummary" type="string" display="textarea" category="advanced" level="content" query="false">
+<value default="true">atg:summary</value>
+<value default="true">primus:summary</value>
+</option>
+
+<option label="Metatag index:" desc="Metatags with property names in this option are used to index the document in a two-tier
+indexing scheme (property-&gt;value-&gt;document). Documents can be retrieved directly from their indexed metatag values."
+name="metatagIndex" type="string" display="textarea" category="advanced" level="content" query="false">
+</option>
+
+<option label="Metatag searchable fields:" desc="This option defines text fields that will contain the content of one or more metatags with the given property name.
+The format of this option is field|name|name|..., where field is an arbitrary text field name (e.g. role:keyword) and name is a name attribute value of a &lt;meta&gt; tag.
+The text fields will be available for search, and controlled with the field search parameters. To simply turn the meta content into unstructured text fields, use
+the field name 'doc'"
+name="metatagSearchable" type="string" display="textarea" category="advanced" level="content" query="false">
+</option>
+
+<option label="Metatag property weight:" desc="Metatags that are defined in the Metatags option can have weights assigned
+to them using this option. Weighted properties are used for special query processing, typically
+with solutions."
+name="metatagPropWeight" type="string" display="textarea" category="indexing" level="content" query="false">
+</option>
+
+<option label="Table cell delimiter:" desc="Controls what whitespace is inserted between the text from table cells."
+name="tableCell" type="enum" display="dropdown" category="advanced" level="content" query="false">
+<value default="true">TAB</value>
+<value>NEWLINE</value>
+<value>SPACE</value>
+<value>PERIOD</value>
+</option>
+
+<option label="Table structure parsing:" desc="Controls how text from tables is extracted during indexing."
+name="tableStructure" type="string" display="textarea" category="advanced" level="content" query="false">
+</option>
+
+<option label="Ignore text in tags:" desc="Controls whether text within certain tags is deleted (not forwarded to
+the NLP processing). The text will appear in the document view, but will not
+be processed or indexed."
+name="delete" type="string" display="textarea" category="indexing" level="content" query="false">
+<value default="true">select</value>
+<value default="true">ae_noindex</value>
+<value default="true">noscript</value>
+<value default="true">noframes</value>
+<value default="true">script</value>
+<value default="true">style</value>
+</option>
+
+<option label="Indexing ignored statement:" desc="Specifies a simple pattern that acts as a filter on the statements during indexing. A statement that matches any of
+specified patterns is ignored and excluded from the index. Patterns begin with a prefix of either: all:, begins:, ends:, or
+contains:" name="ignoreStatement" type="string" display="textarea" category="indexing" level="content" query="false">
+</option>
+
+<option label="Indexing ignored zone:" desc= "Controls whether text within certain tags is ignored within statements.
+The text will appear in the statement results, but will not be processed or indexed."
+name="ignoreZone" type="string" display="textarea" category="indexing" level="content" query="false">
+<value default="true">sup</value>
+<value default="true">sub</value>
+</option>
+
+<option label="Result language:" desc="Normally, the result language is the same as the language of the content items to search. However, this option allows the system to accept input in one language and search for results in other languages. An option value of 'all' means to search all available languages, otherwise the option specifies just a single language to search. The value of 'same' means to search whatever the input language is, controlled by the main 'language' (Input language) option." 
+name="targetLanguage" type="enum" display="msdropdown" category="query" level="none" query="true">
+<value default="true">Same</value>
+<value>All</value>
+<value>Arabic</value>
+<value>Bokmal</value>
+<value>Bulgarian</value>
+<value>Catalan</value>
+<value>Chinese</value>
+<value>Czech</value>
+<value>Danish</value>
+<value>Dutch</value>
+<value>English</value>
+<value>English (United Kingdom)</value>
+<value>Estonian</value>
+<value>Finnish</value>
+<value>French</value>
+<value>French (Canada)</value>
+<value>German</value>
+<value>Greek</value>
+<value>Hungarian</value>
+<value>Icelandic</value>
+<value>Italian</value>
+<value>Japanese</value>
+<value>Korean</value>
+<value>Latvian</value>
+<value>Lithuanian</value>
+<value>Nynorsk</value>
+<value>Polish</value>
+<value>Portuguese</value>
+<value>Portuguese (Brazil)</value>
+<value>Romanian</value>
+<value>Russian</value>
+<value>Slovak</value>
+<value>Spanish</value>
+<value>Swedish</value>
+<value>Thai</value>
+<value>Turkish</value>
+<value>Ukrainian</value>
+<value>Vietnamese</value>
+<value>Other</value>
+</option>
+
+<option label="Spell check module:" desc="Controls which spellchecker module to use, if any.
+A value of wintertree means the third-party WinterTree spell checker is used.
+A value of internal means AE's internal spell checker is used.
+A value of internal-wintertree means AE's internal AND WinterTree's spell checkers are used in combination, but preference is given to AE's suggestions.
+A value of wintertree-internal means AE's internal AND WinterTree's spell checkers are used in combination, but preference is given to Wintertree's suggestions.
+A value of none means no spell checking is done."
+name="spellChecker" type="enum" display="dropdown" category="query" level="none" query="true">
+<value>internal</value>
+<value>wintertree</value>
+<value default="true">internal-wintertree</value>
+<value>wintertree-internal</value>
+<value>none</value>
+</option>
+
+<option label="Spell check maximum corrections:" desc="Controls how many suggestions are made for misspelled words"
+name="spellMaxSuggestions" type="int" display="input" category="query" level="none" query="true">
+<value min="1" max="20" inc="1" default="true">4</value>
+</option>
+
+<option label="Spell check suggestion cut-off:" desc="Controls when to stop suggestion corrections"
+name="spellSuggestionCutoff" type="int" display="input" category="query" level="none" query="true">
+<value min="0" max="100" inc="1" default="true">60</value>
+</option>
+
+<option label="Spell check suggestion factor:" desc="Controls when to return spelling suggestions for query terms that are in the index and thus are not considered misspelled. 
+Normally, no spelling suggestions would be returned. Using this value, any suggestable term with a frequency greater than the original query term's frequency multiplied by this factor, is returned. A value of 0 disables this functionality."
+name="spellSuggestionFactor" type="int" display="input" category="query" level="none" query="true">
+<value min="0" max="1000" inc="1" default="true">10</value>
+</option>
+
+<option label="Spell split words:" desc="determines whether the Search engine attempts to split unknown words longer than five letters into two known words, and if it does so, whether it does this before or after applying spelling
+correction. This feature can compensate for simple user errors such as a missing space between two search terms. The possible values are:
+  false—Unknown terms are not split
+  before—Unknown terms are subject to splitting before applying spelling correction. This is the default behavior.
+  after—Unknown words are not subject to splitting until after spelling correction has been applied, and only if the term is still unknown."
+  name="spellSplitWords" type="enum" display="dropdown" category="query" level="none" query="true">
+  <value default="true">before</value>
+  <value>false</value>
+  <value>after</value>
+</option>
+
+<option label="Expand stems in query:" desc="Controls whether an expanded set of stems is used for query processing. A value of 'all' means that all terms in the query are expanded to all stems. A value of 'untagged' means that only terms that have not been POS-tagged are expanded to all stems."
+name="expandedStemming" type="enum" display="dropdown" category="query" level="none" query="true">
+<value default="true">untagged</value>
+<value>all</value>
+<value>false</value>
+</option>
+
+<option label="Expand target language terms:" desc="Controls whether to expand stems in the target language."
+name="targetLanguageExpansion" type="bool" display="checkbox" category="query" level="none" query="true">
+<value default="true">false</value>
+<value>true</value>
+</option>
+
+<option label="Wildcard max:" desc="Controls the maximum number of terms a wildcard term (e.g., sell*) can expand to."
+name="wildcardMax" type="int" display="input" category="query" level="none" query="true">
+<value min="0" max="1000" inc="1" default="true">20</value>
+</option>
+
+<option label="Wildcard characters:" desc="Controls what characters besides letters and digits are allowed inside wild card expressions (e.g., B2.5/6*)."
+name="wildcardChar" type="string" display="input" category="query" level="none" query="true">
+<value default="true">.-_/</value>
+</option>
+
+<option label="Security role:" desc="Controls whether some parts of the HTML are secured and thus should
+be filtered from view or excluded from search."
+name="securityRole" type="string" display="textarea" size="60" category="query" level="none" query="true">
+</option>
+
+<option label="Property mapping:" desc="Specifies if a external property name (from a constraint, refinement, or request) should
+be mapped to an internal property name from an ordered list of choices. The format of this option is: external,internal,internal,..."
+name="propertyMapping" type="string" display="textarea" size="60" category="query" level="none" query="true">
+</option>
+
+</env>
+<!-- @version $Id: //application/SearchAdmin/version/10.0.3/customizations/src/config/atg/searchadmin/repository/service/TextProcessingOptions.xml#2 $$Change: 651448 $-->

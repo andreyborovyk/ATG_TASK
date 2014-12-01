@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE portal-manifest PUBLIC "-//Art Technology Group, Inc.//DTD Portal Manifest//EN" "http://www.atg.com/dtds/portal/framework/portal_manifest_1.0.dtd">
+
+<portal-manifest name="Document Exchange" version="1.0" author="ATG Portal Team">
+  <gear-definitions>
+    <gear-definition name="Document Exchange" version="1.0" author="ATG Portal Team">
+      <description>Document Exchange Gear</description>
+
+      <servlet-context>/gear/docexch</servlet-context>
+
+      <dimensions>
+        <dimension name="height">noPreference</dimension>
+        <dimension name="width">wide</dimension>
+      </dimensions>
+
+      <gear-modes>
+        <gear-mode name="content">
+          <display-modes>
+            <display-mode name="shared">
+              <device-output name="html">/DocExchShared.jsp</device-output>
+            </display-mode>
+            <display-mode name="full">
+              <device-output name="html">/DocExchFull.jsp</device-output>
+            </display-mode>
+          </display-modes>
+        </gear-mode>
+
+        <gear-mode name="userConfig">
+          <display-modes>
+            <display-mode name="full">
+              <device-output name="html">/UserConfig.jsp</device-output>
+            </display-mode>
+          </display-modes>
+        </gear-mode>
+
+        <gear-mode name="installConfig">
+          <display-modes>
+            <display-mode name="full">
+              <device-output name="html">/InstallConfig.jsp</device-output>
+            </display-mode>
+          </display-modes>
+        </gear-mode>
+
+        <gear-mode name="instanceConfig">
+          <display-modes>
+            <display-mode name="full">
+              <device-output name="html">/InstanceConfig.jsp</device-output>
+            </display-mode>
+          </display-modes>
+        </gear-mode>
+      </gear-modes>
+
+
+      <instance-parameters>
+       <parameter name="attachmentRequired">
+         <default-value>
+           true
+         </default-value>
+       </parameter>
+       <parameter name="repositoryPath">
+         <default-value>
+           /atg/portal/gear/docexch/SplitDocumentRepository
+         </default-value>
+       </parameter>
+       <parameter name="itemDescriptorName">
+         <default-value>
+           document
+         </default-value>
+       </parameter>
+       <parameter name="fileDataPropertyName">
+         <default-value>
+           fileData
+         </default-value>
+       </parameter>
+       <parameter name="mimeTypePropertyName">
+         <default-value>
+           mimeType
+         </default-value>
+       </parameter>
+       <parameter name="fileSizePropertyName">
+         <default-value>
+           size
+         </default-value>
+       </parameter>
+       <parameter name="authorPropertyName">
+         <default-value>
+           author
+         </default-value>
+       </parameter>
+       <parameter name="filenamePropertyName">
+         <default-value>
+           filename
+         </default-value>
+       </parameter>
+       <parameter name="titlePropertyName">
+         <default-value>
+           title
+         </default-value>
+       </parameter>
+       <parameter name="descriptionPropertyName">
+         <default-value>
+           description
+         </default-value>
+       </parameter>
+       <parameter name="createDatePropertyName">
+         <default-value>
+           createDate
+         </default-value>
+       </parameter>
+       <parameter name="statusPropertyName">
+         <default-value>
+           status
+         </default-value>
+       </parameter>
+       <parameter name="gearIdPropertyName">
+         <default-value>
+           gearInstanceRef
+         </default-value>
+       </parameter>
+       <parameter name="annotationRefPropertyName">
+         <default-value>
+          annotationRef
+         </default-value>
+       </parameter>       
+       <parameter name="readOnly">
+         <default-value>
+           false
+         </default-value>
+       </parameter>
+       <parameter name="maxFileSize">
+         <default-value>
+           1
+         </default-value>
+       </parameter>
+       <parameter name="displayTitle">
+         <default-value>
+           true
+         </default-value>
+       </parameter>
+       <parameter name="displayDescription">
+         <default-value>
+           true
+         </default-value>
+       </parameter>
+       <parameter name="displayAuthor">
+         <default-value>
+           true
+         </default-value>
+       </parameter>
+       <parameter name="displayCreateDate">
+         <default-value>
+           true
+         </default-value>
+       </parameter>
+       <parameter name="displayStatus">
+         <default-value>
+           true
+         </default-value>
+       </parameter>
+       <parameter name="discussPermissionRole">
+         <default-value>
+           member
+         </default-value>
+       </parameter>
+       <parameter name="writePermissionRole">
+         <default-value>
+           member
+         </default-value>
+       </parameter>
+       <parameter name="updateStatusPermissionRole">
+         <default-value>
+           member
+         </default-value>
+       </parameter>
+       <parameter name="enableDiscussion">
+         <default-value>
+           true
+         </default-value>
+       </parameter>
+       <parameter name="enableSearch">
+         <default-value>
+           true
+         </default-value>
+       </parameter>
+       <parameter name="displayColumnHeaders">
+         <default-value>
+           true
+         </default-value>
+       </parameter>
+       <parameter name="authorDisplayProp1">
+         <default-value>
+           firstName
+         </default-value>
+       </parameter>
+       <parameter name="authorDisplayProp2">
+         <default-value>
+           lastName
+         </default-value>
+       </parameter>
+       <parameter name="dateStyle">
+         <default-value>
+           medium
+         </default-value>
+       </parameter>
+       <parameter name="timeStyle">
+         <default-value>
+           notShown
+         </default-value>
+       </parameter>
+       <parameter name="resourceBundle">
+         <default-value>
+         atg.portal.gear.docexch.DocumentResources
+         </default-value>
+       </parameter>
+       <parameter name="discResourceBundle">
+         <default-value>
+         atg.portal.gear.docexch.DiscussionResources
+         </default-value>
+       </parameter>
+       <parameter name="discussionRepositoryPath">
+         <default-value>
+           /atg/portal/gear/discussion/DiscussionRepository
+         </default-value>
+       </parameter>
+       <parameter name="globalAlertMode" >
+         <default-value>
+           no
+         </default-value>
+       </parameter>
+      </instance-parameters>
+
+      <user-parameters>
+       <parameter name="shortListSize">
+         <default-value>
+	   3
+         </default-value>
+       </parameter>
+       <parameter name="fullListPageSize">
+         <default-value>
+	   12
+         </default-value>
+       </parameter>
+      </user-parameters>
+
+      <alerts>
+
+        <alert-message name="DocumentCreatedMessage">
+          <message-type>atg.portal.gear.docexch.DocumentCreatedMessage</message-type>
+          <default-value>yes_locked</default-value>
+          <resource-bundle>atg.portal.gear.docexch.DocumentCreatedResources</resource-bundle>
+        </alert-message>
+
+        <alert-message name="DocumentUpdatedMessage">
+          <message-type>atg.portal.gear.docexch.DocumentUpdatedMessage</message-type>
+          <default-value>yes_locked</default-value>
+          <resource-bundle>atg.portal.gear.docexch.DocumentUpdatedResources</resource-bundle>
+        </alert-message>
+
+        <alert-message name="DocumentDeletedMessage">
+          <message-type>atg.portal.gear.docexch.DocumentDeletedMessage</message-type>
+          <default-value>yes_locked</default-value>
+          <resource-bundle>atg.portal.gear.docexch.DocumentDeletedResources</resource-bundle>
+        </alert-message>
+
+        <alert-message name="DocumentViewedMessage">
+          <message-type>atg.portal.gear.docexch.DocumentViewedMessage</message-type>
+          <default-value>yes_locked</default-value>
+          <resource-bundle>atg.portal.gear.docexch.DocumentViewedResources</resource-bundle>
+        </alert-message>
+
+      </alerts>
+
+    </gear-definition>
+
+  </gear-definitions>
+</portal-manifest>
+<!-- @version $Id: //app/portal/version/10.0.3/docexch/etc/docexch-manifest.xml#2 $$Change: 651448 $ -->

@@ -1,0 +1,73 @@
+<HTML>
+<HEAD>
+<TITLE>Standard To Custom Catalog Migration</TITLE>
+</HEAD>
+
+<importbean bean="/atg/commerce/catalog/custom/CatalogMigrationFormHandler">
+
+<body BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="../images/dcsadminbanner.gif" ALT="Dynamo Commerce Administration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a href="../index.jhtml">Commerce</a>/Standard to Custom Catalog Migration<p>
+
+<blockquote>
+
+<H2>Standard To Custom Catalog Migration</H2>
+
+<img src="../../images/bluedot.gif" width=505 height=1><p>
+
+<!-- Show any errors -->
+<droplet bean="/atg/dynamo/droplet/Switch">
+ <param name="value" value="bean:CatalogMigrationFormHandler.formError">
+ <oparam name="true">
+  &nbsp;<br>
+  <span class=content_alert>The following errors occurred:</span><br>
+  <span class=content_alert><UL>
+   <droplet bean="/atg/dynamo/droplet/ErrorMessageForEach">
+    <param name="exceptions" value="bean:CatalogMigrationFormHandler.formExceptions">
+    <oparam name="output">
+     <LI> <valueof param="message"/>
+    </oparam>
+   </droplet>
+  </UL></span> 
+ </oparam>
+</droplet>
+
+<form action="MigrationStatus.jhtml">
+<input type="hidden" bean="CatalogMigrationFormHandler.migrateSuccessURL" value="MigrationStatus.jhtml">
+<input type="hidden" bean="CatalogMigrationFormHandler.migrateErrorURL" value="StandardMigration.jhtml">
+<p>
+This migration process is used to migrate a standard catalog to a custom catalog. Before executing this
+migration, some new tables must be created in the database. The necessary DDL is provided in the DCS module
+in a file named custom_catalog_ddl.sql.
+
+As part of this migration process a new catalog item is created in the database. This catalog becomes the base catalog for
+all the root categories. The display name is the name that will appear in the ACC and Merchandising for the new catalog item.  
+
+</p>
+<table>
+ <tr>
+  <td>Catalog Repository To Migrate:</td>
+  <td><input size="40" bean="CatalogMigrationFormHandler.repositoryPath"></td>
+ </tr>
+ <tr>
+  <td>Display name of new catalog item:</td>
+  <td><input bean="CatalogMigrationFormHandler.catalogDisplayName"></td>
+ </tr>
+ <tr>
+  <td></td>
+  <td><input type="submit" bean="CatalogMigrationFormHandler.migrate" value="MIGRATE"></td>
+ </tr>
+</table>
+</form>
+
+<img src="../images/bluedot.gif" width=505 height=1>
+<p>
+
+</blockquote>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/DCS/admin/atg/commerce/admin/en/catalog/StandardMigration.jhtml#2 $$Change: 651448 $*/</java>
+

@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE process SYSTEM "dynamosystemresource:/atg/dtds/pdl/pdl_1.0.dtd">
+<process author="admin" creation-time="997915986497" enabled="true" last-modified-by="admin" modification-time="1044979091453">
+  <segment migrate-subjects="false">
+    <segment-name>Show preferred supplier specials</segment-name>
+    <fork id="1">
+      <branch id="1.1">
+        <!--================================-->
+        <!--== Visits a page named MotorpriseJSP:/en/home.jsp  -->
+        <!--================================-->
+        <event id="1.1.1">
+          <event-name>atg.dps.PageVisit</event-name>
+          <filter construct="page-path-name-filter" operator="eq">
+            <event-property>
+              <property-name>scenarioPathInfo</property-name>
+            </event-property>
+            <constant>MotorpriseJSP:/en/home.jsp</constant>
+          </filter>
+        </event>
+      </branch>
+      <branch id="1.2">
+        <!--================================-->
+        <!--== Visits a page named MotorpriseJSP:/de/home.jsp  -->
+        <!--================================-->
+        <event id="1.2.1">
+          <event-name>atg.dps.PageVisit</event-name>
+          <filter construct="page-path-name-filter" operator="eq">
+            <event-property>
+              <property-name>scenarioPathInfo</property-name>
+            </event-property>
+            <constant>MotorpriseJSP:/de/home.jsp</constant>
+          </filter>
+        </event>
+      </branch>
+      <branch id="1.3">
+        <!--================================-->
+        <!--== Visits a page named MotorpriseJSP:/ja/home.jsp  -->
+        <!--================================-->
+        <event id="1.3.1">
+          <event-name>atg.dps.PageVisit</event-name>
+          <filter construct="page-path-name-filter" operator="eq">
+            <event-property>
+              <property-name>scenarioPathInfo</property-name>
+            </event-property>
+            <constant>MotorpriseJSP:/ja/home.jsp</constant>
+          </filter>
+        </event>
+      </branch>
+    </fork>
+    <!--================================-->
+    <!--== Remove items from slot PreferredVendorSpecials  -->
+    <!--================================-->
+    <action id="2">
+      <action-name>emptySlot</action-name>
+      <action-param name="slot">
+        <nucleus-property>
+          <nucleus-path>/atg/registry/Slots/PreferredVendorSpecials</nucleus-path>
+        </nucleus-property>
+      </action-param>
+    </action>
+    <fork id="3">
+      <branch id="3.1">
+        <!--================================-->
+        <!--== Preferred vendors includes Suppell  -->
+        <!--================================-->
+        <condition construct="people-element" id="3.1.1">
+          <filter construct="profile-property-filter" operator="includes">
+            <subject-property>
+              <property-name>preferredVendors</property-name>
+            </subject-property>
+            <constant>Suppell</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Add items to slot PreferredVendorSpecials named Air filters, 4...  -->
+        <!--================================-->
+        <action id="3.1.2">
+          <action-name>fillSlot</action-name>
+          <action-param name="slot">
+            <nucleus-property>
+              <nucleus-path>/atg/registry/Slots/PreferredVendorSpecials</nucleus-path>
+            </nucleus-property>
+          </action-param>
+          <action-param name="ids">
+            <array type="java.lang.String[]">
+              <constant>prod100086</constant>
+              <constant>prod110085</constant>
+              <constant>prod110151</constant>
+            </array>
+          </action-param>
+        </action>
+      </branch>
+      <branch id="3.2">
+        <!--================================-->
+        <!--== Preferred vendors includes Kawaf  -->
+        <!--================================-->
+        <condition construct="people-element" id="3.2.1">
+          <filter construct="profile-property-filter" operator="includes">
+            <subject-property>
+              <property-name>preferredVendors</property-name>
+            </subject-property>
+            <constant>Kawaf</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Add items to slot PreferredVendorSpecials named Fuel pump, electric, 220...  -->
+        <!--================================-->
+        <action id="3.2.2">
+          <action-name>fillSlot</action-name>
+          <action-param name="slot">
+            <nucleus-property>
+              <nucleus-path>/atg/registry/Slots/PreferredVendorSpecials</nucleus-path>
+            </nucleus-property>
+          </action-param>
+          <action-param name="ids">
+            <array type="java.lang.String[]">
+              <constant>prod40004</constant>
+              <constant>prod100046</constant>
+              <constant>prod10005</constant>
+            </array>
+          </action-param>
+        </action>
+      </branch>
+      <branch id="3.3">
+        <!--================================-->
+        <!--== Preferred vendors includes Streb  -->
+        <!--================================-->
+        <condition construct="people-element" id="3.3.1">
+          <filter construct="profile-property-filter" operator="includes">
+            <subject-property>
+              <property-name>preferredVendors</property-name>
+            </subject-property>
+            <constant>Streb</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Add items to slot PreferredVendorSpecials named Sensor, Chrysler, 81-88...  -->
+        <!--================================-->
+        <action id="3.3.2">
+          <action-name>fillSlot</action-name>
+          <action-param name="slot">
+            <nucleus-property>
+              <nucleus-path>/atg/registry/Slots/PreferredVendorSpecials</nucleus-path>
+            </nucleus-property>
+          </action-param>
+          <action-param name="ids">
+            <array type="java.lang.String[]">
+              <constant>prod100079</constant>
+              <constant>prod110067</constant>
+              <constant>prod60011</constant>
+            </array>
+          </action-param>
+        </action>
+      </branch>
+      <branch id="3.4">
+        <!--================================-->
+        <!--== Preferred vendors includes Dyler  -->
+        <!--================================-->
+        <condition construct="people-element" id="3.4.1">
+          <filter construct="profile-property-filter" operator="includes">
+            <subject-property>
+              <property-name>preferredVendors</property-name>
+            </subject-property>
+            <constant>Dyler</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Add items to slot PreferredVendorSpecials named Pipe, 1 3/4...  -->
+        <!--================================-->
+        <action id="3.4.2">
+          <action-name>fillSlot</action-name>
+          <action-param name="slot">
+            <nucleus-property>
+              <nucleus-path>/atg/registry/Slots/PreferredVendorSpecials</nucleus-path>
+            </nucleus-property>
+          </action-param>
+          <action-param name="ids">
+            <array type="java.lang.String[]">
+              <constant>prod10050</constant>
+              <constant>prod10032</constant>
+              <constant>prod100018</constant>
+            </array>
+          </action-param>
+        </action>
+      </branch>
+      <branch id="3.5">
+        <!--================================-->
+        <!--== Preferred vendors includes Folbit  -->
+        <!--================================-->
+        <condition construct="people-element" id="3.5.1">
+          <filter construct="profile-property-filter" operator="includes">
+            <subject-property>
+              <property-name>preferredVendors</property-name>
+            </subject-property>
+            <constant>Folbit</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Add items to slot PreferredVendorSpecials named Air filters, 4  -->
+        <!--================================-->
+        <action id="3.5.2">
+          <action-name>fillSlot</action-name>
+          <action-param name="slot">
+            <nucleus-property>
+              <nucleus-path>/atg/registry/Slots/PreferredVendorSpecials</nucleus-path>
+            </nucleus-property>
+          </action-param>
+          <action-param name="ids">
+            <array type="java.lang.String[]">
+              <constant>prod100086</constant>
+            </array>
+          </action-param>
+        </action>
+      </branch>
+      <otherwise-branch id="3.6">
+        <!-- Otherwise -->
+        <!--================================-->
+        <!--== Add items to slot PreferredVendorSpecials named Thermostat, large GM...  -->
+        <!--================================-->
+        <action id="3.6.2">
+          <action-name>fillSlot</action-name>
+          <action-param name="slot">
+            <nucleus-property>
+              <nucleus-path>/atg/registry/Slots/PreferredVendorSpecials</nucleus-path>
+            </nucleus-property>
+          </action-param>
+          <action-param name="ids">
+            <array type="java.lang.String[]">
+              <constant>prod100015</constant>
+              <constant>prod100019</constant>
+              <constant>prod110149</constant>
+            </array>
+          </action-param>
+        </action>
+      </otherwise-branch>
+    </fork>
+  </segment>
+</process>

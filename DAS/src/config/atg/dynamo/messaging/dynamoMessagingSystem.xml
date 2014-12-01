@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE dynamo-message-system
+        SYSTEM
+        "http://www.atg.com/dtds/patchbay/patchbay_1.0.dtd">
+
+<dynamo-message-system>
+
+  <!-- patch bay definitions -->
+  <patchbay>
+
+    <!-- local JMS provider -->
+    <!--
+    <provider>
+      <provider-name>
+        local
+      </provider-name>
+      <topic-connection-factory-name>
+        dynamo:/atg/dynamo/messaging/MessagingManager
+      </topic-connection-factory-name>
+      <queue-connection-factory-name>
+        dynamo:/atg/dynamo/messaging/MessagingManager
+      </queue-connection-factory-name>
+      <xa-topic-connection-factory-name>
+        dynamo:/atg/dynamo/messaging/MessagingManager
+      </xa-topic-connection-factory-name>
+      <xa-queue-connection-factory-name>
+        dynamo:/atg/dynamo/messaging/MessagingManager
+      </xa-queue-connection-factory-name>
+      <supports-transactions>
+        true
+      </supports-transactions>
+      <supports-xa-transactions>
+        true
+      </supports-xa-transactions>
+      <username>
+      </username>
+      <password>
+      </password>
+      <client-id>
+        local
+      </client-id>
+    </provider>
+    -->
+
+    <!-- SQL JMS provider -->
+    <!--
+    <provider>
+      <provider-name>
+        sqldms
+      </provider-name>
+      <topic-connection-factory-name>
+        dynamo:/atg/dynamo/messaging/SqlJmsProvider
+      </topic-connection-factory-name>
+      <queue-connection-factory-name>
+        dynamo:/atg/dynamo/messaging/SqlJmsProvider
+      </queue-connection-factory-name>
+      <xa-topic-connection-factory-name>
+        dynamo:/atg/dynamo/messaging/SqlJmsProvider
+      </xa-topic-connection-factory-name>
+      <xa-queue-connection-factory-name>
+        dynamo:/atg/dynamo/messaging/SqlJmsProvider
+      </xa-queue-connection-factory-name>
+      <supports-transactions>
+        true
+      </supports-transactions>
+      <supports-xa-transactions>
+        true
+      </supports-xa-transactions>
+    </provider>
+    -->
+
+    <!-- DAS Messages -->
+    <message-source>
+      <nucleus-name>
+        /atg/dynamo/messaging/DynamoMessageSource
+      </nucleus-name>
+
+      <output-port>
+        <port-name>
+          Startup
+        </port-name>
+        <output-destination>
+          <provider-name>
+            local
+          </provider-name>
+          <destination-name>
+            localdms:/local/DASTopic/StartupEvents
+          </destination-name>
+          <destination-type>
+            Topic
+          </destination-type>
+        </output-destination>
+      </output-port>
+
+      <output-port>
+        <port-name>
+          Shutdown
+        </port-name>
+        <output-destination>
+          <provider-name>
+            local
+          </provider-name>
+          <destination-name>
+            localdms:/local/DASTopic/ShutdownEvents
+          </destination-name>
+          <destination-type>
+            Topic
+          </destination-type>
+        </output-destination>
+      </output-port>
+
+      <output-port>
+        <port-name>
+          FormSubmission
+        </port-name>
+        <output-destination>
+          <provider-name>
+            local
+          </provider-name>
+          <destination-name>
+            localdms:/local/DASTopic/FormSubmissionEvents
+          </destination-name>
+          <destination-type>
+            Topic
+          </destination-type>
+        </output-destination>
+      </output-port>
+
+    </message-source>
+
+    <message-source>
+      <nucleus-name>
+        /atg/dynamo/service/GSAInvalidatorService
+      </nucleus-name>
+      <output-port>
+        <port-name>
+          GSAInvalidate
+        </port-name>
+        <output-destination>
+          <provider-name>
+            local
+          </provider-name>
+          <destination-name>
+            localdms:/local/DASTopic/GSAInvalidator
+          </destination-name>
+          <destination-type>
+            Topic
+          </destination-type>
+        </output-destination>
+      </output-port>
+    </message-source>
+
+    <message-source>
+      <nucleus-name>
+        /atg/integrations/repository/IntegrationRepositoryTools
+      </nucleus-name>
+      
+      <output-port>
+        <port-name>
+          IntegrationRepositoryScenarios
+        </port-name>
+        <output-destination>
+          <destination-name>
+            patchbay:/sqldms/IntegrationRepository/RemoteDataEvents
+          </destination-name>
+          <destination-type>
+            Topic
+          </destination-type>
+        </output-destination>
+      </output-port>
+    </message-source>
+
+    <message-source>
+      <nucleus-name>
+        /atg/dynamo/messaging/MessageImporter
+      </nucleus-name>
+      
+      <output-port>
+        <port-name>
+         IndividualEvents
+        </port-name>
+        <output-destination>
+           <provider-name>
+             local
+           </provider-name>
+           <destination-name>
+             localdms:/local/MessageImporter/IndividualEvents
+           </destination-name>
+           <destination-type>
+             Topic
+           </destination-type>
+        </output-destination>
+      </output-port>
+      <output-port>
+        <port-name>
+         GlobalEvents
+        </port-name>
+        <output-destination>
+          <destination-name>
+            patchbay:/sqldms/MessageImporter/CollectiveEvents
+          </destination-name>
+          <destination-type>
+      Queue   
+          </destination-type>
+        </output-destination>
+      </output-port>
+    </message-source>
+
+    <message-source>
+      <nucleus-name>
+        /atg/dynamo/service/LogRotationMessageSource
+      </nucleus-name>
+      
+      <output-port>
+        <port-name>
+         DEFAULT
+        </port-name>
+        <output-destination>
+          <provider-name>
+	    local
+          </provider-name>
+          <destination-name>
+            localdms:/local/Reporting/LogRotation
+          </destination-name>
+          <destination-type>
+            Queue   
+          </destination-type>
+        </output-destination>
+      </output-port>
+    </message-source>
+
+    <!-- MultiSite messages -->
+    <message-source>
+      <nucleus-name>
+        /atg/multisite/SiteSessionEventSender
+      </nucleus-name>
+
+      <output-port>
+        <port-name>
+          StartSiteSession
+        </port-name>
+        <output-destination>
+          <provider-name>
+            local
+          </provider-name>
+          <destination-name>
+            localdms:/local/MultiSite/StartSiteSession
+          </destination-name>
+          <destination-type>
+            Topic            
+          </destination-type>
+        </output-destination>        
+      </output-port>
+
+      <output-port>
+        <port-name>
+          SiteChangedEvent
+        </port-name>
+        <output-destination>
+          <provider-name>
+            local
+          </provider-name>
+          <destination-name>
+            localdms:/local/MultiSite/SiteChangedEvents
+          </destination-name>
+          <destination-type>
+            Topic            
+          </destination-type>
+        </output-destination>        
+      </output-port>
+    </message-source>    
+
+    <message-sink>
+      <nucleus-name>
+        /atg/dynamo/droplet/Cache
+      </nucleus-name>
+
+      <input-port>
+        <port-name>
+          Default
+        </port-name>
+        
+        <input-destination>
+          <provider-name>
+            local
+          </provider-name>
+          <destination-name>
+            localdms:/local/DASTopic/CacheFlushEvents
+          </destination-name>
+          <destination-type>
+            Topic
+          </destination-type>
+        </input-destination>
+
+      </input-port>
+
+    </message-sink>
+
+    <message-sink>
+      <nucleus-name>
+        /atg/dynamo/service/GSAInvalidationReceiver
+      </nucleus-name>
+
+      <input-port>
+        <port-name>
+          GSAInvalidate
+        </port-name>
+        <input-destination>
+          <provider-name>
+            local
+          </provider-name>
+          <destination-name>
+            localdms:/local/DASTopic/GSAInvalidator
+          </destination-name>
+          <destination-type>
+            Topic
+          </destination-type>
+        </input-destination>
+      </input-port>
+    </message-sink>
+
+    <message-sink>
+      <nucleus-name>
+        /atg/dynamo/service/ShutdownService
+      </nucleus-name>
+
+      <input-port>
+        <port-name>
+          ShutdownEvents
+        </port-name>
+        <input-destination>
+          <provider-name>
+            local
+          </provider-name>
+          <destination-name>
+            localdms:/local/DASTopic/ShutdownEvents
+          </destination-name>
+          <destination-type>
+            Topic
+          </destination-type>
+        </input-destination>
+      </input-port>
+    </message-sink>
+
+  </patchbay>
+
+  <!-- local JMS definitions -->
+  <local-jms>
+    <jndi-prefix>/local</jndi-prefix>
+    
+    <topic-name>/DASTopic/TestEvents</topic-name>
+    <topic-name>/DASTopic/StartupEvents</topic-name>
+    <topic-name>/DASTopic/ShutdownEvents</topic-name>
+    <topic-name>/DASTopic/CacheFlushEvents</topic-name>
+    <topic-name>/DASTopic/FormSubmissionEvents</topic-name>
+    <topic-name>/DASTopic/GSAInvalidator</topic-name>
+    <topic-name>/DCSTopic</topic-name>
+    <topic-name>/MessageImporter/IndividualEvents</topic-name>
+    <topic-name>/MultiSite/StartSiteSession</topic-name>
+    <topic-name>/MultiSite/SiteChangedEvents</topic-name>
+    <queue-name>/DASQueue</queue-name>
+    <queue-name>/DPSQueue</queue-name>
+    <queue-name>/DRSQueue</queue-name>
+    <queue-name>/DCSQueue</queue-name>
+    <queue-name>/Reporting/LogRotation</queue-name>
+
+  </local-jms>
+
+  <!-- message registry definitions -->
+  <message-registry>
+    <message-family>
+      <message-family-name>
+        atg
+      </message-family-name>
+
+      <message-type>
+        <jms-type>
+          atg.das.Startup
+        </jms-type>
+        <message-class>
+          atg.nucleus.dms.DASMessage
+        </message-class>
+        <display-name-resource>
+          dasStartupDisplayName
+        </display-name-resource>
+        <description-resource>
+          dasStartupDescription
+        </description-resource>
+        <resource-bundle>
+          atg.dms.MessagingSystemResources
+        </resource-bundle>
+      </message-type>
+
+      <message-type>
+        <jms-type>
+          atg.das.Shutdown
+        </jms-type>
+        <message-class>
+          atg.nucleus.dms.DASMessage
+        </message-class>
+        <display-name-resource>
+          dasShutdownDisplayName
+        </display-name-resource>
+        <description-resource>
+          dasShutdownDescription
+        </description-resource>
+        <resource-bundle>
+          atg.dms.MessagingSystemResources
+        </resource-bundle>
+      </message-type>
+
+      <message-type>
+        <jms-type>
+          atg.das.CacheFlush
+        </jms-type>
+        <message-class>
+          atg.nucleus.dms.DASMessage
+        </message-class>
+        <display-name-resource>
+          cacheFlushDisplayName
+        </display-name-resource>
+        <hidden>
+          true
+        </hidden>
+        <description-resource>
+          cacheFlushDescription
+        </description-resource> 
+        <resource-bundle>
+          atg.dms.MessagingSystemResources
+        </resource-bundle>
+      </message-type>
+
+      <message-type>
+        <jms-type>
+          atg.das.FormSubmission
+        </jms-type>
+        <message-class>
+          atg.nucleus.dms.FormSubmissionMessage
+        </message-class>
+        <message-context>
+          request
+        </message-context>
+        <display-name-resource>
+          formSubmissionDisplayName
+        </display-name-resource>
+        <description-resource>
+          formSubmissionDescription
+        </description-resource> 
+        <resource-bundle>
+          atg.dms.MessagingSystemResources
+        </resource-bundle>
+      </message-type>
+
+      <message-type>
+        <jms-type>
+          atg.multisite.SiteChanged
+        </jms-type>
+        <message-class>
+          atg.multisite.dms.SiteChangedMessage
+        </message-class>
+        <message-context>
+          request
+        </message-context>
+        <display-name-resource>
+          siteChangedDisplayName
+        </display-name-resource>
+        <description-resource>
+          siteChangedDescription
+        </description-resource> 
+        <resource-bundle>
+          atg.dms.MessagingSystemResources
+        </resource-bundle>
+      </message-type>
+
+
+      <message-type>
+        <jms-type>
+          atg.das.GSAInvalidation
+        </jms-type>
+        <message-class>
+          atg.adapter.gsa.invalidator.GSAInvalidationMessage
+        </message-class>
+        <display-name-resource>
+          gsaInvalidationDisplayName
+        </display-name-resource>
+        <description-resource>
+          gsaInvalidationDescription
+        </description-resource> 
+        <resource-bundle>
+          atg.dms.MessagingSystemResources
+        </resource-bundle>
+      </message-type>
+
+      <message-type>
+        <jms-type>
+          atg.das.IntegrationExternalIdChange
+        </jms-type>
+        <message-class>
+          atg.adapter.integrations.IntegrationExternalIdChange
+        </message-class>
+        <display-name-resource>
+         integrationExternalIdChangeDisplayName
+        </display-name-resource>
+        <description-resource>
+         integrationExternalIdChangeDescription
+        </description-resource> 
+        <resource-bundle>
+         atg.adapter.integrations.MessagingSystemResources
+        </resource-bundle>
+      </message-type>
+
+    </message-family>
+  </message-registry>
+
+</dynamo-message-system>
+<!-- @version $Id: //product/DAS/version/10.0.3/templates/DAS/config/config/atg/dynamo/messaging/dynamoMessagingSystem.xml#2 $$Change: 651448 $ -->

@@ -1,0 +1,35 @@
+<HTML>
+<HEAD>
+<TITLE>Switch Product Catalog Data Source</TITLE>
+</HEAD>
+
+<importbean bean="/atg/commerce/jdbc/ProductCatalogSwitcher">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+
+<body BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="../images/dcsadminbanner.gif" ALT="Dynamo Commerce Administration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a href="../index.jhtml">Commerce</a>/
+<a href="index.jhtml">ProductCatalog-PriceLists</a>/Switch<p>
+
+<blockquote>
+
+<h2>Switch the Product Catalog's and Price Lists's Data Sources: Finished</h2>
+
+<setvalue param="switchingDataSource" value="bean:ProductCatalogSwitcher.switchingDataSource">
+
+<p>You have finished switching the data source used by the Product
+Catalog and the Price Lists.
+
+<p>The data source currently being used is
+<b><valueof param="switchingDataSource.currentDataSourceName"></valueof></b></p>
+
+<p>Click <a href="PrepareToSwitchProductCatalog.jhtml">here</a> to switch again.<br>
+
+</blockquote>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/DCS/admin/atg/commerce/admin/en/catalog/SwitchFinished.jhtml#2 $$Change: 651448 $*/</java>
+

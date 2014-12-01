@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE database-initializer SYSTEM "http://www.atg.com/dtds/dbinit_1_0.dtd">
+<database-initializer>
+
+	<schema id="versionedSchema">
+	
+		<sql>
+			<path>
+				<create>
+					sql/db_components/${database}/versioned_b2b_product_catalog_ddl.sql
+				</create>
+				<drop>
+					sql/uninstall/${database}/drop_versioned_b2b_product_catalog_ddl.sql
+				</drop>
+			</path>
+		</sql>		
+		
+	</schema>
+	
+	<server-instance-type id="management">
+		<datasource id="all">
+			<schema id="versionedSchema"/>
+		</datasource>	
+	</server-instance-type>
+	
+</database-initializer>
+<!-- @version $Id: //product/B2BCommerce/version/10.0.3/release/B2BCommerce/Versioned/cim/dbinit.xml#2 $$Change: 651448 $-->

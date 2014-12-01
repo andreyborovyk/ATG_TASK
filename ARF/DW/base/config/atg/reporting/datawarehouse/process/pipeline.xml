@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE pipelinemanager
+  PUBLIC "-//Art Technology Group, Inc.//DTD Dynamo Pipeline Manager//EN"
+         'http://www.atg.com/dtds/pipelinemanager/pipelinemanager_1.0.dtd'>
+<pipelinemanager>
+  
+  <!-- Segment load pipeline chain-->
+  <pipelinechain headlink="segmentLoadProcessor" transaction="TX_REQUIRED" name="segmentLoad">
+    <pipelinelink name="segmentLoadProcessor" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SegmentLoadProcessor"/>
+    </pipelinelink>
+  </pipelinechain>
+  
+  <!-- Site visit pipeline chain -->
+  <pipelinechain name="siteVisit" transaction="TX_REQUIRED" headlink="lookupSiteVisitDay">
+    <pipelinelink name="lookupSiteVisitDay" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SiteVisitDayLookupProcessor"/>
+      <transition returnvalue="1" link="lookupSiteVisitTime"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupSiteVisitTime" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SiteVisitTimeLookupProcessor"/>
+      <transition returnvalue="1" link="lookupSiteVisitEndDay"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupSiteVisitEndDay" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SiteVisitEndDayLookupProcessor"/>
+      <transition returnvalue="1" link="lookupSiteVisitEndTime"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupSiteVisitEndTime" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SiteVisitEndTimeLookupProcessor"/>
+      <transition returnvalue="1" link="lookupSiteSessionDay"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupSiteSessionDay" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SiteSessionDayLookupProcessor"/>
+      <transition returnvalue="1" link="lookupSiteSessionTime"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupSiteSessionTime" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SiteSessionTimeLookupProcessor"/>
+      <transition returnvalue="1" link="lookupSiteSessionEndDay"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupSiteSessionEndDay" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SiteSessionEndDayLookupProcessor"/>
+      <transition returnvalue="1" link="lookupSiteSessionEndTime"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupSiteSessionEndTime" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SiteSessionEndTimeLookupProcessor"/>
+      <transition returnvalue="1" link="lookupVisitEndDay"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupVisitEndDay" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/VisitEndDayLookupProcessor"/>
+      <transition returnvalue="1" link="lookupVisitEndTime"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupVisitEndTime" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/VisitEndTimeLookupProcessor"/>
+      <transition returnvalue="1" link="lookupVisitor"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupVisitor" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SiteVisitorLookupProcessor"/>
+      <transition returnvalue="1" link="lookupSiteVisitStimulusGroup"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupSiteVisitStimulusGroup" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SiteVisitStimulusGroupLookupProcessor"/>
+      <transition returnvalue="1" link="lookupDemographic"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupDemographic" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/DemographicLookupProcessor"/>
+      <transition returnvalue="1" link="lookupSite"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupSite" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SiteLookupProcessor"/>
+      <transition returnvalue="1" link="lookupEntrySite"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupEntrySite" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/EntrySiteLookupProcessor"/>
+      <transition returnvalue="1" link="lookupExitSite"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupExitSite" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/ExitSiteLookupProcessor"/>
+      <transition returnvalue="1" link="lookupReferringSite"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupReferringSite" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/ReferringSiteLookupProcessor"/>
+      <transition returnvalue="1" link="lookupUserAgent"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupUserAgent" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/UserAgentLookupProcessor"/>
+      <transition returnvalue="1" link="lookupReferrer"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupReferrer" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/ReferrerLookupProcessor"/>
+      <transition returnvalue="1" link="logSiteVisit"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="logSiteVisit" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SiteVisitLoggerProcessor"/>
+    </pipelinelink>
+  </pipelinechain>
+
+  <!-- registration pipeline chain -->
+  <pipelinechain name="registration" transaction="TX_REQUIRED" headlink="lookupRegistrationDay">
+    <pipelinelink name="lookupRegistrationDay" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/registration/RegistrationDayLookupProcessor"/>
+      <transition returnvalue="1" link="lookupRegistrationTime"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupRegistrationTime" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/registration/RegistrationTimeLookupProcessor"/>
+      <transition returnvalue="1" link="lookupRegistrant"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupRegistrant" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/registration/RegistrantLookupProcessor"/>
+      <transition returnvalue="1" link="lookupRegistrationStimulusGroup"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupRegistrationStimulusGroup" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/registration/RegistrationStimulusGroupLookupProcessor"/>
+      <transition returnvalue="1" link="lookupRegistrationSegmentCluster"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupRegistrationSegmentCluster" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/registration/RegistrationSegmentClusterLookupProcessor"/>
+      <transition returnvalue="1" link="lookupRegistrationDemographic"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupRegistrationDemographic" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/registration/RegistrationDemographicLookupProcessor"/>
+      <transition returnvalue="1" link="lookupRegistrationSite"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupRegistrationSite" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/registration/RegistrationSiteLookupProcessor"/>
+      <transition returnvalue="1" link="lookupRegistrationSiteVisit"/> <!-- RETCODE_OK -->
+    </pipelinelink>
+    <pipelinelink name="lookupRegistrationSiteVisit" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/registration/RegistrationSiteVisitLookupProcessor"/>
+      <transition returnvalue="1" link="logRegistration"/>
+    </pipelinelink>
+    <pipelinelink name="logRegistration" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/registration/RegistrationLoggerProcessor"/>
+    </pipelinelink>
+  </pipelinechain>
+
+  <!-- Dimension update pipeline chain -->
+  <pipelinechain name="dimensionUpdate" transaction="TX_REQUIRED" headlink="convertItemType">
+    <pipelinelink name="convertItemType" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/ConvertItemTypeProcessor"/>
+      <transition returnvalue="1" link="acquireLocks"/> 
+    </pipelinelink>
+    <pipelinelink name="acquireLocks" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/AcquireLocksProcessor"/>
+      <transition returnvalue="1" link="lookupWarehouseItem"/> <!-- LOCKS_AQUIRED -->
+    </pipelinelink>
+    <pipelinelink name="lookupWarehouseItem" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/WarehouseItemLookupProcessor"/>
+      <transition returnvalue="1" link="typeOfChange"/> <!-- WAREHOUSE_ITEM_FOUND -->
+      <transition returnvalue="2" link="typeOfChange"/> <!-- WAREHOUSE_ITEM_NOT_FOUND -->
+    </pipelinelink>
+    <pipelinelink name="typeOfChange" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/ChangeTypeProcessor"/>
+      <transition returnvalue="1" link="insertItem"/> <!-- INSERT_CHANGE -->
+      <transition returnvalue="2" link="updateItem"/> <!-- UPDATE_CHANGE -->
+      <transition returnvalue="3" link="deleteItem"/> <!-- DELETE_CHANGE -->
+    </pipelinelink>
+    <pipelinelink name="deleteItem" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/WarehouseItemExistsProcessor"/>
+      <transition returnvalue="1" link="deleteExistingItem"/> <!-- WAREHOUSE_ITEM_EXISTS -->
+      <transition returnvalue="2" link="createDummyItemForDelete"/> <!-- WAREHOUSE_ITEM_DOES_NOT_EXISTS -->
+    </pipelinelink>
+    <pipelinelink name="deleteExistingItem" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/UpdateDeletedItemProcessor"/>
+    </pipelinelink>
+    <pipelinelink name="createDummyItemForDelete" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/InsertDummyItemProcessor"/>
+      <transition returnvalue="1" link="deleteNonExistingItem"/> <!-- DUMMY_ITEM_INSERTED -->
+    </pipelinelink>
+    <pipelinelink name="deleteNonExistingItem" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/UpdateDeletedItemProcessor"/>
+    </pipelinelink>
+    <pipelinelink name="insertItem" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/WarehouseItemExistsProcessor"/>
+      <transition returnvalue="1" link="restoreDeletedExistingItem"/> <!-- WAREHOUSE_ITEM_EXISTS -->
+      <transition returnvalue="2" link="lookupProductionItemForInsert"/> <!-- WAREHOUSE_ITEM_DOES_NOT_EXISTS -->
+    </pipelinelink>
+    <pipelinelink name="restoreDeletedExistingItem" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/RestoreDeletedItemProcessor"/>
+      <transition returnvalue="1" link="updateExistingItemStartDate"/> 
+    </pipelinelink>
+    <pipelinelink name="updateExistingItemStartDate" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/UpdateItemStartDateProcessor"/>
+      <transition returnvalue="1" link="updateItem"/> <!-- DATE_WAS_UPDATED -->
+      <transition returnvalue="2" link="updateItem"/> <!-- DATE_WAS_NOT_UPDATED -->
+    </pipelinelink>
+    <pipelinelink name="lookupProductionItemForInsert" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/ProductionItemLookupProcessor"/>
+      <transition returnvalue="1" link="convertItemForInsert"/> <!-- PRODUCTION_ITEMS_EXIST -->
+      <transition returnvalue="2" link="createDummyItemForInsert"/> <!-- PRODUCTION_ITEMS_DO_NOT_EXIST -->
+    </pipelinelink>
+    <pipelinelink name="convertItemForInsert" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/ItemConversionProcessor"/>
+      <transition returnvalue="1" link="insertNewItem"/> <!-- ITEM_CONVERTED -->
+    </pipelinelink>
+    <pipelinelink name="insertNewItem" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/InsertNewItemProcessor"/>
+    </pipelinelink>
+    <pipelinelink name="createDummyItemForInsert" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/InsertDummyItemProcessor"/>
+      <transition returnvalue="1" link="insertNonExistingItem"/> <!-- DUMMY_ITEM_INSERTED -->
+    </pipelinelink>
+    <pipelinelink name="insertNonExistingItem" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/UpdateItemStartDateProcessor"/>
+    </pipelinelink>
+
+    <pipelinelink name="updateItem" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/ProductionItemLookupProcessor"/>
+      <transition returnvalue="1" link="convertItemForUpdate"/> <!-- PRODUCTION_ITEMS_EXIST -->
+      <transition returnvalue="2" link="ignoreChangeRequest"/> <!-- PRODUCTION_ITEMS_DO_NOT_EXIST -->
+                  <!-- delete must have happened, but not been processed yet, can ignore -->
+    </pipelinelink>
+    <pipelinelink name="convertItemForUpdate" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/ItemConversionProcessor"/>
+      <transition returnvalue="1" link="warehouseItemExistsForUpdate"/> <!-- ITEM_CONVERTED -->
+    </pipelinelink>
+    <pipelinelink name="warehouseItemExistsForUpdate" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/WarehouseItemExistsProcessor"/>
+      <transition returnvalue="1" link="compareDatesForUpdate"/> <!-- WAREHOUSE_ITEM_EXISTS -->
+      <transition returnvalue="2" link="convertUpdateToInsert"/> <!-- WAREHOUSE_ITEM_DOES_NOT_EXISTS -->
+    </pipelinelink>
+    <pipelinelink name="convertUpdateToInsert" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/ConvertUpdateToInsertProcessor"/>
+      <transition returnvalue="1" link="insertNewItem"/> <!-- CHANGE_TYPE_CONVERTED --> 
+    </pipelinelink>
+    <pipelinelink name="compareDatesForUpdate" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/CompareEventAndLastUpdateDatesProcessor"/>
+      <transition returnvalue="1" link="createDiffs"/> <!-- EVENT_AFTER_UPDATE -->
+      <transition returnvalue="2" link="ignoreChangeRequest"/> <!-- EVENT_NOT_AFTER_UPDATE -->
+                  <!-- can ignore, any changes already in the data warehouse item -->
+    </pipelinelink>
+    <pipelinelink name="createDiffs" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/DiffProcessor"/>
+      <transition returnvalue="1" link="updateExistingItem"/> <!-- CHANGES_FOUND -->
+      <transition returnvalue="2" link="ignoreChangeRequest"/> <!-- NO_CHANGES_FOUND -->
+                  <!-- can ignore, any changes already in the data warehouse item -->
+    </pipelinelink>
+    <pipelinelink name="updateExistingItem" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/UpdateItemProcessor"/>
+    </pipelinelink>
+
+    <pipelinelink name="ignoreChangeRequest" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/NoOpProcessor"/>
+      <!-- terminating processor when a switch terminates in one case, but not the others -->
+    </pipelinelink>
+
+  </pipelinechain>
+
+</pipelinemanager>
+<!-- $Id: //product/ARF/version/10.0.3/ARF/DW/base/config/atg/reporting/datawarehouse/process/pipeline.xml#2 $ -->
+<!-- @version $Id: //product/ARF/version/10.0.3/ARF/DW/base/config/atg/reporting/datawarehouse/process/pipeline.xml#2 $$Change: 651448 $-->

@@ -1,0 +1,85 @@
+<%@ taglib uri="/paf-taglib" prefix="paf" %>
+<%@ taglib uri="/core-taglib" prefix="core" %>
+<%@ taglib uri="/dsp" prefix="dsp" %>
+<%@ taglib uri="/admin-taglib" prefix="admin" %>
+<%@ taglib uri="/jakarta-i18n-1.0" prefix="i18n" %>
+
+<paf:setFrameworkLocale />
+
+<i18n:bundle baseName="atg.portal.admin.PortalAdminResources" localeAttribute="userLocale" changeResponseLocale="false" />
+
+<dsp:page>
+
+<!-- Display any information messages -->
+<dsp:droplet name="/atg/dynamo/droplet/Switch">
+  <dsp:param name="value" bean="RegisterPageLayout.formInfo"/>
+  <dsp:oparam name="true">
+    <font class="info">
+    <dsp:droplet name="/atg/dynamo/droplet/ForEach">
+      <dsp:param name="array" bean="RegisterPageLayout.formMessages"/>
+      <dsp:oparam name="output">
+        <img src='<%= response.encodeURL("images/info.gif")%>' />&nbsp;&nbsp;<dsp:valueof param="element"/><br>
+      </dsp:oparam>
+    </dsp:droplet>
+    </font><br>
+  </dsp:oparam>
+</dsp:droplet>
+
+<core:CreateUrl id="styleFormURL"     url="/portal/admin/style.jsp">
+ <core:urlParam param="mode" value="<%=mode%>"/>
+<dsp:form action="<%=styleFormURL.getNewUrl()%>" enctype="multipart/form-data" method="post">
+<dsp:input bean="RegisterPageLayout.failureURL" type="hidden" value="<%=styleFormURL.getNewUrl()%>"/>
+<font class="small">
+
+
+
+    <table cellpadding="1" cellspacing="0" border="0" bgcolor="#666666" width="100%"><tr><td>
+	<table cellpadding="4" cellspacing="0" border="0" bgcolor="#999999" width="100%"><tr><td>
+	<font class="pageheader"><i18n:message key="admin-styles-layout-templates"/>
+	</td></tr></table>
+	</td></tr></table>
+	
+	<table cellpadding="4" cellspacing="0" border="0" bgcolor="#EAEEF0" width="100%"><tr><td>
+	<font class="smaller"><i18n:message key="admin-styles-infotext-layout-templates"/><br>
+	</td></tr></table>
+<img src='<%=clearGif %>' height="1" width="1" ><br>
+
+
+
+<table  cellspacing="0" cellpadding="4" border="0" bgcolor="#c9d1d7" width="100%">
+<tr><td>
+<dsp:input bean="RegisterPageLayout.manifestFile" type="file"/>
+<i18n:message id="upload01pl" key="upload" /><dsp:input type="submit" bean="RegisterPageLayout.create" value="<%= upload01pl %>"/>
+</font>
+</dsp:form>
+</core:CreateUrl>
+</td></tr></table>
+
+
+<img src='<%=clearGif %>' height="2" width="1" ><br>
+<table cellspacing="0" cellpadding="4" border="0" bgcolor="#c9d1d7" width="100%">
+<tr><td>
+    <b><font class="small">
+    <i18n:message key="admin-layouts-available-layouts"/></font></b><br>
+    <br>
+    <admin:GetAllItems id="items">
+
+
+    <dsp:droplet name="ForEach">
+      <dsp:param name="array" value="<%= items.getLayouts(atg.portal.framework.Comparators.getLayoutComparator()) %>"/>
+      <dsp:oparam name="output">
+<font class="small">
+        <dsp:valueof param="element.name"/><br>
+
+      </dsp:oparam>
+    </dsp:droplet>
+
+    </admin:GetAllItems>
+	
+	</td></tr></table>
+
+
+</font>
+
+</dsp:page>
+<%-- @version $Id: //app/portal/version/10.0.3/paf/admin.war/style_layout_templates.jspf#2 $$Change: 651448 $--%>

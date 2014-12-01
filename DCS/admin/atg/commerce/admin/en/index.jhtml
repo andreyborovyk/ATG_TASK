@@ -1,0 +1,139 @@
+<HTML>
+<HEAD>
+<TITLE>Dynamo Commerce Administration</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A"  VLINK="#637DA6" LINK="#E87F02">
+<IMG SRC="images/dcsadminbanner.gif" ALT="Dynamo Commerce Administration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/Commerce<p>
+
+<h2>Dynamo Commerce Administration</h2>
+<br>
+
+<blockquote>
+  <a href="inventory/index.jhtml"><b>Inventory Administration</b></a>
+  <blockquote>
+    View and manage inventory or send notifications of changes to inventory.
+  </blockquote>
+</blockquote>
+<br>
+
+
+  <java>/* fulfillment stuff depends on Fillfillment module */</java>
+  <droplet bean="/atg/dynamo/droplet/ForEach">
+    <param name="array" value="bean:/atg/modules/ModuleManager.modules">
+    <param name="elementName" value="module">
+    <oparam name="output">
+      <!-- Include link to Fulfillment admin if the Fulfillment Module is installed -->
+      <droplet bean="/atg/dynamo/droplet/Switch">
+	      <param name="value" value="param:module.moduleName">
+	      <oparam name="Fulfillment">
+	        <blockquote>
+	          <a href="fulfillment/index.jhtml"><b>Fulfillment Administration</b></a>
+		        <blockquote>
+		          Notify Fulfillment that something has shipped, send notification to Fulfillment that a shipping group has changed, or view orders.
+            </blockquote>
+	        </blockquote>
+	        <br>
+	      </oparam>
+	      <oparam name="AbandonedOrderServices">
+	        <blockquote>
+	          <a href="abandonment/index.jhtml"><b>Abandoned Order Administration</b></a>
+		        <blockquote>
+		          Send order abandonment scenario events.
+            </blockquote>
+	        </blockquote>
+	        <br>
+	      </oparam>
+      </droplet>
+    </oparam>
+  </droplet>
+
+  <droplet bean="/atg/dynamo/droplet/ForEach">
+    <param name="array" value="bean:/atg/modules/ModuleManager.modules">
+    <param name="elementName" value="module">
+    <oparam name="output">
+      <!-- Include link to Migration admin if the Migration Module is installed -->
+      <droplet bean="/atg/dynamo/droplet/Switch">
+	      <param name="value" value="param:module.moduleName">
+	      <oparam name="CustomCatalogMigration">
+	        <blockquote>
+            <a href="catalog/StandardMigration.jhtml"><b>Standard to Custom Catalog Migration</b></a>
+    	      <blockquote>
+              Migrate a standard catalog to a custom catalog<p>
+            </blockquote>
+          </blockquote>
+          <br>
+	      </oparam>
+      </droplet>
+    </oparam>
+  </droplet>
+
+
+
+<blockquote>
+  <b>Copy/Switch Commerce Data</a></b>
+  <blockquote>
+	<table border="0" cellpadding="2">
+	  <tr valign="top">
+	    <td><a href="catalog/CopyCatalog.jhtml">Copy Commerce Data</a></td>
+	    <td>Copy the ProductCatalog tables and the PriceLists tables from one database to another.</td>
+	  </tr>
+	  <tr valign="top">
+	    <td><a href="catalog/PrepareToSwitchProductCatalog.jhtml">Switch Commerce Data</a></td>
+	    <td>Switch the ProductCatalog and the PriceLists to a different data source.</td>
+	  </tr>
+	</table>
+  </blockquote>
+</blockquote>
+<br>
+
+
+<blockquote>
+  <b>Catalog Maintenance</b>
+  <blockquote>
+    Use the selections below to perform batch maintenance on the DCS Catalog.
+	<table border="0" cellpadding="2">
+	  <tr valign="top">
+	    <td nowrap><a href="maintenance/startService.jhtml">
+        <param name="process" value="UpdateCatalogProcess">
+        Catalog Update</a></td>
+	    <td>
+        This process will batch update the custom catalog property values that are normally updated incrementally by the CatalogCompletionService.
+        When this service is <a href="/nucleus/atg/commerce/catalog/custom/CatalogCompletionService/?propertyName=enabled">enabled</a>
+        all updates to the catalog using the ACC or the Repository API will trigger these properties to be computed and updated dynamically.
+        However, if the DCS catalog is updated outside of these processes or if the CatalogCompletionService is disabled, this process should be used to batch
+        update the appropriate property values.
+      </td>
+	  </tr>
+	  <tr valign="top">
+	    <td nowrap><a href="maintenance/startService.jhtml">
+        <param name="process" value="VerifyProcess">
+        Catalog Verification</a></td>
+	    <td>
+        This process verifies catalog component relationships for correctness.
+      </td>
+	  </tr>
+	 <tr valign="top">
+	   <td nowrap><a href="maintenance/startService.jhtml">
+     <param name="process" value="BasicMaintProcess">
+     Basic Maintenance</a></td>
+	   <td>This process will execute the standard batch maintenance services against the DCS catalog.</td>
+	 </tr>
+	 <tr valign="top">
+	   <td><a href="maintenance/viewStatus.jhtml">View Status</a></td>
+	   <td>View the log from the last execution of maintenance on this server.</td>
+	 </tr>
+	 </table>
+  </blockquote>
+</blockquote>
+<br>
+
+<img src="../images/bluedot.gif" width=505 height=1>
+<p>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/DCS/admin/atg/commerce/admin/en/index.jhtml#2 $$Change: 651448 $*/</java>
+

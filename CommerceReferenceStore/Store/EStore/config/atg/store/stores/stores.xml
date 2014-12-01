@@ -1,0 +1,75 @@
+<!DOCTYPE gsa-template PUBLIC "-//Art Technology Group, Inc.//DTD Dynamo Security//EN"
+"http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template>
+
+  <header>
+    <name>Commerce Reference Store</name>
+    <author>ATG</author>
+  </header>
+
+  <!--///////////////////////////////-->
+  <!--            store              -->
+  <!--///////////////////////////////-->
+
+  <item-descriptor name="store" display-name="Store" display-property="storeName">
+
+    <attribute name="resourceBundle" value="atg.projects.store.stores.StoreRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryAddressPriority" value="20"/>
+    <attribute name="categoryContactPriority" value="30"/>
+    <attribute name="categoryInfoPriority" value="40"/>
+
+    <attribute name="iconSwf" value="item.storeLocations.iconSmall"/>
+    <attribute name="largeIconSwf" value="item.storeLocations.iconLarge"/>
+
+    <table name="crs_store_location" type="primary" id-column-name="store_id">
+      <property name="id" column-name="store_id" data-type="string" category-resource="categoryInfo" display-name-resource="id">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="90"/>
+      </property>
+      <property name="siteId" column-name="site_id" data-type="string" category-resource="categoryBasics" display-name-resource="siteId">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="storeName" column-name="store_name" data-type="string" category-resource="categoryBasics" display-name-resource="name">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="address1" column-name="address_1" data-type="string" category-resource="categoryAddress" display-name-resource="address1">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="address2" column-name="address_2" data-type="string" category-resource="categoryAddress" display-name-resource="address2">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="address3" column-name="address_3" data-type="string" category-resource="categoryAddress" display-name-resource="address3">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property name="city" column-name="city" data-type="string" category-resource="categoryAddress" display-name-resource="city">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property name="county" column-name="county" data-type="string" category-resource="categoryAddress" display-name-resource="county">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+      <property name="stateAddress" column-name="state" data-type="string" category-resource="categoryAddress" display-name-resource="stateAddress">
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+      <property name="postalCode" column-name="postal_code" data-type="string" category-resource="categoryAddress" display-name-resource="postalCode">
+        <attribute name="propertySortPriority" value="90"/>
+      </property>
+      <property name="country" column-name="country" data-type="string" category-resource="categoryAddress" display-name-resource="country">
+        <attribute name="propertySortPriority" value="100"/>
+      </property>
+      <property name="phoneNumber" column-name="phone_number" data-type="string" category-resource="categoryContact" display-name-resource="phoneNumber">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="faxNumber" column-name="fax_number" data-type="string" category-resource="categoryContact" display-name-resource="faxNumber">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="email" column-name="email" data-type="string" category-resource="categoryContact" display-name-resource="email">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //hosting-blueprint/B2CBlueprint/version/10.0.3/EStore/config/atg/store/stores/stores.xml#2 $$Change: 651448 $-->

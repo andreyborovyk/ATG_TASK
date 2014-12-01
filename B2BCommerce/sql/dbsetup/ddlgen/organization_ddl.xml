@@ -1,0 +1,231 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="organization_ddl">
+<comment><![CDATA[ @version $Id: //product/B2BCommerce/version/10.0.3/templates/B2BCommerce/sql/organization_ddl.xml#2 $$Change: 651448 $]]></comment>
+   <table name="dbc_organization" description="Basic model for organizational hierarchies">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="type" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="cust_type" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="duns_number" nullable="y">
+         <column-type db="generic" type="varchar" length="20"/>
+      </column>
+      <column name="dflt_shipping_addr" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="dflt_billing_addr" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="dflt_payment_type" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="dflt_cost_center" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="order_price_limit" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="7"/>
+      </column>
+      <column name="contract_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="approval_required" nullable="y">
+         <column-type db="generic" type="tinyint"/>
+         <column-type db="oracle" type="number" length="1" scale="0"/>
+         <column-type db="db2" type="numeric" length="4" scale="0"/>
+         <column-type db="mssql" type="numeric" length="1" scale="0"/>
+      </column>
+      <primary-key name="dbc_organization_p">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dbc_orgncontrct__f" referenced-table="dbc_contract" index-name="dbc_org_cntrct_id">
+         <fkey-column referencing-column="contract_id" referenced-column="contract_id"/>
+      </foreign-key>
+      <foreign-key name="dbc_orgndflt_bil_f" referenced-table="dps_contact_info" index-name="dbc_orgdfltblig_ad">
+         <fkey-column referencing-column="dflt_billing_addr" referenced-column="id"/>
+      </foreign-key>
+      <foreign-key name="dbc_orgndflt_shi_f" referenced-table="dps_contact_info" index-name="dbc_orgdflt_shpadr">
+         <fkey-column referencing-column="dflt_shipping_addr" referenced-column="id"/>
+      </foreign-key>
+      <foreign-key name="dbc_orgndflt_pay_f" referenced-table="dps_credit_card" index-name="dbc_orgdflt_pmttyp">
+         <fkey-column referencing-column="dflt_payment_type" referenced-column="id"/>
+      </foreign-key>
+      <foreign-key name="dbc_orgnztnid_f" referenced-table="dps_organization">
+         <fkey-column referencing-column="id" referenced-column="org_id"/>
+      </foreign-key>
+      <index name="dbc_orgdfltcst_ctr" table="dbc_organization">
+         <index-column column="dflt_cost_center" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dbc_org_contact" description="Associate an Organization with one or more contacts">
+      <column name="org_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="contact_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="seq" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <primary-key name="dbc_org_contact_p">
+         <index-column column="org_id" order="asc" seq="1"/>
+         <index-column column="seq" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dbc_orgccontct_d_f" referenced-table="dps_contact_info" index-name="dbc_org_cntct_id">
+         <fkey-column referencing-column="contact_id" referenced-column="id"/>
+      </foreign-key>
+      <foreign-key name="dbc_orgcorg_d_f" referenced-table="dps_organization">
+         <fkey-column referencing-column="org_id" referenced-column="org_id"/>
+      </foreign-key>
+   </table>
+<comment><![CDATA[
+Multi-table associating an Organization with one or more order 
+approvers.  Like administrators, approvers are required to be 
+registered users of the site so they can perform online approvals.
+]]></comment>
+   <table name="dbc_org_approver">
+      <column name="org_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="approver_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="seq" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <primary-key name="dbc_org_approver_p">
+         <index-column column="org_id" order="asc" seq="1"/>
+         <index-column column="seq" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dbc_orgporg_d_f" referenced-table="dps_organization">
+         <fkey-column referencing-column="org_id" referenced-column="org_id"/>
+      </foreign-key>
+      <foreign-key name="dbc_orgpapprvr_d_f" referenced-table="dps_user" index-name="org_approver_idx">
+         <fkey-column referencing-column="approver_id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+<comment><![CDATA[
+Multi-table associating an Organization with one or more cost
+centers that are pre-approved for use by members of the organization.  
+]]></comment>
+   <table name="dbc_org_costctr">
+      <column name="org_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="cost_center" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="mssql" type="varchar" length="80" scale=""/>
+      </column>
+      <column name="seq" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <primary-key name="dbc_org_costctr_p">
+         <index-column column="org_id" order="asc" seq="1"/>
+         <index-column column="seq" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dbc_ocstctrorgd_f" referenced-table="dps_organization">
+         <fkey-column referencing-column="org_id" referenced-column="org_id"/>
+      </foreign-key>
+      <index name="dbc_org_cstctr" table="dbc_org_costctr">
+         <index-column column="cost_center" order="asc" seq="1"/>
+      </index>
+   </table>
+<comment><![CDATA[
+Multi-table associating an Organization with one or more payment 
+types that are pre-apprived for use by members of the organization.
+Right now we're just using credit cards here, but this will need
+to change to support more general payment types, including 
+invoicing and purchase orders
+]]></comment>
+   <table name="dbc_org_payment">
+      <column name="org_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="tag" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="42"/>
+      </column>
+      <column name="payment_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dbc_org_payment_p">
+         <index-column column="org_id" order="asc" seq="1"/>
+         <index-column column="tag" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dbc_orgppaymnt_d_f" referenced-table="dps_credit_card" index-name="dbc_org_pymnt_id">
+         <fkey-column referencing-column="payment_id" referenced-column="id"/>
+      </foreign-key>
+      <foreign-key name="dbc_orgpymntorg_f" referenced-table="dps_organization">
+         <fkey-column referencing-column="org_id" referenced-column="org_id"/>
+      </foreign-key>
+   </table>
+   <table name="dbc_org_shipping" description="Associate an Organization with one or more preapproved shipping addresses">
+      <column name="org_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="tag" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="42"/>
+      </column>
+      <column name="addr_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dbc_org_shipping_p">
+         <index-column column="org_id" order="asc" seq="1"/>
+         <index-column column="tag" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dbc_orgsaddr_d_f" referenced-table="dps_contact_info" index-name="dbc_org_shpng_adr">
+         <fkey-column referencing-column="addr_id" referenced-column="id"/>
+      </foreign-key>
+      <foreign-key name="dbc_orgsorg_d_f" referenced-table="dps_organization">
+         <fkey-column referencing-column="org_id" referenced-column="org_id"/>
+      </foreign-key>
+   </table>
+   <table name="dbc_org_billing" description="Associate an Organization with one or more preapproved billing addresses">
+      <column name="org_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="tag" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="42"/>
+      </column>
+      <column name="addr_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dbc_org_billing_p">
+         <index-column column="org_id" order="asc" seq="1"/>
+         <index-column column="tag" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dbc_orgbaddr_d_f" referenced-table="dps_contact_info" index-name="dbc_org_billng_adr">
+         <fkey-column referencing-column="addr_id" referenced-column="id"/>
+      </foreign-key>
+      <foreign-key name="dbc_orgborg_d_f" referenced-table="dps_organization">
+         <fkey-column referencing-column="org_id" referenced-column="org_id"/>
+      </foreign-key>
+   </table>
+   <table name="dbc_org_prefvndr" description="Associate an Organization with one or more preferred vendors">
+      <column name="org_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="vendor" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="100"/>
+      </column>
+      <column name="seq" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <primary-key name="dbc_org_prefvndr_p">
+         <index-column column="org_id" order="asc" seq="1"/>
+         <index-column column="seq" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dbc_orgprfvndorg_f" referenced-table="dps_organization">
+         <fkey-column referencing-column="org_id" referenced-column="org_id"/>
+      </foreign-key>
+   </table>
+</schema>
+<!-- @version $Id: //product/B2BCommerce/version/10.0.3/templates/B2BCommerce/sql/organization_ddl.xml#2 $$Change: 651448 $ -->

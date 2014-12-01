@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE portal-manifest PUBLIC "-//Art Technology Group, Inc.//DTD Portal Manifest//EN" "http://www.atg.com/dtds/portal/framework/portal_manifest_1.0.dtd">
+
+<portal-manifest name="XML Feed" version="1.0" author="ATG Portal Team">
+
+  <gear-definitions>
+    <gear-definition name="News XML Feed"  version="1.0" author="ATG Portal Team">
+      <description>Uses XSLT to display a weather xml feed</description>
+
+      <servlet-context>/gear/xmlfeed</servlet-context>
+
+      <dimensions>
+        <dimension name="height">noPreference</dimension>
+        <dimension name="width">noPreference</dimension>
+      </dimensions>
+
+      <gear-modes>
+
+        <gear-mode name="content">
+          <display-modes>
+            <display-mode name="shared">
+              <device-output name="html">/html/sharedXmlFeed.jsp</device-output>
+              <device-output name="wml">/wml/sharedXmlFeed.jsp</device-output>
+            </display-mode>
+            
+            <display-mode name="full">
+              <device-output name="html">/html/fullXmlFeed.jsp</device-output>
+              <device-output name="wml">/wml/fullXmlFeed.jsp</device-output>
+            </display-mode>
+          </display-modes>
+        </gear-mode>
+
+        <gear-mode name="installConfig">
+          <display-modes>           
+            <display-mode name="full">
+              <device-output name="html">
+              /html/installConfig.jsp
+              </device-output> 
+            </display-mode>
+          </display-modes>
+        </gear-mode>
+
+       <gear-mode name="instanceConfig">
+          <display-modes>           
+            <display-mode name="full">
+              <device-output name="html">
+              /html/instanceConfig.jsp
+              </device-output> 
+            </display-mode>
+          </display-modes>
+        </gear-mode>
+
+
+       
+        
+
+      </gear-modes>
+
+      
+
+      <instance-parameters>
+
+        <parameter name="queryProcessorClass">
+          <default-value>atg.portal.gear.xmlfeed.BaseQueryProcessor</default-value>
+          <description>Name of class to process query</description>
+        </parameter>
+
+        <parameter name="baseXmlSource">
+          <default-value>/xml/LocalAtgNews/Headlines.xml</default-value>
+          <description>Base XML Feed Source</description>
+        </parameter>
+
+        <parameter name="sharedHtmlXsl"  >
+          <default-value>/xsl/html/LocalAtgNewsShared.xsl</default-value>
+          <description>XSL Source for shared mode HTML output</description>
+        </parameter>
+
+        <parameter name="fullHtmlXsl"  >
+          <default-value>/xsl/html/LocalAtgNewsFull.xsl</default-value>
+          <description>XSL Source for full mode HTML output</description>
+        </parameter>
+
+        <parameter name="sharedWmlXsl"  >
+          <default-value>/xsl/wml/LocalAtgNewsShared.xsl</default-value>
+          <description>XSL Source for shared mode WML output</description>
+        </parameter>
+
+        <parameter name="fullWmlXsl"  >
+          <default-value>/xsl/wml/LocalAtgNewsFull.xsl</default-value>
+          <description>XSL Source for full mode WML output</description>
+        </parameter>
+
+        <parameter name="queryParametersMapping"  >
+          <default-value></default-value>
+          <description>Additional query parameters mapping</description>
+        </parameter>
+       
+        <parameter name="showLinkToFull"  >
+          <default-value>false</default-value>
+          <description>Show a link to the full mode page in shared mode</description>
+        </parameter>
+       
+      </instance-parameters> 
+
+      
+
+    
+    </gear-definition>
+
+  </gear-definitions>
+</portal-manifest>
+<!-- @version $Id: //app/portal/version/10.0.3/xmlfeed/etc/news-manifest.xml#2 $$Change: 651448 $ -->

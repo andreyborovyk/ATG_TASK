@@ -1,0 +1,35 @@
+<HTML>
+<HEAD>
+<TITLE>Shipping</TITLE>
+</HEAD>
+<importbean bean="/atg/commerce/fulfillment/droplet/ShippingDroplet">
+<body BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="../images/dcsadminbanner.gif" ALT="Dynamo Commerce Administration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a href="../index.jhtml">Commerce</a>/<a href="index.jhtml">Fulfillment</a>/
+<a href="ShippableGroups.jhtml">Shippable Groups</a>/Shipping<p>
+
+<blockquote>
+
+<H2>Shipping</H2>
+
+Shipping group: <valueof param=shippingGroupId>"No shipping
+  group."</valueof> in order: <valueof param=orderId>"no order id"</valueof><br>
+
+<DROPLET bean="ShippingDroplet">
+  <PARAM NAME="orderId" value="param:orderId">
+  <PARAM NAME="shippingGroupId" value="param:shippingGroupId">
+  <OPARAM NAME="output">
+    <valueof param="status">no status</valueof>
+  </OPARAM>
+</DROPLET>
+
+<br>
+
+</blockquote>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/DCS/admin/atg/commerce/admin/en/fulfillment/Shipping.jhtml#2 $$Change: 651448 $*/</java>
+

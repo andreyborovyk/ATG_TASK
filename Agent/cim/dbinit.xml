@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE database-initializer SYSTEM "http://www.atg.com/dtds/dbinit_1_0.dtd">
+<database-initializer>
+
+  <schema id="svcagentSchema">
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/agent_audit_ddl.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_agent_audit_ddl.sql
+        </drop>
+      </path>
+    </sql>
+  </schema>
+
+  <schema id="productionSchema">
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/agent_profile_ddl.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_agent_profile_ddl.sql
+        </drop>
+      </path>
+    </sql>
+  </schema>
+
+  <server-instance-type id="svcagent">
+    <datasource id="svcagent">
+      <schema id="svcagentSchema"/>
+      <schema id="productionSchema"/>
+    </datasource>
+  </server-instance-type>
+
+  <server-instance-type id="production">
+    <datasource id="nonswitchingCore">
+      <schema id="productionSchema"/>
+    </datasource>
+    <datasource id="switchingCore">
+      <schema id="productionSchema"/>
+    </datasource>
+  </server-instance-type>
+
+</database-initializer>
+<!-- @version $Id: //product/Agent/version/10.0.3/src/cim/dbinit.xml#2 $$Change: 651448 $-->

@@ -1,0 +1,101 @@
+<importbean bean="/atg/commerce/order/purchase/PaymentGroupDroplet">
+<importbean bean="/atg/commerce/order/purchase/PaymentGroupFormHandler">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/Switch">
+<importbean bean="/atg/dynamo/droplet/ErrorMessageForEach">
+<importbean bean="/atg/userprofiling/Profile">
+
+<body>
+<a href="index.jhtml">Catalog Home</a> - 
+<a href="product_search.jhtml">Product Search</a> - 
+<a href="shoppingcart.jhtml">Shopping Cart</a> - 
+<a href="lists.jhtml">My Lists</a> - 
+<a href="comparison.jhtml">Product Comparison</a> -
+<a href="giftlist_search.jhtml">Gift List Search</a> - 
+<droplet bean="/atg/dynamo/droplet/Switch">
+  <param name="value" value="bean:/atg/userprofiling/Profile.transient">
+  <oparam name="false">
+    <a href="logout.jhtml">Logout</a>
+  </oparam>
+  <oparam name="true">
+    <a href="login.jhtml">Login</a> or <a href="register.jhtml">Register</a>
+  </oparam>
+</droplet>
+<BR>
+<i>location: <valueof bean="Profile.currentLocation"></valueof></i><p>
+
+<java>/* Check for errors */</java>
+<droplet name="Switch">
+  <param name="value" value="bean:PaymentGroupFormHandler.formError">
+  <oparam name="true">
+    <font color=cc0000><STRONG><UL>
+      <droplet name="ErrorMessageForEach">
+        <param name="exceptions" value="bean:PaymentGroupFormHandler.formExceptions">
+        <oparam name="output">
+        <LI> <valueof param="message"></valueof>
+        </oparam>
+      </droplet>
+    </UL></STRONG></font>
+  </oparam>
+</droplet>
+
+<p>Here we utilize the PaymentGroupDroplet to initialize CreditCard and StoreCredit
+PaymentGroups. CreditCards are initialized based on the Profile property referenced
+by PaymentGroupDroplet.creditCardsPropertyName. StoreCredits are initialized based
+on the ClaimableManager.getStoreCreditsForProfile method, which querires the
+ClaimableRepository. If a user has no StoreCredits in the ClaimableRepository, then
+none will appear here. If a user wishes to make a purchase for an amount greater then
+that authorized by the StoreCredit, then multiple PaymentGroups should be used.
+The PaymentGroupDroplet also initializes one OrderPaymentInfo object to keep the
+association between the Order and whichever PaymentGroup the user selects
+
+<p>You can readily add a StoreCredit to the ClaimableRepository by running an XML
+operation tag in the component browser at
+http://localhost:8830/nucleus/atg/commerce/claimable/ClaimableRepository/
+
+<p>The following xml will create a StoreCredit with an amount remaining of $10,000
+for the current user.
+
+<PRE>
+  &lt;add-item item-descriptor="StoreCreditClaimable"&gt;
+    &lt;set-property name="amount" value="10000"/&gt;
+    &lt;set-property name="amountAuthorized" value="0"/&gt;
+    &lt;set-property name="amountRemaining" value="10000"/&gt;
+    &lt;set-property name="ownerId" value="<valueof bean="Profile.id"/>"/&gt;
+    &lt;set-property name="expirationDate" value="01/01/2005"/&gt;
+    &lt;set-property name="issueDate" value="01/01/2001"/&gt;
+  &lt;/add-item&gt;
+</PRE>
+
+
+<droplet bean="PaymentGroupDroplet">
+  <param name="clear" value="true">
+  <param name="initOrderPayment" value="true">
+  <param name="paymentGroupTypes" value="creditCard,storeCredit">
+  <param name="initPaymentGroups" value="true">
+  <oparam name="output">
+  <setvalue bean="PaymentGroupFormHandler.listId" value="param:order.id">
+  <!-- begin output -->
+    <form action="store_credit.jhtml" method=post>
+    <droplet bean="ForEach">
+      <param name="array" value="param:paymentGroups">
+      <oparam name="empty">There are no StoreCredits or CreditCards for this user.</oparam>
+      <oparam name="output">
+        <input type=radio bean="PaymentGroupFormHandler.currentList[0].paymentMethod" value="param:key"><valueof param="key"/><br>
+      </oparam>
+      <oparam name="outputEnd">
+        <input type="hidden" priority=9 bean="PaymentGroupFormHandler.ListId" value="param:order.id">
+        <input type=hidden bean="PaymentGroupFormHandler.applyPaymentGroupsSuccessURL" value="order_confirmation.jhtml">
+        <input type=submit bean="PaymentGroupFormHandler.applyPaymentGroups" value="Continue">
+      </oparam>
+    </droplet>
+    </form>
+  <!-- end output -->
+  </oparam>
+</droplet>
+
+<p>Go <a href="billing.jhtml?init=true">back</a> to normal billing page.
+
+</body>
+</html>
+<java>/* @version $Id: //product/B2BCommerce/version/10.0.3/release/B2BCommerce/html/sample_catalog/store_credit.jhtml#2 $$Change: 651448 $*/</java>

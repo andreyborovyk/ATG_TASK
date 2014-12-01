@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE scenario
+  SYSTEM
+  "dynamosystemresource:/atg/scenario/definition/sdl.dtd">
+
+<scenario author="admin" creation-time="960937282000" enabled="true" last-modified-by="admin" modification-time="1028234961332">
+  <segment migrate-users="true">
+    <segment-name>Activity Based Promotion</segment-name>
+    <fork id="1">
+      <branch id="1.1">
+        <!--================================-->
+        <!--== Views an item from Features named Features:feature:/repositories/Features/en_US/globalfocus.html  -->
+        <!--================================-->
+        <event id="1.1.1">
+          <event-name>atg.dps.ViewItem</event-name>
+          <filter construct="content-repository-filter" operator="eq">
+            <event-property>
+              <property-name>repositoryName</property-name>
+            </event-property>
+            <constant>Features</constant>
+          </filter>
+          <filter construct="content-id-filter" operator="isOneOf">
+            <event-property>
+              <property-name>item</property-name>
+              <property-name>repositoryId</property-name>
+            </event-property>
+            <array type="java.lang.String[]">
+              <constant>/repositories/Features/en_US/globalfocus.html</constant>
+            </array>
+          </filter>
+        </event>
+      </branch>
+      <branch id="1.2">
+        <!--================================-->
+        <!--== Views an item from Features named Features:feature:/repositories/Features/en_US/international.html  -->
+        <!--================================-->
+        <event id="1.2.1">
+          <event-name>atg.dps.ViewItem</event-name>
+          <filter construct="content-repository-filter" operator="eq">
+            <event-property>
+              <property-name>repositoryName</property-name>
+            </event-property>
+            <constant>Features</constant>
+          </filter>
+          <filter construct="content-id-filter" operator="isOneOf">
+            <event-property>
+              <property-name>item</property-name>
+              <property-name>repositoryId</property-name>
+            </event-property>
+            <array type="java.lang.String[]">
+              <constant>/repositories/Features/en_US/international.html</constant>
+            </array>
+          </filter>
+        </event>
+      </branch>
+    </fork>
+    <fork id="2">
+      <branch id="2.1">
+        <!--================================-->
+        <!--== Fund list includes /repositories/Funds/en_US/overseas.xml  -->
+        <!--================================-->
+        <condition construct="people-element" id="2.1.1">
+          <filter construct="profile-property-filter" operator="includes">
+            <subject-property>
+              <property-name>fundList</property-name>
+            </subject-property>
+            <constant>/repositories/Funds/en_US/overseas.xml</constant>
+          </filter>
+        </condition>
+      </branch>
+      <otherwise-branch id="2.2">
+        <!-- Otherwise -->
+        <!--================================-->
+        <!--== Add items to slot QFOfferSlot named Offers:offer:/repositories/Offers/en_US/overseas.html  -->
+        <!--================================-->
+        <action id="2.2.2">
+          <action-name>fillSlot</action-name>
+          <action-param name="slot">
+            <nucleus-property>
+              <nucleus-path>/atg/registry/Slots/QFOfferSlot</nucleus-path>
+            </nucleus-property>
+          </action-param>
+          <action-param name="ids">
+            <array type="java.lang.String[]">
+              <constant>/repositories/Offers/en_US/overseas.html</constant>
+            </array>
+          </action-param>
+        </action>
+      </otherwise-branch>
+    </fork>
+  </segment>
+  <segment migrate-users="true">
+    <segment-name>Activity Based Promotion FR</segment-name>
+    <fork id="1">
+      <branch id="1.1">
+        <!--================================-->
+        <!--== Views an item from Features named Features:feature:/repositories/Features/fr_FR/globalfocus.html  -->
+        <!--================================-->
+        <event id="1.1.1">
+          <event-name>atg.dps.ViewItem</event-name>
+          <filter construct="content-repository-filter" operator="eq">
+            <event-property>
+              <property-name>repositoryName</property-name>
+            </event-property>
+            <constant>Features</constant>
+          </filter>
+          <filter construct="content-id-filter" operator="isOneOf">
+            <event-property>
+              <property-name>item</property-name>
+              <property-name>repositoryId</property-name>
+            </event-property>
+            <array type="java.lang.String[]">
+              <constant>/repositories/Features/fr_FR/globalfocus.html</constant>
+            </array>
+          </filter>
+        </event>
+      </branch>
+      <branch id="1.2">
+        <!--================================-->
+        <!--== Views an item from Features named Features:feature:/repositories/Features/fr_FR/international.html  -->
+        <!--================================-->
+        <event id="1.2.1">
+          <event-name>atg.dps.ViewItem</event-name>
+          <filter construct="content-repository-filter" operator="eq">
+            <event-property>
+              <property-name>repositoryName</property-name>
+            </event-property>
+            <constant>Features</constant>
+          </filter>
+          <filter construct="content-id-filter" operator="isOneOf">
+            <event-property>
+              <property-name>item</property-name>
+              <property-name>repositoryId</property-name>
+            </event-property>
+            <array type="java.lang.String[]">
+              <constant>/repositories/Features/fr_FR/international.html</constant>
+            </array>
+          </filter>
+        </event>
+      </branch>
+    </fork>
+    <fork id="2">
+      <branch id="2.1">
+        <!--================================-->
+        <!--== Fund list includes /repositories/Funds/fr_FR/overseas.xml  -->
+        <!--================================-->
+        <condition construct="people-element" id="2.1.1">
+          <filter construct="profile-property-filter" operator="includes">
+            <subject-property>
+              <property-name>fundList</property-name>
+            </subject-property>
+            <constant>/repositories/Funds/fr_FR/overseas.xml</constant>
+          </filter>
+        </condition>
+      </branch>
+      <otherwise-branch id="2.2">
+        <!-- Otherwise -->
+        <!--================================-->
+        <!--== Add items to slot QFOfferSlot named Offers:offer:/repositories/Offers/fr_FR/overseas.html  -->
+        <!--================================-->
+        <action id="2.2.2">
+          <action-name>fillSlot</action-name>
+          <action-param name="slot">
+            <nucleus-property>
+              <nucleus-path>/atg/registry/Slots/QFOfferSlot</nucleus-path>
+            </nucleus-property>
+          </action-param>
+          <action-param name="ids">
+            <array type="java.lang.String[]">
+              <constant>/repositories/Offers/fr_FR/overseas.html</constant>
+            </array>
+          </action-param>
+        </action>
+      </otherwise-branch>
+    </fork>
+  </segment>
+  <segment migrate-users="true">
+    <segment-name>Activity Based Promotion JA</segment-name>
+    <fork id="1">
+      <branch id="1.1">
+        <!--================================-->
+        <!--== Views an item from Features named Features:feature:/repositories/Features/ja_JP/globalfocus.html  -->
+        <!--================================-->
+        <event id="1.1.1">
+          <event-name>atg.dps.ViewItem</event-name>
+          <filter construct="content-repository-filter" operator="eq">
+            <event-property>
+              <property-name>repositoryName</property-name>
+            </event-property>
+            <constant>Features</constant>
+          </filter>
+          <filter construct="content-id-filter" operator="isOneOf">
+            <event-property>
+              <property-name>item</property-name>
+              <property-name>repositoryId</property-name>
+            </event-property>
+            <array type="java.lang.String[]">
+              <constant>/repositories/Features/ja_JP/globalfocus.html</constant>
+            </array>
+          </filter>
+        </event>
+      </branch>
+      <branch id="1.2">
+        <!--================================-->
+        <!--== Views an item from Features named Features:feature:/repositories/Features/ja_JP/international.html  -->
+        <!--================================-->
+        <event id="1.2.1">
+          <event-name>atg.dps.ViewItem</event-name>
+          <filter construct="content-repository-filter" operator="eq">
+            <event-property>
+              <property-name>repositoryName</property-name>
+            </event-property>
+            <constant>Features</constant>
+          </filter>
+          <filter construct="content-id-filter" operator="isOneOf">
+            <event-property>
+              <property-name>item</property-name>
+              <property-name>repositoryId</property-name>
+            </event-property>
+            <array type="java.lang.String[]">
+              <constant>/repositories/Features/ja_JP/international.html</constant>
+            </array>
+          </filter>
+        </event>
+      </branch>
+    </fork>
+    <fork id="2">
+      <branch id="2.1">
+        <!--================================-->
+        <!--== Fund list includes /repositories/Funds/de_DE/overseas.xml  -->
+        <!--================================-->
+        <condition construct="people-element" id="2.1.1">
+          <filter construct="profile-property-filter" operator="includes">
+            <subject-property>
+              <property-name>fundList</property-name>
+            </subject-property>
+            <constant>/repositories/Funds/de_DE/overseas.xml</constant>
+          </filter>
+        </condition>
+      </branch>
+      <otherwise-branch id="2.2">
+        <!-- Otherwise -->
+        <!--================================-->
+        <!--== Add items to slot QFOfferSlot named Offers:offer:/repositories/Offers/ja_JP/overseas.html  -->
+        <!--================================-->
+        <action id="2.2.2">
+          <action-name>fillSlot</action-name>
+          <action-param name="slot">
+            <nucleus-property>
+              <nucleus-path>/atg/registry/Slots/QFOfferSlot</nucleus-path>
+            </nucleus-property>
+          </action-param>
+          <action-param name="ids">
+            <array type="java.lang.String[]">
+              <constant>/repositories/Offers/ja_JP/overseas.html</constant>
+            </array>
+          </action-param>
+        </action>
+      </otherwise-branch>
+    </fork>
+  </segment>
+  <segment migrate-users="true">
+    <segment-name>Activity Based Promotion DE</segment-name>
+    <fork id="1">
+      <branch id="1.1">
+        <!--================================-->
+        <!--== Views an item from Features named Features:feature:/repositories/Features/de_DE/globalfocus.html  -->
+        <!--================================-->
+        <event id="1.1.1">
+          <event-name>atg.dps.ViewItem</event-name>
+          <filter construct="content-repository-filter" operator="eq">
+            <event-property>
+              <property-name>repositoryName</property-name>
+            </event-property>
+            <constant>Features</constant>
+          </filter>
+          <filter construct="content-id-filter" operator="isOneOf">
+            <event-property>
+              <property-name>item</property-name>
+              <property-name>repositoryId</property-name>
+            </event-property>
+            <array type="java.lang.String[]">
+              <constant>/repositories/Features/de_DE/globalfocus.html</constant>
+            </array>
+          </filter>
+        </event>
+      </branch>
+      <branch id="1.2">
+        <!--================================-->
+        <!--== Views an item from Features named Features:feature:/repositories/Features/de_DE/international.html  -->
+        <!--================================-->
+        <event id="1.2.1">
+          <event-name>atg.dps.ViewItem</event-name>
+          <filter construct="content-repository-filter" operator="eq">
+            <event-property>
+              <property-name>repositoryName</property-name>
+            </event-property>
+            <constant>Features</constant>
+          </filter>
+          <filter construct="content-id-filter" operator="isOneOf">
+            <event-property>
+              <property-name>item</property-name>
+              <property-name>repositoryId</property-name>
+            </event-property>
+            <array type="java.lang.String[]">
+              <constant>/repositories/Features/de_DE/international.html</constant>
+            </array>
+          </filter>
+        </event>
+      </branch>
+    </fork>
+    <fork id="2">
+      <branch id="2.1">
+        <!--================================-->
+        <!--== Fund list includes /repositories/Funds/de_DE/overseas.xml  -->
+        <!--================================-->
+        <condition construct="people-element" id="2.1.1">
+          <filter construct="profile-property-filter" operator="includes">
+            <subject-property>
+              <property-name>fundList</property-name>
+            </subject-property>
+            <constant>/repositories/Funds/de_DE/overseas.xml</constant>
+          </filter>
+        </condition>
+      </branch>
+      <otherwise-branch id="2.2">
+        <!-- Otherwise -->
+        <!--================================-->
+        <!--== Add items to slot QFOfferSlot named Offers:offer:/repositories/Offers/de_DE/overseas.html  -->
+        <!--================================-->
+        <action id="2.2.2">
+          <action-name>fillSlot</action-name>
+          <action-param name="slot">
+            <nucleus-property>
+              <nucleus-path>/atg/registry/Slots/QFOfferSlot</nucleus-path>
+            </nucleus-property>
+          </action-param>
+          <action-param name="ids">
+            <array type="java.lang.String[]">
+              <constant>/repositories/Offers/de_DE/overseas.html</constant>
+            </array>
+          </action-param>
+        </action>
+      </otherwise-branch>
+    </fork>
+  </segment>
+</scenario>

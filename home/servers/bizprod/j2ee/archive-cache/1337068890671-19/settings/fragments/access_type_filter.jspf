@@ -1,0 +1,11 @@
+
+<form action='<%=urlTargetJsp %>' method="GET" id="filter">
+<input type="hidden" name="mode"             value='<%=mode%>'>
+<input type="hidden" name="userGroupType"    value='<%= request.getParameter("userGroupType")%>'/>
+<input type="hidden" name="paf_page_id"      value="<%= dsp_page_id %>">
+<input type="hidden" name="paf_gear_id"      value="<%= dsp_gear_id %>">
+<input type="hidden" name="paf_page_url"     value="<%= dsp_page_url%>">
+<input type="hidden" name="paf_community_id" value="<%= dsp_community_id %>">
+<input type="text" size="20" maxlength="20" name="searchFilter" value="<%=currFilter%>">&nbsp;</font><font size="-2"><input type="submit" value="<%=submitLabelFilter%>" name="filterSubmit"></font>
+</form>
+<%-- @version $Id: //app/portal/version/10.0.3/paf/settings.war/fragments/access_type_filter.jspf#2 $$Change: 651448 $--%>

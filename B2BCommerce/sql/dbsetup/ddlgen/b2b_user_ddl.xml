@@ -1,0 +1,229 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="b2b_user_ddl">
+<comment><![CDATA[ @version $Id: //product/B2BCommerce/version/10.0.3/templates/B2BCommerce/sql/b2b_user_ddl.xml#2 $$Change: 651448 $]]></comment>
+<comment><![CDATA[
+Specific extensions for B2B user profiles
+]]></comment>
+   <table name="dbc_cost_center">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="identifier" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+         <column-type db="oracle" type="varchar2" length="64" scale=""/>
+      </column>
+      <column name="user_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dbc_cost_center_p">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dbc_user">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="price_list" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="user_catalog" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="user_role" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="business_addr" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="dflt_shipping_addr" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="dflt_billing_addr" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="dflt_payment_type" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="dflt_cost_center" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="order_price_limit" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="7"/>
+      </column>
+      <column name="approval_required" nullable="y">
+         <column-type db="generic" type="tinyint"/>
+         <column-type db="oracle" type="number" length="1" scale="0"/>
+         <column-type db="db2" type="numeric" length="4" scale="0"/>
+         <column-type db="mssql" type="numeric" length="1" scale="0"/>
+      </column>
+      <primary-key name="dbc_user_p">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dbc_usrdflt_cos_f" referenced-table="dbc_cost_center" index-name="usr_defcstctr_idx">
+         <fkey-column referencing-column="dflt_cost_center" referenced-column="id"/>
+      </foreign-key>
+      <foreign-key name="dbc_usrbusnss_d_f" referenced-table="dps_contact_info" index-name="dbc_usr_busnes_adr">
+         <fkey-column referencing-column="business_addr" referenced-column="id"/>
+      </foreign-key>
+      <foreign-key name="dbc_usrdflt_bil_f" referenced-table="dps_contact_info" index-name="dbc_usrdfltblngadr">
+         <fkey-column referencing-column="dflt_billing_addr" referenced-column="id"/>
+      </foreign-key>
+      <foreign-key name="dbc_usrdflt_shi_f" referenced-table="dps_contact_info" index-name="dbc_usrdfltshp_adr">
+         <fkey-column referencing-column="dflt_shipping_addr" referenced-column="id"/>
+      </foreign-key>
+      <foreign-key name="dbc_usrdflt_pay_f" referenced-table="dps_credit_card" index-name="dbc_usrdfltpymntty">
+         <fkey-column referencing-column="dflt_payment_type" referenced-column="id"/>
+      </foreign-key>
+      <foreign-key name="dbc_usrid_f" referenced-table="dps_user">
+         <fkey-column referencing-column="id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="dbc_buyer_costctr">
+      <column name="user_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="seq" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="cost_center_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dbc_buyer_costct_p">
+         <index-column column="user_id" order="asc" seq="1"/>
+         <index-column column="seq" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dbc_buyrcost_cnt_f" referenced-table="dbc_cost_center" index-name="dbc_byr_costctr_id">
+         <fkey-column referencing-column="cost_center_id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+<comment><![CDATA[
+Multi-table associating a Buyer with one or more order approvers.  Approvers are 
+required to be registered users of the site so they can perform online approvals.
+]]></comment>
+   <table name="dbc_buyer_approver" description="">
+      <column name="user_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="approver_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="seq" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <primary-key name="dbc_buyer_approv_p">
+         <index-column column="user_id" order="asc" seq="1"/>
+         <index-column column="seq" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dbc_buyrapprvr_d_f" referenced-table="dps_user" index-name="buyer_approver_idx">
+         <fkey-column referencing-column="approver_id" referenced-column="id"/>
+      </foreign-key>
+      <foreign-key name="dbc_buyrusr_d_f" referenced-table="dps_user">
+         <fkey-column referencing-column="user_id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="dbc_buyer_payment" description="Associate a Buyer with one or more payment types that are pre-apprived for his or her use.">
+      <column name="user_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="tag" nullable="n">
+         <column-type db="generic" type="varchar" length="42"/>
+      </column>
+      <column name="payment_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dbc_buyer_paymen_p">
+         <index-column column="user_id" order="asc" seq="1"/>
+         <index-column column="tag" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dbc_buyrpaymnt_d_f" referenced-table="dps_credit_card" index-name="dbc_byr_pymnt_id">
+         <fkey-column referencing-column="payment_id" referenced-column="id"/>
+      </foreign-key>
+      <foreign-key name="dbc_brpymntusr_d_f" referenced-table="dps_user">
+         <fkey-column referencing-column="user_id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="dbc_buyer_shipping" description="Associate a Buyer with one or more preapproved shipping addresses">
+      <column name="user_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="tag" nullable="n">
+         <column-type db="generic" type="varchar" length="42"/>
+      </column>
+      <column name="addr_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dbc_buyer_shippi_p">
+         <index-column column="user_id" order="asc" seq="1"/>
+         <index-column column="tag" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dbc_buyraddr_d_f" referenced-table="dps_contact_info" index-name="dbc_byr_shpng_addr">
+         <fkey-column referencing-column="addr_id" referenced-column="id"/>
+      </foreign-key>
+      <foreign-key name="dbc_buyrshpusr_d_f" referenced-table="dps_user">
+         <fkey-column referencing-column="user_id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="dbc_buyer_billing" description="Associate a Buyer with one or more preapproved billing addresses">
+      <column name="user_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="tag" nullable="n">
+         <column-type db="generic" type="varchar" length="42"/>
+      </column>
+      <column name="addr_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dbc_buyer_billin_p">
+         <index-column column="user_id" order="asc" seq="1"/>
+         <index-column column="tag" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dbc_buyrblladdr_f" referenced-table="dps_contact_info" index-name="dbc_byr_biladdr_id">
+         <fkey-column referencing-column="addr_id" referenced-column="id"/>
+      </foreign-key>
+      <foreign-key name="dbc_buyrbllusr_d_f" referenced-table="dps_user">
+         <fkey-column referencing-column="user_id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="dbc_buyer_prefvndr" description="Associate a Buyer with one or more preferred vendors">
+         <column name="user_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="vendor" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="100"/>
+      </column>
+      <column name="seq" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <primary-key name="dbc_buyer_prefvn_p">
+         <index-column column="user_id" order="asc" seq="1"/>
+         <index-column column="seq" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dbc_byrprfndusrd_f" referenced-table="dps_user">
+         <fkey-column referencing-column="user_id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="dbc_buyer_plist" description="Associate a Buyer with one or more standard purchase lists">
+      <column name="user_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="list_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="tag" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <primary-key name="dbc_buyer_plist_p">
+         <index-column column="user_id" order="asc" seq="1"/>
+         <index-column column="tag" order="asc" seq="2"/>
+      </primary-key>
+   </table>
+</schema>
+<!-- @version $Id: //product/B2BCommerce/version/10.0.3/templates/B2BCommerce/sql/b2b_user_ddl.xml#2 $$Change: 651448 $ -->

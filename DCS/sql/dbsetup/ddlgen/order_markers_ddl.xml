@@ -1,0 +1,73 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="dcs_ddl">
+<comment><![CDATA[ @version $ $]]></comment>
+  <table name="dcs_order_markers">
+    <column name="marker_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="order_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="marker_key" nullable="n" i18n="n">
+      <column-type db="generic" type="varchar" length="100"/>
+    </column>
+    <column name="marker_value" nullable="y" i18n="n">
+      <column-type db="generic" type="varchar" length="100"/>
+    </column>
+    <column name="marker_data" nullable="y" i18n="n">
+      <column-type db="generic" type="varchar" length="100"/>
+    </column>
+    <column name="creation_date" nullable="y">
+      <column-type db="generic" type="timestamp"/>
+    </column>
+    <column name="version" nullable="n">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <column name="marker_type" nullable="y">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <primary-key name="dcsordermarkers_p">
+      <index-column column="marker_id" order="asc" seq="1"/>
+      <index-column column="order_id" order="asc" seq="2"/>
+    </primary-key>
+    <foreign-key name="dcsordermarkers_f" referenced-table="dcspp_order" index-name="dcs_ordrmarkers1_x">
+      <fkey-column referencing-column="order_id" referenced-column="order_id"/>
+    </foreign-key>
+  </table>
+
+  <table name="dcspp_commerce_item_markers">
+    <column name="marker_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="commerce_item_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="marker_key" nullable="n" i18n="n">
+      <column-type db="generic" type="varchar" length="100"/>
+    </column>
+    <column name="marker_value" nullable="y" i18n="n">
+      <column-type db="generic" type="varchar" length="100"/>
+    </column>
+    <column name="marker_data" nullable="y" i18n="n">
+      <column-type db="generic" type="varchar" length="100"/>
+    </column>
+    <column name="creation_date" nullable="y">
+      <column-type db="generic" type="timestamp"/>
+    </column>
+    <column name="version" nullable="n">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <column name="marker_type" nullable="y">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <primary-key name="dcscitemmarkers_p">
+      <index-column column="marker_id" order="asc" seq="1"/>
+      <index-column column="commerce_item_id" order="asc" seq="2"/>
+    </primary-key>
+    <foreign-key name="dcscitemmarkers_f" referenced-table="dcspp_item" index-name="dcs_itemmarkers1_x">
+      <fkey-column referencing-column="commerce_item_id" referenced-column="commerce_item_id"/>
+    </foreign-key>
+  </table>
+
+</schema>
+<!-- @version $Id: //product/DCS/version/10.0.3/templates/DCS/sql/order_markers_ddl.xml#2 $$Change: 651448 $-->

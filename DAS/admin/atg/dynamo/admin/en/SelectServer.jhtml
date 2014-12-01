@@ -1,0 +1,49 @@
+<nucleus type=import>
+	/atg/dynamo/admin/Configure
+	/atg/dynamo/admin/DefaultConfigure
+    /atg/dynamo/droplet/ForEach
+</nucleus>
+
+<!-- <setvalue property="Configure.serverName" value="param:serverName"> -->
+
+<java>
+//  atg.service.dynamo.ServerConfig configure = (atg.service.dynamo.ServerConfig) request.resolveName("/atg/dynamo/admin/Configure");
+//  String serverName = request.getParameter("serverName");
+//  if (serverName != null)
+//    configure.setServerName(serverName);
+</java>
+
+<form action="param:returnURL" method=post>
+  <TABLE BORDER="0" WIDTH="500">
+  <TR>
+  <TD>
+  <select property="Configure.serverName">
+    <droplet name="ForEach">
+      <param name="array" value="property:Configure.serverNames">
+      <oparam name="output">
+        <option value="param:element"><valueof param="element"></valueof>
+      </oparam>
+    </droplet>
+  </select>
+  </TD>
+  
+  <TD> 
+  <input type=submit value="Change Server">
+  </TD>
+  <TD ALIGN="RIGHT" WIDTH="100%">
+  <a href="config-individual.jhtml">Add, Delete, or Reset Servers</a>
+  </TD>
+  </TR>
+  </TABLE>
+</form>
+
+
+
+<!-- <form action="configure.jhtml" method=post> -->
+
+<setvalue property="Configure.refresh">
+<setvalue property="DefaultConfigure.refresh">
+
+<!-- </form> -->
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/SelectServer.jhtml#2 $$Change: 651448 $ */</java>
+

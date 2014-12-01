@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<waspc-config xmlns:wasp="urn:WaspServer" xmlns:cppa="urn:CppAdaptor" xmlns:sep="urn:ServiceEndpoint" xmlns:svci="urn:ServiceInstanceRepository" xmlns:trans="urn:TransportRepository" xmlns:disp="urn:DispatcherRepository">
+<wasp:import ref="conf/server-core60-custom.xml"/>
+<trans:transport trans:class="WASP_HTTPTransportServer" trans:scheme="server-http" xmlns:hts="urn:HTTPTransportServer" hts:reuseCount="30" hts:reuseTimeout="180" hts:rwTimeout="10" hts:acceptTimeout="5" hts:chunked="true" hts:port="6074" hts:hostname="$AUTO$" hts:dispatcher="DefaultDispatcher" hts:singleThread="0" hts:maxSpareThreads="-1" hts:maxThreads="-1" hts:selectorThreads="14"/>
+<disp:dispatcher disp:class="WASP_DispatcherImpl" disp:name="DefaultDispatcher" xmlns:dispi="urn:DispatcherImpl" dispi:shutdownURL="/Admin/Shutdown6074/"/>
+<!--Service binding - hello--><sep:serviceEndpoint sep:dispatcherRef="DefaultDispatcher" sep:adaptorRef="DefaultCppAdaptor" cppa:wsdl="aexml.wsdl" sep:url="/AEXmlService/">
+<cppa:instance cppa:ref="aexml"/>
+</sep:serviceEndpoint>
+<!--Service instances - implementation classes--><svci:serviceInstance svci:class="AEXmlServerImpl" svci:name="aexml"/>
+</waspc-config>

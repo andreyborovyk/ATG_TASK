@@ -1,0 +1,313 @@
+<jsp:useBean id="arrayList" class="java.util.ArrayList"/>
+
+<core:switch value="<%= entryData.getAction() %>">
+
+    <%-- delete a queue entry --%>
+    <core:case value="<%= dmsContext.kDeleteQueueEntry %>">
+      <core:demarcateTransaction id="deleteQueueEntryXA">
+
+ 	  <dms:decodeCompoundKey id="decodeKey" encodedKey="<%= entryData.getEntryId() %>">
+            <dms:queueEntry id="queueEntry" messageId="<%= decodeKey.getLong2() %>"
+                            queueId="<%= decodeKey.getLong1() %>">
+              <dms:removeEntityBean id="removeBean" 
+	                            entityBean="<%= queueEntry.getQueueEntry() %>"/>
+	    </dms:queueEntry>  
+	  </dms:decodeCompoundKey>
+
+      </core:demarcateTransaction>
+    </core:case>
+
+    <%-- delete some queue entries --%>
+    <core:case value="<%= dmsContext.kDeleteSomeQueueEntries %>">
+      <core:demarcateTransaction id="deleteSomeQueueEntriesXA">
+        
+	<core:forEach id="queueEntriesForEach" values="<%= entryData.getEntryIds() %>"
+	              elementId="queueEntryId" castClass="java.lang.String">
+          <dms:decodeCompoundKey id="decodeKey" encodedKey="<%= queueEntryId %>">
+	    <dms:queueEntry  id="queueEntry" messageId="<%= decodeKey.getLong2() %>"
+	                     queueId="<%= decodeKey.getLong1() %>" >
+	      <dms:removeEntityBean id="removeBean"
+	                            entityBean="<%= queueEntry.getQueueEntry() %>"/>
+	    </dms:queueEntry>
+	  </dms:decodeCompoundKey>
+        </core:forEach>
+	      
+      </core:demarcateTransaction>
+    </core:case>
+
+    <%-- delete all queue entries --%>
+    <core:case value="<%= dmsContext.kDeleteAllQueueEntries %>">
+      <core:demarcateTransaction id="deleteAllQueueEntriesXA">
+	<core:forEach id="queueEntriesForEach" 
+	              values="<%= dmsContext.getQueue().getQueueEntries() %>"
+	              elementId="queueEntry" castClass="atg.sqljmsadmin.DMSQueueEntry">
+	  <dms:removeEntityBean id="removeBean" entityBean="<%= queueEntry %>"/>
+        </core:forEach>
+      </core:demarcateTransaction>
+    </core:case>
+
+    <%-- delete all pending queue entries --%>
+    <core:case value="<%= dmsContext.kDeletePendingQueueEntries %>">
+      <core:demarcateTransaction id="deleteAllPendingQueueEntriesXA">
+	<core:forEach id="queueEntriesForEach" 
+	              values="<%= dmsContext.getQueue().pendingMessages() %>"
+	              elementId="queueEntry" castClass="atg.sqljmsadmin.DMSQueueEntry">
+	  <dms:removeEntityBean id="removeBean" entityBean="<%= queueEntry %>"/>
+        </core:forEach>
+      </core:demarcateTransaction>
+    </core:case>
+
+    <%-- delete all unhandled queue entries --%>
+    <core:case value="<%= dmsContext.kDeleteUnhandledQueueEntries %>">
+      <core:demarcateTransaction id="deleteAllUnhandledQueueEntriesXA">
+	<core:forEach id="queueEntriesForEach" 
+	              values="<%= dmsContext.getQueue().unhandledMessages() %>"
+	              elementId="queueEntry" castClass="atg.sqljmsadmin.DMSQueueEntry">
+	  <dms:removeEntityBean id="removeBean" entityBean="<%= queueEntry %>"/>
+        </core:forEach>
+      </core:demarcateTransaction>
+    </core:case>
+
+    <%-- move a queue entry --%>
+    <core:case value="<%= dmsContext.kMoveQueueEntry %>">
+      <dms:addToArray arrayList="<%= arrayList %>" value="<%= entryData.getEntryId() %>"/>
+      <core:cast id="castEntryIds" value="<%= arrayList.toArray(new java.lang.String[0]) %>" 
+                 castClass="java.lang.String[]">
+        <jsp:setProperty name="entryData" property="entryIds" value="<%= castEntryIds %>"/>
+      </core:cast>
+      <jsp:setProperty name="entryData" property="action" 
+                       value="<%= dmsContext.kMoveSomeQueueEntries %>"/>
+      <core:redirect url="moveEntry.jsp"/>
+    </core:case>
+
+    <%-- move some queue entries --%>
+    <core:case value="<%= dmsContext.kMoveSomeQueueEntries %>">
+      <core:redirect url="moveEntry.jsp"/>
+    </core:case>
+
+    <%-- move all queue entries --%>
+    <core:case value="<%= dmsContext.kMoveAllQueueEntries %>">
+      <core:forEach id="queueEntriesForEach" 
+	            values="<%= dmsContext.getQueue().getQueueEntries() %>"
+	            elementId="queueEntry" castClass="atg.sqljmsadmin.DMSQueueEntry">
+        <dms:encodeCompoundKey id="encodeKey" long1="<%= queueEntry.getId().getQueueId() %>"
+	                       long2="<%= queueEntry.getId().getMessageId() %>">
+          <dms:addToArray arrayList="<%= arrayList %>" value="<%= encodeKey.getEncodedKey() %>"/>
+        </dms:encodeCompoundKey>
+      </core:forEach>
+      
+      <core:cast id="castEntryIds" value="<%= arrayList.toArray(new java.lang.String[0]) %>" 
+                 castClass="java.lang.String[]">
+        <jsp:setProperty name="entryData" property="entryIds" value="<%= castEntryIds %>"/>
+      </core:cast>
+      <jsp:setProperty name="entryData" property="action" 
+                       value="<%= dmsContext.kMoveSomeQueueEntries %>"/>
+      <core:redirect url="moveEntry.jsp"/>
+    </core:case>
+    
+    <%-- move all unhandled queue entries --%>
+    <core:case value="<%= dmsContext.kMoveAllUnhandledQueueEntries %>">
+      <core:forEach id="queueEntriesForEach" 
+	            values="<%= dmsContext.getQueue().unhandledMessages() %>"
+	            elementId="queueEntry" castClass="atg.sqljmsadmin.DMSQueueEntry">
+        <dms:encodeCompoundKey id="encodeKey" long1="<%= queueEntry.getId().getQueueId() %>"
+	                       long2="<%= queueEntry.getId().getMessageId() %>">
+          <dms:addToArray arrayList="<%= arrayList %>" value="<%= encodeKey.getEncodedKey() %>"/>
+        </dms:encodeCompoundKey>
+      </core:forEach>
+      
+      <core:cast id="castEntryIds" value="<%= arrayList.toArray(new java.lang.String[0]) %>" 
+                 castClass="java.lang.String[]">
+        <jsp:setProperty name="entryData" property="entryIds" value="<%= castEntryIds %>"/>
+      </core:cast>
+      <jsp:setProperty name="entryData" property="action" 
+                       value="<%= dmsContext.kMoveSomeQueueEntries %>"/>
+      <core:redirect url="moveEntry.jsp"/>
+    </core:case>
+
+    <%-- delete a topic entry --%>
+    <core:case value="<%= dmsContext.kDeleteTopicEntry %>">
+      <core:demarcateTransaction id="deleteTopicEntryXA">
+        <dms:decodeCompoundKey id="decodeKey" encodedKey="<%= entryData.getEntryId() %>">
+	  <dms:topicEntry id="topicEntry" messageId="<%= decodeKey.getLong2() %>"
+	                  topicSubscriptionId="<%= decodeKey.getLong1() %>">
+            <dms:removeEntityBean id="removeBean" entityBean="<%= topicEntry.getTopicEntry() %>"/>
+          </dms:topicEntry>
+	</dms:decodeCompoundKey>
+      </core:demarcateTransaction>
+    </core:case>
+
+    <%-- delete some topic entries --%>
+    <core:case value="<%= dmsContext.kDeleteSomeTopicEntries %>">
+      <core:demarcateTransaction id="deleteSomeTopicEntriesXA">
+        <core:forEach id="topicEntriesForEach" values="<%= entryData.getEntryIds() %>"
+	              elementId="topicEntryId" castClass="java.lang.String">
+	  <dms:decodeCompoundKey id="decodeKey" encodedKey="<%= topicEntryId %>">
+	    <dms:topicEntry id="topicEntry" messageId="<%= decodeKey.getLong2() %>"
+	                    topicSubscriptionId="<%= decodeKey.getLong1() %>">
+              <dms:removeEntityBean id="removeBean" 
+	                            entityBean="<%= topicEntry.getTopicEntry() %>"/>
+            </dms:topicEntry>
+	  </dms:decodeCompoundKey>
+        </core:forEach>
+      </core:demarcateTransaction>
+    </core:case>
+
+    <%-- delete all topic entries --%>
+    <core:case value="<%= dmsContext.kDeleteAllTopicEntries %>">
+      <core:demarcateTransaction id="deleteAllTopicEntriesXA">
+	<core:forEach id="topicEntriesForEach" 
+	              values="<%= dmsContext.getTopicSubscription().getTopicEntries() %>"
+	              elementId="topicEntry" castClass="atg.sqljmsadmin.DMSTopicEntry">
+	  <dms:removeEntityBean id="removeBean" entityBean="<%= topicEntry %>"/>
+        </core:forEach>
+      </core:demarcateTransaction>
+    </core:case>
+
+    <%-- delete all pending topic entries --%>
+    <core:case value="<%= dmsContext.kDeletePendingTopicEntries %>">
+      <core:demarcateTransaction id="deleteAllPendingTopicEntriesXA">
+	<core:forEach id="topicEntriesForEach" 
+	              values="<%= dmsContext.getTopicSubscription().pendingMessages() %>"
+	              elementId="topicEntry" castClass="atg.sqljmsadmin.DMSTopicEntry">
+	  <dms:removeEntityBean id="removeBean" entityBean="<%= topicEntry %>"/>
+        </core:forEach>
+      </core:demarcateTransaction>
+    </core:case>
+
+    <%-- delete all unhandled topic entries --%>
+    <core:case value="<%= dmsContext.kDeleteUnhandledTopicEntries %>">
+      <core:demarcateTransaction id="deleteAllUnhandledTopicEntriesXA">
+	<core:forEach id="topicEntriesForEach" 
+	              values="<%= dmsContext.getTopicSubscription().unhandledMessages() %>"
+	              elementId="topicEntry" castClass="atg.sqljmsadmin.DMSTopicEntry">
+	  <dms:removeEntityBean id="removeBean" entityBean="<%= topicEntry %>"/>
+        </core:forEach>
+      </core:demarcateTransaction>
+    </core:case>
+
+    <%-- move a topic entry --%>
+    <core:case value="<%= dmsContext.kMoveTopicEntry %>">
+      <dms:addToArray arrayList="<%= arrayList %>" value="<%= entryData.getEntryId() %>"/>
+      <core:cast id="castEntryIds" value="<%= arrayList.toArray(new java.lang.String[0]) %>" 
+                 castClass="java.lang.String[]">
+        <jsp:setProperty name="entryData" property="entryIds" value="<%= castEntryIds %>"/>
+      </core:cast>
+      <jsp:setProperty name="entryData" property="action" 
+                       value="<%= dmsContext.kMoveSomeTopicEntries %>"/>
+      <core:redirect url="moveEntry.jsp"/>
+    </core:case>
+
+    <%-- move some topic entries --%>
+    <core:case value="<%= dmsContext.kMoveSomeTopicEntries %>">
+      <core:redirect url="moveEntry.jsp"/>
+    </core:case>
+
+    <%-- move all topic entries --%>
+    <core:case value="<%= dmsContext.kMoveAllTopicEntries %>">
+      <core:forEach id="topicEntriesForEach" 
+	            values="<%= dmsContext.getTopicSubscription().getTopicEntries() %>"
+	            elementId="topicEntry" castClass="atg.sqljmsadmin.DMSTopicEntry">
+        <dms:encodeCompoundKey id="encodeKey" long1="<%= topicEntry.getId().getSubscriptionId() %>"
+	                       long2="<%= topicEntry.getId().getMessageId() %>">
+          <dms:addToArray arrayList="<%= arrayList %>" value="<%= encodeKey.getEncodedKey() %>"/>
+        </dms:encodeCompoundKey>
+      </core:forEach>
+      
+      <core:cast id="castEntryIds" value="<%= arrayList.toArray(new java.lang.String[0]) %>" 
+                 castClass="java.lang.String[]">
+        <jsp:setProperty name="entryData" property="entryIds" value="<%= castEntryIds %>"/>
+      </core:cast>
+      <jsp:setProperty name="entryData" property="action" 
+                       value="<%= dmsContext.kMoveSomeTopicEntries %>"/>
+      <core:redirect url="moveEntry.jsp"/>
+    </core:case>
+
+    <%-- move all unhandled topic entries --%>
+    <core:case value="<%= dmsContext.kMoveAllUnhandledTopicEntries %>">
+      <core:forEach id="topicEntriesForEach" 
+	            values="<%= dmsContext.getTopicSubscription().unhandledMessages() %>"
+	            elementId="topicEntry" castClass="atg.sqljmsadmin.DMSTopicEntry">
+        <dms:encodeCompoundKey id="encodeKey" long1="<%= topicEntry.getId().getSubscriptionId() %>"
+	                       long2="<%= topicEntry.getId().getMessageId() %>">
+          <dms:addToArray arrayList="<%= arrayList %>" value="<%= encodeKey.getEncodedKey() %>"/>
+        </dms:encodeCompoundKey>
+      </core:forEach>
+      
+      <core:cast id="castEntryIds" value="<%= arrayList.toArray(new java.lang.String[0]) %>" 
+                 castClass="java.lang.String[]">
+        <jsp:setProperty name="entryData" property="entryIds" value="<%= castEntryIds %>"/>
+      </core:cast>
+      <jsp:setProperty name="entryData" property="action" 
+                       value="<%= dmsContext.kMoveSomeTopicEntries %>"/>
+      <core:redirect url="moveEntry.jsp"/>
+    </core:case>
+
+    <%-- delete a client --%>
+    <core:case value="<%= dmsContext.kDeleteClient %>">
+      <core:urlParamValue id="clientIdValue" param="clientId">
+        <core:ifNotNull value="<%= clientIdValue.getValue() %>">
+	
+	  <core:demarcateTransaction id="deleteClientXA">
+          <dms:client id="client" clientId="<%= clientIdValue.getValue() %>">
+            <dms:removeEntityBean id="removeBean" entityBean="<%= client.getClient() %>"/>
+          </dms:client>    
+	  </core:demarcateTransaction>
+	  
+        </core:ifNotNull>
+      </core:urlParamValue>
+    </core:case>
+
+    <%-- delete a queue --%>
+    <core:case value="<%= dmsContext.kDeleteQueue %>">
+      <core:urlParamValue id="queueIdValue" param="queueId">
+        <core:ifNotNull value="<%= queueIdValue.getValue() %>">
+	
+	  <core:demarcateTransaction id="deleteQueueXA">
+	  <dms:queue id="deleteQueue" queueId="<%= queueIdValue.getValue() %>">
+	    <dms:removeEntityBean id="removeBean" entityBean="<%= deleteQueue.getQueue() %>"/>
+          </dms:queue>    
+	  </core:demarcateTransaction>	  
+
+        </core:ifNotNull>
+      </core:urlParamValue>
+    </core:case>
+
+    <%-- delete a topic --%>
+    <core:case value="<%= dmsContext.kDeleteTopic %>">
+      <core:urlParamValue id="topicIdValue" param="topicId">
+        <core:ifNotNull value="<%= topicIdValue.getValue() %>">
+	
+	  <core:demarcateTransaction id="deletTopicXA">
+	  <dms:topic id="topic" topicId="<%= topicIdValue.getValue() %>">
+	    <dms:removeEntityBean id="removeBean" entityBean="<%= topic.getTopic() %>"/>
+          </dms:topic>    
+	  </core:demarcateTransaction>
+	  
+        </core:ifNotNull>
+      </core:urlParamValue>
+    </core:case>    
+
+    <%-- delete a topic subscription --%>
+    <core:case value="<%= dmsContext.kDeleteTopicSubscription %>">
+      <core:urlParamValue id="topicSubIdValue" param="topicSubId">
+        <core:ifNotNull value="<%= topicSubIdValue.getValue() %>">
+	
+	  <core:demarcateTransaction id="deleteTopicSubXA">
+	  <dms:topicSubscription id="topicSubscription" 
+	                         topicSubscriptionId="<%= topicSubIdValue.getValue() %>">
+            <core:exclusiveIf>
+	      <core:ifNotNull value="<%= topicSubscription.getTopicSubscription() %>">
+    	        <dms:removeEntityBean id="removeBean" 
+	                       entityBean="<%= topicSubscription.getTopicSubscription() %>"/>
+	      </core:ifNotNull>
+            </core:exclusiveIf>
+	  </dms:topicSubscription>
+	  </core:demarcateTransaction>
+
+	</core:ifNotNull>
+      </core:urlParamValue>
+    </core:case>
+
+</core:switch>
+<%-- @version $Id: //product/DAS/version/10.0.3/release/SQLJMSAdmin/j2ee-apps/sqlJmsAdmin/webModule/delete.jspf#2 $$Change: 651448 $--%>

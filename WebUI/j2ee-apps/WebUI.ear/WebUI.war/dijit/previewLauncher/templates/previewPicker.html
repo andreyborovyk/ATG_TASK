@@ -1,0 +1,37 @@
+<div id="atg_previewPicker" class="atg_previewPicker" dojoattachpoint="wrapper">
+
+  <div dojoattachpoint="contents" style="position: relative; z-index: 2;">
+
+
+   <div id="ppHeader">
+     <a id="ppCloser" href="#" title="Close This" dojoAttachEvent="onclick: hide">X</a>
+     Preview Launcher
+  </div>
+
+   <div id="ppPicker" dojoattachpoint="ppPicker">
+   <!-- <em>Loading Data...</em> -->
+   </div>
+   <div id="ppFooter">
+
+     <h3>Launch Settings</h3>
+     <div id="ppChosen">
+         <div id="userChosen">
+           <span>As User: </span><em dojoattachpoint="chosenUser">Please Select From Above</em>
+        </div>
+         <div id="urlChosen">
+           <span>Landing Page: </span><em dojoattachpoint="chosenURL">Please Select From Above</em>
+        </div>
+         <div id="siteChosen">
+           <span>On Site: </span><em dojoattachpoint="chosenSite">Please Select From Above</em>
+        </div>
+     </div>
+
+     <input dojoattachpoint="previewLaunchButton" id="previewLaunchButton" disabled="true" type="submit" value="Launch" class="submit" dojoAttachEvent="onclick: launchClicked"></input>
+
+
+   </div>
+
+
+  </div>
+
+</div>

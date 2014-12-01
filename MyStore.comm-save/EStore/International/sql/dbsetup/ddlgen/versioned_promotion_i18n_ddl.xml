@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This is a generated file -->
+
+<!DOCTYPE schema SYSTEM "http://road.atg.com/dtds/ddlgen/schema.dtd">
+<schema name="versioned_catalog_i18n_ddl" description="tables for the Catalog log i18n repository">
+
+<comment> @version $Id: //edu/ILT-Courses/main/COMM/StudentFiles/COM/setup/copy-files/apps/MyStore/EStore/International/sql/dbsetup/ddlgen/versioned_promotion_i18n_ddl.xml#3 $$Change: 635816 $</comment>
+
+  <sql>
+    <sql-db db="oracle">
+      alter session set NLS_LENGTH_SEMANTICS='CHAR';
+    </sql-db>
+  </sql>
+  
+	 <table name="crs_prm_xlate" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+			</column>
+			<column description="the id of the workspace that the asset exists on" nullable="n" name="workspace_id">
+				 <column-type length="40" type="varchar" db="generic"/>
+			</column>
+			<column description="the id of the branch that the asset exists on" nullable="n" name="branch_id">
+				 <column-type length="40" type="varchar" db="generic"/>
+			</column>
+			<column description="is this version the head of branch" nullable="n" name="is_head">
+				 <column-type type="one-digit" db="generic"/>
+			</column>
+			<column description="flag indicating that the version is deleted" nullable="n" name="version_deleted">
+				 <column-type length="1" type="numeric" db="generic"/>
+			</column>
+			<column description="flag indicating that version is editable" nullable="n" name="version_editable">
+				 <column-type length="1" type="numeric" db="generic"/>
+			</column>
+			<column description="the predecessor version number" nullable="y" name="pred_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+			</column>
+			<column description="date the asset was checked in if not a working version" nullable="y" name="checkin_date">
+				 <column-type type="datetime" db="generic"/>
+			</column>
+
+			<!-- Data Columns -->
+    <column name="translation_id" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>    
+    <column name="display_name" nullable="y" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>    
+    <column name="description" nullable="y" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>
+    
+  <primary-key name="crs_prm_xlate_p">
+      <index-column column="translation_id" seq="1" order="asc"/>
+    
+				 <index-column seq="2" order="asc" column="asset_version"/>
+			</primary-key>
+			<index table="crs_prm_xlate" name="crs_prm_xlate_wsx">
+				 <index-column seq="1" order="asc" column="workspace_id"/>
+			</index>
+			<index table="crs_prm_xlate" name="crs_prm_xlate_cix">
+				 <index-column seq="1" order="asc" column="checkin_date"/>
+			</index>
+	 </table>
+  
+	 <table name="crs_prm_prm_xlate" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+			</column>
+
+			<!-- Data Columns -->
+    <column name="promotion_id" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="locale" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="translation_id" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>    
+    
+        
+    
+  <primary-key name="crs_prm_prm_xlt_p">
+      <index-column column="promotion_id" seq="1" order="asc"/>
+      <index-column column="locale" seq="2" order="asc"/>
+    
+				 <index-column seq="3" order="asc" column="asset_version"/>
+			</primary-key>
+			<index name="crs_prm_xlt_tr_id" table="crs_prm_prm_xlate" description="">
+      <index-column column="translation_id" order="asc" seq="1"/>
+    </index>
+	 </table>
+  
+	 <table name="crs_cq_xlate" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+			</column>
+			<column description="the id of the workspace that the asset exists on" nullable="n" name="workspace_id">
+				 <column-type length="40" type="varchar" db="generic"/>
+			</column>
+			<column description="the id of the branch that the asset exists on" nullable="n" name="branch_id">
+				 <column-type length="40" type="varchar" db="generic"/>
+			</column>
+			<column description="is this version the head of branch" nullable="n" name="is_head">
+				 <column-type type="one-digit" db="generic"/>
+			</column>
+			<column description="flag indicating that the version is deleted" nullable="n" name="version_deleted">
+				 <column-type length="1" type="numeric" db="generic"/>
+			</column>
+			<column description="flag indicating that version is editable" nullable="n" name="version_editable">
+				 <column-type length="1" type="numeric" db="generic"/>
+			</column>
+			<column description="the predecessor version number" nullable="y" name="pred_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+			</column>
+			<column description="date the asset was checked in if not a working version" nullable="y" name="checkin_date">
+				 <column-type type="datetime" db="generic"/>
+			</column>
+
+			<!-- Data Columns -->
+    <column name="translation_id" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>    
+    <column name="name" nullable="y" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="254"/>
+    </column>    
+    
+  <primary-key name="crs_cq_xlate_p">
+      <index-column column="translation_id" seq="1" order="asc"/>
+    
+				 <index-column seq="2" order="asc" column="asset_version"/>
+			</primary-key>
+			<index table="crs_cq_xlate" name="crs_cq_xlate_wsx">
+				 <index-column seq="1" order="asc" column="workspace_id"/>
+			</index>
+			<index table="crs_cq_xlate" name="crs_cq_xlate_cix">
+				 <index-column seq="1" order="asc" column="checkin_date"/>
+			</index>
+	 </table>
+  
+	 <table name="crs_cq_cq_xlate" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+			</column>
+
+			<!-- Data Columns -->
+    <column name="close_qualif_id" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="locale" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="translation_id" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>    
+    
+        
+    
+  <primary-key name="crs_cq_cq_xlt_p">
+      <index-column column="close_qualif_id" seq="1" order="asc"/>
+      <index-column column="locale" seq="2" order="asc"/>
+    
+				 <index-column seq="3" order="asc" column="asset_version"/>
+			</primary-key>
+			<index name="crs_cq_xlt_tr_id" table="crs_cq_cq_xlate" description="">
+      <index-column column="translation_id" order="asc" seq="1"/>
+    </index>
+	 </table>
+
+  <sql>
+    <sql-db db="oracle">
+      alter session set NLS_LENGTH_SEMANTICS='BYTE';
+    </sql-db>
+  </sql>
+
+</schema>
+<!-- @version $Id: //edu/ILT-Courses/main/COMM/StudentFiles/COM/setup/copy-files/apps/MyStore/EStore/International/sql/dbsetup/ddlgen/versioned_promotion_i18n_ddl.xml#3 $$Change: 635816 $-->

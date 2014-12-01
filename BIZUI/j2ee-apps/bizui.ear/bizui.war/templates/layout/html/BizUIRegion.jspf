@@ -1,0 +1,19 @@
+<c:set var="PORTALSERVLETREQUEST"><%= Attribute.PORTALSERVLETREQUEST %></c:set>
+<c:set var="PORTALSERVLETRESPONSE"><%= Attribute.PORTALSERVLETRESPONSE %></c:set>
+<c:set var="portalServletRequest"     value="${requestScope[PORTALSERVLETREQUEST]}"/>
+<c:set var="portalServletResponse"    value="${requestScope[PORTALSERVLETRESPONSE]}"/>
+<c:set var="community"                value="${portalServletRequest.community}"/>
+<c:set var="gearTextColor"            value="#${page.colorPalette.gearTextColor}"/>
+<c:set var="gearBackgroundColor"      value="#${page.colorPalette.gearBackgroundColor}"/>
+
+<c:forEach var="gear" items="${gears}">
+  <% 
+    pageContext.setAttribute("gearContextType",GearContext.class);
+	  pageContext.setAttribute("gearMode",GearMode.CONTENT);		
+  %>
+  <paf:context var="gearContext" type="${gearContextType}"/>
+  <c:set target="${gearContext}" property="gear" value="${gear}"/>
+  <c:set target="${gearContext}" property="gearMode" value="${gearMode}"/>
+  <paf:include context="${gearContext}"/>     
+</c:forEach>
+<%-- @version $Id: //product/BIZUI/version/10.0.3/web-apps/bizui/templates/layout/html/BizUIRegion.jspf#2 $$Change: 651448 $--%>

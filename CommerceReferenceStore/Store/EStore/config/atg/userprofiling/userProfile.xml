@@ -1,0 +1,161 @@
+<gsa-template>
+  <header>
+    <name>Store Related Profile Additions</name>
+    <author>ATG</author>
+  </header>
+
+  <!--///////////////////////////////-->
+  <!--            user               -->
+  <!--///////////////////////////////-->
+
+  <item-descriptor name="user" cache-mode="simple" item-cache-timeout="550000" query-expire-timeout="550000" xml-combine="append">
+
+    <property name="storeId" data-type="string" display-name-resource="storeId" category-resource="categoryCommerceGeneral">
+      <attribute name="resourceBundle" value="atg.projects.store.profile.UserProfileTemplateResources"/>
+    </property>
+    <property name="categoryLastBrowsed" data-type="string" display-name-resource="categoryLastBrowsed" category-resource="categoryCommerceBehaviorTracking">
+      <attribute name="resourceBundle" value="atg.projects.store.profile.UserProfileTemplateResources"/>
+    </property>
+
+    <property name="age" data-type="int" display-name-resource="age" queryable="true" readable="true" category-resource="categoryBasics" expert="false" cache-mode="inherit" property-type="atg.repository.dp.TimeIntervalPropertyDescriptor">
+      <attribute name="datePropertyName1" value="dateOfBirth"/>
+      <attribute name="timeStampInterval" value="year"/>
+      <attribute name="propertySortPriority" value="55"/>
+      <attribute name="resourceBundle" value="atg.projects.store.profile.UserProfileTemplateResources"/>
+    </property>
+
+    <table name="dps_user">
+      <property name="firstName" category-resource="categoryBasics" required="true"/>
+      <property name="lastName" category-resource="categoryBasics" required="true"/>
+      <property name="email" category-resource="categoryEmail" required="true"/>
+
+      <property name="gender" default="unknown" data-type="enumerated" display-name-resource="gender" xml-combine="replace">
+        <attribute name="resourceBundle" value="atg.projects.store.profile.UserProfileTemplateResources"/>
+        <attribute name="useCodeForValue" value="false" />
+        <option value="unknown" code="0"/>
+        <option value="female" code="1"/>
+        <option value="male" code="2"/>
+      </property>
+    
+      <property name="autoLogin" default="true" />
+
+    </table>
+  
+    <table name="crs_user" type="auxiliary" id-column-name="user_id">
+
+      <property name="externalId" display-name-resource="externalId" column-name="external_id" data-type="string">
+        <attribute name="resourceBundle" value="atg.projects.store.profile.UserProfileTemplateResources"/>
+      </property>
+     
+
+      <property name="referralSource" data-type="enumerated" display-name-resource="referralSource" column-name="referral_source">
+        <attribute name="resourceBundle" value="atg.projects.store.profile.UserProfileTemplateResources"/>
+        <attribute name="useCodeForValue" value="false" />
+        <option value="unknown" code="0" />
+        <option value="tv" code="1" />
+        <option value="radio" code="2" />
+        <option value="pressArticle" code="3" />
+        <option value="onlineAdLink" code="4" />
+        <option value="friend" code="5" />
+        <option value="justTypedURL" code="6" />
+      </property>
+
+      <property name="numberOfOrders" category-resource="categoryOrderTracking" data-type="int" 
+                display-name-resource="numberOfOrders" column-name="number_of_orders" 
+                default="0">
+         <attribute name="propertySortyPriority" value="-20"/>
+        <attribute name="resourceBundle" value="atg.projects.store.profile.UserProfileTemplateResources"/>
+      </property>
+      <property name="lastPurchaseDate" category-resource="categoryOrderTracking" data-type="date" display-name-resource="lastPurchaseDate" column-name="last_purchase_date">
+        <attribute name="propertySortyPriority" value="-30"/>
+        <attribute name="resourceBundle" value="atg.projects.store.profile.UserProfileTemplateResources"/>
+      </property>
+      
+      <property name="receivePromoEmail" category-resource="categoryEmail"  data-type="enumerated" default="receivePromoEmailYes" column-name="receive_promo_email" display-name-resource="receivePromoEmail">
+        <attribute name="useCodeForValue" value="false"/>
+        <option resource="receivePromoEmailYes" code="1"/>
+        <option resource="receivePromoEmailNo" code="0"/>
+        <attribute name="resourceBundle" value="atg.projects.store.profile.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="-2"/>
+      </property>
+   
+    </table>
+  
+    <table name="crs_items_bought" type="multi" multi-column-name="sequence_id" id-column-name="user_id">
+       <property name="itemsBought" category-resource="categoryOrderTracking" column-name="item" display-name-resource="itemsBought" data-type="list" queryable="true" repository="/atg/commerce/catalog/ProductCatalog" cache-mode="disabled" component-item-type="sku">
+          <attribute name="propertySortyPriority" value="-10"/>
+          <attribute name="resourceBundle" value="atg.projects.store.profile.UserProfileTemplateResources"/>
+       </property>
+    </table>
+      
+    <table name="dps_user_address">
+    
+      <property name="billingAddress" category-resource="categoryCommerceAddressAndPhone" display-name-resource="billingAddress" cascade="update,delete" column-name="billing_addr_id" item-type="contactInfo" xml-combine="replace">
+        <attribute name="resourceBundle" value="atg.commerce.UserProfileTemplateResources" /> 
+        <attribute name="propertySortPriority" value="-5"/>
+      </property>
+      
+      <property name="shippingAddress" category-resource="categoryCommerceAddressAndPhone" display-name-resource="shippingAddress" cascade="" column-name="shipping_addr_id" item-type="contactInfo" xml-combine="replace">
+        <attribute name="resourceBundle" value="atg.commerce.UserProfileTemplateResources"/> 
+        <attribute name="propertySortPriority" value="-3"/>
+      </property>
+
+    </table>
+
+    <table name="dps_other_addr">
+      <property name="secondaryAddresses" category-resource="categoryCommerceAddressAndPhone" data-type="map" queryable="true" readable="true"  hidden="false" expert="false" required="false" cache-mode="inherit" writable="true" component-item-type="contactInfo"/>
+    </table>
+  </item-descriptor>
+
+  <!--///////////////////////////////-->
+  <!--       emailRecipient          -->
+  <!--///////////////////////////////-->
+
+  <item-descriptor name="emailRecipient" display-name="Email Recipient">
+    <attribute name="resourceBundle" value="atg.projects.store.profile.UserProfileTemplateResources"/>
+    <table name="crs_email_recpient" type="primary" id-column-name="email_recipient_id">
+      <property name="emailRecipientId" category-resource="emailRecipient" writable="false" display-name-resource="emailRecipientId" column-name="email_recipient_id" group="emailRecipient">
+        <attribute name="propertySortyPriority" value="-10"/>
+      </property>
+      <property name="email" category-resource="emailRecipient" data-type="string" display-name-resource="email" column-name="email" queryable="true" required="true" group="emailRecipient">
+        <attribute name="propertySortyPriority" value="-20"/>
+      </property>
+      <property name="userId" category-resource="emailRecipient" data-type="string" display-name-resource="userId" column-name="user_id" group="emailRecipient">
+        <attribute name="propertySortyPriority" value="-30"/>
+      </property>
+      <property name="sourceCode" category-resource="emailRecipient" data-type="string" display-name-resource="sourceCode" column-name="source_code" group="emailRecipient">
+        <attribute name="propertySortyPriority" value="-40"/>
+      </property>
+    </table>  
+  </item-descriptor>
+
+  <!--///////////////////////////////-->
+  <!--         credit-card           -->
+  <!--///////////////////////////////-->
+
+  <item-descriptor name="credit-card">
+    <table name="dps_credit_card">
+      <property name="creditCardNumber" property-type="atg.projects.store.repository.EncryptionPropertyDescriptor">
+        <attribute name="encryptorComponent" value="/atg/store/security/DESedeEncryptor"/>
+        <attribute name="key" value="K8XdjXuubOdIXa1XXiX0CzBb"/>
+      </property>
+    </table>
+  </item-descriptor> 
+
+  <!--///////////////////////////////-->
+  <!--    backInStockNotifyItem      -->
+  <!--///////////////////////////////-->
+
+  <item-descriptor name="backInStockNotifyItem">
+    <table name="crs_back_in_stock" type="primary" id-column-name="id">
+      <property name="id" data-type="string" column-name="id"/>
+      <property name="emailAddress" data-type="string" column-name="email"/>
+      <property name="catalogRefId" data-type="string" column-name="catalog_ref_id"/>
+      <property name="productId" data-type="string" column-name="product_id"/>
+      <property name="siteId" data-type="string" column-name="site_id"/>
+      <property name="locale" data-type="string" column-name="locale"/>
+    </table>  
+  </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //hosting-blueprint/B2CBlueprint/version/10.0.3/EStore/config/atg/userprofiling/userProfile.xml#2 $$Change: 651448 $-->

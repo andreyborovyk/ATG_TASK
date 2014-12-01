@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+
+<!DOCTYPE gsa-template
+        PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN"
+        "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template>
+
+  <header>
+    <name>Store Import Profile Changes</name>
+    <author>CIM Team</author>
+    <version>$Id: //hosting-blueprint/B2CBlueprint/version/10.0.3/Storefront/cim/nonswitchCoreSchema-config/atg/userprofiling/userProfile.xml#2 $$Change: 651448 $</version>
+  </header>  
+
+  <item-descriptor name="promotionStatus"> 
+    <table name="dcs_usr_promostat" type="primary" id-column-name="status_id">               
+      <property name="promotion" xml-combine="remove">
+      </property>        
+      <property name="promotion" data-type="string" column-name="promotion" required="true" display-name-resource="promotion">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //hosting-blueprint/B2CBlueprint/version/10.0.3/Storefront/cim/nonswitchCoreSchema-config/atg/userprofiling/userProfile.xml#2 $$Change: 651448 $ -->

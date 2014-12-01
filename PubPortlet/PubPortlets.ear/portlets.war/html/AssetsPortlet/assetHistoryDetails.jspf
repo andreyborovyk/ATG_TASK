@@ -1,0 +1,211 @@
+<%--
+  Asset History Details
+  Fragment that displays asset history in either the asset or project portlets.
+
+  This fragment expects the following variables to be set in the enclosing page's scope:
+  @param assetHistoryDetailsURI   The asset URI of the item.
+  @param formHandlerPath          The path to the appropriate diff form handler.
+  @param portletViewAttribute     The view attribute of the enclosing portlet.
+  @param diffSuccessView          The diff view of the enclosing portlet.
+
+  @version $Id $$Change $
+  @updated $DateTime $$Author $
+  --%>
+
+<!-- Begin AssetPortlet's assetHistoryDetails.jsp -->
+
+<dspel:importbean bean="${formHandlerPath}" var="assetDiffFormHandler"/>
+<dspel:importbean bean="/atg/userprofiling/ProfileTools" var="profileTools"/>
+
+<fmt:setBundle var="assetsBundle" basename="atg.epub.portlet.AssetsPortlet.Resources"/>
+<fmt:message var="diffVersionsButtonText" key="diff-asset-versions-button" bundle="${assetsBundle}"/>
+
+<fmt:setBundle var="propertiesBundle" basename="atg.epub.PublishingRepositoryResources"/>
+
+<portlet:actionURL var="createActionURL"/>
+
+<!-- BEGIN ASSET HISTORY DISPLAY -->
+
+<c:set value="false" var="isFile" scope="request"/>
+<c:set value="false" var="isDiffPermitted"/>
+
+<%-- Display any errors. --%>
+<div class="contentActions">
+  <table cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td class="blankSpace">&nbsp;</td>
+      <td><h2><fmt:message key="history" bundle="${propertiesBundle}"/></h2></td>
+      <td width="100%" class="error rightAlign">
+        <c:forEach var="exception" items="${assetDiffFormHandler.formExceptions}">
+          <c:out value="${exception.message}"/><br />
+        </c:forEach>
+      </td>
+      <td class="blankSpace">&nbsp;</td>
+    </tr>
+  </table>
+</div>
+
+<!-- Begin table content: Display information for each asset version.  -->
+<table cellpadding="0" cellspacing="0" border="0" class="dataTable">
+
+  <%-- ASSET DIFF FORM --%>
+  <dspel:form id="assetDiffForm" action="${createActionURL}" method="post">
+
+    <%-- Call diffVersions on the form handler to handle the submit. --%>
+    <dspel:input type="hidden" priority="-1" bean="${formHandlerPath}.diffVersions" value="1"/>
+
+    <%-- If the diff succeeds, go to the diff view. --%>
+    <dspel:input type="hidden" bean="${formHandlerPath}.viewAttribute" value="${portletViewAttribute}"/>
+    <dspel:input type="hidden" bean="${formHandlerPath}.successView" value="${diffSuccessView}"/>
+
+    <tr>
+      <th class="centerAligned" style="width: 4%;">
+        <img src='<%=renderResponse.encodeURL(renderRequest.getContextPath()
+          + "/html/AssetsPortlet/images/checkMark1.gif") %>'
+          alt="select multiple column" width="7" height="8" border="0" />
+      </th>
+      <th class="leftAligned">
+        <span class="tableHeader"><fmt:message key="action" bundle="${propertiesBundle}"/></span>
+      </th>
+      <th class="centerAligned">
+        <span class="tableHeader"><fmt:message key="version" bundle="${propertiesBundle}"/></span>
+      </th>
+      <th class="centerAligned">
+        <span class="tableHeader"><fmt:message key="dateAndTime" bundle="${propertiesBundle}"/></span>
+      </th>
+      <th class="centerAligned">
+        <span class="tableHeader"><fmt:message key="checkedInBy" bundle="${propertiesBundle}"/></span>
+      </th>
+    </tr>
+
+    <c:if test="${ ! empty assetHistoryDetailsURI }">
+      <pws:getAsset uri="${assetHistoryDetailsURI}" var="assetVersion">
+
+        <%-- Set the asset into our form --%>
+        <dspel:input type="hidden" bean="${formHandlerPath}.assetURI" value="${assetHistoryDetailsURI}"/>
+        <dspel:input type="hidden" bean="${formHandlerPath}.workspaceName" value="${null}"/>
+
+        <c:forEach items="${assetVersion.asset.allVersions}" var="av" varStatus="versionLoop">
+          <c:set value="${av.repositoryItem}" scope="page" var="item"/>
+          <c:set value="${av.virtualFile != null}" var="isFile" scope="request"/>
+          <c:set value="${!(versionLoop.first && versionLoop.last)}" var="isDiffPermitted"/>
+          
+          <!-- tr -->
+          <c:choose>
+            <c:when test="${versionLoop.count % 2 == 0}">
+              <tr class="alternateRowHighlight">
+            </c:when>
+            <c:otherwise><tr></c:otherwise>
+          </c:choose>
+
+          <td class="centerAligned">
+            <c:if test="${ ! isFile }">
+              <dspel:input bean="${formHandlerPath}.versions" type="checkbox"
+                value="${av.version}" iclass="checkbox" checked="false" disabled="${!isDiffPermitted}"/>
+            </c:if>
+          </td>
+          <td class="leftAligned">
+            <span class="tableInfo">
+              <c:choose>
+                <c:when test="${item.version == 1}">
+                  <fmt:message key="created" bundle="${assetsBundle}"/>
+                </c:when>
+                <c:when test="${item.deleted}">
+                  <fmt:message key="deleted" bundle="${assetsBundle}"/>
+                </c:when>
+                <c:otherwise>
+                  <fmt:message key="modified" bundle="${assetsBundle}"/>
+                </c:otherwise>
+              </c:choose>
+            </span>
+          </td>
+
+          <c:set var="assetVersion" value="${item.version}"/>
+          <portlet:renderURL var="assetVersionPropertiesURL">
+            <portlet:param name="projectAssetVersion" 
+              value='<%= (String) pageContext.getAttribute("assetVersion").toString() %>'/>
+          </portlet:renderURL>
+
+          <td class="centerAligned">
+            <span class="tableInfo">
+              <a href='<c:out value="${assetVersionPropertiesURL}"/>'>
+                <c:out value="${item.version}"/>
+              </a>
+            </span>
+          </td>
+          <td class="centerAligned">
+            <span class="tableInfo">
+              <jsp:useBean id="adate" class="java.util.Date"/>
+              <c:set target="${adate}" property="time"
+                value="${item.workspace.checkInTime}"/>
+              <fmt:formatDate value="${adate}"
+                type="BOTH" dateStyle="MEDIUM" timeStyle="MEDIUM"/>
+            </span>
+          </td>
+          <td class="centerAligned">
+            <span class="tableInfo">
+              <c:choose>
+                <c:when test="${empty item.workspace.user}">
+                  &nbsp;
+                </c:when>
+                <c:otherwise>
+                  <dspel:droplet var="foo" name="/atg/dynamo/droplet/RQLQueryForEach">
+                    <dspel:param name="repository" value="${profileTools.profileRepository}"/>
+                    <dspel:param name="itemDescriptor" value="user"/>
+                    <dspel:param name="queryRQL" value='login = "${item.workspace.user}"'/>
+                    <dspel:oparam name="output">
+                      <dspel:valueof param="element.firstName"/>
+                      <dspel:valueof param="element.lastName"/>
+                    </dspel:oparam>
+                    <dspel:oparam name="empty">
+                      <c:out value="${item.workspace.user}"/>
+                    </dspel:oparam>
+                  </dspel:droplet>
+                </c:otherwise>
+              </c:choose>
+            </span>
+          </td>
+          </tr>
+        </c:forEach>
+      </pws:getAsset>
+    </c:if>
+  </dspel:form>
+</table>
+
+<div class="contentActions">
+  <table cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td class="blankSpace" width="100%">&nbsp;</td>
+<%--
+      <td>
+        <a href='javascript:document.getElementById("assetDiffForm").submit();' 
+          class="mainContentButton diff">
+          Revert Asset to This Version
+        </a>
+      </td>
+--%>
+      <c:if test="${ ! isFile }">
+    
+        <c:if test="${isDiffPermitted}">
+        <td class="buttonImage">
+          <a href='javascript:document.getElementById("assetDiffForm").submit();' 
+            class="mainContentButton diff">
+            <c:out value="${diffVersionsButtonText}"/>
+          </a>
+        </td>
+        </c:if> 
+        <td>
+        <c:if test="${!isDiffPermitted}">
+          <div
+            class="mainContentButton diff">
+            <c:out value="${diffVersionsButtonText}"/>
+          </div>
+        </c:if> 
+      </td>
+      </c:if>
+      <td class="blankSpace">&nbsp;</td>
+    </tr>
+  </table>
+</div>
+<!-- End AssetPortlet's assetHistoryDetails.jsp -->
+<%-- @version $Id: //product/PubPortlet/version/10.0.3/portlets.war/html/AssetsPortlet/assetHistoryDetails.jspf#2 $$Change: 651448 $--%>

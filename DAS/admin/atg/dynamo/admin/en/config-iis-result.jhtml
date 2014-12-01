@@ -1,0 +1,185 @@
+
+<nucleus type=import>
+	/atg/dynamo/admin/ISAPIConfigure
+</nucleus>
+
+<java>
+  atg.service.dynamo.ISAPIConfig ISAPIConfigure = (atg.service.dynamo.ISAPIConfig)
+  	request.resolveName("/atg/dynamo/admin/ISAPIConfigure");
+  atg.service.dynamo.ServerConfig defaultCfg = (atg.service.dynamo.ServerConfig)
+  	request.resolveName("/atg/dynamo/admin/DefaultConfigure");
+
+// defaultCfg.handleChangeHttp( request, response );
+</java>
+
+<HTML>
+<HEAD>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+<TITLE>Install Connection Modules</TITLE>
+
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="images/config-banner.gif" ALT="Dynamo Configuration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a href="configure-server.jhtml">Configure</a>/<a href="configure-server.jhtml#CM">Connection_Modules</a>/script_dir<p>
+<p>
+
+<blockquote>
+
+<H2>Install Connection Modules</H2>
+
+<p>
+<FORM ACTION="config-iis-properties.jhtml" METHOD=POST>
+
+<java>
+if ( ISAPIConfigure.isErrorMessageValid() )
+{
+	</java>
+	The following error occurred while trying to install the Connection Module:<p>
+	<font color=red><valueof property=ISAPIConfigure.errorMessage valueishtml></valueof></font><p>
+	<java>
+}
+else
+{
+	</java>
+	The Dynamo Connection Module has been successfully installed.<p>
+
+	<b>In order for changes to take effect, you must restart both IIS and Dynamo servers.</b><p>
+
+    <TABLE BORDER="1" CELLPADDING="6" CELLSPACING="0">
+
+    <TR>
+		<TD ALIGN=LEFT VALIGN=TOP>
+			Load Manager/Port:
+		</TD>
+		<TD ALIGN=LEFT VALIGN=TOP>
+			Status:
+		</TD>
+	</TR>
+
+    <java>
+    Enumeration e = ISAPIConfigure.getDynamoLoadManagers().elements();
+    while( e.hasMoreElements() )
+    {
+         atg.service.dynamo.LoadManager lm = (atg.service.dynamo.LoadManager) e.nextElement();
+
+         </java>
+         <tr>
+             <td>
+                 <b><java>
+                    out.println( lm.getFullName() );
+                 </java></b>
+             </td>
+             <td>
+             <java>
+                 switch( lm.getDynamoServerStatus() )
+                 {
+                    case atg.service.dynamo.LoadManager.UNCONFIGURED:
+                    {
+                        </java>
+                            You need to add a Dynamo server, enable load management and the DRP
+                            service, and set the CM Packet Server port to
+                            <b><java>
+                                out.println( lm.getPort() );
+                            </java></b>
+                        <java>
+                        break;
+                    }
+                    case atg.service.dynamo.LoadManager.REMOTE:
+                    {
+                        </java>
+                            Please ensure that you have installed a
+                            Dynamo server on the machine
+                            <b><java>
+                                out.println( lm.getName() );
+                            </java></b>
+                            and that it's load management is enabled and
+                            listening on the CMPacketServer port
+                            <b><java>
+                                out.println( lm.getPort() );
+                            </java></b>
+                        <java>
+                        break;
+                    }
+                    case atg.service.dynamo.LoadManager.DEFAULT:
+                    {
+                        </java>
+                        The default Dynamo server configuration has been modified
+                        to enable load management on this machine.  You may start
+                        the local Dynamo server by issuing the command:<p>
+                        <code>
+                        <java>
+                        if (defaultCfg.isDynamoAppServerStandAloneMode())
+                        {
+                            out.println( defaultCfg.pathify("bin/startDAS") );
+                        }
+                        else
+                        {
+                            out.println( defaultCfg.pathify("bin/startDynamo") );
+                        }
+                        </java>
+                        </code><p>
+                        from the Dynamo installation directory
+                        <java>
+                        break;
+                    }
+                    case atg.service.dynamo.LoadManager.SERVER_NAME:
+                    {
+                        </java>
+                        The Dynamo server
+                            <b><java>
+                                out.println(lm.getDynamoServerName());
+                            </java></b>
+                        has been configured as load manager for this machine, listening on port
+                            <java>
+                                out.println(lm.getPort());
+                            </java>.
+                        To start this server, issue the command: <p>
+                            <code>
+                            <java>
+                            if (defaultCfg.isDynamoAppServerStandAloneMode())
+                            {
+                                out.println( defaultCfg.pathify("bin/startDAS") +
+                                    " " + lm.getDynamoServerName() );
+                            }
+                            else
+                            {
+                                out.println( defaultCfg.pathify("bin/startDynamo") +
+                                    " " + lm.getDynamoServerName() );
+                            }
+                            </java>
+                            </code><p>
+                        from the Dynamo installation directory
+                        <p>
+                        <java>
+                        break;
+                    }
+                 }
+             </java>
+             </td>
+         </tr>
+         <java>
+    }
+    </java>
+    </table>
+
+    <p>
+    Dynamo has modified its own document root to match your
+    IIS document root.
+	<p>
+
+	
+	<java>
+}
+</java>
+
+<INPUT TYPE="submit" VALUE="Modify this IIS Server">
+</FORM>
+
+
+</blockquote>
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/config-iis-result.jhtml#2 $$Change: 651448 $ */</java>
+

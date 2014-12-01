@@ -1,0 +1,70 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="personalization_ddl">
+<comment><![CDATA[ @version $Id: //product/DPS/version/10.0.3/templates/DPS/sql/personalization_ddl.xml#2 $$Change: 651448 $]]></comment>
+<comment><![CDATA[
+This file contains create table statements needed to configure your 
+database for personzalization assets.
+
+This script will create tables and indexes associated with 
+the user segment list manager.
+]]></comment>
+
+   <table name="dps_seg_list" description="User segment lists">
+     <column name="segment_list_id" nullable="n">
+       <column-type db="generic" type="varchar" length="40"/>
+     </column>
+     <column name="display_name" nullable="y">
+       <column-type db="generic" type="varchar" length="256"/>
+     </column>
+     <column name="description" nullable="y">
+       <column-type db="generic" type="varchar" length="1024"/>
+     </column>
+     <column name="folder_id" nullable="y">
+       <column-type db="generic" type="varchar" length="40"/>
+     </column>
+     <primary-key name="dps_seg_list_p">
+       <index-column column="segment_list_id"/>
+     </primary-key>
+   </table>
+
+   <table name="dps_seg_list_name" description="User segment names, within a list">
+     <column name="segment_list_id" nullable="n">
+       <column-type db="generic" type="varchar" length="40"/>
+     </column>
+     <column name="seq" nullable="n">
+       <column-type db="generic" type="integer"/>
+     </column>
+     <column name="group_name" nullable="n">
+       <column-type db="generic" type="varchar" length="256"/>
+     </column>
+     <primary-key name="dps_s_l_n_p">
+       <index-column column="segment_list_id" seq="1"/>
+       <index-column column="seq" seq="2"/>
+     </primary-key>
+     <foreign-key name="dps_s_l_n_f1" referenced-table="dps_seg_list">
+       <fkey-column referencing-column="segment_list_id" referenced-column="segment_list_id"/> 
+     </foreign-key>
+   </table>
+
+   <table name="dps_seg_list_folder" description="Folder">
+     <column name="folder_id" nullable="n">
+       <column-type db="generic" type="varchar" length="40"/>
+     </column>
+     <column name="display_name" nullable="y">
+       <column-type db="generic" type="varchar" length="256"/>
+     </column>
+     <column name="description" nullable="y">
+       <column-type db="generic" type="varchar" length="1024"/>
+     </column>
+     <column name="parent_folder_id" nullable="y">
+       <column-type db="generic" type="varchar" length="40"/>
+     </column>
+     <primary-key name="dps_s_l_f_p">
+       <index-column column="folder_id"/>
+     </primary-key>
+     <foreign-key name="dps_s_l_f_f1" referenced-table="dps_seg_list_folder" index-name="dps_sgmlstfldr1_x">
+       <fkey-column referencing-column="parent_folder_id" referenced-column="folder_id"/> 
+     </foreign-key>
+   </table>
+</schema>
+<!-- @version $Id: //product/DPS/version/10.0.3/templates/DPS/sql/personalization_ddl.xml#2 $$Change: 651448 $-->

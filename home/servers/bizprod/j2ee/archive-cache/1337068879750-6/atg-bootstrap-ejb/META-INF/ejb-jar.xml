@@ -1,0 +1,39 @@
+<?xml version="1.0" ?>
+
+<!DOCTYPE ejb-jar PUBLIC "-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN" "http://java.sun.com/dtd/ejb-jar_2_0.dtd">
+
+<ejb-jar>
+  <enterprise-beans>
+<!-- 
+     NOTE: Do not add whitespace or CR after the <ejb-class> tag.
+     WebSphere Studio (WSAD) in particular will interpret the whitespace
+     as part of the EJB class name.
+     In other words do this:
+     <ejb-class>Foo</ejb-class>
+     NOT thisL
+    <ejb-class> 
+       Foo
+    </ejb-class>
+-->
+    <session>
+      <ejb-name>ClasspathSession</ejb-name>
+      <local-home>atg.dafdeploy.ClasspathSessionLocalHome</local-home>
+      <local>atg.dafdeploy.ClasspathSessionLocal</local>
+      <ejb-class>atg.dafdeploy.ClasspathSessionEJB</ejb-class>
+      <session-type>Stateless</session-type>
+      <transaction-type>Container</transaction-type>
+    </session>
+  </enterprise-beans>
+
+  <assembly-descriptor>
+    <container-transaction>
+      <method>
+        <ejb-name>ClasspathSession</ejb-name>
+        <method-name>*</method-name>
+      </method>
+      <trans-attribute>Required</trans-attribute>
+    </container-transaction>
+  </assembly-descriptor>
+
+</ejb-jar>
+<!-- @version $Id: //product/DAF/version/10.0.3/DafEar/base/src/j2ee-components/atg-bootstrap-ejb.jar/META-INF/ejb-jar.xml#2 $$Change: 651448 $ -->

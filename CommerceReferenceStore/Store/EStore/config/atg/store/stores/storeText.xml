@@ -1,0 +1,76 @@
+<!DOCTYPE gsa-template PUBLIC "-//Art Technology Group, Inc.//DTD Dynamo Security//EN"
+"http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template>
+  <item-descriptor name="storeText"
+                   sub-type-property="type"
+                   sub-type-value="storeText"
+                   display-name="Resource Text"
+                   display-property="key">
+    <attribute name="resourceBundle" value="atg.projects.store.stores.StoreRepositoryTemplateResources"/>
+
+    <attribute name="categoryStoreKeyPriority" value="10"/>
+    <attribute name="categoryStoreTextPriority" value="20"/>
+
+    <attribute name="iconSwf" value="item.shortStoreText.iconSmall"/>
+    <attribute name="largeIconSwf" value="item.shortStoreText.iconLarge"/>
+
+    <table name="crs_store_text"
+           type="primary"
+           id-column-name="text_id">
+      <property name="key"
+                column-name="key_id"
+                data-type="string"
+                required="true"
+                category-resource="categoryStoreKey"
+                display-name-resource="key"/>
+
+      <property name="tag"
+                column-name="tag"
+                data-type="string"
+                category-resource="categoryStoreText"
+                display-name-resource="tag"/>
+
+      <property name="text"
+                column-name="text_template"
+                data-type="string"
+                category-resource="categoryStoreText"
+                display-name-resource="text"/>
+
+      <property name="type" 
+                column-name="text_type"
+                data-type="enumerated"
+                category-resource="categoryStoreText"
+                display-name-resource="type">
+        <option value="storeText" code="0"/>
+        <option value="storeLongText" code="1"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="storeLongText"
+                   super-type="storeText"
+                   sub-type-value="storeLongText"
+                   display-name-resource="longText">
+    <attribute name="resourceBundle" value="atg.projects.store.stores.StoreRepositoryTemplateResources"/>
+
+    <attribute name="categoryStoreKeyPriority" value="10"/>
+    <attribute name="categoryStoreTextPriority" value="20"/>
+
+    <attribute name="iconSwf" value="item.longStoreText.iconSmall"/>
+    <attribute name="largeIconSwf" value="item.longStoreText.iconLarge"/>
+
+
+    <table name="crs_store_long_txt"
+           type="auxiliary"
+           id-column-names="text_id">
+      <property name="text"
+                column-name="text_template"
+                data-type="big string"
+                category-resource="categoryStoreText"
+                display-name-resource="text"/>
+    </table>
+  </item-descriptor>
+</gsa-template>
+<!-- @version $Id: //hosting-blueprint/B2CBlueprint/version/10.0.3/EStore/config/atg/store/stores/storeText.xml#2 $$Change: 651448 $-->
+

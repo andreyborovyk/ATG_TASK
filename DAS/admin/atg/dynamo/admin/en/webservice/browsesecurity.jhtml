@@ -1,0 +1,203 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+    <title>Web Service Security Configurations</title>
+  </head>
+<nucleus type=import>
+	/atg/dynamo/admin/ForEachFunctionalSecurityItem
+	/atg/dynamo/admin/CreateWebService
+        /atg/dynamo/droplet/Switch
+        /atg/dynamo/droplet/ForEach
+        /atg/dynamo/droplet/For
+        /atg/webservice/security/NucleusAccessControlFormHandler
+</nucleus>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+<IMG SRC="../images/admin-banner.gif" ALT="Dynamo Administration"
+     ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+
+<droplet name="Switch">
+  <param name="value" value="param:choose">
+  <oparam name="default">
+   <a href="/">admin</a> / <a href="index.jhtml">Web Service
+	Administration</a> / <a href="browsesecurity.jhtml">
+        <param name="choose" value="param:choose">
+	Security Configurations</a></p><p>
+
+    <h1>Web Service Security Configurations</h1>
+    <blockquote>
+  </oparam>
+  <oparam name="true">
+   <a href="/">admin</a> / <a href="index.jhtml">Web Service
+	Administration</a> / Create Web Service</p><p>
+
+    <h2>Create Web Service</h2>
+    <h1>Choose Security Configuration</h1>
+    <blockquote>
+    <droplet src="curselections.jhtml"/>
+    <P>
+    <B>Security Configurations</B><BR>
+  </oparam>
+</droplet>
+
+<droplet name="Switch">
+  <param name="value" value="param:choose">
+  <param name="true" value=" ">
+  <oparam name="default">
+    <a href="createsec.jhtml?choose=`request.getParameter("choose")`">Create New</a><BR><BR>
+  </oparam>
+</droplet>
+
+
+<table border=0 cellpadding=0>
+<tr>
+<form action="edit-sec-item.jhtml">
+<droplet name="Switch">
+  <param name="value" value="param:notFound">
+  <param name="unset" value=" ">
+  <oparam name="default">
+    <tr><td colspan=3"><font color="red">Security configuration "<valueof param="funcName"/>" not found.</font></td></tr>
+  </oparam>
+</droplet>
+<td>Find Functional Security Name:</td>
+<td><input type="hidden" name="choose" value="param:choose"></td><td><input name="funcName" type="text"
+                                        value="param:funcName" size=40/>&nbsp;<input type="submit" value="Find"></td></tr>
+
+</table><BR>
+</form>
+
+
+
+
+<JAVA>
+  String strPageNum = request.getParameter("pageNum");
+  if ((strPageNum == null) || "null".equals(strPageNum)) {
+    request.setParameter("pageNum", "1");
+  }
+</JAVA>
+<form action="choose-sec-item.jhtml">
+  <input type="hidden" name="choose" value="param:choose">
+<droplet name="ForEachFunctionalSecurityItem">
+  <param name="pageNum" value="param:pageNum">
+  <oparam name="outputStart">
+    <droplet name="Switch">
+      <param name="value" value="param:pages">
+      <param name="1" value=" ">
+      <oparam name="default">
+        Pages:
+        <droplet name="For">
+          <param name="howMany" value="param:pages">
+          <oparam name="output">
+            <droplet name="Switch">
+              <param name="value" value="param:count"> 
+              <oparam name="param:pageNum">
+                <B><valueof param="count">?</valueof></B>
+              </oparam>
+              <oparam name="default">
+                <a href="browsesecurity.jhtml"><param name="pageNum" value="param:count"><param name="choose" value="param:choose"><valueof param="count">?</valueof></a>
+              </oparam>
+            </droplet>
+          </oparam>
+        </droplet>
+        <P>
+      </oparam>
+    </droplet>
+    Security Configurations <valueof
+				     param="firstCount">?</valueof>-<valueof param="lastCount">?</valueof> of <valueof param="countTotalItems">?</valueof>
+    <blockquote>
+    <table border=0>
+
+     <droplet name="Switch">
+       <param name="value" value="param:choose">
+       <oparam name="true">
+
+       </oparam>
+       <oparam name="default">
+          <tr><th align="left">Name</th><th align="left">Actions</th></tr>
+       </oparam>
+      </droplet>
+  </oparam>
+  <oparam name="output">
+    <tr>
+     <droplet name="Switch">
+       <param name="value" value="param:choose">
+       <oparam name="true">
+         <td align="right">
+           <input type="radio"
+		  bean="CreateWebService.functionalName" 
+                  value="param:element.functionalName">
+         </td>
+       </oparam>
+     </droplet>
+      <droplet name="Switch">
+       <param name="value" value="param:choose">
+       <oparam name="true">
+        <td>
+         <a href="edit-sec-item.jhtml"><param name="funcName"
+						      value="param:element.functionalName"><param name="choose" value="param:choose"><valueof param="element.functionalName">???</valueof></a>
+        </td>
+       </oparam>
+       <oparam name="default">
+        <td>
+         <valueof param="element.functionalName">???</valueof>
+        </td>
+        <td>
+
+           <a href="edit-sec-item.jhtml"><param name="funcName"
+						      value="param:element.functionalName"><param name="choose" value="param:choose">Edit</a>&nbsp;<a href="deletesecurity.jhtml"><param name="funcName"
+						      value="param:element.functionalName"><param name="choose" value="param:choose">Delete</a></oparam></droplet>
+    </td>
+    </tr>
+  </oparam>
+  <oparam name="empty">No functional security configurations found.<P>
+    <droplet name="Switch">
+      <param name="value" value="param:choose">
+      <param name="default" value=" ">
+      <oparam name="true">
+        <BR><a href="createsec.jhtml?choose=`request.getParameter("choose")`">Create New</a><P>
+      </oparam>
+    </droplet>
+
+  </oparam>
+  <oparam name="outputEnd">
+    </table>
+     <droplet name="Switch">
+       <param name="value" value="param:choose">
+       <param name="default" value=" ">
+       <oparam name="true">
+        <BR><a href="createsec.jhtml?choose=`request.getParameter("choose")`">Create New</a><BR>
+       </oparam>
+      </droplet>
+    </blockquote>
+  </oparam>
+</droplet>
+<P>
+
+
+
+<droplet name="Switch">
+  <param name="value" value="param:choose">
+  <oparam name="true">
+      <input value="Previous" priority=100 type="submit"
+             name="NucleusAccessControlFormHandler.redirect.2"
+             bean="NucleusAccessControlFormHandler.redirect"
+	     submitValue="sessionsec.jhtml" >
+
+
+      <JAVA>request.addQueryParameter("choose", "true");</JAVA>
+
+      <input value="Next"
+             type="submit"
+             name="mySubmit">
+  </oparam>
+</droplet>
+</blockquote>
+
+</form>
+
+</blockquote>
+  </BODY>
+</html>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/webservice/browsesecurity.jhtml#2 $$Change: 651448 $*/</java>

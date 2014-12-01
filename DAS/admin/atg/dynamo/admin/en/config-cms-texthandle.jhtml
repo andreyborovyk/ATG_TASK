@@ -1,0 +1,89 @@
+
+<nucleus type=import>
+	/atg/dynamo/admin/NSAPIConfigure
+</nucleus>
+
+<HTML>
+<HEAD>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+<TITLE>Install Connection Modules: HTML handling</TITLE>
+
+
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="images/config-banner.gif" ALT="Dynamo Configuration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a
+href="configure-server.jhtml">Configure</a>/<a
+href="configure-server.jhtml#CM">Connection_Modules</a>/<a
+href="config-cms-path.jhtml">version_path</a>/<a
+href="config-cms-serverlist.jhtml">server</a>/text_HTML
+<p>
+
+<blockquote>
+
+<H2>Install Connection Modules: HTML Handling</H2>
+
+
+<FORM ACTION="config-cms-properties.jhtml" METHOD=GET>
+
+
+Please choose how the Dynamo Connection Module should handle HTML files:
+<p>
+
+<table border=0 cellpadding=6 width=555>
+<tr valign=top>
+  <td>
+	<INPUT TYPE="radio" property=NSAPIConfigure.textHtmlHandling NAME="texthandling" VALUE=0>
+  </td>
+  <td>
+	Served by the Sun ONE server
+  </td>
+  <td valign=top>
+	Using your Sun ONE server to serve HTML files provides
+	the fastest performance.
+  </td>
+</tr>
+<tr valign=top>
+  <td>
+	<INPUT TYPE="radio" property=NSAPIConfigure.textHtmlHandling NAME="texthandling" VALUE=1>
+  </td>
+  <td>
+	Served by Dynamo
+  </td>
+  <td valign=top>
+	Use Dynamo to serve HTML pages if you want to use
+	URL-based session tracking across HTML pages or if you want
+	Dynamo's servlet pipeline to process HTML pages. Note: If you
+	want Dynamo to restrict access to HTML pages, 
+    then use Dynamo to serve HTML pages.
+  </td>
+</tr>
+<tr valign=top>
+  <td>
+	<INPUT TYPE="radio" property=NSAPIConfigure.textHtmlHandling NAME="texthandling" VALUE=2>
+  </td>
+  <td>
+	Served by the Sun ONE server and logged by Dynamo
+  </td>
+  <td valign=top>
+	HTML pages are served by the Sun ONE server and logged by
+	Dynamo. Requests are sent to Dynamo which then logs the requests
+	but does not process them.
+  </td>
+</tr>
+</table>
+
+<p>
+<INPUT TYPE="submit" VALUE="Next">
+<p>
+<a href="config-cms-serverlist.jhtml">Back</a>
+</FORM>
+
+
+</blockquote>
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/config-cms-texthandle.jhtml#2 $$Change: 651448 $ */</java>
+

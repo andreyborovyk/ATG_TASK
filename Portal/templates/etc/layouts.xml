@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE portal-manifest PUBLIC "-//Art Technology Group, Inc.//DTD Portal Manifest//EN" "http://www.atg.com/dtds/portal/framework/portal_manifest_1.0.dtd">
+
+<portal-manifest name="Default Layout Templates" version="1.0" author="ATG Portal Team">
+
+  <layout-templates>
+ 
+    <layout-template name="Layout 25-75 Template" version="1.0" author="ATG Portal Team">
+      <description>A layout which defines two columns, the left hand column reserves 25% of the screen, and the rest is used by the right hand column</description>
+      <servlet-context>/portal/layoutTemplates</servlet-context>
+      <images>
+        <image type="small">
+          <url>/images/layout_25_75.gif</url>
+        </image>
+      </images>
+      <display-modes>
+        <display-mode name="shared">
+          <device-output name="html">/html/layout_25_75.jsp</device-output>
+        </display-mode>
+        <display-mode name="full">
+          <device-output name="html">/html/layout_full.jsp</device-output>
+        </display-mode>
+      </display-modes>
+      <regions>
+        <region name="25_75_Left">
+         <dimensions>
+          <dimension name="width">narrow</dimension>
+          <dimension name="height">tall</dimension>
+         </dimensions>
+        </region>
+        <region name="25_75_Right">
+         <dimensions>
+          <dimension name="width">wide</dimension>
+          <dimension name="height">tall</dimension>
+         </dimensions>
+        </region>
+      </regions>
+    </layout-template>
+
+  </layout-templates>
+
+</portal-manifest>
+<!-- @version $Id: //app/portal/version/10.0.3/templates/etc/layouts.xml#2 $$Change: 651448 $ -->

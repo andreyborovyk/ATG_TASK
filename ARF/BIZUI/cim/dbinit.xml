@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE database-initializer SYSTEM "http://www.atg.com/dtds/dbinit_1_0.dtd">
+<database-initializer>
+
+	<schema id="caSchema">	
+
+		<data-import>
+			<repository-path>/atg/userprofiling/InternalProfileRepository</repository-path>
+			<import-file-path>/ARF/BIZUI/data/arf-profile.xml</import-file-path>
+		</data-import>		
+
+	</schema>
+	
+
+	<server-instance-type id="management">
+		<datasource id="all">
+			<schema id="caSchema"/>
+		</datasource>	
+	</server-instance-type>
+
+  <server-instance-type id="svcagent">
+    <datasource id="svcagent">
+      <schema id="caSchema"/>
+    </datasource> 
+  </server-instance-type>
+
+</database-initializer>
+<!-- @version $Id: //product/ARF/version/10.0.3/ARF/BIZUI/cim/dbinit.xml#2 $$Change: 651448 $-->

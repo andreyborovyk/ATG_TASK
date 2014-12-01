@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE portal-manifest PUBLIC "-//Art Technology Group, Inc.//DTD Portal Manifest//EN" "http://www.atg.com/dtds/portal/framework/portal_manifest_1.0.dtd">
+
+<portal-manifest name="OrderApproval" version="1.0" author="ATG Commerce Team">
+  <gear-definitions>
+    <gear-definition name="Order Approval" version="1.0" author="ATG Commerce Team">
+      <description>Order Approval Gear</description>
+
+      <servlet-context>/commerce/orderapproval</servlet-context>
+
+      <dimensions>
+        <dimension name="height">noPreference</dimension>
+        <dimension name="width">wide</dimension>
+      </dimensions>
+
+      <gear-modes>
+        <gear-mode name="content">
+          <display-modes>
+            <display-mode name="shared">
+              <device-output name="html">/html/content/OrderApprovalShared.jsp</device-output>
+            </display-mode>
+            <display-mode name="full">
+              <device-output name="html">/html/content/OrderApprovalFull.jsp</device-output>
+            </display-mode>
+          </display-modes>
+        </gear-mode>
+
+        <gear-mode name="userConfig">
+          <display-modes>
+            <display-mode name="full">
+              <device-output name="html">/html/config/userConfig.jsp</device-output>
+            </display-mode>
+          </display-modes>
+        </gear-mode>
+
+        <gear-mode name="instanceConfig">
+          <display-modes>
+            <display-mode name="full">
+              <device-output name="html">/html/config/instanceConfig.jsp</device-output>
+            </display-mode>
+          </display-modes>
+        </gear-mode>
+
+        <gear-mode name="installConfig">
+          <display-modes>
+            <display-mode name="full">
+              <device-output name="html">/html/config/installConfig.jsp</device-output>
+            </display-mode>
+          </display-modes>
+        </gear-mode>
+      </gear-modes>
+
+      <instance-parameters>
+       <parameter name="ShowOrderInfoInDetails">
+         <default-value>
+           true
+         </default-value>
+         <description>Show the basic order information in the Order Details page.</description>         
+       </parameter>
+       <parameter name="ShowBillingInfoInDetails">
+         <default-value>
+           true
+         </default-value>
+         <description>Show the billing information of order in the Order Details page.</description>   
+       </parameter>              
+       <parameter name="ShowShippingInfoInDetails">
+         <default-value>
+           true
+         </default-value>
+         <description>Show the shipping information of order in the Order Details page.</description>   
+       </parameter>              
+       <parameter name="ShowOrderInfoInApprove">
+         <default-value>
+           true
+         </default-value>
+         <description>Show the basic order information in the Order Approvals page.</description>   
+       </parameter>              
+       <parameter name="ShowMessageInApprove">
+         <default-value>
+           true
+         </default-value>
+         <description>Show the message box in the Order Approvals page.</description>   
+       </parameter> 
+       
+       
+       <parameter name="ShowOrderInfoInReject">
+         <default-value>
+           true
+         </default-value>
+         <description>Show the basic order information in the Order Rejected page.</description>   
+       </parameter>              
+       <parameter name="ShowMessageInReject">
+         <default-value>
+           true
+         </default-value>
+         <description>Show the message box in the Order Rejected page.</description>   
+       </parameter>              
+
+       <parameter name="UseOrderApprovalOfGear">
+         <default-value>
+           true
+         </default-value>
+         <description>Specifies whether the order approval process of the gear should be used or of a Commerce application.</description>   
+       </parameter>              
+       <parameter name="ApprovedOrderPageURL">
+         <default-value>
+           /Motorprise/en/user/order.jsp
+         </default-value>
+         <description>The URL used to link to the order page from the full view displaying approved orders.</description>         
+       </parameter>       
+       <parameter name="PendingApprovalOrderPageURL">
+         <default-value>
+           /Motorprise/en/user/order_pending_approval.jsp
+         </default-value>
+         <description>The URL used to link to the order page from the full view displaying orders that are pending approval.</description>         
+       </parameter>          
+      </instance-parameters>
+
+      <user-parameters>
+      
+       <parameter name="NumberOfOrdersShared">
+         <default-value>
+           5
+         </default-value>
+         <description>At a maximum show these number of orders in the shared view of the gear.</description>         
+       </parameter> 
+       <parameter name="ShowPendingApprovalCountShared">
+         <default-value>
+           true
+         </default-value>
+         <description>Specify whether we need show the count of approved orders or not in the Shared view</description>         
+       </parameter>       
+       <parameter name="NumberOfOrdersPerPageFull">
+         <default-value>
+           10
+         </default-value>
+         <description>At a maximum show these number of orders per page in the full view of the gear</description>         
+       </parameter>              
+       <parameter name="NumberOfOrdersFull">
+         <default-value>
+           -1
+         </default-value>
+         <description>At a maximum show these many number of orders in the full view of the gear.</description>         
+       </parameter>              
+      </user-parameters>
+
+    </gear-definition>
+
+  </gear-definitions>
+</portal-manifest>
+<!-- @version $Id: //product/B2BCommerce/version/10.0.3/gears/OrderApproval/orderapproval-manifest.xml#2 $$Change: 651448 $ -->

@@ -1,0 +1,50 @@
+<!DOCTYPE form-validation PUBLIC
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1//EN"
+    "http://www.atg.com/dtds/searchadmin/validator_1_3_0.dtd">
+
+<form-validation>
+  <formset>
+
+    <form name="ManageContentFormHandler">
+      <field property="settings.baseFilePath" depends="required">
+        <arg key="error_field.content_add_content.file_path" position="0" />
+        <var>
+          <var-name>need2Validate</var-name>
+          <var-value>contentSourceType=filesystem</var-value>
+        </var>
+      </field>
+      <field property="settings.indexOnlyMetaTagsName" depends="required,compareBlank">
+        <arg key="error_field.content_add_content.index_only_meta_tags_name" position="0" />
+        <var>
+          <var-name>need2Validate</var-name>
+          <var-value>contentSourceType=filesystem</var-value>
+        </var>
+        <var>
+          <var-name>required</var-name>
+          <var-value>all_except_one_row</var-value>
+        </var>
+        <var>
+          <var-name>compareBlank</var-name>
+          <var-value>settings.indexOnlyMetaTagsValue</var-value>
+        </var>
+      </field>
+      <field property="settings.indexOnlyMetaTagsValue" depends="required,compareBlank">
+        <arg key="error_field.content_add_content.index_only_meta_tags_value" position="0" />
+        <var>
+          <var-name>need2Validate</var-name>
+          <var-value>contentSourceType=filesystem</var-value>
+        </var>
+        <var>
+          <var-name>required</var-name>
+          <var-value>all_except_one_row</var-value>
+        </var>
+        <var>
+          <var-name>compareBlank</var-name>
+          <var-value>settings.indexOnlyMetaTagsName</var-value>
+        </var>
+      </field>
+    </form>
+    
+  </formset>
+</form-validation>
+<!-- @version $Id: //application/SearchAdmin/version/10.0.3/admin-ui/src/config/atg/searchadmin/adminui/navigation/FileSystemSourceValidatorConfig.xml#2 $$Change: 651448 $-->

@@ -1,0 +1,101 @@
+<nucleus type=import>
+	/atg/dynamo/admin/jdbcbrowser/ConnectionPoolPointer
+</nucleus>
+
+<html>
+<title>JDBC Browser</title>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+<IMG SRC="images/jdbc-banner.gif" ALT="JDBC Browser" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+<a href="/">admin</a>/JDBC Browser
+<h1>JDBC Browser</h1>
+
+<h2>Database</h2>
+
+The browser is currently using the connection pool component at
+<tt><valueof property="ConnectionPoolPointer.connectionPoolName"></valueof></tt>.
+
+If you want the JDBC Browser to use a different connection pool, modify
+the connectionPool property of the
+<tt>/atg/dynamo/admin/jdbcbrowser/ConnectionPoolPointer</tt> component
+so that it points to the desired connection pool service.
+
+<p>
+Here are the current settings of the connection pool:
+
+
+<droplet name="/atg/dynamo/droplet/Switch">
+  <param name="value" value="property:ConnectionPoolPointer.isDataSource">
+  <oparam name="false">
+    <ul>
+    <table border>
+    <tr><th>type</th><td>
+    old-style Dynamo JDBCConnectionPool</td></tr>
+    <tr><th>driver</th><td>
+    <valueof property="ConnectionPoolPointer.driver"></valueof></td></tr>
+    <tr><th>URL</th><td>
+    <valueof property="ConnectionPoolPointer.URL"></valueof></td></tr>
+    <tr><th>autoCommit</th><td>
+    <valueof property="ConnectionPoolPointer.autoCommit"></valueof></td></tr>
+    </table>
+    </ul>
+  </oparam>
+  <oparam name="true">
+    <ul>
+    <table border>
+    <tr><th>type</th><td>
+    Pooling Java Transactional DataSource</td></tr>
+    <tr><th>XADataSource</th><td>
+    <valueof property="ConnectionPoolPointer.XADataSource"></valueof></td></tr>
+    <droplet name="/atg/dynamo/droplet/Switch">
+      <param name="value" value="property:ConnectionPoolPointer.isFakeXADataSource">
+      <oparam name="true">
+        <tr><th>driver</th><td>
+        <valueof property="ConnectionPoolPointer.driver"></valueof></td></tr>
+        <tr><th>URL</th><td>
+        <valueof property="ConnectionPoolPointer.URL"></valueof></td></tr>
+      </oparam>
+    </droplet>
+    </table>
+    </ul>
+  </oparam>
+</droplet>
+
+<h2>Database operations</h2>
+
+<ul>
+<li><a href="createTable.jhtml">Create table</a>
+<li><a href="dropTable.jhtml">Drop table</a>
+<li><a href="executeQuery.jhtml">Execute query</a>
+<li><a href="viewMetaDataTable.jhtml?operation=tables">List tables</a>
+<li><a href="viewMetaDataTable.jhtml?operation=columns">List table columns</a>
+<li><a href="viewMetaDataTable.jhtml?operation=typeInfo">List datatypes</a>
+<li><a href="viewMetaData.jhtml">List database Metadata</a>
+</ul>
+
+<h2>Other Metadata</h2>
+
+<ul>
+<li><a href="viewMetaDataTable.jhtml?operation=procedures">procedures</a>
+<li><a href="viewMetaDataTable.jhtml?operation=procedureColumns">procedureColumns</a>
+<li><a href="viewMetaDataTable.jhtml?operation=schemas">schemas</a>
+<li><a href="viewMetaDataTable.jhtml?operation=catalogs">catalogs</a>
+<li><a href="viewMetaDataTable.jhtml?operation=tableTypes">tableTypes</a>
+<li><a href="viewMetaDataTable.jhtml?operation=columnPrivileges">columnPrivileges</a>
+<li><a href="viewMetaDataTable.jhtml?operation=tablePrivileges">tablePrivileges</a>
+<li><a href="viewMetaDataTable.jhtml?operation=bestRowIdentifier">bestRowIdentifier</a>
+<li><a href="viewMetaDataTable.jhtml?operation=versionColumns">versionColumns</a>
+<li><a href="viewMetaDataTable.jhtml?operation=primaryKeys">primaryKeys</a>
+<li><a href="viewMetaDataTable.jhtml?operation=importedKeys">importedKeys</a>
+<li><a href="viewMetaDataTable.jhtml?operation=exportedKeys">exportedKeys</a>
+<li><a href="viewMetaDataTable.jhtml?operation=crossReference">crossReference</a>
+<li><a href="viewMetaDataTable.jhtml?operation=indexInfo">indexInfo</a>
+</ul>
+
+
+</ul>
+
+</body>
+</html>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/jdbcbrowser/index.jhtml#2 $$Change: 651448 $ */</java>
+

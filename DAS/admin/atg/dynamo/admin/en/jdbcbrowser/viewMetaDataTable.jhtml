@@ -1,0 +1,99 @@
+<nucleus type=import>
+	/atg/dynamo/admin/jdbcbrowser/MetaDataRequestField
+	/atg/dynamo/admin/jdbcbrowser/MetaDataRequest
+</nucleus>
+
+<html>
+<title><valueof param="operation"></valueof> MetaData</title>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+<IMG SRC="images/jdbc-banner.gif" ALT="JDBC Browser" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+<a href="/">admin</a>/<a href="index.jhtml">JDBC Browser</a>/Metadata
+<h1><valueof param="operation"></valueof> MetaData</h1>
+
+<form method=post action="viewMetaDataTableResult.jhtml">
+
+<input type=hidden property="MetaDataRequest.operation" value="param:operation">
+
+<p>Leaving a field blank means that it will match all values of that
+field.  Leave all fields blank to do a full query.
+
+<table>
+
+<droplet name="MetaDataRequestField">
+<param name="fieldName" value="catalog">
+<oparam name="display">
+<tr><th>Catalog Name</th>
+<td><input property="MetaDataRequest.catalog"></td></tr>
+</oparam>
+</droplet>
+
+<droplet name="MetaDataRequestField">
+<param name="fieldName" value="schema">
+<oparam name="display">
+<tr><th>Schema Name</th>
+<td><input property="MetaDataRequest.schema"></td></tr>
+</oparam>
+</droplet>
+
+<droplet name="MetaDataRequestField">
+<param name="fieldName" value="procedure">
+<oparam name="display">
+<tr><th>Procedure Name</th>
+<td><input property="MetaDataRequest.procedure"></td></tr>
+</oparam>
+</droplet>
+
+<droplet name="MetaDataRequestField">
+<param name="fieldName" value="table">
+<oparam name="display">
+<tr><th>Table Name</th>
+<td><input property="MetaDataRequest.table"></td></tr>
+</oparam>
+</droplet>
+
+<droplet name="MetaDataRequestField">
+<param name="fieldName" value="column">
+<oparam name="display">
+<tr><th>Column Name</th>
+<td><input property="MetaDataRequest.column"></td></tr>
+</oparam>
+</droplet>
+
+<droplet name="MetaDataRequestField">
+<param name="fieldName" value="foreignCatalog">
+<oparam name="display">
+<tr><th>Foreign Catalog Name</th>
+<td><input property="MetaDataRequest.foreignCatalog"></td></tr>
+</oparam>
+</droplet>
+
+<droplet name="MetaDataRequestField">
+<param name="fieldName" value="foreignSchema">
+<oparam name="display">
+<tr><th>Foreign Schema Name</th>
+<td><input property="MetaDataRequest.foreignSchema"></td></tr>
+</oparam>
+</droplet>
+
+<droplet name="MetaDataRequestField">
+<param name="fieldName" value="foreignTable">
+<oparam name="display">
+<tr><th>Foreign Table Name</th>
+<td><input property="MetaDataRequest.foreignTable"></td></tr>
+</oparam>
+</droplet>
+
+</table>
+
+<p><input type=checkbox property="MetaDataRequest.longForm">
+Show resulting column headings in long form
+
+<p><input type="submit" name="submit">
+
+</form>
+
+</body>
+</html>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/jdbcbrowser/viewMetaDataTable.jhtml#2 $$Change: 651448 $ */</java>
+

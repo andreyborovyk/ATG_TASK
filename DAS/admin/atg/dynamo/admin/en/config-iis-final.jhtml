@@ -1,0 +1,126 @@
+<nucleus type=import>
+	/atg/dynamo/admin/DefaultConfigure
+	/atg/dynamo/admin/ISAPIConfigure
+</nucleus>
+
+<java>
+  atg.service.dynamo.ISAPIConfig ISAPIConfigure = (atg.service.dynamo.ISAPIConfig)
+  	request.resolveName("/atg/dynamo/admin/ISAPIConfigure");
+</java>
+
+<HTML>
+<HEAD>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+<TITLE>Configure IIS Connection Modules Properties</TITLE>
+
+
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="images/config-banner.gif" ALT="Dynamo Configuration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a
+href="configure-server.jhtml">Configure</a>/<a
+href="configure-server.jhtml#CM">Connection_Modules</a>/<a
+href="config-iis-scriptdir.jhtml">script_dir</a>/<a
+href="config-iis-decide.jhtml">install_or_uninstall</a>/<a
+href="config-iis-texthandle.jhtml">text_HTML</a>/<a
+href="config-iis-properties.jhtml">load_manager</a>/<a
+href="config-iis-ref-apps.jhtml">ref_apps</a>/confirm
+<p>
+
+<blockquote>
+
+<h2>Install Connection Modules</h2>
+
+Ready to configure a Dynamo Connection Module for a Microsoft IIS HTTP server. Please be
+sure the information below is correct,
+then click Install to complete the
+Connection Module setup.
+<p>
+
+<FORM ACTION="config-iis-result.jhtml" METHOD=GET>
+
+
+<ul>
+
+<b>IIS Script Directory:</b><p>
+	<valueof property=ISAPIConfigure.scriptDir></valueof>
+<p>
+
+<b>Text/HTML Handling:</b><p>
+<java>
+switch( ISAPIConfigure.getTextHtmlHandling() )
+{
+	case atg.service.dynamo.ISAPIConfig.DYNAMO_NO_TEXT_HTML:
+		out.println( "Text/HTML is served by IIS" );
+		break;
+	case atg.service.dynamo.ISAPIConfig.DYNAMO_SERVING_TEXT_HTML:
+		out.println( "Text/HTML is served by the Dynamo server" );
+		break;
+	case atg.service.dynamo.ISAPIConfig.DYNAMO_LOGGING_TEXT_HTML:
+		out.println( "Text/HTML is served by IIS and logged by Dynamo" );
+		break;
+	default:
+		out.println( "No setting" );
+		break;
+}
+</java>
+<p>
+
+<b>Dynamo Load Managers:</b><p>
+
+<TABLE BORDER="1" CELLPADDING="6" CELLSPACING="0">
+	<TR>
+		<TD ALIGN=LEFT VALIGN=TOP>
+			Hostname or IP Address:
+		</TD>
+		<TD ALIGN=LEFT VALIGN=TOP>
+			Port:
+		</TD>
+	</TR>
+
+<java>
+
+Enumeration e = ISAPIConfigure.getDynamoLoadManagers().elements();
+
+while( e.hasMoreElements() )
+{
+    atg.service.dynamo.LoadManager lm =
+        (atg.service.dynamo.LoadManager) e.nextElement();
+
+	</java>
+	<TR>
+	<TD ALIGN=LEFT VALIGN=TOP>
+	<java> out.print( lm.getName() ); </java>
+	</TD>
+	<TD ALIGN=LEFT VALIGN=TOP>
+	<java> out.print( lm.getPort() ); </java>
+	</TD>
+	</TR>
+	<java>
+}
+
+</java>
+
+</TABLE>
+</ul>
+<br>
+
+<input name="currentProperties" property="DefaultConfigure.currentProperties" type=hidden value="httpEnabled">
+<input name="currentProperties" property="DefaultConfigure.currentProperties" type=hidden value="documentRoot">
+<input name="currentProperties" property="DefaultConfigure.currentProperties" type=hidden value="drpEnabled">
+
+<input type="hidden" property=DefaultConfigure.httpEnabled value=true>
+<input type="hidden" property=DefaultConfigure.drpEnabled value=true>
+
+<INPUT TYPE="submit" property=ISAPIConfigure.install VALUE="Install">
+<p>
+<a href="config-iis-properties.jhtml">Back</a>
+</FORM>
+
+</blockquote>
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/config-iis-final.jhtml#2 $$Change: 651448 $ */</java>
+

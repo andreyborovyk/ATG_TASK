@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE data-warehouse-dimension-loader-definition SYSTEM "http://www.atg.com/dtds/dataWarehouseDimensionLoader/datawarehousedimensionloader_1.0.dtd">
+<data-warehouse-dimension-loader-definition>
+  <data-warehouse-repository repository="/atg/reporting/datawarehouse/WarehouseRepository">
+
+    <data-warehouse-repository-item item="user" natural-key="userId">
+      <production-repository repository="/atg/userprofiling/ProfileAdapterRepository" nickname="ProfileRepository">
+        <production-repository-item item="user"/>
+      </production-repository>
+      <property-mappings>
+        <warehouse-property name="login">
+          <production-property name="ProfileRepository.user.login"/>
+        </warehouse-property>
+        <warehouse-property name="firstName">
+          <production-property name="ProfileRepository.user.firstName"/>
+        </warehouse-property>
+        <warehouse-property name="middleName">
+          <production-property name="ProfileRepository.user.middleName"/>
+        </warehouse-property>
+        <warehouse-property name="lastName">
+          <production-property name="ProfileRepository.user.lastName"/>
+        </warehouse-property>
+        <warehouse-property name="email">
+          <production-property name="ProfileRepository.user.email"/>
+        </warehouse-property>
+        <warehouse-property name="dateOfBirth">
+          <production-property name="ProfileRepository.user.dateOfBirth"/>
+        </warehouse-property>
+        <warehouse-property name="language" conversion-component="/atg/reporting/datawarehouse/process/converter/LocaleToLanguageItemConverter">
+          <production-property name="ProfileRepository.user.locale" conversion-context-name="locale"/>
+        </warehouse-property>
+        <warehouse-property name="gender" conversion-component="/atg/reporting/datawarehouse/process/converter/GenderToGenderItemConverter">
+          <production-property name="ProfileRepository.user.gender" conversion-context-name="gender"/>
+        </warehouse-property>
+        <warehouse-property name="homeRegion" conversion-component="/atg/reporting/datawarehouse/process/converter/AddressToRegionItemConverter">
+          <production-property name="ProfileRepository.user.homeAddress.state" conversion-context-name="state"/>
+          <production-property name="ProfileRepository.user.homeAddress.country" conversion-context-name="country"/>
+        </warehouse-property>
+        <warehouse-property name="maritalStatus" conversion-component="/atg/reporting/datawarehouse/process/converter/MaritalStatusConverter">    
+        </warehouse-property>
+        <warehouse-property name="organization">
+          <production-property name="ProfileRepository.user.parentOrganization"/>
+        </warehouse-property>
+      </property-mappings>
+    </data-warehouse-repository-item>
+
+    <data-warehouse-repository-item item="organization" natural-key="organizationId">
+      <production-repository repository="/atg/userprofiling/ProfileAdapterRepository" nickname="ProfileRepository">
+        <production-repository-item item="organization"/>
+      </production-repository>
+      <property-mappings>
+        <warehouse-property name="name">
+          <production-property name="ProfileRepository.organization.name"/>
+        </warehouse-property>
+        <warehouse-property name="description">
+          <production-property name="ProfileRepository.organization.description"/>
+        </warehouse-property>
+        <warehouse-property name="parentOrganization">
+          <production-property name="ProfileRepository.organization.parentOrganization"/>
+        </warehouse-property>
+      </property-mappings>
+    </data-warehouse-repository-item>
+
+    <data-warehouse-repository-item item="gender"/>
+    <data-warehouse-repository-item item="language"/>
+    <data-warehouse-repository-item item="maritalStatus"/>
+    <data-warehouse-repository-item item="region"/>
+
+    <data-warehouse-repository-item item="site" natural-key="siteId">
+      <production-repository repository="/atg/multisite/SiteRepository" nickname="SiteRepository">
+        <production-repository-item item="siteConfiguration"/>
+      </production-repository>
+      <property-mappings>
+        <warehouse-property name="name">
+          <production-property name="SiteRepository.siteConfiguration.name"/>
+        </warehouse-property>
+        <warehouse-property name="nameEn">
+          <production-property name="SiteRepository.siteConfiguration.name"/>
+        </warehouse-property>
+        <warehouse-property name="description">
+          <production-property name="SiteRepository.siteConfiguration.description"/>
+        </warehouse-property>
+        <warehouse-property name="descriptionEn">
+          <production-property name="SiteRepository.siteConfiguration.description"/>
+        </warehouse-property>
+        <warehouse-property name="homePage">
+          <production-property name="SiteRepository.siteConfiguration.productionURL"/>
+        </warehouse-property>
+        <warehouse-property name="launchDate">
+          <production-property name="SiteRepository.siteConfiguration.openDate"/>
+        </warehouse-property>
+        <warehouse-property name="closeDate">
+          <production-property name="SiteRepository.siteConfiguration.closingDate"/>
+        </warehouse-property>
+        <warehouse-property name="enabled">
+          <production-property name="SiteRepository.siteConfiguration.enabled"/>
+        </warehouse-property>
+      </property-mappings>
+    </data-warehouse-repository-item>
+
+  </data-warehouse-repository>
+</data-warehouse-dimension-loader-definition>
+<!-- @version $Id: //product/ARF/version/10.0.3/ARF/DW/base/config/atg/reporting/datawarehouse/process/definition/DimensionProperties.xml#2 $$Change: 651448 $-->

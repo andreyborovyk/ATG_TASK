@@ -1,0 +1,168 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="japanese_catalog_ddl">
+<comment><![CDATA[ @version $Id: //product/B2BCommerce/version/10.0.3/templates/MotorpriseJSP/sql/japanese_catalog_ddl.xml#2 $$Change: 651448 $]]></comment>
+   <table name="dbc_catalog_ja">
+      <column name="catalog_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="display_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dbc_catalog_ja_p">
+         <index-column column="catalog_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dbc_category_ja">
+      <column name="category_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="display_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="long_description" nullable="y" i18n="y">
+         <column-type db="generic" type="long-varchar"/>
+      </column>
+      <column name="template_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dbc_category_ja_p">
+         <index-column column="category_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dbc_product_ja">
+      <column name="product_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="display_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="long_description" nullable="y" i18n="y">
+         <column-type db="generic" type="long-varchar"/>
+      </column>
+      <column name="admin_display" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="template_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dbc_product_ja_p">
+         <index-column column="product_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dbc_sku_ja">
+      <column name="sku_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="display_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="template_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dbc_sku_ja_p">
+         <index-column column="sku_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dbc_sku_link_ja">
+      <column name="sku_link_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="display_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dbc_sku_link_ja_p">
+         <index-column column="sku_link_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dbc_config_prop_ja">
+      <column name="config_prop_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="display_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dbc_configpropja_p">
+         <index-column column="config_prop_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dbc_config_opt_ja">
+      <column name="config_opt_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="display_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="price" nullable="y">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="19" scale="7"/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+	   </column>
+      <primary-key name="dbc_config_optja_p">
+         <index-column column="config_opt_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dbc_cat_key_ja">
+      <column name="category_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="keyword" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dbc_cat_key_ja_p">
+         <index-column column="category_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+   </table>
+   <table name="dbc_prd_key_ja">
+      <column name="product_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="keyword" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dbc_prd_key_ja_p">
+         <index-column column="product_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+   </table>
+   <table name="dbc_promotion_ja">
+      <column name="promotion_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="display_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dbc_promotion_ja_p">
+         <index-column column="promotion_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+</schema>
+<!-- @version $Id: //product/B2BCommerce/version/10.0.3/templates/MotorpriseJSP/sql/japanese_catalog_ddl.xml#2 $$Change: 651448 $ -->

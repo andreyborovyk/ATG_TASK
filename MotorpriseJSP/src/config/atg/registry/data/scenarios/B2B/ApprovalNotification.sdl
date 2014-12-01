@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE process SYSTEM "dynamosystemresource:/atg/dtds/pdl/pdl_1.0.dtd">
+<process author="admin" creation-time="995658568196" enabled="false" last-modified-by="admin" modification-time="1045003266643">
+  <segment migrate-subjects="false">
+    <segment-name>Approval required</segment-name>
+    <!--================================-->
+    <!--== Order approval is required  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.b2bcommerce.approval.ApprovalRequired</event-name>
+    </event>
+    <!--================================-->
+    <!--== Email address is defined  -->
+    <!--================================-->
+    <condition construct="people-element" id="2">
+      <filter construct="profile-property-filter" operator="isNotNull">
+        <subject-property>
+          <property-name>email</property-name>
+        </subject-property>
+      </filter>
+    </condition>
+    <fork id="3">
+      <branch id="3.1">
+        <!--================================-->
+        <!--== Locale is en_US  -->
+        <!--================================-->
+        <condition construct="people-element" id="3.1.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>locale</property-name>
+            </subject-property>
+            <constant>en_US</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Send email with path MotorpriseJSP:/en/email/approval_required.jsp  -->
+        <!--================================-->
+        <action id="3.1.2">
+          <action-name>sendEmail</action-name>
+          <action-param name="scenarioPathInfo">
+            <constant>MotorpriseJSP:/en/email/approval_required.jsp</constant>
+          </action-param>
+        </action>
+      </branch>
+      <branch id="3.2">
+        <!--================================-->
+        <!--== Locale is de_DE  -->
+        <!--================================-->
+        <condition construct="people-element" id="3.2.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>locale</property-name>
+            </subject-property>
+            <constant>de_DE</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Send email with path MotorpriseJSP:/de/email/approval_required.jsp  -->
+        <!--================================-->
+        <action id="3.2.2">
+          <action-name>sendEmail</action-name>
+          <action-param name="scenarioPathInfo">
+            <constant>MotorpriseJSP:/de/email/approval_required.jsp</constant>
+          </action-param>
+        </action>
+      </branch>
+      <branch id="3.3">
+        <!--================================-->
+        <!--== Locale is ja_JP  -->
+        <!--================================-->
+        <condition construct="people-element" id="3.3.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>locale</property-name>
+            </subject-property>
+            <constant>ja_JP</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Send email with path MotorpriseJSP:/ja/email/approval_required.jsp  -->
+        <!--================================-->
+        <action id="3.3.2">
+          <action-name>sendEmail</action-name>
+          <action-param name="scenarioPathInfo">
+            <constant>MotorpriseJSP:/ja/email/approval_required.jsp</constant>
+          </action-param>
+        </action>
+      </branch>
+    </fork>
+  </segment>
+  <segment migrate-subjects="false">
+    <segment-name>Order approved</segment-name>
+    <!--================================-->
+    <!--== Order approval status has changed approvalStatus is approved  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.b2bcommerce.approval.ApprovalUpdate</event-name>
+      <filter construct="event-property-filter" operator="eq">
+        <event-property construct="event-property">
+          <property-name>approvalStatus</property-name>
+        </event-property>
+        <constant>approved</constant>
+      </filter>
+    </event>
+    <!--================================-->
+    <!--== Email address is defined  -->
+    <!--================================-->
+    <condition construct="people-element" id="2">
+      <filter construct="profile-property-filter" operator="isNotNull">
+        <subject-property>
+          <property-name>email</property-name>
+        </subject-property>
+      </filter>
+    </condition>
+    <fork id="3" synchronized="true">
+      <branch id="3.1">
+        <!--================================-->
+        <!--== Locale is en_US  -->
+        <!--================================-->
+        <condition construct="people-element" id="3.1.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>locale</property-name>
+            </subject-property>
+            <constant>en_US</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Send email with path MotorpriseJSP:/en/email/order_approved.jsp  -->
+        <!--================================-->
+        <action id="3.1.2">
+          <action-name>sendEmail</action-name>
+          <action-param name="scenarioPathInfo">
+            <constant>MotorpriseJSP:/en/email/order_approved.jsp</constant>
+          </action-param>
+        </action>
+      </branch>
+      <branch id="3.2">
+        <!--================================-->
+        <!--== Locale is de_DE  -->
+        <!--================================-->
+        <condition construct="people-element" id="3.2.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>locale</property-name>
+            </subject-property>
+            <constant>de_DE</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Send email with path MotorpriseJSP:/de/email/order_approved.jsp  -->
+        <!--================================-->
+        <action id="3.2.2">
+          <action-name>sendEmail</action-name>
+          <action-param name="scenarioPathInfo">
+            <constant>MotorpriseJSP:/de/email/order_approved.jsp</constant>
+          </action-param>
+        </action>
+      </branch>
+      <branch id="3.3">
+        <!--================================-->
+        <!--== Locale is ja_JP  -->
+        <!--================================-->
+        <condition construct="people-element" id="3.3.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>locale</property-name>
+            </subject-property>
+            <constant>ja_JP</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Send email with path MotorpriseJSP:/ja/email/order_approved.jsp  -->
+        <!--================================-->
+        <action id="3.3.2">
+          <action-name>sendEmail</action-name>
+          <action-param name="scenarioPathInfo">
+            <constant>MotorpriseJSP:/ja/email/order_approved.jsp</constant>
+          </action-param>
+        </action>
+      </branch>
+    </fork>
+  </segment>
+  <segment migrate-subjects="false">
+    <segment-name>Order rejected</segment-name>
+    <!--================================-->
+    <!--== Order approval status has changed approvalStatus is rejected  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.b2bcommerce.approval.ApprovalUpdate</event-name>
+      <filter construct="event-property-filter" operator="eq">
+        <event-property construct="event-property">
+          <property-name>approvalStatus</property-name>
+        </event-property>
+        <constant>rejected</constant>
+      </filter>
+    </event>
+    <!--================================-->
+    <!--== Email address is defined  -->
+    <!--================================-->
+    <condition construct="people-element" id="2">
+      <filter construct="profile-property-filter" operator="isNotNull">
+        <subject-property>
+          <property-name>email</property-name>
+        </subject-property>
+      </filter>
+    </condition>
+    <fork id="3">
+      <branch id="3.1">
+        <!--================================-->
+        <!--== Locale is en_US  -->
+        <!--================================-->
+        <condition construct="people-element" id="3.1.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>locale</property-name>
+            </subject-property>
+            <constant>en_US</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Send email with path MotorpriseJSP:/en/email/order_rejected.jsp  -->
+        <!--================================-->
+        <action id="3.1.2">
+          <action-name>sendEmail</action-name>
+          <action-param name="scenarioPathInfo">
+            <constant>MotorpriseJSP:/en/email/order_rejected.jsp</constant>
+          </action-param>
+        </action>
+      </branch>
+      <branch id="3.2">
+        <!--================================-->
+        <!--== Locale is de_DE  -->
+        <!--================================-->
+        <condition construct="people-element" id="3.2.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>locale</property-name>
+            </subject-property>
+            <constant>de_DE</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Send email with path MotorpriseJSP:/de/email/order_rejected.jsp  -->
+        <!--================================-->
+        <action id="3.2.2">
+          <action-name>sendEmail</action-name>
+          <action-param name="scenarioPathInfo">
+            <constant>MotorpriseJSP:/de/email/order_rejected.jsp</constant>
+          </action-param>
+        </action>
+      </branch>
+      <branch id="3.3">
+        <!--================================-->
+        <!--== Locale is ja_JP  -->
+        <!--================================-->
+        <condition construct="people-element" id="3.3.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>locale</property-name>
+            </subject-property>
+            <constant>ja_JP</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Send email with path MotorpriseJSP:/ja/email/order_rejected.jsp  -->
+        <!--================================-->
+        <action id="3.3.2">
+          <action-name>sendEmail</action-name>
+          <action-param name="scenarioPathInfo">
+            <constant>MotorpriseJSP:/ja/email/order_rejected.jsp</constant>
+          </action-param>
+        </action>
+      </branch>
+    </fork>
+  </segment>
+</process>

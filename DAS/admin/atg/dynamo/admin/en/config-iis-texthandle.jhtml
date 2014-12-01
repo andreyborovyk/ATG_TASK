@@ -1,0 +1,52 @@
+
+<nucleus type=import>
+	/atg/dynamo/admin/ISAPIConfigure
+</nucleus>
+
+<HTML>
+<HEAD>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+<TITLE>Configure IIS Connection Modules: HTML handling</TITLE>
+
+
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="images/config-banner.gif" ALT="Dynamo Configuration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a
+href="configure-server.jhtml">Configure</a>/<a
+href="configure-server.jhtml#CM">Connection_Modules</a>/<a
+href="config-iis-scriptdir.jhtml">script_dir</a>/<a
+href="config-iis-decide.jhtml">install_or_uninstall</a>/text_HTML
+<p>
+
+<blockquote>
+
+<H2>Configure IIS Connection Modules HTML Handling</H2>
+
+
+<FORM ACTION="config-iis-properties.jhtml" METHOD=GET>
+
+
+Choose how the Dynamo Connection Module should handle HTML files:<br>
+<ul>
+	<INPUT TYPE="radio" property=ISAPIConfigure.textHtmlHandling NAME="texthandling" VALUE=0>
+		HTML is served by the IIS server<br>
+	<INPUT TYPE="radio" property=ISAPIConfigure.textHtmlHandling NAME="texthandling" VALUE=1>
+		HTML is served by Dynamo<br>
+	<INPUT TYPE="radio" property=ISAPIConfigure.textHtmlHandling NAME="texthandling" VALUE=2>
+		HTML is served by the IIS server and logged by Dynamo<br>
+</ul>
+
+<INPUT TYPE="submit" VALUE="Next">
+<p>
+<a href="config-iis-scriptdir.jhtml">Back</a>
+</FORM>
+
+
+</blockquote>
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/config-iis-texthandle.jhtml#2 $$Change: 651448 $ */</java>
+

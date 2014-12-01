@@ -1,0 +1,80 @@
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017737	/atg/dynamo/service/SMTPEmail	javax.mail.MessagingException: Could not connect to SMTP host: localhost, port: 25;
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017737	/atg/dynamo/service/SMTPEmail	  nested exception is:
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017737	/atg/dynamo/service/SMTPEmail		java.net.SocketException: Permission denied: connect
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender	atg.userprofiling.ProfileResources->emailCantSendMessage : Error sending email atg.userprofiling.email.TemplateEmailInfoImpl@1f860e0(mailingId=110000, mailingName=scenarioMailing, messageSubject=no subject)	CONTAINER:atg.userprofiling.email.TemplateEmailException: atg.service.email.EmailException: javax.mail.MessagingException: Could not connect to SMTP host: localhost, port: 25;
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender	  nested exception is:
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender		java.net.SocketException: Permission denied: connect; SOURCE:atg.service.email.EmailException: javax.mail.MessagingException: Could not connect to SMTP host: localhost, port: 25;
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender	  nested exception is:
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender		java.net.SocketException: Permission denied: connect
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender		at atg.userprofiling.email.TemplateEmailSender.doSendEmailMessage(TemplateEmailSender.java:2293)
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender		at atg.userprofiling.email.TemplateEmailSender.doSendEmailMessage(TemplateEmailSender.java:1953)
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender		at atg.userprofiling.email.EmailRequestThread.run(EmailRequestThread.java:108)
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender	Caused by :atg.service.email.EmailException: javax.mail.MessagingException: Could not connect to SMTP host: localhost, port: 25;
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender	  nested exception is:
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender		java.net.SocketException: Permission denied: connect
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender		at atg.service.email.SMTPEmailSender.openConnection(SMTPEmailSender.java:762)
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender		at atg.userprofiling.email.TemplateEmailSender.doSendEmailMessage(TemplateEmailSender.java:2164)
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender		at atg.userprofiling.email.TemplateEmailSender.doSendEmailMessage(TemplateEmailSender.java:1953)
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender		at atg.userprofiling.email.EmailRequestThread.run(EmailRequestThread.java:108)
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender	Caused by (#2):javax.mail.MessagingException: Could not connect to SMTP host: localhost, port: 25;
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender	  nested exception is:
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender		java.net.SocketException: Permission denied: connect
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender		at com.sun.mail.smtp.SMTPTransport.openServer(SMTPTransport.java:1282)
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender		at com.sun.mail.smtp.SMTPTransport.protocolConnect(SMTPTransport.java:370)
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender		at javax.mail.Service.connect(Service.java:275)
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender		at atg.service.email.SMTPEmailSender$ConnectionThread.run(SMTPEmailSender.java:1106)
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender	Caused by (#3):java.net.SocketException: Permission denied: connect
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender		at java.net.PlainSocketImpl.socketConnect(Native Method)
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender		at java.net.PlainSocketImpl.doConnect(PlainSocketImpl.java:333)
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender		at java.net.PlainSocketImpl.connectToAddress(PlainSocketImpl.java:195)
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender		at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:182)
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender		at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:366)
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender		at java.net.Socket.connect(Socket.java:525)
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender		at java.net.Socket.connect(Socket.java:475)
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender		at com.sun.mail.util.SocketFetcher.createSocket(SocketFetcher.java:232)
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender		at com.sun.mail.util.SocketFetcher.getSocket(SocketFetcher.java:189)
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender		at com.sun.mail.smtp.SMTPTransport.openServer(SMTPTransport.java:1250)
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender		at com.sun.mail.smtp.SMTPTransport.protocolConnect(SMTPTransport.java:370)
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender		at javax.mail.Service.connect(Service.java:275)
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender		at atg.service.email.SMTPEmailSender$ConnectionThread.run(SMTPEmailSender.java:1106)
+**** Error	пн груд 01 15:20:17 EET 2014	1417440017750	/atg/scenario/IndividualEmailSender	
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658347	/atg/dynamo/service/SMTPEmail	javax.mail.MessagingException: Could not connect to SMTP host: localhost, port: 25;
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658347	/atg/dynamo/service/SMTPEmail	  nested exception is:
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658347	/atg/dynamo/service/SMTPEmail		java.net.SocketException: Permission denied: connect
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender	atg.userprofiling.ProfileResources->emailCantSendMessage : Error sending email atg.userprofiling.email.TemplateEmailInfoImpl@ca7dda(mailingId=120000, mailingName=scenarioMailing, messageSubject=no subject)	CONTAINER:atg.userprofiling.email.TemplateEmailException: atg.service.email.EmailException: javax.mail.MessagingException: Could not connect to SMTP host: localhost, port: 25;
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender	  nested exception is:
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender		java.net.SocketException: Permission denied: connect; SOURCE:atg.service.email.EmailException: javax.mail.MessagingException: Could not connect to SMTP host: localhost, port: 25;
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender	  nested exception is:
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender		java.net.SocketException: Permission denied: connect
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender		at atg.userprofiling.email.TemplateEmailSender.doSendEmailMessage(TemplateEmailSender.java:2293)
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender		at atg.userprofiling.email.TemplateEmailSender.doSendEmailMessage(TemplateEmailSender.java:1953)
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender		at atg.userprofiling.email.EmailRequestThread.run(EmailRequestThread.java:108)
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender	Caused by :atg.service.email.EmailException: javax.mail.MessagingException: Could not connect to SMTP host: localhost, port: 25;
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender	  nested exception is:
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender		java.net.SocketException: Permission denied: connect
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender		at atg.service.email.SMTPEmailSender.openConnection(SMTPEmailSender.java:762)
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender		at atg.userprofiling.email.TemplateEmailSender.doSendEmailMessage(TemplateEmailSender.java:2164)
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender		at atg.userprofiling.email.TemplateEmailSender.doSendEmailMessage(TemplateEmailSender.java:1953)
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender		at atg.userprofiling.email.EmailRequestThread.run(EmailRequestThread.java:108)
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender	Caused by (#2):javax.mail.MessagingException: Could not connect to SMTP host: localhost, port: 25;
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender	  nested exception is:
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender		java.net.SocketException: Permission denied: connect
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender		at com.sun.mail.smtp.SMTPTransport.openServer(SMTPTransport.java:1282)
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender		at com.sun.mail.smtp.SMTPTransport.protocolConnect(SMTPTransport.java:370)
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender		at javax.mail.Service.connect(Service.java:275)
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender		at atg.service.email.SMTPEmailSender$ConnectionThread.run(SMTPEmailSender.java:1106)
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender	Caused by (#3):java.net.SocketException: Permission denied: connect
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender		at java.net.PlainSocketImpl.socketConnect(Native Method)
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender		at java.net.PlainSocketImpl.doConnect(PlainSocketImpl.java:333)
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender		at java.net.PlainSocketImpl.connectToAddress(PlainSocketImpl.java:195)
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender		at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:182)
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender		at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:366)
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender		at java.net.Socket.connect(Socket.java:525)
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender		at java.net.Socket.connect(Socket.java:475)
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender		at com.sun.mail.util.SocketFetcher.createSocket(SocketFetcher.java:232)
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender		at com.sun.mail.util.SocketFetcher.getSocket(SocketFetcher.java:189)
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender		at com.sun.mail.smtp.SMTPTransport.openServer(SMTPTransport.java:1250)
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender		at com.sun.mail.smtp.SMTPTransport.protocolConnect(SMTPTransport.java:370)
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender		at javax.mail.Service.connect(Service.java:275)
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender		at atg.service.email.SMTPEmailSender$ConnectionThread.run(SMTPEmailSender.java:1106)
+**** Error	пн груд 01 15:30:58 EET 2014	1417440658394	/atg/scenario/IndividualEmailSender	

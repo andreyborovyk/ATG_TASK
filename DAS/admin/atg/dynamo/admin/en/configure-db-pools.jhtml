@@ -1,0 +1,226 @@
+<nucleus type=import>
+	/atg/dynamo/admin/Configure
+	/atg/dynamo/admin/DbConnectionPool
+	/atg/dynamo/admin/NativeDbConnectionPool
+	/atg/dynamo/droplet/Switch
+</nucleus>
+
+<droplet bean="Switch">
+<!--  <param name="value" value="bean:/atg/dynamo/Configuration.dynamoAppServer"> -->
+     <param name="value" value="param:dynamoPool">
+     <oparam name="true">
+
+<java>
+  atg.service.dynamo.ServerConfig configure = (atg.service.dynamo.ServerConfig) request.resolveName("/atg/dynamo/admin/Configure");
+  atg.service.dynamo.DBConnectionPoolConfig dbCfg =
+  	(atg.service.dynamo.DBConnectionPoolConfig) request.resolveName("/atg/dynamo/admin/DbConnectionPool");
+</java>
+
+<HTML>
+<HEAD>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+<TITLE>Select a JDBC Connection Pool to Configure </TITLE>
+
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="images/config-banner.gif" ALT="Dynamo Configuration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a href="configure-server.jhtml">Configure</a>/DB_Pools<p>
+
+<blockquote>
+
+<h2>Configure or Delete JDBC Connection Pool</h2>
+
+<p><font color=red><valueof property=DbConnectionPool.errorMessage valueishtml></valueof></font><p>
+
+<droplet bean="/atg/dynamo/droplet/ForEach">
+  <param name="array" value="property:DbConnectionPool.connectionPoolNames">
+
+  <oparam name="outputStart">
+    <!-- start table -->
+    <table border="1" cellpadding="10" cellspacing="0">
+      <tr>
+       <th align="left">Configure Pool</th>
+       <th align="left">Delete Pool</th>
+      </tr>
+  </oparam>
+
+  <oparam name="output">
+      <tr>
+
+        <td align="left" valign="top">
+          <!-- link for configuring connection pool -->
+          <a href="configure-jdbc-type.jhtml"
+            property="DbConnectionPool.poolName"
+            submitvalue="param:element" value="param:element">
+          <param name="dynamoPool" value="param:dynamoPool">
+          <valueof param="element"></valueof></a>
+        </td>
+
+        <td align="left" valign="top">
+          <!-- form for deleting/resetting connection pool -->
+          <form action="configure-db-pools.jhtml" method="POST">
+            <input type="hidden" name="dynamoPool" value="param:dynamoPool">
+
+            <!-- reset button if pool is default JTDataSource -->
+            <!-- otherwise delete button                      -->
+            <droplet name="Switch">
+              <param name="value" value="param:element">
+              <oparam name="JTDataSource">
+                <input type="submit" name="param:element"
+                  property="DbConnectionPool.DeletePoolName"
+                  submitvalue="param:element" value="Reset Pool">
+              </oparam>
+              <oparam name="default">
+                <input type="submit" name="param:element"
+                  property="DbConnectionPool.DeletePoolName"
+                  submitvalue="param:element" value="Delete Pool">
+              </oparam>
+            </droplet>
+
+          </form>
+        </td>
+
+      </tr>
+  </oparam>
+
+  <oparam name="outputEnd">
+    <!-- end table -->
+    </table>
+  </oparam>
+
+</droplet>
+
+&nbsp<br>
+
+<h2>Add Connection Pool</h2>
+
+<!-- Form for adding connection pool. -->
+
+<!-- Clear pool name so it does not show up in text field of form. -->
+<setvalue bean="DbConnectionPool.poolName" value="">
+
+<table border="0" cellpadding="7" cellspacing="0">
+  <TR>
+   <FORM ACTION="configure-db-pools.jhtml" METHOD=POST>
+      <INPUT TYPE="hidden" name="dynamoPool" value="param:dynamoPool">
+    <TD ALIGN=LEFT VALIGN=TOP>
+      Pool name:<br>
+      <INPUT TYPE="hidden" name="dynamoPool" value="param:dynamoPool">
+      <INPUT TYPE="text" property=DbConnectionPool.poolName SIZE=30>
+    </TD>
+    <TD ALIGN=LEFT VALIGN=BOTTOM>
+      <INPUT TYPE="submit" property=DbConnectionPool.addPool VALUE="Add Pool">
+    </TD>
+   </FORM>
+  </TR>
+</table>
+
+</oparam>
+
+<oparam name="false">
+<java>
+  atg.service.dynamo.ServerConfig configure = (atg.service.dynamo.ServerConfig) request.resolveName("/atg/dynamo/admin/Configure");
+  atg.service.dynamo.NativeDBConnectionPoolConfig dbCfg =
+  	(atg.service.dynamo.NativeDBConnectionPoolConfig) request.resolveName("/atg/dynamo/admin/NativeDbConnectionPool");
+</java>
+
+<HTML>
+<HEAD>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+<TITLE>Select a JDBC Connection Pool to Configure </TITLE>
+
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="images/config-banner.gif" ALT="Dynamo Configuration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a href="configure-server.jhtml">Configure</a>/DB_Pools<p>
+
+<blockquote>
+
+<h2>Configure or Delete a Native JDBC Connection Pool</h2>
+
+<java>
+if ( null != dbCfg.getErrorMessage() )
+{
+	</java>
+	<p><font color=red><valueof property=NativeDbConnectionPool.errorMessage valueishtml></valueof></font><p>
+	<java>
+}
+</java>
+
+
+<TABLE BORDER="1" CELLPADDING="10" CELLSPACING="0">
+	<TR>
+		<TH ALIGN=LEFT>Configure Pool</TH>
+		<TH ALIGN=LEFT>Delete Pool</TH>
+	</TR>
+
+<java>
+
+String [] pools = dbCfg.getConnectionPoolNames();
+if ( null != pools )
+{
+	for( int ii=0; ii < pools.length; ++ii )
+	{
+		String poolName = pools[ii];
+
+		</java>
+		<TR>
+		<TD ALIGN=LEFT VALIGN=TOP>
+		<a href="native-c-db-p.jhtml" property=NativeDbConnectionPool.poolName submitvalue=`poolName` value=`poolName`>        <param name="dynamoPool" value="param:dynamoPool">
+		<java>
+		out.print( poolName );
+		</java></a>
+		</TD>
+
+                <FORM ACTION="configure-db-pools.jhtml" METHOD=POST>
+                <INPUT TYPE="hidden" name="dynamoPool" value="param:dynamoPool">
+		<TD ALIGN=LEFT VALIGN=TOP>
+		<INPUT TYPE="submit" name="`poolName`" property=NativeDbConnectionPool.deletePoolName
+			submitvalue="`poolName`" VALUE="Delete Pool">
+		</TD>
+		</TR>
+		</FORM>
+		<java>
+	}
+}
+</java>
+</table>
+
+&nbsp<br>
+
+<h2>Add Native Connection Pool</h2>
+
+<!-- Form for adding connection pool. -->
+
+<!-- Clear pool name so it does not show up in text field of form. -->
+<setvalue bean="NativeDbConnectionPool.poolName" value="">
+
+<table border="0" cellpadding="7" cellspacing="0">
+  <TR>
+   <FORM ACTION="configure-db-pools.jhtml" METHOD=POST>
+      <INPUT TYPE="hidden" name="dynamoPool" value="param:dynamoPool">
+    <TD ALIGN=LEFT VALIGN=TOP>
+      Pool name:<br>
+      <INPUT TYPE="text" property=NativeDbConnectionPool.poolName SIZE=30>
+    </TD>
+    <TD ALIGN=LEFT VALIGN=BOTTOM>
+      <INPUT TYPE="submit" property=NativeDbConnectionPool.addPool VALUE="Add Pool">
+    </TD>
+   </FORM>
+  </TR>
+</table>
+
+</oparam>
+</droplet>
+
+<p>
+
+</blockquote>
+
+</BODY>
+</html>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/configure-db-pools.jhtml#2 $$Change: 651448 $*/</java>

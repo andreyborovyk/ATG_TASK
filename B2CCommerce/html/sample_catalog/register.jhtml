@@ -1,0 +1,292 @@
+<HTML>
+<HEAD>
+<TITLE>Registration</TITLE>
+</HEAD>
+
+<importbean bean="/atg/userprofiling/Profile">
+<importbean bean="/atg/userprofiling/ProfileFormHandler">
+<importbean bean="/atg/userprofiling/ProfileErrorMessageForEach">
+<importbean bean="/atg/dynamo/droplet/Switch">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+
+<!-- This form should not show what the current profile attributes are so we will
+     disable the ability to extract default values from the profile. -->
+<setvalue bean="ProfileFormHandler.extractDefaultValuesFromProfile" value="false">
+
+<BODY>
+<a href="index.jhtml">Catalog Home</a> - 
+<a href="product_search.jhtml">Product Search</a> - 
+<a href="shoppingcart.jhtml">Shopping Cart</a> - 
+<a href="lists.jhtml">My Lists</a> - 
+<a href="comparison.jhtml">Product Comparison</a> -
+<a href="giftlist_search.jhtml">Gift List Search</a> - 
+<droplet bean="Switch">
+  <param name="value" value="bean:Profile.transient">
+  <oparam name="false">
+    <a href="logout.jhtml">Logout</a>
+  </oparam>
+  <oparam name="true">
+    <a href="login.jhtml">Login</a> or Register
+  </oparam>
+</droplet>
+<BR>
+
+<h3>Member Registration</h3>
+
+<droplet name="Switch">
+<param name="value" value="bean:ProfileFormHandler.profile.transient">
+<oparam name="false">
+  You are currently logged in. If you wish to register as a new user
+  please logout first.
+</oparam>
+
+<oparam name="default">
+<FORM ACTION="register.jhtml" METHOD="POST">
+<INPUT TYPE="HIDDEN" BEAN="ProfileFormHandler.createSuccessURL" VALUE="index.jhtml">
+
+<droplet name="Switch">
+<param name="value" value="bean:ProfileFormHandler.formError">
+<oparam name="true">
+  <font color=cc0000><STRONG><UL>
+    <droplet name="ProfileErrorMessageForEach">
+      <param name="exceptions" value="bean:ProfileFormHandler.formExceptions">
+      <oparam name="output">
+	<LI> <valueof param="message"></valueof>
+      </oparam>
+    </droplet>
+    </UL></STRONG></font>
+</oparam>
+</droplet>
+
+<INPUT TYPE="hidden" BEAN="ProfileFormHandler.value.member" value="true">
+
+<table>
+<tr>
+
+<td>
+<table>
+<tr>
+<td>User Name:</td>
+<td><INPUT TYPE="TEXT" SIZE="20" MAXSIZE="20" BEAN="ProfileFormHandler.value.login"></td>
+</tr>
+<tr>
+<td>Password:</td>
+<td><INPUT TYPE="PASSWORD" SIZE="20" MAXSIZE="20" BEAN="ProfileFormHandler.value.password"></td>
+</tr>
+<tr>
+<td>Email Address:</td>
+<td><INPUT TYPE="TEXT" SIZE="30" MAXSIZE="30" BEAN="ProfileFormHandler.value.email"></td>
+</tr>
+</table>
+</td>
+
+<td>
+<table>
+<tr>
+<td>First Name:</td>
+<td><INPUT TYPE="TEXT" SIZE="30" MAXSIZE="30" BEAN="ProfileFormHandler.value.firstName"></td>
+</tr>
+<tr>
+<td>Middle Name:</td>
+<td><INPUT TYPE="TEXT" SIZE="30" MAXSIZE="30" BEAN="ProfileFormHandler.value.middleName"></td>
+</tr>
+<tr>
+<td>Last Name:</td>
+<td><INPUT TYPE="TEXT" SIZE="30" MAXSIZE="30" BEAN="ProfileFormHandler.value.lastName"></td>
+</tr>
+</table>
+</td>
+
+</tr>
+
+<tr>
+<td>
+
+<table>
+<tr>
+<td></td>
+<td><i>Billing Address</i></td>
+</tr>
+
+<tr>
+<td>Address:</td>
+<td><INPUT TYPE="TEXT" SIZE="30" MAXSIZE="30" BEAN="ProfileFormHandler.value.billingAddress.address1"></td>
+</tr>
+
+<tr>
+<td>City:</td>
+<td><INPUT TYPE="TEXT" SIZE="30" MAXSIZE="30" BEAN="ProfileFormHandler.value.billingAddress.city"></td>
+</tr>
+
+<tr>
+<td>State:</td>
+<td>
+<select BEAN="ProfileFormHandler.value.billingAddress.state">
+<option value="AL">Alabama
+<option value="AK">Alaska
+<option value="AZ">Arizona
+<option value="AR">Arkansas
+<option value="CA">California
+<option value="CO">Colorado
+<option value="CT">Connecticut
+<option value="DE">Delaware
+<option value="FL">Florida
+<option value="GA">Georgia
+<option value="HI">Hawaii
+<option value="ID">Idaho
+<option value="IL">Illinois
+<option value="IN">Indiana
+<option value="IA">Iowa
+<option value="KS">Kansas
+<option value="KY">Kentucky
+<option value="LA">Louisiana
+<option value="ME">Maine
+<option value="MD">Maryland
+<option value="MA">Massachusetts
+<option value="MI">Michigan
+<option value="MN">Minnesota
+<option value="MS">Mississippi
+<option value="MO">Missouri
+<option value="MT">Montana
+<option value="NE">Nebraska
+<option value="NV">Nevada
+<option value="NH">New Hampshire
+<option value="NJ">New Jersey
+<option value="NM">New Mexico
+<option value="NY">New York
+<option value="NC">North Carolina
+<option value="ND">North Dakota
+<option value="OH">Ohio
+<option value="OK">Oklahoma
+<option value="OR">Oregon
+<option value="PA">Pennsylvania
+<option value="RI">Rhode Island
+<option value="SC">South Carolina
+<option value="SD">South Dakota
+<option value="TN">Tennessee
+<option value="TX">Texas
+<option value="UT">Utah
+<option value="VT">Vermont
+<option value="VA">Virginia
+<option value="WA">Washington
+<option value="DC">Washington D.C.
+<option value="WV">West Virginia
+<option value="WI">Wisconsin
+<option value="WY">Wyoming
+</SELECT>
+</td>
+</tr>
+
+<tr>
+<td>Zipcode:</td>
+<td><INPUT TYPE="TEXT" SIZE="10" MAXSIZE="10" BEAN="ProfileFormHandler.value.billingAddress.postalCode"></td>
+</tr>
+
+<tr>
+<td>Country:</td>
+<td><INPUT TYPE="TEXT" SIZE="10" MAXSIZE="10" BEAN="ProfileFormHandler.value.billingAddress.country"></td>
+</tr>
+</table>
+</td>
+
+<td>
+
+<table>
+<tr>
+<td></td>
+<td><i>Shipping Address</i></td>
+</tr>
+
+<tr>
+<td>Address:</td>
+<td><INPUT TYPE="TEXT" SIZE="30" MAXSIZE="30" BEAN="ProfileFormHandler.value.shippingAddress.address1"></td>
+</tr>
+
+<tr>
+<td>City:</td>
+<td><INPUT TYPE="TEXT" SIZE="30" MAXSIZE="30" BEAN="ProfileFormHandler.value.shippingAddress.city"></td>
+</tr>
+
+<tr>
+<td>State:</td>
+<td>
+<select BEAN="ProfileFormHandler.value.shippingAddress.state">
+<option value="AL">Alabama
+<option value="AK">Alaska
+<option value="AZ">Arizona
+<option value="AR">Arkansas
+<option value="CA">California
+<option value="CO">Colorado
+<option value="CT">Connecticut
+<option value="DE">Delaware
+<option value="FL">Florida
+<option value="GA">Georgia
+<option value="HI">Hawaii
+<option value="ID">Idaho
+<option value="IL">Illinois
+<option value="IN">Indiana
+<option value="IA">Iowa
+<option value="KS">Kansas
+<option value="KY">Kentucky
+<option value="LA">Louisiana
+<option value="ME">Maine
+<option value="MD">Maryland
+<option value="MA">Massachusetts
+<option value="MI">Michigan
+<option value="MN">Minnesota
+<option value="MS">Mississippi
+<option value="MO">Missouri
+<option value="MT">Montana
+<option value="NE">Nebraska
+<option value="NV">Nevada
+<option value="NH">New Hampshire
+<option value="NJ">New Jersey
+<option value="NM">New Mexico
+<option value="NY">New York
+<option value="NC">North Carolina
+<option value="ND">North Dakota
+<option value="OH">Ohio
+<option value="OK">Oklahoma
+<option value="OR">Oregon
+<option value="PA">Pennsylvania
+<option value="RI">Rhode Island
+<option value="SC">South Carolina
+<option value="SD">South Dakota
+<option value="TN">Tennessee
+<option value="TX">Texas
+<option value="UT">Utah
+<option value="VT">Vermont
+<option value="VA">Virginia
+<option value="WA">Washington
+<option value="DC">Washington D.C.
+<option value="WV">West Virginia
+<option value="WI">Wisconsin
+<option value="WY">Wyoming
+</SELECT>
+</td>
+</tr>
+
+<tr>
+<td>Zipcode:</td>
+<td><INPUT TYPE="TEXT" SIZE="10" MAXSIZE="10" BEAN="ProfileFormHandler.value.shippingAddress.postalCode"></td>
+</tr>
+<tr>
+<td>Country:</td>
+<td><INPUT TYPE="TEXT" SIZE="10" MAXSIZE="10" BEAN="ProfileFormHandler.value.shippingAddress.country"></td>
+</tr>
+
+</table>
+</td>
+</tr>
+</table>
+
+<INPUT TYPE="SUBMIT" VALUE="register" BEAN="ProfileFormHandler.create"> or <a href="login.jhtml">login</a>
+
+</FORM>
+</oparam>
+</droplet>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/B2CCommerce/html/sample_catalog/register.jhtml#2 $$Change: 651448 $*/</java>
+

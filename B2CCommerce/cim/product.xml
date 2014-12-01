@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE product SYSTEM "http://www.atg.com/dtds/product_1_0.dtd">
+<product id="b2ccommerce" extends="commerce">
+
+	<title resource-key="B2CCommerceProduct.name">ATG B2C Commerce</title>
+	<detail resource-key="B2CCommerceProduct.detail">Includes ATG Platform, Content Administration and, optionally, ACI, Preview, ATG Search, and Merchandising</detail>
+
+	<!-- addons --> 
+
+	<!-- not impl until bright  
+	
+			<product-addon id="clicktoconnect">
+				<title resource-key="">Click To Connect</title>
+				
+				<modify-server-instance-type id="production">
+					<append-module name="DCS.ClickToConnect"/>
+				</modify-server-instance-type>				
+				
+			</product-addon>
+-->
+
+<product-addon-group id="baseaddon_group">	
+		<title>Choose Commerce AddOns :</title>  
+</product-addon-group>
+
+
+	<product-addon-group id="platform_datasource_group" min-occurs="1" max-occurs="1">		
+			<title>Choose switching or non-switching datasource :</title>
+			
+			<product-addon id="switchingdatasource" >
+				<title resource-key="">Switching Datasource</title>
+
+				<modify-server-instance-type id="externalpreview">
+					<prepend-module name="DCS.Versioned"/>
+					<prepend-module name="B2CCommerce.Versioned"/>					
+				</modify-server-instance-type>
+
+			</product-addon>					
+	
+			<product-addon id="nonswitchingdatasource" >
+				<title resource-key="">Non-Switching Datasource</title>
+				
+				<modify-server-instance-type id="externalpreview">
+					<prepend-module name="DCS.Versioned"/>
+					<prepend-module name="B2CCommerce.Versioned"/>					
+				</modify-server-instance-type>
+			
+			</product-addon>
+
+	</product-addon-group>		
+  
+  
+	<!-- addon combos -->		
+
+  
+	<!-- server instance types -->
+	<server-instance-type id="management">
+		<title resource-key="CommerceCAServer.name">ATG Commerce Publishing Server</title>
+		<detail resource-key="CommerceCAServer.detail"/>
+
+		<!-- <add-module>DCS-UI</add-module>  -->
+		<append-module name="B2CCommerce.Versioned"/>
+		<append-module name="DCS.Versioned"/>		
+
+	</server-instance-type>			
+
+	<server-instance-type id="production" >
+
+		<title resource-key="CommerceProductionServer.name">ATG Commerce Production Server</title>
+		<detail/>
+		
+    <append-module name="B2CCommerce"/>
+		<append-module name="DCS.PublishingAgent"/>
+						
+	</server-instance-type>
+	
+	<server-instance-type id="staging" >
+
+		<title resource-key="CommerceStagingServer.name">ATG Commerce Staging Server</title>
+		<detail/>
+    
+		<append-module name="B2CCommerce"/>
+		<append-module name="DCS.PublishingAgent"/>
+						
+	</server-instance-type>
+
+	<server-instance-type id="datawarehouse_loader" >
+		<append-module name="B2CCommerce"/>
+		<append-module name="DCS.DW"/>
+		<append-module name="DCS.PublishingAgent"/>
+						
+	</server-instance-type>
+	
+</product>
+<!-- @version $Id: //product/DCS/version/10.0.3/release/B2CCommerce/cim/product.xml#2 $$Change: 651448 $-->

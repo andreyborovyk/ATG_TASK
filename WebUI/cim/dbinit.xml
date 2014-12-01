@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE database-initializer SYSTEM "http://www.atg.com/dtds/dbinit_1_0.dtd">
+<database-initializer>
+	<schema id="versionedSchema">
+		<sql>
+			<path>
+				<create>sql/db_components/${database}/viewmapping_ddl.sql</create>
+				<drop>sql/uninstall/${database}/drop_viewmapping_ddl.sql</drop>
+			</path>
+		</sql>
+	</schema>
+
+	<schema id="svcagentSchema">
+		<sql>
+			<path>
+				<create>sql/db_components/${database}/viewmapping_ddl.sql</create>
+				<drop>sql/uninstall/${database}/drop_viewmapping_ddl.sql</drop>
+			</path>
+		</sql>
+	</schema>
+
+	<schema id="coreSchema">
+		<sql>
+			<path>
+				<create>sql/db_components/${database}/viewmapping_ddl.sql</create>
+				<drop>sql/uninstall/${database}/drop_viewmapping_ddl.sql</drop>
+			</path>
+		</sql>
+	</schema>
+
+	<server-instance-type id="production">
+		<datasource id="switchingCore">
+			<schema id="coreSchema" />
+		</datasource>
+
+		<datasource id="nonswitchingCore">
+			<schema id="coreSchema" />
+		</datasource>
+	</server-instance-type>
+
+	<server-instance-type id="staging">
+		<datasource id="stagingswitchingCore">
+			<schema id="coreSchema" />
+		</datasource>
+
+		<datasource id="stagingnonswitchingCore">
+			<schema id="coreSchema" />
+		</datasource>
+	</server-instance-type>
+
+	<server-instance-type id="datawarehouse_loader">
+		<datasource id="all">
+			<schema id="coreSchema" />
+		</datasource>
+	</server-instance-type>
+
+	<server-instance-type id="management">
+		<datasource id="management">
+			<schema id="versionedSchema" />
+		</datasource>
+	</server-instance-type>
+
+	<server-instance-type id="svcagent">
+		<datasource id="svcagent">
+			<schema id="svcagentSchema" />
+		</datasource>
+	</server-instance-type>
+</database-initializer>
+<!-- @version $Id: //product/WebUI/version/10.0.3/src/cim/dbinit.xml#2 $$Change: 651448 $-->

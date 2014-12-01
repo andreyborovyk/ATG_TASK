@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE gsa-template
+        PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN"
+        "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template>
+
+  <header>
+    <name>WSRP Consumer Repository Template</name>
+    <author>Andrew Rickard</author>
+    <version>$Id: //product/WSRP/version/10.0.3/consumer/config/atg/wsrp/consumer/persistence/consumer.xml#2 $</version>
+  </header>
+
+<!--===============================================================================================================================
+                                   Item Descriptors for Producer & RegistrationInformation
+=================================================================================================================================-->
+  <!-- Producer -->
+  <!--          -->
+  <item-descriptor name="producer" display-property="producerName" display-name-resource="itemDescriptorProducer">
+    <attribute name="resourceBundle" value="atg.wsrp.consumer.ConsumerTemplateResources"/>
+    <attribute name="icon" value="organizationIcon"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryActivityPriority" value="30"/>
+    <attribute name="categoryInfoPriority" value="50"/>
+
+    <table name="wsrpc_producer" type="primary" id-column-name="producer_id">
+
+      <!-- Producer Info -->
+      <property name="id" data-type="string" required="true" column-name="producer_id" display-name-resource="producerId" category-resource="categoryInfo">
+	<attribute name="uiwritable" value="false"/>
+	<attribute name="unique" value="true"/>
+      </property>      
+      <property name="producerName" data-type="string" required="true" column-name="name" display-name-resource="producerName" category-resource="categoryInfo">
+	<attribute name="unique" value="true"/>
+      </property>      
+      <property name="producerURL" data-type="string" required="false" column-name="producer_url" display-name-resource="producerURL" category-resource="categoryInfo"/>
+      <property name="producerDescription" data-type="string" required="false" column-name="producer_dsc" display-name-resource="producerDescription" category-resource="categoryInfo"/>
+      <property name="registrationURL" data-type="string" required="false" column-name="reg_url" display-name-resource="registrationURL" category-resource="categoryInfo"/>      
+      <property name="serviceDescriptionURL" data-type="string" required="true" column-name="serv_desc_url" display-name-resource="serviceDescriptionURL" category-resource="categoryInfo"/>      
+      <property name="markupURL" data-type="string" required="true" column-name="markup_url" display-name-resource="markupURL" category-resource="categoryInfo"/>
+      <property name="portletManagementURL" data-type="string" required="false" column-name="prtlt_mgmt_url" display-name-resource="portletManagementURL" category-resource="categoryInfo"/>
+      <!-- Registration Detail -->
+      <property name="registrationHandle" data-type="string" required="false" column-name="reg_handle" display-name-resource="registrationHandle" category-resource="categoryInfo">
+      	<attribute name="uiwritable" value="false"/>
+      </property>      	
+      <property name="registrationState" data-type="binary" required="false" column-name="reg_state" display-name-resource="registrationState" category-resource="categoryInfo"/>
+      <!-- Producer ServiceDescription -->
+      <property name="producerServiceDescription" item-type="serviceDescription" column-name="service_id" display-name-resource="producerServiceDescription" category-resource="categoryInfo"/>
+      <!-- Last Modified -->
+      <property name="lastModifiedDate" data-type="timestamp" column-name="last_modfd_dt" display-name-resource="producerLastModified" category-resource="categoryInfo"/>
+    </table>
+    
+    <!-- Available Portlets -->
+    <table name="wsrpc_avl_prtlt" type="multi" id-column-name="producer_id">
+      <property name="availablePortlets" column-name="portlet_id" data-type="set" component-item-type="portletDescription"/>
+    </table> 
+        
+  </item-descriptor>
+
+  <!--  RegistrationInformation    -->
+  <!--                             -->
+  <item-descriptor name="registrationInformation" display-property="name" display-name-resource="itemDescriptorRegistrationInfo">
+    <attribute name="resourceBundle" value="atg.wsrp.consumer.ConsumerTemplateResources"/>
+    <attribute name="icon" value="organizationIcon"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="50"/>
+
+    <table name="wsrpc_regn_info" type="primary" id-column-name="regn_info_id">
+
+      <!-- Info -->
+      <property name="id" data-type="string" required="true" column-name="regn_info_id" display-name-resource="registrationInfoId" category-resource="categoryInfo">
+	<attribute name="uiwritable" value="false"/>
+	<attribute name="unique" value="true"/>
+      </property>
+      <property name="name" data-type="string" required="true" column-name="name" display-name-resource="consumerName" category-resource="categoryInfo">
+	<attribute name="unique" value="true"/>
+      </property>
+      <property name="agent" data-type="string" required="true" column-name="agent" display-name-resource="agent" category-resource="categoryInfo"/>
+      <property name="getSupported" data-type="boolean" required="true" column-name="get_supported" display-name-resource="getSupported" category-resource="categoryInfo"/>
+    </table>
+
+    <!-- More Info -->
+    <table name="wsrpc_modes" type="multi" id-column-name="regn_info_id">
+      <property name="modes" column-name="portlet_mode" data-type="set" component-data-type="enumerated" display-name-resource="consumerModes" category-resource="categoryInfo">
+	<option value="view" code="0"/>
+	<option value="edit" code="1"/>
+	<option value="help" code="2"/>
+	<option value="preview" code="3"/>
+      </property>
+    </table>
+    <table name="wsrpc_windw_sts" type="multi" id-column-name="regn_info_id">
+      <property name="windowStates" column-name="window_state" data-type="set" component-data-type="enumerated" display-name-resource="consumerWindowStates" category-resource="categoryInfo">
+	<option value="normal" code="0"/>
+	<option value="minimized" code="1"/>
+	<option value="maximized" code="2"/>
+	<option value="solo" code="3"/>
+      </property>
+    </table>
+    <table name="wsrpc_usr_scops" type="multi" id-column-name="regn_info_id">
+      <property name="userScopes" column-name="user_scope" data-type="set" component-data-type="enumerated" display-name-resource="userScopes" category-resource="categoryInfo">
+	<option value="perUser" code="0"/>
+	<option value="forAll" code="1"/>
+      </property>
+    </table>
+    <table name="wsrpc_usrpr_dat" type="multi" id-column-name="regn_info_id">
+      <property name="userProfileData" column-name="usr_prf_data" data-type="set" component-data-type="string" display-name-resource="userProfileData" category-resource="categoryInfo"/>
+    </table>
+
+  </item-descriptor>
+
+<!--===============================================================================================================================
+                                   END OF Item Descriptors for Producer & Registration Information
+=================================================================================================================================-->
+
+<!--===============================================================================================================================
+                                   Item Descriptors for ServiceDescription 
+=================================================================================================================================-->
+
+  <!-- ServiceDescription          -->
+  <!--                             --> 
+  <item-descriptor name="serviceDescription" display-property="id" display-name-resource="itemDescriptorServiceDescription">
+    <attribute name="resourceBundle" value="atg.wsrp.consumer.ConsumerTemplateResources"/>
+    <attribute name="icon" value="organizationIcon"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="50"/>
+
+    <table name="wsrpc_serv_desc" type="primary" id-column-name="service_id">
+
+      <!-- Info -->
+      <property name="id" data-type="string" required="true" column-name="service_id" display-name-resource="id" category-resource="categoryInfo">
+	<attribute name="uiwritable" value="false"/>
+	<attribute name="unique" value="true"/>
+      </property>
+      <property name="requiresRegistration" data-type="boolean" column-name="requires_reg" display-name-resource="requiresRegistration" category-resource="categoryInfo"/>
+      <property name="requiresInitCookies" data-type="enumerated" column-name="req_init_cookie" display-name-resource="initCookie" category-resource="categoryInfo">
+        <option value="none"     code="0"/>
+        <option value="perUser"  code="1"/>
+        <option value="perGroup" code="2"/>
+      </property>
+      <property name="resourceList" item-type="resourceList" column-name="res_list_id" required="false" display-name-resource="resourceList" category-resource="categoryInfo"/>
+    </table>
+
+    <table name="wsrpc_svcdsc_lc" type="multi" id-column-name="service_id" multi-column-name="sequence_num">
+      <property name="locales" column-name="locale" data-type="list" component-data-type="string" display-name-resource="locales" category-resource="categoryInfo"/>
+    </table>
+
+    <table name="wsrpc_urct_idsc" type="multi" id-column-name="service_id">
+      <property name="userCategoryDescriptions" data-type="set" component-item-type="itemDescription" column-name="description_id" display-name-resource="userCategoryDescriptions" category-resource="categoryInfo"/>
+    </table>
+
+    <table name="wsrpc_cprf_idsc" type="multi" id-column-name="service_id">
+      <property name="customProfileItemDescriptions" data-type="set" component-item-type="itemDescription" column-name="description_id" display-name-resource="customProfileItemDescriptions" category-resource="categoryInfo"/>
+    </table>
+
+    <table name="wsrpc_cwst_dsc" type="multi" id-column-name="service_id">
+      <property name="customWindowStateDescriptions" data-type="set" component-item-type="itemDescription" column-name="description_id" display-name-resource="customWindowStateDescriptions" category-resource="categoryInfo"/>
+    </table>
+
+    <table name="wsrpc_cmode_dsc" type="multi" id-column-name="service_id">
+      <property name="customModeDescriptions" data-type="set" component-item-type="itemDescription" column-name="description_id" display-name-resource="customModeDescriptions" category-resource="categoryInfo"/>
+    </table>
+
+  </item-descriptor>
+
+  <!-- ResourceList    -->
+  <!--                 -->
+  <item-descriptor name="resourceList" display-property="id" display-name-resource="itemDescriptorResourceList">
+    <attribute name="resourceBundle" value="atg.wsrp.consumer.ConsumerTemplateResources"/>
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="50"/>
+
+    <table name="wsrpc_res_list" type="primary" id-column-name="res_list_id">
+      <!-- Info -->
+      <property name="id" data-type="string" required="true" column-name="res_list_id" display-name-resource="resourceListId" category-resource="categoryInfo">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="unique" value="true"/>
+      </property>
+      <property name="extensions" data-type="string" required="false" column-name="extension" display-name-resource="Extensions" category-resource="categoryInfo"/>
+    </table>
+
+    <table name="wsrpc_resources" type="multi" id-column-name="res_list_id">
+        <property name="resources" column-name="resource_id" data-type="set"
+                  component-item-type="resource" display-name-resource="resources" category-resource="categoryInfo"/>
+    </table>
+  </item-descriptor>
+
+  <!--          Resource                         -->
+  <!-- Used as Localization Resource in WSRP     -->
+  <!--                                           -->
+  <item-descriptor name="resource" display-property="id" display-name-resource="itemDescriptorResource">
+    <attribute name="resourceBundle" value="atg.wsrp.consumer.ConsumerTemplateResources"/>
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="50"/>
+
+    <table name="wsrpc_resource" type="primary" id-column-name="resource_id">
+      <!-- Info -->
+      <property name="id" data-type="string" required="true" column-name="resource_id" display-name-resource="resourceId" category-resource="categoryInfo">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="unique" value="true"/>
+      </property>
+      <property name="resourceName" data-type="string" required="true" column-name="resource_name" display-name-resource="resourceName" category-resource="categoryInfo"/>
+    </table>
+    <table name="wsrpc_res_value" type="multi" id-column-names="resource_id"
+           multi-column-name="locale">
+      <property name="resourceValues" column-names="res_value" data-type="map"
+            component-data-type="string" display-name-resource="resourceValues" category-resource="categoryInfo"/>
+    </table>
+  </item-descriptor>
+
+  <!-- itemDescription Type       -->
+  <!--                            -->
+  <item-descriptor name="itemDescription" display-property="itemName" display-name-resource="itemDescriptorItemDescription">
+    <attribute name="resourceBundle" value="atg.wsrp.consumer.ConsumerTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="50"/>
+
+    <table name="wsrpc_item_desc" type="primary" id-column-name="item_desc_id">
+      <!-- Info -->
+      <property name="id" data-type="string" required="true" column-name="item_desc_id" display-name-resource="itemDescriptionId" category-resource="categoryInfo">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="unique" value="true"/>
+      </property>
+      <property name="itemName" data-type="string" required="true" column-name="item_name" display-name-resource="itemName" category-resource="categoryInfo"/>
+
+      <!-- description localized string -->
+      <property name="description" data-type="string" required="false" column-name="description" display-name-resource="description" category-resource="categoryInfo"/>
+      <property name="descriptionXmlLang" data-type="string" required="false" column-name="dsc_xml_lang" display-name-resource="descriptionXmlLang" category-resource="categoryInfo"/>
+      <property name="descriptionResourceName" data-type="string" required="false" column-name="dsc_res_name" display-name-resource="descriptionResourceName" category-resource="categoryInfo"/>
+    </table>
+  </item-descriptor>
+<!--===============================================================================================================================
+                                   END OF Item Descriptors for ServiceDescription
+=================================================================================================================================-->
+
+
+<!--===============================================================================================================================
+                                   Item Descriptors for PortletDescription
+=================================================================================================================================-->
+
+<!-- WSRP PortletDescription     -->
+<!--                             -->
+<item-descriptor name="portletDescription" display-property="handle" display-name-resource="itemDescriptorPortletDescription">
+  <attribute name="resourceBundle" value="atg.wsrp.consumer.ConsumerTemplateResources"/>
+
+  <attribute name="categoryBasicsPriority" value="10"/>
+  <attribute name="categoryInfoPriority" value="50"/>
+
+  <table name="wsrpc_prtlt_dsc" type="primary" id-column-name="prtlt_dsc_id">
+    <!-- Info -->
+    <property name="id" data-type="string" required="true" column-name="prtlt_dsc_id" display-name-resource="portletDescriptionId" category-resource="categoryInfo">
+      <attribute name="uiwritable" value="false"/>
+      <attribute name="unique" value="true"/>
+    </property>
+    <property name="handle" data-type="string" required="true" column-name="handle" display-name-resource="portletHandle" category-resource="categoryInfo">
+      <attribute name="uiwritable" value="false"/>
+      <attribute name="unique" value="true"/>
+    </property>
+    <property name="portletType" data-type="enumerated" required="true" column-name="portlet_type" display-name-resource="portletType" category-resource="categoryInfo">
+      <option value="producerOffered" code="0"/>
+      <option value="cloned"          code="1"/>
+    </property>
+    <property name="groupID" data-type="string" required="false" column-name="group_id" display-name-resource="groupID" category-resource="categoryInfo"/>
+    <property name="description" data-type="string" required="false" column-name="description" display-name-resource="portletDescription" category-resource="categoryInfo"/>
+    <property name="descriptionXmlLang" data-type="string" required="false" column-name="dsc_xml_lang" display-name-resource="portletDescriptionXmlLang" category-resource="categoryInfo"/>
+    <property name="descriptionResouceName" data-type="string" required="false" column-name="dsc_res_name" display-name-resource="portletDescriptionResouceName" category-resource="categoryInfo"/>
+    <property name="shortTitle" data-type="string" required="false" column-name="short_title" display-name-resource="shortTitle" category-resource="categoryInfo"/>
+    <property name="shortTitleXmlLang" data-type="string" required="false" column-name="shtitl_xml_lang" display-name-resource="shortTitleXmlLang" category-resource="categoryInfo"/>
+    <property name="shortTitleResouceName" data-type="string" required="false" column-name="shtitl_res_name" display-name-resource="shortTitleResouceName" category-resource="categoryInfo"/>
+    <property name="title" data-type="string" required="false" column-name="title" display-name-resource="title" category-resource="categoryInfo"/>
+    <property name="titleXmlLang" data-type="string" required="false" column-name="title_xml_lang" display-name-resource="titleXmlLang" category-resource="categoryInfo"/>
+    <property name="titleResouceName" data-type="string" required="false" column-name="title_res_name" display-name-resource="titleResouceName" category-resource="categoryInfo"/>
+    <property name="displayName" data-type="string" required="false" column-name="display_name" display-name-resource="displayName" category-resource="categoryInfo"/>
+    <property name="displayNameXmlLang" data-type="string" required="false" column-name="dspnam_xml_lang" display-name-resource="displayNameXmlLang" category-resource="categoryInfo"/>
+    <property name="displayNameResouceName" data-type="string" required="false" column-name="dspnam_res_name" display-name-resource="displayNameResouceName" category-resource="categoryInfo"/>
+    <property name="usesMethodGet" data-type="boolean" column-name="uses_method_get" display-name-resource="usesMethodGet" category-resource="categoryInfo"/>
+    <property name="defaultMarkupSecure" data-type="boolean" column-name="dflt_mrkp_secur" display-name-resource="defaultMarkupSecure" category-resource="categoryInfo"/>
+    <property name="onlySecure" data-type="boolean" column-name="only_secure" display-name-resource="onlySecure" category-resource="categoryInfo"/>
+    <property name="userContextStoredInSession" data-type="boolean" column-name="usr_ctxin_sessn" display-name-resource="userContextStoredInSession" category-resource="categoryInfo"/>
+    <property name="templatesStoredInSession" data-type="boolean" column-name="tmplts_in_sessn" display-name-resource="templatesStoredInSession" category-resource="categoryInfo"/>
+    <property name="hasUserSpecificState" data-type="boolean" column-name="has_usr_spec_st" display-name-resource="hasUserSpecificState" category-resource="categoryInfo"/>
+    <property name="doesUrlTemplateProcessing" data-type="boolean" column-name="does_url_templt" display-name-resource="doesUrlTemplateProcessing" category-resource="categoryInfo"/>
+    <!-- Last Modified -->
+    <property name="lastModifiedDate" data-type="timestamp" column-name="last_modfd_dt" display-name-resource="portletLastModified" category-resource="categoryInfo"/>
+  </table>
+
+  <table name="wsrpc_mrkp_typs" type="multi" id-column-name="prtlt_dsc_id">
+    <property name="markupTypes" column-name="markup_type_id" data-type="set" component-item-type="markupType" display-name-resource="markupTypes" category-resource="categoryInfo"/>
+  </table>
+  <table name="wsrpc_usr_ctgrs" type="multi" id-column-name="prtlt_dsc_id">
+    <property name="userCategories" column-name="user_category" data-type="set" component-data-type="string" display-name-resource="userCategories" category-resource="categoryInfo"/>
+  </table>
+  <table name="wsrpc_usrpr_itm" type="multi" id-column-name="prtlt_dsc_id">
+    <property name="userProfileItems" column-name="usr_profile_itm" data-type="set" component-data-type="string" display-name-resource="userProfileItems" category-resource="categoryInfo"/>
+  </table>
+</item-descriptor>
+
+<!-- MarkupType     -->
+<!--                -->
+<item-descriptor name="markupType" display-property="id" display-name-resource="itemDescriptorMarkupType">
+  <attribute name="resourceBundle" value="atg.wsrp.consumer.ConsumerTemplateResources"/>
+
+  <attribute name="categoryBasicsPriority" value="10"/>
+  <attribute name="categoryInfoPriority" value="50"/>
+
+  <table name="wsrpc_mrkp_type" type="primary" id-column-name="markup_type_id">
+    <!-- Info -->
+    <property name="id" data-type="string" required="true" column-name="markup_type_id" display-name-resource="markupTypeId" category-resource="categoryInfo">
+      <attribute name="uiwritable" value="false"/>
+      <attribute name="unique" value="true"/>
+    </property>
+    <property name="mimeType" data-type="string" required="true" column-name="mime_type" display-name-resource="mimeType" category-resource="categoryInfo">
+      <attribute name="unique" value="false"/>
+    </property>
+  </table>
+
+  <table name="wsrpc_mrkp_mode" type="multi" id-column-name="markup_type_id">
+    <property name="modes" column-name="markup_mode_id" data-type="set" component-data-type="string" display-name-resource="markupModes" category-resource="categoryInfo"/>
+  </table>
+  <table name="wsrpc_mrkp_wnst" type="multi" id-column-name="markup_type_id">
+    <property name="windowStates" column-name="mrkp_winstat_id" data-type="set" component-data-type="string" display-name-resource="windowStates" category-resource="categoryInfo"/>
+  </table>
+  <table name="wsrpc_mrkp_lcle" type="multi" id-column-name="markup_type_id">
+    <property name="locales" column-name="mrkp_locale_id" data-type="set" component-data-type="string" display-name-resource="markupTypeLocales" category-resource="categoryInfo"/>
+  </table>
+</item-descriptor>
+
+<!--===============================================================================================================================
+                                   END OF Item Descriptors for PortletDescription
+=================================================================================================================================-->
+
+</gsa-template>
+<!-- @version $Id: //product/WSRP/version/10.0.3/consumer/config/atg/wsrp/consumer/persistence/consumer.xml#2 $$Change: 651448 $-->

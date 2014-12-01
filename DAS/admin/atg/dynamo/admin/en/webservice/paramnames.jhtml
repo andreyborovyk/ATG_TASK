@@ -1,0 +1,199 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+    <title>Create Web Service: Set Parameter Names</title>
+  </head>
+<nucleus type=import>
+        /atg/dynamo/droplet/ForEach
+	/atg/dynamo/admin/GetMethod
+	/atg/dynamo/admin/CreateWebService
+        /atg/dynamo/droplet/Switch
+</nucleus>
+
+
+<param name="CreateWebService" value="bean:CreateWebService">
+
+<JAVA>
+  String strCmpName = request.getParameter("cmpnName");
+  if ("null".equals(strCmpName)) {
+	request.setParameter("cmpnName", null);
+        strCmpName = null;
+  }
+
+  if (null == strCmpName) {
+    // System.out.println("Getting componentName from CreateWebService");
+    strCmpName =
+(String)request.getObjectParameter("CreateWebService.componentName");
+  }
+
+  Object objResolve = null;
+
+  if (strCmpName != null) {
+    objResolve = request.resolveName(strCmpName);
+  }
+
+  request.setParameter("resolvedCmpn", objResolve);
+
+  if (objResolve == null) {
+    // System.out.println("No obj resolve... going back to create.");
+    request.addQueryParameter("context", strCmpName); 
+    response.sendRedirect(request.encodeURL("selecttype.jhtml"));
+  }
+
+  if (null == request.getObjectParameter("methodName")) {
+    request.setParameter("methodName",
+                         request.getObjectParameter("CreateWebService.methodName"));
+  }
+</JAVA>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+<IMG SRC="../images/admin-banner.gif" ALT="Dynamo Administration"
+     ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+
+<droplet name="Switch">
+  <param name="value" value="param:cmpnName">
+  <param name="null" value=" ">
+  <param name="unset" value=" ">
+  <oparam name="default">
+   <setvalue bean="CreateWebService.componentName" value="param:cmpnName">
+  </oparam>
+</droplet>
+
+<droplet name="Switch">
+  <param name="value" value="param:methodName">
+  <param name="null" value=" ">
+  <param name="unset" value=" ">
+  <oparam name="default">
+   <setvalue bean="CreateWebService.methodName" value="param:methodName">
+  </oparam>
+</droplet>
+
+<param name="object" value="bean:CreateWebService.resolvedComponent">
+
+<droplet name="GetMethod">
+  <param name="object" value="bean:CreateWebService.resolvedComponent">
+  <param name="methodName" value="bean:CreateWebService.methodName">
+  <oparam name="error">
+     <JAVA> request.addQueryParameter("context",
+	      request.getParameter("cmpnName")); 
+            response.sendRedirect(request.encodeURL("selecttype.jhtml"));
+     </JAVA>
+  </oparam>
+  <oparam name="output">
+  <setvalue bean="CreateWebService.method" value="param:method"/>
+
+
+<a href="/">admin</a> / <a href="index.jhtml">Web Service
+	Administration</a> / Create Web Service</p><p>
+
+    <h2>Create Web Service</h2>
+    <h1>Set Parameter Names</h1>
+
+<blockquote>
+
+
+<B>Current Selections</B><BR>
+<TABLE border=0>
+<TR><TD>&nbsp;&nbsp;&nbsp;</TD><TD>
+  Nucleus Component: <valueof bean="CreateWebService.componentName">???</valueof><BR>
+  Method: <valueof bean="CreateWebService.methodName">???</valueof></TD></TR>
+</TABLE>
+<P>
+
+
+
+<droplet name="Switch">
+  <param name="value" value="bean:CreateWebService.methodForSlot">
+  <oparam name="true">
+    <droplet name="Switch">
+     <param name="value"
+value="bean:CreateWebService.mappingManagerMappingFileNames">
+     <param name="empty" value=" ">
+     <oparam name="output">
+        Select mapping file: <select bean="CreateWebService.mappingFile">
+          <droplet name="ForEach">
+           <param name="array"
+            value="bean:CreateWebService.mappingManager.mappingFileNames">
+           <oparam name="output">
+             <option value="bean:element"><valueof param:element>?</valueof></option>
+           </oparam>
+          </droplet>
+        </select>
+        <P>&nbsp;<P>
+     </oparam>
+    </droplet>
+  </oparam>
+</droplet>
+
+
+
+<setvalue bean="CreateWebService.method" value="param:method"/>
+
+
+
+<B>Parameters of Method <valueof bean="CreateWebService.componentName">???</valueof>.<valueof bean="CreateWebService.methodName">???</valueof></B>
+<P>
+
+
+
+<form action="createstage.jhtml" method="POST">
+ <input type="hidden" bean="CreateWebService.componentName"
+	value="bean:CreateWebService.componentName" priority="1"/>
+ <input type="hidden" bean="CreateWebService.methodName"
+	value="bean:CreateWebService.methodName" priority="1"/>
+
+<table border=0 cellpadding=3>
+
+<droplet name="ForEach">
+  <param name="array" value="bean:CreateWebService.parameterTypes">
+  <oparam name="outputStart">
+       <tr><td><B>Parameter</B></td><td><B>Name</B></td></tr>
+  </oparam>
+  <oparam name="output">
+       <tr><td>
+       <setvalue param="form"
+		 value="bean:CreateWebService"/>
+
+	<droplet name="Switch">
+	  <param name="value" value="param:form.paramNameExceptions[param:index]">
+          <oparam name="unset"></oparam>
+          <oparam name="default">
+             <font color="red"><valueof param="value.message">???</valueof></font><br>
+          </oparam>
+        </droplet>
+
+         <valueof param="count">?</valueof>.
+	 type <valueof param="element">???</valueof>: 
+         </td><td>
+	 <input type="text"
+		bean="CreateWebService.parameterNames[param:index]"
+		priority="-5" size="10"/>
+    </td></tr>
+  </oparam>
+  <oparam name="empty">
+    <tr><td colspan=2>(none)</td></tr>
+  </oparam>
+</droplet>
+
+ <input type="hidden" name="cmpnName" value="param:cmpnName"/>
+ <input type="hidden" name="methodName" value="param:methodName"/>
+ <input type="hidden" name="stage" value="param:stage"/>
+ <input type="hidden" bean="CreateWebService.successURL" value="appconfig.jhtml">
+ <input type="hidden" bean="CreateWebService.failureURL" value="paramnames.jhtml">
+
+ <tr><td colspan=3>&nbsp;</td></tr>
+
+ <tr><td colspan=3><input type="submit" submitValue="selectmethod.jhtml?cmpnName=`request.getParameter("cmpnName")`" value="Previous" bean="CreateWebService.redirect">&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="Next" bean="CreateWebService.submit"></td></tr>
+</table> 
+</form>
+
+</blockquote>
+
+  </oparam>
+</droplet>
+
+  </BODY>
+</html>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/webservice/paramnames.jhtml#2 $$Change: 651448 $*/</java>

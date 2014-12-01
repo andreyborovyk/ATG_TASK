@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE gsa-template
+        PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN"
+        "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template>
+
+  <header>
+    <name>ProcessData</name>
+    <author>Manny Parasirakis</author>
+    <version>$Id: //product/Publishing/version/10.0.3/pws/config/atg/epub/process/processData.xml#2 $$Change: 651448 $</version>
+  </header>
+
+  <!-- ******************************** -->
+  <!--   ProcessData Item Definition    -->
+  <!-- ******************************** -->  
+  <item-descriptor name="processData" default="true" expert="true" hidden="true" sub-type-property="type" 
+      display-name-resource="itemDescriptorProcessData"
+      item-cache-size="1000" query-cache-size="500">
+
+    <attribute name="resourceBundle" value="atg.epub.process.ProcessDataResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <attribute name="deployable" value="false"/>
+
+    <table name="epub_process_data" type="primary" id-column-name="process_data_id">
+
+      <!-- categoryInfo -->
+
+      <property name="id" column-name="process_data_id" data-type="string"
+          category-resource="categoryInfo" display-name-resource="processDataId">
+        <attribute name="propertySortPriority" value="10"/>          
+      </property>
+
+      <property name="type" column-name="type" data-type="enumerated"
+          category-resource="categoryInfo" display-name-resource="type">
+        <attribute name="propertySortPriority" value="20"/>
+        <attribute name="useCodeForValue" value="false"/>
+        <option value="processData" code="8800"/>
+      </property>
+      
+      <!-- categoryBasics -->
+
+    </table>
+  </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //product/Publishing/version/10.0.3/pws/config/atg/epub/process/processData.xml#2 $$Change: 651448 $ -->

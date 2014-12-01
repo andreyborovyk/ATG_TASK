@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<!DOCTYPE schema
+  SYSTEM 'http://road.atg.com/dtds/ddlgen/schema.dtd'>
+<schema name="push_agent_ddl">
+  <comment><![CDATA[ Linking table for agent's push properties @version $Id: //product/Ticketing/version/10.0.3/src/sql/push_agent_ddl.xml#2 $$Change: 651448 $]]></comment>
+
+  <table name="tkt_push_agent">
+    <column name="id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    <column name="push_agent" nullable="y">
+      <column-type db="generic" type="one-digit"/>
+    </column>
+
+    <column name="push_load_level" nullable="y">
+      <column-type db="generic" type="int"/>
+    </column>
+
+    <column name="push_auto_in" nullable="y">
+      <column-type db="generic" type="one-digit"/>
+    </column>
+
+    <primary-key name="push_agent_p">
+      <index-column column="id" order="asc" seq="1"/>
+    </primary-key>
+
+    <foreign-key name="push_agent_user_f" referenced-table="dpi_user">
+      <fkey-column referencing-column="id" referenced-column="id"/>
+    </foreign-key>
+  </table>
+
+  <comment><![CDATA[
+    Linking table for organizations' ticketQueues property
+  ]]></comment>
+
+  <table name="tkt_org_tktqs">
+    <column name="org_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="tkt_q" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <!-- don't have a foreign key for either the physical or logical organization,
+         since they will be in a different repository/different DB OOTB -->
+  </table>
+</schema>
+<!-- @version $Id: //product/Ticketing/version/10.0.3/src/sql/push_agent_ddl.xml#2 $$Change: 651448 $-->

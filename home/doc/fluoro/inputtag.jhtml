@@ -1,0 +1,42 @@
+<%-- Should have the following parameters: 
+       propertyName: name of the property.
+       repositoryItem: the repository item
+       editableItemSpecifier: the editable item specifier
+       propertySpecifier: the editable property specifier
+       specifierAndValue: the specifier and value object
+ --%>
+<importbean bean="/atg/dynamo/droplet/Switch">
+<importbean bean="/atg/dynamo/service/fluoroscope/itemedit/RepositoryFormHandler">
+<importbean bean="/atg/dynamo/droplet/ErrorMessageForEach">
+<setvalue bean="RepositoryFormHandler.repositoryPathName" 
+          value="param:editableItemSpecifier.repositoryPath"/>
+<setvalue bean="RepositoryFormHandler.itemDescriptorName" 
+          value="param:editableItemSpecifier.itemDescriptorName"/>
+<setvalue bean="RepositoryFormHandler.repositoryId" 
+                  value="param:repositoryId"/>
+<setvalue param="propertyName" value="param:propertySpecifier.propertyName"/>
+   <input type="hidden" bean="RepositoryFormHandler.repositoryPathName"
+          value="bean:RepositoryFormHandler.repositoryPathName"/>
+   <input type="hidden" bean="RepositoryFormHandler.itemDescriptorName"
+	  value="bean:RepositoryFormHandler.itemDescriptorName"/>
+   <input type="hidden" bean="RepositoryFormHandler.repositoryId"
+          value="bean:RepositoryFormHandler.repositoryId"/>
+
+   <droplet name="Switch">
+     <param name="value" value="param:propertySpecifier.attributes.fieldSubPath"/>
+     <oparam name="default">
+       <droplet src="param:propertySpecifier.attributes.fieldSubPath"> </droplet>
+     </oparam>
+     <oparam name="unset">
+       <input type="param:propertySpecifier.inputTagType" bean="RepositoryFormHandler.value.`request.getParameter("propertyName")`" onblur="fluoroEdit.onBlurRememberActive(this)"/>
+     </oparam>
+   </droplet>
+
+   <input type="submit" value="Apply" bean="RepositoryFormHandler.update">
+   <input type="submit" value="Cancel" bean="RepositoryFormHandler.cancel">
+   <%-- input type="hidden"  bean="RepositoryFormHandler.update" value="true" priority="-10"/ --%>
+   <droplet name="ErrorMessageForEach">
+     <param name="exceptions" value="bean:RepositoryFormHandler.formExceptions">
+     <oparam name="output"><span style="color: red;"><valueof param="message">???</valueof><script type="text/javascript">fluoroEdit.delayedHasError = true;</script></span></oparam>
+   </droplet>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/home/doc/fluoro/inputtag.jhtml#2 $$Change: 651448 $*/</java>

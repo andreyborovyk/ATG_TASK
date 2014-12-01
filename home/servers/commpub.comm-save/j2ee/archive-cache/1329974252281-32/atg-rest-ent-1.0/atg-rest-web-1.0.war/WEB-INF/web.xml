@@ -1,0 +1,68 @@
+<?xml version="1.0" ?>
+
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+  <display-name>ATG Rest Web Services</display-name>
+
+  <!-- 
+       Configure the Nucleus Servlet. This servlet definition is required
+       in each web application that uses dynamo functionality.  When mapped,
+       it exposes the nucleus component browser, but should not be
+       mapped to any paths on a live site.
+    -->
+
+  <context-param>
+    <param-name>atg.session.parentContextName</param-name>
+   <param-value>/dyn</param-value>
+  </context-param>
+
+  <context-param>
+    <param-name>atg.dafear.bootstrapContextName</param-name>
+    <param-value>/dyn</param-value>
+    <description>The name of the DAF bootstrap WAR context.</description>
+  </context-param>
+
+  <!--
+       If context-root is set here, then ServletContextWebAppRegistry will use
+       this setting as the context-root for this WebApp. This must match
+       the context-root setting in application.xml. 
+    -->
+  <context-param>
+    <param-name>context-root</param-name>
+    <param-value>/rest</param-value>
+  </context-param>
+
+  <filter>
+    <filter-name>PageFilter</filter-name>
+    <filter-class>atg.filter.dspjsp.PageFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>PageFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <servlet>
+    <servlet-name>NucleusServlet</servlet-name>
+    <servlet-class>atg.nucleus.servlet.NucleusServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet>
+    <servlet-name>RestProxyServlet</servlet-name>
+    <servlet-class>atg.rest.servlet.RestProxyServlet</servlet-class>
+    <load-on-startup>2</load-on-startup>
+    <init-param>
+      <param-name>proxiedServlet</param-name>
+      <param-value>/atg/dynamo/servlet/dafpipeline/HeadRestServlet</param-value>
+    </init-param>
+  </servlet>
+
+  <!-- Exposes the rest pipeline for serving ReST requests -->
+  <servlet-mapping>
+    <servlet-name>RestProxyServlet</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+
+</web-app>
+<!-- @version $Id: //product/REST/version/10.0.3/atg-rest/war/web-app/WEB-INF/web.xml#2 $$Change: 651448 $ -->

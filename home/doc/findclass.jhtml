@@ -1,0 +1,229 @@
+<!--
+  Description:
+    Find where Dynamo has loaded a class from (filesystem or jar file).
+    Also print the CLASS_VERSION information if found.
+
+  Installation:
+    Put findclass.jhtml in the Dynamo document root - DYNAMO_HOME/doc/findclass.jhtml
+		Or in the Dynamo Admin root - ATG_HOME/DAS/admin/atg/dynamo/admin/en/findclass.jhtml (to avoid any custom pipeline servlets)
+
+  Usage:
+    http://localhost:8840/findclass.jhtml
+
+    Type in a class that you are looking for (it accepts many different formats)
+      atg.droplet.Cache
+      /atg/droplet/Cache.java
+      atg.droplet.Cache.class
+      atg/droplet/Cache.class
+
+    Press the "Find Class" button.
+
+    If you run into problem, append "&debug=true" to the URL and it will print out debugging
+    information
+
+  Author:
+    Patrick Duggan - 09-Dec-2005
+    George Oprica for the CLASS_VERSION code
+
+  History:
+    09-Dec-2005 - Original with input from George
+    22-Jun-2007 - modified to work for resource bundles
+                - now uses the current classloader (not the system classloader)
+		02-Jul-2007 - fixed part that was not using the current classloader
+		12-Dec-2007 - will always show exception that occurred if one did
+		            - will display exception stack trace with debug=true
+-->
+
+<java>
+	// All code same as JSP version except last two lines are extra for this JHTML version
+  boolean debug = Boolean.valueOf(request.getParameter("debug")).booleanValue();
+  boolean isPropertiesFile = false;
+	String path = "";
+	String classVersion = "";
+
+  if (debug) {
+    // this table is used to "format" the debug messages
+    out.println("<table>");
+  }
+
+  String origClassName = request.getParameter("className");
+  if (debug) {
+    out.println("<tr><td valign=middle align=right><strong>Original:<strong></td>");
+    out.println("<td>" + origClassName + "</td></tr>");
+  }
+
+  if (origClassName != null) {
+    String className = origClassName.trim();
+
+    // Strip any leading '/'
+    while (className.startsWith("/")) {
+      className = className.substring(1);
+    }
+
+    if (debug) {
+      out.println("<tr><td valign=middle align=right><strong>No leading slash:<strong></td>");
+      out.println("<td>" + className + "</td></tr>");
+    }
+
+    // Get rid of any suffixes...
+    int length = className.length();
+    if (length != 0) {
+      String[] suffix = { ".java", ".class" };
+    
+      for (int i = 0; i < suffix.length; i++) {
+        if (className.endsWith(suffix[i])) {
+          className = className.substring(0, (length - suffix[i].length()));
+        }
+      }
+
+      if (className.endsWith(".properties")) {
+        className = className.substring(0, (length - 11));
+        isPropertiesFile = true;
+      }
+
+      if (debug) {
+        out.println("<tr><td valign=middle align=right><strong>No suffix:<strong></td>");
+        out.println("<td>" + className + "</td></tr>");
+      }
+
+      // getResource is expecting slashes instead of dots
+      final String classNamePath = className.replace('.', '/');
+
+      if (debug) {
+        out.println("<tr><td valign=middle align=right>");
+        out.println("<strong>No dot notation:<strong></td>");
+        out.println("<td>" + classNamePath + "</td></tr>");
+      }
+
+      java.net.URL location = null;
+      ClassLoader classLoader = this.getClass().getClassLoader();
+      if ( isPropertiesFile)
+        location = classLoader.getResource(classNamePath + ".properties");
+      else
+        location = classLoader.getResource(classNamePath + ".class");
+
+      if (debug) {
+        out.println("<tr><td valign=middle align=right>");
+        out.println("<strong>Location URL:<strong></td>");
+        out.println("<td>" + location + "</td></tr>");
+      }
+
+      if (location != null)
+        path = location.toString();
+      else
+        path = origClassName + ": Not Found";
+
+      Class c = null;
+      try {
+        // class.forName() is expecting dots instead of slashes
+        c = Class.forName(className);
+        if (debug) {
+          out.println("<tr><td valign=middle align=right>");
+          out.println("<strong>Class.forName:<strong></td>");
+          out.println("<td>" + c + "</td></tr>");
+        }
+      }
+      catch ( final Throwable t ) {
+        if (debug) 
+				{
+          out.println("<tr><td valign=top align=right>");
+          out.println("<strong>Exception:<strong></td>");
+					out.print("<td>" );
+					t.printStackTrace( 
+						new java.io.PrintWriter( out )
+						{
+							public final void println()
+							{
+								try
+								{
+								  this.out.write( "<br/>" );
+								}
+								catch ( final java.io.IOException e )
+								{
+									throw new RuntimeException( e );
+								}
+							}
+						} );
+					out.println( "</td></tr>");
+        }
+				else
+				{
+					out.println("<strong>Exception:</strong> " + t.toString() + "<br/>");
+				}
+      }
+
+      try {
+        if (c != null)
+				{
+          java.lang.reflect.Field version = c.getField("CLASS_VERSION");
+          classVersion = version.get(c).toString();
+        }
+				else
+				{
+					classVersion = className + ": Not Found";
+				}
+      }
+      catch ( final Throwable t ) {
+        if (debug) 
+				{
+          out.println("<tr><td valign=top align=right>");
+          out.println("<strong>Exception:<strong></td>");
+					out.print("<td>" );
+					t.printStackTrace( 
+						new java.io.PrintWriter( out )
+						{
+							public final void println()
+							{
+								try
+								{
+									this.out.write( "<br/>" );
+								}
+								catch ( final java.io.IOException e )
+								{
+									throw new RuntimeException( e );
+								}
+							}
+						} );
+					out.println( "</td></tr>");
+        }
+				else
+				{
+					out.println("<strong>Exception:</strong> " + t.toString() + "<br/>");
+				}
+        classVersion = "No version information.";
+      }
+    }
+  }
+
+  if (debug) {
+    out.println("</table>");
+  }
+
+	// These lines are unique to JHTML version of code
+  request.setParameter( "path", path );
+  request.setParameter( "classVersion", classVersion );
+</java>
+
+<br>
+
+<form action="findclass.jhtml" method="get">
+  <table cellpadding="3">
+    <tr>
+      <td width="100" valign="middle" align="right"><strong>Path:</strong></td>
+      <td><valueof param="path">&nbsp;</valueof></td>
+    </tr>
+    <tr>
+      <td width="100" valign="middle" align="right"><strong>Class&nbsp;Version:</strong></td>
+      <td><valueof param="classVersion">&nbsp;</valueof></td>
+    </tr>
+    <tr>
+      <td valign="middle" align="right"><strong>Class&nbsp;Name:</strong></td>
+      <td><input type="text" size="60" name="className" value="param:className"/></td>
+    </tr>
+    <tr>
+      <td valign="middle" align="right">&nbsp;</td>
+      <td><input type="submit" value="Find Class"></td>
+    </tr>
+  </table>
+</form>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/home/doc/findclass.jhtml#2 $$Change: 651448 $*/</java>

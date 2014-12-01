@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- refineConfig lists out the priority of refinements to attempt -->
+<!-- if a refinement is unusable (all results have the same property value)  -->
+<!-- then either its children are used or it is ignored if it has no children -->
+
+<!-- refineElement represents how to use 1 property for refinement -->
+<!-- refineElement children are more granular properties to use once the parent is unusable -->
+<!-- Attributes are: --> 
+<!--   id:       unique id --> 
+<!--   label:    displayable name of property --> 
+<!--   property: name of property in documents --> 
+<!--   type:     type of property --> 
+<!--   range:    whether the property values should be aggregated into range values, rather than absolute values --> 
+<!--   desired:  for ranges, desired number of property value "buckets" to return --> 
+<!--   min:      for ranges, minimum size of a property value "bucket" to return --> 
+<!--   inc:      for ranges, minimum size of a property value range --> 
+
+<!-- @version $Id: //product/B2BCommerce/version/10.0.3/release/B2BCommerce/Search/Query/xml/refineConfig.xml#2 $$Change: 651448 $ -->
+
+<refineConfig name="sample-refine-config">
+  <refineElement id="0" label="Category" property="ancestorCategories.displayName" type="string" range="false" >
+  </refineElement>
+
+  <refineElement id="1" label="Manufacturer" property="manufacturer.displayName" type="string" range="false" >
+  </refineElement>
+</refineConfig>
+
+<!-- @version $Id: //product/B2BCommerce/version/10.0.3/release/B2BCommerce/Search/Query/xml/refineConfig.xml#2 $$Change: 651448 $ -->
+

@@ -1,0 +1,226 @@
+<?xml version="1.0" ?>
+<!DOCTYPE schema
+    SYSTEM 'http://road.atg.com/dtds/ddlgen/schema.dtd'>
+
+<!-- DDLGen xml description for Facets database.
+     It is used to generate *.sql files for all db types to create and drop tables -->
+<!-- Author: Denis Sitnitsa -->
+
+<schema name="searchadmin_facets_ddl">
+  <!-- This table describes BaseFacet element. FacetSet and Facet are BaseFacet elements. -->
+  <table name="srch_facet_base">
+    <!-- generated id (used as primary key) -->
+    <column name="facet_base_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <!-- type: facetset or facet -->
+    <column name="facet_base_type" nullable="n">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <!-- primary key is id, described above -->
+    <primary-key name="srch_facet_base_p">
+      <index-column column="facet_base_id" order="asc" seq="1"/>
+    </primary-key>
+  </table>
+
+  <!-- FacetSet -->
+  <table name="srch_facet_set">
+    <!-- Facet Set id, generated. -->
+    <column name="facet_set_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <!-- Facet Set name -->
+    <column name="facet_set_name" nullable="n" i18n="y">
+      <column-type db="generic" length="254" type="varchar"/>
+    </column>
+    <!-- Facet Set description -->
+    <column name="facet_set_desc" nullable="y" i18n="y">
+      <column-type db="generic" length="254" type="varchar"/>
+    </column>
+    <!-- Facet Set last modified -->
+    <column name="facet_set_last_mod" nullable="n">
+      <column-type db="generic" type="date"/>
+    </column>
+    <!-- Primary key is id, described above -->
+    <primary-key name="srch_facet_set_p">
+      <index-column column="facet_set_id" order="asc" seq="1"/>
+    </primary-key>
+    <!-- Facet Set name must be unique -->
+    <unique name="srch_facet_set_u">
+      <index-column column="facet_set_name" seq="1"/>
+    </unique>
+  </table>
+
+  <!-- FacetSet mappings -->
+  <table name="srch_facet_set_mapping">
+    <!-- Facet Set id -->
+    <column name="facet_set_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <!-- Facet Set Mapping id -->
+    <column name="facet_set_mapping_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <!-- Facet Set name -->
+    <column name="facet_set_mapping" nullable="n" i18n="y">
+      <column-type db="generic" length="254" type="varchar"/>
+    </column>
+    <!-- orders the list of patterns in a topic-->
+    <column name="sequence_num" nullable="y">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <!-- Primary key is id, described above -->
+    <primary-key name="srch_fs_mapping_p">
+      <index-column column="facet_set_mapping_id" order="asc" seq="1"/>
+    </primary-key>
+  </table>
+
+  <!-- Facet -->
+  <table name="srch_facet_item">
+    <!-- Facet id, generated -->
+    <column name="facet_item_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <!-- Parent id, it can be facet id or facet set id -->
+    <column name="facet_item_parent_id" nullable="y">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <!-- Top FasetSet id, used for unique names-->
+    <column name="facet_item_set_id" nullable="y">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <!-- Facet name -->
+    <column name="facet_item_name" nullable="n" i18n="y">
+      <column-type db="generic" length="254" type="varchar"/>
+    </column>
+    <!-- Facet property -->
+    <column name="facet_item_prop" nullable="n" i18n="y">
+      <column-type db="generic" length="254" type="varchar"/>
+    </column>
+    <!-- Facet property type-->
+    <column name="facet_item_type" nullable="n">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <!-- Facet levels-->
+    <column name="facet_item_levels" nullable="y">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <!-- Facet selection type -->
+    <column name="facet_item_range" nullable="n">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <!-- Facet select -->
+    <column name="facet_item_select" nullable="y" i18n="y">
+      <column-type db="generic" length="254" type="varchar"/>
+    </column>
+    <!-- Number of ranges -->
+    <column name="facet_item_rng_num" nullable="y">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <!-- Numerical size of range -->
+    <column name="facet_item_rng_siz" nullable="y">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <!-- Minimum facet values per range -->
+    <column name="facet_item_min_val" nullable="y">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <!-- Valuedata -->
+    <column name="facet_item_valuedt" nullable="y" i18n="y">
+      <column-type db="generic" length="254" type="varchar"/>
+    </column>
+    <!-- Case -->
+    <column name="facet_item_case" nullable="y">
+      <column-type db="generic" type="one-digit"/>
+    </column>
+    <!-- Filter -->
+    <column name="facet_item_filter" nullable="y">
+      <column-type db="generic" type="one-digit"/>
+    </column>
+    <!-- Precision -->
+    <column name="facet_item_prec" nullable="y">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <!-- Round selection values to the nearest -->
+    <column name="facet_item_round" nullable="y">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <!-- Facet sort mode -->
+    <column name="facet_item_sort" nullable="n">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <!-- Facet presentation name-->
+    <column name="facet_item_pres" nullable="y" i18n="y">
+      <column-type db="generic" length="254" type="varchar"/>
+    </column>
+    <!-- Primary key is facet id, described above -->
+    <primary-key name="srch_facet_item_p">
+      <index-column column="facet_item_id" order="asc" seq="1"/>
+    </primary-key>
+    <index name="srch_facet_item_i" table="srch_facet_item">
+      <index-column column="facet_item_name" seq="1"/>
+      <index-column column="facet_item_set_id" seq="2"/>
+    </index>
+  </table>
+
+  <!-- Specified Facet Values -->
+  <table name="srch_facet_spec">
+    <!-- Facet id -->
+    <column name="facet_spec_item_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <!-- Index column, used to make sort of list -->
+    <column name="facet_spec_idx" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <!-- Facet specified value -->
+    <column name="facet_spec_value" nullable="n" i18n="y">
+      <column-type db="generic" length="254" type="varchar"/>
+    </column>
+    <primary-key name="srch_facet_spec_p">
+      <index-column column="facet_spec_item_id" seq="1"/>
+      <index-column column="facet_spec_idx" seq="2"/>
+    </primary-key>
+  </table>
+
+  <!-- Excluded Facet Values -->
+  <table name="srch_facet_exc">
+    <!-- Facet id -->
+    <column name="facet_exc_item_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <!-- Index column, used to make sort of list -->
+    <column name="facet_exc_idx" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <!-- Facet excluded value -->
+    <column name="facet_exc_value" nullable="n" i18n="y">
+      <column-type db="generic" length="254" type="varchar"/>
+    </column>
+    <primary-key name="srch_facet_exc_p">
+      <index-column column="facet_exc_item_id" seq="1"/>
+      <index-column column="facet_exc_idx" seq="2"/>
+    </primary-key>
+  </table>
+
+  <!-- Facet ranges -->
+  <table name="srch_facet_rngs">
+    <!-- Facet id -->
+    <column name="facet_rngs_item_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <!-- Index column, used to make sort of list -->
+    <column name="facet_rngs_idx" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <!-- Facet range value -->
+    <column name="facet_rngs_value" nullable="n" i18n="y">
+      <column-type db="generic" length="254" type="varchar"/>
+    </column>
+    <primary-key name="srch_facet_rngs_p">
+      <index-column column="facet_rngs_item_id" seq="1"/>
+      <index-column column="facet_rngs_idx" seq="2"/>
+    </primary-key>
+  </table>
+</schema>
+    <!-- @version $Id: //application/SearchAdmin/version/10.0.3/customizations/src/sql/searchadmin_facet_ddl.xml#2 $$Change: 651448 $-->

@@ -1,0 +1,62 @@
+
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr >
+<td colspan="2"><nobr><font size="-2"><b><i18n:message key="org_list_column_header_name"/></b></font></nobr></td>
+</tr>
+<tr bgcolor="#000000"><td colspan="2"><img src='<%=clearGif%>' height="1" width="1" border="0"></td></tr>
+
+<core:ForEach id="orgIterator"
+      values='<%= pageContext.getAttribute("organizationList",pageContext.PAGE_SCOPE) %>' 
+      castClass="atg.userdirectory.Organization"
+      elementId="organization">
+
+<%
+   currName = organization.getName();
+   if ( ( request.getParameter("searchFilter") == null) || ( organization.getName().toLowerCase().indexOf(currFilter.toLowerCase()) > -1   ) ) { 
+    bgcolorA = (  bgcolorA == "dddddd" ) ? "ffffff" : "dddddd";
+    hasSeen = true;
+%>
+
+<core:CreateUrl  id="roleEditorURL" url="community_gears.jsp">
+  <core:UrlParam param="userGroupType" value='<%= request.getParameter("userGroupType")%>'/>
+  <core:UrlParam param="searchFilter"     value='<%= request.getParameter("searchFilter")%>'/>
+  <core:UrlParam param="mode" value="13"/>
+  <core:UrlParam param="paf_org_id" value="<%=organization.getPrimaryKey()%>"/>
+  <core:UrlParam param="paf_gear_id" value="<%=dsp_gear_id%>"/>
+  <core:UrlParam param="paf_page_id" value="<%=dsp_page_id%>"/>
+  <paf:encodeUrlParam param="paf_page_url" value="<%=dsp_page_url%>"/>
+  <core:UrlParam param="paf_community_id" value="<%=dsp_community_id%>"/>
+
+<% if (!( organization.getPrimaryKey().equals(request.getParameter("paf_org_id")))) { %>
+
+<tr bgcolor='<%="#"+bgcolorA%>'>
+
+<td NOWRAP width="80%"><nobr><font class="smaller">&nbsp;<%= organization.getName()%></font><br></nobr></td>
+<td align="right" NOWRAP><nobr><font class="smaller"><a href='<%=roleEditorURL.getNewUrl()+"#three"%>'><i18n:message key="community_gears_role_link"/></a></font><br></nobr></td>
+</tr>
+
+
+<% } else { %>
+
+
+ <tr bgcolor='<%="#"+bgcolorA%>'>
+ <td NOWRAP width="80%" colspan="2">
+ 
+  <%@ include file="gears_role_editor.jspf"  %>
+ <br>
+ </td></tr>
+
+ <% } %>
+
+ </core:CreateUrl>
+
+<% } %>
+
+</core:ForEach>
+
+<tr bgcolor="#000000">
+<td colspan="2"><img src='<%=clearGif%>' height="1" width="1" border="0"></td>
+</tr>
+</table>
+<%-- @version $Id: //app/portal/version/10.0.3/paf/settings.war/fragments/gear_role_org_listing.jspf#2 $$Change: 651448 $--%>

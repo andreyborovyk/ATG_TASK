@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE pipelinemanager
+        PUBLIC "-//Art Technology Group, Inc.//DTD Dynamo Pipeline Manager//EN"
+        'http://www.atg.com/dtds/pipelinemanager/pipelinemanager_1.0.dtd'>
+
+<pipelinemanager>
+
+<!-- This chain is called by ValidatePaymentGroupsPreConfirmation to validate  -->
+<!-- each payment group in the moveToConfirmation chain. -->
+<!-- This is used primarily by the PaymentGroupFormHandler framework for any -->
+<!-- validation that it requires. -->
+
+    <pipelinechain name="validatePaymentGroupPreConfirmation" transaction="TX_REQUIRED" 
+                   headlink="dispatchOnPGTypePreConfirmation" xml-combine="replace">
+      <pipelinelink name="dispatchOnPGTypePreConfirmation" transaction="TX_MANDATORY">
+          <processor jndi="/atg/commerce/order/processor/ValidatePaymentGroupByType"/>
+	  <transition returnvalue="4000" link="validateCreditCardPGPreConfirmation"/>
+	  <transition returnvalue="4001" link="validateGiftCertificatePGPreConfirmation"/>
+	  <transition returnvalue="4002" link="validateStoreCreditPGPreConfirmation"/>
+          <transition returnvalue="5000" link="validateInvoiceRequestPGPreConfirmation"/>
+      </pipelinelink>
+      <pipelinelink name="validateCreditCardPGPreConfirmation" transaction="TX_MANDATORY">
+          <processor jndi="/atg/commerce/order/processor/ValidateCreditCard"/>
+      </pipelinelink>
+      <pipelinelink name="validateGiftCertificatePGPreConfirmation" transaction="TX_MANDATORY">
+          <processor jndi="/atg/commerce/order/processor/ValidateGiftCertificate"/>
+      </pipelinelink>
+      <pipelinelink name="validateStoreCreditPGPreConfirmation" transaction="TX_MANDATORY">
+          <processor jndi="/atg/commerce/order/processor/ValidateStoreCredit"/>
+      </pipelinelink>
+      <pipelinelink name="validateInvoiceRequestPGPreConfirmation" transaction="TX_MANDATORY">
+          <processor jndi="/atg/commerce/order/processor/StoreValidateInvoiceRequest"/>
+      </pipelinelink>
+    </pipelinechain>
+
+</pipelinemanager>
+<!-- @version $Id: //product/B2BCommerce/version/10.0.3/release/MotorpriseJSP/j2ee-apps/motorprise/config/atg/commerce/commercepipeline.xml#2 $$Change: 651448 $ -->

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- ==================================================================== -->
+<!-- Scenario UI grammar extension for the Alert gear.                    -->
+<!-- ==================================================================== -->
+
+<?xcl-stylesheet resource="atg/ui/expreditor/xcl/grammar.xsl"?>
+
+<context>
+
+  <!-- ==================================================================== -->
+  <!-- Custom expression for the NewForum event.                            -->
+  <!-- ==================================================================== -->
+
+  <sequence id="event-message-atg.portal.gear.discussion.NewForumMessage">
+    <attribute name="icon"><icon path="atg/ui/process/images/generic-event.gif"/></attribute>
+    <attribute name="eventType" value="atg.portal.gear.discussion.NewForumMessage"/>
+    <attribute name="eventContext" value="request"/>
+
+    <xml-template>
+      <event-name>atg.portal.gear.discussion.NewForumMessage</event-name>
+    </xml-template>
+
+    <token><description>New Forum Created</description></token>
+    <rule name="portal-event-filter"/>
+  </sequence>
+
+  <sequence id="condition-message-atg.portal.gear.discussion.NewForumMessage">
+    <expression-class>atg.ui.process.expression.EventConditionExpression</expression-class>
+    <attribute name="icon"><icon path="atg/ui/process/images/generic-condition.gif"/></attribute>
+    <attribute name="checkedEventName" value="atg.portal.gear.discussion.NewForumMessage"/>
+
+    <token><description>Forum event</description></token>
+    <rule name="portal-condition-filter"/>
+  </sequence>
+
+</context>
+<!-- @version $Id: //app/portal/version/10.0.3/discussion/src/atg/portal/gear/discussion/discussion-expression-grammar.xml#2 $$Change: 651448 $ -->

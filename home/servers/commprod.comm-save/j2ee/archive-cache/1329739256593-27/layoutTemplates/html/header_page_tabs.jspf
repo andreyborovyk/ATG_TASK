@@ -1,0 +1,46 @@
+<!-- COMMUNITY TABS -->
+<% boolean hasHighLightedTab = false;
+   String currPageId=null;
+   currPageId=pafEnv.getPage().getId();
+%>
+
+    <table border="0" cellpadding="0" cellspacing="0">
+          <tr>
+            <core:ForEach id="childpages"
+                          values="<%= pafEnv.getPages() %>"
+                          castClass="atg.portal.framework.Page"
+                          elementId="childPage">
+
+              <core:CreateUrl id="fullChildPageUrl" url="<%= pafEnv.getPageURI(childPage) %>">
+                 <core:ExclusiveIf>
+                   <core:If value="<%= childPage.getId().equals(currPageId) %>">
+                    <td valign="top" align="right" width="22" height="20" ><img src="/portal/layoutTemplates/images/45_tab_left.gif" width="22" height="22" border="0"></td>
+                    <td bgcolor="#cccccc" valign="middle" nowrap ><a href="<%= fullChildPageUrl.getNewUrl() %>" style="text-decoration:none"><font class="smaller" color="#333333"><%= childPage.getName() %></font></a></td>
+                    <td><img src="/portal/layoutTemplates/images/45_tab_right.gif" width="22" height="22" border="0"></td>
+                    <% hasHighLightedTab = true; %>
+                  </core:If>
+                  <core:DefaultCase>
+                    <core:IfNot value="<%= hasHighLightedTab %>">
+                      <td><img src="/portal/layoutTemplates/images/45_page_tab_center.gif" width="22" height="19" border="0"></td>
+                    </core:IfNot>
+                    <% hasHighLightedTab = false; %>
+                    <td valign="middle" nowrap><a href="<%= fullChildPageUrl.getNewUrl() %>" style="text-decoration:none"><font class="smaller" color="#FFFFFF"><%= childPage.getName() %></font></a></td>
+                  </core:DefaultCase>
+                </core:ExclusiveIf>
+              </core:CreateUrl>
+            </core:ForEach>
+
+            <core:IfNot value="<%= hasHighLightedTab %>">
+              <td><img src="/portal/layoutTemplates/images/45_page_tab_center.gif" width="22" height="19" border="0"></td>
+            </core:IfNot>
+
+            <td></td>
+
+            <td><img src="/portal/layoutTemplates/images/clear.gif" width="25" height="19" border="0"></td>
+          </tr>
+        </table>
+
+
+
+<!-- END COMMUNITY TABS -->
+<%-- @version $Id: //app/portal/version/10.0.3/templates/layoutTemplates.war/web/html/header_page_tabs.jspf#2 $$Change: 651448 $--%>

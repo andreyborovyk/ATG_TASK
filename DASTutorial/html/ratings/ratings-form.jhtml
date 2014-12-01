@@ -1,0 +1,59 @@
+<importbean bean="/atg/demo/ratings/RatingsFormHandler">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/Switch">
+<importbean bean="/atg/dynamo/droplet/ErrorMessageForEach">
+
+<HTML> <HEAD>
+<TITLE>Rate It</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF">
+<H2>Rate the <valueof param="pagename">???</valueof> Page</H2>
+
+
+<form action=ratings-form.jhtml method=post>
+
+I found the page to be:<br>
+<!-- Place error message by corresponding input field. -->
+<droplet name="Switch">
+  <param name="value" value="bean:RatingsFormHandler.propertyExceptions.rating.errorCode">
+  <oparam name="missingRequiredValue">
+    <!-- Display the message from the exception object. -->
+    <font color=#ff0000><valueof bean="RatingsFormHandler.propertyExceptions.rating.message"></valueof></font><br>
+  </oparam>
+</droplet>
+<valueof bean="RatingsFormHandler.rating1Label">no label</valueof>
+<input type=radio name="ratingbutton" bean="RatingsFormHandler.rating" value=1>
+<valueof bean="RatingsFormHandler.rating2Label">no label</valueof>
+<input type=radio name="ratingbutton" bean="RatingsFormHandler.rating" value=2>
+<valueof bean="RatingsFormHandler.rating3Label">no label</valueof>
+<input type=radio name="ratingbutton" bean="RatingsFormHandler.rating" value=3>
+<p>
+
+Please explain your rating:<br>
+<!-- Place error message by corresponding input field. -->
+<droplet name="Switch">
+  <param name="value" value="bean:RatingsFormHandler.propertyExceptions.comment.errorCode">
+  <oparam name="missingRequiredValue">
+    <!-- The message in the exception object will be rather generic -->
+    <!-- since this one is generated automatically using the required -->
+    <!-- attribute, so let's provide our own here instead. -->
+    <font color=#ff0000>You did not provide a comment.</font><br>
+  </oparam>
+</droplet>
+<textarea name="comment" cols="50" rows="5" bean="RatingsFormHandler.comment" required></textarea>
+
+<br>
+<input type=hidden bean="RatingsFormHandler.successURL" value="display-ratings.jhtml">
+<input type=hidden bean="RatingsFormHandler.pageName" value="param:pagename">
+<!-- Make sure this parameter is set when the form is rendered again via the form action. -->
+<input type=hidden name="pagename" value="param:pagename">
+<input type=submit bean="RatingsFormHandler.update" value="Submit">
+
+</form>
+
+
+
+</BODY> </HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DASTutorial/html/ratings/ratings-form.jhtml#2 $$Change: 651448 $*/</java>
+

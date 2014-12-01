@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>IE6 Form Leak</title>
+	
+</head>
+
+<body>
+  <h1>IE6 Form Leaks</h1>
+  <cite>This page is for the form leak bug located at <a href="https://bugs.atg.com/road/bugzilla/bugs/show_bug.cgi?id=144261">144261</a></cite>
+  <p>IE6 doesn't allow full deletion of form nodes, this results in increasing dom counts, orphans and memory usage as content is loaded and deleted that contains form nodes.</p>
+  
+  <p>The two test pages contain a contentPane widget that will reload with content every 2 seconds, the two files that it switches between contain that exact same amount of HTML nodes.</p>
+  
+  <p>The first test page is the control the content loaded contains only DIV nodes</p>
+  
+  <p>The test page loads content that contains mostly FORM nodes.  In the bug the number of DOM nodes, orphans and memory usage would rise rapidly as the content is loaded and reloaded.  The bug is fixed if there is no DOM node increase, no orphaned nodes and the memory graph is the same as when loading just DIVS</p>
+  
+  <p>These pages must be loaded into something that measures the above values, Drip / sIEve is one of the more common tools for this.  They can be downloaded from <a href="http://sourceforge.net/projects/ieleak">Sourceforge</a> or the original <a href="http://home.wanadoo.nl/jsrosman/">sIEve</a> site.
+  
+  
+  <ul>
+    <li>
+      <a href="formLeak_contentPane_div.html">Content Pane Loading no Forms - control</a>
+    </li>
+    <li>
+      <a href="formLeak_contentPane_form.html">Content Pane Loading Forms - control</a>
+    </li>
+    
+  </ul>
+
+
+<p>The Drip or sIEve Output should look something like</p>
+
+<img src="img/memory_graph.png" width="760" height="126" alt="Memory Graph">
+
+
+<p>Any questions please contact <a href="mailto:jon.sykes@mediahive.com">Jon Sykes @ Mediahive</a> or <a href="mailto:sdrye@atg.com">Stephen Drye @ ATG</a><p>
+
+
+</body>
+</html>

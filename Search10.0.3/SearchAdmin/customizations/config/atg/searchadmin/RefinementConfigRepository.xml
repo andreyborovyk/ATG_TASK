@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE gsa-template
+    PUBLIC "-//Art Technology Group, Inc.//DTD Dynamo Security//EN"
+    "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+<!--
+$Id: //application/SearchAdmin/version/10.0.3/customizations/src/config/atg/searchadmin/RefinementConfigRepository.xml#2 $$Change: 651448 $
+$Change: 651448 $$DateTime: 2011/06/07 13:55:45 $
+-->
+
+<gsa-template>
+  <header>
+    <name>RefinementConfigRepository</name>
+    <author>Denis Sitnitsa</author>
+    <description>Facets repository definition file</description>
+  </header>
+
+  <!-- BaseFacet item. FacetSet and Facet items are BaseFacet itself. -->
+  <item-descriptor name="baseFacet" sub-type-property="baseFacetType" display-property="baseFacetType">
+    <table name="srch_facet_base" type="primary" id-column-name="facet_base_id">
+      <!-- FacetSet or Facet id -->
+      <property name="id" column-name="facet_base_id" required="true" data-type="string"/>
+      <!-- Type of BaseFacet item: FacetSet or Facet -->
+      <property name="baseFacetType" column-name="facet_base_type" data-type="enumerated">
+        <attribute name="uiwritable" value="false"/>
+        <option value="facetSet" code="13140"/>
+        <option value="facet" code="13141"/>
+      </property>
+    </table>
+    <!-- BaseFacet child facets -->
+    <table name="srch_facet_item" type="multi" id-column-name="facet_item_parent_id">
+      <property name="childFacets" column-name="facet_item_id" data-type="set"
+                component-item-type="facet" required="false" cascade="delete"/>
+    </table>
+  </item-descriptor>
+
+  <!-- FacetSet-->
+  <item-descriptor name="facetSet" default="true" super-type="baseFacet"
+                   sub-type-value="facetSet" display-property="name">
+    <table name="srch_facet_set" id-column-name="facet_set_id" type="auxiliary">
+      <!-- FacetSet id -->
+      <property name="id" column-name="facet_set_id" required="true" data-type="string"/>
+      <!-- FacetSet name -->
+      <property name="name" column-name="facet_set_name" required="true" data-type="string">
+        <attribute name="unique" value="true"/>
+      </property>
+      <!-- FacetSet description -->
+      <property name="description" column-name="facet_set_desc" required="false" data-type="string"/>
+      <!-- FacetSet last modified date -->
+      <property name="lastModified" column-name="facet_set_last_mod" required="true" data-type="date"/>
+    </table>
+    <table name="srch_facet_set_mapping" type="multi" id-column-name="facet_set_id" multi-column-name="sequence_num">
+      <property name="mappings" column-name="facet_set_mapping_id" cascade="delete" data-type="list" required="false"
+                component-item-type="facetSetMapping"/>
+    </table>
+  </item-descriptor>
+
+  <!-- Facet Set mapping  -->
+  <item-descriptor name="facetSetMapping">
+    <table name="srch_facet_set_mapping" id-column-name="facet_set_mapping_id" type="primary">
+      <property name="facetId" column-name="facet_set_id" required="true" data-type="string"/>
+      <!-- FacetSet mappind id -->
+      <property name="mappingId" column-name="facet_set_mapping_id" required="true" data-type="string"/>
+      <!-- Facet Set mapping -->
+      <property name="mapping" column-name="facet_set_mapping" required="true" data-type="string"/>
+      <!-- FacetSet description -->
+      <property name="sequence_num" column-name="sequence_num" required="false" data-type="int"/>
+    </table>
+  </item-descriptor>
+
+
+  <!-- Facet -->
+  <item-descriptor name="facet" super-type="baseFacet" sub-type-value="facet" display-property="name">
+    <table name="srch_facet_item" id-column-name="facet_item_id" type="auxiliary">
+      <!-- Facet id -->
+      <property name="id" column-name="facet_item_id" required="true" data-type="string"/>
+      <!-- Parent BaseFacet item -->
+      <property name="parentBaseFacet" column-name="facet_item_parent_id" required="false" item-type="baseFacet"/>
+      <!-- Id of top facet set -->
+      <property name="topFacetSet" column-name="facet_item_set_id" required="false" item-type="facetSet"/>
+      <!-- Facet name -->
+      <property name="name" column-name="facet_item_name" required="true" data-type="string"/>
+      <!-- Facet property -->
+      <property name="property" column-name="facet_item_prop" required="true" data-type="string"/>
+      <!-- Facet property type -->
+      <property name="propertyType" column-name="facet_item_type" required="true" data-type="enumerated">
+        <option value="float" code="13150"/>
+        <option value="integer" code="13151"/>
+        <option value="string" code="13152"/>
+        <option value="date" code="13153"/>
+        <option value="enum" code="13154"/>
+        <option value="boolean" code="13155"/>
+      </property>
+      <!-- Facet levels -->
+      <property name="levels" column-name="facet_item_levels" required="false" data-type="int"/>
+      <!-- Facet selection type -->
+      <property name="selectionType" column-name="facet_item_range" required="true" data-type="enumerated">
+        <option value="oneSelection" code="13144"/>
+        <option value="dynamicRangeSelection" code="13145"/>
+        <option value="fixedRangeSelection" code="13146"/>
+        <option value="specifiedRangeSelection" code="13147"/>
+      </property>
+      <!-- Facet select -->
+      <property name="select" column-name="facet_item_select" required="false" data-type="string"/>
+      <!-- Number of ranges -->
+      <property name="numberOfRanges" column-name="facet_item_rng_num" required="false" data-type="int"/>
+      <!-- Numerical size of range -->
+      <property name="numSizeOfRange" column-name="facet_item_rng_siz" required="false" data-type="int"/>
+      <!-- Minimum facet values per range -->
+      <property name="minFacetValuesPerRange" column-name="facet_item_min_val" required="false" data-type="int"/>
+      <!-- Round selection values to the nearest -->
+      <property name="roundSelectionValues" column-name="facet_item_round" required="false" data-type="int"/>
+      <!-- Sort mode -->
+      <property name="sortType" column-name="facet_item_sort" required="true" data-type="enumerated">
+        <option value="numeric" code="13157"/>
+        <option value="valueCount" code="13158"/>
+        <option value="rangeOrder" code="13159"/>
+        <option value="explicitOrder" code="13156"/>
+      </property>
+      <!-- Valuedata -->
+      <property name="valuedata" column-name="facet_item_valuedt" required="false" data-type="string"/>
+      <!-- Case -->
+      <property name="case" column-name="facet_item_case" required="false" data-type="boolean"/>
+      <!-- Filter-->
+      <property name="filter" column-name="facet_item_filter" required="false" data-type="boolean" default="true"/>
+      <!-- Precision -->
+      <property name="precision" column-name="facet_item_prec" required="false" data-type="int"/>
+      <!-- Facet presentation name -->
+      <property name="presentationName" column-name="facet_item_pres" required="false" data-type="string"/>
+    </table>
+    <!-- Specified Facet Values -->
+    <table name="srch_facet_spec" type="multi" id-column-names="facet_spec_item_id" multi-column-name="facet_spec_idx">
+      <property name="specifiedFacetValues" column-name="facet_spec_value" required="true" data-type="list"
+                component-data-type="string"/>
+    </table>
+    <!-- Excluded Facet Values -->
+    <table name="srch_facet_exc" type="multi" id-column-names="facet_exc_item_id" multi-column-name="facet_exc_idx">
+      <property name="excludedFacetValues" column-name="facet_exc_value" required="true" data-type="list"
+                component-data-type="string"/>
+    </table>
+    <!-- Facet ranges -->
+    <table name="srch_facet_rngs" type="multi" id-column-names="facet_rngs_item_id" multi-column-name="facet_rngs_idx">
+      <property name="facetSpecifiedRanges" column-name="facet_rngs_value" required="true" data-type="list"
+                component-data-type="string"/>
+    </table>
+  </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //application/SearchAdmin/version/10.0.3/customizations/src/config/atg/searchadmin/RefinementConfigRepository.xml#2 $$Change: 651448 $-->

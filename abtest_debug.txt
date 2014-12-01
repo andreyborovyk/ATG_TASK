@@ -1,0 +1,37 @@
+Tue Dec 27 13:26:40 IST 2011
+
+
+Post-install Actions:
+com.zerog.ia.installer.actions.Comment -- Comment: ========================= write ABTest, DCS-ABTest and CAF config.xml's
+com.zerog.ia.installer.actions.EditVariableTable -- InstallAnywhere Variable
+com.zerog.ia.installer.actions.EditVariableTable -- InstallAnywhere Variable
+com.zerog.ia.installer.actions.EditVariableTable -- InstallAnywhere Variable
+com.zerog.ia.installer.actions.EditVariableTable -- InstallAnywhere Variable
+com.zerog.ia.installer.actions.Comment -- Comment: --------------------------------------------------------------------------------------- write ABTest config.xml
+com.zerog.ia.installer.actions.EditMultipleVariables -- InstallAnywhere Variables
+com.zerog.ia.installer.actions.ASCIIFileManipulator -- Modifying: C:\AE10\ATG10.0.3\CampaignOptimizer10.0.3\installconfig\conf...
+com.zerog.ia.installer.actions.ASCIIFileManipulator -- Modifying: configXMLproperties.txt
+com.zerog.ia.installer.actions.CustomAction -- Writing config.xml
+com.zerog.ia.installer.actions.Comment -- Comment: ------------------------------------------------------------------------------- write DCS-ABTest config.xml
+com.zerog.ia.installer.actions.JumpLabel -- Jump Label: dcs_abtest_write_configxml
+com.zerog.ia.installer.actions.JumpAction -- Jump To: Next before_write_caf_configxml -- Prev: NO JUMP
+com.zerog.ia.installer.actions.ASCIIFileManipulator -- Modifying: C:\AE10\ATG10.0.3\DCSCampaignOptimizer10.0.3\installconfig\c...
+com.zerog.ia.installer.actions.EditMultipleVariables -- InstallAnywhere Variables
+com.zerog.ia.installer.actions.CustomAction -- Writing config.xml
+com.zerog.ia.installer.actions.JumpLabel -- Jump Label: before_write_caf_configxml
+com.zerog.ia.installer.actions.Comment -- Comment: ------------------------------------------------------------------- write CAF config.xml (if appropriate)
+com.zerog.ia.installer.actions.ASCIIFileManipulator -- Modifying: C:\AE10\ATG10.0.3\CAF10.0.3\installconfig\configXMLpropertie...
+com.zerog.ia.installer.actions.EditMultipleVariables -- InstallAnywhere Variables
+com.zerog.ia.installer.actions.CustomAction -- Writing config.xml
+com.zerog.ia.installer.actions.Comment -- Comment: ============================= call PITH for ABTest/DCS-ABTest and CAF
+com.zerog.ia.installer.actions.EditMultipleVariables -- InstallAnywhere Variables
+com.zerog.ia.installer.actions.Comment -- Comment: ------------------------------------------------------------------- call PITH for ABTest/DCS-ABTest
+com.zerog.ia.installer.actions.ExecuteScript -- Execute Script/Batch file: launch PITH (win32)
+com.zerog.ia.installer.actions.ExecuteScript -- Execute Script/Batch file: launch PITH (unix)
+com.zerog.ia.installer.actions.Comment -- Comment: ------------------------------------------------------------------- call PITH for CAF (if appropriate)
+com.zerog.ia.installer.actions.ExecuteScript -- Execute Script/Batch file: launch PITH (win32)
+com.zerog.ia.installer.actions.ExecuteScript -- Execute Script/Batch file: launch PITH (unix)
+com.zerog.ia.installer.actions.Comment -- Comment: =============================================== Post-Install UI
+com.zerog.ia.installer.actions.DumpDebugInfo -- Output Debug Information
+com.zerog.ia.installer.actions.InstallFinishAction -- Panel: Install Complete: Install Complete
+com.zerog.ia.installer.actions.InstallCompleteActionConsole -- Console: Install Complete: Installation Complete

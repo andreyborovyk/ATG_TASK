@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This is a generated file -->
+
+<!DOCTYPE schema SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="versioned_claimable_ddl" description="">
+<comment> @version $Id: //product/DCS/version/10.0.3/templates/DCS/sql/claimable_ddl.xml#2 $$Change: 651448 $</comment>
+   
+	 <table name="dcspp_claimable" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="the id of the workspace that the asset exists on" nullable="n" name="workspace_id">
+				 <column-type length="40" type="varchar" db="generic"/>
+			</column>
+			<column description="the id of the branch that the asset exists on" nullable="n" name="branch_id">
+				 <column-type length="40" type="varchar" db="generic"/>
+			</column>
+			<column description="is this version the head of branch" nullable="n" name="is_head">
+				 <column-type type="one-digit" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="flag indicating that the version is deleted" nullable="n" name="version_deleted">
+				 <column-type length="1" type="numeric" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="flag indicating that version is editable" nullable="n" name="version_editable">
+				 <column-type length="1" type="numeric" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="the predecessor version number" nullable="y" name="pred_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="date the asset was checked in if not a working version" nullable="y" name="checkin_date">
+				 <column-type type="datetime" db="generic"/>
+				 <column-type type="timestamp" db="oracle"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="claimable_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="type" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="status" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="expiration_date" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="last_modified" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="timestamp"/>
+      </column>
+      
+   
+			<primary-key name="dcspp_claimable_p">
+         <index-column column="claimable_id" order="asc" seq="1"/>
+      	 <index-column seq="2" order="asc" column="asset_version"/>
+			</primary-key>
+			<index table="dcspp_claimable" name="dcspp_claimabl_wsx">
+				 <index-column seq="1" order="asc" column="workspace_id"/>
+			</index>
+			<index table="dcspp_claimable" name="dcspp_claimabl_cix">
+				 <index-column seq="1" order="asc" column="checkin_date"/>
+			</index>
+	 </table>
+   
+	 <table name="dcspp_giftcert" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="giftcertificate_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="amount" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="double precision" length="" scale=""/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+       </column>
+      <column name="amount_authorized" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="double precision" length="" scale=""/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+       </column>
+      <column name="amount_remaining" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="double precision" length="" scale=""/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+      </column>
+      <column name="purchaser_id" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="purchase_date" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="last_used" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle" type="timestamp"/>
+      </column>
+      
+      
+      
+   
+			<primary-key name="dcspp_giftcert_p">
+         <index-column column="giftcertificate_id" order="asc" seq="1"/>
+      	 <index-column seq="2" order="asc" column="asset_version"/>
+			</primary-key>
+			<index name="claimable_user_idx" table="dcspp_giftcert" description="">
+         <index-column column="purchaser_id" order="asc" seq="1"/>
+      </index>
+	 </table>
+   
+	 <table name="dcs_storecred_clm" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="store_credit_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="amount" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="19" scale="7"/>
+         <column-type db="db2" type="numeric" length="19" scale="7"/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+       </column>
+      <column name="amount_authorized" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="19" scale="7"/>
+         <column-type db="db2" type="numeric" length="19" scale="7"/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+       </column>
+      <column name="amount_remaining" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="19" scale="7"/>
+         <column-type db="db2" type="numeric" length="19" scale="7"/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+       </column>
+      <column name="owner_id" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="issue_date" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="expiration_date" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="last_used" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle" type="timestamp"/>
+      </column>
+      
+      
+      
+      
+   
+			<primary-key name="dcs_storecred_cl_p">
+         <index-column column="store_credit_id" order="asc" seq="1"/>
+      	 <index-column seq="2" order="asc" column="asset_version"/>
+			</primary-key>
+			<index name="storecr_issue_idx" table="dcs_storecred_clm" description="">
+         <index-column column="issue_date" order="asc" seq="1"/>
+      </index>
+			<index name="storecr_owner_idx" table="dcs_storecred_clm" description="">
+         <index-column column="owner_id" order="asc" seq="1"/>
+      </index>
+	 </table>
+   
+   
+	 <table name="dcspp_cp_folder" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="the id of the workspace that the asset exists on" nullable="n" name="workspace_id">
+				 <column-type length="40" type="varchar" db="generic"/>
+			</column>
+			<column description="the id of the branch that the asset exists on" nullable="n" name="branch_id">
+				 <column-type length="40" type="varchar" db="generic"/>
+			</column>
+			<column description="is this version the head of branch" nullable="n" name="is_head">
+				 <column-type type="one-digit" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="flag indicating that the version is deleted" nullable="n" name="version_deleted">
+				 <column-type length="1" type="numeric" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="flag indicating that version is editable" nullable="n" name="version_editable">
+				 <column-type length="1" type="numeric" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="the predecessor version number" nullable="y" name="pred_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="date the asset was checked in if not a working version" nullable="y" name="checkin_date">
+				 <column-type type="datetime" db="generic"/>
+				 <column-type type="timestamp" db="oracle"/>
+			</column>
+
+			<!-- Data Columns -->
+      
+      <column name="folder_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      
+      <column name="name" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="parent_folder" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      
+      
+   
+			<primary-key name="dcspp_cp_folder_p">
+         <index-column column="folder_id" order="asc" seq="1"/>
+      	 <index-column seq="2" order="asc" column="asset_version"/>
+			</primary-key>
+			<index table="dcspp_cp_folder" name="dcspp_cp_folde_wsx">
+				 <index-column seq="1" order="asc" column="workspace_id"/>
+			</index>
+			<index table="dcspp_cp_folder" name="dcspp_cp_folde_cix">
+				 <index-column seq="1" order="asc" column="checkin_date"/>
+			</index>
+	 </table>
+   
+   
+	 <table name="dcspp_coupon" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="coupon_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="promotion_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      
+      
+   
+			<primary-key name="dcspp_coupon_p">
+         <index-column column="coupon_id" order="asc" seq="1"/>
+		 <index-column column="promotion_id" order="asc" seq="2"/>
+      	 <index-column seq="3" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table>
+
+   
+	 <table name="dcspp_coupon_info" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="coupon_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="display_name" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+	  <column name="use_promo_site" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="parent_folder" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      
+      
+      
+   
+			<primary-key name="dcspp_copninfo_p">
+         <index-column column="coupon_id" order="asc" seq="1"/>
+      	 <index-column seq="2" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table>
+
+</schema>
+<!-- @version $Id: //product/DCS/version/10.0.3/templates/DCS/sql/claimable_ddl.xml#2 $$Change: 651448 $ -->

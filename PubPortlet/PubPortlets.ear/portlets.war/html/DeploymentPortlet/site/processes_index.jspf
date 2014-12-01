@@ -1,0 +1,15 @@
+<!-- BEGIN FILE processes_index.jspf -->
+<c:choose>
+  <c:when test="${rollbackProject != null && param.done_rollback == null}">
+    <c:choose>
+      <c:when test="${rollbackProject != null}">
+        <dspel:include page="site_processes_rollback.jsp" />
+      </c:when>
+   </c:choose>
+  </c:when><%-- end details--%>
+  <c:otherwise>
+    <dspel:include page="site_processes.jsp" />
+  </c:otherwise>
+</c:choose>
+<!-- END FILE processes_index.jspf -->
+<%-- @version $Id: //product/PubPortlet/version/10.0.3/portlets.war/html/DeploymentPortlet/site/processes_index.jspf#2 $$Change: 651448 $--%>

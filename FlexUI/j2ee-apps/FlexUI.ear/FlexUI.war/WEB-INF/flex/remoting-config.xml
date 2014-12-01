@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service id="remoting-service" 
+         class="flex.messaging.services.RemotingService">
+
+  <adapters>
+    <adapter-definition
+      id="java-object"
+      class="atg.flex.messaging.services.TransactionalJavaAdapter"
+      default="true"/>
+  </adapters>
+  
+  <default-channels>
+    <channel ref="atg-amf"/>
+  </default-channels>
+
+</service>
+<!-- @version $Id: //product/FlexUI/version/10.0.3/src/web-apps/FlexUI/WEB-INF/flex/remoting-config.xml#2 $$Change: 651448 $-->

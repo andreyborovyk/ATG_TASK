@@ -1,0 +1,56 @@
+<nucleus type=import>
+        /atg/dynamo/admin/GetSecurityItem
+        /atg/dynamo/droplet/Redirect
+        /atg/dynamo/droplet/Switch
+        /atg/dynamo/admin/CreateWebService
+</nucleus>
+
+<%-- Redirect if funcName or choose are not set properly --%>
+
+<param name="CreateWebService" value="bean:CreateWebService">
+<JAVA>
+  if (request.getParameter("funcName") == null) {
+    String strValue =
+      request.getParameter("CreateWebService.functionalName");
+    if ((strValue != null) && !strValue.equals("null")) {
+      request.setParameter("funcName", strValue);
+    }
+  }
+</JAVA>
+
+<DROPLET name="Switch">
+   <PARAM name="value" value="param:funcName">
+   <OPARAM name="unset">
+     <DROPLET name="Redirect">
+       <PARAM name="url" value="browsesecurity.jhtml?choose=`request.getParameter("choose")`">
+     </DROPLET>
+   </OPARAM>
+</DROPLET>
+
+<DROPLET name="Switch">
+   <PARAM name="value" value="param:choose">
+   <PARAM name="true" value=" ">
+   <OPARAM name="default">
+     <DROPLET name="Redirect">
+       <PARAM name="url" value="browsesecurity.jhtml">
+     </DROPLET>
+   </OPARAM>
+</DROPLET>
+
+<droplet name="GetSecurityItem">
+   <param name="funcName" value="param:funcName">
+   <oparam name="notFound">
+     <JAVA> request.addQueryParameter("choose",
+	      request.getParameter("choose")); 
+            response.sendRedirect(request.encodeURL("browsesecurity.jhtml"));
+     </JAVA>
+   </oparam>
+   <oparam name="output">
+     <setvalue bean="CreateWebService.functionalName"
+	       value="param:funcName">
+     <DROPLET name="Redirect">
+       <PARAM name="url" value="finalconfirm.jhtml?fromEditSec=`request.getParameter("fromEditSec")`">
+     </DROPLET>
+   </oparam>
+</droplet>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/webservice/choose-sec-item.jhtml#2 $$Change: 651448 $*/</java>

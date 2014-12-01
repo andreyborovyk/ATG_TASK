@@ -1,0 +1,127 @@
+
+  <%-- NB: FIXME: Don't hard code editAsset.jsp --%>
+  <c:url var="linkURL" value="/assetEditor/editAsset.jsp">
+    <c:param name="pushContext"      value="true"/>
+    <c:param name="linkPropertyName" value="refineConfig"/>
+    <c:if test="${not empty requestScope.categoryId}">
+      <c:param name="categoryId" value="${requestScope.categoryId}"/>
+    </c:if>
+  </c:url>
+
+  <dcsui-search:getElementSource var="inheritedSources" 
+                                 itemType="${formHandler.itemDescriptorName}" 
+                                 itemId="${formHandler.repositoryId}"/>
+                                 
+  <script type="text/Javascript">
+    function show (elementID)
+    {
+      hideAll();
+      document.getElementById(elementID).style.display = "block";
+    }
+
+    function hideAll ()
+    {
+      <c:forEach items="${inheritedSources}" var="source">
+        document.getElementById("<c:out value='${source.sourceId}'/>").style.display = "none";
+      </c:forEach>
+    }
+
+    function setParentCatalog (form)
+    {
+      var parentCatalogId = document.getElementById("parentCatalog").value;
+      if (parentCatalogId == "initial")
+        hideAll();
+      else
+        show (parentCatalogId);
+    }
+    
+    function refineElementDrillDown (uri)
+    {
+      var linkURL = "<c:out value='${linkURL}' escapeXml='false'/>&assetURI=" + uri;
+
+      // Force a save of the current asset, then move to the URL.
+      parent.atg.assetmanager.saveconfirm.saveBeforeLeaveAsset(linkURL);
+    }
+  </script>
+  
+  <web-ui:collectionPropertySize var="numElements" collection="${inheritedSources}"/>
+  <c:set var="selectStyle"  value="display: block;"/>
+  <c:set var="inheritStyle" value="display: none;"/>
+  <c:if test="${numElements == 1}">
+    <c:set var="selectStyle"  value="display: none;"/>
+    <c:set var="inheritStyle" value="display: block;"/>
+  </c:if>
+  
+  <tr>
+    <td class="formLabel">
+      <fmt:message key="inheritedFacets" bundle="${bundle}"/>:
+    </td>
+    <td>
+      <%-- inherited refineElement dropdown selector --%>
+      <div id="parentCatalogSelection" style="<c:out value='${selectStyle}'/>">
+        <select id="parentCatalog" onchange="setParentCatalog(this.form);">
+          <option value="initial">
+            <fmt:message key="selectParentCatalog" bundle="${bundle}"/>
+          </option>
+          <c:forEach items="${inheritedSources}" var="source" varStatus="status">
+            <option value="<c:out value='${source.sourceId}'/>">
+              <c:out value='${source.sourceName}'/>
+            </option>
+          </c:forEach>
+        </select>
+      </div>
+
+<%--
+            <c:if test="${status.count > 1}">
+              <c:if test="${status.first}">
+                <option value="initial">
+                  <fmt:message key="selectParentCatalog" bundle="${bundle}"/>
+                </option>
+              </c:if>
+              <option value="<c:out value='${source.sourceId}'/>">
+                <c:out value='${source.sourceName}'/>
+              </option>
+            </c:if>
+
+--%>
+
+      <c:set var="doesInherit" value="false" />
+
+      <%-- inherited refineElement tables --%>
+      <c:forEach items="${inheritedSources}" var="source" varStatus="status">
+        <div id="<c:out value='${source.sourceId}'/>" style="<c:out value='${inheritStyle}'/>">
+          <%-- table goes here --%>
+          <c:set var="showSourceColumn" value="${false}"/>
+          <table class="formStringList">
+            <dcsui-search:reorderFacetByPriority collection="${source.refineElements}" />
+            <c:forEach items="${source.refineElements}" var="refineElement">
+              <c:set var="doesInherit" value="true" />
+              <c:if test="${not (empty refineElement.source)}">
+                <c:set var="showSourceColumn" value="${true}"/>
+              </c:if>
+              <tr>
+                <td align="right" width="1%">
+                  <c:out value="${refineElement.priority}"/>
+                </td>
+
+                <%-- TODO: fill in the href link --%>
+                <asset-ui:createAssetURI var="linkedURI"
+                                         componentName="RefinementRepository"
+                                         itemDescriptorName="refineElement"
+                                         itemId="${refineElement.id}"/>
+                <td class="formValueCell"><a href='javascript:refineElementDrillDown("<c:out value='${linkedURI}'/>")'><c:out value="${refineElement.name}"/></a></td>
+                <c:if test="${showSourceColumn}">
+                  <td class="formValueCell"><fmt:message key="${refineElement.source}" bundle="${bundle}"/></td>
+                </c:if>
+              </tr>
+            </c:forEach>
+          </table>
+        </div>
+      </c:forEach>
+      
+      <c:if test="${doesInherit eq false}">
+        <fmt:message key="noInheritedFacets" bundle="${bundle}"/>
+      </c:if>
+    </td>
+  </tr>
+<%-- @version $Id: //product/DCS-UI/version/10.0.3/search/src/web-apps/DCS-UI-Search/facetEditor/inheritedFacets.jspf#2 $$Change: 651448 $--%>

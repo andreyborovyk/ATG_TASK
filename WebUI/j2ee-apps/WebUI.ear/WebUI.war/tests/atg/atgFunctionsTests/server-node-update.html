@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>XHR Handler - Node-Update</title>
+	<script type="text/javascript" src="/dojo-1/dojo/dojo.js.uncompressed.js" djConfig="isDebug: true, parseOnLoad: true"></script>
+
+		<script type="text/javascript" src="/WebUI/atg.js"></script>
+
+		
+		<script type="text/javascript" src="/dojo-1/dojo-fixes.js"></script>
+
+    <script type="text/javascript">
+      
+      
+      
+      function xhrSelect(node){
+        console.debug("xhrSelect Fired");
+        
+        dojo.xhrPost({
+                postData: "foo:bar",
+                url: "xhr/select.html",
+                handleAs: "node-update-server"
+          
+        });
+        
+      }
+      
+    </script>
+		
+
+	</head>
+	<body>
+    <h3>Node Update XHR Handler</h3>
+    <button onclick="javascript:xhrSelect('selectNode');">Load New Content</button>
+    
+    <div id="checkBox">
+      <input type="checkbox" disabled='true'><label style="color:red">Disabled</label>
+    </div>
+      
+    <div id="selectNode">
+      
+            
+        <select id="brand_id" name="brand_id" class="small" MULTIPLE SIZE=5>
+
+        <option value="15">Advocaat</option>
+
+        <option value="1827">Alize</option>
+        <option value="2503">Angostura</option>
+        <option value="61">Baileys</option>
+        <option value="86">Benedictine</option>
+        <option value="1556">Chartreuse Monks</option>
+        <option value="199">Cherry Brandy</option>
+        <option value="227">Cointreau</option>
+        <option value="247">Creme de Cacao</option>
+        <option value="1558">Curacao (white)</option>
+
+        <option value="303">Durkee</option>
+        <option value="1559">Frangelico</option>
+        <option value="1560">Galliano</option>
+        <option value="399">Godiva</option>
+        <option value="411">Grand Marnier</option>
+        <option value="518">Kahlua</option>
+        <option value="535">Kirsch</option>
+        <option value="636">Midori</option>
+        <option value="1561">Ouzo</option>
+
+        <option value="1562">Pernod</option>
+        <option value="2363">Romana</option>
+        <option value="1563">Sambuca</option>
+        <option value="915">Smirnoff</option>
+        <option value="1565">Southern Comfort</option>
+        <option value="1566">Tia Maria</option>
+        <option value="2361">Yukon Jack</option>
+        </select>
+          
+    </div>
+	  
+		
+	</body>
+</html>

@@ -1,0 +1,376 @@
+<!-- BEGIN FILE site_details_tabs.jspf -->
+	<portlet:renderURL var="overviewURL">	
+	  <portlet:param name="atg_admin_menu_group" value="deployment"/>
+	  <portlet:param name="atg_admin_menu_1" value="overview"/>
+	  <portlet:param name="overview_no_tabs" value="true"/>
+	  <portlet:param name="from_menu" value="true"/>
+	</portlet:renderURL>
+
+<pws:getTarget var="testTarget" targetId="${TARGET_ID}"/>
+<c:choose>
+<c:when test="${empty testTarget || empty TARGET_ID }">
+  <c:remove var="target" scope="session"/>
+  <c:remove var="goToDetailsTabs" scope="session"/>
+  <c:remove var="TARGET_ID" scope="session"/>
+  <%-- if we don't have a target we cannot be here --%>
+  <script language="Javascript" type="text/javascript">
+    <!--
+    doRedirect('<c:out value="${overviewURL}"/>');
+    -->
+  </script>
+  
+  <c:set var="isTargetOneOff" value="false"/>
+</c:when>
+<c:otherwise>
+  <c:set var="isTargetOneOff" value="${target.oneOff}"/>
+</c:otherwise>
+</c:choose>
+
+		<div id="intro">
+		<h2><span class="pathSub"><fmt:message key="overview" bundle="${depBundle}"/> :</span> <c:out value="${target.name}"/></h2>
+		<p class="path"><a href="<c:out value='${overviewURL}'/>">&laquo;&nbsp;<fmt:message key="back-to-deployment-overview" bundle="${depBundle}"/></a></p>
+<!-- The script that hides and shows the extra intro text-->
+<script language="Javascript" type="text/javascript">
+<!--
+function showIntroTextDetails(detailsDiv){
+  closeAdminDetails(detailsDiv);
+   var morelesselement = document.getElementById(detailsDiv+"_container");
+   if(morelesselement != null){
+     var morelesstext = morelesselement.innerHTML;
+     var newtext = "";
+     if(morelesstext.indexOf("more") > 0){
+       newtext = morelesstext.replace(/<fmt:message key="more" bundle="${depBundle}"/>/g, '<fmt:message key="less" bundle="${depBundle}"/>');
+     }
+     else{
+       newtext = morelesstext.replace(/<fmt:message key="less" bundle="${depBundle}"/>/g, '<fmt:message key="more" bundle="${depBundle}"/>');
+     }
+     replaceInnerHtml(morelesselement, newtext); 
+   }
+}
+
+function checkAll(formName, fieldName) {
+  var form = document.getElementById(formName);
+  var field = form[fieldName];
+  if (field != null) 
+  {
+    if (document.getElementById("checkAllField").checked == true) {
+      if (field.length == null)
+        field.checked = true;
+      else {
+        for (i=0; i<field.length; i++)
+          field[i].checked = true;
+      }
+    }
+    else {
+      if (field.length == null)
+        field.checked = false;
+      else {
+        for (i=0; i<field.length; i++)
+          field[i].checked = false;
+      }
+    }
+  }
+}
+-->
+</script>
+
+<c:choose>
+ <c:when test='${siteTabName eq "details"}'>
+  <p><fmt:message key="details-intro-p1" bundle="${depBundle}"/>
+<span id="extraText_container" style="DISPLAY: inline;" class="containerIconClosed adminDetails"><a href="#" onmousedown="showIntroTextDetails('extraText');"><fmt:message key="more" bundle="${depBundle}"/></a></span></p>
+  <div id="extraText" class="hierarchyPaneClosed">
+  <p> <fmt:message key="details-intro-p2" bundle="${depBundle}"/></p>
+
+  <p> <fmt:message key="details-intro-p3" bundle="${depBundle}"/></p>
+  <p/>
+</div>
+ </c:when><%-- end details--%>
+ <c:when test='${(siteTabName  eq "todo") && !isTargetOneOff}'>
+
+ <p><fmt:message key="todo-intro-p1" bundle="${depBundle}"/>
+ <span id="extraText_container" class="containerIconClosed adminDetails"><a href="#" onmousedown="showIntroTextDetails('extraText');"><fmt:message key="more" bundle="${depBundle}"/></a></span>
+ </p>
+  <div id="extraText" class="hierarchyPaneClosed">
+  
+  <p><fmt:message key="todo-intro-p2" bundle="${depBundle}"/></p>
+  <p/> 
+  </div>
+ </c:when><%-- end todo --%>
+ <c:when test='${siteTabName eq "agents"}'>
+ <p><fmt:message key="agents-intro-p1" bundle="${depBundle}"/> 
+  <span id="extraText_container" class="containerIconClosed adminDetails"><a href="#" onmousedown="showIntroTextDetails('extraText');"><fmt:message key="more" bundle="${depBundle}"/></a></span>
+  </p>
+  <div id="extraText" class="hierarchyPaneClosed">
+  <c:choose>
+    <c:when test="${agentTabletName == 'switchables'}">
+      <p><fmt:message key="agents-intro-p3-1" bundle="${depBundle}"/><br/>
+      <fmt:message key="agents-intro-p3-2" bundle="${depBundle}"/></p>
+    </c:when>
+    <c:otherwise>
+      <p><fmt:message key="agents-intro-p2-1" bundle="${depBundle}"/><br/>
+      <fmt:message key="agents-intro-p2-2" bundle="${depBundle}"/></p>
+    </c:otherwise>
+  </c:choose>
+  <p/> 
+  </div>
+ 
+ </c:when><%-- end agents --%>
+ <c:when test='${siteTabName eq "plan"}'>
+<p><fmt:message key="plan-intro-p1" bundle="${depBundle}"/>  
+ <span id="extraText_container" class="containerIconClosed adminDetails"><a href="#" onmousedown="showIntroTextDetails('extraText');"><fmt:message key="more" bundle="${depBundle}"/></a></span>
+  </p>
+  <div id="extraText" class="hierarchyPaneClosed">
+
+    <c:if test="${!isTargetOneOff}">    
+    <p><fmt:message key="plan-intro-p2-1" bundle="${depBundle}"/></p>
+    </c:if>
+    <c:if test="${isTargetOneOff}">
+    <p><fmt:message key="plan-intro-p2-2" bundle="${depBundle}"/></p>
+    </c:if>
+
+    <c:if test="${!isTargetOneOff}">    
+    <p><fmt:message key="plan-intro-p3-1" bundle="${depBundle}"/></p>
+    </c:if>
+    <c:if test="${isTargetOneOff}">
+    <p><fmt:message key="plan-intro-p3-2" bundle="${depBundle}"/></p>
+    </c:if>
+  <p/> 
+</div>
+ </c:when><%-- end plan--%>
+ <c:when test='${siteTabName eq "results"}'>
+   <p>
+     <fmt:message key="processes-intro-p1" bundle="${depBundle}"/>  
+     <c:if test="${!isTargetOneOff}">
+       <fmt:message key="processes-intro-p1-1" bundle="${depBundle}"/>  
+     </c:if>
+     <span id="extraText_container" class="containerIconClosed adminDetails"><a href="#" onmousedown="showIntroTextDetails('extraText');"><fmt:message key="more" bundle="${depBundle}"/></a></span>
+  </p>
+  <div id="extraText" class="hierarchyPaneClosed">
+
+    <p><fmt:message key="processes-intro-p2" bundle="${depBundle}"/></p>
+
+     <c:if test="${!isTargetOneOff}">
+       <p><fmt:message key="processes-intro-p3" bundle="${depBundle}"/></p>
+   </c:if>
+  <p/> 
+</div> 
+ </c:when><%-- end results--%>
+ <c:otherwise>
+   <p><fmt:message key="details-intro-p1" bundle="${depBundle}"/>
+  <span id="extraText_container" class="containerIconClosed adminDetails"><a href="#" onmousedown="showIntroTextDetails('extraText');"><fmt:message key="more" bundle="${depBundle}"/></a></span>
+  </p>
+  <div id="extraText" class="hierarchyPaneClosed">
+  <p><fmt:message key="details-intro-p2" bundle="${depBundle}"/></p>
+
+  <p><fmt:message key="details-intro-p3" bundle="${depBundle}"/></p>
+  <p/> 
+</div>
+
+ </c:otherwise>
+</c:choose>
+                 
+		</div>
+    <portlet:renderURL var="detailsURL">
+     <portlet:param name="atg_admin_menu_group" value="deployment"/>
+     <portlet:param name="atg_admin_menu_1" value="overview"/>
+     <portlet:param name="goto_details_tabs" value="true"/>
+     <portlet:param name="site_tab_name" value="details"/>
+     <portlet:param name="target_id" value='<%=pageContext.findAttribute("TARGET_ID")+""%>'/>
+    </portlet:renderURL>
+    <portlet:renderURL var="toDoURL">
+     <portlet:param name="atg_admin_menu_group" value="deployment"/>
+     <portlet:param name="atg_admin_menu_1" value="overview"/>
+     <portlet:param name="goto_details_tabs" value="true"/>
+     <portlet:param name="site_tab_name" value="todo"/>
+     <portlet:param name="target_id" value='<%=pageContext.findAttribute("TARGET_ID")+""%>'/>
+    </portlet:renderURL>
+    <portlet:renderURL var="agentsURL">
+     <portlet:param name="atg_admin_menu_group" value="deployment"/>
+     <portlet:param name="atg_admin_menu_1" value="overview"/>
+     <portlet:param name="goto_details_tabs" value="true"/>
+     <portlet:param name="site_tab_name" value="agents"/>
+     <portlet:param name="target_id" value='<%=pageContext.findAttribute("TARGET_ID")+""%>'/>
+    </portlet:renderURL>
+    <portlet:renderURL var="planURL">
+     <portlet:param name="atg_admin_menu_group" value="deployment"/>
+     <portlet:param name="atg_admin_menu_1" value="overview"/>
+     <portlet:param name="goto_details_tabs" value="true"/>
+     <portlet:param name="site_tab_name" value="plan"/>
+     <portlet:param name="target_id" value='<%=pageContext.findAttribute("TARGET_ID")+""%>'/>
+    </portlet:renderURL>
+    <portlet:renderURL var="resultsURL">
+     <portlet:param name="atg_admin_menu_group" value="deployment"/>
+     <portlet:param name="atg_admin_menu_1" value="overview"/>
+     <portlet:param name="goto_details_tabs" value="true"/>
+     <portlet:param name="site_tab_name" value="results"/>
+     <portlet:param name="target_id" value='<%=pageContext.findAttribute("TARGET_ID")+""%>'/>
+    </portlet:renderURL>
+
+
+
+<!-- begin content -->
+	
+		<table cellpadding="0" border="0" cellspacing="0" width="100%">
+		<tr>
+		<td class="contentTabShadow" style="width: 20px;">&nbsp;</td>
+<c:choose>
+ <c:when test="${(siteTabName == 'todo') && !isTargetOneOff}">
+		<td class="contentTab"><a href="<c:out value='${detailsURL}'/>" class="tabOff"><fmt:message key="details" bundle="${depBundle}"/></a></td>
+  		<td class="contentTab"><span class="tabOn"><fmt:message key="to-do" bundle="${depBundle}"/></span></td>
+		<td class="contentTab"><a href="<c:out value='${planURL}'/>" class="tabOff"><fmt:message key="plan" bundle="${depBundle}"/></a></td>
+                <td class="contentTab"><a href="<c:out value='${resultsURL}'/>" class="tabOff"><fmt:message key="processes" bundle="${depBundle}"/></a></td>
+                <td class="contentTab"><a href="<c:out value='${agentsURL}'/>" class="tabOff"><fmt:message key="agents" bundle="${depBundle}"/></a></td>		
+                
+    <td class="contentTabShadow tabNote"><div id="pagingDivTop"></div></td>
+		</tr>
+		<tr>
+		<td class="contentTabOffBorder"></td>
+                <td class="contentTabOffBorder"></td>
+		<c:if test="${!isTargetOneOff}">
+                  <td class="contentTabOnBorder"></td>
+                </c:if>
+		<td class="contentTabOffBorder"></td>
+		<td class="contentTabOffBorder"></td>
+		<td class="contentTabOffBorder"></td>
+		<td class="contentTabOffBorder"></td>
+		</tr>
+
+</c:when><%-- end todo --%>
+ <c:when test="${siteTabName == 'plan'}">
+		<td class="contentTab"><a href="<c:out value='${detailsURL}'/>" class="tabOff"><fmt:message key="details" bundle="${depBundle}"/></a></td>
+                <c:if test="${!isTargetOneOff}">
+                  <td class="contentTab"><a href="<c:out value='${toDoURL}'/>" class="tabOff"><fmt:message key="to-do" bundle="${depBundle}"/></a></td>
+                </c:if>
+                <td class="contentTab"><span class="tabOn"><fmt:message key="plan" bundle="${depBundle}"/></span></td>
+                <td class="contentTab"><a href="<c:out value='${resultsURL}'/>" class="tabOff"><fmt:message key="processes" bundle="${depBundle}"/></a></td>
+                <td class="contentTab"><a href="<c:out value='${agentsURL}'/>" class="tabOff"><fmt:message key="agents" bundle="${depBundle}"/></a></td>		
+                <td class="contentTabShadow tabNote"><div id="pagingDivTop"></div></td>
+		</tr>
+		<tr>
+		<td class="contentTabOffBorder"></td>
+		<td class="contentTabOffBorder"></td>
+                <c:if test="${!isTargetOneOff}">
+		  <td class="contentTabOffBorder"></td>
+                </c:if> 
+		<td class="contentTabOnBorder"></td>
+		<td class="contentTabOffBorder"></td>
+		<td class="contentTabOffBorder"></td>
+		<td class="contentTabOffBorder"></td>
+		</tr>
+ </c:when><%-- end plan --%>
+ <c:when test="${siteTabName == 'results'}">
+		<td class="contentTab"><a href="<c:out value='${detailsURL}'/>" class="tabOff"><fmt:message key="details" bundle="${depBundle}"/></a></td>
+                <c:if test="${!isTargetOneOff}">
+                  <td class="contentTab"><a href="<c:out value='${toDoURL}'/>" class="tabOff"><fmt:message key="to-do" bundle="${depBundle}"/></a></td>
+                </c:if>
+		<td class="contentTab"><a href="<c:out value='${planURL}'/>" class="tabOff"><fmt:message key="plan" bundle="${depBundle}"/></a></td>
+ 		<td class="contentTab"><span class="tabOn"><fmt:message key="processes" bundle="${depBundle}"/></span></td>
+		<td class="contentTab"><a href="<c:out value='${agentsURL}'/>" class="tabOff"><fmt:message key="agents" bundle="${depBundle}"/></a></td>  		
+    <td class="contentTabShadow tabNote"><div id="pagingDivTop"></div></td>
+		</tr>
+ 		<tr>
+		<td class="contentTabOffBorder"></td>
+		<td class="contentTabOffBorder"></td>
+                <c:if test="${!isTargetOneOff}">
+		  <td class="contentTabOffBorder"></td>
+                </c:if> 
+                <td class="contentTabOffBorder"></td>
+		<td class="contentTabOnBorder"></td>
+		<td class="contentTabOffBorder"></td>
+		<td class="contentTabOffBorder"></td>
+		</tr>
+</c:when><%-- end results--%>
+<c:when test="${siteTabName == 'agents'}">
+		<td class="contentTab"><a href="<c:out value='${detailsURL}'/>" class="tabOff"><fmt:message key="details" bundle="${depBundle}"/></a></td>
+                <c:if test="${!isTargetOneOff}">
+                   <td class="contentTab"><a href="<c:out value='${toDoURL}'/>" class="tabOff"><fmt:message key="to-do" bundle="${depBundle}"/></a></td>
+                </c:if>
+                <td class="contentTab"><a href="<c:out value='${planURL}'/>" class="tabOff"><fmt:message key="plan" bundle="${depBundle}"/></a></td>
+                <td class="contentTab"><a href="<c:out value='${resultsURL}'/>" class="tabOff"><fmt:message key="processes" bundle="${depBundle}"/></a></td>
+                <td class="contentTab"><span class="tabOn"><fmt:message key="agents" bundle="${depBundle}"/></span></td>        
+                <td class="contentTabShadow tabNote"><div id="pagingDivTop"></div></td>
+                </tr>
+		<tr>
+		<td class="contentTabOffBorder"></td>
+		<td class="contentTabOffBorder"></td>
+                <c:if test="${!isTargetOneOff}">
+		  <td class="contentTabOffBorder"></td>
+                </c:if> 
+                <td class="contentTabOffBorder"></td>
+		<td class="contentTabOffBorder"></td>
+		<td class="contentTabOnBorder"></td>
+		<td class="contentTabOffBorder"></td>
+		</tr>
+
+</c:when><%-- end agents--%>
+
+  <c:otherwise>
+                <td class="contentTab"><span class="tabOn"><fmt:message key="details" bundle="${depBundle}"/></span></td>
+                <c:if test="${!isTargetOneOff}">
+                  <td class="contentTab"><a href="<c:out value='${toDoURL}'/>" class="tabOff"><fmt:message key="to-do" bundle="${depBundle}"/></a></td>
+                </c:if>
+                <td class="contentTab"><a href="<c:out value='${planURL}'/>" class="tabOff"><fmt:message key="plan" bundle="${depBundle}"/></a></td>
+                  <td class="contentTab"><a href="<c:out value='${resultsURL}'/>" class="tabOff"><fmt:message key="processes" bundle="${depBundle}"/></a></td>
+                <td class="contentTab"><a href="<c:out value='${agentsURL}'/>" class="tabOff"><fmt:message key="agents" bundle="${depBundle}"/></a></td>		
+
+                <td class="contentTabShadow tabNote"><div id="pagingDivTop"></div></td>
+                </tr>
+ 		<tr>
+		<td class="contentTabOffBorder"></td>
+		<td class="contentTabOnBorder"></td>
+                <c:if test="${!isTargetOneOff}">
+		  <td class="contentTabOffBorder"></td>
+                </c:if> 
+                <td class="contentTabOffBorder"></td>
+		<td class="contentTabOffBorder"></td>
+		<td class="contentTabOffBorder"></td>
+		<td class="contentTabOffBorder"></td>
+		</tr>
+ </c:otherwise>
+</c:choose>
+		
+
+
+		</table>
+    <%--  plan screen has its own attribute bar, don't show it here --%>
+	<c:if test="${!(siteTabName eq 'plan')}">	
+		<table cellpadding="0" cellspacing="0" border="0" width="100%" id="attributeBar">
+		<tr>
+		<td>
+		
+			<div class="attributes">
+			<p>&nbsp;</p>
+			</div>
+	
+			<div class="attributeExtras">
+			<p>&nbsp;</p>
+			</div>			
+
+			
+		</td>
+		</tr>
+		</table>
+  </c:if>
+
+<c:choose>
+ <c:when test='${siteTabName eq "details"}'>
+  <dspel:include page="site_detail.jsp" />
+ </c:when><%-- end details--%>
+ <c:when test='${(siteTabName  eq "todo") && !isTargetOneOff}'>
+  <%@ include file="toDo_index.jspf" %>
+ </c:when><%-- end todo --%>
+ <c:when test='${siteTabName eq "agents"}'>
+  <%@ include file="agents_index.jspf" %>
+ </c:when><%-- end agents --%>
+ <c:when test='${siteTabName eq "plan"}'>
+  <%@ include file="plan_index.jspf" %>
+ </c:when><%-- end plan--%>
+ <c:when test='${siteTabName eq "results"}'>
+  <%@ include file="processes_index.jspf" %>
+ </c:when><%-- end results--%>
+ <c:otherwise>
+  <dspel:include page="site_detail.jsp"/>
+ </c:otherwise>
+</c:choose>
+<!-- END FILE site_details_tabs.jspf -->
+<%-- @version $Id: //product/PubPortlet/version/10.0.3/portlets.war/html/DeploymentPortlet/site/site_details_tabs.jspf#2 $$Change: 651448 $--%>

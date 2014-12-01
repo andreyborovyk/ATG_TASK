@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE scenario-manager-configuration
+        PUBLIC "-//Art Technology Group, Inc.//DTD Scenario Manager//EN"
+        'http://www.atg.com/dtds/processmanager/processmanager_1.0.dtd'>
+
+<process-manager-configuration>
+
+	<action-registry>
+		<action>
+			<action-name>Add Credit</action-name>
+			<display-name>Add credit</display-name>
+			<action-class>com.mystore.credit.AddCreditAction</action-class>
+			<action-configuration>/com/mystore/credit/AddCreditActionConfig</action-configuration>
+			<action-execution-policy>individual</action-execution-policy>
+			<action-error-response>continue</action-error-response>
+			<action-parameter>
+				<action-parameter-name>
+					credit
+                  </action-parameter-name>
+				<display-name>
+					Number to add
+                  </display-name>
+				<action-parameter-class>
+					java.lang.Double
+                  </action-parameter-class>
+				<required>
+					true
+                  </required>
+			</action-parameter>
+		</action>
+	</action-registry>
+</process-manager-configuration>

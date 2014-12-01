@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE database-initializer SYSTEM "http://www.atg.com/dtds/dbinit_1_0.dtd">
+<database-initializer>
+
+  <schema id="versionedSchema">
+  
+  
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/versioned_claimable_ddl.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_versioned_claimable_ddl.sql
+        </drop>
+      </path>
+    </sql>
+
+
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/versioned_commerce_site_ddl.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_versioned_commerce_site_ddl.sql
+        </drop>
+      </path>
+    </sql>
+
+    
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/versioned_priceLists_ddl.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_versioned_priceLists_ddl.sql
+        </drop>
+      </path>
+    </sql>
+
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/versioned_product_catalog_ddl.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_versioned_product_catalog_ddl.sql
+        </drop>
+      </path>
+    </sql>    
+    
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/versioned_custom_catalog_ddl.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_versioned_custom_catalog_ddl.sql
+        </drop>
+      </path>
+    </sql>  
+    
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/versioned_promotion_ddl.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_versioned_promotion_ddl.sql
+        </drop>
+      </path>
+    </sql>    
+    
+    <data-import start-up-module="DPS.Versioned">
+      <repository-path>/atg/userprofiling/PersonalizationRepository</repository-path>
+      <import-file-path>/DCS/install/data/initial-segment-lists.xml</import-file-path>
+      <user>publishing</user>
+      <workspace>initialSegments</workspace>
+      <comment>initialSegments</comment>  
+    </data-import>    
+    
+  </schema>
+  
+  <server-instance-type id="management">
+    <datasource id="all">
+      <schema id="versionedSchema"/>
+    </datasource>  
+  </server-instance-type>
+  
+</database-initializer>
+<!-- @version $Id: //product/DCS/version/10.0.3/release/DCS/Versioned/cim/dbinit.xml#2 $$Change: 651448 $-->

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE database-initializer SYSTEM "http://www.atg.com/dtds/dbinit_1_0.dtd">
+<database-initializer>
+
+  <schema id="productionSchema">
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/click_to_connect_ddl.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_click_to_connect_ddl.sql
+        </drop>
+      </path>
+    </sql>
+  </schema>
+
+  <server-instance-type id="production">
+    <datasource id="nonswitchingCore">
+      <schema id="productionSchema"/>
+    </datasource>
+    <datasource id="switchingCore">
+      <schema id="productionSchema"/>
+    </datasource>
+  </server-instance-type>
+
+</database-initializer>
+<!-- @version $Id: //product/ClickToConnect/version/10.0.3/cim/dbinit.xml#2 $$Change: 651448 $-->

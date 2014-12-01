@@ -1,0 +1,1069 @@
+<?xml version="1.0" ?>
+<!DOCTYPE schema  SYSTEM "http://road.atg.com/dtds/ddlgen/schema.dtd">
+
+<schema name="create_searchadmin">
+
+  <!-- extraConfig -->
+  <table name="srch_adv_conf">
+    <column name="id" nullable="n">
+        <column-type db="generic"  length="40" type="varchar"/>
+    </column>
+    <column name="conf" nullable="y">
+        <column-type db="generic" type="long-varchar"/>
+    </column>
+    <primary-key name="srch_adv_conf_p">
+      <index-column column="id" order="asc" seq="1"/>
+    </primary-key>
+  </table>
+
+  <!-- searchProject -->
+  <table name="srch_project">
+    <column name="id" nullable="n">
+       <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="srch_idx_id" nullable="y">
+       <!-- The search index for our "model" for new syncs -->
+       <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="cur_srch_idx_id" nullable="y">
+       <!-- The search index for our last successfully built  -->
+       <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="name" nullable="n" i18n="y">
+       <column-type db="generic" length="254" type="varchar"/>
+    </column>
+    <column name="description" nullable="y" i18n="y">
+       <column-type db="generic" length="254" type="varchar"/>
+    </column>
+    <column name="min_inact_idxs" nullable="y">
+      <column-type db="generic" type="smallint"/>
+    </column>
+    <column name="preserve_cnt" nullable="y">
+      <column-type db="generic" type="smallint"/>
+    </column>
+    <column name="preserve_age" nullable="y">
+      <column-type db="generic" type="smallint"/>
+    </column>
+    <column name="srch_adv_c_id" nullable="y">
+       <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="force_full_index" nullable="y">
+      <column-type db="generic" type="one-digit"/>
+    </column>
+    <column name="cached_cust" nullable="y">
+      <column-type db="generic" type="long-varbinary"/>
+    </column>
+	<column name="no_content" nullable="n" default="0">
+      <column-type db="generic" type="one-digit"/>
+    </column>
+    <primary-key name="srch_project_p">
+      <index-column column="id" order="asc" seq="1"/>
+    </primary-key>
+
+    <foreign-key referenced-table="srch_adv_conf" name="srch_project_fk2" index-name="srch_project_x2">
+      <fkey-column referencing-column="srch_adv_c_id" referenced-column="id"/>
+    </foreign-key>
+
+    <unique name="srch_project_u1">
+      <index-column column="name" seq="1"/>
+    </unique>
+  </table>
+
+
+  <!-- registeredImplementation -->
+  <table name="srch_reg_impl" >
+    <column name="id" nullable="n">
+       <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="intface" nullable="y">
+       <column-type db="generic" length="254" type="varchar"/>
+    </column>
+    <column name="classname" nullable="y">
+       <column-type db="generic" length="254" type="varchar"/>
+    </column>
+    <column name="classloader" nullable="y">
+       <column-type db="generic" length="254" type="varchar"/>
+    </column>
+    <column name="name" nullable="y">
+       <column-type db="generic" length="254" type="varchar"/>
+    </column>
+    <column name="description" nullable="y">
+       <column-type db="generic" length="254" type="varchar"/>
+    </column>
+    <primary-key name="srch_reg_impl_p">
+      <index-column column="id" order="asc" seq="1"/>
+    </primary-key>
+  </table>
+
+  <!-- contentSourceSetIdToTargetIds: this is bookkeeping, and needs to -->
+  <!-- survive deletions of indexes, sync tasks,etc. This is only used -->
+  <!-- as a map on searchProject. -->
+  <table name="srch_css_id_to_targ_ids">
+    <column name="id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <!-- reference to the containing search project -->
+    <column name="srch_project_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="srch_content_ss_id" nullable="n">
+       <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="srch_idx_id" nullable="n">
+       <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="srch_shared_lp_id" nullable="n">
+       <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <primary-key name="srch_css_to_targ_p">
+      <index-column column="id" order="asc" seq="1"/>
+    </primary-key>
+    <foreign-key referenced-table="srch_project" name="srch_css_2_trg_fk1" index-name="srch_csidtargid1_x">
+      <fkey-column referencing-column="srch_project_id" referenced-column="id"/>
+    </foreign-key>
+  </table>
+
+
+  <!-- contentSourceAdapter -->
+  <table name="srch_content">
+    <column name="id" nullable="n">
+       <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="name" nullable="y" i18n="y">
+       <column-type db="generic" length="254" type="varchar"/>
+    </column>
+    <column name="srch_content_id" nullable="y">
+       <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="srch_adv_c_id" nullable="y">
+       <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="handservice" nullable="y"> <!--name="srch_reg_impl_id" nullable="y"> -->
+      <column-type db="generic" length="254" type="varchar"/>
+    </column>
+    <primary-key name="srch_content_p">
+      <index-column column="id" order="asc" seq="1"/>
+    </primary-key>
+
+    <foreign-key referenced-table="srch_content" name="srch_content_fk1" index-name="srch_content_x1">
+       <fkey-column referencing-column="srch_content_id" referenced-column="id"/>
+    </foreign-key>
+    <foreign-key referenced-table="srch_adv_conf" name="srch_content_fk2" index-name="srch_content_x2">
+      <fkey-column referencing-column="srch_adv_c_id" referenced-column="id"/>
+    </foreign-key>
+
+    <!--<foreign-key referenced-table="srch_reg_impl" name="srch_content_fk3" index-name="srch_content_x3">
+      <fkey-column referencing-column="srch_reg_impl_id" referenced-column="id"/>
+    </foreign-key>-->
+  </table>
+
+
+  <!-- contentSourceSet -->
+  <table name="srch_content_ss">
+    <column name="id" nullable="n">
+       <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="shared_id" nullable="n">
+       <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="name" nullable="y" i18n="y">
+       <column-type db="generic" length="254" type="varchar"/>
+    </column>
+    <column name="last_modified" nullable="y">
+       <column-type db="generic" type="datetime"/>
+	   <column-type db="oracle" type="timestamp"/>
+    </column>
+    <column name="srch_content_id" nullable="n">
+       <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="srch_content_ss_id" nullable="y">
+       <!-- parent -->
+       <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="structured" nullable="y">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <column name="force_con_type" nullable="y">
+      <column-type db="generic" type="one-digit"/>
+    </column>
+
+    <column name="srch_log_part_id" nullable="y">
+       <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="srch_adv_c_id" nullable="y">
+       <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="doc_set_subpath" nullable="y" i18n="y">
+       <column-type db="generic" length="254" type="varchar"/>
+    </column>
+    <primary-key name="srch_content_ss_p">
+      <index-column column="id" order="asc" seq="1"/>
+    </primary-key>
+
+    <foreign-key referenced-table="srch_adv_conf" name="srch_cont_ss_fk1" index-name="srch_cont_ss_x1">
+      <fkey-column referencing-column="srch_adv_c_id" referenced-column="id"/>
+    </foreign-key>
+    <foreign-key referenced-table="srch_content" name="srch_cont_ss_fk2" index-name="srch_cont_ss_x2">
+      <fkey-column referencing-column="srch_content_id" referenced-column="id"/>
+    </foreign-key>
+    <foreign-key referenced-table="srch_content_ss" name="srch_cont_ss_fk3" index-name="srch_cont_ss_x3">
+      <!-- okay, this may cause deletion problems -->
+      <fkey-column referencing-column="srch_content_ss_id" referenced-column="id"/>
+    </foreign-key>
+
+  </table>
+
+  <!-- contentSourceSet.members -->
+  <table name="srch_content_ss_mm">
+    <column name="srch_content_ss_id" nullable="n">
+       <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="members" nullable="n">
+       <column-type db="generic" length="254" type="varchar"/>
+    </column>
+    <primary-key name="srch_cont_ss_mm_p">
+      <index-column column="srch_content_ss_id" order="asc" seq="1"/>
+      <index-column column="members" order="asc" seq="2"/>
+    </primary-key>
+
+    <foreign-key referenced-table="srch_content_ss" name="srch_cont_ss_mm_fk">
+      <fkey-column referencing-column="srch_content_ss_id" referenced-column="id"/>
+    </foreign-key>
+
+  </table>
+
+  <!-- platform -->
+  <table name="srch_platform">
+    <column name="id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="platformid" nullable="y">
+      <column-type db="generic" type="bigint"/><!-- type="numeric" length="19" scale="0"/>-->
+    </column>
+    <column name="maxpartsize" nullable="y">
+      <column-type db="generic" type="bigint"/>
+    </column>
+    <primary-key name="srch_platform_p">
+      <index-column column="id" order="asc" seq="1"/>
+    </primary-key>
+  </table>
+
+  <!-- indexVersion -->
+  <table name="srch_act_idx_v">
+    <column name="id" nullable="n">
+       <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="srch_platform_id" nullable="y">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="majorversion" nullable="y">
+      <column-type db="generic" type="bigint"/><!-- type="numeric" length="19" scale="0"/>-->
+    </column>
+    <column name="minorversion" nullable="y">
+      <column-type db="generic" type="bigint"/><!-- type="numeric" length="19" scale="0"/>-->
+    </column>
+    <column name="charsize" nullable="y">
+       <column-type db="generic" type="integer"/>
+    </column>
+    <primary-key name="srch_act_idx_v_p">
+      <index-column column="id" order="asc" seq="1"/>
+    </primary-key>
+
+    <foreign-key referenced-table="srch_platform" name="srch_act_idx_v_f1" index-name="srch_act_idx_v_x1">
+      <fkey-column referencing-column="srch_platform_id" referenced-column="id"/>
+    </foreign-key>
+
+  </table>
+
+  <!-- syncTaskType -->
+  <table name="srch_sync_task_type">
+    <column name="id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="name" nullable="n">
+      <column-type db="generic" length="254" type="varchar"/>
+    </column>
+    <column name="enum" nullable="y">
+       <column-type db="generic" type="smallint"/> <!--type="numeric" length="5" scale="0"/>-->
+    </column>
+    <primary-key name="srch_task_type_p">
+      <index-column column="id" order="asc" seq="1"/>
+    </primary-key>
+  </table>
+
+  <!-- syncStepType -->
+  <table name="srch_sync_step_type">
+    <column name="id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="name" nullable="n">
+      <column-type db="generic" length="254" type="varchar"/>
+    </column>
+    <column name="enum" nullable="y">
+       <column-type db="generic" type="smallint"/> <!--type="numeric" length="5" scale="0"/>-->
+    </column>
+    <column name="super_step_enum" nullable="y">
+       <column-type db="generic" type="smallint"/>
+    </column>
+    <primary-key name="srch_step_type_p">
+      <index-column column="id" order="asc" seq="1"/>
+    </primary-key>
+  </table>
+
+  <!-- baseSyncTask -->
+  <table name="srch_base_sync_task">
+    <column name="id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+	<column name="base_type" nullable="n">
+      <column-type db="generic" type="smallint"/>
+    </column>
+    <column name="type_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="subname" nullable="y" i18n="y">
+       <column-type db="generic" length="254" type="varchar"/>
+    </column>
+    <column name="srch_adv_c_id" nullable="y">
+       <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="is_all_css" nullable="y" default="0">
+      <column-type db="generic" type="one-digit" />
+    </column>
+    <column name="is_all_custom_data" nullable="y" default="0">
+      <column-type db="generic" type="one-digit"/>
+    </column>
+	<column name="is_pause" nullable="n" default="0">
+      <column-type db="generic" type="one-digit"/>
+    </column>
+    <column name="src_srch_idx_id" nullable="y">
+       <!-- The source search index. Typically null (meaning the -->
+       <!-- project's current index), only set when deploying -->
+       <!-- a historical index. No foreign key constraint by intention -->
+       <column-type db="generic" length="40" type="varchar"/>
+    </column>
+
+	<!-- Search Project denormalized into srch_sync_task and srch_sync_task_def instead of srch_base_sync_task for query performance -->
+    <column name="srch_project_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    
+    <primary-key name="srch_bsynctask_p">
+      <index-column column="id" order="asc" seq="1"/>
+    </primary-key>
+    <foreign-key referenced-table="srch_adv_conf" name="srch_bsynctask_f1" index-name="srch_bsynctask_x1">
+      <fkey-column referencing-column="srch_adv_c_id" referenced-column="id"/>
+    </foreign-key>
+	<foreign-key referenced-table="srch_project" name="srch_bsynctask_f2" index-name="srch_bsynctask_x2">
+      <fkey-column referencing-column="srch_project_id" referenced-column="id"/>
+    </foreign-key>
+    <foreign-key referenced-table="srch_sync_task_type" name="srch_synctaskd_f3" index-name="srch_synctaskd_x3">
+      <fkey-column referencing-column="type_id" referenced-column="id"/>
+    </foreign-key>
+  </table>
+
+  <!-- syncTask -->
+  <table name="srch_sync_task">
+    <column name="id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+	<column name="base_sync_task_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="error_count" nullable="y">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <column name="index_id" nullable="y">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="start_tstamp" nullable="n">
+       <column-type db="generic" type="datetime"/>
+	   <column-type db="oracle" type="timestamp"/>
+    </column>
+    <column name="end_tstamp" nullable="y">
+       <column-type db="generic" type="datetime"/>
+	   <column-type db="oracle" type="timestamp"/>
+    </column>
+    <primary-key name="srch_sync_task_p">
+      <index-column column="id" order="asc" seq="1"/>
+    </primary-key>
+    <!--
+    <foreign-key referenced-table="srch_base_sync_task" name="srch_sync_task_f1" index-name="srch_sync_task_x1">
+      <fkey-column referencing-column="id" referenced-column="id"/>
+    </foreign-key>
+    -->
+    <!-- Executed SyncTask are not deleted when the SyncTaskDefinition is deleted since the SyncTask may be
+         currently running.  Instead we should null the defintion property on the SyncTask.  Since the ddl gen
+         DTD doesn't support defining a foreign key that takes no action on delete, we can't define a foreign key here
+         even though logically definition_id is a reference to the SyncTaskDefinition-->
+    <foreign-key referenced-table="srch_base_sync_task" name="srch_sync_task_f2" index-name="srch_sync_task_x2">
+      <fkey-column referencing-column="base_sync_task_id" referenced-column="id"/>
+    </foreign-key>
+    
+  </table>
+
+  <!-- syncStepOption -->
+  <table name="srch_sync_step_option">
+    <column name="id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="name" nullable="n">
+      <column-type db="generic" length="254" type="varchar"/>
+    </column>
+    <column name="option_type" nullable="n">
+      <column-type db="generic" type="smallint"/>
+    </column>
+    <primary-key name="srch_syncstepopt_p">
+      <index-column column="id" order="asc" seq="1"/>
+    </primary-key>
+  </table>
+
+  <!-- baseSyncStep -->
+  <table name="srch_base_sync_step">
+    <column name="id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="base_type" nullable="n">
+      <column-type db="generic" type="smallint"/>
+    </column>
+    <column name="step_type_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="step_option_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <primary-key name="srch_bsyncstep_p">
+      <index-column column="id" order="asc" seq="1"/>
+    </primary-key>
+    <foreign-key referenced-table="srch_sync_step_type" name="srch_bsyncstep_f1" index-name="srch_bsyncstep_x1">
+      <fkey-column referencing-column="step_type_id" referenced-column="id"/>
+    </foreign-key>
+    <foreign-key referenced-table="srch_sync_step_option" name="srch_bsyncstep_f2" index-name="srch_bsyncstep_x2">
+      <fkey-column referencing-column="step_option_id" referenced-column="id"/>
+    </foreign-key>
+  </table>
+
+  <!-- baseSyncTask.syncSteps -->
+  <table name="srch_sync_task_step_m">
+    <column name="task_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="idx" nullable="n">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <column name="step_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <primary-key name="srch_tskd_stp_m_p">
+      <index-column column="task_id" order="asc" seq="1"/>
+      <index-column column="idx" order="asc" seq="2"/>
+    </primary-key>
+    <foreign-key referenced-table="srch_base_sync_task" name="srch_task_stp_m_f1">
+      <fkey-column referencing-column="task_id" referenced-column="id"/>
+    </foreign-key>
+    <foreign-key referenced-table="srch_base_sync_step" name="srch_task_stp_m_f2" index-name="srch_task_stp_m_x2">
+      <fkey-column referencing-column="step_id" referenced-column="id"/>
+    </foreign-key>
+  </table>
+  
+  <!-- syncTaskType.syncSteps -->
+  <table name="srch_sync_task_type_step_m">
+    <column name="task_type_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="idx" nullable="n">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <column name="step_type_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <primary-key name="srch_tasktype_m_p">
+      <index-column column="task_type_id" order="asc" seq="1"/>
+      <index-column column="idx" order="asc" seq="2"/>
+    </primary-key>
+    <foreign-key referenced-table="srch_sync_task_type" name="srch_tasktype_m_f1">
+      <fkey-column referencing-column="task_type_id" referenced-column="id"/>
+    </foreign-key>
+    <foreign-key referenced-table="srch_sync_step_type" name="srch_tasktype_m_f2" index-name="srch_tasktype_m_x2">
+      <fkey-column referencing-column="step_type_id" referenced-column="id"/>
+    </foreign-key>
+  </table>
+  
+  <!-- syncStepType.availableOptions -->
+  <table name="srch_sync_step_type_option_m">
+    <column name="step_type_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="idx" nullable="n">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <column name="step_option_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <primary-key name="srch_step_typeo_p">
+      <index-column column="step_type_id" order="asc" seq="1"/>
+      <index-column column="idx" order="asc" seq="2"/>
+    </primary-key>
+    <foreign-key referenced-table="srch_sync_step_type" name="srch_stp_type_o_f1">
+      <fkey-column referencing-column="step_type_id" referenced-column="id"/>
+    </foreign-key>
+    <foreign-key referenced-table="srch_sync_step_option" name="srch_stp_type_o_f2" index-name="srch_stp_type_o_x2">
+      <fkey-column referencing-column="step_option_id" referenced-column="id"/>
+    </foreign-key>
+  </table>
+  
+  <!-- syncTaskDefinition -->
+  <table name="srch_sync_task_def">
+    <column name="id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="last_modified" nullable="y">
+       <column-type db="generic" type="datetime"/>
+	   <column-type db="oracle" type="timestamp"/>
+    </column>
+	<column name="base_sync_task_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="enabled" nullable="y">
+       <column-type db="generic" type="one-digit"/>
+    </column>
+    <column name="description" nullable="y" i18n="y">
+       <column-type db="generic" length="254" type="varchar"/>
+    </column>
+    <column name="schedule" nullable="y">
+       <column-type db="generic" length="254" type="varchar"/>
+    </column>
+    <column name="depl_type" nullable="y">
+       <column-type db="generic" length="20" type="varchar"/>
+    </column>
+    <column name="depl_target" nullable="y">
+       <column-type db="generic" length="255" type="varchar"/>
+    </column>
+    <primary-key name="srch_synctaskdef_p">
+      <index-column column="id" order="asc" seq="1"/>
+    </primary-key>
+    <!--
+    <foreign-key referenced-table="srch_sync_task" name="srch_synctaskd_f1" index-name="srch_synctaskd_x1">
+      <fkey-column referencing-column="id" referenced-column="id"/>
+    </foreign-key>
+    -->
+	<foreign-key referenced-table="srch_base_sync_task" name="srch_sync_base_f2" index-name="srch_sync_base_x2">
+      <fkey-column referencing-column="base_sync_task_id" referenced-column="id"/>
+    </foreign-key>
+    <check name="srch_sync_task_chk">
+      <check-expr db="generic" expression="enabled IN (0, 1)"/>
+    </check>
+  </table>
+
+  <!-- syncStepDefinition -->
+  <table name="srch_sync_step_def">
+    <column name="id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="task_definition_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <primary-key name="srch_syncstepdef_p">
+      <index-column column="id" order="asc" seq="1"/>
+    </primary-key>
+    <foreign-key referenced-table="srch_sync_task_def" name="srch_stepdef_f1" index-name="srch_stepdef_x1">
+      <fkey-column referencing-column="task_definition_id" referenced-column="id"/>
+    </foreign-key>
+  </table>
+
+  <!-- syncStepStatus -->
+  <table name="srch_hist_step">
+    <column name="id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="step_definition_id" nullable="y">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="status_id" nullable="n">
+      <column-type db="generic" type="smallint"/>
+    </column>
+    <column name="error_count" nullable="n">
+      <column-type db="generic" type="smallint"/>
+    </column>
+    <column name="start_time" nullable="y">
+      <column-type db="generic" type="datetime"/>
+	  <column-type db="oracle" type="timestamp"/>
+    </column>
+    <column name="end_time" nullable="y">
+      <column-type db="generic" type="datetime"/>
+	  <column-type db="oracle" type="timestamp"/>
+    </column>
+    <primary-key name="srch_hist_step_p">
+      <index-column column="id" order="asc" seq="1"/>
+    </primary-key>
+    <!-- Executed SyncTaskStatus are not deleted when the SyncStepDefinition is deleted since the SyncTask may be
+         currently running.  Instead we should null the defintion property on the SyncTask.  Since the ddl gen
+         DTD doesn't support defining a foreign key that takes no action on delete, we can't define a foreign key here
+         even though logically definition_id is a reference to the SyncStepDefinition
+    <foreign-key referenced-table="srch_sync_step_def" name="srch_syncstep_f2" index-name="srch_syncstep_x2">
+      <fkey-column referencing-column="step_definition_id" referenced-column="id"/>
+    </foreign-key>
+    -->
+  </table>
+
+
+  <!-- syncStepStatusError -->
+  <table name="srch_step_error">
+    <column name="id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="hist_step_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="occurred_time" nullable="n">
+       <column-type db="generic" type="datetime"/>
+	   <column-type db="oracle" type="timestamp"/>
+    </column>
+    <column name="content_id" nullable="y">
+      <column-type db="generic" type="long-varchar"/>
+    </column>
+    <column name="error_type" nullable="n">
+      <column-type db="generic" type="smallint"/>
+    </column>
+	<column name="error_message" nullable="y" i18n="y">
+      <column-type db="generic" type="long-varchar"/>
+    </column>
+    <column name="cause" nullable="y" i18n="y">
+      <column-type db="generic" type="long-varchar"/>
+    </column>
+    <column name="engine_resp" nullable="y" i18n="y">
+      <column-type db="generic" type="long-varchar"/>
+    </column>
+    <primary-key name="srch_step_err_p">
+      <index-column column="id" order="asc" seq="1"/>
+    </primary-key>
+    <foreign-key referenced-table="srch_hist_step" name="srch_hist_step_fk1" index-name="srch_hist_step_x2">
+      <fkey-column referencing-column="hist_step_id" referenced-column="id"/>
+    </foreign-key>
+  </table>
+  
+  <!-- historyData -->
+  <table name="srch_history">
+    <column name="id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="act_part_size" nullable="y">
+      <column-type db="generic" type="numeric" length="12" scale="0"/>
+    </column>
+    <column name="est_part_size" nullable="y">
+      <column-type db="generic" type="numeric" length="12" scale="0"/>
+    </column>
+    <column name="est_psiz_uppr" nullable="y">
+      <column-type db="generic" type="numeric" length="12" scale="0"/>
+    </column>
+    <column name="est_psiz_lowr" nullable="y">
+      <column-type db="generic" type="numeric" length="12" scale="0"/>
+    </column>
+    <column name="item_count" nullable="y">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <!--<column name="error_count" nullable="y">
+      <column-type db="generic" type="integer"/>
+    </column>-->
+    <column name="start_time" nullable="y">
+      <column-type db="generic" type="datetime"/>
+	  <column-type db="oracle" type="timestamp"/>
+    </column>
+    <column name="end_time" nullable="y">
+      <column-type db="generic" type="datetime"/>
+	  <column-type db="oracle" type="timestamp"/>
+    </column>
+    <column name="succeeded" nullable="y">
+      <column-type db="generic" type="one-digit"/>
+    </column>
+    <primary-key name="srch_history_p">
+      <index-column column="id" order="asc" seq="1"/>
+    </primary-key>
+  </table>
+  
+  <!-- historyData.syncStepStatuses -->
+  <table name="srch_hist_stepm">
+    <column name="srch_history_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="srch_hist_step_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="idx" nullable="n">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <primary-key name="srch_hist_stepm_p">
+      <index-column column="srch_history_id" order="asc" seq="1"/>
+      <index-column column="idx"             order="asc" seq="2"/>
+    </primary-key>
+
+    <foreign-key referenced-table="srch_history" name="srch_hist_stepm_f1">
+      <fkey-column referencing-column="srch_history_id" referenced-column="id"/>
+    </foreign-key>
+    <foreign-key referenced-table="srch_hist_step" name="srch_hist_stepm_f2" index-name="srch_hist_stepm_x1">
+      <fkey-column referencing-column="srch_hist_step_id" referenced-column="id"/>
+    </foreign-key>
+  </table>
+
+  <!-- searchProject.searchEnvironments -->
+  <table name="srch_env_p_m">
+    <column name="srch_project_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="search_env_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <primary-key name="srch_env_p_m_p">
+      <index-column column="srch_project_id" order="asc" seq="1"/>
+      <index-column column="search_env_id" order="asc" seq="2"/>
+    </primary-key>
+    <foreign-key referenced-table="srch_project" name="srch_env_p_m_f1">
+      <fkey-column referencing-column="srch_project_id" referenced-column="id"/>
+    </foreign-key>
+  </table>
+
+  <!-- secureOrganization -->
+  <table name="srch_sorg">
+    <column name="id" nullable="n">
+       <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="name" nullable="y">
+       <column-type db="generic" length="254" type="varchar"/>
+    </column>
+    <column name="parent" nullable="y">
+       <column-type db="generic" length="254" type="varchar"/>
+    </column>
+    <primary-key name="srch_sorg_p">
+      <index-column column="id" order="asc" seq="1"/>
+    </primary-key>
+  </table>
+  
+  <!-- secureOrganization.searchProjects -->
+  <table name="srch_env_sorg_m">
+    <column name="srch_project_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="secure_org_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <primary-key name="srch_env_sorg_m_p">
+      <index-column column="srch_project_id" seq="1"/>
+      <index-column column="secure_org_id" seq="2"/>
+    </primary-key>
+    <foreign-key referenced-table="srch_project" name="srch_env_sorgm_f1">
+      <fkey-column referencing-column="srch_project_id" referenced-column="id"/>
+    </foreign-key>
+
+        <foreign-key referenced-table="srch_sorg" name="srch_env_sorgm_f2" index-name="srch_env_sorgm_x2">
+      <fkey-column referencing-column="secure_org_id" referenced-column="id"/>
+    </foreign-key>
+
+  </table>
+
+  <!-- syncTask.contentSourceSetSelections -->
+  <table name="srch_sync_content_ss_m">
+    <column name="sync_task_id" nullable="n">
+       <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="content_ss_id" nullable="n">
+       <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <primary-key name="srch_sync_cntss_p">
+      <index-column column="sync_task_id" order="asc" seq="1"/>
+      <index-column column="content_ss_id" order="asc" seq="2"/>      
+    </primary-key>
+
+    <foreign-key referenced-table="srch_base_sync_task" name="srch_sync_cntss_f1">
+      <fkey-column referencing-column="sync_task_id" referenced-column="id"/>
+    </foreign-key>
+    <foreign-key referenced-table="srch_content_ss" name="srch_sync_cntss_f2" index-name="srch_sync_cntss_x2">
+      <fkey-column referencing-column="content_ss_id" referenced-column="id"/>
+    </foreign-key>
+  </table>
+  
+  <!-- syncTask.contentSourceSetSelections -->
+  <table name="srch_sync_lp_m">
+    <column name="sync_task_id" nullable="n">
+       <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="log_part_id" nullable="n">
+       <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <primary-key name="srch_sync_lp_p">
+      <index-column column="sync_task_id" order="asc" seq="1"/>
+      <index-column column="log_part_id" order="asc" seq="2"/>      
+    </primary-key>
+
+    <foreign-key referenced-table="srch_base_sync_task" name="srch_sync_lp_f1" index-name="srch_sync_lp_x1">
+      <fkey-column referencing-column="sync_task_id" referenced-column="id"/>
+    </foreign-key>
+  </table>
+  
+  <!-- baseSyncTask.searchEnvironmentSelections -->
+  <table name="srch_sync_env_m">
+    <!-- SyncTaskDefinition or SyncTask id -->
+    <column name="sync_task_id" nullable="n">
+       <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="search_env_id" nullable="n">
+       <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <primary-key name="srch_sync_env_m_p">
+      <index-column column="sync_task_id" order="asc" seq="1"/>
+      <index-column column="search_env_id" order="asc" seq="2"/>
+    </primary-key>
+    <foreign-key referenced-table="srch_base_sync_task" name="srch_sync_env_m_f1">
+      <fkey-column referencing-column="sync_task_id" referenced-column="id"/>
+    </foreign-key>
+
+  </table>
+
+  <!-- baseCustomizationDataSelection -->
+    <table name="srch_custom_ds">
+      <column name="id" nullable="n">
+         <column-type db="generic" length="40" type="varchar"/>
+      </column>
+    <column name="shared_id" nullable="n">
+       <column-type db="generic" length="40" type="varchar"/>
+    </column>
+      <column name="select_type" nullable="y">
+        <column-type db="generic" type="integer"/>
+      </column>
+      <column name="srch_content_id" nullable="n">
+         <column-type db="generic" length="40" type="varchar"/>
+      </column>      
+      <column name="srch_adv_c_id" nullable="y">
+         <column-type db="generic" length="40" type="varchar"/>
+      </column>
+      <column name="custom_dt" nullable="n">
+         <column-type db="generic" length="254" type="varchar"/>
+      </column>
+      <primary-key name="srch_custom_ds_p">
+        <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+
+      <foreign-key referenced-table="srch_content" name="srch_custom_ds_fk1" index-name="srch_custom_ds_x1">
+        <fkey-column referencing-column="srch_content_id" referenced-column="id"/>
+      </foreign-key>
+      <foreign-key referenced-table="srch_adv_conf" name="srch_custom_ds_fk6"  index-name="srch_custom_ds_x6">
+        <fkey-column referencing-column="srch_adv_c_id" referenced-column="id"/>
+      </foreign-key>
+
+    </table>
+
+  <!-- projectCustomizationDataSelection -->
+  <table name="srch_project_custom_ds">
+    <column name="id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="srch_project_id" nullable="y">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <primary-key name="srch_prjcust_ds_p">
+      <index-column column="id" order="asc" seq="1"/>
+    </primary-key>
+
+    <foreign-key referenced-table="srch_custom_ds" name="srch_prjcust_ds_f1">
+      <fkey-column referencing-column="id" referenced-column="id"/>
+    </foreign-key>
+    <foreign-key referenced-table="srch_project" name="srch_prjcust_ds_f2"  index-name="srch_prjcust_ds_x2">
+      <fkey-column referencing-column="srch_project_id" referenced-column="id"/>
+    </foreign-key>
+  </table>
+  
+  <!-- syncTaskCustomizationDataSelection -->
+  <table name="srch_sync_task_custom_ds">
+    <column name="id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="srch_sync_task_id" nullable="y">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <primary-key name="srch_snc_tsk_cst_p">
+      <index-column column="id" order="asc" seq="1"/>
+    </primary-key>
+
+    <foreign-key referenced-table="srch_custom_ds" name="srch_sc_tsk_cst_f1">
+      <fkey-column referencing-column="id" referenced-column="id"/>
+    </foreign-key>
+    <foreign-key referenced-table="srch_base_sync_task" name="srch_sc_tsk_cst_f2"  index-name="srch_sc_tsk_cst_x2">
+      <fkey-column referencing-column="srch_sync_task_id" referenced-column="id"/>
+    </foreign-key>
+  </table>   
+
+  <!-- contentSourceSetCustomizationDataSelection -->
+  <table name="srch_css_custom_ds">
+    <column name="id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="srch_content_ss_id" nullable="y">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <primary-key name="srch_csscust_ds_p">
+      <index-column column="id" order="asc" seq="1"/>
+    </primary-key>
+    <foreign-key referenced-table="srch_custom_ds" name="srch_csscust_ds_f1">
+      <fkey-column referencing-column="id" referenced-column="id"/>
+    </foreign-key>
+    <foreign-key referenced-table="srch_content_ss" name="srch_csscust_ds_f2"  index-name="srch_csscust_ds_x2">
+      <fkey-column referencing-column="srch_content_ss_id" referenced-column="id"/>
+    </foreign-key>
+  </table>
+
+  <!-- searchProject.customizationDataSelections -->
+  <table name="srch_project_custom_dsm">
+    <column name="srch_project_id" nullable="n">
+       <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="idx" nullable="n">
+       <column-type db="generic" type="integer"/>
+    </column>
+    <column name="srch_project_custom_ds_id" nullable="y">
+       <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <primary-key name="srch_prjcst_dsm_p">
+      <index-column column="srch_project_id" order="asc" seq="1"/>
+      <index-column column="idx"   order="asc" seq="2"/>
+    </primary-key>
+
+    <foreign-key referenced-table="srch_project" name="srch_prjcst_dsm_f1">
+      <fkey-column referencing-column="srch_project_id" referenced-column="id"/>
+    </foreign-key>
+    <foreign-key referenced-table="srch_project_custom_ds" name="srch_prjcst_dsm_f2"  index-name="srch_prjcst_x2">
+      <fkey-column referencing-column="srch_project_custom_ds_id" referenced-column="id"/>
+    </foreign-key>
+
+  </table>
+
+  <!-- searchProject.customizationDataSelections -->
+  <table name="srch_css_custom_dsm">
+    <column name="srch_content_ss_id" nullable="n">
+       <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="idx" nullable="n">
+       <column-type db="generic" type="integer"/>
+    </column>
+    <column name="srch_csscust_ds_id" nullable="y">
+       <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <primary-key name="srch_csscst_dsm_p">
+      <index-column column="srch_content_ss_id" order="asc" seq="1"/>
+      <index-column column="idx"   order="asc" seq="2"/>
+    </primary-key>
+
+    <foreign-key referenced-table="srch_content_ss" name="srch_csscst_dsm_f1">
+      <fkey-column referencing-column="srch_content_ss_id" referenced-column="id"/>
+    </foreign-key>
+    <foreign-key referenced-table="srch_css_custom_ds" name="srch_csscst_dsm_f2"  index-name="srch_csscst_x2">
+      <fkey-column referencing-column="srch_csscust_ds_id" referenced-column="id"/>
+    </foreign-key>
+
+  </table>
+
+  <!-- baseCustomization.members -->
+  <table name="srch_custom_ds_mm">
+    <column name="srch_custom_ds_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+      <column name="idx" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="sub" nullable="n">
+         <column-type db="generic" length="254" type="varchar"/>
+      </column>
+      <primary-key name="srch_cust_ds_mm_p">
+        <index-column column="srch_custom_ds_id" order="asc" seq="1"/>
+        <index-column column="idx" order="asc" seq="2"/>
+      </primary-key>
+
+      <foreign-key referenced-table="srch_custom_ds" name="srch_cust_ds_mm_fk">
+        <fkey-column referencing-column="srch_custom_ds_id" referenced-column="id"/>
+      </foreign-key>
+
+    </table>
+
+  <!-- externalContentItem -->
+  <table name="srch_file">
+    <column name="id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="srch_content_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="name" nullable="n" i18n="y">
+      <column-type db="generic" type="long-varchar"/>
+    </column>
+    <column name="namehash" nullable="n"> <!-- hashcode on name -->
+      <column-type db="generic" type="int"/>
+    </column>
+    <column name="tstamp" nullable="y">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="gnumber" nullable="y">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <primary-key name="srch_file_p">
+      <index-column column="id" order="asc" seq="1"/>
+    </primary-key>
+
+    <foreign-key referenced-table="srch_content" name="srch_file_f1">
+      <fkey-column referencing-column="srch_content_id" referenced-column="id"/>
+    </foreign-key>
+
+    <!-- It would be nice to be able make sure that names are unique, but
+         given that not all databases will support indexing on long-varchar,
+         it follows that the unique constraint on long var-chars won't be
+         supported. -->
+    <!--
+    <unique name="srch_file_u1">
+      <index-column column="srch_content_id" seq="1"/>
+      <index-column column="name"         seq="2"/>
+    </unique>
+    -->
+    <index name="srch_file_x2" table="srch_file">
+      <index-column column="srch_content_id" seq="1"/>
+      <index-column column="namehash"     seq="2"/>
+    </index>
+  </table>
+  
+  
+  <!-- A queue containing the SyncTaskDefinition ID -->
+  <table name="srch_queue">
+    <column name="id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="base_sync_task_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="qtime" nullable="n">
+      <column-type db="generic" type="timestamp"/>
+    </column>
+    <primary-key name="srch_queue_p">
+      <index-column column="id" order="asc" seq="1"/>
+    </primary-key>
+  </table>
+
+  <!-- Index Audit data -->
+  <table name="srch_audit">
+    <column name="id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="srch_sync_task_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="el_name" nullable="n">
+      <column-type db="generic" length="100" type="varchar"/>
+    </column>
+    <column name="el_value" nullable="n">
+      <column-type db="generic" type="bigint"/>
+    </column>
+    <primary-key name="srch_audit_p">
+      <index-column column="id" order="asc" seq="1"/>
+    </primary-key>
+    <foreign-key referenced-table="srch_sync_task" name="srch_audit_f1" index-name="srch_audit_x1">
+      <fkey-column referencing-column="srch_sync_task_id" referenced-column="id"/>
+    </foreign-key>
+  </table>
+
+</schema>
+<!-- @version $Id: //application/SearchAdmin/version/10.0.3/common/src/sql/searchadmin_admin_ddl.xml#2 $$Change: 651448 $-->

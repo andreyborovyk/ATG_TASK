@@ -1,0 +1,11 @@
+<core:createUrl id="backUrl" url="<%= dmsContext.getPreviousNavigation().getReferringPage() %>">
+  <core:forEach id="urlParams" values="<%= dmsContext.getPreviousNavigation().getParams() %>"
+                keyCastClass="java.lang.String" keyId="paramName">
+    <core:urlParam param="<%= paramName %>" 
+                   value="<%= urlParams.getElement() %>"/>
+  </core:forEach>
+  <a href="<%= backUrl %>">back</a>  
+</core:createUrl>
+
+<a href="main.jsp">main</a>
+<%-- @version $Id: //product/DAS/version/10.0.3/release/SQLJMSAdmin/j2ee-apps/sqlJmsAdmin/webModule/backlink.jspf#2 $$Change: 651448 $--%>

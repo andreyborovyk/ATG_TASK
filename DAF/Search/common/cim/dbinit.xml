@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE database-initializer SYSTEM "http://www.atg.com/dtds/dbinit_1_0.dtd">
+<database-initializer>
+	<schema id="core">
+		<sql>
+			<path>
+				<create>
+					sql/db_components/${database}/refinement_ddl.sql
+				</create>
+				<drop>
+					sql/uninstall/${database}/drop_refinement_ddl.sql
+				</drop>
+			</path>
+		</sql>		
+		
+	</schema>
+	
+	<schema id="searchTesting">
+ 	
+		<sql>
+			<path>
+				<create>
+					sql/db_components/${database}/searchtesting_ddl.sql
+				</create>
+				<drop>
+					sql/uninstall/${database}/drop_searchtesting_ddl.sql
+				</drop>
+			</path>
+		</sql>		
+		
+	</schema>	
+	<server-instance-type id="production">
+		<datasource id="switchingA">
+			<schema id="core"/>
+			<schema id="searchTesting"/>
+		</datasource>	
+    <datasource id="switchingB">
+			<schema id="core"/>
+			<schema id="searchTesting"/>
+		</datasource>	
+		<datasource id="nonswitchingCore">
+			<schema id="core"/>
+			<schema id="searchTesting"/>
+		</datasource>	
+	</server-instance-type>
+	<server-instance-type id="staging">
+		<datasource id="stagingswitchingA">
+			<schema id="core"/>
+			<schema id="searchTesting"/>
+		</datasource>	
+    <datasource id="stagingswitchingB">
+			<schema id="core"/>
+			<schema id="searchTesting"/>
+		</datasource>	
+		<datasource id="stagingnonswitchingCore">
+			<schema id="core"/>
+			<schema id="searchTesting"/>
+		</datasource>	
+	</server-instance-type>
+
+	<server-instance-type id="management">
+		<datasource id="management">
+			<schema id="searchTesting"/>
+		</datasource>	
+	</server-instance-type>
+	
+</database-initializer>
+<!-- @version $Id: //product/DAF/version/10.0.3/Search/common/src/cim/dbinit.xml#2 $$Change: 651448 $-->

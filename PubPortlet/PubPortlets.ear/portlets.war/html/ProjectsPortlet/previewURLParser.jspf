@@ -1,0 +1,147 @@
+<%--
+  This fragment parses the preview URL, if one exists, and
+  substitutes the asset's properties or special properties
+  for corresponding values in the URL.  For example, in
+  the following URL,
+
+    http://some.page?type=$itemType&name=displayName
+
+  The '$itemType' value would be replaced with the item
+  descriptor name in the case of repository items or
+  file type for file assets. The 'name' parameter would be
+  replaced with the repository asset's displayName
+  property, or removed from the URL if the asset contained
+  no 'displayName' property.
+
+  The follow special properties can be used:
+
+   $id
+     The repository ID or the absolute path of a file
+
+   $projectId
+     The project ID or empty if there is no current project
+
+   $componentPath
+     The nucleus path of the repository or virtual file
+     system.
+
+   $itemType
+     The item descriptor name for repository items or
+     file type for files.
+
+  @version $Id $$Change $
+  @updated $DateTime $$Author $
+--%>
+
+<!-- Begin ProjectsPortlet's previewURLParser.jsp -->
+
+<%-- Import Preview As functionality. --%>
+<dspel:importbean var="assetUIConfig" bean="/atg/assetui/Configuration"/>
+<dspel:importbean var="previewParams"
+                  bean="/atg/userprofiling/PreviewProfileRequestProcessor"/>
+<dspel:include otherContext="${assetUIConfig.contextRoot}"
+               page="/preview/previewAsJavaScript.jsp"/>
+
+<script language="JavaScript">
+  var previewURL = null;
+
+  function preview(previewAsURL) {
+    window.open( previewAsURL );
+  }
+
+  // Define callback for previewing once a user is selected.
+  function previewAsUser(selectedUser) {
+    var previewAsURL = previewURL;
+    var amp = "&";
+    if (previewAsURL.indexOf("?") == -1)
+      amp = "?";
+
+    // Append param that indicates the id of the preview user.
+    previewAsURL += amp + "<c:out value="${previewParams.repositoryItemIdParam}"/>" + "=" + selectedUser.id;
+
+    preview( previewAsURL );
+  }
+</script>
+
+<c:set var="baseFormHandlerPath" value="${imap.formHandler.path}"/>
+
+<c:if test="${ ! empty imap.valueDictionaryName }">
+  <c:set var="baseFormHandlerPath"
+    value="${baseFormHandlerPath}.${imap.valueDictionaryName}"/>
+</c:if>
+
+<c:if test="${ ! empty previewURL }">
+  <script language="JavaScript">
+    <c:forTokens items="${ previewURL }"
+      delims="?" begin="0" end="2" var="urlParam" varStatus="vsOuter">
+      <c:choose>
+        <c:when test="${ vsOuter.first }">
+          <%-- the base part of the URL, minus any query arguments --%>
+          previewURL = '<c:out value="${urlParam}?"/>';
+        </c:when>
+        <c:otherwise>
+          <c:set var="amp" value="false"/>
+          <c:forTokens items="${urlParam}" delims="&=" varStatus="vsInner" var="urlPart">
+            <c:choose>
+              <c:when test="${ (vsInner.count % 2) == 1 }">
+                <%-- the query param name --%>
+                <c:if test="${ ! vsInner.first }">
+                  <c:set var="amp" value="true"/>
+                </c:if>
+                <c:set var="paramName" value="${urlPart}"/>
+                <c:set var="propertyValue" value=""/>
+              </c:when>
+              <c:otherwise>
+                <%-- the query param value to be substituted --%>
+                <c:catch var="ex">
+                  <c:choose>
+                    <c:when test="${ urlPart == '$id' }">
+                      <dspel:getvalueof var="propertyValue"
+                        bean="${imap.formHandler.path}.id"/>
+                    </c:when>
+                    <c:when test="${ urlPart == '$projectId' }">
+                      <c:if test="${ ! empty project }">
+                        <c:set var="propertyValue" value="${project.id}"/>
+                      </c:if>
+                    </c:when>
+                    <c:when test="${ urlPart == '$componentPath' }">
+                      <c:set var="propertyValue" value="${formHandler.componentPath}"/>
+                    </c:when>
+                    <c:when test="${ urlPart == '$itemType' }">
+                      <c:set var="propertyValue" value="${formHandler.itemType}"/>
+                    </c:when>
+                    <c:otherwise>
+                      <dspel:getvalueof var="propertyValue"
+                        bean="${baseFormHandlerPath}.${urlPart}"/>
+                    </c:otherwise>
+                  </c:choose>
+                </c:catch>
+                <c:choose>
+                  <c:when test="${ ex == null && ! empty propertyValue }">
+                    <c:if test="${ amp }">
+                      previewURL = previewURL + "&";
+                    </c:if>
+                    <c:choose>
+                      <c:when test="${ urlPart == '$projectId' }">
+                        previewURL = previewURL + '<c:out value="${paramName}"/>' +
+                          "=" + encodeURIComponent( '<c:out value="${propertyValue}"/>' ) +
+                          "&project=" + encodeURIComponent( '<c:out value="${propertyValue}"/>' );
+                      </c:when>
+                      <c:otherwise>
+                        previewURL = previewURL + '<c:out value="${paramName}"/>' +
+                          "=" + encodeURIComponent( '<c:out value="${propertyValue}"/>' );
+                      </c:otherwise>
+                    </c:choose>
+                  </c:when>
+                </c:choose>
+              </c:otherwise>
+            </c:choose>
+          </c:forTokens>
+        </c:otherwise>
+      </c:choose>
+    </c:forTokens>
+  </script>
+</c:if>
+
+<!-- End ProjectsPortlet's previewURLParser.jsp -->
+<%-- @version $Id: //product/PubPortlet/version/10.0.3/portlets.war/html/ProjectsPortlet/previewURLParser.jspf#2 $$Change: 651448 $--%>

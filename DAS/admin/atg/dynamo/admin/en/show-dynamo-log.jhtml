@@ -1,0 +1,88 @@
+<importbean bean="/atg/dynamo/admin/ShowDynamoLog">
+
+<html>
+
+<head>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+<title>View Dynamo Logs</title>
+<style>
+  /*body { font: 13px Verdana, sans-serif; }*/
+  body { background-color: #ffffff; color: #00214a; }
+  :link { color: #e87f02 }
+  :visited { color: #637da6 }
+  :active { color: red }
+  :hover { color: brown; font-weight: bold }
+  pre { font: 9pt Courier }
+  td.c1 { width: 115; text-align: center }
+</style>
+</head>
+
+<body>
+
+<img src="images/config-banner.gif" alt="dynamo configuration" align=top width="585" height="37" border="0">
+
+<p>
+<a href="/">admin</a>/View Dynamo Logs
+
+<!-- menu for which log to view -->
+<p>
+<table border="0" summary="menu of logs">
+  <tr>
+    <td class="c1"><a href="show-dynamo-log.jhtml?filechar=e">Error Log</a></td>
+
+    <td class="c1"><a href="show-dynamo-log.jhtml?filechar=w">Warning Log</a></td>
+
+    <td class="c1"><a href="show-dynamo-log.jhtml?filechar=i">Info Log</a></td>
+
+    <td class="c1"><a href="show-dynamo-log.jhtml?filechar=d">Debug Log</a></td>
+  </tr>
+</table>
+
+<!-- set the log to view if the user has specified it -->
+<droplet bean="/atg/dynamo/droplet/IsNull">
+  <param name="value" value="param:filechar">
+  <oparam name="false">
+    <setvalue bean="ShowDynamoLog.filechar" value="param:filechar" />
+  </oparam>
+</droplet>
+
+<!-- display the name of the log to view -->
+<hr>
+<droplet bean="/atg/dynamo/droplet/Switch">
+  <param name="value" value="bean:ShowDynamoLog.filechar">
+  <oparam name="e">
+    <h3>Error Log</h3>
+  </oparam>
+  <oparam name="w">
+    <h3>Warning Log</h3>
+  </oparam>
+  <oparam name="i">
+    <h3>Info Log</h3>
+  </oparam>
+  <oparam name="d">
+    <h3>Debug Log</h3>
+  </oparam>
+  <oparam name="default">
+    <h3>Unknown Log</h3>
+  </oparam>
+</droplet>
+
+<!-- get user's input about what he wants to display in the current log -->
+<form method=post action=show-dynamo-log.jhtml>
+  <p>How many records would you like to see at a time?
+  <input type="text" bean="ShowDynamoLog.num">
+  <p>
+  <input type="submit" bean="ShowDynamoLog.viewLastRecords" value="view last records">
+  <input type="submit" bean="ShowDynamoLog.viewPrev" value="previous records">
+  <input type="submit" bean="ShowDynamoLog.viewNext" value="next records">
+</form>
+
+<!-- display requested portion of the current log -->
+<p>
+<pre>
+<valueof bean="ShowDynamoLog.currRecords"></valueof>
+</pre>
+
+</body>
+</html>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/show-dynamo-log.jhtml#2 $$Change: 651448 $*/</java>

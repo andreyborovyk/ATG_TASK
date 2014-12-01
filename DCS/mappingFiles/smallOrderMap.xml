@@ -1,0 +1,16 @@
+<!DOCTYPE item-descriptor PUBLIC "-//Art Technology Group, Inc.//DTD DATA BINDING//EN" "http://www.atg.com/dtds/databinding/itemDescriptorMapping_1.0.dtd">
+<item-descriptor repository-path="/atg/commerce/order/OrderRepository" name="order" default-include="false">
+  <property name="id" include="true"/>
+  <property name="profileId" include="true"/>
+  <property name="submittedDate" include="true"/>
+  <property name="state" include="true"/>
+  <property name="stateDetail" include="true"/>
+  <property name="priceInfo" include="true">
+    <item-descriptor repository-path="/atg/commerce/order/OrderRepository" name="orderPriceInfo" default-include="false">
+      <property name="amount" include="true"/>
+      <property name="tax" include="true"/>
+      <property name="shipping" include="true"/>
+    </item-descriptor>
+  </property>
+</item-descriptor>
+<!-- @version $Id: //product/DCS/version/10.0.3/release/DCS/mappingFiles/smallOrderMap.xml#2 $$Change: 651448 $ -->

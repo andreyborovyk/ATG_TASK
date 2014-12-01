@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE portal-manifest PUBLIC "-//Art Technology Group, Inc.//DTD Portal Manifest//EN" "http://www.atg.com/dtds/portal/framework/portal_manifest_1.0.dtd">
+
+<portal-manifest name="OrderStatus" version="1.0" author="ATG Commerce Team">
+  <gear-definitions>
+    <gear-definition name="Order Status" version="1.0" author="ATG Commerce Team">
+      <description>Order Gear</description>
+
+      <servlet-context>/gears/commerce/orderstatus</servlet-context>
+
+      <dimensions>
+        <dimension name="height">noPreference</dimension>
+        <dimension name="width">wide</dimension>
+      </dimensions>
+
+      <gear-modes>
+        <gear-mode name="content">
+          <display-modes>
+            <display-mode name="shared">
+              <device-output name="html">/html/content/OrderStatusShared.jsp</device-output>
+            </display-mode>
+            <display-mode name="full">
+              <device-output name="html">/html/content/OrderStatusFull.jsp</device-output>
+            </display-mode>
+          </display-modes>
+        </gear-mode>
+
+        <gear-mode name="userConfig">
+          <display-modes>
+            <display-mode name="full">
+              <device-output name="html">/html/config/userConfig.jsp</device-output>
+            </display-mode>
+          </display-modes>
+        </gear-mode>
+
+        <gear-mode name="instanceConfig">
+          <display-modes>
+            <display-mode name="full">
+              <device-output name="html">/html/config/instanceConfig.jsp</device-output>
+            </display-mode>
+          </display-modes>
+        </gear-mode>
+      
+        <gear-mode name="installConfig">
+          <display-modes>
+            <display-mode name="full">
+              <device-output name="html">/html/config/installConfig.jsp</device-output>
+            </display-mode>
+          </display-modes>
+        </gear-mode>
+      </gear-modes>
+
+      <instance-parameters>
+       <parameter name="ShowShippedFilterFull">
+         <default-value>
+           true
+         </default-value>
+         <description>Should the filter for orders include "only shipped orders" in the full page.</description>   
+       </parameter>              
+       <parameter name="ShowSubmittedFilterFull">
+         <default-value>
+           true
+         </default-value>
+         <description>Should the filter for orders include "only submitted orders" in the full page.</description>   
+       </parameter>              
+       <parameter name="ShowApprovedFilterFull">
+         <default-value>
+           false
+         </default-value>
+         <description>Should the filter for orders include "only approved orders" in the full page.</description>   
+       </parameter>              
+       <parameter name="ShowRejectedFilterFull">
+         <default-value>
+           false
+         </default-value>
+         <description>Should the filter for orders include "only rejected orders" in the full page.</description>   
+       </parameter> 
+       <parameter name="ShowPendingApprovalFilterFull">
+         <default-value>
+           false
+         </default-value>
+         <description>Should the filter for orders include "pending approval" in the full page.</description>   
+       </parameter> 
+       <parameter name="ShowPendingMerchantActionFilterFull">
+         <default-value>
+           true
+         </default-value>
+         <description>Should the filter for orders include "pending merchang action" in the full page.</description>   
+       </parameter> 
+       
+       
+       <parameter name="ShowPendingRemoveFull">
+         <default-value>
+           true
+         </default-value>
+         <description>Should the filter for orders include "orders pending removal" in the full page.</description>   
+       </parameter>              
+       <parameter name="ShowRemovedFull">
+         <default-value>
+           true
+         </default-value>
+         <description>Should the filter for orders include "removed orders" in the full page.</description>   
+       </parameter>              
+       <parameter name="ShowPendingCustomerActionFull">
+         <default-value>
+           true
+         </default-value>
+         <description>Should the filter for orders include "orders pending customer action" in the full page.</description>   
+       </parameter>              
+       <parameter name="ShowPendingCustomerReturnFull">
+         <default-value>
+           false
+         </default-value>
+         <description>Should the filter for orders include "orders pending customer return" in the full page.</description>   
+       </parameter>                     
+       <parameter name="OrderPage">
+         <default-value>
+           /Motorprise/en/user/order.jsp
+         </default-value>
+         <description>The default value for the URL of the order page of the application.</description>         
+       </parameter>              
+      </instance-parameters>
+
+      <user-parameters>
+       <parameter name="NumberOfOrdersFull">
+         <default-value>
+           10
+         </default-value>
+         <description>Number of orders per page in the full view of the gear.</description>         
+       </parameter>
+       <parameter name="NumberOfOrdersShared">
+         <default-value>
+           5
+         </default-value>
+         <description>At a maximumm show these number of orders in the shared view of the gear.</description>         
+       </parameter>       
+       <parameter name="ShowOpenOrdersShared">
+         <default-value>
+           true
+         </default-value>
+         <description>Specify whether we need show the count of open orders or not in the Shared view.</description>         
+       </parameter>       
+      </user-parameters>
+
+
+    </gear-definition>
+
+  </gear-definitions>
+</portal-manifest>
+<!-- @version $Id: //product/DCS/version/10.0.3/gears/OrderStatus/orderstatus-manifest.xml#2 $$Change: 651448 $ -->

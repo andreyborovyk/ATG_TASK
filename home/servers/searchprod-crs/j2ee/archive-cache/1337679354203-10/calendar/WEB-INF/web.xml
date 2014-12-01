@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE web-app PUBLIC '-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN' 'http://java.sun.com/dtd/web-app_2_3.dtd'>
+
+<web-app>
+  <display-name>Calendar Gear</display-name>
+  <description>Calendar Gear</description>
+
+  <context-param>
+    <param-name>atg.session.parentContextName</param-name>
+    <param-value>/dyn</param-value>
+    <description>
+      The servlet context of the parent web application.
+    </description>
+  </context-param>
+
+  <context-param>
+    <param-name>atg.dafear.bootstrapContextName</param-name>
+    <param-value>/dyn</param-value>
+    <description>
+      The name of the DAF bootstrap WAR context.
+    </description>
+  </context-param>
+
+  <context-param>
+    <param-name>sessionNameContextServlet</param-name>
+    <param-value>SessionNameContextServlet</param-value>
+    <description>
+      The name of  the servlet for setting up a shared SessionNameContext
+      between Web Applications.
+    </description>
+  </context-param>  
+
+  <context-param>
+    <param-name>CalendarRepository</param-name>
+    <param-value>dynamo:/atg/portal/gear/calendar/CalendarRepository</param-value>
+    <description>
+      JNDI location of the CalendarRepository. 
+    </description>
+  </context-param>
+
+  <!--
+       If context-root is set here, then ServletContextWebAppRegistry will use
+       this setting as the context-root for this WebApp. This must match
+       the context-root setting in application.xml. 
+    -->
+  <context-param>
+    <param-name>context-root</param-name>
+    <param-value>/gear/calendar</param-value>
+  </context-param>
+
+  <filter>
+    <filter-name>IncludeFilter</filter-name>
+    <display-name>IncludeFilter</display-name>
+    <description>Responsible for security gear contents from outside access.</description>
+    <filter-class>atg.portal.servlet.IncludeFilter</filter-class>
+    <init-param>
+      <param-name>allowedUrlPatterns</param-name>
+      <param-value>
+        /email/*
+        /images/*
+        /html/admin/instanceConfig.jsp
+      </param-value>
+    </init-param>
+  </filter>
+
+  <filter>
+    <filter-name>PageFilter</filter-name>
+    <display-name>PageFilter</display-name>
+    <description>The DSP Page Filter</description>
+    <filter-class>atg.filter.dspjsp.PageFilter</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>PageFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>IncludeFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <servlet>
+    <servlet-name>Nucleus</servlet-name>
+    <servlet-class>atg.nucleus.servlet.NucleusServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <taglib>
+    <taglib-uri>/paf-taglib</taglib-uri>
+    <taglib-location>/WEB-INF/pafTaglib1_2.tld</taglib-location>
+  </taglib>
+
+  <taglib>
+    <taglib-uri>/core-taglib</taglib-uri>
+    <taglib-location>/WEB-INF/coreTaglib1_0.tld</taglib-location>
+  </taglib>
+
+  <taglib>
+    <taglib-uri>/dsp</taglib-uri>
+    <taglib-location>/WEB-INF/dspjspTaglib1_0.tld</taglib-location>
+  </taglib>
+
+  <taglib>
+    <taglib-uri>/jakarta-i18n-1.0</taglib-uri>
+    <taglib-location>/WEB-INF/i18n.tld</taglib-location>
+  </taglib>
+
+  <taglib>
+    <taglib-uri>/calendar-taglib</taglib-uri>
+    <taglib-location>/WEB-INF/calendarTaglib1_0.tld</taglib-location>
+  </taglib>
+
+</web-app>
+<!-- @version $Id: //app/portal/version/10.0.3/calendar/calendar.war/WEB-INF/web.xml#2 $$Change: 651448 $ -->

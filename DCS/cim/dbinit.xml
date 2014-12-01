@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE database-initializer SYSTEM "http://www.atg.com/dtds/dbinit_1_0.dtd">
+<database-initializer>
+
+  <schema id="versionedSchema">
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/commerce_user.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_commerce_user.sql
+        </drop>
+      </path>
+    </sql>
+
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/custom_catalog_user_ddl.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_custom_catalog_user_ddl.sql
+        </drop>
+      </path>
+    </sql>  
+    
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/inventory_ddl.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_inventory_ddl.sql
+        </drop>
+      </path>
+    </sql>
+
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/user_promotion_ddl.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_user_promotion_ddl.sql
+        </drop>
+      </path>
+    </sql>  
+    
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/order_ddl.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_order_ddl.sql
+        </drop>
+      </path>
+    </sql>    
+    
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/user_giftlist_ddl.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_user_giftlist_ddl.sql
+        </drop>
+      </path>
+    </sql>
+
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/dcs_mappers.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_dcs_mappers.sql
+        </drop>
+      </path>
+    </sql>    
+    
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/order_markers_ddl.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_order_markers_ddl.sql
+        </drop>
+      </path>
+    </sql>
+  </schema>
+
+  <schema id="catalogSchema">
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/priceLists_ddl.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_priceLists_ddl.sql
+        </drop>
+      </path>
+    </sql>
+
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/product_catalog_ddl.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_product_catalog_ddl.sql
+        </drop>
+      </path>
+    </sql>
+            
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/custom_catalog_ddl.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_custom_catalog_ddl.sql
+        </drop>
+      </path>
+    </sql>
+    
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/promotion_ddl.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_promotion_ddl.sql
+        </drop>
+      </path>
+    </sql>          
+  </schema>
+
+  <schema id="coreSchema">
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/claimable_ddl.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_claimable_ddl.sql
+        </drop>
+      </path>
+    </sql>
+    
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/commerce_user.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_commerce_user.sql
+        </drop>
+      </path>
+    </sql>
+    
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/custom_catalog_user_ddl.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_custom_catalog_user_ddl.sql
+        </drop>
+      </path>
+    </sql>  
+    
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/dcs_mappers.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_dcs_mappers.sql
+        </drop>
+      </path>
+    </sql>
+
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/inventory_ddl.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_inventory_ddl.sql
+        </drop>
+      </path>
+    </sql>
+
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/order_ddl.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_order_ddl.sql
+        </drop>
+      </path>
+    </sql>
+
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/order_markers_ddl.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_order_markers_ddl.sql
+        </drop>
+      </path>
+    </sql>        
+    
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/user_giftlist_ddl.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_user_giftlist_ddl.sql
+        </drop>
+      </path>
+    </sql>      
+    
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/user_promotion_ddl.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_user_promotion_ddl.sql
+        </drop>
+      </path>
+    </sql>                          
+  </schema> 
+
+  <schema id="multiSiteSchema">
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/commerce_site_ddl.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_commerce_site_ddl.sql
+        </drop>
+      </path>
+    </sql> 
+  </schema>
+  
+  <server-instance-type id="production">
+    <datasource id="nonswitchingCore">
+      <schema id="coreSchema"/>
+      <schema id="catalogSchema" />
+	  <schema id="multiSiteSchema" />
+    </datasource> 
+    <datasource id="switchingCore">
+      <schema id="coreSchema"/>
+    </datasource> 
+    <datasource id="switchingA">
+      <schema id="catalogSchema"/>
+	  <schema id="multiSiteSchema" />	  
+    </datasource> 
+    <datasource id="switchingB">
+      <schema id="catalogSchema"/>
+	  <schema id="multiSiteSchema" />	  
+    </datasource> 
+    </server-instance-type>
+  <server-instance-type id="staging">
+    <datasource id="stagingnonswitchingCore">
+      <schema id="coreSchema"/>
+      <schema id="catalogSchema"/>   
+	  <schema id="multiSiteSchema" />	  
+    </datasource> 
+    <datasource id="stagingswitchingCore">
+      <schema id="coreSchema"/>
+    </datasource> 
+    <datasource id="stagingswitchingA">
+      <schema id="catalogSchema"/>
+	  <schema id="multiSiteSchema" />	  
+    </datasource> 
+    <datasource id="stagingswitchingB">
+      <schema id="catalogSchema"/>
+	  <schema id="multiSiteSchema" />	  
+    </datasource> 
+  </server-instance-type>
+  
+  <server-instance-type id="management">
+    <datasource id="all">
+      <schema id="versionedSchema"/>
+    </datasource> 
+  </server-instance-type>
+  
+</database-initializer>
+<!-- @version $Id: //product/DCS/version/10.0.3/release/DCS/cim/dbinit.xml#2 $$Change: 651448 $-->

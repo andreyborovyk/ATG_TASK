@@ -1,0 +1,128 @@
+
+<nucleus type=import>
+	/atg/dynamo/admin/Configure
+</nucleus>
+
+<java>
+  atg.service.dynamo.ServerConfig configure = (atg.service.dynamo.ServerConfig) request.resolveName("/atg/dynamo/admin/Configure");
+  atg.service.dynamo.ServerConfig defaultCfg = (atg.service.dynamo.ServerConfig) request.resolveName("/atg/dynamo/admin/DefaultConfigure");
+</java>
+
+<HTML>
+<HEAD>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+<TITLE>Configure Dynamo Request Protocol Service</TITLE>
+
+
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="images/config-banner.gif" ALT="Dynamo Configuration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a
+href="configure-server.jhtml">Configure</a>/<a
+href="configure-server-services.jhtml">Servers</a>/Connection_Module_Request_Protocol
+<p>
+
+
+<blockquote>
+
+<h3>Server: <i><valueof property=Configure.serverName></valueof></i></h3>
+
+<H2>Configure Dynamo Request Protocol Service</H2>
+
+<p>
+The DRP service allows a Dynamo server to receive requests from a
+Connection Module installed on an HTTP server such as Sun ONE Web
+Server, Microsoft IIS, or Apache. A single Dynamo instance may be a DRP
+server, a Load Manager, or both. Each DRP server has a DRP service port
+and an SNMP service port. The DRP service port handles requests from the
+Connection Module, and the SNMP service port responds to SNMP requests
+from the Load Manager.
+</p>
+
+<FORM ACTION="configure-server-services.jhtml" METHOD=POST>
+
+<input name="currentProperties" property="Configure.currentProperties" type=hidden value="drpEnabled">
+<input name="currentProperties" property="Configure.currentProperties" type=hidden value="drpPort">
+<input name="currentProperties" property="Configure.currentProperties" type=hidden value="snmpServerPort">
+
+(currently
+
+<java>
+  if ( !configure.isDefaultServer() && 
+       ( !configure.isUsingDefault("drpEnabled") ||
+         !configure.isUsingDefault("drpPort") ||
+         !configure.isUsingDefault("snmpServerPort")) )
+  {
+    out.print("not");
+  }
+</java>
+
+using defaults)<p>
+
+
+		<INPUT TYPE="checkbox" property="Configure.drpEnabled"> <b>Enable Dynamo Request Protocol Service</b>
+        <java>
+        if ( !configure.isDefaultServer() && !configure.isUsingDefault("drpEnabled") )
+        {
+            out.println( "(default: " + (defaultCfg.getDrpEnabled() ? "enabled":"disabled") + ")" );
+        }
+        </java>
+		<br>
+
+		<ul>
+		DRP (Connection Module request) service port:
+        <java>
+        if ( !configure.isDefaultServer() && !configure.isUsingDefault("cmPacketServerPort") )
+        {
+            out.println( "(default: " + defaultCfg.getDrpPort() + ")" );
+        }
+        </java>
+		<br>
+		<INPUT TYPE="text" property="Configure.drpPort"><p>
+
+		SNMP service port:
+        <java>
+        if ( !configure.isDefaultServer() && !configure.isUsingDefault("snmpServerPort") )
+        {
+            out.println( "(default: " + defaultCfg.getSnmpServerPort() + ")" );
+        }
+        </java>
+		<br>
+		<INPUT TYPE="text" property="Configure.snmpServerPort">
+		
+<p>
+
+<INPUT TYPE="submit" property="Configure.applyChanges" VALUE="Apply Changes">
+</ul>
+<java>
+  if ( !configure.isDefaultServer() && 
+       ( !configure.isUsingDefault("drpEnabled") ||
+         !configure.isUsingDefault("drpPort") ||
+         !configure.isUsingDefault("snmpServerPort")) )
+  {
+</java>
+    <INPUT TYPE="submit" property="Configure.applyDefault" VALUE="Use Defaults">
+<java>
+  }
+</java>
+<p><br>
+</form>
+<hr>
+<b>Change Server</b><p>
+<valueof property=Configure.serverConfiguredText></valueof>
+<p>
+<droplet src="SelectServer.jhtml">
+    <param name="returnURL" value="configure-s-s-drp.jhtml">
+</droplet>
+<p>
+
+<a href="configure-server-services.jhtml">Back</a><br>
+
+</blockquote>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/configure-s-s-drp.jhtml#2 $$Change: 651448 $ */</java>
+

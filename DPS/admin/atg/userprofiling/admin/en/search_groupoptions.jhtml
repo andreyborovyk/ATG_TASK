@@ -1,0 +1,19 @@
+<importbean bean="/atg/userprofiling/servlet/ProfileRepositoryGroupContainerGroupsServlet">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+
+<droplet bean="ProfileRepositoryGroupContainerGroupsServlet">
+ <oparam name="output">
+
+      <droplet bean="ForEach">
+       <param name="array" value="param:groups">
+       <param name="sortProperties" value="+groupName">
+       <oparam name="output">
+ 
+         <option><valueof param="element.groupName">null</valueof>
+ 
+       </oparam>
+      </droplet>
+
+ </oparam>
+</droplet>
+<java>/* @version $Id: //product/DPS/version/10.0.3/release/DPS/admin/atg/userprofiling/admin/en/search_groupoptions.jhtml#2 $$Change: 651448 $ */</java>

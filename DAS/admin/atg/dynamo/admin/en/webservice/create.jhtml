@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+    <title>Create Web Service: Select Nucleus Component</title>
+  </head>
+<nucleus type=import>
+	/atg/dynamo/admin/ForEachNucleusComponent
+        /atg/dynamo/droplet/Switch
+</nucleus>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+<IMG SRC="../images/admin-banner.gif" ALT="Dynamo Administration"
+     ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<JAVA>
+  String strCmpn = request.getParameter("cmpnName");
+  if ("null".equals(strCmpn)) {
+	request.setParameter("cmpnName", null);
+        strCmpn = null;
+  }
+
+
+  Object objResolved = null;
+
+
+  if (strCmpn != null) {
+   objResolved = request.resolveName(strCmpn);
+  }
+
+  request.setParameter("resolvedContext", objResolved);
+
+
+  if ((objResolved != null) &&
+      (!(objResolved instanceof atg.naming.NameContext) ||
+       ("true".equals(request.getParameter("chooseContext"))))) {
+    request.addQueryParameter("cmpnName", strCmpn);
+    response.sendLocalRedirect(request.encodeURL("selectmethod.jhtml"), request);
+  }
+</JAVA>
+
+
+<a href="/">admin</a> / <a href="index.jhtml">Web Service
+	Administration</a> / Create Web Service</p><p>
+
+    <h2>Create Web Service </h2>
+
+    <h1>Select Nucleus Component</h1>
+
+<blockquote>
+
+ <droplet name="Switch">
+   <PARAM NAME="value" VALUE="param:cmpnName">
+   <OPARAM name="unset"></OPARAM>
+   <OPARAM name="default">
+    <droplet name="Switch">
+      <PARAM NAME="value" VALUE="param:resolvedContext">
+      <OPARAM name="unset">
+	  <font color="red">Error: no nucleus component named 
+           "<valueof param="cmpnName">null</valueof>" exists.</font><P>
+      </OPARAM>
+      <P>
+    </droplet>
+   </OPARAM>
+ </droplet>
+
+<P>
+Specify the Nucleus component to expose as a web service by entering the name or by browsing.
+<P>
+
+<B>Nucleus Component</B><P>
+<blockquote>
+<table border=0>
+<tr><td colspan=2> 
+</td></tr>
+<tr>
+<td valign="top">Component path name:</td>
+<td valign="top">
+  <form action="create.jhtml">
+    <input name="cmpnName" type="text" value="param:cmpnName" size=50><br>
+    <input name="cmpnSubmit" type="submit" value="Next"/>
+  </form>
+</td>
+</tr>
+
+</table>
+</blockquote>
+
+<P>
+<B>Browse</B><P>
+
+    <droplet name="Switch">
+      <PARAM NAME="value" VALUE="param:showAll">
+      <OPARAM name="true">
+            Showing all components.
+	    <a href="create.jhtml">
+                           <param name="cmpnName"
+				  value="param:cmpnName">
+	                    <param name="showAll" value="false">Show
+	    only currently running components.</a>
+      </OPARAM>
+
+      <OPARAM name="default">
+            Showing currently running components.
+	    <a href="create.jhtml">
+                           <param name="cmpnName"
+				  value="param:cmpnName">
+	                    <param name="showAll" value="true">Show
+	    all components.</a>
+      </OPARAM>
+
+    </droplet>
+<P>
+
+
+<blockquote>
+
+Current Nucleus Name Context: 
+
+
+<droplet name="ForEachNucleusComponent">
+  <param name="context" value="param:cmpnName">
+  <param name="listParents" value="true">
+  <oparam name="output"><a href="create.jhtml"><param name="cmpnName"
+						      value="param:element.absoluteName"><param name="showAll" value="param:showAll"><valueof param="element.markedName">???</valueof></a></oparam>
+  <oparam name="empty"><font color="red">No nucleus component named 
+    "<valueof param="cmpnName">null</valueof>" exists.</font>
+  </oparam>
+  <oparam name="outputEnd">
+    <a href="create.jhtml">
+      <param name="cmpnName" value="param:cmpnName">
+      <param name="chooseContext" value="true">
+      (Expose as Web Service)
+    </a>
+  </oparam>
+</droplet>
+<P>
+
+
+<droplet name="ForEachNucleusComponent">
+  <param name="context" value="param:cmpnName">
+  <param name="showAll" value="param:showAll">
+  <oparam name="output">
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <droplet name="Switch">
+      <PARAM NAME="value" VALUE="param:element.nameContext">
+      <OPARAM name="true">
+         <a href="create.jhtml"><param name="cmpnName"
+				       value="param:element.absoluteName"><param name="showAll" value="param:showAll"><valueof param="element.markedName">???</valueof></a>
+      </OPARAM>
+      <OPARAM name="false">
+         <a href="create.jhtml"><param name="cmpnName" value="param:element.absoluteName"><valueof param="element.name">???</valueof></a>
+      </OPARAM>
+      <P>
+    </droplet>
+   <P>
+  </oparam>
+  <oparam name="empty">
+    (empty)
+  </oparam>
+</droplet>
+
+</blockquote>
+
+</blockquote>
+  </BODY>
+</html>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/webservice/create.jhtml#2 $$Change: 651448 $*/</java>

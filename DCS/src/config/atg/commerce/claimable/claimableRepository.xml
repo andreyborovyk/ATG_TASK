@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE gsa-template
+        PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN"
+        "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template>
+
+  <header>
+    <name>Claimable Repository</name>
+    <author>DCS Team</author>
+    <version>$Id: //product/DCS/version/10.0.3/templates/DCS/config/atg/commerce/claimable/claimableRepository.xml#2 $$Change: 651448 $</version>
+  </header>
+
+  
+  <!-- base type claimable -->
+  <item-descriptor name="claimable" sub-type-property="type" item-cache-size="1000" query-cache-size="1000" version-property="version" 
+    last-modified-property="lastModified" expert="true" display-name-resource="itemDescriptorClaimable">
+    <attribute name="resourceBundle" value="atg.commerce.ClaimableRepositoryTemplateResources"/> 
+    <attribute name="deployable" value="false"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+    <attribute name="updateLastModified" value="true"/>
+
+    <table name="dcspp_claimable" type="primary" id-column-name="claimable_id">
+
+      <property name="id" data-type="string" column-name="claimable_id" writable="true" 
+                category-resource="categoryBasics" display-name-resource="id" required="true">
+        <attribute name="propertySortPriority" value="10" />
+        <attribute name="uiwritable" value="false" />
+      </property>
+      <property name="version" column-name="version" data-type="int" hidden="true" display-name-resource="version"/>
+      <property name="type" data-type="enumerated" column-name="type" hidden="true" display-name-resource="type">
+        <option value="GiftCertificateClaimable"/>
+        <option value="PromotionClaimable"/>
+        <option value="StoreCreditClaimable"/>
+        <option value="DeployablePromotionClaimable"/>
+        <attribute name="uiwritable" value="false"/>
+      </property>
+      <property name="status" data-type="enumerated" column-name="status" hidden="true" display-name-resource="status">
+      <attribute name="useCodeForValue" value="false"/>
+        <option value="claimed" code="0"/>
+        <option value="unclaimed" code="1"/>
+      </property>
+      <property name="expirationDate" column-name="expiration_date" data-type="timestamp" category-resource="categoryBasics" display-name-resource="expirationDate">
+      <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="lastModified" data-type="timestamp" column-name="last_modified" expert="true"
+               display-name-resource="lastModified" category-resource="categoryBasics" hidden="true"> 
+        <attribute name="propertySortPriority" value="-9"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- Gift Certificate Claimable object -->
+  <item-descriptor name="GiftCertificateClaimable" super-type="claimable" sub-type-value="GiftCertificateClaimable" item-cache-size="1000" query-cache-size="1000" 
+          display-name-resource="itemDescriptorGiftCertificate" display-property="amount">
+    <attribute name="resourceBundle" value="atg.commerce.ClaimableRepositoryTemplateResources"/>
+    <attribute name="iconSwf" value="giftCertificateClaimableIconSwf"/>
+    <attribute name="largeIconSwf" value="giftCertificateClaimableLargeIconSwf"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+    <attribute name="deployable" value="false"/>
+
+    <table name="dcspp_giftcert" type="auxiliary" id-column-name="giftcertificate_id">
+      <property name="amount" data-type="double" required="true" default="0.0" category-resource="categoryBasics" display-name-resource="amount">
+        <attribute name="propertySortPriority" value="-10"/>
+      </property>
+      <property name="amountAuthorized" column-name="amount_authorized" data-type="double" default="0.0" required="true"
+              category-resource="categoryBasics" display-name-resource="amountAuthorized" >
+        <attribute name="propertySortPriority" value="-9"/>
+      </property>
+      <property name="amountRemaining" column-name="amount_remaining" data-type="double" default="0.0" required="true"
+              category-resource="categoryBasics" display-name-resource="amountRemaining" >
+        <attribute name="propertySortPriority" value="-8"/>
+      </property>
+      <property name="purchaserId" column-name="purchaser_id" data-type="string" category-resource="categoryBasics" display-name-resource="purchaserId">
+        <attribute name="propertySortPriority" value="-7"/>
+      </property>
+      <property name="purchaseDate" column-name="purchase_date" data-type="timestamp" category-resource="categoryBasics" display-name-resource="purchaseDate">
+        <attribute name="propertySortPriority" value="-6"/>
+      </property>
+      <property name="lastUsed" column-name="last_used" data-type="timestamp" category-resource="categoryBasics" display-name-resource="lastUsed">
+        <attribute name="propertySortPriority" value="-5"/>
+      </property>
+    </table>
+    
+    <property name="amountAvailable" display-name-resource="amountAvailable" queryable="true" readable="true"  data-type="double" hidden="false" 
+		property-type="atg.commerce.claimable.AvailableAmount" category-resource="categoryBasics" expert="false" required="false" cache-mode="inherit" writable="false">
+      <attribute name="amountProperty" value="amount"/>
+      <attribute name="amountAuthorizedProperty" value="amountAuthorized"/>
+    </property>
+  </item-descriptor>
+
+  <item-descriptor name="promotionClaimableFolder" display-property="name" display-name-resource="itemDescriptorPromotionClaimableFolder">
+    <attribute name="resourceBundle" value="atg.commerce.ClaimableRepositoryTemplateResources"/>
+    <attribute name="iconSwf" value="promotionClaimableFolderIconSwf"/>
+    <attribute name="largeIconSwf" value="promotionClaimableFolderLargeIconSwf"/>
+    <attribute name="plural-display-name-resource" value="itemDescriptorPromotionClaimableFolder.plural"/> 
+
+    <table name="dcspp_cp_folder" type="primary" id-column-name="folder_id">
+      <property name="id" display-name-resource="id" column-name="folder_id" data-type="string" writable="false" expert="true"/>
+      <property name="name" display-name-resource="name" column-name="name" data-type="string" required="true" category-resource="categoryBasics">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="parentFolder" display-name-resource="parentFolder" column-name="parent_folder" item-type="promotionClaimableFolder" category-resource="categoryBasics">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- Promotion Claimable object -->
+  <item-descriptor name="PromotionClaimable" super-type="claimable" sub-type-value="PromotionClaimable" item-cache-size="1000" query-cache-size="1000" 
+          display-name-resource="itemDescriptorPromotionClaimable" display-property="derivedDisplayName">
+	
+    <attribute name="resourceBundle" value="atg.commerce.ClaimableRepositoryTemplateResources"/>
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+    <attribute name="deployable" value="false"/>
+	
+	<table name="dcspp_coupon_info" type="auxiliary" id-column-name="coupon_id">
+	  <property name="displayName" column-name="display_name" data-type="string" category-resource="categoryBasics" display-name-resource="displayName"
+		required="false" hidden="false">
+		<attribute name="propertySortPriority" value="30"/>
+      </property>
+	  	  
+	  <property name="redeemableOnPromotionSites" default="false" data-type="boolean" column-name="use_promo_site" display-name-resource="redeemableOnPromotionSites" category-resource="categoryBasics">
+        <attribute name="useCodeForValue" value="false"/>
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+
+      <property name="parentFolder" item-type="promotionClaimableFolder" column-name="parent_folder" category-resource="categoryBasics" display-name-resource="parentFolder">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+	
+    <table name="dcspp_coupon" type="multi" id-column-name="coupon_id">
+	  <property name="promotions" column-names="promotion_id"  component-item-type="promotion" repository="/atg/commerce/pricing/Promotions" 
+              category-resource="categoryBasics" display-name-resource="promotions" data-type="set">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+    </table>
+
+	<property name="derivedDisplayName" display-name-resource="displayName"  data-type="string" hidden="true" 
+	   category-resource="categoryBasics" expert="false" required="false" cache-mode="inherit" >
+     <derivation user-method="atg.repository.dp.DerivedDisplayName">
+       <expression>displayName</expression>
+	   <expression>promotions</expression>
+     </derivation>
+     <attribute name="propertySortPriority" value="20"/>
+   </property>
+	
+  </item-descriptor>
+  
+   <item-descriptor name="DeployablePromotionClaimable" super-type="PromotionClaimable" sub-type-value="DeployablePromotionClaimable" item-cache-size="1000" query-cache-size="1000" 
+          display-name-resource="itemDescriptorDeployablePromotionClaimable" display-property="promotions">
+    <attribute name="resourceBundle" value="atg.commerce.ClaimableRepositoryTemplateResources"/>
+    <attribute name="uiwritable" value="false"/>
+    <attribute name="iconSwf" value="deployablePromotionClaimableIconSwf"/>
+    <attribute name="largeIconSwf" value="deployablePromotionClaimableLargeIconSwf"/>
+    <attribute name="plural-display-name-resource" value="itemDescriptorDeployablePromotionClaimable.plural"/> 
+  </item-descriptor>
+  
+  <!-- Store Credit Claimable object -->
+  <item-descriptor name="StoreCreditClaimable" super-type="claimable" sub-type-value="StoreCreditClaimable" item-cache-size="1000" query-cache-size="1000" 
+          display-name-resource="itemDescriptorStoreCreditClaimable" display-property="amountRemaining">
+    <attribute name="resourceBundle" value="atg.commerce.ClaimableRepositoryTemplateResources"/>
+    <attribute name="iconSwf" value="storeCreditClaimableIconSwf"/>
+    <attribute name="largeIconSwf" value="storeCreditClaimableLargeIconSwf"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+    <attribute name="deployable" value="false"/>
+
+    <table name="dcs_storecred_clm" type="auxiliary" id-column-name="store_credit_id">
+      <property name="amount" data-type="double" required="true" default="0.0" category-resource="categoryBasics" display-name-resource="amount">
+        <attribute name="propertySortPriority" value="-10"/>
+      </property>
+      <property name="amountAuthorized" column-name="amount_authorized" data-type="double" default="0.0" required="true"
+               category-resource="categoryBasics" display-name-resource="amountAuthorized">
+        <attribute name="propertySortPriority" value="-9"/>
+      </property>
+      <property name="amountRemaining" column-name="amount_remaining" data-type="double" default="0.0" required="true"
+               category-resource="categoryBasics" display-name-resource="amountRemaining">
+        <attribute name="propertySortPriority" value="-8"/>
+      </property>
+      <property name="ownerId" column-name="owner_id" data-type="string" category-resource="categoryBasics" display-name-resource="ownerId">
+        <attribute name="propertySortPriority" value="-7"/>
+      </property>
+      <property name="issueDate" column-name="issue_date" data-type="timestamp" category-resource="categoryBasics" display-name-resource="issueDate">
+        <attribute name="propertySortPriority" value="-6"/>
+      </property>
+<!--
+      <property name="expirationDate" column-name="expiration_date" data-type="timestamp" category-resource="categoryBasics" display-name-resource="expirationDate">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+-->
+      <property name="lastUsed" column-name="last_used" data-type="timestamp" category-resource="categoryBasics" display-name-resource="lastUsed">
+        <attribute name="propertySortPriority" value="-5"/>
+      </property>
+    </table>
+    <property name="amountAvailable" display-name-resource="amountAvailable" queryable="true" readable="true"  data-type="double" hidden="false" property-type="atg.commerce.claimable.AvailableAmount" category-resource="categoryBasics" expert="false" required="false" cache-mode="inherit" writable="false">
+      <attribute name="amountProperty" value="amount"/>
+      <attribute name="amountAuthorizedProperty" value="amountAuthorized"/>
+    </property>
+  </item-descriptor>
+
+  
+  
+</gsa-template>
+<!-- @version $Id: //product/DCS/version/10.0.3/templates/DCS/config/atg/commerce/claimable/claimableRepository.xml#2 $$Change: 651448 $ -->

@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+    <title>Web Service Security Configuration: Choose Organzations</title>
+  </head>
+<nucleus type=import>
+        /atg/dynamo/admin/GetSecurityItem
+        /atg/dynamo/admin/GetAllPrincipals
+        /atg/dynamo/droplet/Switch
+        /atg/dynamo/droplet/ForEach
+        /atg/webservice/security/NucleusAccessControlFormHandler
+</nucleus>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+<IMG SRC="../images/admin-banner.gif" ALT="Dynamo Administration"
+     ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+
+<droplet name="GetSecurityItem">
+   <param name="funcName" value="param:funcName">
+   <oparam name="notFound">
+      NOT FOUND!!!
+     <JAVA> request.addQueryParameter("funcName",
+	      request.getParameter("funcName")); 
+            request.addQueryParameter("choose",
+	      request.getParameter("choose")); 
+            response.sendRedirect(request.encodeURL("securitynotfound.jhtml"));
+     </JAVA>
+   </oparam>
+   <oparam name="output">
+
+   <setvalue bean="NucleusAccessControlFormHandler.securedObjectID" value="param:funcName">
+
+   <setvalue bean="NucleusAccessControlFormHandler.successURL" value="edit-sec-item.jhtml">
+
+<a href="/">admin</a> / <a href="index.jhtml">Web Service
+	Administration</a> / <a href="browsesecurity.jhtml">Security
+		Configurations</a> / <a
+					href="edit-sec-item.jhtml"><param name="funcName" value="param:funcName"><param name="choose" value="param:choose">Edit Security Configuration</a> / Choose Organizations</p><p>
+
+    <h1>Web Service Security Configuration: Choose Organzations</h1>
+
+<blockquote>
+
+<B>Security Configuration for: </B><valueof param="funcName">???</valueof><P>&nbsp;<P>
+
+To select the organizations you wish to add, please check them and
+	click "Add":<BR>
+
+<JAVA>request.addQueryParameter("funcName", request.getParameter("funcName"));
+      request.addQueryParameter("choose", request.getParameter("choose"));</JAVA>
+<form action="choose-roles.jhtml" type="submit">
+  <input type="hidden" name="funcName" value="param:funcName">
+  <input type="hidden" name="choose" value="param:choose">
+  <input type="hidden" bean="NucleusAccessControlFormHandler.securedObjectID" value="param:funcName">
+
+<droplet name="GetAllPrincipals">
+  <oparam name="output">
+    <droplet name="ForEach">
+      <param name="array" value="param:allPrincipalsInfo.allOrganizations">
+      <oparam name="output">
+       <droplet src="choose-personae-indent.jhtml">
+          <param name="indent" value="">
+          <param name="title" value="">
+          <param name="principals" value="param:element">
+       </droplet>
+      </oparam>
+     </droplet>
+  </oparam>
+</droplet>
+
+ <input type="hidden" name="funcName" value="param:funcName">
+ <JAVA>request.addQueryParameter("funcName", request.getParameter("funcName"));
+       request.addQueryParameter("choose", request.getParameter("choose"));</JAVA>
+ <input type="hidden"
+	bean="NucleusAccessControlFormHandler.successURL"
+	value="`request.encodeURL("edit-sec-item.jhtml")`">
+
+<BR>
+
+ <input type="submit" bean="NucleusAccessControlFormHandler.addPersonae" value="Add">
+
+</form>
+
+</blockquote>
+
+   </oparam>
+</droplet><%-- end droplet GetSecurityItem --%>
+
+  </BODY>
+</html>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/webservice/choose-organizations.jhtml#2 $$Change: 651448 $*/</java>

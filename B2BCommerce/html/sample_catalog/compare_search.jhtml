@@ -1,0 +1,111 @@
+<importbean bean="/atg/dynamo/droplet/Switch">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/IsEmpty">
+<importbean bean="/atg/dynamo/droplet/ErrorMessageForEach">
+<importbean bean="/atg/commerce/catalog/AdvProductSearch">
+<importbean bean="/atg/commerce/catalog/RepositoryValues">
+<importbean bean="/atg/commerce/catalog/comparison/ProductList">
+<importbean bean="/atg/userprofiling/Profile">
+
+<html>
+<head>
+<title>Product Comparison: Product Search</title>
+</head>
+
+<body>
+<a href="index.jhtml">Catalog Home</a> - 
+<a href="product_search.jhtml">Product Search</a> - 
+<a href="shoppingcart.jhtml">Shopping Cart</a> - 
+<a href="lists.jhtml">My Lists</a> - 
+Product Comparison -
+<a href="giftlist_search.jhtml">Gift List Search</a> - 
+<droplet bean="/atg/dynamo/droplet/Switch">
+  <param name="value" value="bean:/atg/userprofiling/Profile.transient">
+  <oparam name="false">
+    <a href="logout.jhtml">Logout</a>
+  </oparam>
+  <oparam name="true">
+    <a href="login.jhtml">Login</a> or <a href="register.jhtml">Register</a>
+  </oparam>
+</droplet>
+<BR>
+<i>location: <valueof bean="Profile.currentLocation"></valueof></i>
+
+<P>
+<droplet bean="IsEmpty">
+  <param name="value" value="bean:ProductList.items">
+  <oparam name="true"><h3>Search for products to compare</h3></oparam>
+  <oparam name="false"><h3>Search for more products to compare</h3></oparam>
+</droplet>
+
+<P>
+
+Here we allow the user to search the product catalog for products to
+add to his or her product comparison list.  We use the advanced search
+form handler so the user can limit the search to a single category, or
+search the entire catalog.
+
+<java>/* Display any errors resulting from a failed search attempt */</java>
+
+<droplet name="Switch">
+  <param name="value" value="bean:AdvProductSearch.formError">
+  <oparam name="true">
+    <font color=cc0000><P><STRONG><UL>
+      <droplet name="ErrorMessageForEach">
+        <param name="exceptions" value="bean:AdvProductSearch.formExceptions">
+        <oparam name="output">
+        <LI> <valueof param="message"></valueof>
+        </oparam>
+      </droplet>
+    </UL></STRONG></font>
+  </oparam>
+</droplet>
+
+<java>/* Display the search form */</java>
+
+<form action="compare_search.jhtml" method="POST">
+  <input type="hidden" bean="AdvProductSearch.successURL" value="compare_search_results.jhtml">
+
+  <table border=0 cellpadding=8 cellspacing=0>
+  <tr>
+    <td align=right>Search in category</td>
+    <td>
+    <select bean="AdvProductSearch.hierarchicalCategoryId">
+      <option value="">-- All categories --
+      <droplet bean="RepositoryValues">
+	<param name="itemDescriptorName" value="category">
+	<oparam name="output">
+	  <droplet bean="ForEach">
+	    <param name="array" value="param:values">
+	    <param name="sortProperties" value="+displayName">
+	    <oparam name="output">
+	      <option value="param:element.repositoryId">
+	      <valueof param="element.displayName"></valueof>
+	    </oparam>
+	  </droplet>
+	</oparam>
+      </droplet>
+    </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td align=right>Search text</td>
+    <td><input type="text" size="25" bean="AdvProductSearch.searchInput">
+        <java>/*Include hidden input field so hitting return here submits the form*/</java>
+        <input type="hidden" bean="AdvProductSearch.search" value="Search"></td>
+  </tr>
+
+  <tr>
+    <td></td>
+    <td>
+      <input type="submit" bean="AdvProductSearch.search" value="Search">
+    </td>
+  </tr>
+
+  </table>
+</form>
+
+</body>
+</html>
+<java>/* @version $Id: //product/B2BCommerce/version/10.0.3/release/B2BCommerce/html/sample_catalog/compare_search.jhtml#2 $$Change: 651448 $*/</java>

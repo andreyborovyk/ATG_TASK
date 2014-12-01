@@ -1,0 +1,127 @@
+
+
+<core:IfNotNull value='<%= request.getParameter("action") %>'>
+  <core:If value='<%= request.getParameter("action").equals("add_favorite") %>'>
+    <fcg:addFavorite id="addResult"
+			user="<%= (atg.repository.RepositoryItem) profile %>"
+			addCommId='<%= request.getParameter("paf_community_id") %>'>
+	   <core:IfNot value="<%= addResult.getSuccess() %>"></core:IfNot>
+    </fcg:addFavorite>
+  </core:If>
+</core:IfNotNull>
+
+ <core:exclusiveIf>
+  <core:if value="<%= pafEnv.isRegisteredUser() %>">
+    <core:IfNot value="<%= faves.contains( pafEnv.getCommunity().getId() ) %>">
+      <table width="99%" align=center border="0">
+        <tr>
+          <td align="left"><font class="small"><%= pafEnv.getCommunity().getName() %></font></td>
+          <td align="right"><font class="small_bold">
+            <core:CreateUrl id="addCommUrl" url="<%= pafEnv.getOriginalRequestURI()%>">
+              <core:UrlParam param="action" value="add_favorite"/>
+              <core:UrlParam param="paf_community_id" value="<%= pafEnv.getCommunity().getId() %>"/>
+                <a href="<%=addCommUrl.getNewUrl()%>" class="gear_nav"><i18n:message key="add-to-favorites"/></a>
+            </core:CreateUrl>
+          </font></td>
+        </tr>
+      </table>
+    </core:IfNot>
+   </core:if>
+   <core:DefaultCase>
+    <table width="99%" align=center border="0">
+      <tr>
+        <td align="left" colspan=2><font class="small"><%= pafEnv.getCommunity().getName() %></font></td>
+      </tr>
+	</table>
+   </core:DefaultCase>
+  </core:exclusiveIf>
+
+<%--  END IF NOT IN FAVORITES OR TRANSIENT  --%>
+
+
+
+<%--   THE LIST  --%>
+
+  <core:if value="<%= pafEnv.isRegisteredUser() %>">
+    <core:If value="<%= faves.getFavorites().size() > 0  %>">
+      <table width="99%" align=center border="0">
+
+    <core:ForEach id="communityLinks"
+              values="<%= faves.getFavorites() %>"
+              castClass="atg.portal.framework.Community"
+              elementId="community">
+
+      <tr>
+        <td align=left><font class="small">
+          <core:ExclusiveIf>
+            <core:IfEqual object1="<%= community.getId() %>"
+                    object2="<%= pafEnv.getCommunity().getId() %>">
+              <%= community.getName() %>
+            </core:IfEqual>
+            <core:IfNot value="<%= community.isEnabled()%>">
+            <i18n:message id="wrapperA" key="community_is_wrapper_a"/>
+            <i18n:message id="wrapperB" key="community_is_wrapper_b"/>
+             <%= community.getName(response.getLocale()) %>&nbsp;
+             <i18n:message key="community_is_inactive">
+              <i18n:messageArg value="<%=wrapperA%>"/>
+              <i18n:messageArg value="<%=wrapperB%>"/>
+             </i18n:message>
+            </core:IfNot>
+            <core:DefaultCase>
+              <core:CreateUrl id="commUrl" url="<%= pafEnv.getCommunityURI( community.getId() ) %>">
+                <a href="<%= commUrl.getNewUrl() %>" class="gear_content"><%= community.getName() %></a>
+              </core:CreateUrl>
+            </core:DefaultCase>
+          </core:ExclusiveIf>
+        </font></td>
+        <core:If value="<%= community.isLeader(pafEnv) %>">
+          <td align=right><font class="small_bold">
+            <core:CreateUrl id="leaderUrl" url="/portal/settings/community_settings.jsp" >
+              <core:UrlParam param="paf_community_id" value="<%= community.getId() %>"/>
+              <core:UrlParam param="paf_page_url" value="<%= pafEnv.getCommunityURI( community.getId() ) %>"/>
+                <a href="<%= leaderUrl.getNewUrl() %>" class="gear_nav"><i18n:message key="administer"/></a>
+            </core:CreateUrl>
+          </font></td>
+        </core:If>
+        <core:IfNot value="<%= community.isLeader(pafEnv) %>">
+          <td>&nbsp;</td>
+        </core:IfNot>
+    </core:ForEach>
+
+      </tr>
+    </table>
+
+    </core:If>
+   </core:if>
+  
+
+<%-- END THE LIST --%>
+
+
+<%--  ALL COMMUNITIES   and   EDIT FAVORITES  --%>
+<table border="0" width="99%" align=center>
+  <tr><td NOWRAP align=left><font class="small_bold">
+    <core:CreateUrl id="fullview" url="<%= pafEnv.getOriginalRequestURI() %>">
+      <core:UrlParam param="paf_communities" value="all"/>
+      <core:UrlParam param="paf_dm" value="full"/> 
+        <a href="<%= fullview.getNewUrl() %>" class="gear_nav"><i18n:message key="all-communities"/></a>
+    </core:CreateUrl>
+
+       <core:if value="<%= pafEnv.isRegisteredUser() %>">
+        <core:If value="<%= faves.getFavorites().size() > 0  %>">
+          <core:CreateUrl id="fullview" url="<%= pafEnv.getOriginalRequestURI() %>">
+            <core:UrlParam param="paf_communities" value="edit"/> 
+            <core:UrlParam param="paf_dm" value="full"/> 
+             | <a href="<%= fullview.getNewUrl() %>" class="gear_nav"><i18n:message key="edit-favorites"/></a>
+          </core:CreateUrl>
+        </core:If>
+	<core:IfNot value="<%= faves.getFavorites().size() > 0  %>">&nbsp;
+	</core:IfNot>
+       </core:if>
+    </font></td>
+  </tr>
+
+</table>
+
+<%--  END  ALL COMMUNITIES   and   EDIT FAVORITES --%>
+<%-- @version $Id: //app/portal/version/10.0.3/templates/layoutTemplates.war/web/html/shared_favorites.jspf#2 $$Change: 651448 $--%>

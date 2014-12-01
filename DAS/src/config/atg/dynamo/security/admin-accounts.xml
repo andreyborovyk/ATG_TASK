@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Standard Dynamo admin users -->
+<!-- $Id: //product/DAS/version/10.0.3/templates/DAS/config/config/atg/dynamo/security/admin-accounts.xml#2 $$Change: 651448 $ -->
+
+<!DOCTYPE accounts
+        PUBLIC "-//Art Technology Group, Inc.//DTD Dynamo Accounts//EN"
+        "http://www.atg.com/dtds/security/accounts_1.0.dtd">
+
+<accounts>
+  <!-- DAS UI privilege groups -->
+
+  <!-- Privileges associated with server control -->
+  <privilege name="server-restart-privilege">
+    <attribute name="description">Server Restart</attribute>
+  </privilege>
+  <privilege name="server-shutdown-privilege">
+    <attribute name="description">Server Shutdown</attribute>
+  </privilege>
+
+  <!-- Privileges associated with the Pages and Components menu entry -->
+  <privilege name="pages-privilege">
+    <attribute name="description">Pages and Components: Pages</attribute>
+  </privilege>
+  <privilege name="components-module-privilege">
+    <attribute name="description">Pages and Components: Components By Module</attribute>
+  </privilege>
+  <privilege name="components-path-privilege">
+    <attribute name="description">Pages and Components: Components By Path</attribute>
+  </privilege>
+
+  <!-- Privileges associated with the User Admin menu entry -->
+  <privilege name="admin-users-privilege">
+    <attribute name="description">User Admin: Users</attribute>
+  </privilege>
+  <privilege name="admin-roles-privilege">
+    <attribute name="description">User Admin: Groups</attribute>
+  </privilege>
+
+  <!-- Privileges associated with the Tools menu entry -->
+  <privilege name="tools-server-activity-privilege">
+    <attribute name="description">Tools: Server Activity</attribute>
+  </privilege>
+  <privilege name="tools-j2ee-deploy-privilege">
+    <attribute name="description">Tools: J2EE Deploy</attribute>
+  </privilege>
+  <privilege name="tools-integrations-privilege">
+    <attribute name="description">Tools: Integrations</attribute>
+  </privilege>
+
+  <!-- Privileges associated with the Support menu entry -->
+  <privilege name="support-cases-privilege">
+    <attribute name="description">Tools: Submit a Support Request</attribute>
+  </privilege>
+  <privilege name="support-knowledge-base-privilege">
+    <attribute name="description">Support: Knowledge Base</attribute>
+  </privilege>
+
+  <!-- System user groups -->
+  <group name="administrators-group">
+    <attribute name="description">System Administrators</attribute>
+    <member-of name="server-restart-privilege"/>
+    <member-of name="server-shutdown-privilege"/>
+    <member-of name="pages-privilege"/>
+    <member-of name="components-module-privilege"/>
+    <member-of name="components-path-privilege"/>
+    <member-of name="admin-users-privilege"/>
+    <member-of name="admin-roles-privilege"/>
+    <member-of name="tools-server-activity-privilege"/>
+    <member-of name="tools-j2ee-deploy-privilege"/>
+    <member-of name="support-cases-privilege"/>
+    <member-of name="support-knowledge-base-privilege"/>
+  </group>
+  <group name="everyone-group">
+    <attribute name="description">All Users</attribute>
+    <!-- This gives everyone the right to see new Dynamo components -->
+    <!-- that get created, but not to manipulate them. -->
+  </group>
+
+  <!-- Some typical user groups -->
+  <group name="designers-group">
+    <attribute name="description">Designers</attribute>
+    <member-of name="pages-privilege"/>
+    <member-of name="support-cases-privilege"/>
+    <member-of name="support-knowledge-base-privilege"/>
+  </group>
+  <group name="developers-group">
+    <attribute name="description">Developers</attribute>
+    <member-of name="server-restart-privilege"/>
+    <member-of name="components-module-privilege"/>
+    <member-of name="components-path-privilege"/>
+    <member-of name="tools-server-activity-privilege"/>
+    <member-of name="tools-j2ee-deploy-privilege"/>
+    <member-of name="support-cases-privilege"/>
+    <member-of name="support-knowledge-base-privilege"/>
+  </group>
+  <group name="managers-group">
+    <attribute name="description">Managers</attribute>
+    <member-of name="admin-users-privilege"/>
+    <member-of name="admin-roles-privilege"/>
+    <member-of name="support-cases-privilege"/>
+    <member-of name="support-knowledge-base-privilege"/>
+  </group>
+
+  <!-- Standard users -->
+  <login name="admin">
+    <attribute name="firstName">Andy</attribute>
+    <attribute name="lastName">Administrator</attribute>
+    <attribute name="password">admin</attribute>
+    <member-of name="everyone-group"/>
+    <member-of name="administrators-group"/>
+  </login>
+
+  <login name="design">
+    <attribute name="firstName">Dana</attribute>
+    <attribute name="lastName">Designer</attribute>
+    <attribute name="password">design</attribute>
+    <member-of name="everyone-group"/>
+    <member-of name="designers-group"/>
+  </login>
+
+  <login name="developer">
+    <attribute name="firstName">Donna</attribute>
+    <attribute name="lastName">Developer</attribute>
+    <attribute name="password">developer</attribute>
+    <member-of name="everyone-group"/>
+    <member-of name="developers-group"/>
+  </login>
+
+  <login name="manager">
+    <attribute name="firstName">Mary</attribute>
+    <attribute name="lastName">Manager</attribute>
+    <attribute name="password">manager</attribute>
+    <member-of name="everyone-group"/>
+    <member-of name="managers-group"/>
+  </login>
+</accounts>
+<!-- @version $Id: //product/DAS/version/10.0.3/templates/DAS/config/config/atg/dynamo/security/admin-accounts.xml#2 $$Change: 651448 $ -->

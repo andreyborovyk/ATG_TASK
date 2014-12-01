@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE portal-manifest PUBLIC "-//Art Technology Group, Inc.//DTD Portal Manifest//EN" "http://www.atg.com/dtds/portal/framework/portal_manifest_1.0.dtd">
+
+<portal-manifest name="Web Services Client" version="1.0" author="ATG Portal Team">
+
+  <gear-definitions>
+    <gear-definition name="Web Services Client"  version="1.0" author="ATG Portal Team">
+      <description>Ability to invoke a remote Web Service</description>
+
+      <servlet-context>/gear/soapclient</servlet-context>
+
+      <dimensions>
+        <dimension name="height">noPreference</dimension>
+        <dimension name="width">noPreference</dimension>
+      </dimensions>
+
+      <gear-modes>
+
+        <gear-mode name="content">
+          <display-modes>
+            <display-mode name="shared">
+              <device-output name="html">/html/sharedSOAP.jsp</device-output>
+            </display-mode>
+          </display-modes>              
+        </gear-mode>
+
+        <gear-mode name="installConfig">
+          <display-modes>           
+            <display-mode name="full">
+              <device-output name="html">
+              /html/installConfig.jsp
+              </device-output> 
+            </display-mode>
+          </display-modes>
+        </gear-mode>
+
+       
+
+        <gear-mode name="userConfig">
+          <display-modes>           
+            <display-mode name="full">
+              <device-output name="html">
+              /html/userConfig.jsp
+              </device-output> 
+            </display-mode>
+          </display-modes>
+        </gear-mode>
+
+        
+
+      </gear-modes>
+
+    </gear-definition>
+
+  </gear-definitions>
+</portal-manifest>
+<!-- @version $Id: //app/portal/version/10.0.3/soapclient/etc/soapclient-manifest.xml#2 $$Change: 651448 $ -->

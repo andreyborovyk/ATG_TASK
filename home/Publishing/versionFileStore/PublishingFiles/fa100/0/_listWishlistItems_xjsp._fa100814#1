@@ -1,0 +1,31 @@
+<%--
+  This page is used to display the items in a user's wishlist.
+  --%>
+
+<%@ taglib prefix="c"     uri="http://java.sun.com/jstl/core"                    %>
+<%@ taglib prefix="dspel" uri="http://www.atg.com/taglibs/daf/dspjspELTaglib1_0" %>
+
+<dspel:page>
+
+  <dspel:importbean var="profile" bean="/atg/userprofiling/Profile"/>
+
+  <html>
+    <head>
+      <title>Test page displaying the items in a user's wishlist.</title>
+    </head>
+    <body>
+      <dspel:getvalueof id="profile" idtype="atg.userprofiling.Profile" bean="Profile"/>
+      <dspel:tomap var="currentUser" value="${profile.dataSource}"/>
+      <dspel:tomap var="wishlist" value="${currentUser.wishlist}"/>
+
+      <ul>
+      <c:forEach var="item" items="${wishlist.giftlistItems}" varStatus="loopInfo">
+        <li><c:out value="${item.itemDisplayName}"/></li>
+      </c:forEach>
+      </ul>
+
+    </body>
+  </html>
+
+</dspel:page>
+<%-- @version $Id: //application/campaigns/version/10.0/communication/common/src/web-apps/Outreach/collections/listWishlistItems.jsp#1 $$Change: 610294 $--%>

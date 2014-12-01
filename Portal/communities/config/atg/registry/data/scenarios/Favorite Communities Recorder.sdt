@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE scenario
+  SYSTEM
+  "dynamosystemresource:/atg/scenario/definition/sdl.dtd">
+
+<scenario author="admin" creation-time="999469539342" enabled="false" last-modified-by="admin" modification-time="999536041818">
+  <segment migrate-users="true">
+    <segment-name>Community Added Logger</segment-name>
+    <!--================================-->
+    <!--== Favorite Community Added  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.portal.gear.communities.FavoriteAddedMessage</event-name>
+    </event>
+    <!--================================-->
+    <!--== Record event Favorite Community Added in dataset (FavoriteAddedDataset)  -->
+    <!--================================-->
+    <action id="2">
+      <action-name>recordEvent</action-name>
+      <action-param name="dataset" placeholder-name="FavoriteAddedDataset">
+        <constant>/gearfavoritecommu.xml</constant>
+      </action-param>
+    </action>
+  </segment>
+  <segment migrate-users="true">
+    <segment-name>Community Deleted Logger</segment-name>
+    <!--================================-->
+    <!--== Favorite Community Removed  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.portal.gear.communities.FavoriteRemovedMessage</event-name>
+    </event>
+    <!--================================-->
+    <!--== Record event Favorite Community Removed in dataset (FavoriteRemovedDataset)  -->
+    <!--================================-->
+    <action id="2">
+      <action-name>recordEvent</action-name>
+      <action-param name="dataset" placeholder-name="FavoriteRemovedDataset">
+        <constant>/gearfavoritecommu2.xml</constant>
+      </action-param>
+    </action>
+  </segment>
+</scenario>

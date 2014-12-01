@@ -1,0 +1,84 @@
+<importbean bean="/atg/commerce/gifts/GiftlistFormHandler">
+<importbean bean="/atg/commerce/ShoppingCart">
+<importbean bean="/atg/userprofiling/Profile">
+<importbean bean="/atg/dynamo/droplet/IsEmpty">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/Switch">
+
+<droplet src="remove_from_list.jhtml"></droplet>
+
+<setvalue param="wishlist" value="bean:Profile.wishlist">
+<setvalue param="items" value="param:wishlist.giftlistItems">
+<setvalue param="giftlistId" value="param:wishlist.id">
+
+<form action="`request.getRequestURI()`" method="post">  
+<input type="hidden" bean="GiftlistFormHandler.updateGiftlistItemsSuccessURL" value="`request.getRequestURI()`">
+<input type="hidden" bean="GiftlistFormHandler.updateGiftlistItemsErrorURL" value="`request.getRequestURI()`">
+<input type="hidden" bean="GiftlistFormHandler.giftlistId" value="param:giftlistId">
+
+<strong>My Wish List</strong><BR>
+
+<droplet bean="IsEmpty">
+  <param name="value" value="param:items">
+  <oparam name="false">
+    <table cellspacing=2 cellpadding=0 border=0 width=75%>
+    <tr valign=top><td>Delete</td><td>Quantity</td><td>Item</td><td></td></tr>
+    <droplet bean="/atg/dynamo/droplet/ForEach">
+      <param name="array" value="param:items">
+      
+      <oparam name="output">
+        <tr>
+        <td><input type=checkbox bean="GiftlistFormHandler.removeGiftitemIds" value="param:element.id"></td>
+        <td><input type="text" name="param:element.id" value="param:element.quantityDesired" size=2></td>
+        <td>
+          <droplet bean="/atg/commerce/catalog/ProductLookup">
+            <param name="id" value="param:element.productId">
+            <param name="elementName" value="product">
+            <oparam name="output">
+              <a href="display_product.jhtml">
+                <param name="id" value="param:id">
+                <param name="navAction" value="jump">
+                <droplet bean="/atg/commerce/catalog/SKULookup">
+              <param name="id" value="param:element.catalogRefId">
+              <param name="elementName" value="giftSku">
+              <oparam name="output"><valueof param="giftSku.displayName"></valueof></oparam>
+                </droplet>
+              </a>
+            </oparam>
+          </droplet>
+        </td>
+        <td></td><td><a href="shoppingcart.jhtml"><param name="giftId" value="param:element.id"><param name="giftlistId" value="param:giftlistId">Add to Shopping Cart</a></td>
+        </tr>               
+      </oparam>
+      <oparam name="empty">
+         <tr><td>There's nothing in your wish list yet. Don't you want something?</td></tr>
+      </oparam>
+    </droplet>
+    <tr>
+    <td colspan=3>
+    <input type=submit bean="GiftlistFormHandler.updateGiftlistItems" value="Update list">
+    </td>
+    </tr>
+    </table>
+  </oparam>
+
+  <oparam name="true">
+    Your Wish List is empty, <a href="index.jhtml">go shop</a>.
+    <P>
+  </oparam>
+</droplet>
+
+<droplet bean="Switch">
+  <param name="value" value="bean:ShoppingCart.current.totalCommerceItemCount">
+  <oparam name="0"></oparam>
+  <oparam name="default">
+    &gt; <a href="move_from_cart.jhtml">
+           <param name="giftlistId" value="param:giftlistId">
+           <param name="listName" value="My Wish List">
+            Move items to this wish list from the Shopping Cart
+          </a>
+  </oparam>
+</droplet>
+
+</form>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/DCS/html/sample_catalog/manage_wishlist.jhtml#2 $$Change: 651448 $*/</java>

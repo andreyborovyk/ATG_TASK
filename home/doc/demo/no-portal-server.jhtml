@@ -1,0 +1,42 @@
+<nucleus type=import>
+        /atg/dynamo/Configuration
+        /atg/dynamo/droplet/Switch
+</nucleus>
+<html><head><title>Not Installed</title></head>
+<body bgcolor="#00123f" TEXT="#00B3EE" LINK="#637DA6"  background="/images/grid.gif">
+  <div align=center>
+    <table border=0 width=474 cellpadding=0 cellspacing=0>
+    <tr>
+      <td><img src="images/clear.gif" width="1" height="70"></td>
+    </tr>
+    <tr>
+      <td><img src="images/dynamobanner.gif" width="473" height="68" alt="Dynamo Application Server"></td>
+    </tr>
+    </table><img src="images/clear.gif" width="1" height="10"><br>
+    <table border=0 width=474 cellpadding=14 cellspacing=0>
+    <tr>
+    <td bgcolor=005dac><font face="verdana,helvetica,arial,sans" size=4>
+     <droplet name="Switch">
+       <param name="value" value="bean:Configuration.assembledEarFile">
+       <oparam name="unset"></oparam>
+       <oparam name="default">
+         The ATG Portal Demos are not running. If you have installed the
+         Portal application, shutdown the application server and run it
+         along with the Portal.demos module (for example, when using the
+         Dynamo Application Server use the command startDynamo -m
+         Portal.demos).
+       </oparam>
+       <oparam name="true">
+         The Portals demo modules are not part of this assembled ATG application
+         EAR file.  To use this demo, create a new EAR File using the 
+         runAssembler command, including the modules for this demo.
+         (For example, "runAssembler demo.ear -m Portal.demos").
+       </oparam>
+     </droplet>
+    </font></td>
+    </tr>
+   </table>
+  </div>
+</body>
+</html>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/home/doc/demo/no-portal-server.jhtml#2 $$Change: 651448 $*/</java>

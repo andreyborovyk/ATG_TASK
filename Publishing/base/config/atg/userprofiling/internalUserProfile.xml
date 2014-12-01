@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE gsa-template
+  PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN"
+  "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template>
+
+  <header>
+    <name>ePublishing Internal Profile Changes</name>
+    <author>Paul O'Brien</author>
+    <version>$Id: //product/Publishing/version/10.0.3/pws/config/atg/userprofiling/internalUserProfile.xml#2 $$Change: 651448 $</version>
+  </header>
+
+  <item-descriptor name="user" xml-combine="append">
+    
+    <table name="epub_int_user" type="auxiliary" id-column-name="user_id">
+      <property category-resource="categoryBasics" name="title" data-type="string" column-name="title" display-name-resource="title">
+        <attribute name="resourceBundle" value="atg.epub.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="35"/>
+      </property>
+
+      <property category-resource="categoryBasics" name="expert" data-type="boolean"  default="true" column-name="expert" display-name-resource="expert">
+        <attribute name="resourceBundle" value="atg.epub.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+
+      <property category-resource="categoryBasics" name="allowApplets" data-type="boolean"
+          column-name="allow_applets" display-name-resource="allowApplets">
+        <attribute name="resourceBundle" value="atg.epub.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="90"/>
+      </property>
+      
+      <property category-resource="categoryEPublishing" name="defaultListing" data-type="int" default="20" column-name="def_listing"  display-name-resource="defaultListing">
+        <attribute name="resourceBundle" value="atg.epub.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+
+      <property category-resource="categoryEPublishing" name="defaultInPageListing" data-type="int" default="10" column-name="def_ip_listing"  display-name-resource="defaultInPageListing">
+        <attribute name="resourceBundle" value="atg.epub.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="12"/>
+      </property>
+
+    </table>
+
+    <table name="epub_int_prj_hist" type="multi" id-column-name="user_id" multi-column-name="sequence_num">
+      <property category-resource="categoryEPublishing" name="projectHistory" data-type="list" component-data-type="string" column-name="project_id"  display-name-resource="projectHistory">
+        <attribute name="resourceBundle" value="atg.epub.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="14"/>
+        <attribute name="uiwritable" value="false"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //product/Publishing/version/10.0.3/pws/config/atg/userprofiling/internalUserProfile.xml#2 $$Change: 651448 $ -->

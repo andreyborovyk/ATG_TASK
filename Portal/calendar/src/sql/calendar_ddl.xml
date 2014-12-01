@@ -1,0 +1,175 @@
+<!DOCTYPE schema  SYSTEM "http://road.atg.com/dtds/ddlgen/schema.dtd">
+<schema name="calendar_ddl">
+<comment><![CDATA[ @version $Id: //app/portal/version/10.0.3/calendar/sql/calendar_ddl.xml#2 $$Change: 651448 $]]></comment>
+   <table name="cal_base_event">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="60"/>
+      </column>
+      <column name="description" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="ignore_time" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>         
+         <column-type db="mssql" type="tinyint"/>
+         <column-type db="mysql" type="tinyint"/>
+         <column-type db="sybase" type="tinyint"/>
+      </column>
+      <column name="gear_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="owner" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+         <column-type db="oracle" type="varchar2" length="40" scale=""/>
+         <column-type db="db2" type="varchar" length="40" scale=""/>
+         <column-type db="mssql" type="varchar" length="40" scale=""/>
+         <column-type db="sybase" type="varchar" length="40"/>
+      </column>
+      <column name="item_acl" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+         <column-type db="oracle" type="varchar2" length="1024" scale=""/>
+         <column-type db="db2" type="varchar" length="1024" scale=""/>
+         <column-type db="mssql" type="varchar" length="1024" scale=""/>
+         <column-type db="sybase" type="varchar" length="1024"/>
+      </column>
+      <column name="version" nullable="n" default="0">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="start_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="start_time" nullable="n">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="end_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="end_time" nullable="n">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="local_start_time" nullable="y">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="local_end_time" nullable="y">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="time_zone" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="5"/>
+      </column>
+      <column name="event_type" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="public_event" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mssql" type="tinyint"/>         
+         <column-type db="mysql" type="tinyint"/>         
+         <column-type db="sybase" type="tinyint"/>
+      </column>
+      <primary-key name="cal_base_event_pk">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+      <check name="cal_base_event_c1">
+         <check-expr expression="ignore_time in (0,1)" db="generic"/>
+      </check>
+      <check name="cal_base_event_c2">
+         <check-expr expression="public_event in (0,1)" db="generic"/>
+      </check>
+   </table>
+   <table name="cal_detail_event">
+      <column name="event_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="address1" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="80"/>
+      </column>
+      <column name="address2" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="80"/>
+      </column>
+      <column name="address3" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="80"/>
+      </column>
+      <column name="city" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="80"/>
+      </column>
+      <column name="state" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="32"/>
+      </column>
+      <column name="country" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="80"/>
+      </column>
+      <column name="postal_code" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="10"/>
+      </column>
+      <column name="contact_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="80"/>
+      </column>
+      <column name="contact_phone" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="80"/>
+      </column>
+      <column name="contact_email" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="url" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="cal_detail_eventpk">
+         <index-column column="event_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="cal_detail_eventfk" referenced-table="cal_base_event">
+         <fkey-column referencing-column="event_id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="cal_event_mapper" description="scenario dataset mappers">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="tstamp" nullable="y">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="event_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="community_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="start_date" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="80"/>
+      </column>
+      <column name="city" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="80"/>
+      </column>
+      <column name="state" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="32"/>
+      </column>
+      <column name="gear_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="community_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="user_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="msg_type" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <index name="cal_evtmap_comid" table="cal_event_mapper">
+         <index-column column="community_id" order="asc" seq="1"/>
+      </index>
+      <index name="cal_evtmap_gearid" table="cal_event_mapper">
+         <index-column column="gear_id" order="asc" seq="1"/>
+      </index>
+      <index name="cal_evtmap_usrid" table="cal_event_mapper">
+         <index-column column="user_id" order="asc" seq="1"/>
+      </index>
+   </table>
+</schema>
+<!-- @version $Id: //app/portal/version/10.0.3/calendar/sql/calendar_ddl.xml#2 $$Change: 651448 $ -->

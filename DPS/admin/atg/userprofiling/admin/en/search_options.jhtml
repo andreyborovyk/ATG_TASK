@@ -1,0 +1,56 @@
+<importbean bean="/atg/userprofiling/servlet/ProfileRepositoryItemDescriptorServlet">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/Switch">	
+
+<declareparam name="itemDescriptor" value="atg.RepositoryItemDescriptor" description="The RepositoryItemDescriptor used to build each option">
+<declareparam name="selectedAttributeName" value="java.lang.String" description="The default dropdrown to select">
+
+<droplet bean="ProfileRepositoryItemDescriptorServlet">
+    <oparam name="output">
+	
+     <droplet bean="ForEach">
+      <param name="array" value="param:itemDescriptor.propertyDescriptors">
+      <param name="sortProperties" value="+displayName">
+      <oparam name="output">
+	 	
+		<droplet bean="Switch">
+		 <param name="value" value="param:element.queryable">
+		 <oparam name="true">
+<java type=import>
+atg.beans.*
+</java>
+<java>
+    DynamicPropertyDescriptor propertyDesc = null;
+    String selectedAttributeName = null;
+    Object value;
+
+    if((value = request.getObjectParameter("selectedAttributeName")) != null) {
+      if(value instanceof String)
+        selectedAttributeName = (String) value;
+    }
+    if((value = request.getObjectParameter("element")) != null) {
+      if(value instanceof DynamicPropertyDescriptor)
+        propertyDesc = (DynamicPropertyDescriptor) value;
+    }	
+    
+     if((propertyDesc != null) && (selectedAttributeName != null)) {
+       if(selectedAttributeName.equalsIgnoreCase(propertyDesc.getName())) {
+</java>		     
+          <option selected><valueof param="element.displayName">null</valueof></option>
+<java>
+       } else {
+</java>		      
+          <option><valueof param="element.displayName">null</valueof></option>
+<java>
+       }
+     }
+</java>		      
+                 </oparam>
+                </droplet>
+
+       </oparam>
+     </droplet>
+             
+    </oparam>
+</droplet>
+<java>/* @version $Id: //product/DPS/version/10.0.3/release/DPS/admin/atg/userprofiling/admin/en/search_options.jhtml#2 $$Change: 651448 $ */</java>

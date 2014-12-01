@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE pipelinemanager
+	PUBLIC "-//Art Technology Group, Inc.//DTD Dynamo Pipeline Manager//EN"
+	'http://www.atg.com/dtds/pipelinemanager/pipelinemanager_1.0.dtd'>
+
+<pipelinemanager>
+
+<!-- This chain is invoked by the PaymentManager to process an -->
+<!-- InvoiceRequest payment group.                             -->
+
+<pipelinechain name="invoiceRequestProcessorChain" transaction="TX_REQUIRED" headlink="createInvoiceRequestInfo">
+  <pipelinelink name="createInvoiceRequestInfo" transaction="TX_MANDATORY">
+    <processor jndi="/atg/commerce/payment/processor/CreateInvoiceRequestInfo"/>
+    <transition returnvalue="1" link="processInvoiceRequest"/>
+  </pipelinelink>
+  <pipelinelink name="processInvoiceRequest" transaction="TX_MANDATORY">
+    <processor jndi="/atg/commerce/payment/processor/ProcessInvoiceRequest"/>
+  </pipelinelink>
+</pipelinechain>
+
+</pipelinemanager>
+<!-- @version $Id: //product/B2BCommerce/version/10.0.3/templates/B2BCommerce/config/atg/commerce/payment/paymentpipeline.xml#2 $$Change: 651448 $ -->

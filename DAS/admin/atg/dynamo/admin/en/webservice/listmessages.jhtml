@@ -1,0 +1,40 @@
+<nucleus type=import>
+        /atg/dynamo/droplet/Switch
+        /atg/dynamo/droplet/ForEach
+        /atg/dynamo/messaging/MessagingManager        
+	/atg/dynamo/admin/CreateWebService
+</nucleus>
+
+
+<droplet name="ForEach">
+  <param name="array" value="param:messageFamilies">
+  <param name="sortProperties" value="messageFamilyName">
+  <oparam name="outputStart"><blockquote></oparam>
+  <oparam name="outputEnd"></blockquote></oparam>
+  <oparam name="output">
+    <BR><B><valueof param="element.messageFamilyName">?</valueof></B><BR>
+      <droplet src="listmessages.jhtml">
+        <param name="messageFamilies"
+	       value="param:element.messageFamilies">
+        <param name="displayEmpty" value="false">
+      </droplet>
+      <droplet name="ForEach">
+        <param name="array" value="param:element.messageTypes">
+        <param name="sortProperties" value="JMSType">
+        <oparam name="output">
+          <A href="selectmessage.jhtml"><param name="jmsType" value="param:element.JMSType"><valueof param="element.JMSType">?</valueof></A>  - <valueof param="element.displayName">?</valueof><BR>    
+        </oparam>
+        </param>
+      </droplet>
+  </oparam>
+  <oparam name="empty">
+    <droplet name="Switch">
+     <param name="value" value="param:displayEmpty">
+     <param name="false" value=" ">
+     <oparam name="default">
+      (No message families found)<BR>
+     </oparam>
+    </droplet>
+  </oparam>
+</droplet>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/webservice/listmessages.jhtml#2 $$Change: 651448 $*/</java>

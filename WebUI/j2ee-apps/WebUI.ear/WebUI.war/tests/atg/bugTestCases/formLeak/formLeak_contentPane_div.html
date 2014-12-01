@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>Dojo 1.0 Form Leak Fix Test</title>
+	<script type="text/javascript" src="/dojo-1/dojo/dojo.js.uncompressed.js"
+		djConfig="isDebug: false, parseOnLoad: true"></script>
+
+		<script type="text/javascript" src="/WebUI/atg.js"></script>
+
+		
+		<script type="text/javascript" src="/dojo-1/dojo-fixes.js"></script>
+
+         <script type="text/javascript">
+          dojo.require('dojox.layout.ContentPane');
+            dojo.require('dijit._Container');
+            dojo.require('dijit._Templated');
+
+          dojo.addOnLoad(function(){
+            console.debug(dijit.byId("dojox_layout_ContentPane_0"));
+            
+            openWindow();
+          });
+      
+          var url = "";
+          
+          function openWindow() {
+            
+            
+            url = (url == "xhr/div1.html" || url == "")? "xhr/div2.html" : "xhr/div1.html"
+            dojo.xhrPost({
+              url:      url,
+              load:     function(data) { 
+                          //console.debug('data', data);
+                          dijit.byId("dojox_layout_ContentPane_0").setContent(data);
+                          dojo.byId('tagTotal').innerHTML = atg.formManager.formNodes.length;
+                          setTimeout("openWindow()", 2000);
+                        },
+              method:   "GET"
+            });  
+          }
+                
+        </script>
+     
+		
+
+	</head>
+	<body>
+    <h3>Total Form Tags in Stack <em id="tagTotal"></em></h3>
+    <!-- <button onclick="javascript:openWindow();">Load Content</button> -->
+    
+      
+    <div dojoType="dojox.layout.ContentPane">
+            
+          Initial Content - this should be replaced onload
+          
+    </div>
+	  
+		
+	</body>
+</html>

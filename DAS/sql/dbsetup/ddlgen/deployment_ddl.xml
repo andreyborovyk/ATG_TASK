@@ -1,0 +1,399 @@
+<!DOCTYPE schema SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="deployment_ddl" description="tables for the daf deployment repository">
+
+  <comment> @version $Id: //product/DAS/version/10.0.3/templates/DAS/sql/deployment_ddl.xml#2 $</comment>
+
+  <comment>
+    These tables are for the daf deployment system
+  </comment>
+
+  <table name="das_deployment" description="information about deployment elements" pessimistic="n">
+    <column name="deployment_id" nullable="n" description="each deployment element has a unique id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="version" nullable="n" description="the version of the deployment item">
+      <column-type db="generic" type="integer"/>
+    </column>
+    
+    <column name="start_time" nullable="y" description="the time the deployment started">
+      <column-type db="generic" type="datetime"/> 
+    </column>
+    <column name="end_time" nullable="y" description="the time the deployment completed successfully">
+      <column-type db="generic" type="datetime"/> 
+    </column>
+    <column name="failure_time" nullable="y" description="the time the last failure occurred, if a failure occurred">
+      <column-type db="generic" type="datetime"/> 
+    </column>
+
+    <column name="status" nullable="y" description="the status of the deployment">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <column name="prev_status" nullable="y" description="the status of the deployment prior to a cancel">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <column name="status_detail" nullable="y" description="a detail message about the current status">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="current_phase" nullable="y" description="the current phase of the deployment">
+      <column-type db="generic" type="integer"/>
+    </column>
+
+    <column name="rep_high_mark" nullable="y" description="the high water mark for repository items">
+      <column-type db="generic" type="integer"/> 
+    </column>
+    <column name="rep_marks_avail" nullable="y" description="the number of repository markers available for processing">
+      <column-type db="generic" type="integer"/> 
+    </column>
+    <column name="file_high_mark" nullable="y" description="the high water mark for files">
+      <column-type db="generic" type="integer"/> 
+    </column>
+    <column name="file_marks_avail" nullable="y" description="the number of file markers available for processing">
+      <column-type db="generic" type="integer"/> 
+    </column>
+    <column name="thread_batch_size" nullable="y" description="the size of a batch for a thread to process">
+      <column-type db="generic" type="integer"/> 
+    </column>
+    <column name="failure_count" nullable="y" description="the number of failures which occurred during processing">
+      <column-type db="generic" type="integer"/> 
+    </column>
+    <column name="purge_deploy_data" nullable="y" description="flag indicating whether to purge the deployment data on completion">
+      <column-type db="generic" type="one-digit"/> 
+    </column>
+
+    <primary-key name="daf_depl_pk">
+      <index-column column="deployment_id"/>
+    </primary-key>
+
+    <index name="das_dpl_start_idx" table="das_deployment" description="makes searching on the start time of deployment elements faster">
+      <index-column column="start_time"/>
+    </index>
+  </table>
+
+
+  <table name="das_depl_progress" description="information about deployment elements" pessimistic="n">
+    <column name="deployment_id" nullable="n" description="each deployment element has a unique id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="version" nullable="n" description="the version of the deployment item">
+      <column-type db="generic" type="integer"/>
+    </column>
+    
+    <column name="work_completed" nullable="y" description="the number of units of work completed for this deployment">
+      <column-type db="generic" type="integer"/> 
+    </column>
+    <column name="total_work" nullable="y" description="the total units of work for this deployment">
+      <column-type db="generic" type="integer"/> 
+    </column>
+    
+    <primary-key name="daf_depl_prg_pk">
+      <index-column column="deployment_id"/>
+    </primary-key>
+
+	</table>
+  
+
+  <table name="das_thread_batch" description="information about deployment thread batches" pessimistic="n">
+    <column name="thread_batch_id" nullable="n" description="each thread batch element has a unique id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="version" nullable="n" description="the version of the thread batch item">
+      <column-type db="generic" type="integer"/>
+    </column>
+    
+    <column name="deployment" nullable="y" description="each thread batch element has a reference to its deployment">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="type" nullable="y" description="the type of thread batch, file or repository">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <column name="owner" nullable="y" description="each thread batch element has an owner server/ip address">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="thread_name" nullable="y" description="each thread batch element is claimed by a specific thread">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="lower_bound" nullable="y" description="the lower bound for this batch">
+      <column-type db="generic" type="integer"/> 
+    </column>
+    <column name="upper_bound" nullable="y" description="the upper bound for this batch">
+      <column-type db="generic" type="integer"/> 
+    </column>
+    <column name="last_update_time" nullable="y" description="the last time this item was updated">
+      <column-type db="generic" type="timestamp"/> 
+    </column>
+    <column name="running" nullable="n" description="whether this batch is running">
+      <column-type db="generic" type="numeric" length="1" scale="0"/>
+      <column-type db="sybase" type="tinyint" />
+      <column-type db="mssql" type="tinyint" />
+		  <column-type db="mysql" type="tinyint"/>
+    </column>
+    
+    <primary-key name="das_dpl_tb_pk">
+      <index-column column="thread_batch_id"/>
+    </primary-key>
+    <index name="das_tb_deployment" table="das_thread_batch" description="makes searching on the deployment id of thread batch elements faster">
+      <index-column column="deployment"/>
+    </index>
+    <index name="das_tb_owner" table="das_thread_batch" description="makes searching on the owner of thread batch elements faster">
+      <index-column column="owner"/>
+    </index>
+    <index name="das_tb_thread_nam" table="das_thread_batch" description="makes searching on the thread name of thread batch elements faster">
+      <index-column column="thread_name"/>
+    </index>
+  </table>
+
+
+  <table name="das_deploy_data" description="information associated with deployment data elements" pessimistic="n">
+    <column name="deploy_data_id" nullable="n" description="the id of this deployment data item">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="version" nullable="n" description="the version of the deployment data item">
+      <column-type db="generic" type="integer"/>
+    </column>
+
+    <column name="type" nullable="y" description="the type of deployment data">
+      <column-type db="generic" type="integer"/>
+    </column>
+
+    <column name="source" nullable="y" description="the source component of the data">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="destination" nullable="y" description="the destination component for the data">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="dest_server" nullable="y" description="the IP and port of the destination server">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="deployment" nullable="y" description="the deployment this deployment data is associated with">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    <primary-key name="deploy_data_pk">
+      <index-column column="deploy_data_id"/>
+    </primary-key>
+    <foreign-key name="dd_deployment_fk" referenced-table="das_deployment" index-name="dd_deployment_idx" description="ensures that the deployment value exists in the das_deployment table">
+      <fkey-column referencing-column="deployment" referenced-column="deployment_id"/>
+    </foreign-key>
+  </table>
+
+
+  <table name="das_deploy_mark" description="information associated with marker elements" pessimistic="n">
+    <column name="marker_id" nullable="n" description="the id of this marker item">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="version" nullable="n" description="the version of the marker item">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <column name="type" nullable="y" description="the type of marker">
+      <column-type db="generic" type="integer"/>
+    </column>
+
+    <column name="status" nullable="y" description="the status of the marker">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <column name="index_number" nullable="y" description="the index of the marker">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <column name="marker_action" nullable="y" description="the action to execute on the marker">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <column name="f_src_devline_id" nullable="y" description="the source development line id for forward deployment this marker is concerned with">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+	<column name="r_src_devline_id" nullable="y" description="the source development line id for rollback deployment this marker is concerned with">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>		  
+    <column name="deployment_id" nullable="y" description="the deployment id this marker is associated with">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="deployment_data" nullable="y" description="the deployment data this marker is associated with">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    <primary-key name="marker_pk" non-clustered="y">
+      <index-column column="marker_id"/>
+    </primary-key>
+    <index name="marker_index_idx" table="das_deploy_mark" description="makes searching on the index_number of markers faster">
+      <index-column column="index_number"/>
+    </index>
+  </table>
+
+
+  <table name="das_rep_mark" description="information associated with repository marker elements" pessimistic="n">
+    <column name="rep_marker_id" nullable="n" description="the id of this repository marker item">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    <column name="item_desc_name" nullable="y" description="the item descriptor name of the repository marker">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="item_id" nullable="y" description="the item id of the repository marker">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+
+    <primary-key name="rep_marker_pk"  non-clustered="y">
+      <index-column column="rep_marker_id"/>
+    </primary-key>
+  </table>
+
+
+  <table name="das_file_mark" description="information associated with file marker elements" pessimistic="n">
+    <column name="file_marker_id" nullable="n" description="the id of this file marker item">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    <column name="file_path" nullable="y" description="the file path of the file marker">
+      <column-type db="generic" type="varchar" length="1000"/>
+    </column>
+
+    <primary-key name="file_marker_pk" non-clustered="y">
+      <index-column column="file_marker_id"/>
+    </primary-key>
+  </table>
+
+
+  <table name="das_depl_depldat" description="deployment data items associated with a deployment" pessimistic="n">
+    <column name="deployment_id" nullable="n" description="the id of the deployment">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="sequence_num" nullable="n"
+         description="the sequence number which determines the ordering of the deployment data elements">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <column name="deployment_data" nullable="y" description="the deployment data id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    <primary-key name="das_dpl_depdat_pk">
+      <index-column column="deployment_id" order="asc" seq="1"/>
+      <index-column column="sequence_num" order="asc" seq="2"/>
+    </primary-key>
+  </table>
+
+
+  <table name="das_depl_options" description="deployment options associated with a deployment" pessimistic="n">
+    <column name="deployment_id" nullable="n" description="the id of the deployment">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="tag" nullable="n"
+         description="the name of the deployment option">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="optionValue" nullable="y" description="the value of the option">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+
+    <primary-key name="das_dpl_depopt_pk">
+      <index-column column="deployment_id" order="asc" seq="1"/>
+      <index-column column="tag" order="asc" seq="2"/>
+    </primary-key>
+  </table>
+
+
+  <table name="das_depl_repmaps" description="repository mappings associated with a deployment" pessimistic="n">
+    <column name="deployment_id" nullable="n" description="the id of the deployment">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="source" nullable="n" description="the source repositories">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="destination" nullable="y" description="the destination repositories">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+
+    <primary-key name="das_dpl_repmap_pk">
+      <index-column column="deployment_id" order="asc" seq="1"/>
+      <index-column column="source" order="asc" seq="2"/>
+    </primary-key>
+  </table>
+
+
+  <table name="das_depl_item_ref" description="repository item references created for deployments" pessimistic="n">
+    <column name="item_ref_id" nullable="n" description="the id of the item reference">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="version" nullable="n" description="the version of the marker item">
+      <column-type db="generic" type="integer"/>
+    </column>
+
+    <column name="deployment_id" nullable="y" description="the deployment id the reference is associated with">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="repository" nullable="y" description="the repository the reference is in">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="item_desc_name" nullable="y" description="the item descriptor name of the reference">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="item_id" nullable="y" description="the item id of the reference">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="item_index" nullable="y" description="the item index of the reference">
+      <column-type db="generic" type="integer"/>
+    </column>
+
+    <primary-key name="das_dpl_itmref_pk">
+      <index-column column="item_ref_id" order="asc" seq="1"/>
+    </primary-key>
+    <index name="das_dpl_itmx_idx" table="das_depl_item_ref" description="makes searching on the item_index columns faster">
+      <index-column column="item_index"/>
+    </index>
+    <index name="das_dpl_dplid_idx" table="das_depl_item_ref" description="makes searching on the deployment_id columns faster">
+      <index-column column="deployment_id"/>
+    </index>
+  </table>
+
+
+  <table name="das_dd_markers" description="marker items associated with a deployment data" pessimistic="n">
+    <column name="deploy_data_id" nullable="n" description="the id of the deployment data">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="sequence_num" nullable="n"
+         description="the sequence number which determines the ordering of the marker elements">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <column name="marker" nullable="y" description="the marker id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    <primary-key name="das_dpl_dd_mrk_pk">
+      <index-column column="deploy_data_id" order="asc" seq="1"/>
+      <index-column column="sequence_num" order="asc" seq="2"/>
+    </primary-key>
+    <foreign-key name="marker_fk" referenced-table="das_deploy_mark" index-name="marker_idx" description="ensures that the marker_id exists in the das_deploy_mark table">
+      <fkey-column referencing-column="marker" referenced-column="marker_id"/>
+    </foreign-key>
+  </table>
+
+
+  <table name="das_dep_fail_info" description="failure details for assets" pessimistic="n">
+    <column name="id" nullable="n" description="primary key of failureinfo">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="deployment_id" nullable="n" description="The
+deploying in which this error occurred">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="marker_id" nullable="y" description="id of the marker for
+which this is failure detail">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="severity" nullable="y" >
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="failure_message" nullable="y" >
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="failure_time" nullable="y" >
+      <column-type db="generic" type="timestamp"/>
+    </column>
+    <column name="error_code" nullable="y" >
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="cause" nullable="y" >
+      <column-type db="generic" type="long-varchar"/>
+      <column-type db="db2" type="varchar" length="20480"/>
+    </column>
+  </table>
+</schema>
+<!-- @version $Id: //product/DAS/version/10.0.3/templates/DAS/sql/deployment_ddl.xml#2 $$Change: 651448 $ -->

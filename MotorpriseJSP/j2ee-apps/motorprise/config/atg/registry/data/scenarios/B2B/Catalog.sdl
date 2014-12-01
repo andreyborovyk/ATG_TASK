@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE scenario
+  SYSTEM
+  "dynamosystemresource:/atg/scenario/definition/sdl.dtd">
+
+<scenario author="admin" creation-time="988915675628" enabled="true" last-modified-by="admin" modification-time="1007076861631">
+  <segment migrate-from="984158659338" migrate-users="true">
+    <segment-name>Anonymous Catalog Assignment</segment-name>
+    <!--================================-->
+    <!--== Session starts  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.dps.StartSession</event-name>
+    </event>
+    <!--================================-->
+    <!--== Catalog is undefined  -->
+    <!--================================-->
+    <condition construct="people-element" id="2">
+      <filter construct="profile-property-filter" operator="isNull">
+        <subject-property>
+          <property-name>catalog</property-name>
+        </subject-property>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Change Person's Catalog to Base Catalog  -->
+    <!--================================-->
+    <action id="3">
+      <action-name construct="modify-action">modify</action-name>
+      <action-param name="modified">
+        <subject-property>
+          <property-name>catalog</property-name>
+        </subject-property>
+      </action-param>
+      <action-param name="operator">
+        <constant>assign</constant>
+      </action-param>
+      <action-param name="modifier">
+        <constant construct="repository-item-expr" type="atg.repository.RepositoryItem">/atg/commerce/catalog/ProductCatalog:catalog:400001</constant>
+      </action-param>
+    </action>
+  </segment>
+</scenario>

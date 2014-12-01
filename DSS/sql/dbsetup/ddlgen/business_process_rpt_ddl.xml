@@ -1,0 +1,37 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="dss_ddl">
+<comment><![CDATA[ @version $Id: //product/DSS/version/10.0.3/templates/DSS/sql/business_process_rpt_ddl.xml#2 $$Change: 651448 $]]></comment>
+   <table name="drpt_stage_reached">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="owner_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="process_start_time" nullable="n">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="event_time" nullable="n">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="bp_name" nullable="n">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="bp_stage" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="is_transient" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mssql" type="tinyint" />
+         <column-type db="sybase" type="tinyint" />
+		 <column-type db="mysql" type="tinyint"/>
+      </column>
+      <column name="bp_stage_sequence" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <check name="drpt_bpstage_c">
+         <check-expr expression="is_transient in (0,1)" db="generic"/>
+      </check>
+   </table>
+</schema>
+<!-- @version $Id: //product/DSS/version/10.0.3/templates/DSS/sql/business_process_rpt_ddl.xml#2 $$Change: 651448 $-->

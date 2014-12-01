@@ -1,0 +1,93 @@
+<HTML>
+<HEAD>
+<TITLE>Switch Product Catalog Data Source</TITLE>
+</HEAD>
+
+<importbean bean="/atg/commerce/jdbc/ProductCatalogSwitcher">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/Switch">
+
+<body BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="../images/dcsadminbanner.gif" ALT="Dynamo Commerce Administration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a href="../index.jhtml">Commerce</a>/
+<a href="index.jhtml">ProductCatalog-PriceLists</a>/Switch<p>
+
+<blockquote>
+
+<droplet bean="Switch">
+  <param name="value" value="bean:ProductCatalogSwitcher.formError">
+  <oparam name="true">
+  	<p>The following errors occured while preparing the switch:
+  	<ul>
+     <droplet bean="/atg/dynamo/droplet/ErrorMessageForEach">
+    <param name="exceptions" value="bean:ProductCatalogSwitcher.formExceptions">
+    <oparam name="output">
+      <font color="red">
+      <LI> <valueof param="message"/>
+      </font>
+    </oparam>
+   </droplet>
+   </ul>
+  </oparam>    
+</droplet>
+
+<h2>Switch the Product Catalog's and Price Lists's Data Sources: Switch</h2>
+
+<setvalue param="switchingDataSource" value="bean:ProductCatalogSwitcher.switchingDataSource">
+<p>Now that you have prepared the data source, you can finish the switch.
+
+<p>Here are the available Data Sources for the Product Catalog and
+Price Lists.<br>
+<table border=1>
+  <tr>
+    <td><b>Name</b></td>
+    <td><b>Path</b></td>
+  </tr>
+  <droplet bean="ForEach">
+    <param name="array" value="param:switchingDataSource.dataSources">
+    <param name="elementName" value="dataSource">
+    <oparam name="empty">
+      <tr><td colspan=2>
+	  No data sources.
+      </td></tr>
+    </oparam>
+    <oparam name="error">
+      <tr><td colspan=2>
+	<valueof param="error">There was an error.</valueof>
+      </td></tr>
+    </oparam>
+    <oparam name="output">
+      <tr>
+	<td>
+	    <b><valueof param="key">no name</valueof></b>
+	</td>
+	<td>
+	<java>out.println(((atg.service.jdbc.SwitchingDataSource) request.getObjectParameter("switchingDataSource")).getPathForDataSource((String) request.getParameter("key")));</java>
+	</td>
+      </tr>    
+    </oparam>
+  </droplet>
+</table>
+
+<p>The data source currently being used is
+<b><valueof param="switchingDataSource.currentDataSourceName"></valueof></b>
+
+<p>The next data source will be
+<b><valueof param="switchingDataSource.nextDataSourceName"></valueof></b>
+
+<form action="SwitchFinished.jhtml" method=POST>
+<input type="hidden" bean="ProductCatalogSwitcher.successURL" value="SwitchFinished.jhtml">
+<input type="hidden" bean="ProductCatalogSwitcher.errorURL" value="SwitchProductCatalogDataSource.jhtml">
+Click here to complete the switch.<br>
+<input type=submit bean="ProductCatalogSwitcher.switchDataSource" value="Switch">
+</form>
+<hr>
+
+</blockquote>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/DCS/admin/atg/commerce/admin/en/catalog/SwitchProductCatalogDataSource.jhtml#2 $$Change: 651448 $*/</java>
+

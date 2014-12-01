@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE database-initializer SYSTEM "http://www.atg.com/dtds/dbinit_1_0.dtd">
+<database-initializer>
+
+  <schema id="productionSchema">
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/logical_org_ddl.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_logical_org_ddl.sql
+        </drop>
+      </path>
+    </sql>
+  </schema>
+
+  <server-instance-type id="production">
+    <datasource id="switchingCore">
+      <schema id="productionSchema"/>
+    </datasource>
+    <datasource id="nonswitchingCore">
+      <schema id="productionSchema"/>
+    </datasource>
+  </server-instance-type>
+  <server-instance-type id="svcagent">
+    <datasource id="svcagent">
+      <schema id="productionSchema">
+      </schema>
+    </datasource>
+  </server-instance-type>
+
+</database-initializer>
+<!-- @version $Id: //product/DPS/version/10.0.3/release/DPS/LogicalOrganizations/cim/dbinit.xml#2 $$Change: 651448 $-->

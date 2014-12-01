@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE portal-manifest PUBLIC "-//Art Technology Group, Inc.//DTD Portal Manifest//EN" "http://www.atg.com/dtds/portal/framework/portal_manifest_1.0.dtd">
+
+<portal-manifest name="TargetedContentGear" version="1.0" author="ATG Portal Team">
+
+  <gear-definitions>
+    <gear-definition name="TargetedContentGear" version="1.0" author="ATG Portal Team">
+      <description>This gear will use a slot to render targeted content.</description>
+
+      <servlet-context>/gear/slotgear</servlet-context>
+
+      <dimensions>
+        <dimension name="height">noPreference</dimension>
+        <dimension name="width">narrow</dimension>
+      </dimensions>
+      <gear-modes>
+
+        <gear-mode name="content">
+          <display-modes>
+            <display-mode name="shared">
+              <device-output name="html">/sharedSlot.jsp</device-output>
+            </display-mode>
+          </display-modes>
+        </gear-mode>
+
+        <gear-mode name="instanceConfig">
+          <display-modes>
+            <display-mode name="full">
+              <device-output name="html">/admin/instanceConfig.jsp</device-output>
+            </display-mode>
+          </display-modes>
+        </gear-mode>
+
+      </gear-modes>
+
+     <instance-parameters>
+       <parameter name="slotComponent" >
+         <default-value>
+           TestSlot
+         </default-value>
+       </parameter>
+
+       <parameter name="targetingBean" >
+         <default-value>
+           /atg/targeting/TargetingFirst
+         </default-value>
+       </parameter>
+
+       <parameter name="filter" >
+       </parameter>
+
+       <parameter name="sourceMap" >
+       </parameter>
+
+       <parameter name="howMany" >
+         <default-value>
+           1
+         </default-value>
+       </parameter>
+
+       <parameter name="sortProperties" >
+       </parameter>
+
+       <parameter name="fireContentEvent" >
+         <default-value>
+           false
+         </default-value>
+       </parameter>
+
+       <parameter name="fireContentTypeEvent" >
+         <default-value>
+           false
+         </default-value>
+       </parameter>
+
+       <parameter name="defaultImage" >
+         <default-value>
+           /gear/slotgear/images/clear.gif
+         </default-value>
+       </parameter>
+
+       <parameter name="urlPropertyName" >
+         <default-value>
+           url
+         </default-value>
+       </parameter>
+
+       <parameter name="textPropertyName" >
+         <default-value>
+           data
+         </default-value>
+       </parameter>
+
+       <parameter name="catalogUrl" >
+         <default-value>
+           /EcoVida/b2b/catalog/product.jsp
+         </default-value>
+       </parameter>
+
+       
+     </instance-parameters>
+
+    </gear-definition>
+
+  </gear-definitions>
+</portal-manifest>
+<!-- @version $Id: //app/portal/version/10.0.3/slotgear/etc/slotgear-manifest.xml#2 $$Change: 651448 $ -->

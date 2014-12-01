@@ -1,0 +1,126 @@
+<!DOCTYPE schema SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+
+<schema name="versionmanager_ddl" description="tables for the version manager repository">
+
+  <comment> @version $Id: //product/Publishing/version/10.0.3/pws/sql/xml/versionmanager_ddl.xml#2 $</comment>
+
+  <comment>
+    These tables are for the version manager
+  </comment>
+
+  <table name="avm_devline" description="information about development lines">
+    <column name="id" nullable="n"
+        description="each devline has a unique id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="type" nullable="n"
+        description="the type of the devline object">
+      <column-type db="generic" type="numeric" length="19"/>
+	  <column-type db="mysql" type="bigint" />
+    </column>
+    <column name="name" nullable="n"
+        description="the name of the devline">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="parent" nullable="y"
+        description="the parent branch of this devline">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="date_created" nullable="y"
+        description="date and time that the development line was created">
+      <column-type db="generic" type="datetime"/>
+      <column-type db="oracle" type="timestamp"/>
+    </column>
+
+
+    <primary-key name="avm_devline_pk">
+      <index-column column="id"/>
+    </primary-key>
+
+    <unique name="avm_dl_name_unq"
+        description="ensures that no two names are the same">
+      <index-column column="name"/>
+    </unique>
+
+    <index name="avm_devline_pt_idx" table="avm_devline"
+        description="makes searching on the parent of devlines faster">
+      <index-column column="parent"/>
+    </index>
+  </table>
+
+  <table name="avm_workspace" description="information about workspaces">
+    <column name="ws_id" nullable="n"
+        description="each workspace has a unique id">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="checked_in" nullable="n"
+        description="marks the workspace as checked in">
+      <column-type db="generic" type="numeric" length="1"/>
+	  <column-type db="mysql" type="tinyint" />
+    </column>
+    <column name="ci_time" nullable="y"
+        description="the time the workspace was checked in">
+      <column-type db="generic" type="datetime"/>
+      <column-type db="oracle" type="timestamp"/>
+    </column>
+    <column name="userid" nullable="y"
+        description="the user id which checked in the workspace">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="locked" nullable="n"
+        description="are the assets in this workspace locked">
+      <column-type db="generic" type="numeric" length="1"/>
+	  <column-type db="mysql" type="tinyint" />
+    </column>
+    <column name="editable" nullable="n"
+        description="is this workspace editable">
+      <column-type db="generic" type="numeric" length="1"/>
+	  <column-type db="mysql" type="tinyint" />
+    </column>	  
+    <column name="change_was" nullable="y"
+        description="the checkin comment for the workspace">
+      <column-type db="generic" type="varchar" length="4096"/>
+      <column-type db="mssql" type="text"/>
+      <column-type db="sybase" type="varchar" length="2048"/>
+    </column> 
+
+    <primary-key name="avm_workspace_pk">
+      <index-column column="ws_id"/>
+    </primary-key>
+    <foreign-key name="avm_workspace_fk" referenced-table="avm_devline"
+        description="ensures that the ws_id exists in the avm_devline table">
+      <fkey-column referencing-column="ws_id" referenced-column="id"/>
+    </foreign-key>
+  </table>
+
+  <table name="avm_asset_lock" description="assets can be locked for deployement">
+
+    <column name="repository_name" nullable="n" description="repository name of asset">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="descriptor_name" nullable="n" description="item descriptor name">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="repository_id" nullable="n" description="id of repository asset">
+      <column-type db="generic" type="varchar" length="255"/>
+    </column>
+    <column name="workspace_id" nullable="n" description="workspace that has the lock">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+    <primary-key name="avm_lock_pk">
+      <index-column column="repository_name" order="asc" seq="1"/>
+      <index-column column="descriptor_name" order="asc" seq="2"/>
+      <index-column column="repository_id" order="asc" seq="3"/>
+    </primary-key>
+    
+    <foreign-key name="avm_lock_ws_fk" referenced-table="avm_workspace"
+        description="reference to workspace table" index-name="avm_asset_lock_x">
+      <fkey-column referencing-column="workspace_id" referenced-column="ws_id"/>
+    </foreign-key>
+  </table>
+
+
+
+</schema>
+<!-- @version $Id: //product/Publishing/version/10.0.3/pws/sql/xml/versionmanager_ddl.xml#2 $$Change: 651448 $ -->

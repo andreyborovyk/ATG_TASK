@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE scenario
+  SYSTEM
+  "dynamosystemresource:/atg/scenario/definition/sdl.dtd">
+
+<scenario modification-time="964051935365" enabled="false" author="admin" creation-time="964051935365" >
+  <segment>
+    <segment-name>Email Seminar Announcement</segment-name>
+    <!--================================-->
+    <!--== On (Email Date) at 12:00AM  -->
+    <!--================================-->
+    <time id="1">
+      <date-time-pattern>
+        <date placeholder-name="Email Date">
+          <month>5</month>
+          <day>15</day>
+          <year>2001</year>
+        </date>
+        <time-of-day>
+          <hours>12</hours>
+          <minutes>00</minutes>
+          <meridian>AM</meridian>
+        </time-of-day>
+      </date-time-pattern>
+    </time>
+    <!--================================-->
+    <!--== in group investors  -->
+    <!--================================-->
+    <condition id="2" construct="people-element">
+      <filter operator="eq" construct="profile-group-filter">
+        <subject-property>
+          <property-name>investors</property-name>
+        </subject-property>
+        <constant type="boolean">true</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Receive email is yes  -->
+    <!--================================-->
+    <condition id="3" construct="people-element">
+      <filter operator="eq" construct="profile-property-filter">
+        <subject-property>
+          <property-name>receiveEmail</property-name>
+        </subject-property>
+        <constant>yes</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Home address's postalCode starts with (Postal Code)  -->
+    <!--================================-->
+    <condition id="4" construct="people-element">
+      <filter operator="startsWith" construct="profile-property-filter">
+        <subject-property>
+          <property-name>homeAddress</property-name>
+          <property-name>postalCode</property-name>
+        </subject-property>
+        <constant placeholder-name="Postal Code">02124</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Send email (Seminar Email)  -->
+    <!--================================-->
+    <action id="5">
+      <action-name>sendEmail</action-name>
+      <action-param name="template">
+        <constant placeholder-name="Seminar Email">/QuincyFunds/en/email/seminar.jsp</constant>
+      </action-param>
+    </action>
+  </segment>
+  <segment>
+    <segment-name>Add to Promotion Slot</segment-name>
+    <!--================================-->
+    <!--== Between (Promo Start Date) and (Promo End Date)  -->
+    <!--================================-->
+    <time id="1">
+      <date-range>
+        <date placeholder-name="Promo Start Date">
+          <month>5</month>
+          <day>15</day>
+          <year>2001</year>
+        </date>
+        <date placeholder-name="Promo End Date">
+          <month>6</month>
+          <day>31</day>
+          <year>2001</year>
+        </date>
+      </date-range>
+    </time>
+    <!--================================-->
+    <!--== Logs in  -->
+    <!--================================-->
+    <event id="2">
+      <event-name>atg.dps.Login</event-name>
+    </event>
+    <!--================================-->
+    <!--== Home address's postalCode starts with (Postal Code)  -->
+    <!--================================-->
+    <condition id="3" construct="people-element">
+      <filter operator="startsWith" construct="profile-property-filter">
+        <subject-property>
+          <property-name>homeAddress</property-name>
+          <property-name>postalCode</property-name>
+        </subject-property>
+        <constant placeholder-name="Postal Code">02124</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Show items in slot QFOfferSlot named (Seminar Promo)  -->
+    <!--================================-->
+    <action id="4">
+      <action-name>fillSlot</action-name>
+      <action-param name="slot">
+        <nucleus-property>
+          <nucleus-path>/atg/registry/Slots/QFOfferSlot</nucleus-path>
+        </nucleus-property>
+      </action-param>
+      <action-param placeholder-name="Seminar Promo" name="ids">
+        <array type="java.lang.String[]">
+          <constant>/repositories/Offers/seminar.html</constant>
+        </array>
+      </action-param>
+    </action>
+  </segment>
+</scenario>

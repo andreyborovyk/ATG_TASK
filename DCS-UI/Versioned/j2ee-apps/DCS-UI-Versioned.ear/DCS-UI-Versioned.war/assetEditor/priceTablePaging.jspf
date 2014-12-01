@@ -1,0 +1,51 @@
+
+
+  <div class="paging"> 
+
+  <span class="pageJump">
+
+    <span> <fmt:message key="priceLists.goPage"/> </span> 
+    <input id="gotoPageInput" type="text" size="3"/> 
+    <input type="button" onclick="submitPriceListTable()" class="small" value="<fmt:message key='priceLists.go'/>" />
+
+  </span>
+
+  <span class="directional">
+
+    <c:choose>
+      <c:when test="${priceListFormHandler.currentPageNumber == 1}">
+        <a title="<fmt:message key='priceLists.firstPage'/>" class="icon pageFirst inactive"></a>
+        <a title="<fmt:message key='priceLists.firstPage'/>" class="icon pageBack inactive"></a>
+      </c:when>
+      <c:otherwise>
+        <a href="#" onclick="gotoPageNumber(1)" title="<fmt:message key='priceLists.gotoPage'/> 1" class="icon pageFirst" hidefocus="true"></a>  
+        <a href="#" onclick="stepPageNumber(false)" title="<fmt:message key='priceLists.gotoPage'/> <c:out value='${priceListFormHandler.currentPageNumber -1}'/>" class="icon pageBack" hidefocus="true"></a>  
+      </c:otherwise>
+    </c:choose>
+
+    <span>
+     <fmt:message key="priceLists.page"/>  <c:out value="${priceListFormHandler.currentPageNumber}"/> <fmt:message key="priceLists.pageOfPage"/> <c:out value="${priceListFormHandler.resultPageCount}"/> 
+    </span>
+
+    <c:choose>
+      <c:when test="${priceListFormHandler.currentPageNumber == priceListFormHandler.resultPageCount}">
+        <a title="<fmt:message key='priceLists.lastPage'/>" class="icon pageForward inactive"></a>
+        <a title="<fmt:message key='priceLists.lastPage'/>" class="icon pageLast inactive"></a>
+      </c:when>
+      <c:otherwise>
+        <a href="#" onclick="stepPageNumber(true)" title="<fmt:message key='priceLists.gotoPage'/>  <c:out value='${priceListFormHandler.currentPageNumber +1}'/>" class="icon pageForward" hidefocus="true"></a>  
+        <a href="#" onclick="gotoPageNumber(<c:out value='${priceListFormHandler.resultPageCount}'/>)" title="<fmt:message key='priceLists.gotoPage'/>  <c:out value='${priceListFormHandler.resultPageCount}'/>" class="icon pageLast" hidefocus="true"></a>  
+      </c:otherwise>
+    </c:choose>
+
+  </span>
+
+  </div>
+
+
+<script type="text/javascript">
+  
+  maxPageCount = <c:out value="${priceListFormHandler.resultPageCount}"/>;
+
+</script>
+<%-- @version $Id: //product/DCS-UI/version/10.0.3/Versioned/src/web-apps/DCS-UI-Versioned/assetEditor/priceTablePaging.jspf#2 $$Change: 651448 $--%>

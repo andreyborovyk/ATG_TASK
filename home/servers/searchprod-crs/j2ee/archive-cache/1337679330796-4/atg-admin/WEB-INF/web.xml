@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app id="WebApp_ATG_DYN_EAR">
+  <display-name>Dynamo Application</display-name>
+  <description>A Dynamo Application</description>
+
+  <!--
+       If context-root is set here, then ServletContextWebAppRegistry will use
+       this setting as the context-root for this WebApp.  This must match
+       the context-root setting in application.xml.
+    -->
+  <context-param>
+    <param-name>context-root</param-name>
+    <param-value>dyn/admin</param-value>
+  </context-param>
+
+  <!-- Turn off preview for this app-->
+  <context-param>
+    <param-name>atg.preview</param-name>
+    <param-value>false</param-value>
+  </context-param>
+
+  <!-- 
+       Configure the Nucleus Servlet. This servlet definition is required
+       in each web application that uses dynamo functionality.  When mapped,
+       it exposes the nucleus component browser, but should not be
+       mapped to any paths on a live site.
+    -->
+  <servlet>
+    <servlet-name>NucleusServlet</servlet-name>
+    <servlet-class>atg.nucleus.servlet.NucleusServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <!-- 
+       This servlet exposes the admin server of dynamo as a servlet in your
+       application server.  It is not necessary, but useful to access the
+       nucleus component browser, dynamo's configuration manager, and
+       performance monitor
+    -->
+  <servlet>
+    <servlet-name>AdminProxyServlet</servlet-name>
+    <servlet-class>atg.nucleus.servlet.NucleusProxyServlet</servlet-class>
+    <init-param>
+      <param-name>proxyServletPath</param-name>
+      <param-value>/atg/dynamo/servlet/adminpipeline/AdminHandler</param-value>
+    </init-param>  
+    <load-on-startup>2</load-on-startup>
+  </servlet>
+
+  <!-- 
+    You can enable this for diagnostic purposes in case you have trouble
+    starting up other services, you can go directly to nucleus.  It will
+    allow you to directly access the component browser.  There
+    is no authentication on this though so do not enable it for a live site.
+  <servlet-mapping>
+    <servlet-name>NucleusServlet</servlet-name>
+    <url-pattern>/nucleus/*</url-pattern>
+  </servlet-mapping>
+  -->
+
+  <!-- Exposes dynamo's admin server -->
+  <servlet-mapping>
+    <servlet-name>AdminProxyServlet</servlet-name>
+    <url-pattern>/*</url-pattern>
+  </servlet-mapping>
+
+</web-app>
+<!-- @version $Id: //product/DAF/version/10.0.3/DafEar/Admin/src/j2ee-components/atg-admin.war/WEB-INF/web.xml#2 $$Change: 651448 $ -->

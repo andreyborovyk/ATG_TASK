@@ -1,0 +1,207 @@
+<%--
+  Asset Property View fragment
+
+  Variables
+
+  item            the asset, either a repository item or virtual file
+  assetInfoPath   path to the asset context of the enclosing page
+
+  @version $Id $$Change $
+  @updated $DateTime $$Author $
+  --%>
+
+<%@ page import="atg.epub.servlet.AssetInfo" %>
+
+<!-- Begin AssetPortlet's assetPropertyView.jsp -->
+
+<dspel:getvalueof var="expert" bean="/atg/userprofiling/Profile.expert"/>
+
+<!-- get the mapping for the asset -->
+<biz:getItemMapping item="${item}" var="imap" mode="view"
+  showExpert="${expert}"/>
+
+<!-- Set the item mapping into a request scoped variable -->
+<c:set value="${imap}" var="imap" scope="request"/>
+
+<c:if test="${debug}">
+  item path: <c:out value="${imap.itemPath}"/>
+  <br />
+  item type: <c:out value="${imap.itemName}"/>
+  <br />
+  form handler path: <c:out value="${imap.formHandler.path}"/>
+  <br />
+</c:if>
+
+<!-- Import form handler specified in mapping -->
+<dspel:importbean var="formHandler" bean="${imap.formHandler.path}"/>
+
+<!-- Make the form handler EL variable request scoped -->
+<c:set value="${formHandler}" var="formHandler" scope="request"/>
+
+<%-- Update context with current asset information --%>
+<dspel:importbean var="assetInfo" bean="${assetInfoPath}"/>
+<c:set target="${assetInfo.context}" property="assetFormHandler"
+  value="${formHandler}"/>
+<c:set target="${assetInfo.context.attributes}" property="asset"
+  value="${item}"/>
+<c:set target="${assetInfo.context.attributes}" property="transient"
+  value="false"/>
+  
+<c:set target="${assetInfo.context.attributes}" property="assetURI"
+  value="${assetVersionURI}"/>
+
+<c:if test="${debug}">
+  asset info assetURI: <c:out value="${assetInfo.context.attributes.assetURI}"/>
+  <br />
+</c:if>
+
+<!-- Transfer mapping attributes to form handler -->
+<c:forEach items="${imap.formHandler.attributes}" var="attr">
+  <c:set target="${formHandler.attributes}"
+    property="${attr.key}" value="${attr.value.value}"/>
+</c:forEach>
+
+<c:if test="${debug}">
+  asset editor:    <c:out value="${formHandler.assetEditor}"/>
+  <br />
+</c:if>
+
+<c:set value="${formHandler.assetEditor}" target="${imap}"
+  property="itemEditor"/>
+
+<%--
+  If the form handler defines a value dictionary, set its
+  name in the mapping
+ --%>
+<c:if test="${ ! empty imap.formHandler.attributes.atgFormValueDict }">
+  <c:set target="${imap}" property="valueDictionaryName"
+    value="${imap.formHandler.attributes.atgFormValueDict.value}"/>
+</c:if>
+
+<portlet:actionURL var="actionURL"/>
+
+<dspel:form enctype="multipart/form-data" action="${actionURL}" method="post"
+  id="viewerForm" formid="viewerForm">
+
+  <script language="JavaScript">
+
+    function getForm() { return document.getElementById("viewerForm"); }
+
+    function submitViewChange( viewNumber ) {
+      document.forms[0].elements["<c:out value="${imap.formHandler.path}.view"/>"].value =
+        viewNumber;
+      document.forms[0].elements["<c:out value="${imap.formHandler.path}.actionType"/>"].value =
+        "setView";
+      document.forms[0].submit();
+    }
+  </script>
+
+  <c:set target="${formHandler}" property="assetInfo"
+    value="${assetInfo}"/>
+  <c:set target="${formHandler}" property="itemType"
+    value="${imap.itemName}"/>
+  <c:set target="${formHandler}" property="componentPath"
+    value="${imap.itemPath}"/>
+  <c:set target="${formHandler}" property="item" value="${item}"/>
+  
+  <c:set target="${formHandler.attributes}"
+    property="useAssetUri" value="true"/>
+
+
+  <dspel:input type="hidden" value="${assetInfoPath}" priority="100"
+    bean="${imap.formHandler.path}.assetInfoPath"/>
+
+  <dspel:input type="hidden" value="${imap.itemName}"
+    bean="${imap.formHandler.path}.itemType"/>
+  <dspel:input type="hidden" value="${imap.itemPath}"
+    bean="${imap.formHandler.path}.componentPath"/>
+  <desel:input type="hidden" value="${item.id}"
+    bean="${imap.formHandlerpath}.id}"/>
+
+  <c:if test="${empty formHandler.view}">
+    <c:set target="${formHandler}" var="view" value="0"/>
+  </c:if>
+
+  <div class="contentActions">
+    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+      <tr>
+        <td class="blankSpace">&nbsp;
+        </td>
+        <td>
+          <h2>
+            <dspel:input type="hidden" bean="${imap.formHandler.path}.view"
+              value="" />
+            <dspel:input type="hidden" bean="${imap.formHandler.path}.actionType"
+              value="none" priority="-1"/>
+            <dspel:input type="hidden" bean="${imap.formHandler.path}.submitAction"
+              value="1" priority="-10"/>
+            <dspel:input type="hidden" bean="${imap.formHandler.path}.actionURL"
+              value="${actionURL}" priority="-10"/>
+
+            <c:forEach items="${imap.viewMappings}" var="aView" varStatus="vstat">
+              <c:if test="${vstat.first}">
+                <c:set value="${aView}" var="view" scope="request"/>
+              </c:if>
+              <c:choose>
+                <c:when test="${ vstat.index == formHandler.view }">
+                  <c:set value="${aView}" var="view" scope="request"/>
+                  <c:out value="${view.displayName}"/>
+                </c:when>
+                <c:otherwise>
+                  <a href='javascript:submitViewChange("<c:out value="${vstat.index}"/>");'>
+                    <c:out value="${aView.displayName}"/>
+                  </a>
+                </c:otherwise>
+              </c:choose>
+              <c:if test="${ ! vstat.last }">
+                |
+              </c:if>
+            </c:forEach>
+          </h2>
+        </td>
+        <td class="blankSpace" width="100%">&nbsp;
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- list form handler errors? -->
+  <c:forEach items="${formHandler.formExceptions}" var="ex">
+    <b>
+      <c:out value="${ex.message}"/>
+    </b>
+    <br />
+  </c:forEach>
+
+  <c:if test="${debug}">
+    <br />
+    View Name: <c:out value="${view.name}"/>
+    <br />
+    Description: <c:out value="${view.description}"/>
+    <br />
+  </c:if>
+
+  <!--
+    <c:out value="Mapping Information --------------------"/>
+    <c:out value="  description: ${imap.description}"/>
+    <c:out value="     itemPath: ${imap.itemPath}"/>
+    <c:out value="     itemName: ${imap.itemName}"/>
+    <c:out value="         view: ${view.name}, ${view.uri}"/>
+  -->
+  <dspel:include otherContext="${view.contextRoot}" page="${view.uri}"/>
+
+  <c:choose>
+    <c:when test="${ ! empty view.attributes.atgPreviewURL }">
+      <c:set var="previewURL" scope="request"
+        value="${ view.attributes.atgPreviewURL }"/>
+    </c:when>
+    <c:when test="${ ! empty imap.attributes.atgPreviewURL }">
+      <c:set var="previewURL" scope="request"
+        value="${ imap.attributes.atgPreviewURL.value }"/>
+    </c:when>
+  </c:choose>
+
+</dspel:form>
+
+<!-- End AssetPortlet's assetPropertyView.jsp -->
+<%-- @version $Id: //product/PubPortlet/version/10.0.3/portlets.war/html/AssetsPortlet/assetPropertyView.jspf#2 $$Change: 651448 $--%>

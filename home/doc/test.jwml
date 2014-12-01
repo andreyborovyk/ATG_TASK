@@ -1,0 +1,98 @@
+<java type="import">javax.servlet.http.*</java><java>
+/*
+ * This uses the standard javasoft session tracking API and page compilation
+ * interfaces
+ */
+HttpSession s = request.getSession (true);
+
+Integer count;
+synchronized (s) {
+  count = (Integer) s.getValue ("visitCounter");
+  if (count == null) count = new Integer (0);
+  else count = new Integer(count.intValue() + 1);
+  s.putValue ("visitCounter", count);
+}
+
+/* Set a cookie to make sure that our cookies are being returned properly */
+response.addCookie(new Cookie("countCookie", String.valueOf(count)));
+</java>
+
+<?xml version="1.0"?>
+<!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.1//EN"
+			"http://www.wapforum.org/DTD/wml_1.1.xml">
+
+<wml>
+	<card id="test" title="Test Deck">
+		<p mode="nowrap"><small>
+			<a href="test.jwml">Test Deck</a>
+			<br/>
+			View Count: <java type=print>count</java>
+			<br/>
+			Session Id: <java type=print>request.getSession(true).getId()</java>	
+			<br/>
+			<java type=print>request.getSession(true).isNew() ? "new" : "exists"</java> <java type=print>request.isRequestedSessionIdValid() ? "valid" : "invalid"</java> <java> if(request.isRequestedSessionIdFromUrl()) out.print("url"); else if(request.isRequestedSessionIdFromCookie()) out.print("cookie"); else out.print("other"); </java>
+			<br/>
+			<droplet name="/atg/dynamo/droplet/Switch">
+  			<param name="value" value="property:/atg/dynamo/Configuration.drpEnabled">
+  			<oparam name="true">
+    				Hostname: <valueof property="/atg/dynamo/server/DrpServer.hostName">not set</valueof>
+			<br/>
+				Port: <valueof property="/atg/dynamo/server/DrpServer.port"></valueof>
+  			</oparam>
+  			<oparam name="false">
+    				Drp: disabled
+			</oparam>
+			</droplet>
+			<br/>
+			ContentLength: <java type=print>request.getContentLength()</java>
+			<br/>
+			ContentType: <java type=print>request.getContentType()</java>
+			<br/>
+			Protocol: <java type=print>request.getProtocol()</java>
+			<br/>
+			ServerName: <java type=print>request.getServerName()</java>
+			<br/>
+			ServerPort: <java type=print>request.getServerPort()</java>
+			<br/>
+			RemoteAddr: <java type=print>request.getRemoteAddr()</java>
+			<br/>
+			RemoteHost: <java type=print>request.getRemoteHost()</java>
+			<br/>
+			Method: <java type=print>request.getMethod()</java>
+			<br/>
+			RequestURI: <java type=print>request.getRequestURI()</java>
+			<br/>		
+			ContextPath: <java type=print>request.getContextPath()</java>
+			<br/>
+			ServletPath: <java type=print>request.getServletPath()</java>
+			<br/>
+			PathInfo: <java type=print>request.getPathInfo()</java>
+			<br/>
+			PathTranslated: <java type=print>request.getPathTranslated()</java>
+			<br/>
+			QueryString: <java type=print>request.getQueryString()</java>
+			<br/>
+			RemoteUser: <java type=print>request.getRemoteUser()</java>
+			<br/>
+			AuthType: <java type=print>request.getAuthType()</java>
+			<br/>
+			HTTPHeaders: <java>
+				Enumeration hkeys = request.getHeaderNames();
+				if (hkeys != null) {
+	      				StringBuffer hsb = new StringBuffer();
+      					
+      					while (hkeys.hasMoreElements()) {
+        					String hkey = (String)hkeys.nextElement();
+        					String hvalue = request.getHeader(hkey);
+        					hsb.append(hkey).append("=");
+        					hsb.append(hvalue);
+        					if (hkeys.hasMoreElements())
+          					hsb.append(", ");
+      					}	
+ 	     				
+      					out.print(hsb.toString());
+				}</java>
+			<br/>
+		</small></p>			
+	</card>
+</wml>

@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE process SYSTEM "dynamosystemresource:/atg/dtds/pdl/pdl_1.0.dtd">
+<process author="admin" creation-time="1092778799246" enabled="true" last-modified-by="admin" modification-time="1092779708312">
+  <segment migrate-subjects="false">
+    <segment-name>Home Page Promos</segment-name>
+    <fork id="1">
+      <branch id="1.1">
+        <!--================================-->
+        <!--== Visits a page named MotorpriseJSP:/en/home.jsp  -->
+        <!--================================-->
+        <event id="1.1.1">
+          <event-name>atg.dps.PageVisit</event-name>
+          <filter construct="page-path-name-filter" operator="eq">
+            <event-property>
+              <property-name>scenarioPathInfo</property-name>
+            </event-property>
+            <constant>MotorpriseJSP:/en/home.jsp</constant>
+          </filter>
+        </event>
+        <!--================================-->
+        <!--== Add items to slot named messageSlot named Wheel bearings  -->
+        <!--================================-->
+        <action id="1.1.2">
+          <action-name>fillSlot</action-name>
+          <action-param name="slot">
+            <nucleus-property>
+              <nucleus-path>/atg/registry/Slots/messageSlot</nucleus-path>
+            </nucleus-property>
+          </action-param>
+          <action-param name="ids">
+            <array type="java.lang.String[]">
+              <constant>m900000</constant>
+            </array>
+          </action-param>
+        </action>
+        <!--================================-->
+        <!--== Add items to slot named MessageSlot2 named Tool promo  -->
+        <!--================================-->
+        <action id="1.1.3">
+          <action-name>fillSlot</action-name>
+          <action-param name="slot">
+            <nucleus-property>
+              <nucleus-path>/atg/registry/Slots/MessageSlot2</nucleus-path>
+            </nucleus-property>
+          </action-param>
+          <action-param name="ids">
+            <array type="java.lang.String[]">
+              <constant>m70005</constant>
+            </array>
+          </action-param>
+        </action>
+        <!--================================-->
+        <!--== Add items to slot named MessageSlot3 named New thermostats  -->
+        <!--================================-->
+        <action id="1.1.4">
+          <action-name>fillSlot</action-name>
+          <action-param name="slot">
+            <nucleus-property>
+              <nucleus-path>/atg/registry/Slots/MessageSlot3</nucleus-path>
+            </nucleus-property>
+          </action-param>
+          <action-param name="ids">
+            <array type="java.lang.String[]">
+              <constant>m70007</constant>
+            </array>
+          </action-param>
+        </action>
+      </branch>
+      <branch id="1.2">
+        <!--================================-->
+        <!--== Visits a page named MotorpriseJSP:/de/home.jsp  -->
+        <!--================================-->
+        <event id="1.2.1">
+          <event-name>atg.dps.PageVisit</event-name>
+          <filter construct="page-path-name-filter" operator="eq">
+            <event-property>
+              <property-name>scenarioPathInfo</property-name>
+            </event-property>
+            <constant>MotorpriseJSP:/de/home.jsp</constant>
+          </filter>
+        </event>
+        <!--================================-->
+        <!--== Add items to slot named MessageSlot_de named Wheel bearings de  -->
+        <!--================================-->
+        <action id="1.2.2">
+          <action-name>fillSlot</action-name>
+          <action-param name="slot">
+            <nucleus-property>
+              <nucleus-path>/atg/registry/Slots/MessageSlot_de</nucleus-path>
+            </nucleus-property>
+          </action-param>
+          <action-param name="ids">
+            <array type="java.lang.String[]">
+              <constant>m90006</constant>
+            </array>
+          </action-param>
+        </action>
+        <!--================================-->
+        <!--== Add items to slot named MessageSlot2_de named Tool promo de  -->
+        <!--================================-->
+        <action id="1.2.3">
+          <action-name>fillSlot</action-name>
+          <action-param name="slot">
+            <nucleus-property>
+              <nucleus-path>/atg/registry/Slots/MessageSlot2_de</nucleus-path>
+            </nucleus-property>
+          </action-param>
+          <action-param name="ids">
+            <array type="java.lang.String[]">
+              <constant>m90004</constant>
+            </array>
+          </action-param>
+        </action>
+        <!--================================-->
+        <!--== Add items to slot named MessageSlot3_de named New thermostats de  -->
+        <!--================================-->
+        <action id="1.2.4">
+          <action-name>fillSlot</action-name>
+          <action-param name="slot">
+            <nucleus-property>
+              <nucleus-path>/atg/registry/Slots/MessageSlot3_de</nucleus-path>
+            </nucleus-property>
+          </action-param>
+          <action-param name="ids">
+            <array type="java.lang.String[]">
+              <constant>m90002</constant>
+            </array>
+          </action-param>
+        </action>
+      </branch>
+      <branch id="1.3">
+        <!--================================-->
+        <!--== Visits a page named MotorpriseJSP:/ja/home.jsp  -->
+        <!--================================-->
+        <event id="1.3.1">
+          <event-name>atg.dps.PageVisit</event-name>
+          <filter construct="page-path-name-filter" operator="eq">
+            <event-property>
+              <property-name>scenarioPathInfo</property-name>
+            </event-property>
+            <constant>MotorpriseJSP:/ja/home.jsp</constant>
+          </filter>
+        </event>
+        <!--================================-->
+        <!--== Add items to slot named MessageSlot_ja named Wheel bearings ja  -->
+        <!--================================-->
+        <action id="1.3.2">
+          <action-name>fillSlot</action-name>
+          <action-param name="slot">
+            <nucleus-property>
+              <nucleus-path>/atg/registry/Slots/MessageSlot_ja</nucleus-path>
+            </nucleus-property>
+          </action-param>
+          <action-param name="ids">
+            <array type="java.lang.String[]">
+              <constant>m500003</constant>
+            </array>
+          </action-param>
+        </action>
+        <!--================================-->
+        <!--== Add items to slot named MessageSlot2_ja named Tool promo ja  -->
+        <!--================================-->
+        <action id="1.3.3">
+          <action-name>fillSlot</action-name>
+          <action-param name="slot">
+            <nucleus-property>
+              <nucleus-path>/atg/registry/Slots/MessageSlot2_ja</nucleus-path>
+            </nucleus-property>
+          </action-param>
+          <action-param name="ids">
+            <array type="java.lang.String[]">
+              <constant>m500002</constant>
+            </array>
+          </action-param>
+        </action>
+        <!--================================-->
+        <!--== Add items to slot named MessageSlot3_ja named New thermostats ja  -->
+        <!--================================-->
+        <action id="1.3.4">
+          <action-name>fillSlot</action-name>
+          <action-param name="slot">
+            <nucleus-property>
+              <nucleus-path>/atg/registry/Slots/MessageSlot3_ja</nucleus-path>
+            </nucleus-property>
+          </action-param>
+          <action-param name="ids">
+            <array type="java.lang.String[]">
+              <constant>m500001</constant>
+            </array>
+          </action-param>
+        </action>
+      </branch>
+    </fork>
+    <!--================================-->
+    <!--== Add items to slot named MediaSlot named s_wheel_bearing.jpg  -->
+    <!--================================-->
+    <action id="2">
+      <action-name>fillSlot</action-name>
+      <action-param name="slot">
+        <nucleus-property>
+          <nucleus-path>/atg/registry/Slots/MediaSlot</nucleus-path>
+        </nucleus-property>
+      </action-param>
+      <action-param name="ids">
+        <array type="java.lang.String[]">
+          <constant>m20035</constant>
+        </array>
+      </action-param>
+    </action>
+    <!--================================-->
+    <!--== Add items to slot named MediaSlot2 named s_grinder.jpg  -->
+    <!--================================-->
+    <action id="3">
+      <action-name>fillSlot</action-name>
+      <action-param name="slot">
+        <nucleus-property>
+          <nucleus-path>/atg/registry/Slots/MediaSlot2</nucleus-path>
+        </nucleus-property>
+      </action-param>
+      <action-param name="ids">
+        <array type="java.lang.String[]">
+          <constant>m20020</constant>
+        </array>
+      </action-param>
+    </action>
+    <!--================================-->
+    <!--== Add items to slot named MediaSlot3 named s_thermostat.jpg  -->
+    <!--================================-->
+    <action id="4">
+      <action-name>fillSlot</action-name>
+      <action-param name="slot">
+        <nucleus-property>
+          <nucleus-path>/atg/registry/Slots/MediaSlot3</nucleus-path>
+        </nucleus-property>
+      </action-param>
+      <action-param name="ids">
+        <array type="java.lang.String[]">
+          <constant>m50002</constant>
+        </array>
+      </action-param>
+    </action>
+  </segment>
+</process>

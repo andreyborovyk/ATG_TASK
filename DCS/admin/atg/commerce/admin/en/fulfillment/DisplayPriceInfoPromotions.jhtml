@@ -1,0 +1,24 @@
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/IsNull">
+
+<java>
+  /*
+   * Cycle through the pricing adjustments of the priceInfo object
+   * and display the promotion names.
+   */
+</java>
+
+<droplet bean="ForEach">
+  <param name="array" value="param:priceInfo.adjustments"/>
+  <param name="elementName" value="adjustment"/>
+  <oparam name="output">
+    <droplet bean="IsNull">
+      <param name="value" value="param:adjustment.pricingModel"/>
+      <oparam name="false">
+	<valueof param="adjustment.pricingModel.displayName">Unnamed.</valueof><br>
+      </oparam>
+    </droplet>
+  </oparam>
+</droplet>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/DCS/admin/atg/commerce/admin/en/fulfillment/DisplayPriceInfoPromotions.jhtml#2 $$Change: 651448 $*/</java>
+

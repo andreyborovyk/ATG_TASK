@@ -1,0 +1,368 @@
+<JAVA>/*
+This page allows a user to create a new giftlist, or edit an existing one.
+*/</JAVA>
+
+<DECLAREPARAM NAME="giftlistId" CLASS="String" 
+              DESCRIPTION="The Id of the giftlist to edit">
+
+<importbean bean="/atg/commerce/gifts/GiftlistFormHandler">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/Switch">
+<importbean bean="/atg/dynamo/droplet/IsEmpty">
+<importbean bean="/atg/userprofiling/Profile">
+
+<p>
+<a href="index.jhtml">Catalog Home</a> - 
+<a href="product_search.jhtml">Product Search</a> - 
+<a href="shoppingcart.jhtml">Shopping Cart</a> - 
+<a href="lists.jhtml">My Lists</a> - 
+<a href="comparison.jhtml">Product Comparison</a> -
+<a href="giftlist_search.jhtml">Gift List Search</a> - 
+<droplet bean="Switch">
+  <param name="value" value="bean:Profile.transient">
+  <oparam name="false">
+    <a href="logout.jhtml">Logout</a>
+  </oparam>
+  <oparam name="true">
+    <a href="login.jhtml">Login</a> or <a href="register.jhtml">Register</a>
+  </oparam>
+</droplet>
+<P>
+
+<!-- Display any errors processing form -->
+<droplet name="/atg/dynamo/droplet/Switch">
+<param name="value" value="bean:GiftlistFormHandler.formError">
+<oparam name="true">
+  <font color=cc0000><STRONG><UL>
+    <droplet name="/atg/dynamo/droplet/ErrorMessageForEach">
+      <param name="exceptions" value="bean:GiftlistFormHandler.formExceptions">
+      <oparam name="output">
+  <LI> <valueof param="message"></valueof>
+      </oparam>
+    </droplet>
+    </UL></STRONG></font>
+</oparam>
+</droplet>
+
+<!-- Look for giftlistid passed into form to do an edit -->
+<droplet bean="IsEmpty">
+<param name="value" value="param:giftlistId">
+<oparam name="false">
+<strong>Edit giftlist</strong>
+  <droplet name="/atg/commerce/gifts/GiftlistLookupDroplet">
+    <param name="id" value="param:giftlistId">
+    <oparam name="output">
+      <droplet bean="IsEmpty">
+        <param name="value" value="param:element">
+        <oparam name="false">
+          <setvalue param="giftlist" value="param:element">
+          <droplet name="/atg/dynamo/droplet/Switch">
+          <param name="value" value="bean:Profile.id">
+          <oparam name="param:giftlist.owner.id">
+          <form action="lists.jhtml" method="POST">
+            <input type="hidden" bean="GiftlistFormHandler.giftlistId" value="param:giftlistId">
+            <table cellspacing=0 cellpadding=0 border=0>
+            <!-- Setup gutter and make space -->
+            <tr>
+            <td width=30%><img width=100 height=1 src="images/d.gif"><br></td>
+            <td>&nbsp;&nbsp;</td>
+            <td><img width=400 height=1 src="images/d.gif"></td>
+            </tr>
+  
+            <tr valign=top>
+            <td width=30%>
+            <span class=help>
+            Edit your giftlist.
+            </span>
+            </td>
+            <td></td>
+            <td>
+            <table width=100% cellpadding=0 cellspacing=0 border=0>
+            <tr><td class=box-top-store>Gift list properties</td></tr></table>
+            <p>
+            <b>Event Name</b><br>
+            <input type=text size=40 bean="GiftlistFormHandler.eventName" value="param:giftlist.eventName">
+            <p>
+            <setvalue bean="GiftlistFormHandler.eventDate" value="param:giftlist.eventDate">
+            <b>Event Date</b>
+            <select bean="GiftlistFormHandler.month">
+              <droplet bean="ForEach">
+                <param name="array" value="bean:GiftlistFormHandler.months">
+                <oparam name="output">
+                  <option value="param:index"><valueof param="element">UNDEFINED</valueof>
+                </oparam>
+              </droplet>
+            </select>
+            <select bean="GiftlistFormHandler.date">
+            <droplet bean="ForEach">
+              <param name="array" value="bean:GiftlistFormHandler.dates">
+              <oparam name="output">
+                <option value="param:element"><valueof param="element">UNDEFINED</valueof>
+              </oparam>
+            </droplet>
+            </select>
+            <select bean="GiftlistFormHandler.year">
+            <droplet bean="ForEach">
+              <param name="array" value="bean:GiftlistFormHandler.years">
+              <oparam name="output">
+                <option value="param:element"><valueof param="element">UNDEFINED</valueof>
+              </oparam>
+              </droplet>
+              </select>
+             <p>
+             <b>Event Type</b> 
+             <setvalue bean="GiftlistFormHandler.eventType" value="param:giftlist.eventType">
+             <select bean="GiftlistFormHandler.eventType">
+             <droplet bean="ForEach">
+               <param name="array" value="bean:GiftlistFormHandler.eventTypes">
+               <oparam name="output">
+                 <option value="param:element"><valueof param="element">UNDEFINED</valueof>
+               </oparam>
+               </droplet>
+               </select><br>
+
+            <p>
+            <b>Comments</b><br>
+            <setvalue bean="GiftlistFormHandler.comments" value="param:giftlist.comments">
+            <textarea rows=4 cols=40 bean="GiftlistFormHandler.comments"></textarea>
+            <p>
+            <b>Event Description</b><br>
+            <setvalue bean="GiftlistFormHandler.description" value="param:giftlist.description">
+            <textarea rows=4 cols=40 bean="GiftlistFormHandler.description"></textarea>
+            <p>
+            <b>Extra information or special instructions</b><br>
+            <textarea rows=4 cols=40 bean="GiftlistFormHandler.instructions"></textarea>
+            <p>
+            <b>Where should people ship the gifts?</b><p>
+            <blockquote>
+            <setvalue bean="GiftlistFormHandler.shippingAddressId" value="param:giftlist.shippingAddress.id">
+            <input type=radio bean="GiftlistFormHandler.isNewAddress" value="false" checked>Choose one of your saved shipping destinations.<br>
+              <select bean="GiftlistFormHandler.shippingAddressId">
+              <droplet bean="ForEach">
+                <param name="array" value="bean:GiftlistFormHandler.addresses">
+                <oparam name="output">
+                  <option value="param:key"><valueof param="element">UNDEFINED</valueof>
+                </oparam>
+              </droplet>
+              </select><br>
+            <p>
+  <input type=radio bean="GiftlistFormHandler.isNewAddress" value="true">New address below
+  <p>
+  If you want this address stored in your address book, please give it a nickname<br>
+  <input size=40 bean="GiftlistFormHandler.newAddressName"><br>
+  Name <br><input size=20 name="firstName" bean="GiftlistFormHandler.newAddress.firstName">
+  <input size=5 name="middleName" bean="GiftlistFormHandler.newAddress.middleName">
+  <input size=20 name="lastName" bean="GiftlistFormHandler.newAddress.lastName"><br>
+  Street address <br>
+  <input size=40 name="address1" bean="GiftlistFormHandler.newAddress.address1"><br>
+  <input size=40 name="address2" bean="GiftlistFormHandler.newAddress.address2"><br>
+  City<br>
+  <input size=15 name="city" bean="GiftlistFormHandler.newAddress.city"><br>
+  State<br>
+  <input size=40 name="state" bean="GiftlistFormHandler.newAddress.state"><br>
+  Postal code<br>
+  <input size=15 name="postalCode" bean="GiftlistFormHandler.newAddress.postalCode"><br>
+  Country<br>
+  <input size=40 name="country" bean="GiftlistFormHandler.newAddress.country"><br>
+            </blockquote>
+
+            <p>&nbsp;<br>
+            </td>
+            </tr>
+  
+            <tr valign=top>
+            <td width=30%>
+            <span class=help>
+              If you do not make your list public, then
+              it will not be shown to people searching for giftlists. You can
+              make your list public anytime by editing it.
+            </span>
+
+            </td>
+            <td></td>
+            <td>
+            <table width=100% cellpadding=0 cellspacing=0 border=0>
+            <tr><td class=box-top-store>Gift list public?</td></tr></table>
+            <p>
+           
+            <setvalue bean="GiftlistFormHandler.isPublished" value="param:giftlist.published">
+            <input type=radio bean="GiftlistFormHandler.isPublished" value="true"> Make my list public now<br>
+            <input type=radio bean="GiftlistFormHandler.isPublished" value="false"> Don't make my list public yet
+            <p>&nbsp;<br>
+            <input type="hidden" bean="GiftlistFormHandler.deleteGiftlistSuccessURL" value="./lists.jhtml">
+            <input type="hidden" bean="GiftlistFormHandler.deleteGiftlistErrorURL" value="`new String("./lists_new.jhtml?giftlistId=" + request.getParameter("giftlistId"))`">
+            <input type="hidden" bean="GiftlistFormHandler.updateGiftlistSuccessURL" value="./lists.jhtml">
+            <input type="hidden" bean="GiftlistFormHandler.updateGiftlistErrorURL" value="`new String("./lists_new.jhtml?giftlistId=" + request.getParameter("giftlistId"))`">
+            <input type=submit name="update" value="Save" bean="GiftlistFormHandler.updateGiftlist">
+            or
+            <input type=submit name="delete" value="Delete" bean="GiftlistFormHandler.deleteGiftlist">
+            </td>
+            </tr>
+            </table>
+            </form>
+            </oparam>
+            <oparam name="default">
+            You do not have permission to access the specified giftlist
+            </oparam>
+            </droplet>
+        </oparam>
+        <oparam name="true">
+          <font color=cc0000><STRONG><UL>
+          Either no giftlist found or you do not have permission to access it.
+          </UL></STRONG></font>
+        </oparam>
+      </droplet>
+    </oparam>
+  </droplet>
+</oparam>
+<oparam name="true">
+<!-- creating a new giftlist-->
+<span class=storebig>Create new giftlist</span>
+<form action="lists.jhtml" method="POST">
+<input type="hidden" bean="GiftlistFormHandler.saveGiftlistSuccessURL" value="./lists.jhtml">
+<input type="hidden" bean="GiftlistFormHandler.saveGiftlistErrorURL" value="./lists_new.jhtml">
+<table cellspacing=0 cellpadding=0 border=0>
+<!-- Setup gutter and make space -->
+  <tr>
+  <td width=30%><img width=100 height=1 src="images/d.gif"><br></td>
+  <td>&nbsp;&nbsp;</td>
+  <td><img width=400 height=1 src="images/d.gif"></td>
+  </tr>
+  
+  <tr valign=top>
+  <td width=30%>
+  <span class=help>
+  Create your giftlist.
+  </span>
+  </td>
+  <td></td>
+  <td>
+  <table width=100% cellpadding=0 cellspacing=0 border=0>
+  <tr><td class=box-top-store>Gift list properties</td></tr></table>
+  <p>
+  <b>Event Name</b><br>
+  <input type=text size=40 bean="GiftlistFormHandler.eventName">
+  <p>
+  <b>Event Date</b>
+  <select bean="GiftlistFormHandler.month">
+    <droplet bean="ForEach">
+      <param name="array" value="bean:GiftlistFormHandler.months">
+      <oparam name="output">
+        <option value="param:index"><valueof param="element">UNDEFINED</valueof>
+      </oparam>
+    </droplet>
+  </select>
+  <select bean="GiftlistFormHandler.date">
+  <droplet bean="ForEach">
+    <param name="array" value="bean:GiftlistFormHandler.dates">
+    <oparam name="output">
+      <option value="param:element"><valueof param="element">UNDEFINED</valueof>
+    </oparam>
+  </droplet>
+  </select>
+  <select bean="GiftlistFormHandler.year">
+  <droplet bean="ForEach">
+    <param name="array" value="bean:GiftlistFormHandler.years">
+    <oparam name="output">
+      <option value="param:element"><valueof param="element">UNDEFINED</valueof>
+    </oparam>
+    </droplet>
+    </select>
+   <p>
+   <b>Event Type</b> 
+   <select bean="GiftlistFormHandler.eventType">
+   <droplet bean="ForEach">
+     <param name="array" value="bean:GiftlistFormHandler.eventTypes">
+     <oparam name="output">
+       <option value="param:element"><valueof param="element">UNDEFINED</valueof>
+     </oparam>
+     </droplet>
+     </select><br>
+
+  <p>
+  <b>Comments</b><br>
+  <setvalue bean="GiftlistFormHandler.comments" value="">
+  <textarea rows=4 cols=40 bean="GiftlistFormHandler.comments"></textarea></textarea>
+  <p>
+  <b>Event Description</b><br>
+  <setvalue bean="GiftlistFormHandler.description" value="">
+  <textarea rows=4 cols=40 bean="GiftlistFormHandler.description"></textarea>
+  <p>
+  <b>Extra information or special instructions</b><br>
+  <textarea rows=4 cols=40 bean="GiftlistFormHandler.instructions"></textarea>
+  <p>
+  <b>Where should people ship the gifts?</b><p>
+  <blockquote>
+  <input type=radio bean="GiftlistFormHandler.isNewAddress" value="false" checked>Choose one of your saved shipping destinations.<br>
+    <select bean="GiftlistFormHandler.shippingAddressId">
+    <droplet bean="ForEach">
+      <param name="array" value="bean:GiftlistFormHandler.addresses">
+      <oparam name="output">
+        <option value="param:key"><valueof param="element">UNDEFINED</valueof>
+      </oparam>
+    </droplet>
+    </select><br>
+  <p>
+  <input type=radio bean="GiftlistFormHandler.isNewAddress" value="true">New address below
+  <p>
+  If you want this address stored in your address book, please give it a nickname:<br>
+  <input size=40 bean="GiftlistFormHandler.newAddressName"><br>
+  Name <br><input size=20 name="firstName" bean="GiftlistFormHandler.newAddress.firstName">
+  <input size=5 name="middleName" bean="GiftlistFormHandler.newAddress.middleName">
+  <input size=20 name="lastName" bean="GiftlistFormHandler.newAddress.lastName"><br>
+  Street address <br>
+  <input size=40 name="address1" bean="GiftlistFormHandler.newAddress.address1"><br>
+  <input size=40 name="address2" bean="GiftlistFormHandler.newAddress.address2"><br>
+  City<br>
+  <input size=15 name="city" bean="GiftlistFormHandler.newAddress.city"><br>
+  State<br>
+  <input size=40 name="state" bean="GiftlistFormHandler.newAddress.state"><br>
+  Postal code<br>
+  <input size=15 name="postalCode" bean="GiftlistFormHandler.newAddress.postalCode"><br>
+  Country<br>
+  <input size=40 name="country" bean="GiftlistFormHandler.newAddress.country"><br>
+  </blockquote>
+
+  <p>&nbsp;<br>
+  </td>
+  </tr>
+  
+  <tr valign=top>
+  <td width=30%>
+  <span class=help>
+  Decide if you want your list to be public yet. When you make your list public, your friends can
+  find your list by searching.
+  </span>
+
+  </td>
+  <td></td>
+  <td>
+  <table width=100% cellpadding=0 cellspacing=0 border=0>
+  <tr><td class=box-top-store>Gift list public?</td></tr></table>
+  <p>
+
+  <input type=radio name="published" bean="GiftlistFormHandler.isPublished" value="true"> Make my list public now<br>
+  <input type=radio name="published" bean="GiftlistFormHandler.isPublished" value="false" checked> Don't make my list public yet
+      
+  <p>&nbsp;<br>
+      
+  <input type=submit value="Save gift list" bean="GiftlistFormHandler.saveGiftlist">
+<br>&nbsp;<br>
+  </td>
+  </tr>
+</form>
+
+<tr><td colspan=2></td>
+<td><form action="lists.jhtml"><input type=submit value="Cancel"></form></td></tr>
+  
+</table>
+
+
+</oparam>
+</droplet>
+
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/B2CCommerce/html/sample_catalog/lists_new.jhtml#2 $$Change: 651448 $*/</java>
+

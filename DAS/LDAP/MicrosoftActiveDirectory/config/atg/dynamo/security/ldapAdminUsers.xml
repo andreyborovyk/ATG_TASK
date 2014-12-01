@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE ldap-for-dcc
+        PUBLIC "-//Art Technology Group, Inc.//DTD LDAP Adapter//EN"
+        "http://www.atg.com/dtds/ldap/ldap_1.0.dtd">
+
+<ldap-adapter-template>
+
+<header>
+  <name>ldapAdminUsers.xml</name>
+  <author>ATG</author>
+  <version>$Id: //product/DAS/version/10.0.3/release/DAS/LDAP/MicrosoftActiveDirectory/config/atg/dynamo/security/ldapAdminUsers.xml#2 $$Change: 651448 $</version>
+</header>
+
+<!-- user view -->
+<view name="user" default="true">
+
+  <!-- item descriptor -->
+  <item-descriptor name="user" display-name="User" display-property="login">
+
+    <!-- special properties -->
+    <id-property name="dn" in-ldap="true"/>
+    <object-classes-property name="objectClasses" ldap-name="objectclass"/>
+
+    <!-- object classes -->
+    <object-class>top</object-class>
+    <object-class>person</object-class>
+    <object-class>organizationalPerson</object-class>
+    <object-class>user</object-class>
+
+    <!-- properties -->
+    <property name="login" ldap-name="CN" data-type="string" required="true">
+      <attribute name="unique" value="true"/>
+    </property>
+    <property name="password" ldap-name="userPassword" data-type="string" required="true"/>
+
+    <property name="lastName" ldap-name="sn" data-type="string" required="true"/>
+    <property name="firstName" ldap-name="givenName" data-type="string"/>
+    <property name="email" ldap-name="mail" data-type="string"/>
+
+    <!-- item creation -->
+    <new-items parent-dn="o=yourdomain" rdn-property="login"/>
+
+  </item-descriptor>
+
+  <!-- search roots -->
+  <search-root dn="o=yourdomain"/>
+
+</view>
+
+<!-- group view -->
+<view name="group">
+  <!-- item descriptor -->
+  <item-descriptor name="group" display-name="Group" display-property="gid">
+
+    <id-property name="dn" in-ldap="true"/>
+    <object-classes-property name="objectClasses" ldap-name="objectclass"/>
+
+    <!-- object classes (added to parent classes) -->
+    <object-class>top</object-class>
+    <object-class>group</object-class>
+
+    <!-- properties (added to parent properties) -->
+    <property name="gid" ldap-name="CN" data-type="string" required="true"/>
+    <property name="login" ldap-name="member" data-type="string" multi="true"/>
+
+    <!-- item creation (overrides parent behavior) -->
+    <new-items parent-dn="o=yourdomain" rdn-property="gid"/>
+
+  </item-descriptor>
+
+  <!-- search roots -->
+  <search-root dn="o=yourdomain"/>
+
+</view>
+
+</ldap-adapter-template>
+<!-- @version $Id: //product/DAS/version/10.0.3/release/DAS/LDAP/MicrosoftActiveDirectory/config/atg/dynamo/security/ldapAdminUsers.xml#2 $$Change: 651448 $ -->

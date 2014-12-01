@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE process-manager-configuration
+        PUBLIC "-//Art Technology Group, Inc.//DTD Process Manager//EN"
+        'http://www.atg.com/dtds/processmanager/processmanager_1.0.dtd'>
+
+<!-- Scenario manager customization file that illustrates custom actions and
+     scenario grammar extensions. -->
+     
+<process-manager-configuration>
+
+  <!-- Add a custom scenario grammar extension file. -->
+  <grammar-registry>
+    <grammar-extension-file>atg.portal.gear.docexch.docexch-expression-grammar</grammar-extension-file>
+  </grammar-registry>
+
+  <!-- Add all new JMS messages to the event registry -->
+  <event-registry>
+    <event>
+      <jms-type>
+        atg.portal.gear.docexch.DocumentCreatedMessage
+      </jms-type>
+      <message-class>
+        atg.portal.gear.docexch.DocumentCreatedMessage
+      </message-class>
+      <message-context>
+        session
+      </message-context>
+      <message-scope>
+        individual
+      </message-scope>
+      <display-name-resource>
+        documentCreatedMessageDisplayName
+      </display-name-resource>
+      <description-resource>
+        documentCreatedMessageDescription
+      </description-resource>
+      <resource-bundle>
+        atg.portal.gear.docexch.DocExchMessagingSystemResources
+      </resource-bundle>
+    </event>
+
+    <event>
+      <jms-type>
+        atg.portal.gear.docexch.DocumentUpdatedMessage
+      </jms-type>
+      <message-class>
+        atg.portal.gear.docexch.DocumentUpdatedMessage
+      </message-class>
+      <message-context>
+        session
+      </message-context>
+      <message-scope>
+        individual
+      </message-scope>
+      <display-name-resource>
+        documentUpdatedMessageDisplayName
+      </display-name-resource>
+      <description-resource>
+        documentUpdatedMessageDescription
+      </description-resource>
+      <resource-bundle>
+        atg.portal.gear.docexch.DocExchMessagingSystemResources
+      </resource-bundle>
+    </event>
+
+    <event>
+      <jms-type>
+        atg.portal.gear.docexch.DocumentDeletedMessage
+      </jms-type>
+      <message-class>
+        atg.portal.gear.docexch.DocumentDeletedMessage
+      </message-class>
+      <message-context>
+        session
+      </message-context>
+      <message-scope>
+        individual
+      </message-scope>
+      <display-name-resource>
+        documentDeletedMessageDisplayName
+      </display-name-resource>
+      <description-resource>
+        documentDeletedMessageDescription
+      </description-resource>
+      <resource-bundle>
+        atg.portal.gear.docexch.DocExchMessagingSystemResources
+      </resource-bundle>
+    </event>
+
+    <event>
+      <jms-type>
+        atg.portal.gear.docexch.DocumentViewedMessage
+      </jms-type>
+      <message-class>
+        atg.portal.gear.docexch.DocumentViewedMessage
+      </message-class>
+      <message-context>
+        session
+      </message-context>
+      <message-scope>
+        individual
+      </message-scope>
+      <display-name-resource>
+        documentViewedMessageDisplayName
+      </display-name-resource>
+      <description-resource>
+        documentViewedMessageDescription
+      </description-resource>
+      <resource-bundle>
+        atg.portal.gear.docexch.DocExchMessagingSystemResources
+      </resource-bundle>
+    </event>
+  </event-registry>
+      
+</process-manager-configuration>
+<!-- @version $Id: //app/portal/version/10.0.3/docexch/config/atg/scenario/scenarioManager.xml#2 $$Change: 651448 $ -->

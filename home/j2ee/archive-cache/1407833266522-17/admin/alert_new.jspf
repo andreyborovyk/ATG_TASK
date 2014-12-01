@@ -1,0 +1,128 @@
+<i18n:bundle baseName="atg.portal.admin.PortalAdminResources" localeAttribute="userLocale" changeResponseLocale="false" />
+
+<dsp:page>
+
+<dsp:importbean bean="/atg/portal/alert/AlertConfigurationFormHandler"/>
+<dsp:importbean bean="/atg/dynamo/droplet/Switch"/>
+
+<core:createUrl id="alertFormURL" url="/portal/admin/alert.jsp">
+ <core:UrlParam param="mode" value="<%=mode%>"/>
+
+  <dsp:form action="<%= alertFormURL.getNewUrl() %>" enctype="multipart/form-data" method="post" >
+
+    <core:switch value="<%= mode %>">
+      <core:case value="2">
+        <core:UrlParam param="mode" value="1"/>
+      </core:case>
+      <core:case value="4">
+        <core:UrlParam param="mode" value="3"/>
+      </core:case>
+    </core:switch>
+
+
+<font class="smaller">
+
+<core:switch value="<%= mode %>">
+ <core:case value="2">
+
+<core:createUrl id="alertSFormURL" url="/portal/admin/alert.jsp">
+<core:UrlParam param="mode" value="1"/>
+<core:createUrl id="alertFAFormURL" url="/portal/admin/alert.jsp">
+<core:UrlParam param="mode" value="2"/>
+
+<dsp:input type="hidden" bean="AlertConfigurationFormHandler.createSuccessURL" value="<%=alertSFormURL.getNewUrl() %>"/>
+<dsp:input type="hidden" bean="AlertConfigurationFormHandler.createErrorURL"   value="<%=alertFAFormURL.getNewUrl() %>"/>
+<dsp:input type="hidden" bean="AlertConfigurationFormHandler.value.sourceType" value="administration"/>
+<dsp:input type="hidden" bean="AlertConfigurationFormHandler.value.sourceId"   value="administration"/>
+
+</core:createUrl>
+</core:createUrl>
+
+<table cellpadding="1" cellspacing="0" border="0" bgcolor="#666666" width="100%"><tr><td>
+<table cellpadding="4" cellspacing="0" border="0" bgcolor="#999999" width="100%"><tr><td>
+<font class="pageheader">
+  <i18n:message key="alert-message-create-title-prefix-admin"/>
+</font>
+</td></tr></table>
+</td></tr></table>
+	
+<table cellpadding="4" cellspacing="0" border="0" bgcolor="#EAEEF0" width="100%"><tr><td>
+<font class="smaller">
+<i18n:message key="admin-alerts-infotext-admin-alert-new"/>
+</font>
+</td></tr></table>
+
+ </core:case>
+ <core:case value="4">
+
+<core:createUrl id="alertFFormURL" url="/portal/admin/alert.jsp">
+<core:UrlParam param="mode" value="3"/>
+<core:createUrl id="alertFAFormURL" url="/portal/admin/alert.jsp">
+<core:UrlParam param="mode" value="4"/>
+<dsp:input type="hidden" bean="AlertConfigurationFormHandler.value.sourceType" value="framework"/>
+<dsp:input type="hidden" bean="AlertConfigurationFormHandler.value.sourceId"   value="framework"/>
+<dsp:input type="hidden" bean="AlertConfigurationFormHandler.createSuccessURL" value="<%= alertFFormURL.getNewUrl() %>"/>
+<dsp:input type="hidden" bean="AlertConfigurationFormHandler.createErrorURL"   value="<%= alertFAFormURL.getNewUrl() %>"/>
+</core:createUrl>
+</core:createUrl>
+
+<table cellpadding="1" cellspacing="0" border="0" bgcolor="#666666" width="100%"><tr><td>
+<table cellpadding="4" cellspacing="0" border="0" bgcolor="#999999" width="100%"><tr><td>
+<font class="pageheader">
+  <i18n:message key="alert-message-create-title-prefix-framework"/>
+</font>
+</td></tr></table>
+</td></tr></table>
+	
+<table cellpadding="4" cellspacing="0" border="0" bgcolor="#EAEEF0" width="100%"><tr><td>
+<font class="smaller">
+<i18n:message key="admin-alerts-infotext-framework-alert-new"/>
+</font>
+</td></tr></table>
+</core:case>
+</core:switch>
+
+<dsp:setvalue  bean="AlertConfigurationFormHandler.repositoryId" value='<%= null %>'/>
+
+<img src='<%=clearGif%>' height="1" width="1" alt=""><br>
+   <table cellspacing="0" cellpadding="4"  border="0" bgcolor="#c9d1d7" width="100%">
+   <tr><td>
+    <font class="smaller">&nbsp;<i18n:message key="alert-message-name"/><br></font>&nbsp;<dsp:input type="text" bean="AlertConfigurationFormHandler.value.name"/><br><br>
+
+    <font class="smaller">&nbsp;<i18n:message key="alert-message-type"/><br></font>&nbsp;<dsp:input type="text" bean="AlertConfigurationFormHandler.value.messageType"/><br><br>
+
+    <font class="smaller">&nbsp;<i18n:message key="alert-resource-bundle"/><br></font>&nbsp;<dsp:input type="text" bean="AlertConfigurationFormHandler.value.resourceBundle"/><br><br>
+
+
+<font class="smaller">&nbsp;<i18n:message key="alert-default-value"/><br></font>
+<font class="smaller">
+&nbsp;&nbsp;<dsp:input type="radio" bean="AlertConfigurationFormHandler.value.defaultValue" value="no" />&nbsp;<i18n:message key="admin-default-alert-message-no"/><br>
+
+&nbsp;&nbsp;<dsp:input type="radio" bean="AlertConfigurationFormHandler.value.defaultValue" value="yes_locked" checked="true"/>&nbsp;<i18n:message key="admin-default-alert-message-yes-locked"/><br>
+
+&nbsp;&nbsp;<dsp:input type="radio" bean="AlertConfigurationFormHandler.value.defaultValue" value="yes_opened" />&nbsp;<i18n:message key="admin-default-alert-message-yes-opened"/><br>
+<br>
+<%--&nbsp;<dsp:input type="text" bean="AlertConfigurationFormHandler.value.defaultValue"/>--%>
+
+<font class="smaller">&nbsp;<dsp:input type="submit" bean="AlertConfigurationFormHandler.create" value="<%= createAlert %>"/>&nbsp;&nbsp;<input type="reset" value="<%= resetAlert %>"/></font>
+
+</font>
+
+</dsp:form>
+</core:createUrl>
+
+</td></tr></table>
+
+<img src='<%=clearGif%>' height="1" width="1" alt=""><br>
+  <table cellspacing="0" cellpadding="4"  border="0" bgcolor="#c9d1d7" width="100%">
+    <tr>
+      <td>
+        <font class="smaller_bold">&nbsp;<i18n:message key="alert-message-name"/></font><font class="smaller">&nbsp;<i18n:message key="alert-message-nm-text"/></font><br><br>
+        <font class="smaller_bold">&nbsp;<i18n:message key="alert-message-type"/></font><font class="smaller">&nbsp;<i18n:message key="alert-message-type-text"/></font><br><br>
+        <font class="smaller_bold">&nbsp;<i18n:message key="alert-resource-bundle"/></font><font class="smaller">&nbsp;<i18n:message key="alert-resource-bundle-text"/></font>
+
+      </td>
+    </tr>
+  </table>
+</dsp:page>
+<%-- @version $Id: //app/portal/version/10.0.3/paf/admin.war/alert_new.jspf#2 $$Change: 651448 $--%>

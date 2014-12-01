@@ -1,0 +1,69 @@
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr><td colspan="5"><nobr><font class="smaller"><b><i18n:message key="ind_list_column_header_name"/></b></font></nobr></td></tr>
+<tr bgcolor="#000000"><td colspan="5"><img src='<%=clearGif%>' height="1" width="1" border="0"></td></tr>
+
+<core:ForEach id="userIterator"
+      values='<%=pageContext.getAttribute("userList",pageContext.PAGE_SCOPE) %>' 
+      castClass="atg.userdirectory.User"
+      elementId="user">
+<%
+  currName = user.getLastName();
+   if ( ( request.getParameter("searchFilter") == null) || ( currName.toLowerCase().indexOf(currFilter.toLowerCase()) > -1   ) ) { 
+
+   bgcolorA = (  bgcolorA == "dddddd" ) ? "ffffff" : "dddddd";
+   hasSeen = true;
+%>
+ <core:CreateUrl  id="roleEditorURL" url="community_gears.jsp">
+   <core:UrlParam param="userGroupType" value='<%= request.getParameter("userGroupType")%>'/>
+   <core:UrlParam param="searchFilter"     value='<%= request.getParameter("searchFilter")%>'/>
+   <core:UrlParam param="mode" value="13"/>
+   <core:UrlParam param="paf_user_id" value="<%=user.getPrimaryKey()%>"/>
+   <core:UrlParam param="paf_gear_id" value="<%=dsp_gear_id%>"/>
+   <core:UrlParam param="paf_page_id" value="<%=dsp_page_id%>"/>
+   <paf:encodeUrlParam param="paf_page_url" value="<%=dsp_page_url%>"/>
+   <core:UrlParam param="paf_community_id" value="<%=dsp_community_id%>"/>
+   <core:UrlParam param="hasSearched"      value='<%= request.getParameter("hasSearched")%>'/>
+   <core:UrlParam param="firstName"        value='<%= request.getParameter("firstName")%>'/>
+   <core:UrlParam param="lastName"         value='<%= request.getParameter("lastName")%>'/>
+   <core:UrlParam param="login"            value='<%= request.getParameter("login")%>'/>
+   <core:UrlParam param="email"            value='<%= request.getParameter("email")%>'/>
+   <core:UrlParam param="organizationId"   value='<%= request.getParameter("organizationId")%>'/>
+<%
+  if (!(user.getPrimaryKey().equals(request.getParameter("paf_user_id")))) {
+%>
+
+<tr bgcolor='<%="#"+bgcolorA%>'>
+<td NOWRAP width="80%"><nobr><font class="smaller">&nbsp;<%= user.getFirstName()%> <%= user.getLastName()%> </font><br></nobr></td>
+<td NOWRAP><nobr><font class="smaller"><a href='<%=roleEditorURL.getNewUrl()+"#three"%>'><i18n:message key="community_gears_role_link"/></a></font><br></nobr></td>
+</tr>
+<% } else { %>
+
+<tr bgcolor='<%="#"+bgcolorA%>'>
+<td NOWRAP width="80%" colspan="2">
+ <%@ include file="gears_role_editor.jspf"  %>
+<br>
+</td></tr>
+<%  } %>
+</core:CreateUrl>
+<% } %>
+
+</core:ForEach>
+
+
+
+
+
+<tr bgcolor="#000000">
+<td colspan="5"><img src='<%=clearGif%>' height="1" width="1" border="0"></td>
+</tr>
+
+
+</table>
+
+   <core:If value='<%=hasSeen != true%>'>
+    <font class="smaller"><br>
+    <i18n:message key="acl_no_users_returned"/>
+    </font>
+   </core:If>
+<%-- @version $Id: //app/portal/version/10.0.3/paf/settings.war/fragments/gear_role_ind_listing.jspf#2 $$Change: 651448 $--%>

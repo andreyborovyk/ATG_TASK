@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Dynamo Scenario Server privilege configuration -->
+<!-- $Id: //product/DSS/version/10.0.3/templates/DSS/config/atg/dynamo/security/admin-accounts.xml#2 $$Change: 651448 $ -->
+
+<!DOCTYPE accounts
+        PUBLIC "-//Art Technology Group, Inc.//DTD Dynamo Accounts//EN"
+        "http://www.atg.com/dtds/security/accounts_1.0.dtd">
+
+<accounts>
+  <!-- Privileges associated with the Scenario menu -->
+  <privilege name="scenarios-privilege">
+    <attribute name="description">Scenarios: Scenarios</attribute>
+  </privilege>
+  <privilege name="scenarios-templates-privilege">
+    <attribute name="description">Scenarios: Scenario Templates</attribute>
+  </privilege>
+  <privilege name="scenarios-slots-privilege">
+    <attribute name="description">Scenarios: Slots</attribute>
+  </privilege>
+
+  <!-- Privileges associated with the Analysis menu -->
+  <privilege name="analysis-charts-privilege">
+    <attribute name="description">Analysis: Charts</attribute>
+  </privilege>
+  <privilege name="analysis-chart-templates-privilege">
+    <attribute name="description">Analysis: Chart Templates</attribute>
+  </privilege>
+  <privilege name="analysis-datasets-privilege">
+    <attribute name="description">Analysis: Datasets</attribute>
+  </privilege>
+
+  <!-- Administrators get all DSS privileges and we disable -->
+  <!-- the old Tracking task -->
+  <group name="administrators-group">
+    <member-of name="scenarios-privilege"/>
+    <member-of name="scenarios-templates-privilege"/>
+    <member-of name="scenarios-slots-privilege"/>
+    <member-of name="analysis-charts-privilege"/>
+    <member-of name="analysis-chart-templates-privilege"/>
+    <member-of name="analysis-datasets-privilege"/>
+    <member-of name="targeting-tracking-sensors-privilege" xml-combine="remove"/>
+  </group>
+
+  <!-- The marketing group gets additional privileges in DSS and -->
+  <!-- we disable the old Tracking task -->
+  <group name="marketing-group">
+    <member-of name="scenarios-privilege"/>
+    <member-of name="scenarios-templates-privilege"/>
+    <member-of name="scenarios-slots-privilege"/>
+    <member-of name="analysis-charts-privilege"/>
+    <member-of name="analysis-chart-templates-privilege"/>
+    <member-of name="analysis-datasets-privilege"/>
+    <member-of name="targeting-tracking-sensors-privilege" xml-combine="remove"/>
+  </group>
+</accounts>
+<!-- @version $Id: //product/DSS/version/10.0.3/templates/DSS/config/atg/dynamo/security/admin-accounts.xml#2 $$Change: 651448 $ -->

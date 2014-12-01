@@ -1,0 +1,136 @@
+<%-- decode the destination id and type from the compound string --%>
+<dms:decodeCompoundKey id="decodeKey" encodedKey="<%= moveData.getDestination() %>">
+  <jsp:setProperty name="moveData" property="destinationId" 
+                   value="<%= decodeKey.getLong1() %>"/>
+  <jsp:setProperty name="moveData" property="destinationType"
+                   value="<%= decodeKey.getLong2() %>"/>
+</dms:decodeCompoundKey>
+
+<jsp:useBean id="messageIds" class="java.util.ArrayList"/>
+
+<%-- set the success flag to true --%>
+<jsp:setProperty name="dmsContext" property="success" value="true"/>
+
+<%-- extract only the message ids from the compound keys --%>
+<core:forEach id="entryIdsForEach" values="<%= entryData.getEntryIds() %>"
+              elementId="entryId" castClass="java.lang.String">
+  <dms:decodeCompoundKey id="decodeKey" encodedKey="<%= entryId %>">
+    <dms:addToArray arrayList="<%= messageIds %>" value="<%= decodeKey.getLong2() %>"/>
+  </dms:decodeCompoundKey>
+</core:forEach>
+
+<core:demarcateTransaction id="moveQueueEntriesXA">      
+
+<core:cast id="castMessageIds" castClass="java.lang.Long[]"
+           value="<%= messageIds.toArray(new java.lang.Long[0]) %>">
+  <core:exclusiveIf>
+
+    <%-- moving to queue --%>
+    <core:ifEqual object1="<%= moveData.getDestinationType() %>"
+	              int2="<%= 0 %>">
+      <%-- get the queue --%>
+      <dms:queue id="queue" queueId="<%= moveData.getDestinationId() %>">
+	<%-- add messages to queue --%>
+	<core:compare id="movingTopicEntries" object1="<%= entryData.getAction() %>"
+	              object2="<%= dmsContext.kMoveSomeTopicEntries %>">
+	  <dms:addToQueue id="addToQueue" messageIds="<%= castMessageIds %>" 
+	                      queue="<%= queue.getQueue() %>"
+			      duplicateMessages="<%= movingTopicEntries.isEqual() %>">
+	    <core:if value="<%= addToQueue.isDuplicatePrimaryKey() %>">
+	      Error moving to queue. One or more of the messages already
+	      exist in the selected destination.
+
+	      <jsp:setProperty name="dmsContext" property="success" value="false"/>
+	      <core:setTransactionRollbackOnly id="rollbackQueueAdd"/>
+	    </core:if>
+	  </dms:addToQueue>
+	</core:compare>
+      </dms:queue>
+    </core:ifEqual>
+
+    <%-- moving to topic --%>
+    <core:ifEqual object1="<%= moveData.getDestinationType() %>"
+	              int2="<%= 1 %>">
+      <%-- get the topic --%>
+      <dms:topic id="topic" topicId="<%= moveData.getDestinationId() %>">
+	<%-- add messages to queue --%>
+	<core:compare id="movingTopicEntries" object1="<%= entryData.getAction() %>"
+	              object2="<%= dmsContext.kMoveSomeTopicEntries %>">
+	  <dms:addToTopic id="addToTopic" messageIds="<%= castMessageIds %>" 
+	                      topic="<%= topic.getTopic() %>"
+			      duplicateMessages="<%= movingTopicEntries.isEqual() %>">
+	    <core:if value="<%= addToTopic.isDuplicatePrimaryKey() %>">
+	      Error moving to topic. One or more of the messages already
+	      exist in the selected destination.
+
+	      <jsp:setProperty name="dmsContext" property="success" value="false"/>
+	      <core:setTransactionRollbackOnly id="rollbackTopicAdd"/>
+	    </core:if>
+	  </dms:addToTopic>
+	</core:compare>
+      </dms:topic>
+
+    </core:ifEqual>
+  </core:exclusiveIf>  		     
+
+  <core:transactionStatus id="xaStatus">
+  <core:ifNot value="<%= xaStatus.isMarkedRollback() %>">
+
+  <core:switch value="<%= entryData.getAction() %>">
+    <%-- moving queue entries --%>
+    <core:case value="<%= dmsContext.kMoveSomeQueueEntries %>">
+  
+      <%-- delete the queue entries, make sure to turn off cascade delete --%>
+      <core:forEach id="queueEntryIdsForEach" values="<%= entryData.getEntryIds() %>"
+	            elementId="queueEntryId" castClass="java.lang.String">
+	<dms:decodeCompoundKey id="decodeKey" encodedKey="<%= queueEntryId %>">
+	  <dms:queueEntry id="queueEntry" queueId="<%= decodeKey.getLong1() %>"
+	                  messageId="<%= decodeKey.getLong2() %>">
+	    <% queueEntry.getQueueEntry().setCascadeDelete(false); %>
+            <dms:removeEntityBean id="removeBean" 
+                         entityBean="<%= queueEntry.getQueueEntry() %>"/>
+          </dms:queueEntry>
+	</dms:decodeCompoundKey>
+      </core:forEach>   
+    </core:case>
+
+    <%-- moving topic entries --%>
+    <core:case value="<%= dmsContext.kMoveSomeTopicEntries %>">
+      <%-- delete the topic entries, make sure to turn off cascade delete --%>
+      <core:forEach id="topicEntryIdsForEach" values="<%= entryData.getEntryIds() %>"
+	            elementId="topicEntryId" castClass="java.lang.String">
+	<dms:decodeCompoundKey id="decodeKey" encodedKey="<%= topicEntryId %>">
+	  <dms:topicEntry id="topicEntry" topicSubscriptionId="<%= decodeKey.getLong1() %>"
+	                  messageId="<%= decodeKey.getLong2() %>">
+	    <core:ifNotEqual 
+	          int1="<%= topicEntry.getTopicEntry().getMessage().getReferenceCount() %>"
+		  int2="<%= 1 %>">
+	      <% topicEntry.getTopicEntry().setCascadeDelete(false); %>
+	    </core:ifNotEqual>
+            <dms:removeEntityBean id="removeBean" 
+                         entityBean="<%= topicEntry.getTopicEntry() %>"/>
+          </dms:topicEntry>
+	</dms:decodeCompoundKey>
+      </core:forEach>   
+    </core:case>
+  </core:switch>
+
+  </core:ifNot>
+  </core:transactionStatus>
+
+</core:cast>
+
+</core:demarcateTransaction>
+
+<core:if value="<%= dmsContext.isSuccess() %>">    
+<core:createUrl id="backUrl" 
+                url="<%= dmsContext.getPreviousNavigation().getReferringPage() %>">
+  <core:forEach id="urlParams" values="<%= dmsContext.getPreviousNavigation().getParams() %>"
+                keyCastClass="java.lang.String" keyId="paramName">
+    <core:urlParam param="<%= paramName %>" 
+                   value="<%= urlParams.getElement() %>"/>
+  </core:forEach>
+  <core:redirect url="<%= backUrl.toString() %>"/>
+</core:createUrl>
+</core:if>
+<%-- @version $Id: //product/DAS/version/10.0.3/release/SQLJMSAdmin/j2ee-apps/sqlJmsAdmin/webModule/handleMove.jspf#2 $$Change: 651448 $--%>

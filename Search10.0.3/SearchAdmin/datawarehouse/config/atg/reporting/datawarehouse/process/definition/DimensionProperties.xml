@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data-warehouse-dimension-loader-definition>
+  <data-warehouse-repository repository="/atg/reporting/datawarehouse/WarehouseRepository">
+
+    <data-warehouse-repository-item item="searchProject" natural-key="projectId">
+      <production-repository repository="/atg/searchadmin/SearchAdminRepository" nickname="SearchAdminRepository">
+        <production-repository-item item="searchProject"/>
+      </production-repository>
+      <property-mappings>
+        <warehouse-property name="name">
+          <production-property name="SearchAdminRepository.searchProject.name"/>
+        </warehouse-property>
+        <warehouse-property name="nameEn">
+          <production-property name="SearchAdminRepository.searchProject.name"/>
+        </warehouse-property>
+      </property-mappings>
+    </data-warehouse-repository-item>
+
+
+  </data-warehouse-repository>
+</data-warehouse-dimension-loader-definition>
+<!-- @version $Id: //application/SearchAdmin/version/10.0.3/datawarehouse/src/config/atg/reporting/datawarehouse/process/definition/DimensionProperties.xml#2 $$Change: 651448 $-->

@@ -1,0 +1,107 @@
+<nucleus type=import>
+	/atg/dynamo/admin/Configure
+</nucleus>
+
+<java>
+  atg.service.dynamo.ServerConfig configure = (atg.service.dynamo.ServerConfig) request.resolveName("/atg/dynamo/admin/Configure");
+  atg.service.dynamo.ServerConfig defaultCfg = (atg.service.dynamo.ServerConfig) request.resolveName("/atg/dynamo/admin/DefaultConfigure");
+</java>
+
+<HTML>
+<HEAD>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+<TITLE>Configure Session Backup Server</TITLE>
+
+
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="images/config-banner.gif" ALT="Dynamo Configuration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a href="configure-server.jhtml">Configure</a>/<a href="configure-server-services.jhtml">Servers</a>/Session Backup Server<p>
+
+
+
+<blockquote>
+
+<h3>Server: <i><valueof property=Configure.serverName></valueof></i></h3>
+
+<H2>Configure Session Backup Server</H2>
+
+<FORM ACTION="configure-server-services.jhtml" METHOD=POST>
+
+<input name="currentProperties" property="Configure.currentProperties" type=hidden value="sessionBackupServerEnabled">
+<input name="currentProperties" property="Configure.currentProperties" type=hidden value="sessionBackupServerPort">
+
+<p>
+	The session backup server stores session information for one or more
+	Dynamo servers.  Use of a session backup server allows one Dynamo to
+	recover sessions when another Dynamo becomes unavailable.  
+
+<p>
+
+
+<INPUT TYPE="checkbox" property="Configure.sessionBackupServerEnabled"> <b>Enable Session Backup Server</b>
+
+<java>
+    if ( !configure.isDefaultServer() && !configure.isUsingDefault("sessionBackupServerEnabled") )
+        out.println( "(default: " + (defaultCfg.getSessionBackupServerEnabled()?"enabled":"disabled") + ")" );
+</java>
+<br>
+
+<java>
+if ( !configure.isDefaultServer() )
+{
+    out.println("(currently");
+
+    if ( !(configure.isUsingDefault("sessionBackupServerEnabled")
+        || configure.isUsingDefault("sessionBackupServerPort") ) )
+    {
+	    out.println( " not " );
+    }
+
+    out.println("using defaults)");
+}
+</java>
+
+<p>
+<ul>
+	Session Backup Server Port:
+    <java>
+        if ( !configure.isDefaultServer() && !configure.isUsingDefault("sessionBackupServerPort") )
+            out.println( "(default: " + defaultCfg.getSessionBackupServerPort() + ")" );
+    </java>
+	<br>
+	<INPUT TYPE="text" property="Configure.sessionBackupServerPort">
+	<p>
+
+<INPUT TYPE="submit" property=Configure.applyChanges VALUE="Apply Changes">
+
+<java>
+if ( !configure.isDefaultServer() &&
+     ( !configure.isUsingDefault("sessionBackupServerEnabled") ||
+       !configure.isUsingDefault("sessionBackupServerPort")) )
+{
+	</java> <INPUT TYPE="submit" property="Configure.applyDefault" VALUE="Use Defaults"> <java>
+}
+</java>
+</ul>
+</form>
+<br>
+<hr>
+<b>Change Server</b><p>
+<valueof property=Configure.serverConfiguredText></valueof>
+<p>
+<droplet src="SelectServer.jhtml">
+    <param name="returnURL" value="backup-server.jhtml">
+
+</droplet>
+<p>
+<a href="configure-server-services.jhtml">Back</a><br>
+
+</blockquote>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/backup-server.jhtml#2 $$Change: 651448 $ */</java>
+

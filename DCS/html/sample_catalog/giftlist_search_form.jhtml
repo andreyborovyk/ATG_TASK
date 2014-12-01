@@ -1,0 +1,65 @@
+<importbean bean="/atg/commerce/gifts/GiftlistSearch">
+<importbean bean="/atg/dynamo/droplet/IsEmpty">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/Switch">
+
+<h3>Find a Gift List</h3>
+
+<form action="giftlist_search.jhtml" method="POST">
+
+Name: <input type="text" bean="GiftlistSearch.searchInput" size=30>
+
+<p>
+
+Optional criteria that may make it easier to find the right list:
+
+<blockquote>
+<droplet bean="ForEach">
+  <!-- For each property specified in 
+   GiftlistSearch.advancedSearchPropertyNames, retrieve all possible 
+   property values.  This allows the customer
+   to pick one to search on for advanced searching. -->
+  <param name="array" value="bean:GiftlistSearch.propertyValuesByType">
+  <oparam name="output">
+  <droplet bean="Switch">
+    <param name="value" value="param:key">
+    <!-- One property that a gift list can have is eventType.
+     In this case, if the property is eventType, we want to put all
+     possible choices in a pulldown menu. -->
+    <oparam name="eventType">
+    Event Type
+      <!-- property to store the customer's selection is propertyValues -->
+      <select bean="GiftlistSearch.propertyValues.eventType">
+      <option value="">Any
+      <setvalue param="outerelem" value="param:element">
+      <droplet bean="ForEach">
+        <param name="array" value="param:outerelem">
+        <oparam name="output">
+        <option><valueof param="element">UNDEFINED</valueof>
+        </oparam>
+      </droplet>
+      </select><br>
+    </oparam>
+    <oparam name="eventName">
+      Event Name
+      <!-- property to store the customer's selection is propertyValues -->
+      <input type=text size=30 bean="GiftlistSearch.propertyValues.eventName" value=""> <br> 
+    </oparam>
+    <oparam name="state">
+      State
+      <!-- property to store the customer's selection is propertyValues -->
+      <input type=text size=30 bean="GiftlistSearch.propertyValues.state" value=""> <br> 
+    </oparam>
+  </droplet>
+  </oparam>
+</droplet>
+
+<p>
+<input type="hidden" name="searching" value="true">
+<input type="hidden" bean="GiftlistSearch.search" value="Perform Search">
+<input type="submit" bean="GiftlistSearch.search" value="Perform Search">
+
+</form>
+
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/DCS/html/sample_catalog/giftlist_search_form.jhtml#2 $$Change: 651448 $*/</java>
+

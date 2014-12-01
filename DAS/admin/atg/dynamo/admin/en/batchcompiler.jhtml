@@ -1,0 +1,205 @@
+<nucleus type=import>
+  /atg/dynamo/service/BatchCompiler
+  /atg/dynamo/droplet/Switch
+  /atg/dynamo/droplet/ForEach
+</nucleus>
+
+<!--
+  -- This macro is used to display the show errors input tag if there
+  -- are any errors
+  -->
+<oparam name="showErrorsTag">
+  <droplet name="Switch">
+    <param name="value" value="property:BatchCompiler.lastStatus.numErrors">
+    <oparam name="0"></oparam>
+    <oparam name="unset"></oparam>
+    <oparam name="default">
+      <input type=submit name="showDetails" value="Show Errors">
+    </oparam>
+  </droplet>
+</oparam>
+
+<HTML>
+<HEAD>
+  <link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+  <TITLE>Dynamo Batch Compiler</TITLE>
+  <droplet name="/atg/dynamo/droplet/Switch">
+    <param name="value" value="property:BatchCompiler.numRunningThreads">
+    <oparam name="0"></oparam>
+    <oparam name="default">
+      <meta http-equiv="Refresh" content="15">
+    </oparam>
+  </droplet>
+</HEAD>
+
+<body>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="images/batch-compiler-banner.gif" ALT="Dynamo Batch Compiler" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+<a href="/">admin</a>/Batch Compiler
+
+<h2>Batch Compiler</h2>
+
+When Dynamo serves a .jhtml file for the first time, performance is slower, since the file must be compiled before it can be served. Use the Batch Compiler to pre-compile your .jhtml and avoid the delay caused by compiling for the first time.
+
+<h3>Run the Batch Compiler</h3>
+<blockquote>
+  <form action="batchcompiler.jhtml" method=post>
+    Choose the document root to compile
+    <select bean="BatchCompiler.documentRootPath">
+      <option value="bean:/atg/dynamo/servlet/pipeline/FileFinderServlet.documentRoot">Main document root
+      <option value="bean:/atg/dynamo/servlet/adminpipeline/FileFinderServlet.documentRoot">Admin document root
+    </select><br>
+    Compile .jhtml files in this document root:<br>
+    URL prefix to compile (enter '/' to compile all .jhtml files under this document root)<br>
+    <droplet name="Switch">
+      <param name="value" value="param:startLocation">
+      <oparam name="unset">
+        <input type=text property="BatchCompiler.startLocations[0]" size=50><br>
+      </oparam>
+      <oparam name="default">
+        <input type=text property="BatchCompiler.startLocations[0]" size=50 value="param:startLocation"><br>
+      </oparam>
+    </droplet>
+    <p><input type=submit property="BatchCompiler.walkSite" value="Start Compile">
+    <droplet name="Switch">
+      <param name="value" value="property:BatchCompiler.lastStatus">
+      <oparam name="unset"></oparam>
+      <oparam name="default">
+        <droplet name="Switch">
+          <param name="value" value="property:BatchCompiler.numRunningThreads">
+          <oparam name="0">
+            <input type=submit property="BatchCompiler.clearStatus" value="Clear Status">
+          </oparam>
+        </droplet>
+      </oparam>
+    </droplet>
+  </form>
+
+<p>
+</blockquote>
+<droplet name="Switch">
+  <param name="value" value="property:BatchCompiler.lastStatus">
+  <oparam name="unset">
+    <!-- No batch compiles have been run since dynamo started -->
+  </oparam>
+  <oparam name="default">
+    <h3>Batch Compile Status</h3>
+	<blockquote>
+    <table ncols=2 border=1>
+      <tr>
+        <td colspan=2>
+          <valueof property=BatchCompiler.lastStatus.statusMessage>No results yet</valueof>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          Number of jhtml files processed
+        </td>
+
+        <td>
+          Number of errors
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <valueof property=BatchCompiler.lastStatus.numVisitedURLs></valueof>
+        </td>
+        <td>
+          <valueof property=BatchCompiler.lastStatus.numErrors></valueof>
+        </td>
+      </tr>
+    </table>
+	
+    <form action="batchcompiler.jhtml">
+      <droplet name="Switch">
+        <param name="value" value="param:showDetails">
+        <oparam name="Show Details">
+          <input type=submit name="showDetails" value="Hide Details">
+          <valueof param="showErrorsTag"></valueof>
+          <table border=1>
+            <tr><td>File name</td><td>Details</td>
+            <droplet name="ForEach">
+              <param name="array" value="property:BatchCompiler.lastStatus.ClonedURLResults">
+              <oparam name="output">
+                <tr>
+                  <td><valueof param="key"></valueof></td>
+                  <td><table border=1>
+                    <droplet name="ForEach">
+                      <param name="array" value="param:element.statusMessages">
+                      <oparam name="output">
+                        <tr><td>
+                          <valueof param="element" valueishtml></valueof>
+                        </td></tr>
+                      </oparam>
+                    </droplet>
+                  </table></td>
+                </tr>
+              </oparam>
+            </droplet>
+          </table>
+        </oparam>
+        <oparam name="Show Errors">
+          <input type=submit name="showDetails" value="Show Details">
+          <input type=submit name="showDetails" value="Hide Errors">
+          <table border=1>
+            <tr><td>File name</td><td>Details</td>
+            <droplet name="ForEach">
+              <param name="array" value="property:BatchCompiler.lastStatus.ClonedURLErrors">
+              <oparam name="output">
+                <tr>
+                  <td><valueof param="key"></valueof></td>
+                  <td><table border=1>
+                    <droplet name="ForEach">
+                      <param name="array" value="param:element.statusMessages">
+                      <oparam name="output">
+                        <tr><td>
+                          <valueof param="element" valueishtml></valueof>
+                        </td></tr>
+                      </oparam>
+                    </droplet>
+                  </table></td>
+                </tr>
+              </oparam>
+            </droplet>
+          </table>
+        </oparam>
+        <oparam name="default">
+          <input type=submit name="showDetails" value="Show Details">
+          <valueof param="showErrorsTag"></valueof>
+        </oparam>
+      </droplet>
+    </form>
+  </oparam>
+</droplet>
+</blockquote>
+<p>
+
+<droplet name="/atg/dynamo/droplet/Switch">
+  <param name="value" value="property:BatchCompiler.numRunningThreads">
+  <oparam name="0"></oparam>
+  <oparam name="default">
+    <java>
+      if (request.getParameter("showDetails") != null)
+        request.addQueryParameter("showDetails", request.getParameter("showDetails"));
+      if (request.getParameter("showErrors") != null)
+        request.addQueryParameter("showErrors", request.getParameter("showErrors"));
+    </java>
+    <blockquote>
+    <a href="batchcompiler.jhtml">Refresh Batch Compile Status</a>
+    </blockquote>
+    <h3>Cancel the running batch compilation</h3>
+    <blockquote>
+    <form action="batchcompiler.jhtml" method=post>
+      <input type=submit property="BatchCompiler.stopWalking" value="Cancel">
+    </form>
+    </blockquote>
+  </oparam>
+</droplet>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/batchcompiler.jhtml#2 $$Change: 651448 $ */</java>
+

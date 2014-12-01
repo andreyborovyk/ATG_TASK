@@ -1,0 +1,13 @@
+<Resource auth="Container" 
+    type="com.atomikos.jdbc.AtomikosDataSourceBean" 
+    factory="com.atomikos.tomcat.BeanFactory" 
+    xaDataSourceClassName="${driver-class}" 
+    xaProperties.user="${username}" 
+    xaProperties.password="${password}" 
+    xaProperties.URL="${url}" 
+    borrowConnectionTimeout="5000" 
+    maxIdleTime="900" 
+    maxPoolSize="100" minPoolSize="5" name="${jndi-name}" 
+    uniqueResourceName="${jndi-name}" 
+    />
+<!-- @version $Id: //product/CIM/version/10.0.3/plugins/Base/filetemplate/tomcat-oracleoci-xa.xml#2 $$Change: 651448 $-->

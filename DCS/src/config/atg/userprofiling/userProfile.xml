@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+
+<!DOCTYPE gsa-template
+        PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN"
+        "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template xml-combine="append">
+
+  <header>
+    <name>Commerce Related Profile Changes</name>
+    <author>DCS Team</author>
+    <version>$Id: //product/DCS/version/10.0.3/templates/DCS/config/atg/userprofiling/userProfile.xml#2 $$Change: 651448 $</version>
+  </header>
+
+  <item-descriptor name="user" default="true" sub-type-property="userType">
+
+    <attribute name="categoryCommerceContractPriority" value="50"/>
+    <attribute name="categoryCommercePromotionsPriority" value="55"/>
+    <attribute name="categoryCommercePreferencesPriority" value="60"/>
+    <attribute name="categoryCommercePaymentPriority" value="65"/>
+    <attribute name="categoryCommerceAddressAndPhonePriority" value="70"/>
+    <attribute name="categoryCommerceBehaviorTrackingPriority" value="75"/>
+   
+    <attribute name="categoryCommerceListsPriority" value="80"/>
+    <attribute name="categoryCommerceGiftAddressesPriority" value="85"/>
+    <attribute name="categoryCommerceGeneralPriority" value="90"/>
+    
+    <table name="dcs_usr_actvpromo" type="multi" id-column-name="id" multi-column-name="sequence_num">
+      <property category-resource="categoryCommercePromotions" name="activePromotions" data-type="list" component-item-type="promotionStatus" 
+          column-name="promo_status_id" cascade="update,delete" display-name-resource="activePromotions">
+        <attribute name="resourceBundle" value="atg.commerce.UserProfileTemplateResources"/>
+      </property>
+    </table>
+
+    <table name="dcs_usr_usedpromo" type="multi" id-column-name="id">
+      <property category-resource="categoryCommercePromotions" name="usedPromotions" data-type="set" component-item-type="promotion" 
+          repository="/atg/commerce/pricing/Promotions" column-name="promotion_id" display-name-resource="usedPromotions">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="resourceBundle" value="atg.commerce.UserProfileTemplateResources"/>
+      </property>
+    </table>
+
+    <table name="dcs_user" type="auxiliary" id-column-name="user_id">
+      <property category-resource="categoryCommercePreferences" name="allowPartialShipment" data-type="boolean" default="false"
+                    column-name="allow_partial_ship" display-name-resource="allowPartialShipment">
+        <attribute name="resourceBundle" value="atg.commerce.UserProfileTemplateResources"/>
+      </property>
+
+      <property category-resource="categoryCommercePreferences" name="defaultCreditCard" item-type="credit-card" column-name="default_creditcard"
+                display-name-resource="defaultCreditCard"> 
+        <attribute name="resourceBundle" value="atg.commerce.UserProfileTemplateResources"/>
+      </property>
+      <property category-resource="categoryCommercePreferences" name="expressCheckout" data-type="boolean" default="false" column-name="express_checkout"
+                display-name-resource="expressCheckout">
+        <attribute name="resourceBundle" value="atg.commerce.UserProfileTemplateResources"/>
+      </property>
+      <property category-resource="categoryCommercePreferences" name="defaultCarrier" data-type="String" column-name="default_carrier" display-name-resource="defaultCarrier">
+        <attribute name="resourceBundle" value="atg.commerce.UserProfileTemplateResources"/>
+      </property>
+      <property category-resource="categoryCommerceAddressAndPhone" name="daytimeTelephoneNumber" data-type="String" column-name="daytime_phone_num"
+                display-name-resource="daytimeTelephoneNumber">
+            <attribute name="propertySortPriority" value="-2"/>
+        <attribute name="resourceBundle" value="atg.commerce.UserProfileTemplateResources"/>
+      </property>
+      
+      <property name="priceList" category-resource="categoryCommerceGeneral" item-type="priceList" 
+                display-name-resource="priceList" column-name="price_list" 
+                repository="/atg/commerce/pricing/priceLists/PriceLists">
+        <attribute name="resourceBundle" value="atg.commerce.UserProfileTemplateResources"/>
+      </property>
+      <property name="salePriceList" category-resource="categoryCommerceGeneral" item-type="priceList" 
+                display-name-resource="salePriceList" column-name="sale_price_list" 
+                repository="/atg/commerce/pricing/priceLists/PriceLists">
+        <attribute name="resourceBundle" value="atg.commerce.UserProfileTemplateResources"/>
+      </property>
+    </table>
+    <!-- This transient property may be used for targeting -->
+
+    <property category-resource="categoryCommerceBehaviorTracking" name="currentLocation" data-type="enumerated" default="unknown" display-name-resource="currentLocation">
+      <attribute name="resourceBundle" value="atg.commerce.UserProfileTemplateResources"/>
+      <attribute name="useCodeForValue" value="false"/>
+      <option value="unknown" code="0"/>
+      <option value="home" code="1"/>
+      <option value="store_home" code="2"/>
+      <option value="shopping_cart" code="3"/>
+      <option value="catalog_category" code="4"/>
+      <option value="catalog_product" code="5"/>
+      <option value="catalog_search" code="6"/>
+      <option value="catalog_comparison" code="4000"/>
+      <option value="checkout" code="7"/>
+      <option value="profile" code="8"/>
+    </property>
+
+    <!-- this is the key into private giftlist -->
+    <table name="dcs_user_wishlist" type="auxiliary" id-column-name="user_id">
+      <property category-resource="categoryCommerceLists" name="wishlist" item-type="gift-list" repository="/atg/commerce/gifts/Giftlists"
+                column-name="giftlist_id" cascade="insert,update,delete" display-name-resource="wishlist">
+        <attribute name="resourceBundle" value="atg.commerce.UserProfileTemplateResources"/>
+      </property>
+
+    </table>
+
+    <!-- this is the key into user created giftlists -->
+    <table name="dcs_user_giftlist" type="multi" id-column-name="user_id" multi-column-name="sequence_num">
+      <property category-resource="categoryCommerceLists" name="giftlists" data-type="list" component-item-type="gift-list" repository="/atg/commerce/gifts/Giftlists"
+                column-name="giftlist_id" display-name-resource="giftlists">
+        <attribute name="resourceBundle" value="atg.commerce.UserProfileTemplateResources"/>
+      </property>
+    </table>
+
+    <!-- this is the key into giftlists found for other customers -->
+    <table name="dcs_user_otherlist" type="multi" id-column-name="user_id" multi-column-name="sequence_num">
+      <property category-resource="categoryCommerceLists" name="otherGiftlists" data-type="list" component-item-type="gift-list" repository="/atg/commerce/gifts/Giftlists"
+                column-name="giftlist_id" display-name-resource="otherGiftlists">
+        <attribute name="resourceBundle" value="atg.commerce.UserProfileTemplateResources"/>
+      </property>
+    </table>
+
+    <property category-resource="categoryCommerceGiftAddresses" name="giftlistAddresses" data-type="map"
+              component-item-type="contactInfo" display-name-resource="giftlistAddresses" hidden="true">
+      <attribute name="resourceBundle" value="atg.commerce.UserProfileTemplateResources"/>
+    </property>
+
+    <table name="dcs_user_catalog" type="auxiliary" id-column-name="user_id">
+      <property category-resource="categoryCommerceGeneral" name="catalog" item-type="catalog" display-name-resource="catalog" column-name="user_catalog" 
+          repository="/atg/commerce/catalog/ProductCatalog">
+        <attribute name="resourceBundle" value="atg.commerce.UserProfileTemplateResources"/>
+      </property>
+    </table>
+
+  </item-descriptor>
+
+  <!-- 
+  *************************************************************
+  CreditCard
+  *************************************************************
+  -->
+
+  <item-descriptor name="credit-card" display-name-resource="itemDescriptorCreditCard">
+    <attribute name="resourceBundle" value="atg.commerce.UserProfileTemplateResources"/>
+    
+    <table name="dps_credit_card" type="primary" id-column-name="id">
+      <property name="id" writable="false" display-name-resource="id">
+        <attribute name="resourceBundle" value="atg.commerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>        
+      <property name="creditCardNumber" column-name="credit_card_number" data-type="string" category-resource="categoryBasics" display-name-resource="creditCardNumber">
+        <attribute name="resourceBundle" value="atg.commerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>        
+      <property name="creditCardType" column-name="credit_card_type" data-type="string" category-resource="categoryBasics" display-name-resource="creditCardType">
+        <attribute name="resourceBundle" value="atg.commerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>        
+      <property name="expirationMonth" column-name="expiration_month" data-type="string" category-resource="categoryBasics" display-name-resource="expirationMonth">
+        <attribute name="resourceBundle" value="atg.commerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="40"/>
+      </property>        
+      <property name="expirationDayOfMonth" column-name="exp_day_of_month" data-type="string" category-resource="categoryBasics" display-name-resource="expirationDayOfMonth">
+        <attribute name="resourceBundle" value="atg.commerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="50"/>
+      </property>        
+      <property name="expirationYear" column-name="expiration_year" data-type="string" category-resource="categoryBasics" display-name-resource="expirationYear">
+        <attribute name="resourceBundle" value="atg.commerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="60"/>
+      </property>        
+      <!-- This is a key into the addresses map -->
+      <property name="billingAddress" item-type="contactInfo" column-name="billing_addr" cascade="update" category-resource="categoryBasics" display-name-resource="billingAddress">
+        <attribute name="resourceBundle" value="atg.commerce.UserProfileTemplateResources"/>
+        <attribute name="propertySortPriority" value="70"/>
+      </property>        
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="promotionStatus" display-name-resource="itemDescriptorPromotionStatus" display-property="promotion">
+     <attribute name="resourceBundle" value="atg.commerce.UserProfileTemplateResources"/>
+
+     <table name="dcs_usr_promostat" type="primary" id-column-name="status_id">
+       <property name="profileId" data-type="string" column-name="profile_id" required="true" display-name-resource="profileId">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>        
+       <property name="promotion" item-type="promotion" repository="/atg/commerce/pricing/Promotions" column-name="promotion" required="true" display-name-resource="promotion">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>        
+       <property name="numUses" data-type="int" column-name="num_uses" display-name-resource="numUses">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>        
+       <property name="expirationDate" data-type="timestamp" column-name="expirationDate" display-name-resource="expirationDate">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="grantedDate" data-type="timestamp" column-name="granted_date" display-name-resource="grantedDate">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>        
+     </table>
+  </item-descriptor>
+
+
+
+
+</gsa-template>
+<!-- @version $Id: //product/DCS/version/10.0.3/templates/DCS/config/atg/userprofiling/userProfile.xml#2 $$Change: 651448 $ -->

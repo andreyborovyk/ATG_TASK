@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE pipelinemanager
+	PUBLIC "-//Art Technology Group, Inc.//DTD Dynamo Pipeline Manager//EN"
+	'http://www.atg.com/dtds/pipelinemanager/pipelinemanager_1.0.dtd'>
+
+<pipelinemanager>
+
+<!-- This chain is used to process a credit card payment group -->
+<!-- This single chain knows how to auth/credit/debit a        -->
+<!-- payment group.  It also creates the CreditCardInfo object -->
+<!-- that is used by the CreditCardProcessor to perform an     -->
+<!-- auth/debit/credit.                                        -->
+<!-- This chain gets invoked from the PaymentManager.          -->
+
+<pipelinechain name="creditCardProcessorChain" transaction="TX_REQUIRED" headlink="createCreditCardInfo">
+  <pipelinelink name="createCreditCardInfo" transaction="TX_MANDATORY">
+    <processor jndi="/atg/commerce/payment/processor/CreateCreditCardInfo"/>
+    <transition returnvalue="1" link="processCreditCard"/>
+  </pipelinelink>
+  <pipelinelink name="processCreditCard" transaction="TX_MANDATORY">
+    <processor jndi="/atg/commerce/payment/processor/ProcessCreditCard"/>
+  </pipelinelink>
+</pipelinechain>
+
+
+<!-- This chain is used to process a gift certificate payment  -->
+<!-- group.  This single chain knows how to auth/credit/debit  -->
+<!-- a payment group.  It also creates the GiftCertificateInfo -->
+<!-- object that is used by the CreditCardProcessor to         --> 
+<!-- perform an auth/debit/credit.                             -->
+<!-- This chain gets invoked from the PaymentManager.          -->
+
+<pipelinechain name="giftCertificateProcessorChain" transaction="TX_REQUIRED" headlink="createGiftCertificateInfo">
+  <pipelinelink name="createGiftCertificateInfo" transaction="TX_MANDATORY">
+    <processor jndi="/atg/commerce/payment/processor/CreateGiftCertificateInfo"/>
+    <transition returnvalue="1" link="processGiftCertificate"/>
+  </pipelinelink>
+  <pipelinelink name="processGiftCertificate" transaction="TX_MANDATORY">
+    <processor jndi="/atg/commerce/payment/processor/ProcessGiftCertificate"/>
+  </pipelinelink>
+</pipelinechain>
+
+
+<!-- This chain is used to process a store credit payment group-->
+<!-- This single chain knows how to auth/credit/debit a        -->
+<!-- payment group.  It also creates the StoreCreditInfo object-->
+<!-- That is used by the StoreCreditProcessor to perform an    -->
+<!-- auth/debit/credit.                                        -->
+<!-- This chain gets invoked from the PaymentManager.          -->
+
+<pipelinechain name="storeCreditProcessorChain" transaction="TX_REQUIRED" headlink="createStoreCreditInfo">
+  <pipelinelink name="createStoreCreditInfo" transaction="TX_MANDATORY">
+    <processor jndi="/atg/commerce/payment/processor/CreateStoreCreditInfo"/>
+    <transition returnvalue="1" link="processStoreCredit"/>
+  </pipelinelink>
+  <pipelinelink name="processStoreCredit" transaction="TX_MANDATORY">
+    <processor jndi="/atg/commerce/payment/processor/ProcessStoreCredit"/>
+  </pipelinelink>
+</pipelinechain>
+</pipelinemanager>
+<!-- @version $Id: //product/DCS/version/10.0.3/templates/DCS/config/atg/commerce/payment/paymentpipeline.xml#2 $$Change: 651448 $ -->

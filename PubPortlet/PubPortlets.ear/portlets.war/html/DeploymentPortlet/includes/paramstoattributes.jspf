@@ -1,0 +1,304 @@
+<!-- BEGIN FILE paramstoattributes.jspf -->
+
+<%-- Get the ATGSession --%>
+<c:set var="atgSessionPath" value="/atg/web/ATGSession" />
+<dspel:importbean scope="request" var="atgSession" bean="${atgSessionPath}"/>  
+
+<%-- Set the target --%>
+<%
+    String menuGroup =  ServletUtil.getDynamoRequest(request).getParameter("atg_admin_menu_group");
+    String menu1 =   ServletUtil.getDynamoRequest(request).getParameter("atg_admin_menu_1");
+    String fromMenu =   ServletUtil.getDynamoRequest(request).getParameter("from_menu");
+
+    pageContext.setAttribute("atg_admin_menu_group", menuGroup, pageContext.REQUEST_SCOPE);
+    pageContext.setAttribute("atg_admin_menu_1", menu1, pageContext.REQUEST_SCOPE);
+    if(fromMenu != null)
+     pageContext.setAttribute("fromMenu", new Boolean(true), pageContext.REQUEST_SCOPE);
+%>
+
+<c:if test="${atg_admin_menu_group != null}">
+  <c:set var="atgAdminMenuGroup" value="${atg_admin_menu_group}" scope="session"/>
+</c:if>
+
+<c:if test="${param.atg_admin_menu_group != null && atg_admin_menu_group == null}">
+  <c:set var="atgAdminMenuGroup" value="${param.atg_admin_menu_group}" scope="session"/>
+</c:if>
+
+<c:if test="${atg_admin_menu_1 != null}">
+  <c:set var="atgAdminMenu1" value="${atg_admin_menu_1}" scope="session"/>
+</c:if>
+
+<c:if test="${param.atg_admin_menu_1 != null && atg_admin_menu_1 == null}">
+  <c:set var="atgAdminMenu1" value="${param.atg_admin_menu_1}" scope="session"/>
+</c:if>
+
+<c:if test="${param.target_id != null}">
+  <pws:getTarget var="target" targetId="${param.target_id}"/>
+  <c:set var="target" value="${target}" scope="session"/>
+  <c:set var="TARGET_ID" value="${target.ID}" scope="session"/>
+</c:if>
+
+
+<c:if test="${param.scheduled_only != null}">
+  <c:set var="scheduledOnly" value="${param.scheduled_only}" scope="request"/>
+  <%pageContext.setAttribute(pageContext.findAttribute("TARGET_ID")+"ScheduledOnly", request.getParameter("scheduled_only"), pageContext.SESSION_SCOPE);%>
+</c:if>
+<c:if test="${param.scheduled_only == null}">
+  <%
+   if(pageContext.findAttribute("TARGET_ID")+"ScheduledOnly" != null)
+     pageContext.setAttribute("scheduledOnly", pageContext.findAttribute(pageContext.findAttribute("TARGET_ID")+"ScheduledOnly"), pageContext.REQUEST_SCOPE);
+  %>
+</c:if>
+
+<c:if test="${param.queued_only != null}">
+  <c:set var="queuedOnly" value="${param.queued_only}" scope="request"/>
+  <%pageContext.setAttribute(pageContext.findAttribute("TARGET_ID")+"QueuedOnly", request.getParameter("queued_only"), pageContext.SESSION_SCOPE);%>
+</c:if>
+<c:if test="${param.queued_only == null}"> 
+    <%
+      if(pageContext.findAttribute("TARGET_ID")+"QueuedOnly" != null)
+        pageContext.setAttribute("queuedOnly", pageContext.findAttribute(pageContext.findAttribute("TARGET_ID")+"QueuedOnly"), pageContext.REQUEST_SCOPE);
+     %>
+</c:if>
+
+<c:if test="${param.site_tab_name != null}">
+  <c:set var="siteTabName" value="${param.site_tab_name}" scope="request"/>
+  <%pageContext.setAttribute(pageContext.findAttribute("TARGET_ID")+"SiteTabName", request.getParameter("site_tab_name"), pageContext.SESSION_SCOPE);%>
+</c:if>
+<c:if test="${param.site_tab_name == null}">
+  <%
+   if(pageContext.findAttribute("TARGET_ID")+"SiteTabName" != null)
+     pageContext.setAttribute("siteTabName", pageContext.findAttribute(pageContext.findAttribute("TARGET_ID")+"SiteTabName"), pageContext.REQUEST_SCOPE);
+   %>
+</c:if>
+
+<c:if test="${param.deploy_reject_projects != null}">
+  <c:set var="deployRejectProjects" value="${paramValues['deploy_reject_projects']}" scope="request"/>
+  <%pageContext.setAttribute(pageContext.findAttribute("TARGET_ID")+"DeployRejectProjects", request.getParameterValues("deploy_reject_projects"), pageContext.SESSION_SCOPE);%>
+</c:if>
+<c:if test="${param.deploy_reject_projects == null}">
+  <%
+   if(pageContext.findAttribute("TARGET_ID")+"DeployRejectProjects" != null)
+    pageContext.setAttribute("deployRejectProjects", pageContext.findAttribute(pageContext.findAttribute("TARGET_ID")+"DeployRejectProjects"), pageContext.REQUEST_SCOPE);
+  %>
+</c:if>
+
+<c:if test="${param.deploy_or_reject != null}">
+  <c:set var="deployOrReject" value="${param.deploy_or_reject}" scope="request"/>
+  <%pageContext.setAttribute(pageContext.findAttribute("TARGET_ID")+"DeployOrReject", request.getParameter("deploy_or_reject"), pageContext.SESSION_SCOPE);%>
+</c:if>
+<c:if test="${param.deploy_or_reject == null}">
+  <%
+   if(pageContext.findAttribute("TARGET_ID")+"DeployOrReject" != null)
+    pageContext.setAttribute("deployOrReject", pageContext.findAttribute(pageContext.findAttribute("TARGET_ID")+"DeployOrReject"), pageContext.REQUEST_SCOPE);
+  %>
+</c:if>
+
+<c:if test="${param.rollback_project != null}">
+  <c:set var="rollbackProject" value="${param.rollback_project}" scope="request"/>
+  <%pageContext.setAttribute(pageContext.findAttribute("TARGET_ID")+"RollbackProject", request.getParameterValues("rollback_project"), pageContext.SESSION_SCOPE);%>
+</c:if>
+<c:if test="${param.rollback_project == null}">
+  <%
+   if(pageContext.findAttribute("TARGET_ID")+"RollbackProject" != null)
+    pageContext.setAttribute("rollbackProject", pageContext.findAttribute(pageContext.findAttribute("TARGET_ID")+"RollbackProject"), pageContext.REQUEST_SCOPE);
+  %>
+</c:if>
+
+<c:if test="${param.done_rollback != null}">
+  <%
+     pageContext.removeAttribute(pageContext.findAttribute("TARGET_ID")+"RollbackProject", pageContext.SESSION_SCOPE);
+     pageContext.removeAttribute("rollbackProject", pageContext.REQUEST_SCOPE);
+  %>
+</c:if>
+
+<c:if test="${param.site_tab_name != null}">
+  <c:set var="siteTabName" value="${param.site_tab_name}" scope="request"/>
+  <%pageContext.setAttribute(pageContext.findAttribute("TARGET_ID")+"SiteTabName", request.getParameter("site_tab_name"), pageContext.SESSION_SCOPE);%>
+</c:if>
+<c:if test="${param.site_tab_name == null}">
+  <%
+   if(pageContext.findAttribute("TARGET_ID")+"SiteTabName" != null)
+     pageContext.setAttribute("siteTabName", pageContext.findAttribute(pageContext.findAttribute("TARGET_ID")+"SiteTabName"), pageContext.REQUEST_SCOPE);
+   %>
+</c:if>
+
+<c:if test="${param.agent_tablet_name != null}">
+  <c:set var="agentTabletName" value="${param.agent_tablet_name}" scope="request"/>
+  <%pageContext.setAttribute(pageContext.findAttribute("TARGET_ID")+"AgentTabletName", request.getParameter("agent_tablet_name"), pageContext.SESSION_SCOPE);%>
+</c:if>
+<c:if test="${param.agent_tablet_name == null}">
+  <%
+   if(pageContext.findAttribute("TARGET_ID")+"AgentTabletName" != null)
+     pageContext.setAttribute("agentTabletName", pageContext.findAttribute(pageContext.findAttribute("TARGET_ID")+"AgentTabletName"), pageContext.REQUEST_SCOPE);
+   %>
+</c:if>
+
+<c:if test="${param.goto_details_tabs != null}">
+  <c:set var="goToDetailsTabs" value="${param.goto_details_tabs}" scope="session"/>
+</c:if>
+
+<c:if test="${param.done_deploy != null || param.done_reject != null}">
+  <%
+     pageContext.removeAttribute(pageContext.findAttribute("TARGET_ID")+"DeployRejectProjects", pageContext.SESSION_SCOPE);
+     pageContext.removeAttribute("deployRejectProjects", pageContext.REQUEST_SCOPE);
+  %>
+</c:if>
+
+<c:if test="${param.overview_no_tabs != null}">
+   <c:remove var="goToDetailsTabs" scope="session"/>
+   <c:set var="resultsStartIndex" scope="session" value="0"/>
+</c:if>
+
+<c:if test="${param.edit_deployment_id != null}">
+  <c:set var="editDeploymentID" value="${param.edit_deployment_id}" scope="request"/>
+  <%pageContext.setAttribute(pageContext.findAttribute("TARGET_ID")+"EditDeploymentID", request.getParameter("edit_deployment_id"), pageContext.SESSION_SCOPE);%>
+</c:if>
+
+<c:if test="${param.edit_deployment_id == null}">
+  <%
+   if(pageContext.findAttribute("TARGET_ID")+"EditDeploymentID" != null)
+    pageContext.setAttribute("editDeploymentID", pageContext.findAttribute(pageContext.findAttribute("TARGET_ID")+"EditDeploymentID"), pageContext.REQUEST_SCOPE);
+  %>
+</c:if>
+
+<c:if test="${param.done_deployment_edit != null}">
+  <%
+     pageContext.removeAttribute(pageContext.findAttribute("TARGET_ID")+"EditDeploymentID", pageContext.SESSION_SCOPE);
+     pageContext.removeAttribute("editDeploymentID", pageContext.REQUEST_SCOPE);
+  %>
+</c:if>
+
+<c:if test="${param.target_def_id != null}">
+  <pws:getTargetDef var="targetDef" targetId="${param.target_def_id}"/>
+  <c:set var="targetDef" value="${targetDef}" scope="session"/>
+  <c:set var="TARGET_DEF_ID" value="${targetDef.ID}" scope="session"/>
+  <c:set target="${atgSession}" property="targetDef" value="${targetDef}" />
+<c:if test="${targetDef.primary}">
+ <c:if test="${!empty targetDef.surrogate}">
+  <c:set var="targetDef" value="${targetDef.surrogate}" scope="session"/>
+  <c:set var="TARGET_DEF_ID" value="${targetDef.surrogate.ID}" scope="session"/>
+  <c:set target="${atgSession}" property="TARGET_DEF_ID" value="${targetDef.surrogate.ID}" />
+ </c:if>
+</c:if>
+
+</c:if>
+
+<c:if test="${param.config_tab_name != null}">
+  <c:set var="configTabName" value="${param.config_tab_name}" scope="request"/>
+  <%pageContext.setAttribute(pageContext.findAttribute("TARGET_DEF_ID")+"ConfigTabName", request.getParameter("config_tab_name"), pageContext.SESSION_SCOPE);%>
+</c:if>
+<c:if test="${param.config_tab_name == null}">
+  <%
+   if(pageContext.findAttribute("TARGET_DEF_ID")+"ConfigTabName" != null)
+     pageContext.setAttribute("configTabName", pageContext.findAttribute(pageContext.findAttribute("TARGET_DEF_ID")+"ConfigTabName"), pageContext.REQUEST_SCOPE);
+   %>
+</c:if>
+
+<c:if test="${param.add_or_edit_agent != null}">
+  <c:set var="addOrEditAgent" value="${param.add_or_edit_agent}" scope="request"/>
+  <%pageContext.setAttribute(pageContext.findAttribute("TARGET_DEF_ID")+"AddOrEditAgent", request.getParameter("add_or_edit_agent"), pageContext.SESSION_SCOPE);%>
+</c:if>
+<c:if test="${param.add_or_edit_agent == null}">
+  <%
+   if(pageContext.findAttribute("TARGET_DEF_ID")+"AddOrEditAgent" != null)
+    pageContext.setAttribute("addOrEditAgent", pageContext.findAttribute(pageContext.findAttribute("TARGET_DEF_ID")+"AddOrEditAgent"), pageContext.REQUEST_SCOPE);
+  %>
+</c:if>
+
+<c:if test="${param.edit_agent_ids != null}">
+  <c:set var="editAgentIDs" value="${paramValues['edit_agent_ids']}" scope="request"/>
+  <%pageContext.setAttribute(pageContext.findAttribute("TARGET_DEF_ID")+"EditAgentIDs", request.getParameterValues("edit_agent_ids"), pageContext.SESSION_SCOPE);%>
+</c:if>
+<c:if test="${param.edit_agent_ids == null}">
+  <%
+   if(pageContext.findAttribute("TARGET_DEF_ID")+"EditAgentIDs" != null)
+    pageContext.setAttribute("editAgentIDs", pageContext.findAttribute(pageContext.findAttribute("TARGET_DEF_ID")+"EditAgentIDs"), pageContext.REQUEST_SCOPE);
+  %>
+</c:if>
+
+<c:if test="${param.done_edit_agents != null}">
+  <%
+     pageContext.removeAttribute(pageContext.findAttribute("TARGET_DEF_ID")+"EditAgentIDs", pageContext.SESSION_SCOPE);
+     pageContext.removeAttribute("editAgentIDs", pageContext.REQUEST_SCOPE);
+  %>
+</c:if>
+
+<c:if test="${param.goto_config_details_tabs != null}">
+  <c:set var="goToConfigDetailsTabs" value="${param.goto_config_details_tabs}" scope="session"/>
+</c:if>
+
+<c:if test="${param.config_no_tabs != null}">
+   <c:remove var="goToConfigDetailsTabs" scope="session"/>
+</c:if>
+
+<c:if test="${param.add_site != null}">
+  <c:set var="addSite" value="${param.add_site}" scope="session"/>
+</c:if>
+
+<c:if test="${param.new_site != null}">
+  <c:remove var="target" scope="session"/>
+  <c:remove var="TARGET_ID" scope="session"/>
+  <c:remove var="targetDef" scope="session"/>
+  <c:remove var="TARGET_DEF_ID" scope="session"/>
+  <c:remove var="makeChangesLive" scope="session"/>
+  <c:remove var="goToDetailsTabs" scope="session"/>
+  <c:remove var="goToConfigDetailsTabs" scope="session"/>
+</c:if>
+
+<c:if test="${param.add_site == null && param.new_site == null && param.target_def_id == null}">
+<c:set target="${atgSession}" property="targetDef" value="${null}"/>
+</c:if>
+
+
+<c:if test="${param.make_changes_live != null}">
+  <c:set var="makeChangesLive" value="${param.make_changes_live}" scope="session"/>
+</c:if>
+
+<c:if test="${param.from_make_changes_live != null}">
+   <c:remove var="makeChangesLive" scope="session"/>
+</c:if>
+
+<c:if test="${param.todo_start_index != null}">
+  <c:set var="toDoStartIndex" scope="session" value="${param.todo_start_index}"/>
+</c:if>
+<c:if test="${toDoStartIndex == null}">
+  <c:set var="toDoStartIndex" value="0"/>
+</c:if>
+
+<c:if test="${param.plan_start_index != null}">
+  <c:set var="planStartIndex" scope="session" value="${param.plan_start_index}"/>
+</c:if>
+<c:if test="${planStartIndex == null}">
+  <c:set var="planStartIndex" value="0"/>
+</c:if>
+
+<c:if test="${param.results_start_index != null}">
+  <c:set var="resultsStartIndex" scope="session" value="${param.results_start_index}"/>
+</c:if>
+<c:if test="${resultsStartIndex == null}">
+  <c:set var="resultsStartIndex" value="0"/>
+</c:if>
+
+<c:if test="${param.from_menu != null}">
+  <c:set var="fromMenu" value="true"/>
+   <c:remove var="addSite" scope="session"/>
+   <c:remove var="makeChangesLive" scope="session"/>
+  <c:remove var="goToConfigDetailsTabs" scope="session"/>
+  <c:remove var="goToConfigDetailsTabs" scope="session"/>
+</c:if>
+
+<c:if test="${param.topology_changed != null}">
+  <c:remove var="target" scope="session"/>
+  <c:remove var="TARGET_ID" scope="session"/>
+  <c:remove var="targetDef" scope="session"/>
+  <c:remove var="TARGET_DEF_ID" scope="session"/>
+  <c:remove var="addSite" scope="session"/>
+  <c:remove var="makeChangesLive" scope="session"/>
+  <c:remove var="goToDetailsTabs" scope="session"/>
+  <c:remove var="goToConfigDetailsTabs" scope="session"/>
+  <c:set var="fromMenu" value="true"/>
+</c:if>
+
+<!-- END FILE paramstoattributes.jspf -->
+<%-- @version $Id: //product/PubPortlet/version/10.0.3/portlets.war/html/DeploymentPortlet/includes/paramstoattributes.jspf#2 $$Change: 651448 $--%>

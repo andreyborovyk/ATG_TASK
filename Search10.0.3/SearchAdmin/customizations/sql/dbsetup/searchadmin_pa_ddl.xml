@@ -1,0 +1,112 @@
+<?xml version="1.0" ?>
+<!DOCTYPE schema
+  SYSTEM 'http://road.atg.com/dtds/ddlgen/schema.dtd'>
+
+<schema name="create_service">
+
+  <!--
+    Preferred answers Tables
+  -->
+
+  <table name="srch_pa_pa">
+    <!-- generated id.-->
+    <column name="pa_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+
+    <!--column name="pa_disp_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column-->
+    
+    <column name="pa_question" nullable="n" i18n="y">
+      <column-type db="generic" type="long-varchar"/>
+    </column>
+
+    <column name="pa_ans_in_cont" nullable="n" i18n="y">
+      <column-type db="generic" type="long-varchar"/>
+    </column>
+
+    <column name="pa_expl_ans" nullable="y" i18n="y">
+      <column-type db="generic" type="long-varchar"/>
+    </column>
+
+    <column name="pa_cont_url" nullable="n">
+      <column-type db="generic" type="long-varchar"/>
+    </column>
+
+    <column name="pa_cs_id" nullable="n">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+
+    <column name="pa_created" nullable="n">
+      <column-type db="generic" type="date"/>
+    </column>
+
+    <column name="pa_last_mod" nullable="n">
+      <column-type db="generic" type="date"/>
+    </column>
+
+    <column name="pa_enabled" nullable="n">
+      <column-type db="generic" type="one-digit"/>
+    </column>
+
+    <primary-key name="srch_pa_pa1_p">
+      <index-column column="pa_id" order="asc" seq="1"/>
+    </primary-key>
+
+  </table>
+
+  <table name="srch_pa_mtag">
+    <!-- generated id.-->
+    <column name="pa_mtag_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+
+    <column name="pa_mtag_pa_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+
+    <column name="pa_mtag_name" nullable="n" i18n="y">
+      <column-type db="generic" type="varchar" length="200"/>
+    </column>
+
+    <column name="pa_mtag_type" nullable="n">
+      <column-type db="generic" type="varchar" length="200"/>
+    </column>
+
+    <column name="pa_mtag_value" nullable="n" i18n="y">
+      <column-type db="generic" type="varchar" length="200"/>
+    </column>
+
+    <primary-key name="srch_pa_mtag2_p">
+      <index-column column="pa_mtag_id" order="asc" seq="1"/>
+    </primary-key>
+
+    <foreign-key referenced-table="srch_pa_pa" name="srch_pa_mtag1_f" index-name="srch_pa_mtag1_x">
+      <fkey-column referencing-column="pa_mtag_pa_id" referenced-column="pa_id"/>
+    </foreign-key>
+
+  </table>
+
+  <table name="srch_pa_top">
+  
+    <column name="pa_top_pa_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+
+    <column name="pa_top_topic_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+
+    <primary-key name="srch_pa_top3_p">
+      <index-column column="pa_top_pa_id" order="asc" seq="1"/>
+      <index-column column="pa_top_topic_id" order="asc" seq="2"/>
+    </primary-key>
+
+    <foreign-key referenced-table="srch_pa_pa" name="srch_pa_top2_f" index-name="srch_pa_top2_x">
+      <fkey-column referencing-column="pa_top_pa_id" referenced-column="pa_id"/>
+    </foreign-key>
+
+  </table>
+</schema>
+<!-- @version $Id: //application/SearchAdmin/version/10.0.3/customizations/src/sql/searchadmin_pa_ddl.xml#2 $$Change: 651448 $-->

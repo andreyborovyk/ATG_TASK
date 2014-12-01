@@ -1,0 +1,135 @@
+<html>
+<head><title>Edit item</title>
+<script src="fluoroedit.js"></script>
+</head>
+<body>
+<importbean bean="/atg/dynamo/droplet/Switch">
+<importbean bean="/atg/dynamo/service/fluoroscope/itemedit/GetEditableProperties">
+<importbean bean="/atg/dynamo/service/fluoroscope/itemedit/RepositoryFormHandler">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<%--
+Expects input parameters of: repositoryPath, itemDescriptorName, repositoryId
+--%>
+
+<iframe id="FluoroscopeEditSubmitFrame"
+  name="FluoroscopeEditSubmitFrame"
+  style="width:0px; height:0px; border: 0px"
+  <%-- style="width:100px; height:100px; border: 0px" --%>
+  src="blank.html"></iframe>
+
+
+<%
+  // Debugging!
+  if (null == request.getParameter("repositoryPath")) {
+     request.setParameter("repositoryPath", 
+                          "/atg/userprofiling/ProfileAdapterRepository");
+  }
+
+  if (null == request.getParameter("repositoryId")) {
+     request.setParameter("repositoryId", "749");
+  }
+
+  if (null == request.getParameter("itemDescriptorName")) {
+     request.setParameter("itemDescriptorName", "user");
+  }
+
+%>
+
+
+
+<droplet bean="GetEditableProperties">
+  <param name="repositoryPath" value="/atg/userprofiling/ProfileAdapterRepository" />
+  <oparam name="specifierNotFound">
+    Failed to find editable properties specifier for the repository item.
+  </oparam>
+  <oparam name="output"><BR>
+    <b>Item: <valueof param="repositoryItem">???</valueof></b><BR><BR>
+    <%-- value: <valueof param="editableItemSpecifier">???</valueof><BR>
+    propResults: <valueof param="propertyResults">???</valueof><P>
+
+    <div style="line-height: 140%; border: 0px; margin: 0px;">
+    propResults.length: <%= ((Object[])request.getObjectParameter("propertyResults")).length %>  --%>
+    <droplet bean="ForEach">
+      
+      <param name="array" value="param:propertyResults">
+      <param name="itemDescriptorName" value="param:itemDescriptorName">
+      <param name="repositoryPath" value="param:repositoryPath">
+      <param name="repositoryId" value="param:repositoryId">
+      <oparam name="output">
+        <span id="param:element.globalPropertyIdString">
+        <java> out.print("<script type='text/javascript'>");
+               out.print("fluoroEdit.propertySpanIds.push('" + 
+		            request.getParameter("element.globalPropertyIdString") + "');");
+               out.println("</script>");
+       </java>
+        <setvalue param="propertySpecifier" value="param:element.specifier"/>
+
+	<valueof param="propertySpecifier.displayOrPropertyName">???</valueof>:
+        <setvalue param="propertyValue" value="param:element.value"/>
+        <setvalue param="propValueDisplayId" value="param:element.idSuffixMap.fluoroPropValueDisplay"/>
+        <setvalue param="propValueEditId" value="param:element.idSuffixMap.fluoroPropValueEdit"/>
+        <setvalue param="propValueEditFormId" value="param:element.idSuffixMap.fluoroPropValueEditForm"/>
+
+        <script type="text/javascript">
+          fluoroEdit.addEditableProperty(
+            '<%= request.getParameter("propValueDisplayId") %>',
+            '<%= request.getParameter("propValueEditId") %>',
+            '<%= request.getParameter("propValueEditFormId") %>',
+            '<%= request.getParameter("element.globalPropertyIdString") %>');
+        </script>
+
+        <droplet name="Switch">
+          <param name="value" value="param:element.viewOnly"/>
+          <oparam name="true">
+            <span id="param:element.idSuffixMap.fluoroPropValueDisplay">
+          </oparam>
+          <oparam name="false">
+            <span id="param:element.idSuffixMap.fluoroPropValueDisplay" onmousedown="<%= "fluoroEdit.editProperty('" +  request.getParameter("element.globalPropertyIdString") + "');" %>" style="outline-style: solid; outline-width :1;">
+          </oparam>
+        </droplet><%-- end viewOnly Switch --%>
+
+	<valueof param="propertyValue">???</valueof>
+        </span>
+        
+        <span id="param:propValueEditId" style="display: none;" >
+        <droplet name="Switch">
+          <param name="value" value="param:propertySpecifier.viewOnly"/>
+          <oparam name="false">
+            <%
+              request.addQueryParameter("invokeUpdate", "true");
+              request.addQueryParameter("repositoryPath",
+	              request.getParameter("repositoryPath"));
+              request.addQueryParameter("repositoryId",
+	              request.getParameter("repositoryId"));
+              request.setParameter("formUrl", request.encodeURL("/dyn/dyn/fluoro/edititem.jhtml"));
+            %>
+            <form action="param:formUrl" method="post" target="FluoroscopeEditSubmitFrame" id="param:propValueEditFormId" style="margin-top:0;margin-bottom:0; display:inline;">
+              <droplet src="param:propertySpecifier.contextRelativePath">
+                <param name="targetFrame" value="">
+                <param name="specifierAndValue" value="param:element"/>
+              </droplet>
+            </form>
+          </oparam>
+        </droplet><%-- end viewOnly Switch --%>
+        </span><BR>
+      </oparam>
+    </droplet><%-- end ForEach --%>
+    </div>
+  </oparam>
+</droplet><%-- end GetEditableProperties --%>
+
+<droplet name="Switch">
+  <param name="value" value="param:invokeUpdate"/>
+  <oparam name="true"><script type="text/javascript">parent.fluoroEdit.updatePropertySpansFromIframe("FluoroscopeEditSubmitFrame", fluoroEdit.delayedHasError);</script></oparam>
+</droplet>
+
+<droplet name="Switch">
+  <param name="value" value="param:editSpanId"/>
+  <oparam name="unset"></oparam>
+  <oparam name="null"></oparam>
+  <oparam name="default"><script type="text/javascript">parent.fluoroEdit.editProperty('<%= request.getParameter("editSpanId") %>' );</script></oparam>
+</droplet>
+
+</body>
+</html>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/home/doc/fluoro/edititem.jhtml#2 $$Change: 651448 $*/</java>

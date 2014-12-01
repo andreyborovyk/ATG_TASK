@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE scenario
+  SYSTEM
+  "dynamosystemresource:/atg/scenario/definition/sdl.dtd">
+
+<scenario modification-time="960745992422" enabled="true" author="admin" creation-time="955071601000">
+  <segment>
+    <segment-name>Funds Sensor</segment-name>
+    <!--================================-->
+    <!--== Views an item from Funds  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.dps.ViewItem</event-name>
+      <filter operator="eq" construct="content-repository-filter">
+        <event-property>
+          <property-name>repositoryName</property-name>
+        </event-property>
+        <constant>Funds</constant>
+      </filter>
+    </event>
+    <!--================================-->
+    <!--== Change Person's Aggressive Index by adding Item's Aggressive Index  -->
+    <!--================================-->
+    <action id="2">
+      <action-name construct="modify-action">modify</action-name>
+      <action-param name="modified">
+        <subject-property>
+          <property-name>aggressiveIndex</property-name>
+        </subject-property>
+      </action-param>
+      <action-param name="operator">
+        <constant>add</constant>
+      </action-param>
+      <action-param name="modifier">
+        <event-property>
+          <property-name>item</property-name>
+          <property-name>aggressiveIndex</property-name>
+        </event-property>
+      </action-param>
+    </action>
+    <!--================================-->
+    <!--== Change Person's fundsViewed by appending once Item's Fund Name  -->
+    <!--================================-->
+    <action id="3">
+      <action-name construct="modify-action">modify</action-name>
+      <action-param name="modified">
+        <subject-property>
+          <property-name>fundsViewed</property-name>
+        </subject-property>
+      </action-param>
+      <action-param name="operator">
+        <constant>appendOnce</constant>
+      </action-param>
+      <action-param name="modifier">
+        <event-property>
+          <property-name>item</property-name>
+          <property-name>fundName</property-name>
+        </event-property>
+      </action-param>
+    </action>
+  </segment>
+</scenario>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE env PUBLIC "-//Art Technology Group, Inc.//DTD Repository
+Ouput Specifier 1.0//EN" "http://www.atg.com/dtds/searchadmin/TextProcessingOptions.dtd">
+
+<!--
+$Id: //application/SearchAdmin/version/10.0.3/customizations/src/config/atg/searchadmin/repository/service/SearchAnalysisOptions.xml#2 $$Change: 651448 $
+$Change: 651448 $$DateTime: 2011/06/07 13:55:45 $
+-->
+
+<env>
+  <option name="language" category="basic" display="saolanguage"/>
+  <option name="targetLanguage" category="basic" display="dropdown"/>
+  <option name="context" display="rankedtable" category="basic"/>
+  <option name="spellChecker" category="basic"/>
+  <option name="interpretationMode" label="Interpretation mode:" 
+    type="enum" display="dropdown" category="basic" 
+    class="atg.searchadmin.repository.service.tpo.SearchAnalysisOptionInterpretationMode"/>
+  <option name="spellMaxSuggestions" category="advanced"/>
+  <option name="spellSuggestionCutoff" category="advanced"/>
+  <option name="spellSuggestionFactor" category="advanced"/>
+  <option name="spellSplitWords" category="advanced"/>
+  <option name="expandedStemming" category="advanced"/>
+  <option name="targetLanguageExpansion" category="advanced"/>
+  <option name="wildcardMax" category="advanced"/>
+  <option name="wildcardChar" category="advanced"/>
+  <option name="topicMaximum" category="advanced"/>
+  <option name="topicRelevance" category="advanced"/>
+  <option name="topicConfidence" category="advanced"/>
+  <option name="ruleEnable" category="advanced"/>
+  <option name="queryRuleEnable" category="advanced"/>
+  <option name="queryRuleDisable" category="advanced"/>
+  <option name="topicEnable" category="advanced"/>
+  <option name="topicDisable" category="advanced"/>
+  <option name="securityRole" category="advanced"/>
+  <option name="propertyMapping" category="advanced"/>
+  <option name="link" label="link:" type="mvenum" 
+    display="combinedropdown" category="searchParams">
+    <value default="true">None</value>
+    <value default="true">Equal</value>
+    <value default="true">Strong</value>
+    <value default="true">Medium</value>
+    <value default="true">Weak</value>
+  </option>
+  
+  <option name="exUnk" label="exUnk:" type="bool" 
+    display="checkbox" category="searchParams">
+    <value default="true">true</value>
+    <value>false</value>
+  </option>  
+  
+  <option name="implicitAndSize" label="implicitAndSize:" type="int" 
+    display="input" category="searchParams">
+    <value min="0" max="1000" inc="1" default="true">4</value>
+  </option> 
+</env>
+<!-- @version $Id: //application/SearchAdmin/version/10.0.3/customizations/src/config/atg/searchadmin/repository/service/SearchAnalysisOptions.xml#2 $$Change: 651448 $-->

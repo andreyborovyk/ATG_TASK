@@ -1,0 +1,165 @@
+<!DOCTYPE schema  SYSTEM "http://road.atg.com/dtds/ddlgen/schema.dtd">
+<schema name="paf_mappers_ddl">
+<comment><![CDATA[ @version $Id: //app/portal/version/10.0.3/paf/sql/paf_mappers_ddl.xml#2 $$Change: 651448 $]]></comment>
+   <table name="paf_page_visit">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="tstamp" nullable="y">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="gear_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="community_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="user_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="page_path" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="msg_type" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <index name="paf_pgvst_comid" table="paf_page_visit">
+         <index-column column="community_id" order="asc" seq="1"/>
+      </index>
+      <index name="paf_pgvst_gearid" table="paf_page_visit">
+         <index-column column="gear_id" order="asc" seq="1"/>
+      </index>
+      <index name="paf_pgvst_usrid" table="paf_page_visit">
+         <index-column column="user_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="comm_gear_add">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="tstamp" nullable="y">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="gear_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="community_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="user_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="msg_type" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <index name="comm_gearaddcom_id" table="comm_gear_add">
+         <index-column column="community_id" order="asc" seq="1"/>
+      </index>
+      <index name="comm_gearaddgearid" table="comm_gear_add">
+         <index-column column="gear_id" order="asc" seq="1"/>
+      </index>
+      <index name="comm_gearaddusr_id" table="comm_gear_add">
+         <index-column column="user_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="comm_gear_rem">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="tstamp" nullable="y">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="gear_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="community_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="user_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="msg_type" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <index name="comm_gearremcom_id" table="comm_gear_rem">
+         <index-column column="community_id" order="asc" seq="1"/>
+      </index>
+      <index name="comm_gearremgearid" table="comm_gear_rem">
+         <index-column column="gear_id" order="asc" seq="1"/>
+      </index>
+      <index name="comm_gearremusr_id" table="comm_gear_rem">
+         <index-column column="user_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="page_gear_add">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="tstamp" nullable="y">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="gear_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="community_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="page_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="user_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="msg_type" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <index name="page_gearaddcom_id" table="page_gear_add">
+         <index-column column="community_id" order="asc" seq="1"/>
+      </index>
+      <index name="page_gearaddgearid" table="page_gear_add">
+         <index-column column="gear_id" order="asc" seq="1"/>
+      </index>
+      <index name="page_gearaddpageid" table="page_gear_add">
+         <index-column column="page_id" order="asc" seq="1"/>
+      </index>
+      <index name="page_gearaddusr_id" table="page_gear_add">
+         <index-column column="user_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="page_gear_rem">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="tstamp" nullable="y">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="gear_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="community_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="page_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="user_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="msg_type" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <index name="page_gearremcom_id" table="page_gear_rem">
+         <index-column column="community_id" order="asc" seq="1"/>
+      </index>
+      <index name="page_gearremgearid" table="page_gear_rem">
+         <index-column column="gear_id" order="asc" seq="1"/>
+      </index>
+      <index name="page_gearrempageid" table="page_gear_rem">
+         <index-column column="page_id" order="asc" seq="1"/>
+      </index>
+      <index name="page_gearremusr_id" table="page_gear_rem">
+         <index-column column="user_id" order="asc" seq="1"/>
+      </index>
+   </table>
+</schema>
+<!-- @version $Id: //app/portal/version/10.0.3/paf/sql/paf_mappers_ddl.xml#2 $$Change: 651448 $ -->

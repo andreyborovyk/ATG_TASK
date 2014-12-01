@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE process-manager-configuration
+        PUBLIC "-//Art Technology Group, Inc.//DTD Process Manager//EN"
+        'http://www.atg.com/dtds/processmanager/processmanager_1.0.dtd'>
+
+<!-- Scenario manager customization file that illustrates custom actions and
+     scenario grammar extensions. -->
+     
+<process-manager-configuration>
+
+  <!-- Add a custom scenario grammar extension file. -->
+  <grammar-registry>
+    <grammar-extension-file>atg.ui.portal.expression.expression-grammar</grammar-extension-file>
+  </grammar-registry>
+
+  <bean-expression-registry>
+    <bean-expression>
+      <bean-expression-name>PortalServletRequest</bean-expression-name>
+      <jndi-url>dynamo:/PortalServletRequest</jndi-url>
+      <bean-info-provider-path>/PortalServletRequest</bean-info-provider-path>
+      <resource-bundle>atg.portal.scenario.Resources</resource-bundle>
+      <display-name>PortalServletRequest</display-name>
+      <display-name-resource>portalServletRequest.displayName</display-name-resource>
+      <description>This bean represents the current PortalServletRequest</description>
+      <description-resource>portalServletRequest.description</description-resource>
+      <request-scoped>true</request-scoped>
+      <expert>true</expert>
+      <hidden>false</hidden>
+    </bean-expression>
+  </bean-expression-registry>
+
+  <!-- Add all new JMS messages to the event registry -->
+  <event-registry>
+    <event>
+      <jms-type>
+        atg.portal.messaging.MemSubscribeMessage
+      </jms-type>
+      <message-class>
+        atg.portal.messaging.MemSubscribeMessage
+      </message-class>
+      <message-context>
+        session
+      </message-context>
+      <message-scope>
+        individual
+      </message-scope>
+      <display-name-resource>
+        memSubscribeMessageDisplayName
+      </display-name-resource>
+      <description-resource>
+        memSubscribeMessageDescription
+      </description-resource>
+      <resource-bundle>
+        atg.portal.messaging.MessagingSystemResources
+      </resource-bundle>
+    </event>
+
+    <event>
+      <jms-type>
+        atg.portal.messaging.MemUnsubscribeMessage
+      </jms-type>
+      <message-class>
+        atg.portal.messaging.MemUnsubscribeMessage
+      </message-class>
+      <message-context>
+        session
+      </message-context>
+      <message-scope>
+        individual
+      </message-scope>
+      <display-name-resource>
+        memUnsubscribeMessageDisplayName
+      </display-name-resource>
+      <description-resource>
+        memUnsubscribeMessageDescription
+      </description-resource>
+      <resource-bundle>
+        atg.portal.messaging.MessagingSystemResources
+      </resource-bundle>
+      <event-parameter>
+        <event-parameter-name>
+          sourceId
+        </event-parameter-name>
+        <display-name-resource>
+          memUnsubscribe.sourceId.displayName
+        </display-name-resource>
+      </event-parameter>
+      <event-parameter>
+        <event-parameter-name>
+          sourceType
+        </event-parameter-name>
+        <display-name-resource>
+          memUnsubscribe.sourceType.displayName
+        </display-name-resource>
+      </event-parameter>
+      <event-parameter>
+        <event-parameter-name>
+          profileId
+        </event-parameter-name>
+        <display-name-resource>
+          memUnsubscribe.profileId.displayName
+        </display-name-resource>
+      </event-parameter>
+      <event-parameter>
+        <event-parameter-name>
+          profileDisplayName
+        </event-parameter-name>
+        <display-name-resource>
+          memUnsubscribe.profileDisplayName.displayName
+        </display-name-resource>
+      </event-parameter>
+      <event-parameter>
+        <event-parameter-name>
+          messageType
+        </event-parameter-name>
+        <display-name-resource>
+          memUnsubscribe.messageType.displayName
+        </display-name-resource>
+      </event-parameter>
+      <event-parameter>
+        <event-parameter-name>
+          enrollmentType
+        </event-parameter-name>
+        <display-name-resource>
+          memUnsubscribe.enrollmentType.displayName
+        </display-name-resource>
+      </event-parameter>
+      <event-parameter>
+        <event-parameter-name>
+          communityId
+        </event-parameter-name>
+        <display-name-resource>
+          memUnsubscribe.communityId.displayName
+        </display-name-resource>
+      </event-parameter>
+    </event>
+
+    <event>
+      <jms-type>
+        atg.portal.messaging.MembershipAcceptedMessage
+      </jms-type>
+      <message-class>
+        atg.portal.messaging.MembershipAcceptedMessage
+      </message-class>
+      <message-context>
+        session
+      </message-context>
+      <message-scope>
+        individual
+      </message-scope>
+      <display-name-resource>
+        membershipAcceptedMessageDisplayName
+      </display-name-resource>
+      <description-resource>
+        membershipAcceptedMessageDescription
+      </description-resource>
+      <resource-bundle>
+        atg.portal.messaging.MessagingSystemResources
+      </resource-bundle>
+    </event>
+
+    <event>
+      <jms-type>
+        atg.portal.messaging.MembershipDeclinedMessage
+      </jms-type>
+      <message-class>
+        atg.portal.messaging.MembershipDeclinedMessage
+      </message-class>
+      <message-context>
+        session
+      </message-context>
+      <message-scope>
+        individual
+      </message-scope>
+      <display-name-resource>
+        membershipDeclinedMessageDisplayName
+      </display-name-resource>
+      <description-resource>
+        membershipDeclinedMessageDescription
+      </description-resource>
+      <resource-bundle>
+        atg.portal.messaging.MessagingSystemResources
+      </resource-bundle>
+    </event>
+
+    <event>
+      <jms-type>
+        atg.portal.messaging.CommunityPageviewMessage
+      </jms-type>
+      <message-class>
+        atg.portal.messaging.CommunityPageviewMessage
+      </message-class>
+      <message-context>
+        session
+      </message-context>
+      <message-scope>
+        individual
+      </message-scope>
+      <display-name-resource>
+        communityPageViewMessageDisplayName
+      </display-name-resource>
+      <description-resource>
+        communityPageViewMessageDescription
+      </description-resource>
+      <resource-bundle>
+        atg.portal.messaging.MessagingSystemResources
+      </resource-bundle>
+    </event>
+    
+    <event>
+      <jms-type>
+        atg.portal.messaging.CommunityGearAddedMessage
+      </jms-type>
+      <message-class>
+        atg.portal.messaging.CommunityGearAddedMessage
+      </message-class>
+      <message-context>
+        session
+      </message-context>
+      <message-scope>
+        individual
+      </message-scope>
+      <display-name-resource>
+        CommunityGearAddedMessageDisplayName
+      </display-name-resource>
+      <description-resource>
+        CommunityGearAddedMessageDescription
+      </description-resource>
+      <resource-bundle>
+        atg.portal.messaging.GearMessagingSystemResources
+      </resource-bundle>
+    </event>
+
+    <event>
+      <jms-type>
+        atg.portal.messaging.CommunityGearRemovedMessage
+      </jms-type>
+      <message-class>
+        atg.portal.messaging.CommunityGearRemovedMessage
+      </message-class>
+      <message-context>
+        session
+      </message-context>
+      <message-scope>
+        individual
+      </message-scope>
+      <display-name-resource>
+        CommunityGearRemovedMessageDisplayName
+      </display-name-resource>
+      <description-resource>
+        CommunityGearRemovedMessageDescription
+      </description-resource>
+      <resource-bundle>
+        atg.portal.messaging.GearMessagingSystemResources
+      </resource-bundle>
+    </event>
+    
+    <event>
+      <jms-type>
+        atg.portal.messaging.PageGearAddedMessage
+      </jms-type>
+      <message-class>
+        atg.portal.messaging.PageGearAddedMessage
+      </message-class>
+      <message-context>
+        session
+      </message-context>
+      <message-scope>
+        individual
+      </message-scope>
+      <display-name-resource>
+        PageGearAddedMessageDisplayName
+      </display-name-resource>
+      <description-resource>
+        PageGearAddedMessageDescription
+      </description-resource>
+      <resource-bundle>
+        atg.portal.messaging.GearMessagingSystemResources
+      </resource-bundle>
+    </event>
+
+    <event>
+      <jms-type>
+        atg.portal.messaging.PageGearRemovedMessage
+      </jms-type>
+      <message-class>
+        atg.portal.messaging.PageGearRemovedMessage
+      </message-class>
+      <message-context>
+        session
+      </message-context>
+      <message-scope>
+        individual
+      </message-scope>
+      <display-name-resource>
+        PageGearRemovedMessageDisplayName
+      </display-name-resource>
+      <description-resource>
+        PageGearRemovedMessageDescription
+      </description-resource>
+      <resource-bundle>
+        atg.portal.messaging.GearMessagingSystemResources
+      </resource-bundle>
+    </event>    
+    
+  </event-registry>
+
+  <!-- Add custom actions. -->
+  <action-registry>
+
+    <!-- Define an action which uses a SendAlertAction class to generate an
+         event of a given type. -->
+    <action>
+      <action-name>sendAlert</action-name>
+      <action-class>atg.portal.alert.SendAlertAction</action-class>
+      <action-configuration>
+        /atg/portal/scenario/action/SendAlertConfiguration
+      </action-configuration>
+      <resource-bundle>atg.portal.scenario.action.Resources</resource-bundle>
+      <description-resource>sendAlert.description</description-resource>
+      <action-execution-policy>collective</action-execution-policy>
+      <action-error-response>continue</action-error-response>
+
+      <!-- Define an action parameter named "recipientType" that specifies the
+           type of recipients for the alert. -->
+      <action-parameter>
+        <action-parameter-name>recipientType</action-parameter-name>
+        <action-parameter-class>java.lang.String</action-parameter-class>
+        <required>true</required>
+        <description-resource>sendAlert.recipientType.description</description-resource>
+      </action-parameter>
+
+      <!-- Define an action parameter named "recipientIDs" that specifies the
+           list of recipient IDs as a string array. -->
+      <action-parameter>
+        <action-parameter-name>recipientIDs</action-parameter-name>
+        <action-parameter-class>java.lang.String[]</action-parameter-class>
+        <required>true</required>
+        <description-resource>sendAlert.recipientIDs.description</description-resource>
+      </action-parameter>
+
+    </action>
+
+    <action>
+      <action-name>portalServletRequestDump</action-name>
+      <action-class>atg.portal.scenario.action.PortalServletRequestDumpAction</action-class>
+      <resource-bundle>atg.portal.scenario.action.Resources</resource-bundle>
+      <display-name>Dump Portal Servlet Request</display-name>
+      <display-name-resource>portalServletRequestDump.displayName</display-name-resource>
+      <description>This action can be used to dump the contents of the PortalServletRequest</description>
+      <description-resource>portalServletRequestDump.description</description-resource>
+      <icon-resource>portalSerlvetRequestDump.icon</icon-resource>
+      <expert>true</expert>
+      <hidden>false</hidden>
+      <action-terminal>false</action-terminal>
+      <action-execution-policy>collective</action-execution-policy>
+      <action-error-response>continue</action-error-response>
+      <action-configuration>/atg/portal/scenario/action/PortalServletRequestDumpConfiguration</action-configuration>
+    </action>    
+
+  </action-registry>
+
+</process-manager-configuration>
+<!-- @version $Id: //app/portal/version/10.0.3/paf/config/framework/atg/scenario/scenarioManager.xml#2 $$Change: 651448 $ -->

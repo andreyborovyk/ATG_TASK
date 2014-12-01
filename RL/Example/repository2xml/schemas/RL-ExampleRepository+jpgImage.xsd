@@ -1,0 +1,100 @@
+<xsd:schema elementFormDefault="qualified" targetNamespace="http://www.atg.com/ns/RL-ExampleRepository/jpgImage" xmlns:jpgImage="http://www.atg.com/ns/RL-ExampleRepository/jpgImage" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:annotation>
+    <xsd:documentation>
+Repository Name: RL-ExampleRepository
+Item-Descriptor Name: jpgImage
+Mapping File Name: None Specified
+Loaded Modules.... 
+module: Dynamo
+module: Support
+module: Local</xsd:documentation>
+  </xsd:annotation>
+  <xsd:element name="jpgImage" type="jpgImage:jpgImage"/>
+  <xsd:complexType name="jpgImage">
+    <xsd:all>
+      <xsd:element minOccurs="0" name="jpgImage.type" nillable="true">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="textFileAsset"/>
+            <xsd:enumeration value="binaryFileAsset"/>
+            <xsd:enumeration value="htmlArticle"/>
+            <xsd:enumeration value="txtPressRelease"/>
+            <xsd:enumeration value="xmlPressRelease"/>
+            <xsd:enumeration value="gifImage"/>
+            <xsd:enumeration value="jpgImage"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="jpgImage.content" nillable="true" type="xsd:base64Binary"/>
+      <xsd:element name="jpgImage.filename" nillable="true" type="xsd:string"/>
+      <xsd:element minOccurs="0" name="jpgImage.id" nillable="true" type="xsd:string"/>
+      <xsd:element minOccurs="0" name="jpgImage.size" nillable="true" type="xsd:long"/>
+      <xsd:element minOccurs="0" name="jpgImage.lastModified" nillable="true" type="xsd:dateTime"/>
+    </xsd:all>
+    <xsd:attribute name="ID" type="xsd:ID"/>
+    <xsd:attribute name="IDREF" type="xsd:IDREF"/>
+  </xsd:complexType>
+  <xsd:element name="string" nillable="true" type="xsd:string"/>
+  <xsd:element name="date" nillable="true" type="xsd:date"/>
+  <xsd:element name="dateTime" nillable="true" type="xsd:dateTime"/>
+  <xsd:element name="boolean" type="xsd:boolean"/>
+  <xsd:element name="integer" nillable="true" type="xsd:integer"/>
+  <xsd:element name="byte" nillable="true" type="xsd:byte"/>
+  <xsd:element name="short" nillable="true" type="xsd:short"/>
+  <xsd:element name="float" nillable="true" type="xsd:float"/>
+  <xsd:element name="double" nillable="true" type="xsd:double"/>
+  <xsd:element name="long" nillable="true" type="xsd:long"/>
+  <xsd:element name="binary" nillable="true" type="xsd:base64Binary"/>
+  <xsd:complexType name="StringArray">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" ref="jpgImage:string"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="IntegerArray">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" ref="jpgImage:integer"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="DateArray">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" ref="jpgImage:date"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="TimestampArray">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" ref="jpgImage:dateTime"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="BooleanArray">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" ref="jpgImage:boolean"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="ShortArray">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" ref="jpgImage:short"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="FloatArray">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" ref="jpgImage:float"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="DoubleArray">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" ref="jpgImage:double"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="LongArray">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" ref="jpgImage:long"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="null" nillable="true" type="jpgImage:null"/>
+  <xsd:complexType name="null"/>
+  <xsd:element name="itemRef">
+    <xsd:complexType>
+      <xsd:attribute name="itemRef" type="xsd:string"/>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

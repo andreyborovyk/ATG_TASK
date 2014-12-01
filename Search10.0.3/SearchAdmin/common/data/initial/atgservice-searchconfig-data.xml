@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE gsa-template SYSTEM "dynamosystemresource:/atg/dtds/gsa/gsa_1.0.dtd">
+<gsa-template>
+  <import-items>
+
+<!-- 3 items of type searchEnvironment -->
+
+<add-item item-descriptor="searchEnvironment" id="svcIndexing_ATGService">
+  <set-property name="envName"><![CDATA[indexing_ATGService]]></set-property>
+  <set-property name="parentProject"><![CDATA[svcATGServiceProject]]></set-property>
+  <set-property name="envType"><![CDATA[indexing]]></set-property>
+</add-item>
+
+<add-item item-descriptor="searchEnvironment" id="svcStaging_ATGService">
+  <set-property name="envName"><![CDATA[staging_ATGService]]></set-property>
+  <set-property name="parentProject"><![CDATA[svcATGServiceProject]]></set-property>
+  <set-property name="envType"><![CDATA[staging]]></set-property>
+  <set-property name="targetName"><![CDATA[Production]]></set-property>
+</add-item>
+
+<!-- No items of type deploymentHistory -->
+
+<!-- 3 items of type searchEnvironmentHost -->
+
+<add-item item-descriptor="searchEnvironmentHost" id="svcIndexingEnvHost">
+  <set-property name="indexRootPath"><![CDATA[../indexFiles]]></set-property>
+  <set-property name="numEngines"><![CDATA[1]]></set-property>
+  <set-property name="parentEnv"><![CDATA[svcIndexing_ATGService]]></set-property>
+  <set-property name="searchMachine"><![CDATA[svcLocalSearchMachine]]></set-property>
+</add-item>
+
+<add-item item-descriptor="searchEnvironmentHost" id="svcStagingEnvHost">
+  <set-property name="indexRootPath"><![CDATA[../indexFiles]]></set-property>
+  <set-property name="numEngines"><![CDATA[1]]></set-property>
+  <set-property name="parentEnv"><![CDATA[svcStaging_ATGService]]></set-property>
+  <set-property name="searchMachine"><![CDATA[svcLocalSearchMachine]]></set-property>
+</add-item>
+
+<!-- 1 items of type searchMachine -->
+
+<add-item item-descriptor="searchMachine" id="svcLocalSearchMachine">
+  <set-property name="hostname"><![CDATA[localhost]]></set-property>
+  <set-property name="endPort"><![CDATA[6100]]></set-property>
+  <set-property name="launchServiceName"><![CDATA[/atg/search/routing/LaunchService]]></set-property>
+  <set-property name="launchServiceProtocol"><![CDATA[rmi]]></set-property>
+  <set-property name="startPort"><![CDATA[6072]]></set-property>
+  <set-property name="launchServicePort"><![CDATA[8860]]></set-property>
+</add-item>
+
+<!-- 1 items of type searchIndex -->
+
+<add-item item-descriptor="searchIndex" id="svcSearchIndex">
+  <set-property name="logicalPartitions"><![CDATA[svcKnowledgeLP]]></set-property>
+</add-item>
+
+<!-- 1 items of type contentLabel -->
+
+<add-item item-descriptor="contentLabel" id="knowledge"/>
+
+<!-- 1 items of type contentLabel -->
+
+<add-item item-descriptor="targetType" id="Production"/>
+
+<!-- 1 items of type logicalPartition -->
+
+<add-item item-descriptor="logicalPartition" id="svcKnowledgeLP">
+  <set-property name="physicalPartitions"><![CDATA[]]></set-property>
+  <set-property name="partitionMode"><![CDATA[hash]]></set-property>
+  <set-property name="sharedId"><![CDATA[svcKnowledgeLP]]></set-property>
+  <set-property name="name"><![CDATA[Knowledge Solutions]]></set-property>
+  <set-property name="thisIndexFullIndex"><![CDATA[true]]></set-property>
+  <set-property name="originalPhysicalPartitionCount"><![CDATA[19]]></set-property>
+  <set-property name="flaggedForFullIndex"><![CDATA[false]]></set-property>
+  <set-property name="parentIndex"><![CDATA[svcSearchIndex]]></set-property>
+  <set-property name="contentLabel"><![CDATA[knowledge]]></set-property>
+</add-item>
+
+</import-items>
+  
+<update-item item-descriptor="searchEnvironment" id="svcIndexing_ATGService">
+  <set-property name="hosts"><![CDATA[svcIndexingEnvHost]]></set-property>
+</update-item>
+
+<update-item item-descriptor="searchEnvironment" id="svcStaging_ATGService">
+  <set-property name="hosts"><![CDATA[svcStagingEnvHost]]></set-property>
+</update-item>
+
+</gsa-template>
+<!-- @version $Id: //application/SearchAdmin/version/10.0.3/common/src/data/initial/atgservice-searchconfig-data.xml#2 $$Change: 651448 $-->

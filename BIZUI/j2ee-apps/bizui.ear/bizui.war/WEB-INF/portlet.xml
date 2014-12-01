@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<portlet-app xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd"
+version="1.0">
+
+ <portlet>
+    <description>A portlet to list all the activities available to the current user.</description>
+    <portlet-name>ActivitiesPortlet</portlet-name>
+    <display-name>Activities Portlet</display-name>
+
+    <portlet-class>atg.portlet.DispatchPortlet</portlet-class>
+    <init-param>
+      <name>path</name>
+      <value>/portlets/ActivitiesPortlet/index.jsp</value>
+    </init-param>
+    <init-param>
+      <name>loggingError</name>
+      <value>false</value>
+    </init-param>
+    <init-param>
+      <name>projectPageId</name>
+      <value>100004</value>
+    </init-param>
+    <init-param>
+      <name>projectCommunityId</name>
+      <value>100001</value>
+    </init-param>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>VIEW</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Activities Portlet</title>
+    </portlet-info>
+  </portlet>
+
+  <portlet>
+    <description>A portlet to list all the projects/tasks available to the current user.</description>
+    <portlet-name>ProjectTodoPortlet</portlet-name>
+    <display-name>Project Todo Portlet</display-name>
+
+    <portlet-class>atg.portlet.DispatchPortlet</portlet-class>
+    <init-param>
+      <name>path</name>
+      <value>/portlets/ProjectTodoPortlet/index.jsp</value>
+    </init-param>
+    <init-param>
+      <name>loggingError</name>
+      <value>false</value>
+    </init-param>
+    <init-param>
+      <name>projectPageId</name>
+      <value>100004</value>
+    </init-param>
+    <init-param>
+      <name>projectCommunityId</name>
+      <value>100001</value>
+    </init-param>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>VIEW</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Project Todo Portlet</title>
+    </portlet-info>
+  </portlet>
+
+</portlet-app>
+<!-- @version $Id: //product/BIZUI/version/10.0.3/web-apps/bizui/WEB-INF/portlet.xml#1 $$Change: 651360 $-->

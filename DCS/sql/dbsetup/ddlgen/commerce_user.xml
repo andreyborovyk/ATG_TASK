@@ -1,0 +1,104 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="commerce_user">
+<comment><![CDATA[ @version $Id: //product/DCS/version/10.0.3/templates/DCS/sql/commerce_user.xml#2 $$Change: 651448 $]]></comment>
+   <table name="dps_credit_card">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="credit_card_number" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="credit_card_type" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="expiration_month" nullable="y">
+         <column-type db="generic" type="varchar" length="20"/>
+      </column>
+      <column name="exp_day_of_month" nullable="y">
+         <column-type db="generic" type="varchar" length="20"/>
+      </column>
+      <column name="expiration_year" nullable="y">
+         <column-type db="generic" type="varchar" length="20"/>
+      </column>
+      <column name="billing_addr" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dps_credit_card_p">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+      <index name="dps_crcdba_idx" table="dps_credit_card">
+         <index-column column="billing_addr" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dcs_user">
+      <column name="user_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="allow_partial_ship" nullable="y">
+         <column-type db="generic" type="tinyint"/>
+         <column-type db="oracle" type="number" length="1" scale="0"/>
+         <column-type db="db2" type="numeric" length="1" scale="0"/>
+         <column-type db="mssql" type="numeric" length="1" scale="0"/>
+      </column>
+      <column name="default_creditcard" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="daytime_phone_num" nullable="y">
+         <column-type db="generic" type="varchar" length="30"/>
+      </column>
+      <column name="express_checkout" nullable="y">
+         <column-type db="generic" type="tinyint"/>
+         <column-type db="oracle" type="number" length="1" scale="0"/>
+         <column-type db="db2" type="numeric" length="1" scale="0"/>
+         <column-type db="mssql" type="numeric" length="1" scale="0"/>
+      </column>
+      <column name="default_carrier" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="256"/>
+         <column-type db="mssql" type="varchar" length="256" scale=""/>
+      <column-type db="sybase" type="varchar" length="255"/>
+      </column>
+      <column name="price_list" nullable="y">
+        <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sale_price_list" nullable="y">
+        <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcs_user_p">
+         <index-column column="user_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dcs_usrdeflt_cr_f" referenced-table="dps_credit_card" index-name="dcs_usrdcc_idx">
+         <fkey-column referencing-column="default_creditcard" referenced-column="id"/>
+      </foreign-key>
+      <check name="dcs_user1_c">
+         <check-expr expression="allow_partial_ship in (0,1)" db="generic"/>
+      </check>
+      <check name="dcs_user2_c">
+         <check-expr expression="express_checkout in (0,1)" db="generic"/>
+      </check>
+   </table>
+   <table name="dps_usr_creditcard">
+      <column name="user_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="tag" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="42"/>
+      </column>
+      <column name="credit_card_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dps_usr_creditca_p">
+         <index-column column="user_id" order="asc" seq="1"/>
+         <index-column column="tag" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dps_usrccredt_cr_f" referenced-table="dps_credit_card" index-name="dps_ucccid_idx">
+         <fkey-column referencing-column="credit_card_id" referenced-column="id"/>
+      </foreign-key>
+      <foreign-key name="dps_usrcusr_d_f" referenced-table="dps_user">
+         <fkey-column referencing-column="user_id" referenced-column="id"/>
+      </foreign-key>
+      <index name="dps_uccuid_idx" table="dps_usr_creditcard">
+         <index-column column="user_id" order="asc" seq="1"/>
+      </index>
+   </table>
+</schema>
+<!-- @version $Id: //product/DCS/version/10.0.3/templates/DCS/sql/commerce_user.xml#2 $$Change: 651448 $ -->

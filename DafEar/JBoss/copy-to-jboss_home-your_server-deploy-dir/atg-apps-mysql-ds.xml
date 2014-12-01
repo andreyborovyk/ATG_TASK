@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ This minimal data source definition is sufficient to using the MySQL database
+ shipped with ATG for demo/development purposes. Take a look at the one for the
+ Hypersonic database that is packaged with JBoss for more (but possibly 
+ irrelevant) options. 
+ NOTE: the value of <jndi-name> here must agree with the JNDIName property of
+       the atg/dynamo/service/jdbc/JTDataSource component.
+  -->
+<datasources>
+  <local-tx-datasource>
+    <!-- The jndi name of the DataSource, it is prefixed with java:/ -->
+    <!-- Datasources are not available outside the virtual machine -->
+    <jndi-name>ATGMotorpriseDS</jndi-name>
+    <!-- The jdbc url -->
+    <connection-url>jdbc:mysql://localhost:3306/test</connection-url>
+    <!-- The driver class -->
+    <driver-class>com.mysql.jdbc.Driver</driver-class>
+    <!-- The login and password -->
+    <user-name>root</user-name>
+    <password></password>
+    <!-- The minimum connections in a pool/sub-pool.
+         Pools are lazily constructed on first use -->
+    <min-pool-size>1</min-pool-size>
+    <!-- The maximum connections in a pool/sub-pool -->
+    <max-pool-size>3</max-pool-size>
+  </local-tx-datasource>
+  <local-tx-datasource>
+    <!-- The jndi name of the DataSource, it is prefixed with java:/ -->
+    <!-- Datasources are not available outside the virtual machine -->
+    <jndi-name>ATGPublishingDS</jndi-name>
+    <!-- The jdbc url -->
+    <connection-url>jdbc:mysql://localhost:3306/test</connection-url>
+    <!-- The driver class -->
+    <driver-class>com.mysql.jdbc.Driver</driver-class>
+    <!-- The login and password -->
+    <user-name>root</user-name>
+    <password></password>
+    <!-- The minimum connections in a pool/sub-pool.
+         Pools are lazily constructed on first use -->
+    <min-pool-size>1</min-pool-size>
+    <!-- The maximum connections in a pool/sub-pool -->
+    <max-pool-size>3</max-pool-size>
+  </local-tx-datasource>
+</datasources>
+<!-- @version $Id: //product/DAF/version/10.0.3/DafEar/JBoss/src/copy-to-server-deploy-dir/atg-apps-mysql-ds.xml#1 $$Change: 655476 $-->

@@ -1,0 +1,12 @@
+#!/bin/sh -x
+
+SEARCH_DW_DB2_CLIENT_HOME=/opt/ibm/db2/V9.1
+if [ ! -d ${SEARCH_DW_DB2_CLIENT_HOME} ] ; then
+  echo Invalid setting of SEARCH_DW_DB2_CLIENT_HOME in db2. Directory ${SEARCH_DW_DB2_CLIENT_HOME} does not exist.
+  exit 1
+fi
+
+${SEARCH_DW_DB2_CLIENT_HOME}/bin/db2 "connect to $SEARCH_DW_DB2_DB_NAME user $SEARCH_DW_DB_USER using $SEARCH_DW_DB_PWD"
+${SEARCH_DW_DB2_CLIENT_HOME}/bin/db2 -tvf $DYNAMO_HOME/$1
+${SEARCH_DW_DB2_CLIENT_HOME}/bin/db2 "connect reset"
+${SEARCH_DW_DB2_CLIENT_HOME}/bin/db2 "terminate"

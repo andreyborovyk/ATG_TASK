@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>ATG Validation Widgets</title>
+
+    <link type="text/css" href="/WebUI/css/cssFramework.css" rel="stylesheet" type="text/css"/>
+
+    <link type="text/css" href="/WebUI/css/cssModules/dataTable.css" rel="stylesheet" type="text/css"/>
+    <link type="text/css" href="/WebUI/css/cssModules/dataForm.css" rel="stylesheet" type="text/css"/>
+
+
+		<style type="text/css">
+			@import "/dojo-1/dijit/themes/atg/atg.css";
+			
+			/* From CommerceAssist.css */
+			
+			span.required {
+      color:#339900;
+      cursor:default;
+      font-size:1em;
+      font-weight:bold;
+      padding:20px;
+      }
+      span.requiredStar {
+      color:#000;
+      cursor:default;  
+      font-size:1.2em;
+      font-weight:bold;
+      }
+			
+			/* end required Styling */
+
+			.testExample {
+				background-color:#fbfbfb;
+				padding:1em;
+				margin-bottom:1em;
+				border:1px solid #bfbfbf;
+			}
+
+			body .small {
+				width: 3em;
+			}
+			body .medium {
+				width: 10em;
+			}
+			body .long {
+				width: 20em;
+			}
+			body .verylong {
+				width: 90%;
+			}
+
+			.noticeMessage {
+				color:#093669;
+				font-size:0.95em;
+				margin-left:0.5em;
+			}
+
+			.dojoTitlePaneLabel label {
+				font-weight:bold;
+			}
+			
+			ul,li{
+			  list-style: none;
+			}
+		</style>
+
+		<script type="text/javascript" src="/dojo-1/dojo/dojo.js"
+			djConfig="isDebug: true, parseOnLoad: true, extraLocale: ['de-de', 'en-us']"></script>
+
+
+		<script type="text/javascript">
+			dojo.require("dijit.form.TextBox");
+			dojo.require("dijit.form.ValidationTextBox");
+			dojo.require("dijit.form.NumberTextBox");
+			dojo.require("dijit.form.CurrencyTextBox");
+			dojo.require("dojo.currency");
+			dojo.require("dojo.parser");	// scan page for widgets and instantiate them
+		
+		</script>
+		
+		<script type="text/javascript" charset="utf-8">
+		  dojo.registerModulePath("atg.widget", "/WebUI/dijit");
+      dojo.require("atg.widget.validation.ValidationTextBox");
+		</script>
+		
+	</head>
+
+	<body class="atg">
+		<h1 class="testTitle">ATG Validation Widgets</h1>
+
+		<form id="form1" action="" name="example" method="">
+
+      <ul class="atg_dataForm atg_commerce_csr_customerInfo">
+        <li class="atg_commerce_csr_firstName atg_dataForm_first">
+          <span class="atg_commerce_csr_fieldTitle">
+            <label for="firstName"  id="firstNameAlert">
+              <span class="requiredStar">*</span>
+              First Name:
+            </label>
+          </span>
+        <input value="" tabindex="1" maxlength="40" required="true" trim="true" type="text" dojoType="atg.widget.validation.ValidationTextBox" id="cpFirstName" propercase="true" inlineIndicator="firstNameAlert" size="25" invalidMessage="The First Name is required." name="cpFirstName"/>
+
+        </li>
+      </ul>
+
+
+	</body>
+</html>

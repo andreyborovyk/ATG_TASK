@@ -1,0 +1,180 @@
+<!-- $Id: //product/B2BCommerce/version/10.0.3/release/MotorpriseJSP/j2ee-apps/motorprise/config/atg/commerce/catalog/productCatalog.xml#2 $$Change: 651448 $ -->
+
+<gsa-template xml-combine="append">
+
+  <!-- Add sub-types for sku.  These subtypes are specific to the auto industry -->
+  <!-- We use the code values that have been reserved for B2BCommerce.  That    -->
+  <!-- is, numbers greater than 5000.                                           -->
+  <item-descriptor name="sku">
+     <table name="dcs_sku" type="primary" id-column-name="sku_id">
+     <property name="type">
+        <option value="belt-sku"        code="5000"/>
+        <option value="hose-sku"        code="5001"/>
+        <option value="spark-plug-sku"  code="5002"/>
+        <option value="oil-filter-sku"  code="5003"/>
+        <option value="cube-sku"        code="5004"/>
+        <option value="cylinder-sku"    code="5005"/>
+     </property>
+    </table>
+    
+  </item-descriptor>
+
+  <!-- New belt sku type.  Adds information specific to a belt sku -->
+  <item-descriptor name="belt-sku" super-type="sku" 
+                   sub-type-value="belt-sku" item-cache-size="1000"
+                   query-cache-size="1000" id-space-name="sku" 
+                   display-name-resource="itemDescriptorBeltSku">
+    <attribute name="resourceBundle" value="atg.projects.b2bstore.ProductCatalogTemplateResources"/>
+
+    <table name="b2b_belt_sku" type="auxiliary" id-column-name="sku_id">
+      <property name="length" required="false" readable="true" 
+                writable="true" queryable="true" 
+                hidden="false" expert="false" cache-mode="inherit" 
+                column-name="length"
+                data-type="string" display-name-resource="length"/>
+
+      <property name="topWidth" required="false" readable="true" 
+                writable="true" queryable="true" 
+                hidden="false" expert="false" cache-mode="inherit" 
+                column-name="top_width"
+                data-type="string" display-name-resource="topWidth"/>
+
+      <property name="angle" required="false" readable="true" 
+                writable="true" queryable="true" 
+                hidden="false" expert="false" cache-mode="inherit" 
+                column-name="angle"
+                data-type="string" display-name-resource="angle"/>
+        
+      <property name="notched" required="false" readable="true" 
+                writable="true" queryable="true" 
+                hidden="false" expert="false" cache-mode="inherit" 
+                column-name="notched"
+                data-type="boolean" display-name-resource="notched"/>
+    </table>
+  </item-descriptor>
+
+
+  <!-- New hose sku type.  Adds information specific to a hose sku -->
+  <item-descriptor name="hose-sku" super-type="sku" 
+                   sub-type-value="hose-sku" item-cache-size="1000"
+                   query-cache-size="1000" id-space-name="sku" 
+                   display-name-resource="itemDescriptorHoseSku">
+    <attribute name="resourceBundle" value="atg.projects.b2bstore.ProductCatalogTemplateResources"/>
+
+    <table name="b2b_hose_sku" type="auxiliary" id-column-name="sku_id">
+      <property name="innerDiameter" required="false" readable="true" 
+                writable="true" queryable="true" 
+                hidden="false" expert="false" cache-mode="inherit" 
+                column-name="inner_diameter"
+                data-type="string" display-name-resource="innerDiameter"/>
+
+      <property name="length" required="false" readable="true" 
+                writable="true" queryable="true" 
+                hidden="false" expert="false" cache-mode="inherit" 
+                column-name="length"
+                data-type="string" display-name-resource="length"/>
+    </table>
+  </item-descriptor>
+
+  <!-- New spark plug sku type.  Adds information specific to a spark plug -->
+  <item-descriptor name="spark-plug-sku" super-type="sku" 
+                   sub-type-value="spark-plug-sku" item-cache-size="1000"
+                   query-cache-size="1000" id-space-name="sku" 
+                   display-name-resource="itemDescriptorSparkPlugSku">
+    <attribute name="resourceBundle" value="atg.projects.b2bstore.ProductCatalogTemplateResources"/>
+
+    <table name="b2b_sprkplg_sku" type="auxiliary" id-column-name="sku_id">
+      <property name="plugNumber" required="false" readable="true" 
+                writable="true" queryable="true" 
+                hidden="false" expert="false" cache-mode="inherit" 
+                column-name="plug_number"
+                data-type="string" display-name-resource="plugNumber"/>
+
+      <property name="thread" required="false" readable="true" 
+                writable="true" queryable="true" 
+                hidden="false" expert="false" cache-mode="inherit" 
+                column-name="thread"
+                data-type="string" display-name-resource="thread"/>
+    </table>
+  </item-descriptor>
+
+  <!-- New oil filter type.  Adds information specific to an oil filter -->
+  <item-descriptor name="oil-filter-sku" super-type="sku" 
+                   sub-type-value="oil-filter-sku" item-cache-size="1000"
+                   query-cache-size="1000" id-space-name="sku" 
+                   display-name-resource="itemDescriptorOilFilterSku">
+    <attribute name="resourceBundle" value="atg.projects.b2bstore.ProductCatalogTemplateResources"/>
+
+    <table name="b2b_oilfltr_sku" type="auxiliary" id-column-name="sku_id">
+      <property name="threadType" required="false" readable="true" 
+                writable="true" queryable="true" 
+                hidden="false" expert="false" cache-mode="inherit" 
+                column-name="thread_type"
+                data-type="string" display-name-resource="threadType"/>
+
+      <property name="length" required="false" readable="true" 
+                writable="true" queryable="true" 
+                hidden="false" expert="false" cache-mode="inherit" 
+                column-name="length"
+                data-type="string" display-name-resource="length"/>
+
+      <property name="outerDiameter" required="false" 
+                readable="true" writable="true" queryable="true" 
+                hidden="false" expert="false" cache-mode="inherit" 
+                column-name="outer_diameter"
+                data-type="string" display-name-resource="outerDiameter"/>
+    </table>
+  </item-descriptor>
+
+  <!-- New cylinder sku type.  Adds information specific to a cylinder -->
+  <item-descriptor name="cylinder-sku" super-type="sku" 
+                   sub-type-value="cylinder-sku" item-cache-size="1000"
+                   query-cache-size="1000" id-space-name="sku" 
+                   display-name-resource="itemDescriptorCylinderSku">
+    <attribute name="resourceBundle" value="atg.projects.b2bstore.ProductCatalogTemplateResources"/>
+
+    <table name="b2b_cylinder_sku" type="auxiliary" id-column-name="sku_id">
+      <property name="diameter" required="false" readable="true" 
+                writable="true" queryable="true" 
+                hidden="false" expert="false" cache-mode="inherit" 
+                column-name="diameter"
+                data-type="string" display-name-resource="diameter"/>
+
+      <property name="height" required="false" readable="true" 
+                writable="true" queryable="true" 
+                hidden="false" expert="false" cache-mode="inherit" 
+                column-name="height"
+                data-type="string" display-name-resource="height"/>
+    </table>
+  </item-descriptor>
+
+  <!-- New cube sku type.  Adds information specific to a cube -->
+  <item-descriptor name="cube-sku" super-type="sku" 
+                   sub-type-value="cube-sku" item-cache-size="1000"
+                   query-cache-size="1000" id-space-name="sku" 
+                   display-name-resource="itemDescriptorCubeSku">
+    <attribute name="resourceBundle" value="atg.projects.b2bstore.ProductCatalogTemplateResources"/>
+
+    <table name="b2b_cube_sku" type="auxiliary" id-column-name="sku_id">
+      <property name="height" required="false" readable="true" 
+                writable="true" queryable="true" 
+                hidden="false" expert="false" cache-mode="inherit" 
+                column-name="height"
+                data-type="string" display-name-resource="height"/>
+
+      <property name="width" required="false" readable="true" 
+                writable="true" queryable="true" 
+                hidden="false" expert="false" cache-mode="inherit" 
+                column-name="width"
+                data-type="string" display-name-resource="width"/>
+
+      <property name="depth" required="false" readable="true" 
+                writable="true" queryable="true" 
+                hidden="false" expert="false" cache-mode="inherit" 
+                column-name="depth"
+                data-type="string" display-name-resource="depth"/>
+    </table>
+  </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //product/B2BCommerce/version/10.0.3/release/MotorpriseJSP/j2ee-apps/motorprise/config/atg/commerce/catalog/productCatalog.xml#2 $$Change: 651448 $ -->

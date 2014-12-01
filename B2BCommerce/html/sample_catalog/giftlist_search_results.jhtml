@@ -1,0 +1,34 @@
+<importbean bean="/atg/commerce/gifts/GiftlistSearch">
+<importbean bean="/atg/dynamo/droplet/IsEmpty">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+
+
+<droplet bean="IsEmpty">
+  <param name="value" value="bean:GiftlistSearch.searchResults">
+  <oparam name="false">
+    Your search found these gift lists.<br>
+    Click the person's name to shop for them.
+    <blockquote>
+    <droplet bean="ForEach">
+      <param name="array" value="bean:GiftlistSearch.searchResults">
+      <oparam name="output">
+        <a href="giftlist_search.jhtml">
+          <param name="action" value="add">
+          <param name="searching" value="false">
+          <param name="giftlistId" value="param:element.id">
+          <valueof param="element.owner.firstName"></valueof>
+          <valueof param="element.owner.middleName"></valueof>
+          <valueof param="element.owner.lastName"></valueof>
+   	 </a>
+         <valueof param="element.eventName"></valueof>
+         <valueof param="element.eventDate"></valueof>
+         <br>
+       </oparam>
+     </droplet>  
+     </blockquote>
+  </oparam>
+  <oparam name="true">
+    Your search found no gift lists.
+  </oparam>
+</droplet>
+<java>/* @version $Id: //product/B2BCommerce/version/10.0.3/release/B2BCommerce/html/sample_catalog/giftlist_search_results.jhtml#2 $$Change: 651448 $*/</java>

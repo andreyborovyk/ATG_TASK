@@ -1,0 +1,45 @@
+Manifest-Version: 1.0
+ATG-Config-Path: config/
+    vfs[localconfig-1]=/atg/epub/file/ConfigFileSystem
+ATG-LiveConfig-Path: liveconfig
+ATG-JBossConfig-Path: jbossconfig
+ATG-PreviewConfig-Path: configlayers/preview
+ATG-StagingConfig-Path: configlayers/stagingandprod
+ATG-TomcatConfig-Path: tomcatconfig
+ATG-Class-Path: lib/classes.jar
+ATG-Client-Class-Path: lib/classes.jar
+ATG-Client-Help-Path: help/pub_ui_help.jar
+ATG-Required: DSS.InternalUsers DAS-UI RL DAF.Deployment
+ATG-Product-Full: ATG Publishing
+ATG-Version: 10.0.3
+ATG-SKU: PUB_1002
+ATG-Data-Directory: @@dynamo.home@@/Publishing
+ATG-DBSetup-InitialDataRepositories: /atg/userprofiling/InternalProfileRepository /atg/epub/PublishingRepository /atg/epub/file/PublishingFileRepository
+ATG-DBSetup-TableCreationPath: sql/dbsetup/ddlgen/publishing_ddl.xml
+  sql/dbsetup/ddlgen/versioned_process_data_ddl.xml
+  sql/dbsetup/ddlgen/versionmanager_ddl.xml
+  sql/dbsetup/ddlgen/versioned_file_repository_ddl.xml
+  sql/dbsetup/ddlgen/workflow_ddl.xml
+  sql/dbsetup/ddlgen/internal_user_profile_ddl.xml
+ATG-DBSetup-InitialDataPath: install/epub-role-data.xml
+  install/epub-repository-data.xml
+  install/epub-file-repository-data.xml
+
+Name: jbossconfig
+ATG-Assembler-Import-File: True
+
+Name: lib/subclassloader.jar
+ATG-Assembler-Import-File: True
+
+Name: lib/classes.jar
+ATG-Client-Update-File: true
+Digest-Algorithms: SHA MD5
+SHA-Digest: X/NL/3gyZ/Rb/JSvLOivX4lzol4=
+MD5-Digest: UJddRdcjE8n5ksPb20J6cA==
+
+Name: help/pub_ui_help.jar
+ATG-Client-Update-File: true
+Digest-Algorithms: SHA MD5
+SHA-Digest: X/NL/3gyZ/Rb/JSvLOivX4lzol4=
+MD5-Digest: UJddRdcjE8n5ksPb20J6cA==
+

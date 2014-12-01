@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- ==================================================================== -->
+<!-- Scenario UI grammar extension for the Alert gear.                    -->
+<!-- ==================================================================== -->
+
+<?xcl-stylesheet resource="atg/ui/expreditor/xcl/grammar.xsl"?>
+
+<context>
+
+  <!-- Filters for "calendar event" events (except EventCreated) -->
+
+  <choice id="calendar-condition-filter">
+    <rule name="calendar-event-with-event"/>
+    <rule name="portal-event-with-community"/>
+    <rule name="portal-event-with-gear"/>
+    <rule name="portal-event-with-profile"/>
+  </choice>
+
+  <sequence id="calendar-event-filter">
+    <placeholder>
+      <choice>
+        <rule name="with-any-attributes"/>
+        <rule name="calendar-condition-filter"/>
+      </choice>
+    </placeholder>
+  </sequence>
+
+  <!-- ==================================================================== -->
+  <!-- Custom expression for the EventCreatedMessage event.                 -->
+  <!-- ==================================================================== -->
+
+  <sequence id="event-message-atg.portal.gear.calendar.EventCreatedMessage">
+    <attribute name="icon"><icon path="atg/ui/process/images/generic-event.gif"/></attribute>
+    <attribute name="eventType" value="atg.portal.gear.calendar.EventCreatedMessage"/>
+    <attribute name="eventContext" value="request"/>
+
+    <xml-template>
+      <event-name>atg.portal.gear.calendar.EventCreatedMessage</event-name>
+    </xml-template>
+
+    <token><description>Calendar Event Created</description></token>
+    <rule name="portal-event-filter"/>
+  </sequence>
+
+  <sequence id="condition-message-atg.portal.gear.calendar.EventCreatedMessage">
+    <expression-class>atg.ui.process.expression.EventConditionExpression</expression-class>
+    <attribute name="icon"><icon path="atg/ui/process/images/generic-condition.gif"/></attribute>
+    <attribute name="checkedEventName" value="atg.portal.gear.calendar.EventCreatedMessage"/>
+
+    <token><description>Calendar event</description></token>
+    <rule name="portal-condition-filter"/>
+  </sequence>
+
+  <!-- ==================================================================== -->
+  <!-- Custom expression for the EventDeletedMessage event.                 -->
+  <!-- ==================================================================== -->
+
+  <sequence id="event-message-atg.portal.gear.calendar.EventDeletedMessage">
+    <attribute name="icon"><icon path="atg/ui/process/images/generic-event.gif"/></attribute>
+    <attribute name="eventType" value="atg.portal.gear.calendar.EventDeletedMessage"/>
+    <attribute name="eventContext" value="request"/>
+
+    <xml-template>
+      <event-name>atg.portal.gear.calendar.EventDeletedMessage</event-name>
+    </xml-template>
+
+    <token><description>Calendar Event Deleted</description></token>
+    <rule name="calendar-event-filter"/>
+  </sequence>
+
+  <sequence id="condition-message-atg.portal.gear.calendar.EventDeletedMessage">
+    <expression-class>atg.ui.process.expression.EventConditionExpression</expression-class>
+    <attribute name="icon"><icon path="atg/ui/process/images/generic-condition.gif"/></attribute>
+    <attribute name="checkedEventName" value="atg.portal.gear.calendar.EventDeletedMessage"/>
+
+    <token><description>Calendar event</description></token>
+    <rule name="calendar-condition-filter"/>
+  </sequence>
+
+  <!-- ==================================================================== -->
+  <!-- Custom expression for the EventEditedMessage event.                  -->
+  <!-- ==================================================================== -->
+
+  <sequence id="event-message-atg.portal.gear.calendar.EventEditedMessage">
+    <attribute name="icon"><icon path="atg/ui/process/images/generic-event.gif"/></attribute>
+    <attribute name="eventType" value="atg.portal.gear.calendar.EventEditedMessage"/>
+    <attribute name="eventContext" value="request"/>
+
+    <xml-template>
+      <event-name>atg.portal.gear.calendar.EventEditedMessage</event-name>
+    </xml-template>
+
+    <token><description>Calendar Event Edited</description></token>
+    <rule name="calendar-event-filter"/>
+  </sequence>
+
+  <sequence id="condition-message-atg.portal.gear.calendar.EventEditedMessage">
+    <expression-class>atg.ui.process.expression.EventConditionExpression</expression-class>
+    <attribute name="icon"><icon path="atg/ui/process/images/generic-condition.gif"/></attribute>
+    <attribute name="checkedEventName" value="atg.portal.gear.calendar.EventEditedMessage"/>
+
+    <token><description>Calendar event</description></token>
+    <rule name="calendar-condition-filter"/>
+  </sequence>
+
+  <!-- ==================================================================== -->
+  <!-- Custom expression for the EventViewedMessage event.                  -->
+  <!-- ==================================================================== -->
+
+  <sequence id="event-message-atg.portal.gear.calendar.EventViewedMessage">
+    <attribute name="icon"><icon path="atg/ui/process/images/generic-event.gif"/></attribute>
+    <attribute name="eventType" value="atg.portal.gear.calendar.EventViewedMessage"/>
+    <attribute name="eventContext" value="request"/>
+
+    <xml-template>
+      <event-name>atg.portal.gear.calendar.EventViewedMessage</event-name>
+    </xml-template>
+
+    <token><description>Calendar Event Viewed</description></token>
+    <rule name="calendar-event-filter"/>
+  </sequence>
+
+  <sequence id="condition-message-atg.portal.gear.calendar.EventViewedMessage">
+    <expression-class>atg.ui.process.expression.EventConditionExpression</expression-class>
+    <attribute name="icon"><icon path="atg/ui/process/images/generic-condition.gif"/></attribute>
+    <attribute name="checkedEventName" value="atg.portal.gear.calendar.EventViewedMessage"/>
+
+    <token><description>Calendar event</description></token>
+    <rule name="calendar-condition-filter"/>
+  </sequence>
+
+  <!-- Expression for specifying the "event" property of a "calendar event" event. -->
+
+  <sequence id="calendar-event-with-event">
+    <expression-class>atg.ui.expreditor.LeftCoercedExpression</expression-class>
+      
+    <xml-template>
+      <filter construct="calendar-event-with-event" operator="eq">
+        <event-property>
+          <property-name>calendarEventId</property-name>
+        </event-property>
+        <constant><apply-xml-templates/></constant>
+      </filter>
+    </xml-template>
+
+    <sequence>
+      <expression-class>atg.ui.expreditor.TypedSequenceExpression</expression-class>
+      <attribute name="typeClassName" value="java.lang.String"/>
+      <token><description>where event is</description></token>
+    </sequence>
+
+    <token>
+      <expression-class>atg.ui.expreditor.targeting.RepositoryItemSetExpression</expression-class>
+      <assistant-class>atg.ui.expreditor.targeting.RepositoryItemSetAssistant</assistant-class>
+      <attribute name="repositoryName" value="/atg/portal/gear/calendar/CalendarRepository"/>
+      <attribute name="repositoryItemType" value="event"/>
+      <required/>
+      <description>Choose event...</description>
+    </token>
+  </sequence>
+
+</context>
+<!-- @version $Id: //app/portal/version/10.0.3/calendar/classes.jar/src/atg/portal/gear/calendar/calendar-expression-grammar.xml#2 $$Change: 651448 $ -->

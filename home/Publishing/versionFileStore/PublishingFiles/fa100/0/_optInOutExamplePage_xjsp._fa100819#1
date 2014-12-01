@@ -1,0 +1,43 @@
+<%@ taglib uri="http://www.atg.com/taglibs/daf/dspjspELTaglib1_0" prefix="dspel" %>
+<%@ taglib prefix="c"       uri="http://java.sun.com/jstl/core" %>
+
+<dspel:page>
+
+<html>
+<head>
+  <title>Opt In / Opt Out example home page</title>
+</head>
+
+<dspel:importbean var="profile" bean="/atg/userprofiling/Profile"/>
+<dspel:tomap var="currentUser" value="${profile.dataSource}"/>
+
+<body>
+
+<h2>Opt In / Opt Out example home page.</h2>
+
+<c:if test="${profile.transient}" >
+  You are not currently logged in.
+</c:if>
+
+<c:if test="${!profile.transient}" >
+  Welcome, <c:out value="${currentUser.firstName}"/>
+</c:if>
+
+<br/><br/>
+
+<a href="login.jsp?successURL=optInOutExamplePage.jsp">Login</a><br/><br/>
+
+<a href="logout.jsp?successURL=optInOutExamplePage.jsp">Logout</a><br/><br/>
+
+<a href="optInTest.jsp">Opt Ins</a><br/><br/>
+
+<a href="optOutTest.jsp">Opt Outs</a><br/><br/>
+
+<a href="currentOptInOuts.jsp">Current Preferences</a><br/><br/>
+
+</body>
+</html>
+
+
+</dspel:page>
+<%-- @version $Id: //application/campaigns/version/10.0/communication/common/src/web-apps/Outreach/optInOut/optInOutExamplePage.jsp#1 $$Change: 610294 $--%>

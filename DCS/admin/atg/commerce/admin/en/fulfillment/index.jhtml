@@ -1,0 +1,60 @@
+<html>
+<head>
+<title>Fulfillment</title>
+</head>
+<body BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="../images/dcsadminbanner.gif" ALT="Dynamo Commerce Administration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a href="../index.jhtml">Commerce</a>/Fulfillment<p>
+
+<blockquote>
+
+<importbean bean="/atg/commerce/fulfillment/ShippingGroupUpdateFormHandler">
+<importbean bean="/atg/dynamo/droplet/IsNull">
+
+<h2>Fulfillment Administration</h2>
+
+<font color=cc0000><STRONG>
+  <valueof bean="ShippingGroupUpdateFormHandler.errorMessage"></valueof><p>
+</STRONG></font>    
+
+<b>List Shippable Groups</b><p>
+
+<a href="ShippableGroups.jhtml">Click here</a> to get a list of all
+the shipping groups in the repository that are ready to be shipped.<p>
+
+<img src="../../images/bluedot.gif" width=505 height=1><p>
+
+<b>Reprocess Shipping Groups</b><p>
+
+This form will send a ShippingGroupUpdate message with the given
+data.  A ShippingGroupUpdate message will tell the fulfillment system
+that the given shipping groups have been changed and need to be
+reprocessed.  The order id given should be the order containing all of
+the shipping groups listed.  List as many shipping group ids as
+necessary, separated by spaces.<br>
+<form action="index.jhtml" method=POST>
+Order Id: <input rows=1 cols=20 bean="ShippingGroupUpdateFormHandler.orderId" value=""><br>
+Shipping group ids:
+<input type=textarea rows=2 cols=40 required bean="ShippingGroupUpdateFormHandler.shippingGroupIdString" value="">
+<br>
+<input type=submit bean="ShippingGroupUpdateFormHandler.shippingGroupUpdate" value="Send...">
+</form>
+
+<img src="../../images/bluedot.gif" width=505 height=1><p>
+
+<b>Print an order</b><p>
+
+<form action="PrintOrder.jhtml" method=POST>
+OrderId: <input rows=1 cols=20 name="orderId">
+<input type=submit name="method" value="Print Order"><br>
+</form>
+<br>
+
+</blockquote>
+
+</body>
+</html>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/DCS/admin/atg/commerce/admin/en/fulfillment/index.jhtml#2 $$Change: 651448 $*/</java>
+

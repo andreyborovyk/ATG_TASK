@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE database-initializer SYSTEM "http://www.atg.com/dtds/dbinit_1_0.dtd">
+<database-initializer>
+
+	<schema id="allSchema">
+		<sql>
+			<path>
+				<create>
+					sql/db_components/${database}/searchadmin_admin_ddl.sql
+				</create>
+				<drop>
+					sql/uninstall/${database}/drop_searchadmin_admin_ddl.sql
+				</drop>
+			</path>
+		</sql>				
+		
+		<data-import>
+			<repository-path>/atg/searchadmin/SearchAdminRepository</repository-path>
+			<import-file-path>/Search${version}/SearchAdmin/common/data/initial/searchadmin-data.xml</import-file-path>
+		</data-import>		
+<!--
+		<data-import start-up-module="DPS.InternalUsers">
+			<repository-path>/atg/userprofiling/InternalProfileRepository</repository-path>
+			<import-file-path>/Search2008.1/SearchAdmin/common/data/initial/searchadmin-profile.xml</import-file-path>
+		</data-import>		
+		-->	
+
+	</schema>
+	
+	<server-instance-type id="production">
+		<datasource id="switchingCore">
+			<schema id="allSchema"/>
+		</datasource>	
+		<datasource id="nonswitchingCore">
+			<schema id="allSchema"/>
+		</datasource>	
+	</server-instance-type>  
+	
+</database-initializer>
+<!-- @version $Id: //application/SearchAdmin/version/10.0.3/common/src/cim/dbinit.xml#2 $$Change: 651448 $-->

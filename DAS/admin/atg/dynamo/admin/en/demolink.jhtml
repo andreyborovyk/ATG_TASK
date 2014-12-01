@@ -1,0 +1,128 @@
+<java type=import>
+  atg.core.io.FileUtils
+  atg.repository.nucleus.RepositoryRegistryService
+  atg.nucleus.DynamoEnv
+</java><param name="documentRoot" value="property:/atg/dynamo/Configuration.documentRoot"><java>
+  /*-----------------------------------------------------------------------------
+    This new incarnation of the demolink page redirects to the main
+    demo page in the doc tree (from the admin tree), but before doing
+    so, it first checks to see that all the currently installed demo
+    directories in the original (Serverina) doc tree have been copied
+    to the current doc tree, if different.  (i.e., Dynamo has been set
+    up to use a third party webserver via connection modules.)  If the
+    docroot has changed and any demos have not yet been copied over,
+    then this page presents a form to allow the user start the copy.
+    Otherwise, it simply redirects to the /demo/ page in the doc tree.
+
+    This demo copying code must reside in the admin tree to ensure
+    that it is always accessible (even when the docroot has changed),
+    and hence, cannot be part of the dlink.jhtml file which takes care
+    of checking for various other degrees of demo installation before
+    actually attempting to start up a given demo.
+  ------------------------------------------------------------------------------*/
+
+  // Get the Dynamo docroot as configured out of the box (i.e., Serverina)
+  // and the currently configured Dynamo docroot which may be
+  // different from original if using third party webserver and
+  // connection modules.
+
+  
+  String home = DynamoEnv.getProperty("atg.dynamo.home");
+  if (home == null) home = ".";
+  File originalDocroot = new File(home, "doc");
+  File currentDocroot = new File(request.getParameter("documentRoot"));
+
+  // If the docroot has not changed from the original, there is no
+  // copying to be done.
+
+  if (originalDocroot.getCanonicalPath().equals(currentDocroot.getCanonicalPath()))
+  {
+    response.sendLocalRedirect("/atg/dynamo/admin/en/docrootlink.jhtml?path=/demo/", request);
+    return;
+  }
+  
+
+  // Get the src and dest directories for the various demos.
+  
+  File dasSrc = new File(originalDocroot, "demo");
+  File dasDest = new File (currentDocroot, "demo");
+  File dssSrc = new File(originalDocroot, "DSSDemo" +
+                         File.separator + "QuincyFunds");
+  File dssDest = new File(currentDocroot, "DSSDemo" +
+                          File.separator + "QuincyFunds");
+  File src = null;
+  File dest = null;
+
+
+  // Do the copying if the CopyDemos parameter has been set via the
+  // user clicking the submit button of the form below.
+
+  if (request.getParameter("CopyDemos") != null)
+  {
+    try
+    {
+      if (dasSrc.canRead() && !dasDest.canRead())
+      {
+        src = dasSrc;  dest = dasDest;
+        if (!dest.mkdirs()) throw new IOException("Unable to create directory " + dest.getCanonicalPath());
+        FileUtils.copyDir(src.getPath(), dest.getPath());
+      }
+      if (dssSrc.canRead() && !dssDest.canRead())
+      {
+        src = dssSrc;  dest = dssDest;
+        if (!dest.mkdirs()) throw new IOException("Unable to create directory " + dest.getCanonicalPath());
+        FileUtils.copyDir(src.getPath(), dest.getPath());
+      }
+
+      // Now I think we need to refresh the repositories so they pick
+      // up the new docs.  Probably only necessary for DSS and/or DCS,
+      // if at all.  I stole this code from the old dps demolink file. 
+      RepositoryRegistryService r = (RepositoryRegistryService) request.resolveName("/atg/registry/ContentRepositories");
+      if (r != null) r.refresh();
+    }
+    catch (IOException e) {
+      </java>
+        <html><head><title>Copy demos failed</title>
+         <link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css"></head>
+        <body bgcolor=ffffff>
+        <h1>Copy of demos failed</h1>
+          Unable to copy the directory <java type=print>src.getCanonicalPath()</java> to
+          the directory <java type=print>dest.getCanonicalPath()</java>.
+          The error was: <java type=print>e</java>
+        </body>
+      <java>
+      return;
+    }
+  }
+
+
+  // If copying is necessary, present the user with a form to allow
+  // them to determine if they want the demos copied to the current
+  // docroot, rather than just doing so behind the scenes. 
+
+  if ((dasSrc.canRead() && !dasDest.canRead()) ||
+      (dssSrc.canRead() && !dssDest.canRead()))
+  {
+    </java>
+        <html><head><title>Copy demos to docroot</title></head><body bgcolor=ffffff>
+        <h1>Missing Demos in Docroot</h1>
+        Some or all of the installed demos have not been copied to
+        your current docroot: 
+        <valueof param="documentRoot"></valueof>
+        <p>
+        <form action="demolink.jhtml" method=get>
+          <input type=submit name="CopyDemos" value="Copy demos now"> 
+        </form>
+        </body>
+    <java>
+    return;
+  }
+
+
+  // Redirect to the main demo page.  Those links will then use the
+  // dlink page to determine if the demo is completely installed.
+  response.sendLocalRedirect("/atg/dynamo/admin/en/docrootlink.jhtml?path=/demo/", request);
+
+
+</java>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/demolink.jhtml#2 $$Change: 651448 $*/</java>

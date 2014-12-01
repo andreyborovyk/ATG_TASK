@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE taglib
+	PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN"
+	"http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
+
+<!-- This document describes the variou tags associated with -->
+<!-- the soapclient gear.  There is a single tag defined     -->
+<!-- which is responsible for invoking a given web service.  -->
+
+<taglib>
+  <tlib-version>1.0</tlib-version>
+  <jsp-version>1.1</jsp-version>
+  <short-name>soap</short-name>
+  <uri>http://www.atg.com/taglibs/gear/soapclientTaglib1_0</uri>
+  <description>The taglib containing the support tags for the soapclient gear</description>
+
+  <!-- InvokeService Tag -->
+  <tag>
+    <name>InvokeService</name>
+    <tag-class>atg.portal.gear.soapclient.taglib.InvokeSOAPServiceTag</tag-class>
+    <tei-class>atg.portal.gear.soapclient.taglib.InvokeSOAPServiceTEI</tei-class>    
+    <body-content>JSP</body-content>
+    <description>
+      Tag that will invoke a particular SOAP Service
+    </description>
+
+    <!-- name that the variable returned by the tag will be placed into -->
+    <!-- context by.  Also, an attribute will be placed into the page   -->
+    <!-- context by this name.                                          -->
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <!-- Gearenvironment variable that will be used to extract user     -->
+    <!-- parameter values from.                                         -->
+    <attribute>
+      <name>gearEnv</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+  </tag>
+
+  <!-- GetInstalledWSDLValues Tag -->
+  <tag>
+    <name>GetInstalledWSDLValues</name>
+    <tag-class>atg.portal.gear.soapclient.taglib.GetInstalledWSDLValuesTag</tag-class>
+    <tei-class>atg.portal.gear.soapclient.taglib.GetInstalledWSDLValuesTEI</tei-class>    
+    <body-content>JSP</body-content>
+    <description>
+      Tag that will expose values of the installed WSDL document
+    </description>
+
+    <!-- name that the variable returned by the tag will be placed into -->
+    <!-- context by.  Also, an attribute will be placed into the page   -->
+    <!-- context by this name.                                          -->
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <!-- GearDefId variable that identifies the gear definition    -->
+    <attribute>
+      <name>gearDefId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+</taglib>
+
+
+

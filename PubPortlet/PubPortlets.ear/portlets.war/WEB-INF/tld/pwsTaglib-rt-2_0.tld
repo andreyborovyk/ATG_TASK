@@ -1,0 +1,1562 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE taglib
+    PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN"
+    "http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_2.dtd">
+<taglib>
+  <tlib-version>2.0</tlib-version>
+  <jsp-version>1.1</jsp-version>
+  <short-name>pws</short-name>
+  <uri>http://www.atg.com/taglibs/pws_rt</uri>
+
+  <description>The tag library containing the Project Work Station tags</description>
+
+   <!-- escape and truncate text and do other rendering tranformations  -->
+  <tag>
+    <name>display</name>
+    <tag-class>atg.epub.pws.taglib.EscapeHTMLTextTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.EscapeHTMLTextTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      return HTML escaped text
+      var - required, return escaped and if maxlength specified truncated text
+      text - required, text to be HTML escaped
+      maxLength - optional if specified, truncate text to last space before maximum length  
+    </description>
+    
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  
+    <attribute>
+      <name>text</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    
+    <attribute>
+      <name>maxLength</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    
+    <attribute>
+      <name>appendedText</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>getTasks</name>
+    <tag-class>atg.epub.pws.taglib.GetTasksTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.GetTasksTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      return a collection of tasks
+      var - required, return object with tasks and size properties
+      userOnly - optional, default is false, return current user's tasks
+      unowned - optional, default is false, return unowned tasks
+      active - optional, default is true, returns active tasks only. False returns all tasks.
+      processId - optional, returns tasks for given process. If null, returns all tasks in system.
+      workflowId - optional, returns tasks for the given workflow. Requires processId to be supplied.
+      taskElementId - optional, returns the task info with the given task element id. Requires processId to be supplied.
+    </description>
+    
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  
+    <attribute>
+      <name>userOnly</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>unowned</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>active</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>processId</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>workflowId</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>taskElementId</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>index</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>count</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  
+  <tag>
+    <name>canFireTaskOutcome</name>
+    <tag-class>atg.epub.pws.taglib.CanFireTaskOutcomeTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.CanFireTaskOutcomeTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      return a Results object
+      var - required, return object with hasAccess property
+      taskInfo - required, the task to get the access information for
+    </description>
+    
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  
+    <attribute>
+      <name>taskInfo</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>    
+    
+  <tag>
+    <name>canSetTaskOwner</name>
+    <tag-class>atg.epub.pws.taglib.CanSetTaskOwnerTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.CanSetTaskOwnerTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      return a Results object
+      var - required, return object with hasAccess property
+      taskInfo - required, the task to get the access information for
+    </description>
+    
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  
+    <attribute>
+      <name>taskInfo</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>    
+    
+  <tag>
+    <name>getWorkflowDefinitions</name>
+    <tag-class>atg.epub.pws.taglib.GetWorkflowDefinitionsTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.GetWorkflowDefinitionsTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      return a collection of workflow definitions
+      var - required, return object with definitions and size properties
+      userOnly - optional, default is false, if true, return workflow definitions which current user can start
+      index - optional, return workflow definitions starting at the specified index
+      count - optional, return this number of workflow definitions
+    </description>
+    
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  
+    <attribute>
+      <name>userOnly</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>index</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>count</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  
+  <tag>
+    <name>getWorkflowDescriptor</name>
+    <tag-class>atg.epub.pws.taglib.GetWorkflowDescriptorTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.GetWorkflowDescriptorTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      return a results object with the workflow descriptors for the given process' workflows
+      var - required, return object of type Results with processWorkflow and projectWorkflow properties
+      processId - required, the processId of the process whose workflow descriptor are desired
+      workflowId - optional, the workflowId of the workflow whose descriptor is desired. Requires processId to be supplied also.
+    </description>
+    
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  
+    <attribute>
+      <name>processId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>workflowId</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  
+  <tag>
+    <name>getItemSubTypes</name>
+    <tag-class>atg.epub.pws.taglib.GetItemSubTypesTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.GetItemSubTypesTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      return a List of RepositoryItemDescriptor objects which are the subtypes
+      var - required, return object of type List of RepositoryItemDescriptor objects
+      repositoryPath - required, the nucleus path of the repository in which the itemTypes exist
+      itemType - required, the name of the itemType whose subTypes are sought
+    </description>
+    
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  
+    <attribute>
+      <name>repositoryPath</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>itemType</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>includeSourceType</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>showHidden</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>showExpert</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  
+  <tag>
+    <name>getProjects</name>
+    <tag-class>atg.epub.pws.taglib.GetProjectsTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.GetProjectsTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      return a collection of projects by status or ids
+      var - required, return object with projects and size properties
+      projectIds - optional, returns projects with these ids.  Ignores status and sortProperties
+      status - optional, default is Active, return projects whose status is that which is supplied
+      sortProperties - optional, a comma separated list of Project properties to sort by
+      index - optional, return Projects starting at the specified index
+      count - optional, return this number of Projects
+    </description>
+    
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  
+    <attribute>
+      <name>status</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>projectIds</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    
+    <attribute>
+      <name>sortProperties</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>index</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>count</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  
+  <tag>
+    <name>getProcesses</name>
+    <tag-class>atg.epub.pws.taglib.GetProcessesTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.GetProcessesTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      return a collection of processes by status
+      var - required, return object with processes and size properties
+      status - optional, default is Edit, return processes whose status is that which is supplied
+      hiddenWorkflowTypes - optional, return processes whose workflowTypes are not of these types
+      sortProperties - optional, a comma separated list of Process properties to sort by
+      index - optional, return Processes starting at the specified index
+      count - optional, return this number of Processes
+    </description>
+    
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  
+    <attribute>
+      <name>status</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>hiddenWorkflowTypes</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>createdByUser</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>sortProperties</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>index</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>count</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  
+  <tag>
+    <name>getProject</name>
+    <tag-class>atg.epub.pws.taglib.GetProjectTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.GetProjectTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      return a project by its id
+      var - required, return object which is the project
+      projectId - required, the id of the project to return
+    </description>
+    
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  
+    <attribute>
+      <name>projectId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>getCurrentProject</name>
+    <tag-class>atg.epub.pws.taglib.GetCurrentProjectTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.GetCurrentProjectTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      return a results object with process, project, workflow, and task properties
+      var - required, return object which is the results object
+    </description>
+    
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute> 
+  </tag>
+
+  <tag>
+    <name>getCurrentContext</name>
+    <tag-class>atg.epub.pws.taglib.GetCurrentProjectTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.GetCurrentProjectTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      return a results object with process, project, workflow, and task properties
+      var - required, return object which is the results object
+    </description>
+    
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute> 
+  </tag>
+
+  <tag>
+    <name>getProcess</name>
+    <tag-class>atg.epub.pws.taglib.GetProcessTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.GetProcessTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      return a process by its id
+      var - required, return object which is the process
+      processId - the id of the process to return
+      projectId - the id of the project to return its parent process
+    </description>
+    
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  
+    <attribute>
+      <name>processId</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>projectId</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>getVersionedAssetTypes</name>
+    <tag-class>atg.epub.pws.taglib.GetVersionedAssetTypesTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.GetVersionedAssetTypesTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+       Return a list of all versioned assets
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  
+  <tag>
+    <name>getMappedRepository</name>
+    <tag-class>atg.epub.pws.taglib.GetMappedRepositoryTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.GetMappedRepositoryTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+       Return the repository by name configured in the VersionManager
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>repositoryName</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  
+  <tag>
+    <name>ensureVersionedRepository</name>
+    <tag-class>atg.epub.pws.taglib.EnsureVersionedRepositoryTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.EnsureVersionedRepositoryTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+       Verify the repository supplied is a versioned repository
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>repositoryName</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  
+  <tag>
+    <name>createVersionManagerURI</name>
+    <tag-class>atg.epub.pws.taglib.CreateVersionManagerURITag</tag-class>
+    <tei-class>atg.epub.pws.taglib.CreateVersionManagerURITag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+       Return a version manager uri with the given information
+    </description>
+
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>versionManagerName</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>componentName</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>itemDescriptorName</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>itemId</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>virtualFilePath</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>repositoryItem</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>virtualFile</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>object</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>getAsset</name>
+    <tag-class>atg.epub.pws.taglib.GetAssetTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.GetAssetTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      return an asset by its URI
+      var - required, return object which is the asset
+      uri - required, the URI of the asset to return
+      workspaceName - optional, the name of the workspace to return the working version of the asset for
+      useWorkspaceInSession - optional, a boolean flag indicating whether or not to use the project's
+                        workspace which is set in the current user's session. Use instead of
+                        workspaceName.
+    </description>
+    
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  
+    <attribute>
+      <name>uri</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>workspaceName</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>useWorkspaceInSession</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>allowFileRepositoryItems</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>getAssignableUsers</name>
+    <tag-class>atg.epub.pws.taglib.GetAssignableUsersTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.GetAssignableUsersTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      return a list of User objects for each user which can execute the task
+      var - required, return object which is the collection of User objects
+      taskDescriptor - required, the task descriptor of the task
+      includeAccUsers - optional, default is false, flag to indicate whether or not to include acc users
+    </description>
+    
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  
+    <attribute>
+      <name>taskDescriptor</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>includeAccUsers</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  
+  <tag>
+    <name>getUnsuppliedAssets</name>
+    <tag-class>atg.epub.pws.taglib.GetUnsuppliedAssetsTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.GetUnsuppliedAssetsTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      return information about all and required only assets in the given
+      project's workflow.
+      var - required, return object which is a result object with the information
+      processId - required, the id of the process for which to return the
+      unsupplied asset data
+    </description>
+    
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  
+    <attribute>
+      <name>processId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+   
+  <tag>
+    <name>categorize</name>
+    <tag-class>atg.epub.pws.taglib.CategorizeTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.CategorizeTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      categorize and sort item properties
+      id - required returns instance of tag. Call getItems() to return collection
+        of atg.beans.DynamicPropertyDescriptors for properties to display in this repository item
+      repositoryItem - atg.repository.RepositoryItem instance
+      itemDescriptor - item descriptor name for item type you wish to display
+      repositoryPath - if not working in the context of a repository item, set this 
+                       and itemDescriptorName attributes.
+      itemDescriptorName - the name of the item descriptor to use with repositoryPath attribute.
+      hidden - if true then display hidden properties.  Default is false
+      expert - if true then display expert properties. Default is false.
+      excluded - String. if property name in string then don't show property
+      excludedCategories - String. if category name in string, then don't show
+      categories - String. restrict to these categories
+      specificProperties - String. restrict to these properties.
+      hideSingleCategoryDescriptor - boolean.  If true and there is only one category, don't return the category descriptor
+    </description>
+    
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>repositoryItem</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>itemDescriptor</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>hidden</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>repositoryPath</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>    
+    <attribute>
+      <name>itemDescriptorName</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>    
+    <attribute>
+      <name>expert</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>excluded</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>excludedCategories</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>categories</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>specificProperties</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>hideSingleCategoryDescriptor</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>getTargets</name>
+    <tag-class>atg.epub.pws.taglib.GetTargetsTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.GetTargetsTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>      
+      var - returned collection of atg.deployment.server.Target class
+      oneOff - not required. When true, returns one-off tarets only
+    </description>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>oneOff</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>getTargetDefs</name>
+    <tag-class>atg.epub.pws.taglib.GetTargetDefsTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.GetTargetDefsTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>      
+      id - required, returned collection of atg.deployment.server.topology.TargetDef class
+      toplogyType -  one or "primary", "surrogate" or "both".
+    </description>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>topologyType</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>    
+  </tag>
+  
+  <tag>
+    <name>getTarget</name>
+    <tag-class>atg.epub.pws.taglib.GetTargetTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.GetTargetTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>      
+      id - required, the atg.deployment.server.Target obtained, null if no target found
+    </description>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>targetId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>    
+  </tag>
+  
+  <tag>
+    <name>getTargetDef</name>
+    <tag-class>atg.epub.pws.taglib.GetTargetDefTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.GetTargetDefTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>      
+      id - required, the atg.deployment.server.topology.Target obtained, null if no target found
+    </description>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>targetId</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>    
+  </tag>
+  
+  <tag>
+    <name>getDeployments</name>
+    <tag-class>atg.epub.pws.taglib.GetDeploymentsTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.GetDeploymentsTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      return an array of Deployments and total count wrapped in a Result object
+      id - required, return object with array of atg.deployment.server.deployment.Deployment and size properties
+      queuedOnly - optional, return queued deployments only, default is all the pending deployments
+      scheduledOnly -- optional return scheduled deployments only, default is all the pending deployments
+      target -- optional, the default is all the targets know to the DeploymentServer
+      projects -- collection of atg.epub.project.Project. projects deployments can be filtered for projects. 
+                  All the above filters will still apply if given
+      the order of filtering precedence is
+             projects
+             targets
+             scheduledOnly, queuedOnly
+      On the scripting variable added by this tag, use scripting_variable.deployments to get the array of atg.deployment.server.Deployment,
+      scripting_variable.count to get the count of deployments in that array and scripting_variable.totalCount to get the
+      total count of deployments satisfying the given criteria.             
+      if totalCountVar scripting variable name is given it will also be set to the total number to deployment found.
+    </description>
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+     <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+   <attribute>
+      <name>target</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>    
+    <attribute>
+      <name>projects</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>    
+    <attribute>
+      <name>queuedOnly</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>scheduledOnly</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>index</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>count</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>totalCountVar</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>    
+  </tag>  
+  
+  <tag>
+    <name>getDeployment</name>
+    <tag-class>atg.epub.pws.taglib.GetDeploymentTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.GetDeploymentTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      return a single Deployment give a valid deployment ID
+      id - required, return object with array of atg.deployment.server.deployment.Deployment and size properties
+      target - required, the deployment's ID
+    </description>
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+     <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+   <attribute>
+      <name>deploymentId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>    
+  </tag>  
+  
+  
+    <tag>
+    <name>getDeployedActiveProjects</name>
+    <tag-class>atg.epub.pws.taglib.GetDeployedActiveProjectsTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.GetDeployedActiveProjectsTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      return an array of deployed active projects count, total count wrapped in a Result object.
+      id - required, return object with array of atg.epub.project.Project, count and totalCount properties
+      target -- required, the target for which to get deployed projects.
+      
+      
+      On the scripting variable added by this tag, use scripting_variable.projects to get the array of atg.epub.project.Project
+      scripting_variable.count to get the count of projects in that array and scripting_variable.totalCount to get the
+      total count of deployed projects in the repository.
+      if totalCountVar scripting variable name is given it will also be set to the total number to deployed projects found.      
+    </description>
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+      <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>target</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>    
+     <attribute>
+      <name>index</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>count</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>totalCountVar</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>        
+ </tag>
+  
+    <tag>
+    <name>getDeployedCheckedInProjects</name>
+    <tag-class>atg.epub.pws.taglib.GetDeployedCheckedInProjectsTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.GetDeployedCheckedInProjectsTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      return an array of deployed checked in projects count, total count wrapped in a Result object.
+      id - required, return object with array of atg.epub.project.Project, count and totalCount properties
+      target -- required, the target for which to get deployed projects.
+      
+      
+      On the scripting variable added by this tag, use scripting_variable.projects to get the array of atg.epub.project.Project
+      scripting_variable.count to get the count of projects in that array and scripting_variable.totalCount to get the
+      total count of deployed projects in the repository.
+      if totalCountVar scripting variable name is given it will also be set to the total number to deployed projects found.      
+    </description>
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+      <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>target</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>    
+     <attribute>
+      <name>index</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>count</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>totalCountVar</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>        
+ </tag>
+   
+  <tag>
+    <name>getDeployedProjects</name>
+    <tag-class>atg.epub.pws.taglib.GetDeployedProjectsTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.GetDeployedProjectsTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      return an array of projects count, total count wrapped in a Result object.
+      id - required, return object with array of atg.epub.project.Project, count and totalCount properties
+      target -- required, the target for which to get deployed projects.
+      
+      
+      On the scripting variable added by this tag, use scripting_variable.projects to get the array of atg.epub.project.Project
+      scripting_variable.count to get the count of projects in that array and scripting_variable.totalCount to get the
+      total count of deployed projects in the repository.
+      if totalCountVar scripting variable name is given it will also be set to the total number to deployed projects found.      
+    </description>
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+      <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>target</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>    
+     <attribute>
+      <name>index</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>count</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>totalCountVar</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>        
+ </tag>
+
+ <tag>
+    <name>getProjectsPendingDeployment</name>
+    <tag-class>atg.epub.pws.taglib.GetProjectsPendingDeploymentTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.GetProjectsPendingDeploymentTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+
+      id, var - required, scripting variable would be set to this name.
+      target - optional attribute to  get todo projects for a single target            
+      count -number of projects starting from the index
+      a collection of ToDoProject object which has the following properties
+        project - atg.epub.project.Project object
+        target - atg.deployment.server.Target, 
+        orphaned - boolean true if this project is orphaned
+       is added as a scripting variable with the name given in var attribute.
+      if totalCountVar scripting variable name is given it will also be set to the total number to deployment found.      
+    </description>
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+      <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>target</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>    
+     <attribute>
+      <name>index</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>count</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>totalCountVar</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    
+ </tag>
+    
+  <tag>
+    <name>getPlaceholderAsset</name>
+    <tag-class>atg.epub.pws.taglib.GetPlaceholderAssetTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.GetPlaceholderAssetTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      return a working version object of the asset represented by the placeholder
+      var - required, return object of type WorkingVersion
+      processId - required, the process id of to get the placeholder asset from
+      assetDescriptor - required, the placeholder AssetDescriptor 
+    </description>
+    
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    
+    <attribute>
+      <name>processId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>assetDescriptor</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+ <tag>
+    <name>getDependentProjects</name>
+    <tag-class>atg.epub.pws.taglib.GetDependentProjectsTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.GetDependentProjectsTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+
+      id, var - required, scripting variable name that will comtain a Collection of dependent projects.
+      target - required attribute to  get todo projects for a single target            
+      candidateProjects - optional attribute that is the collection of candidate project  for
+                         whom to lookup the dependent projects
+      candidateProjects - optional attribute that is the candidate project for
+                          which to lookup the dependent projects
+       one of candidateProjects and candidateProject is required to produce meaningful list of 
+       dependent projects
+                         
+    </description>
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+      <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>target</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>    
+     <attribute>
+      <name>candidateProjects</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+     <attribute>
+      <name>candidateProject</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>    
+ </tag>
+ 
+  <tag>
+    <name>getProjectAssets</name>
+    <tag-class>atg.epub.pws.taglib.GetProjectAssetsTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.GetProjectAssetsTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      return a collection of assets
+      var - required, return object with assets and size properties
+      projectId - required, the project to retrieve assets from
+      showExpert - optional, default is false, show assets with expert attribute set
+      checkedIn - optional, default is false, return checked in assets
+      sortConflictedAssets - optional, default is false, sort assets in conflict
+    </description>
+    
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  
+    <attribute>
+      <name>showExpert</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>checkedIn</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>projectId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>index</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>count</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>sortConflictedAssets</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>parsePreviewURL</name>
+    <tag-class>atg.epub.pws.taglib.ParsePreviewURLTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.ParsePreviewURLTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      return the preview url with all the variables replaced with values
+      var - required, return object which is the preview url
+      url - required, the preview url to replace the variables in
+      asset - required, the asset which provides data for the variables
+      projectId - optional, the projectId to add to the url
+    </description>
+    
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>url</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>asset</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>projectId</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>getDeploymentPercentageComplete</name>
+    <tag-class>atg.epub.pws.taglib.GetDeploymentPercentageCompleteTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.GetDeploymentPercentageCompleteTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      return the percentage completion of a deployment
+      var - required, return object which is the percentage complete
+      projectId - required, the deployment id
+    </description>
+    
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>deploymentId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>getDeploymentLog</name>
+    <tag-class>atg.epub.pws.taglib.GetDeploymentLogTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.GetDeploymentLogTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      return the deployment log record
+      var - required, return deployment log record
+      deploymentId - required, the deployment id
+    </description>
+    
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>deploymentId</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>deploymentType</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>target</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>totalCountVar</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>        
+  </tag>
+
+  <tag>
+    <name>getAgentSwitchables</name>
+    <tag-class>atg.epub.pws.taglib.GetAgentSwitchablesTag</tag-class>
+    <tei-class>atg.epub.pws.taglib.GetAgentSwitchablesTag$TEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>      
+      targetId - required, target ID for which to return agent switchable data
+      var - required, return collection
+    </description>
+    <attribute>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>targetId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+</taglib>

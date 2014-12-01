@@ -1,0 +1,85 @@
+<HTML>
+<HEAD>
+<TITLE>Login</TITLE>
+</HEAD>
+
+<importbean bean="/atg/userprofiling/Profile">
+<importbean bean="/atg/userprofiling/ProfileFormHandler">
+<importbean bean="/atg/userprofiling/ProfileErrorMessageForEach">
+<importbean bean="/atg/dynamo/droplet/Switch">
+
+<!-- This form should not show what the current profile attributes are so we will
+     disable the ability to extract default values from the profile. -->
+<setvalue bean="ProfileFormHandler.extractDefaultValuesFromProfile" value="false">
+
+<BODY>
+
+<a href="index.jhtml">Catalog Home</a> - 
+<a href="product_search.jhtml">Product Search</a> - 
+<a href="shoppingcart.jhtml">Shopping Cart</a> - 
+<a href="lists.jhtml">My Lists</a> - 
+<a href="comparison.jhtml">Product Comparison</a> -
+<a href="giftlist_search.jhtml">Gift List Search</a> - 
+<droplet bean="Switch">
+  <param name="value" value="bean:Profile.transient">
+  <oparam name="false">
+    <a href="logout.jhtml">Logout</a>
+  </oparam>
+  <oparam name="true">
+    Login or <a href="register.jhtml">Register</a>
+  </oparam>
+</droplet>
+<BR>
+
+<h3>Member Login</h3>
+
+<droplet name="Switch">
+<param name="value" value="bean:ProfileFormHandler.profile.transient">
+<oparam name="false">
+  You are currently logged in. If you wish to login as a different user
+  please logout first.
+</oparam>
+
+<oparam name="default">
+<FORM ACTION="login.jhtml" METHOD="POST">
+<INPUT TYPE="HIDDEN" BEAN="ProfileFormHandler.loginSuccessURL" VALUE="index.jhtml">
+
+<droplet name="Switch">
+<param name="value" value="bean:ProfileFormHandler.formError">
+<oparam name="true">
+  <font color=cc0000><STRONG><UL>
+    <droplet name="ProfileErrorMessageForEach">
+      <param name="exceptions" value="bean:ProfileFormHandler.formExceptions">
+      <oparam name="output">
+	<LI> <valueof param="message"></valueof>
+      </oparam>
+    </droplet>
+    </UL></STRONG></font>
+</oparam>
+</droplet>
+
+<table width=456 border=0>
+  <tr>
+    <td valign=middle align=right>User Name:</td>
+    <td><INPUT TYPE="TEXT" SIZE="20" MAXSIZE="20" BEAN="ProfileFormHandler.value.login"></td>
+  </tr>
+
+  <tr>
+    <td valign=middle align=right>Password:</td>
+    <td><INPUT TYPE="PASSWORD" SIZE="20" MAXSIZE="20" BEAN="ProfileFormHandler.value.password"></td>
+  </tr>
+
+  <tr>
+    <td valign=middle align=right></td>
+    <td><INPUT TYPE="SUBMIT" VALUE="login" BEAN="ProfileFormHandler.login"> or <a href="register.jhtml">register</a></td>
+  </tr>
+</table>
+
+</FORM>
+</oparam>
+</droplet>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/DCS/html/sample_catalog/login.jhtml#2 $$Change: 651448 $*/</java>
+

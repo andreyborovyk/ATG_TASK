@@ -1,0 +1,11 @@
+setlocal
+title ${SERVER_NAME}
+SET CATALINA_HOME="${TOMCAT_HOME}"
+SET CATALINA_BASE="${TOMCAT_HOME}/atgbases/${SERVER_NAME}"
+SET JAVA_OPTS=-Xms512m -Xmx1024m -XX:MaxPermSize=256m -XX:MaxNewSize=256m
+call "${TOMCAT_HOME}/bin/catalina.bat" run %*
+
+REM SET JPDA_ADDRESS=8000
+REM SET JPDA_TRANSPORT=dt_socket
+REM call "${TOMCAT_HOME}/bin/catalina.bat" jpda start %*
+endlocal

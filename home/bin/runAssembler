@@ -1,0 +1,36 @@
+#!/bin/sh
+
+#
+# Check that DYNAMO_HOME and DAS_ROOT are set
+#
+OWD=`pwd`
+
+if [ -f /bin/cygpath ] ; then
+  OWD=`cygpath -w ${OWD}`
+fi
+
+PROGRAM_DIR=`dirname $0`
+. $PROGRAM_DIR/checkDynamoHome.sh
+
+#
+# Load in default environment values
+#
+. $DYNAMO_HOME/bin/dynamoEnv.sh
+
+#
+# Set extra environment variables
+#
+if [ -f $DYNAMO_HOME/localconfig/environment.sh ] ; then
+	. $DYNAMO_HOME/localconfig/environment.sh
+fi
+
+
+EXTRA_JAVA_ARGS=" -Datg.dynamo.root=${DYNAMO_ROOT} -Datg.dynamo.appserver=${THIRD_PARTY_APP_SERVER}"
+
+#
+# runAssembler
+#
+${JAVA_VM} -Xms96m -Xmx160m \
+           ${EXTRA_JAVA_ARGS} \
+           -cp ${DYNAMO_HOME}/lib/launcher.jar${PSEPARATOR}${DYNAMO_HOME}/lib/assembler.jar \
+           atg.appassembly.Main -owd "$OWD" $* DafEar

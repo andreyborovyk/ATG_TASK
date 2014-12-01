@@ -1,0 +1,9 @@
+#!/bin/sh -x
+
+SEARCH_DW_MYSQL_CLIENT_HOME=/usr/local/mysql
+if [ ! -d ${SEARCH_DW_MYSQL_CLIENT_HOME} ] ; then
+  echo Invalid setting of SEARCH_DW_MYSQL_CLIENT_HOME in mysql. Directory ${SEARCH_DW_MYSQL_CLIENT_HOME} does not exist.
+  exit 1
+fi
+
+${SEARCH_DW_MYSQL_CLIENT_HOME}/bin/mysql -f $SEARCH_DW_MYSQL_DB_NAME -h $SEARCH_DW_MYSQL_DB_HOST -u $SEARCH_DW_DB_USER -p$SEARCH_DW_DB_PWD < $DYNAMO_HOME/$1

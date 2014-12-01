@@ -1,0 +1,85 @@
+<JAVA>/* A shopping cart-like display of order information */</JAVA>
+
+<importbean bean="/atg/dynamo/droplet/Switch">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/IsNull">
+
+<droplet bean="IsNull">
+  <param name="value" value="param:order.shippingGroups">
+  <oparam name="true">
+   <p>There are no shipping groups in this order.
+  </oparam>
+  <oparam name="false">
+    <table>
+    <droplet bean="ForEach">
+      <param name="array" value="param:order.shippingGroups">
+      <param name="elementName" value="sg">
+      <oparam name="empty">
+	There were no shipping groups.<br>
+      </oparam>
+      <oparam name="output">
+	<tr valign=top>
+	  <td>
+	      <b>The following items ship:</b><br>
+	      <droplet bean="ForEach">
+		<param name="array" value="param:sg.commerceItemRelationships">
+		<param name="elementName" value="itemRel">
+		<oparam name="empty">
+		  There were no items in this shipping group.
+		</oparam>
+		<oparam name="output">
+		  <droplet bean="Switch">
+		    <param name="value" value="param:itemRel.relationshipTypeAsString">
+		    <oparam name="SHIPPINGQUANTITY">
+		      <valueof param="itemRel.quantity">No quantity specified</valueof> of
+		    </oparam> 
+		    <oparam name="SHIPPINGQUANTITYREMAINING">
+		      The rest of 
+		    </oparam> 
+	          </droplet>
+		  <valueof param="itemRel.commerceItem.auxiliaryData.catalogRef.displayName">No display name.</valueof>
+		  <br>
+	        </oparam>
+	      </droplet>
+	  </td>
+	  <td>    
+	      <p><b>Using this information:</b><br>
+	      <droplet bean="Switch">
+		<param name="value" value="param:sg.shippingGroupClassType">
+		<oparam name="hardgoodShippingGroup">
+		  <i>Ship via <valueof param="sg.shippingMethod">No shipping method</valueof> to:</i><BR>
+		  <valueof param="sg.shippingAddress.firstName"></valueof> 
+		  <valueof param="sg.shippingAddress.lastName"></valueof><BR>
+		  <valueof param="sg.shippingAddress.address1"></valueof> 
+		  <valueof param="sg.shippingAddress.address2"></valueof><BR>
+		  <valueof param="sg.shippingAddress.city"></valueof>, 
+		  <valueof param="sg.shippingAddress.state"></valueof> 
+		  <valueof param="sg.shippingAddress.postalCode"></valueof><BR>
+	       </oparam>
+		<oparam name="b2bHardgoodShippingGroup">
+		  <i>Ship via <valueof param="sg.shippingMethod">No shipping method</valueof> to:</i><BR>
+		  <valueof param="sg.shippingAddress.firstName"></valueof> 
+		  <valueof param="sg.shippingAddress.lastName"></valueof><BR>
+		  <valueof param="sg.shippingAddress.jobTitle"></valueof><BR>
+		  <valueof param="sg.shippingAddress.companyName"></valueof><BR>
+		  <valueof param="sg.shippingAddress.address1"></valueof> 
+		  <valueof param="sg.shippingAddress.address2"></valueof><BR>
+		  <valueof param="sg.shippingAddress.city"></valueof>, 
+		  <valueof param="sg.shippingAddress.state"></valueof> 
+		  <valueof param="sg.shippingAddress.postalCode"></valueof><BR>
+	       </oparam>
+	       <oparam name="electronicShippingGroup">
+		 <i>Ship via email to:</i><BR>
+		 <valueof param="sg.emailAddress">unknown email address</valueof><BR>
+	       </oparam>
+	     </droplet>
+	 </td>
+       </tr>
+       <tr></tr>
+      </oparam>
+    </droplet>    
+    </table>
+  </oparam>
+</droplet>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/Fulfillment/html/en/email_templates/DisplayShippingInfo.jhtml#2 $$Change: 651448 $*/</java>
+

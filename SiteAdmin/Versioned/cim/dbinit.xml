@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE database-initializer SYSTEM "http://www.atg.com/dtds/dbinit_1_0.dtd">
+<database-initializer>
+
+  <schema id="managementSchema">
+
+    <data-import start-up-module="DSS.InternalUsers">
+      <repository-path>/atg/userprofiling/InternalProfileRepository</repository-path>
+      <import-file-path>/SiteAdmin/Versioned/install/data/siteadmin-role-data.xml</import-file-path>
+    </data-import>
+    
+    <data-import start-up-module="DSS.InternalUsers">
+      <repository-path>/atg/userprofiling/InternalProfileRepository</repository-path>
+      <import-file-path>/SiteAdmin/Versioned/install/data/users.xml</import-file-path>
+    </data-import>
+    
+    <data-import>
+      <repository-path>/atg/web/viewmapping/ViewMappingRepository</repository-path>
+      <import-file-path>/SiteAdmin/Versioned/install/data/viewmapping.xml</import-file-path>
+    </data-import>    
+    <data-import>
+      <repository-path>/atg/multisite/SiteRepository</repository-path>
+      <import-file-path>/SiteAdmin/Versioned/install/data/templates.xml</import-file-path>
+    </data-import> 
+
+  </schema>
+  
+  <server-instance-type id="management">
+    <datasource id="all">
+      <schema id="managementSchema" />
+    </datasource> 
+  </server-instance-type>
+  
+</database-initializer>
+<!-- @version $Id: //product/SiteAdmin/version/10.0.3/Versioned/src/cim/dbinit.xml#2 $$Change: 651448 $-->

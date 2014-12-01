@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+    <title>Create Repository Web Service: Select Item Descriptor</title>
+  </head>
+
+<nucleus type=import>
+	/atg/dynamo/droplet/ForEach
+</nucleus>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+<IMG SRC="../images/admin-banner.gif" 
+     ALT="Dynamo Administration"
+     ALIGN=TOP 
+     WIDTH="585" 
+     HEIGHT="37" 
+     BORDER="0">
+
+<p>
+ <a href="/">admin</a> / 
+ <a href="index.jhtml">Web Service Administration</a> / 
+ <a href="selecttype.jhtml">Create Web Service</a> /
+ <a href="repositorycreate.jhtml">Repository Web Service</a> /
+ Select Item Descriptor
+</p>
+
+<java type="import">
+atg.repository.*
+</java>
+
+<java>
+// Make sure we have a repository path at this point
+String repositoryPath = request.getParameter("repositoryPath");
+if(repositoryPath == null 
+   || "null".equals(repositoryPath) 
+   || repositoryPath.length() == 0) { 
+    out.println("<font color=\"red\">No repository path specified. " +
+	        "Cannot list item descriptors</font>");
+}
+else {
+  Object repository = request.resolveName(repositoryPath);
+  if(repository == null) {
+    // No component found
+    out.println("<font color=\"red\">No component at path " + 
+                  repositoryPath + "</font>");
+  }
+  else {
+    if(repository != null) {
+      if(!(repository instanceof Repository)) {
+        // Component found is not a Repository
+        out.println("<font color=\"red\">Component at path " + 
+  	             repositoryPath +
+	             " is not a Repository</font>");
+      }
+      else {
+        Repository rep = (Repository)repository;
+        request.setParameter("repository", rep);
+      }
+    }
+  }
+}
+</java>
+
+<p>
+    <h2>Create Repository Web Service</h2>	
+    <h1>Select item descriptor<br>
+        <valueof param="repositoryPath">No Repository Specified</valueof>
+    </h1>
+<p>
+Choose the item descriptor you want to create a web service for
+</p>
+<P>
+<ul>
+<droplet name="ForEach">
+  <param name="array" value = "param:repository.itemDescriptorNames">
+  <oparam name="output">
+    <li>
+    <a href="repositorymethod.jhtml">
+      <param name="itemDescName" value="param:element">
+      <param name="repositoryPath" value="param:repositoryPath">
+      <valueof param="element">???</valueof>
+    </a>
+    </li>
+  </oparam>
+  <oparam name="empty">
+    No item descriptors to choose from
+  </oparam>
+</droplet>
+</ul>
+</BODY>
+</html>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/webservice/choosedescriptor.jhtml#2 $$Change: 651448 $*/</java>

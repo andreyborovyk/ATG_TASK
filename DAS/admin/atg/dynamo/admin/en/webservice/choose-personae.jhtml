@@ -1,0 +1,42 @@
+
+<declareparam name="pricipals"> 
+<declareparam name="title"> 
+<declareparam name="principalsInfo"> 
+
+<P>
+
+<nucleus type=import>
+  /atg/dynamo/droplet/ForEach
+  /atg/webservice/security/NucleusAccessControlFormHandler
+  /atg/dynamo/droplet/Switch
+</nucleus>
+
+<droplet name="Switch">
+  <param name="value" value="param:title">
+  <oparam name=""></oparam>
+  <param name="unset" value="">
+  <oparam name="default">
+   <B><valueof param="indent" valueishtml="true"/><valueof param="title">?</valueof></B><BR>
+  </oparam>
+</droplet>
+
+
+<valueof param="indent" valueishtml="true"/><table border=0>
+<droplet name="ForEach">
+  <param name="array" value="param:principals">
+  <oparam name="output">
+     <tr>
+       <td>
+        <input type="checkbox" value="param:element.persona.name" bean="NucleusAccessControlFormHandler.personaIDs"><valueof param="element.name">???</valueof>&nbsp;&nbsp;
+       </td>
+       <td>
+         <valueof param="element.displayName"></valueof>
+       </td>
+     </tr>
+  </oparam>
+  <oparam name="empty">
+     <tr><td>(none)</td></tr>
+  </oparam>
+</droplet>
+</table>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/webservice/choose-personae.jhtml#2 $$Change: 651448 $*/</java>

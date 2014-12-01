@@ -1,0 +1,35 @@
+#!/bin/sh
+
+PROGRAM_DIR=`dirname $0`
+. $PROGRAM_DIR/checkDynamoHome.sh
+
+findDynamoHome
+echo $DYNAMO_HOME
+
+if [ $# -lt 3 ]
+then
+  echo "Usage: $0 <servername> <rmiport> <drpport>"
+  exit
+fi
+
+SERVERNAME=$1
+RMIPORT=$2
+DRPPORT=$3
+
+if [ -d "$DYNAMO_HOME/servers/$SERVERNAME" ]
+then
+  echo "Server $SERVERNAME already exists."
+  exit
+fi
+
+cp -r $DYNAMO_HOME/servers/original $DYNAMO_HOME/servers/$SERVERNAME
+
+echo "name=Server $SERVERNAME" > $DYNAMO_HOME/servers/$SERVERNAME/localconfig/CONFIG.properties
+
+mkdir -p $DYNAMO_HOME/servers/$SERVERNAME/localconfig/atg/dynamo
+
+echo "rmiEnabled=true" > $DYNAMO_HOME/servers/$SERVERNAME/localconfig/atg/dynamo/Configuration.properties
+echo "rmiPort=$RMIPORT" >> $DYNAMO_HOME/servers/$SERVERNAME/localconfig/atg/dynamo/Configuration.properties
+echo "drpPort=$DRPPORT" >> $DYNAMO_HOME/servers/$SERVERNAME/localconfig/atg/dynamo/Configuration.properties
+
+

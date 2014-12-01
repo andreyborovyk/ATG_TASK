@@ -1,0 +1,72 @@
+<nucleus type=import>
+	/atg/dynamo/admin/NTServiceConfigure
+	/atg/dynamo/droplet/Switch
+</nucleus>
+
+<HTML>
+<HEAD>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+<TITLE>Configure Dynamo as a Window Service</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+
+<IMG SRC="images/config-banner.gif" ALT="Dynamo Configuration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+<a href="/">admin</a>/<a href="configure-server.jhtml">Configure</a>/<a href="configure-server-services.jhtml">Servers</a>/Windows Service<p>
+
+<h3>Server: <i><valueof property=NTServiceConfigure.serverName></valueof></i></h3>
+
+<h2>Configure Dynamo as a Windows Service</h2>
+
+<p>
+<!-- Display error message and then clear it. -->
+<font color=red><valueof property=NTServiceConfigure.errorMessage valueishtml></valueof></font>
+<setvalue property=NTServiceConfigure.errorMessage>
+
+<!-- set error page, i.e. the page we are redirected -->
+<!-- to if there is an error while processing the form -->
+<setvalue property=NTServiceConfigure.errorPage
+  value="configure-s-s-ntservice.jhtml">
+
+<blockquote>
+
+<p>
+You can set up Dynamo as a Windows service using the Configuration
+Manager.  After configuration the new service appears in the Services
+dialog box of the Windows Control Panel. Use this dialog box to start
+and stop the Dynamo service and select a startup method (automatic or
+manual).
+
+<form action="configure-server-services.jhtml" method=POST>
+
+  <droplet name="Switch">
+    <param name="value" value="property:NTServiceConfigure.installed">
+      <oparam name="true">
+        <!-- display Reinstall button if service is already installed -->
+        <input type="submit" property=NTServiceConfigure.install
+          value="Reinstall">
+      </oparam>
+      <oparam name="false">
+        <!-- display Install button if service is not installed -->
+        <input type="submit" property=NTServiceConfigure.install
+          value="Install">
+      </oparam>
+  </droplet>
+
+  <droplet name="Switch">
+    <param name="value" value="property:NTServiceConfigure.installed">
+      <oparam name="true">
+        <!-- display Remove button only if service is installed -->
+        <input type="submit" property=NTServiceConfigure.remove value="Remove">
+      </oparam>
+      <oparam name="false">
+      </oparam>
+  </droplet>
+
+</form>
+
+</body>
+</html>
+
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/configure-s-s-ntservice.jhtml#2 $$Change: 651448 $ */</java>

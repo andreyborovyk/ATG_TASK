@@ -1,0 +1,236 @@
+<!-- BEGIN FILE config_edit_mappings.jspf -->
+
+    <%-- start repository mapping --%> 
+    <dspel:input type="hidden" bean="${topologyFormHandlerName}.delimitedRepositoryMappings" name="delimitedMappings" />
+
+    <style>
+     .multiButton {
+      margin-top:5px;
+      margin-bottom: 5px;
+     }
+
+     .button {
+      display:inline-block !important;
+      margin:0 !important;
+      padding:3px 8px 3px 8px !important;
+      width:auto !important;
+      background:#fff url(http://sika:8840/atg/images/bg_button.gif) repeat-x left bottom !important;
+      border:1px solid !important;
+      border-color:#C2C6CA #A1A4A7 #A1A4A7 #C2C6CA !important;
+      font:small-caption !important;
+      text-decoration:none !important;
+      text-align:center !important;
+      white-space:nowrap;
+      }
+     .buttonSmall {
+      display:inline-block !important;
+      margin:0 !important;
+      padding:2px 5px 2px 5px !important;
+      background:#fff url(../images/bg_button.gif) repeat-x left bottom !important;
+      border:1px solid !important;
+      border-color:#C2C6CA #A1A4A7 #A1A4A7 #C2C6CA !important;
+      font:small-caption !important;
+      font-weight:normal !important;
+      text-decoration:none !important;
+      text-align:center !important;
+      white-space:nowrap;
+      }
+     .buttonSmall:link,
+     .button:link,
+     .buttonSmall:visited, 
+     .button:visited {
+      display:inline !important;
+      color:#000 !important;
+      }
+     .buttonSmall:hover,
+     .button:hover,
+     .buttonSmall:active,
+     .button:active {
+      display:inline !important;
+      background:#fff url(../images/bg_buttonOn.gif) repeat-x left bottom !important;
+      }
+    </style>     
+
+    <div class="contentActions">
+    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+     <tr>
+      <td class="blankSpace">&nbsp;</td>
+      <td><h2><fmt:message key="setting-repository-mappings" bundle="${depBundle}"/>
+      </h2></td>
+      <td width="100%" class="error rightAlign">
+
+      </td>  
+     </tr>
+    </table>
+    </div>
+
+    <div id="adminDeployment">
+
+    <script type="text/Javascript">
+      var keyDelimiter     = "$$";
+      var mappingDelimiter = "||";
+   <c:choose>
+     <c:when test="${createTarget == 'true'}">
+       var delimitedMapping = "";
+     </c:when>
+     <c:otherwise>
+       var delimitedMapping = "<c:out value='${targetDef.delimitedDestinations}' />";
+     </c:otherwise>
+   </c:choose>
+      var repoMapping = createMapFromDelimited(delimitedMapping);
+
+      function createMapFromDelimited(delimited)
+      {
+        var mapping = delimited.split(mappingDelimiter);
+        var map = new Array();
+        for (var i=0; i<mapping.length; i++) {
+          var keyValue = mapping[i].split(keyDelimiter);
+          if (keyValue != null && keyValue != "")
+            map[keyValue[0]] = keyValue[1];
+        }
+        return map;
+      }
+
+      function createDelimitedFromMap()
+      {
+        var delimited = new String();
+        for (key in repoMapping) {
+          if (repoMapping[key] != null && repoMapping[key] != "") {
+            delimited += key + keyDelimiter + repoMapping[key] + mappingDelimiter;
+          }
+        }
+        return delimited;
+      }
+
+      function drawMappingTable()
+      {
+        var mappingsTableDiv = document.getElementById("mappingsTable");
+        var mappingsTableHTML = new String();
+
+        if (repoMapping != null) {
+          mappingsTableHTML = '<table cellpadding="0" cellspacing="0" border="0" class="dataTable">';
+          for (key in repoMapping) {
+            if (repoMapping[key] != null && repoMapping[key] != "") {
+              mappingsTableHTML += '<tr><td class="leftAligned" valign="top"><span class="tableInfo">';
+              mappingsTableHTML += key;
+              mappingsTableHTML += '</span></td><td class="leftAligned"><span class="tableInfo">';
+              mappingsTableHTML += repoMapping[key];
+              mappingsTableHTML += '</span></td><td width="4%">';
+          <c:choose>
+            <c:when test="${createTarget != 'true'}">
+              <c:choose>
+                <c:when test="${targetDef.primary}">
+              mappingsTableHTML += '<a href="#">';
+                </c:when>
+                <c:otherwise>
+              mappingsTableHTML += '<a href="javascript:removeFromMapping( \'' + key + '\');">';
+                </c:otherwise>
+              </c:choose>
+            </c:when>
+            <c:otherwise>
+              mappingsTableHTML += '<a href="javascript:removeFromMapping( \'' + key + '\');">';
+            </c:otherwise>
+          </c:choose>
+              mappingsTableHTML += '<img src="/atg/images/icon_delete2.gif" alt="Delete mapping"  border="0" align="absmiddle"  style="padding: 0px;" /></a></td></tr>';
+            }
+          }
+          mappingsTableHTML += '</table>';
+        }
+        mappingsTableDiv.innerHTML = mappingsTableHTML;
+      }
+
+      function addToMapping(srcRepository, destRepository)
+      {
+        if (srcRepository == null || 
+            destRepository == null ||
+            srcRepository == "" ||
+            destRepository == "") {
+          alert('<fmt:message key="select-mapping-repositories" bundle="${depBundle}"/>');
+        }
+        else {
+          repoMapping[srcRepository] = destRepository;
+          drawMappingTable();
+        }
+      }
+
+      function removeFromMapping(srcRepository)
+      {
+        repoMapping[srcRepository] = "";
+        drawMappingTable();
+      }
+
+      function addRepositoryMapping()
+      {
+        var srcRepo  = document.getElementById("sourceRepository");
+        var destRepo = document.getElementById("destinationRepository");
+
+        addToMapping(srcRepo.value, destRepo.value);
+      }
+
+      registerOnLoad( drawMappingTable );
+    </script>
+
+    <c:set var="versionRepos" value="${topologyEditFormHandler.versionedRepositories}"/>
+    <c:set var="targetRepos"  value="${topologyEditFormHandler.potentialTargetRepositories}"/>
+
+    <table border="0" cellpadding="10" cellspacing="0" width="100%" class="overview">
+      <tr>
+        <TD>
+          <P>
+            <LABEL><SPAN class="tableInfo destinationLabel"><fmt:message key="source-repository" bundle="${depBundle}"/>:</SPAN><BR>
+              <SELECT  size="6" class="formElement" name="sourceRepository" id="sourceRepository" style="width: 300px;">
+                <c:forEach items="${versionRepos}" var="versionRepo">
+                  <option value=<c:out value="${versionRepo}"/> ><c:out value="${versionRepo}"/>
+                </c:forEach>
+              </SELECT>
+            </LABEL> 
+          </P>
+        </TD>
+        <TD>
+          <P>
+            <LABEL><SPAN class="tableInfo destinationLabel"><fmt:message key="target-repository" bundle="${depBundle}"/>:</SPAN><BR>
+              <SELECT  size="6" class="formElement" name="destinationRepository" id="destinationRepository" style="width: 300px;">
+                <c:forEach items="${targetRepos}" var="targetRepo">
+                  <option value=<c:out value="${targetRepo}"/> ><c:out value="${targetRepo}"/>
+                </c:forEach>
+              </SELECT>
+            </LABEL>
+          </P>
+        </TD>
+        <td width="40%" valign="bottom" style="padding-bottom: 15px;">
+          <c:choose>
+            <c:when test="${createTarget != 'true'}">
+              <c:choose>
+                <c:when test="${targetDef.primary}">
+                  <a href="#" class="buttonSmall"><fmt:message key="add-button" bundle="${depBundle}"/></a>
+                </c:when>
+                <c:otherwise>
+                  <a href="javascript:addRepositoryMapping();" class="buttonSmall"><fmt:message key="add-button" bundle="${depBundle}"/></a>
+                </c:otherwise>
+              </c:choose>
+            </c:when>
+            <c:otherwise>
+              <a href="javascript:addRepositoryMapping();" class="buttonSmall"><fmt:message key="add-button" bundle="${depBundle}"/></a>
+            </c:otherwise>
+          </c:choose>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="3">
+        <p>
+          <LABEL><SPAN class="tableInfo destinationLabel"><fmt:message key="repository-mappings" bundle="${depBundle}"/>:</SPAN>
+        </p>
+
+        <div id="mappingsTable">
+          <%-- this is populated dynamically --%>
+        </div>
+
+        </td>
+      </tr>
+    </table>
+    </div>
+    <%-- end repository mapping --%> 
+
+<!-- END FILE config_edit_mappings.jspf -->
+<%-- @version $Id: //product/PubPortlet/version/10.0.3/portlets.war/html/DeploymentPortlet/config/config_edit_mappings.jspf#2 $$Change: 651448 $ --%>
+

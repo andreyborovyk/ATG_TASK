@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE taglib
+	PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN"
+	"http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
+
+<taglib>
+  <tlib-version>1.0</tlib-version>
+  <jsp-version>1.1</jsp-version>
+  <short-name>xmlprotocol</short-name>
+  <uri>http://www.atg.com/taglibs/gear/xmlprotocolTaglib1_0</uri>
+  <description>The tag library containing the xml feed tags</description>
+  
+  
+    <!-- Headline retrieval Tag -->
+  
+   <tag>
+      <name>XMLHeadlines</name>
+      <tag-class>
+         atg.portal.gear.xmlprotocol.taglib.HeadlinesTag
+      </tag-class>
+      
+      <tei-class>
+          atg.portal.gear.xmlprotocol.taglib.HeadlinesTEI
+      </tei-class>
+      <body-content>
+         JSP
+      </body-content>
+  
+      <description>
+        Get XML news headlines
+      </description>
+      <attribute>
+         <name>id</name>
+         <required>true</required>
+         <rtexprvalue>false</rtexprvalue> 
+      </attribute>
+      <attribute> 
+         <name>pafEnv</name>
+         <required>true</required>
+         <rtexprvalue>true</rtexprvalue> 
+      </attribute>
+      <attribute>
+         <name>params</name>
+          <required>false</required>
+      	<rtexprvalue>true</rtexprvalue> 
+      </attribute>
+      <attribute>
+         <name>categoryFilter</name>
+          <required>false</required>
+      	<rtexprvalue>true</rtexprvalue> 
+      </attribute>
+ 
+ 
+       </tag>
+
+    <!-- Category retrieval Tag -->
+  
+   <tag>
+      <name>XMLCategories</name>
+      <tag-class>
+         atg.portal.gear.xmlprotocol.taglib.CategoriesTag
+      </tag-class>
+      
+      <tei-class>
+          atg.portal.gear.xmlprotocol.taglib.CategoriesTEI
+      </tei-class>
+      <body-content>
+         JSP
+      </body-content>
+  
+      <description>
+        Get news categories
+      </description>
+      
+      <attribute>
+         <name>id</name>
+         <required>true</required>
+         <rtexprvalue>false</rtexprvalue> 
+      </attribute>
+      <attribute> 
+         <name>pafEnv</name>
+         <required>true</required>
+         <rtexprvalue>true</rtexprvalue> 
+      </attribute>
+      <attribute>
+         <name>params</name>
+          <required>false</required>
+      	<rtexprvalue>true</rtexprvalue> 
+      </attribute>
+
+   </tag>
+
+   <tag>
+      <name>XMLArticle</name>
+      <tag-class>
+         atg.portal.gear.xmlprotocol.taglib.ArticleTag
+      </tag-class>
+      
+      <tei-class>
+          atg.portal.gear.xmlprotocol.taglib.ArticleTEI
+      </tei-class>
+      <body-content>
+         JSP
+      </body-content>
+  
+      <description>
+        Get an article
+      </description>
+      <attribute> 
+          <name>pafEnv</name>
+          <required>true</required>
+          <rtexprvalue>true</rtexprvalue> 
+      </attribute>
+      <attribute>
+         <name>id</name>
+         <required>true</required>
+          <rtexprvalue>false</rtexprvalue> 
+      </attribute>
+      <attribute>
+        <name>articleID</name>
+        <required>true</required>
+	<rtexprvalue>true</rtexprvalue> 
+      </attribute>
+      <attribute>
+        <name>params</name>
+        <required>false</required>
+	<rtexprvalue>true</rtexprvalue> 
+      </attribute>
+
+   </tag>
+
+   
+    <!-- Category configuration Tag -->
+  
+   <tag>
+      <name>ConfigureCategories</name>
+      <tag-class>
+         atg.portal.gear.xmlprotocol.taglib.ConfigureCategoriesTag
+      </tag-class>
+      
+      <tei-class>
+          atg.portal.gear.xmlprotocol.taglib.ConfigureCategoriesTEI
+      </tei-class>
+      <body-content>
+         JSP
+      </body-content>
+  
+      <description>
+        Configures user preferences for news categories
+      </description>
+      
+      <attribute>
+         <name>id</name>
+         <required>true</required>
+         <rtexprvalue>false</rtexprvalue> 
+      </attribute>
+      <attribute> 
+         <name>pafEnv</name>
+         <required>true</required>
+         <rtexprvalue>true</rtexprvalue> 
+      </attribute>
+      <attribute>
+         <name>params</name>
+          <required>false</required>
+      	 <rtexprvalue>true</rtexprvalue> 
+      </attribute>
+      <attribute>
+         <name>configureDefaults</name>
+	 <required>false</required>
+	 <rtexprvalue>true</rtexprvalue> 
+      </attribute>
+
+   </tag>
+   
+    
+ 
+</taglib>

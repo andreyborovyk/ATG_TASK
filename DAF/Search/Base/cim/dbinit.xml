@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE database-initializer SYSTEM "http://www.atg.com/dtds/dbinit_1_0.dtd">
+
+<database-initializer>
+  <schema id="coreSchema">
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/search_site_ddl.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_search_site_ddl.sql
+        </drop>
+      </path>
+    </sql>
+
+  </schema>
+
+  <schema id="versionedSchema">
+    <sql>
+      <path>
+        <create>
+          ../Versioned/sql/db_components/${database}/versioned_search_site_ddl.sql
+        </create>
+        <drop>
+          ../Versioned/sql/uninstall/${database}/drop_versioned_search_site_ddl.sql
+        </drop>
+      </path>
+    </sql>
+  </schema>
+
+  <server-instance-type id="production">
+    <datasource id="switchingA">
+      <schema id="coreSchema"/>
+    </datasource>
+	<datasource id="switchingB">
+      <schema id="coreSchema"/>
+    </datasource>		
+    <datasource id="nonswitchingCore">
+      <schema id="coreSchema"/>
+    </datasource>	
+  </server-instance-type>
+  <server-instance-type id="staging">    
+    <datasource id="stagingnonswitchingCore">
+      <schema id="coreSchema"/>
+    </datasource>	
+  </server-instance-type>
+
+  <server-instance-type id="svcagent">
+    <datasource id="svcagent">
+      <schema id="coreSchema"/>
+    </datasource>
+  </server-instance-type>
+  <server-instance-type id="management">
+    <datasource id="management">
+      <schema id="versionedSchema"/>
+    </datasource>
+  </server-instance-type>
+</database-initializer>
+<!-- @version $Id: //product/DAF/version/10.0.3/Search/Base/src/cim/dbinit.xml#2 $$Change: 651448 $-->

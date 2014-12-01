@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE scenario
+  SYSTEM
+  "dynamosystemresource:/atg/scenario/definition/sdl.dtd">
+
+<scenario author="admin" creation-time="960937282000" enabled="true" last-modified-by="admin" modification-time="1028234749036">
+  <segment migrate-from="1007668948631,1028233465671,1028233611971,1028233734057" migrate-users="true">
+    <segment-name>Email Fund Promotion</segment-name>
+    <!--================================-->
+    <!--== On Aug 1, 2001 at 12:00AM  -->
+    <!--================================-->
+    <time id="1">
+      <date-time-pattern>
+        <date>
+          <month>8</month>
+          <day>1</day>
+          <year>2001</year>
+        </date>
+        <time-of-day>
+          <hours>12</hours>
+          <minutes>00</minutes>
+          <meridian>AM</meridian>
+        </time-of-day>
+      </date-time-pattern>
+    </time>
+    <!--================================-->
+    <!--== in group investors  -->
+    <!--================================-->
+    <condition construct="people-element" id="2">
+      <filter construct="profile-group-filter" operator="eq">
+        <subject-property>
+          <property-name>investors</property-name>
+        </subject-property>
+        <constant type="boolean">true</constant>
+      </filter>
+    </condition>
+    <!--================================-->
+    <!--== Receive email is yes  -->
+    <!--================================-->
+    <condition construct="people-element" id="3">
+      <filter construct="profile-property-filter" operator="eq">
+        <subject-property>
+          <property-name>receiveEmail</property-name>
+        </subject-property>
+        <constant>yes</constant>
+      </filter>
+    </condition>
+    <fork id="4">
+      <branch id="4.1">
+        <!--================================-->
+        <!--== Locale is en_US  -->
+        <!--================================-->
+        <condition construct="people-element" id="4.1.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>locale</property-name>
+            </subject-property>
+            <constant>en_US</constant>
+          </filter>
+        </condition>
+        <fork id="4.1.2">
+          <branch id="4.1.2.1">
+            <!--================================-->
+            <!--== Fund list includes /repositories/Funds/en_US/growth.xml  -->
+            <!--================================-->
+            <condition construct="people-element" id="4.1.2.1.1">
+              <filter construct="profile-property-filter" operator="includes">
+                <subject-property>
+                  <property-name>fundList</property-name>
+                </subject-property>
+                <constant>/repositories/Funds/en_US/growth.xml</constant>
+              </filter>
+            </condition>
+          </branch>
+          <otherwise-branch id="4.1.2.2">
+            <!-- Otherwise -->
+            <!--================================-->
+            <!--== Send email with Dynamo path /QuincyFunds/en/email/growthfundpromo.jsp  -->
+            <!--================================-->
+            <action id="4.1.2.2.2">
+              <action-name>sendEmail</action-name>
+              <action-param name="template">
+                <constant>/QuincyFunds/en/email/growthfundpromo.jsp</constant>
+              </action-param>
+            </action>
+          </otherwise-branch>
+        </fork>
+      </branch>
+      <branch id="4.2">
+        <!--================================-->
+        <!--== Locale is fr_FR  -->
+        <!--================================-->
+        <condition construct="people-element" id="4.2.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>locale</property-name>
+            </subject-property>
+            <constant>fr_FR</constant>
+          </filter>
+        </condition>
+        <fork id="4.2.2">
+          <branch id="4.2.2.1">
+            <!--================================-->
+            <!--== Fund list includes /repositories/Funds/fr_FR/growth.xml  -->
+            <!--================================-->
+            <condition construct="people-element" id="4.2.2.1.1">
+              <filter construct="profile-property-filter" operator="includes">
+                <subject-property>
+                  <property-name>fundList</property-name>
+                </subject-property>
+                <constant>/repositories/Funds/fr_FR/growth.xml</constant>
+              </filter>
+            </condition>
+          </branch>
+          <otherwise-branch id="4.2.2.2">
+            <!-- Otherwise -->
+            <!--================================-->
+            <!--== Send email with Dynamo path /QuincyFunds/fr/email/growthfundpromo.jsp  -->
+            <!--================================-->
+            <action id="4.2.2.2.2">
+              <action-name>sendEmail</action-name>
+              <action-param name="template">
+                <constant>/QuincyFunds/fr/email/growthfundpromo.jsp</constant>
+              </action-param>
+            </action>
+          </otherwise-branch>
+        </fork>
+      </branch>
+      <branch id="4.3">
+        <!--================================-->
+        <!--== Locale is ja_JP  -->
+        <!--================================-->
+        <condition construct="people-element" id="4.3.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>locale</property-name>
+            </subject-property>
+            <constant>ja_JP</constant>
+          </filter>
+        </condition>
+        <fork id="4.3.2">
+          <branch id="4.3.2.1">
+            <!--================================-->
+            <!--== Fund list includes /repositories/Funds/ja_JP/growth.xml  -->
+            <!--================================-->
+            <condition construct="people-element" id="4.3.2.1.1">
+              <filter construct="profile-property-filter" operator="includes">
+                <subject-property>
+                  <property-name>fundList</property-name>
+                </subject-property>
+                <constant>/repositories/Funds/ja_JP/growth.xml</constant>
+              </filter>
+            </condition>
+          </branch>
+          <otherwise-branch id="4.3.2.2">
+            <!-- Otherwise -->
+            <!--================================-->
+            <!--== Send email with Dynamo path /QuincyFunds/ja/email/growthfundpromo.jsp  -->
+            <!--================================-->
+            <action id="4.3.2.2.2">
+              <action-name>sendEmail</action-name>
+              <action-param name="template">
+                <constant>/QuincyFunds/ja/email/growthfundpromo.jsp</constant>
+              </action-param>
+            </action>
+          </otherwise-branch>
+        </fork>
+      </branch>
+      <branch id="4.4">
+        <!--================================-->
+        <!--== Locale is de_DE  -->
+        <!--================================-->
+        <condition construct="people-element" id="4.4.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>locale</property-name>
+            </subject-property>
+            <constant>de_DE</constant>
+          </filter>
+        </condition>
+        <fork id="4.4.2">
+          <branch id="4.4.2.1">
+            <!--================================-->
+            <!--== Fund list includes /repositories/Funds/de_DE/growth.xml  -->
+            <!--================================-->
+            <condition construct="people-element" id="4.4.2.1.1">
+              <filter construct="profile-property-filter" operator="includes">
+                <subject-property>
+                  <property-name>fundList</property-name>
+                </subject-property>
+                <constant>/repositories/Funds/de_DE/growth.xml</constant>
+              </filter>
+            </condition>
+          </branch>
+          <otherwise-branch id="4.4.2.2">
+            <!-- Otherwise -->
+            <!--================================-->
+            <!--== Send email with Dynamo path /QuincyFunds/de/email/growthfundpromo.jsp  -->
+            <!--================================-->
+            <action id="4.4.2.2.2">
+              <action-name>sendEmail</action-name>
+              <action-param name="template">
+                <constant>/QuincyFunds/de/email/growthfundpromo.jsp</constant>
+              </action-param>
+            </action>
+          </otherwise-branch>
+        </fork>
+      </branch>
+    </fork>
+  </segment>
+  <segment migrate-from="962412942650,1007668948631,1028233465671,1028233611971,1028233734057" migrate-users="true">
+    <segment-name>Show Promotion</segment-name>
+    <!--================================-->
+    <!--== Between May 1, 2001 and Dec 31, 2006  -->
+    <!--================================-->
+    <time id="1">
+      <date-range>
+        <date>
+          <month>5</month>
+          <day>1</day>
+          <year>2001</year>
+        </date>
+        <date>
+          <month>12</month>
+          <day>31</day>
+          <year>2006</year>
+        </date>
+      </date-range>
+    </time>
+    <fork id="2">
+      <branch id="2.1">
+        <!--================================-->
+        <!--== Logs in  -->
+        <!--================================-->
+        <event id="2.1.1">
+          <event-name>atg.dps.Login</event-name>
+        </event>
+      </branch>
+      <branch id="2.2">
+        <!--================================-->
+        <!--== Registers  -->
+        <!--================================-->
+        <event id="2.2.1">
+          <event-name>atg.dps.Register</event-name>
+        </event>
+      </branch>
+    </fork>
+    <fork id="3">
+      <branch id="3.1">
+        <!--================================-->
+        <!--== Locale is en_US  -->
+        <!--================================-->
+        <condition construct="people-element" id="3.1.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>locale</property-name>
+            </subject-property>
+            <constant>en_US</constant>
+          </filter>
+        </condition>
+        <fork id="3.1.2">
+          <branch id="3.1.2.1">
+            <!--================================-->
+            <!--== Fund list includes /repositories/Funds/en_US/growth.xml  -->
+            <!--================================-->
+            <condition construct="people-element" id="3.1.2.1.1">
+              <filter construct="profile-property-filter" operator="includes">
+                <subject-property>
+                  <property-name>fundList</property-name>
+                </subject-property>
+                <constant>/repositories/Funds/en_US/growth.xml</constant>
+              </filter>
+            </condition>
+          </branch>
+          <otherwise-branch id="3.1.2.2">
+            <!-- Otherwise -->
+            <!--================================-->
+            <!--== Add items to slot QFOfferSlot named Offers:offer:/repositories/Offers/en_US/growth.html  -->
+            <!--================================-->
+            <action id="3.1.2.2.2">
+              <action-name>fillSlot</action-name>
+              <action-param name="slot">
+                <nucleus-property>
+                  <nucleus-path>/atg/registry/Slots/QFOfferSlot</nucleus-path>
+                </nucleus-property>
+              </action-param>
+              <action-param name="ids">
+                <array type="java.lang.String[]">
+                  <constant>/repositories/Offers/en_US/growth.html</constant>
+                </array>
+              </action-param>
+            </action>
+          </otherwise-branch>
+        </fork>
+      </branch>
+      <branch id="3.2">
+        <!--================================-->
+        <!--== Locale is fr_FR  -->
+        <!--================================-->
+        <condition construct="people-element" id="3.2.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>locale</property-name>
+            </subject-property>
+            <constant>fr_FR</constant>
+          </filter>
+        </condition>
+        <fork id="3.2.2">
+          <branch id="3.2.2.1">
+            <!--================================-->
+            <!--== Fund list includes /repositories/Funds/fr_FR/growth.xml  -->
+            <!--================================-->
+            <condition construct="people-element" id="3.2.2.1.1">
+              <filter construct="profile-property-filter" operator="includes">
+                <subject-property>
+                  <property-name>fundList</property-name>
+                </subject-property>
+                <constant>/repositories/Funds/fr_FR/growth.xml</constant>
+              </filter>
+            </condition>
+          </branch>
+          <otherwise-branch id="3.2.2.2">
+            <!-- Otherwise -->
+            <!--================================-->
+            <!--== Add items to slot QFOfferSlot named Offers:offer:/repositories/Offers/fr_FR/growth.html  -->
+            <!--================================-->
+            <action id="3.2.2.2.2">
+              <action-name>fillSlot</action-name>
+              <action-param name="slot">
+                <nucleus-property>
+                  <nucleus-path>/atg/registry/Slots/QFOfferSlot</nucleus-path>
+                </nucleus-property>
+              </action-param>
+              <action-param name="ids">
+                <array type="java.lang.String[]">
+                  <constant>/repositories/Offers/fr_FR/growth.html</constant>
+                </array>
+              </action-param>
+            </action>
+          </otherwise-branch>
+        </fork>
+      </branch>
+      <branch id="3.3">
+        <!--================================-->
+        <!--== Locale is ja_JP  -->
+        <!--================================-->
+        <condition construct="people-element" id="3.3.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>locale</property-name>
+            </subject-property>
+            <constant>ja_JP</constant>
+          </filter>
+        </condition>
+        <fork id="3.3.2">
+          <branch id="3.3.2.1">
+            <!--================================-->
+            <!--== Fund list includes /repositories/Funds/ja_JP/growth.xml  -->
+            <!--================================-->
+            <condition construct="people-element" id="3.3.2.1.1">
+              <filter construct="profile-property-filter" operator="includes">
+                <subject-property>
+                  <property-name>fundList</property-name>
+                </subject-property>
+                <constant>/repositories/Funds/ja_JP/growth.xml</constant>
+              </filter>
+            </condition>
+          </branch>
+          <otherwise-branch id="3.3.2.2">
+            <!-- Otherwise -->
+            <!--================================-->
+            <!--== Add items to slot QFOfferSlot named Offers:offer:/repositories/Offers/ja_JP/growth.html  -->
+            <!--================================-->
+            <action id="3.3.2.2.2">
+              <action-name>fillSlot</action-name>
+              <action-param name="slot">
+                <nucleus-property>
+                  <nucleus-path>/atg/registry/Slots/QFOfferSlot</nucleus-path>
+                </nucleus-property>
+              </action-param>
+              <action-param name="ids">
+                <array type="java.lang.String[]">
+                  <constant>/repositories/Offers/ja_JP/growth.html</constant>
+                </array>
+              </action-param>
+            </action>
+          </otherwise-branch>
+        </fork>
+      </branch>
+      <branch id="3.4">
+        <!--================================-->
+        <!--== Locale is de_DE  -->
+        <!--================================-->
+        <condition construct="people-element" id="3.4.1">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>locale</property-name>
+            </subject-property>
+            <constant>de_DE</constant>
+          </filter>
+        </condition>
+        <fork id="3.4.2">
+          <branch id="3.4.2.1">
+            <!--================================-->
+            <!--== Fund list includes /repositories/Funds/de_DE/growth.xml  -->
+            <!--================================-->
+            <condition construct="people-element" id="3.4.2.1.1">
+              <filter construct="profile-property-filter" operator="includes">
+                <subject-property>
+                  <property-name>fundList</property-name>
+                </subject-property>
+                <constant>/repositories/Funds/de_DE/growth.xml</constant>
+              </filter>
+            </condition>
+          </branch>
+          <otherwise-branch id="3.4.2.2">
+            <!-- Otherwise -->
+            <!--================================-->
+            <!--== Add items to slot QFOfferSlot named Offers:offer:/repositories/Offers/de_DE/growth.html  -->
+            <!--================================-->
+            <action id="3.4.2.2.2">
+              <action-name>fillSlot</action-name>
+              <action-param name="slot">
+                <nucleus-property>
+                  <nucleus-path>/atg/registry/Slots/QFOfferSlot</nucleus-path>
+                </nucleus-property>
+              </action-param>
+              <action-param name="ids">
+                <array type="java.lang.String[]">
+                  <constant>/repositories/Offers/de_DE/growth.html</constant>
+                </array>
+              </action-param>
+            </action>
+          </otherwise-branch>
+        </fork>
+      </branch>
+    </fork>
+  </segment>
+</scenario>

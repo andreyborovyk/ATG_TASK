@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE database-initializer SYSTEM "http://www.atg.com/dtds/dbinit_1_0.dtd">
+<database-initializer>
+
+  <schema id="versionedSchema">
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/versioned_seo_ddl.sql
+        </create>          
+        <drop>
+          sql/uninstall/${database}/drop_versioned_seo_ddl.sql
+        </drop>
+      </path>
+    </sql>
+    <sql>
+      <path>
+        <create>
+          sql/db_components/${database}/versioned_site_ddl.sql
+        </create>
+        <drop>
+          sql/uninstall/${database}/drop_versioned_site_ddl.sql
+        </drop>
+      </path>
+    </sql>
+  </schema>	
+
+  <server-instance-type id="management">
+    <datasource id="all">
+      <schema id="versionedSchema"/>
+    </datasource>
+  </server-instance-type> 
+  
+  <server-instance-type id="svcagent">
+    <datasource id="svcagent">
+      <schema id="versionedSchema"/>
+    </datasource>
+  </server-instance-type>
+	
+</database-initializer>
+<!-- @version $Id: //product/DAS/version/10.0.3/release/DAS/Versioned/cim/dbinit.xml#2 $$Change: 651448 $-->

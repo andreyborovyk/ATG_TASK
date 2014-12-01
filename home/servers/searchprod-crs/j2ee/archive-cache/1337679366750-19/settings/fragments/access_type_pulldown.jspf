@@ -1,0 +1,33 @@
+
+<form action="<%=urlTargetJsp%>" method="GET" id="type">
+<input type="hidden" name="mode"             value="<%=mode%>">
+<input type="hidden" name="paf_page_id"      value="<%= dsp_page_id %>">
+<input type="hidden" name="paf_gear_id"      value="<%= dsp_gear_id %>">
+<input type="hidden" name="paf_page_url"     value="<%= dsp_page_url%>">
+<input type="hidden" name="paf_community_id" value="<%= dsp_community_id %>">
+<font size="-1">
+<select name="userGroupType">
+<% selected = (currSelected.equals("guest"))? "selected" : "";%>
+   <option value="guest" <%= selected%> > <i18n:message key="acl_pulldown_item_guest"/>
+<% selected = (currSelected.equals("member"))? "selected" : "";%>
+   <option value="member" <%= selected%>> <i18n:message key="acl_pulldown_item_member"/>
+<% selected = (currSelected.equals("all_users"))? "selected" : "";%>
+   <option value="all_users" <%= selected%>> <i18n:message key="acl_pulldown_item_all_users"/>
+<% selected = (currSelected.equals("guest_orgs"))? "selected" : "";%>
+   <option value="guest_orgs" <%= selected%>><i18n:message key="acl_pulldown_item_guest_org"/>
+<% selected = (currSelected.equals("member_orgs"))? "selected" : "";%>
+   <option value="member_orgs" <%= selected%>> <i18n:message key="acl_pulldown_item_member_org"/>
+<% selected = (currSelected.equals("leader_orgs"))? "selected" : "";%>
+   <option value="leader_orgs" <%= selected%>> <i18n:message key="acl_pulldown_item_leader_org"/>
+<% selected = (currSelected.equals("all_orgs"))? "selected" : "";%>
+   <option value="all_orgs" <%= selected%>> <i18n:message key="acl_pulldown_item_all_org"/>
+
+<core:If value="<%= showRolesInDropdown == true%>">
+<% selected = (currSelected.equals("all_roles"))? "selected" : "";%>
+   <option value="all_roles" <%= selected%>> <i18n:message key="acl_pulldown_item_all_roles"/>
+</core:If>
+
+</select>&nbsp;</font><font size="-2"><input type="submit" name="submit" value="<%=submitLabelFind%>"></font>
+
+</form>
+<%-- @version $Id: //app/portal/version/10.0.3/paf/settings.war/fragments/access_type_pulldown.jspf#2 $$Change: 651448 $--%>

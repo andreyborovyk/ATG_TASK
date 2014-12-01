@@ -1,0 +1,60 @@
+<!-- BEGIN FILE site_failure_info.jspf -->
+
+  <%-- START FAILURE INFO --%>
+  <tr>
+   <td class="centerAligned selectLine" valign="middle">
+      <a style="cursor:hand" onclick="show('<c:out value="${rowIdPrefix}"/><c:out value="${status.count}"/>')"><img src="/atg/images/plus.gif" name="img<c:out value='${rowIdPrefix}'/><c:out value='${status.count}'/>"></a>
+   </td> 
+
+   <td>
+   <%-- determine which icon to display --%>
+   <c:if test="${!empty failureInfo}">
+     <c:choose>
+       <c:when test="${failureInfo.severity eq 'Warning'}">
+         <c:set var="failureIcon" value="/atg/images/icon_alertSmall.gif"/>
+       </c:when>
+       <c:otherwise>
+         <c:set var="failureIcon" value="/atg/images/icon_alertSmallRed.gif"/>
+       </c:otherwise>
+     </c:choose>
+   </c:if>
+   <img src="<c:out value='${failureIcon}'/>" alt="<c:out value='${failureInfo.severity}'/>" width="14" height="12" border="0" align="absmiddle"  style="padding: 0px;" />
+   </td> 
+
+   <td class="leftAligned" valign="top">
+     <span class="tableInfo">
+       <c:out value="${failureInfo.message}"/>
+     </span>
+   </td>
+
+   <td class="leftAligned">
+     <span class="tableInfo">
+       <c:choose>
+         <c:when test="${!empty failureInfo.filePath}">
+           <c:out value="${failureInfo.filePath}"/>
+         </c:when>
+         <c:otherwise>
+           <c:out value="${failureInfo.itemId}"/>:<c:out value="${failureInfo.itemDesc}"/>
+         </c:otherwise>
+       </c:choose>
+     </span>
+   </td>
+
+   <td class="leftAligned" nowrap>
+     <span class="tableInfo">
+       <c:out value="${failureInfo.failureTime}"/>
+     </span>
+   </td>
+  </tr>
+
+  <tr id="msg<c:out value='${rowIdPrefix}'/><c:out value='${status.count}'/>" name="msg<c:out value='${rowIdPrefix}'/><c:out value='${status.count}'/>" class="hide">
+   <td colspan="5"><span class="tableInfo">
+   <strong><fmt:message key="failure-message-detail" bundle="${depBundle}"/>:</strong><br>
+     <c:out value="${failureInfo.stackTrace}"/>
+   </span>
+   </td>
+  </tr>
+  <%-- END FAILURE INFO --%>
+
+<!-- END FILE site_failure_info.jspf -->
+<%-- @version $Id: //product/PubPortlet/version/10.0.3/portlets.war/html/DeploymentPortlet/site/site_failure_info.jspf#2 $$Change: 651448 $--%>

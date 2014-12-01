@@ -1,0 +1,370 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="dps_mappers">
+<comment><![CDATA[ @version $Id: //product/DSS/version/10.0.3/templates/DSS/sql/dps_mappers.xml#2 $$Change: 651448 $]]></comment>
+   <table name="dss_dps_event">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="32"/>
+      </column>
+      <column name="timestamp" nullable="y">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="sessionid" nullable="y">
+         <column-type db="generic" type="varchar" length="100"/>
+      </column>
+      <column name="parentsessionid" nullable="y">
+         <column-type db="generic" type="varchar" length="100"/>
+      </column>
+      <column name="profileid" nullable="y">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <column name="scenarioPathInfo" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+   </table>
+   <table name="dss_dps_page_visit">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="32"/>
+      </column>
+      <column name="timestamp" nullable="y">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="sessionid" nullable="y">
+         <column-type db="generic" type="varchar" length="100"/>
+      </column>
+      <column name="parentsessionid" nullable="y">
+         <column-type db="generic" type="varchar" length="100"/>
+      </column>
+      <column name="path" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="profileid" nullable="y">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+   </table>
+   <table name="dss_dps_view_item">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="32"/>
+      </column>
+      <column name="timestamp" nullable="y">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="sessionid" nullable="y">
+         <column-type db="generic" type="varchar" length="100"/>
+      </column>
+      <column name="parentsessionid" nullable="y">
+         <column-type db="generic" type="varchar" length="100"/>
+      </column>
+      <column name="repositoryname" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="folder" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="itemtype" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="repositoryid" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="itemdescriptor" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="page" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="profileid" nullable="y">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+   </table>
+   <table name="dss_dps_click">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="32"/>
+      </column>
+      <column name="timestamp" nullable="y">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="sessionid" nullable="y">
+         <column-type db="generic" type="varchar" length="100"/>
+      </column>
+      <column name="parentsessionid" nullable="y">
+         <column-type db="generic" type="varchar" length="100"/>
+      </column>
+      <column name="destinationpath" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="sourcenames" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="sourcepath" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="profileid" nullable="y">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+   </table>
+   <table name="dss_dps_referrer">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="32"/>
+      </column>
+      <column name="timestamp" nullable="y">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="sessionid" nullable="y">
+         <column-type db="generic" type="varchar" length="100"/>
+      </column>
+      <column name="parentsessionid" nullable="y">
+         <column-type db="generic" type="varchar" length="100"/>
+      </column>
+      <column name="referrerpath" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="referrersite" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="referrerpage" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="profileid" nullable="y">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+   </table>
+   <table name="dss_dps_inbound">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="32"/>
+      </column>
+      <column name="timestamp" nullable="y">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="messagesubject" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="originalsubject" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="messagefrom" nullable="y">
+         <column-type db="generic" type="varchar" length="64"/>
+      </column>
+      <column name="messageto" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="messagecc" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="messagereplyto" nullable="y">
+         <column-type db="generic" type="varchar" length="64"/>
+      </column>
+      <column name="receiveddate" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="bounced" nullable="y">
+         <column-type db="generic" type="varchar" length="6"/>
+      </column>
+      <column name="bounceemailaddr" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="bouncereplycode" nullable="y">
+         <column-type db="generic" type="varchar" length="10"/>
+      </column>
+      <column name="bounceerrormess" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="bouncestatuscode" nullable="y">
+         <column-type db="generic" type="varchar" length="10"/>
+      </column>
+   </table>
+   <table name="dss_dps_admin_reg">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="32"/>
+      </column>
+      <column name="clocktime" nullable="y">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="sessionid" nullable="y">
+         <column-type db="generic" type="varchar" length="100"/>
+      </column>
+      <column name="parentsessionid" nullable="y">
+         <column-type db="generic" type="varchar" length="100"/>
+      </column>
+      <column name="adminprofileid" nullable="y">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <column name="profileid" nullable="y">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+   </table>
+   <table name="dss_dps_property">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="32"/>
+      </column>
+      <column name="clocktime" nullable="y">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="sessionid" nullable="y">
+         <column-type db="generic" type="varchar" length="100"/>
+      </column>
+      <column name="parentsessionid" nullable="y">
+         <column-type db="generic" type="varchar" length="100"/>
+      </column>
+      <column name="propertypath" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="oldvalue" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="newvalue" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="changesign" nullable="y">
+         <column-type db="generic" type="varchar" length="16"/>
+      </column>
+      <column name="changeamount" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="7"/>
+      </column>
+      <column name="changepercentage" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="7"/>
+      </column>
+      <column name="elementsadded" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="elementsremoved" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="profileid" nullable="y">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+   </table>
+   <table name="dss_dps_admin_prop">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="32"/>
+      </column>
+      <column name="clocktime" nullable="y">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="sessionid" nullable="y">
+         <column-type db="generic" type="varchar" length="100"/>
+      </column>
+      <column name="parentsessionid" nullable="y">
+         <column-type db="generic" type="varchar" length="100"/>
+      </column>
+      <column name="propertypath" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="oldvalue" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="newvalue" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="changesign" nullable="y">
+         <column-type db="generic" type="varchar" length="16"/>
+      </column>
+      <column name="changeamount" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="7"/>
+      </column>
+      <column name="changepercentage" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="7"/>
+      </column>
+      <column name="elementsadded" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="elementsremoved" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="adminprofileid" nullable="y">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <column name="profileid" nullable="y">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+   </table>
+   <table name="dss_dps_update">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="32"/>
+      </column>
+      <column name="clocktime" nullable="y">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="sessionid" nullable="y">
+         <column-type db="generic" type="varchar" length="100"/>
+      </column>
+      <column name="parentsessionid" nullable="y">
+         <column-type db="generic" type="varchar" length="100"/>
+      </column>
+      <column name="changedproperties" nullable="y">
+         <column-type db="generic" type="long-varchar"/>
+         <column-type db="oracle" type="varchar2" length="4000" scale=""/>
+         <column-type db="db2" type="varchar" length="4000" scale=""/>
+      </column>
+      <column name="oldvalues" nullable="y">
+         <column-type db="generic" type="long-varchar"/>
+         <column-type db="oracle" type="varchar2" length="4000" scale=""/>
+         <column-type db="db2" type="varchar" length="4000" scale=""/>
+      </column>
+      <column name="newvalues" nullable="y">
+         <column-type db="generic" type="long-varchar"/>
+         <column-type db="oracle" type="varchar2" length="4000" scale=""/>
+         <column-type db="db2" type="varchar" length="4000" scale=""/>
+      </column>
+      <column name="profileid" nullable="y">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+   </table>
+   <table name="dss_dps_admin_up">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="32"/>
+      </column>
+      <column name="clocktime" nullable="y">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <column name="sessionid" nullable="y">
+         <column-type db="generic" type="varchar" length="100"/>
+      </column>
+      <column name="parentsessionid" nullable="y">
+         <column-type db="generic" type="varchar" length="100"/>
+      </column>
+      <column name="changedproperties" nullable="y">
+         <column-type db="generic" type="long-varchar"/>
+         <column-type db="oracle" type="varchar2" length="4000" scale=""/>
+         <column-type db="db2" type="varchar" length="4000" scale=""/>
+      </column>
+      <column name="oldvalues" nullable="y">
+         <column-type db="generic" type="long-varchar"/>
+         <column-type db="oracle" type="varchar2" length="4000" scale=""/>
+         <column-type db="db2" type="varchar" length="4000" scale=""/>
+      </column>
+      <column name="newvalues" nullable="y">
+         <column-type db="generic" type="long-varchar"/>
+         <column-type db="oracle" type="varchar2" length="4000" scale=""/>
+         <column-type db="db2" type="varchar" length="4000" scale=""/>
+      </column>
+      <column name="adminprofileid" nullable="y">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <column name="profileid" nullable="y">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+   </table>
+   <table name="dps_scenario_value">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="tag" nullable="n">
+         <column-type db="generic" type="varchar" length="42"/>
+      </column>
+      <column name="scenario_value" nullable="y">
+         <column-type db="generic" type="varchar" length="100"/>
+      </column>
+      <primary-key name="dps_scenario_val_p">
+         <index-column column="id" order="asc" seq="1"/>
+         <index-column column="tag" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dps_scenrvlid_f" referenced-table="dps_user">
+         <fkey-column referencing-column="id" referenced-column="id"/>
+      </foreign-key>
+      <index name="dps_scenval_id" table="dps_scenario_value">
+         <index-column column="id" order="asc" seq="1"/>
+      </index>
+   </table>
+</schema>
+<!-- @version $Id: //product/DSS/version/10.0.3/templates/DSS/sql/dps_mappers.xml#2 $$Change: 651448 $ -->

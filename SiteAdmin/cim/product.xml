@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE product SYSTEM "http://www.atg.com/dtds/product_1_0.dtd">
+<product id="siteadmin" extends="platform">
+
+  <title resource-key="SiteAdminProduct.name">ATG Site Administration</title>
+  <detail resource-key="SiteAdminProduct.detail">Includes ATG Platform and Content Administration.</detail>
+    
+  <!-- addons --> 
+  <product-addon-group id="search">
+    <product-addon id="search">
+
+      <modify-server-instance-type id="management">
+        <append-module name="SiteAdmin.Search"/>
+      </modify-server-instance-type>        
+
+    </product-addon>
+  </product-addon-group>
+  
+  <server-instance-type id="management">
+    <append-module name="SiteAdmin.Versioned"/>
+  </server-instance-type>		
+
+</product>
+<!-- @version $Id: //product/SiteAdmin/version/10.0.3/src/cim/product.xml#2 $$Change: 651448 $-->

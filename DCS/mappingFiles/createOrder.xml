@@ -1,0 +1,79 @@
+<!DOCTYPE item-descriptor PUBLIC "-//Art Technology Group, Inc.//DTD DATA BINDING//EN" "http://www.atg.com/dtds/databinding/itemDescriptorMapping_1.0.dtd">
+<item-descriptor repository-path="/atg/commerce/order/OrderRepository" name="order" default-include="true">
+  <property name="id" include="true"/>
+  <property name="profileId" include="false"/>
+  <property name="version" include="false"/>
+  <property name="priceInfo" include="false"/>
+  <property name="taxPriceInfo" include="false"/>
+  
+  <property name="relationships" include="true">
+    <item-descriptor name="shipItemRel" repository-path="/atg/commerce/order/OrderRepository" default-include="true">
+      <property name="version" include="false"/>
+      <property name="amount" include="false"/>
+      <property name="returnedQuantity" include="false"/>
+      <property name="order" include="true"/>
+      <property name="commerceItem" include="true">
+        <item-descriptor name="commerceItem" repository-path="/atg/commerce/order/OrderRepository">
+          <property name="version" include="false"/>
+          <property name="priceInfo" include="false"/>
+          <property name="order" include="true"/>
+        </item-descriptor>
+      </property>
+      <property name="shippingGroup" include="true">
+        <item-descriptor name="hardgoodShippingGroup" repository-path="/atg/commerce/order/OrderRepository" default-include="true">
+          <property name="version" include="false"/>
+          <property name="priceInfo" include="false"/>
+          <property name="order" include="true"/>
+        </item-descriptor>
+      </property>
+    </item-descriptor>
+
+    <item-descriptor name="payItemRel" repository-path="/atg/commerce/order/OrderRepository" default-include="true">
+      <property name="version" include="false"/>
+      <property name="commerceItem" include="true"/>
+      <property name="order" include="true"/>
+      <property name="paymentGroup" include="true">
+        <item-descriptor name="creditCard" repository-path="/atg/commerce/order/OrderRepository" default-include="true">
+          <property name="version" include="false"/>
+          <property name="order" include="true"/>
+        </item-descriptor>
+      </property>
+    </item-descriptor>  
+   
+    <item-descriptor name="payOrderRel" repository-path="/atg/commerce/order/OrderRepository" default-include="true">
+      <property name="version" include="false"/>
+      <property name="order" include="true"/>
+      <property name="orderRef" include="true"/>
+      <property name="paymentGroup" include="true">
+        <item-descriptor name="creditCard" repository-path="/atg/commerce/order/OrderRepository" default-include="true">
+          <property name="version" include="false"/>
+          <property name="order" include="true"/>
+        </item-descriptor>
+      </property>
+    </item-descriptor>
+  </property>
+
+  <property name="paymentGroups" include="true">
+    <item-descriptor name="creditCard" repository-path="/atg/commerce/order/OrderRepository">
+      <property name="version" include="false"/>
+      <property name="order" include="true"/>
+    </item-descriptor>
+  </property>
+
+  <property name="shippingGroups" include="true">
+    <item-descriptor name="hardgoodShippingGroup" repository-path="/atg/commerce/order/OrderRepository">
+      <property name="version" include="false"/>
+      <property name="priceInfo" include="false"/>
+      <property name="order" include="true"/>
+    </item-descriptor>
+  </property>
+
+  <property name="commerceItems" include="true">
+    <item-descriptor name="commerceItem" repository-path="/atg/commerce/order/OrderRepository" default-include="false">
+      <property name="version" include="false"/>
+      <property name="priceInfo" include="false"/>
+      <property name="order" include="true"/>
+    </item-descriptor>
+  </property>
+</item-descriptor>
+<!-- @version $Id: //product/DCS/version/10.0.3/release/DCS/mappingFiles/createOrder.xml#2 $$Change: 651448 $ -->

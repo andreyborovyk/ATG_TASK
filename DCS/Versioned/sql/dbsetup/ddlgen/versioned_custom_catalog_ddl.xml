@@ -1,0 +1,1168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This is a generated file -->
+
+<!DOCTYPE schema SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="versioned_custom_catalog_ddl" description="">
+<comment> @version $Id: //product/DCS/version/10.0.3/templates/DCS/sql/custom_catalog_ddl.xml#1 $$Change: 651360 $</comment>
+   
+	 <table name="dcs_catalog" description="catalog table">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="the id of the workspace that the asset exists on" nullable="n" name="workspace_id">
+				 <column-type length="40" type="varchar" db="generic"/>
+			</column>
+			<column description="the id of the branch that the asset exists on" nullable="n" name="branch_id">
+				 <column-type length="40" type="varchar" db="generic"/>
+			</column>
+			<column description="is this version the head of branch" nullable="n" name="is_head">
+				 <column-type type="one-digit" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="flag indicating that the version is deleted" nullable="n" name="version_deleted">
+				 <column-type length="1" type="numeric" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="flag indicating that version is editable" nullable="n" name="version_editable">
+				 <column-type length="1" type="numeric" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="the predecessor version number" nullable="y" name="pred_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="date the asset was checked in if not a working version" nullable="y" name="checkin_date">
+				 <column-type type="datetime" db="generic"/>
+				 <column-type type="timestamp" db="oracle"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="catalog_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="display_name" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="creation_date" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="last_mod_date" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="migration_status" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="number" length="3" scale="0"/>
+         <column-type db="db2" type="numeric" length="3" scale="0"/>
+      </column>
+      <column name="migration_index" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="integer"/>
+         <column-type db="db2" type="numeric" length="10" scale="0"/>
+      </column>
+      <column name="item_acl" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="long-varchar"/>
+         <column-type db="oracle" type="varchar2" length="1024" scale=""/>
+         <column-type db="db2" type="varchar" length="1024" scale=""/>
+      </column>
+      
+   
+			<primary-key name="dcs_catalog_p">
+         <index-column column="catalog_id" order="asc" seq="1"/>
+      	 <index-column seq="2" order="asc" column="asset_version"/>
+			</primary-key>
+			<index table="dcs_catalog" name="dcs_catalog_wsx">
+				 <index-column seq="1" order="asc" column="workspace_id"/>
+			</index>
+			<index table="dcs_catalog" name="dcs_catalog_cix">
+				 <index-column seq="1" order="asc" column="checkin_date"/>
+			</index>
+	 </table>
+   
+	 <table name="dcs_root_cats" description="list of root categories">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset (shared table)" nullable="n" name="sec_asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="catalog_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="root_cat_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      
+      
+      
+   
+			<primary-key name="dcs_root_cats_p">
+         <index-column column="catalog_id" order="asc" seq="1"/>
+         <index-column column="root_cat_id" order="asc" seq="2"/>
+      	 <index-column seq="3" order="asc" column="asset_version"/>
+				 <index-column seq="4" order="asc" column="sec_asset_version"/>
+			</primary-key>
+			<index table="dcs_root_cats" name="dcs_rootcatscat_id">
+				 <index-column seq="1" order="asc" column="root_cat_id"/>
+			</index>
+	 </table>
+   
+	 <table name="dcs_allroot_cats" description="list of root categories">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="catalog_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="root_cat_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      
+      
+      
+   
+			<primary-key name="dcs_allroot_cats_p">
+         <index-column column="catalog_id" order="asc" seq="1"/>
+         <index-column column="root_cat_id" order="asc" seq="2"/>
+      	 <index-column seq="3" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table>
+   
+	 <table name="dcs_root_subcats" description="list of root sub-catalogs">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset (shared table)" nullable="n" name="sec_asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="catalog_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sub_catalog_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      
+      
+      
+   
+			<primary-key name="dcs_root_subcats_p">
+         <index-column column="catalog_id" order="asc" seq="1"/>
+         <index-column column="sub_catalog_id" order="asc" seq="2"/>
+      	 <index-column seq="3" order="asc" column="asset_version"/>
+				 <index-column seq="4" order="asc" column="sec_asset_version"/>
+			</primary-key>
+	 </table>
+   
+	 <table name="dcs_category_info" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="the id of the workspace that the asset exists on" nullable="n" name="workspace_id">
+				 <column-type length="40" type="varchar" db="generic"/>
+			</column>
+			<column description="the id of the branch that the asset exists on" nullable="n" name="branch_id">
+				 <column-type length="40" type="varchar" db="generic"/>
+			</column>
+			<column description="is this version the head of branch" nullable="n" name="is_head">
+				 <column-type type="one-digit" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="flag indicating that the version is deleted" nullable="n" name="version_deleted">
+				 <column-type length="1" type="numeric" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="flag indicating that version is editable" nullable="n" name="version_editable">
+				 <column-type length="1" type="numeric" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="the predecessor version number" nullable="y" name="pred_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="date the asset was checked in if not a working version" nullable="y" name="checkin_date">
+				 <column-type type="datetime" db="generic"/>
+				 <column-type type="timestamp" db="oracle"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="category_info_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="item_acl" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="long-varchar"/>
+         <column-type db="oracle" type="varchar2" length="1024" scale=""/>
+         <column-type db="db2" type="varchar" length="1024" scale=""/>
+      </column>
+      
+   
+			<primary-key name="dcs_category_inf_p">
+         <index-column column="category_info_id" order="asc" seq="1"/>
+      	 <index-column seq="2" order="asc" column="asset_version"/>
+			</primary-key>
+			<index table="dcs_category_info" name="dcs_category_i_wsx">
+				 <index-column seq="1" order="asc" column="workspace_id"/>
+			</index>
+			<index table="dcs_category_info" name="dcs_category_i_cix">
+				 <index-column seq="1" order="asc" column="checkin_date"/>
+			</index>
+	 </table>
+   
+	 <table name="dcs_product_info" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="the id of the workspace that the asset exists on" nullable="n" name="workspace_id">
+				 <column-type length="40" type="varchar" db="generic"/>
+			</column>
+			<column description="the id of the branch that the asset exists on" nullable="n" name="branch_id">
+				 <column-type length="40" type="varchar" db="generic"/>
+			</column>
+			<column description="is this version the head of branch" nullable="n" name="is_head">
+				 <column-type type="one-digit" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="flag indicating that the version is deleted" nullable="n" name="version_deleted">
+				 <column-type length="1" type="numeric" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="flag indicating that version is editable" nullable="n" name="version_editable">
+				 <column-type length="1" type="numeric" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="the predecessor version number" nullable="y" name="pred_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="date the asset was checked in if not a working version" nullable="y" name="checkin_date">
+				 <column-type type="datetime" db="generic"/>
+				 <column-type type="timestamp" db="oracle"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="product_info_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="parent_cat_id" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="item_acl" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="long-varchar"/>
+         <column-type db="oracle" type="varchar2" length="1024" scale=""/>
+         <column-type db="db2" type="varchar" length="1024" scale=""/>
+      </column>
+      
+   
+			<primary-key name="dcs_product_info_p">
+         <index-column column="product_info_id" order="asc" seq="1"/>
+      	 <index-column seq="2" order="asc" column="asset_version"/>
+			</primary-key>
+			<index table="dcs_product_info" name="dcs_product_in_wsx">
+				 <index-column seq="1" order="asc" column="workspace_id"/>
+			</index>
+			<index table="dcs_product_info" name="dcs_product_in_cix">
+				 <index-column seq="1" order="asc" column="checkin_date"/>
+			</index>
+	 </table>
+   
+	 <table name="dcs_sku_info" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="the id of the workspace that the asset exists on" nullable="n" name="workspace_id">
+				 <column-type length="40" type="varchar" db="generic"/>
+			</column>
+			<column description="the id of the branch that the asset exists on" nullable="n" name="branch_id">
+				 <column-type length="40" type="varchar" db="generic"/>
+			</column>
+			<column description="is this version the head of branch" nullable="n" name="is_head">
+				 <column-type type="one-digit" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="flag indicating that the version is deleted" nullable="n" name="version_deleted">
+				 <column-type length="1" type="numeric" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="flag indicating that version is editable" nullable="n" name="version_editable">
+				 <column-type length="1" type="numeric" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="the predecessor version number" nullable="y" name="pred_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="date the asset was checked in if not a working version" nullable="y" name="checkin_date">
+				 <column-type type="datetime" db="generic"/>
+				 <column-type type="timestamp" db="oracle"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="sku_info_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="item_acl" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="long-varchar"/>
+         <column-type db="oracle" type="varchar2" length="1024" scale=""/>
+         <column-type db="db2" type="varchar" length="1024" scale=""/>
+      </column>
+      
+   
+			<primary-key name="dcs_sku_info_p">
+         <index-column column="sku_info_id" order="asc" seq="1"/>
+      	 <index-column seq="2" order="asc" column="asset_version"/>
+			</primary-key>
+			<index table="dcs_sku_info" name="dcs_sku_info_wsx">
+				 <index-column seq="1" order="asc" column="workspace_id"/>
+			</index>
+			<index table="dcs_sku_info" name="dcs_sku_info_cix">
+				 <index-column seq="1" order="asc" column="checkin_date"/>
+			</index>
+	 </table>
+   
+	 <table name="dcs_cat_subcats" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset (shared table)" nullable="n" name="sec_asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="category_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="catalog_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      
+      
+      
+   
+			<primary-key name="dcs_cat_subcats_p">
+         <index-column column="category_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      	 <index-column seq="3" order="asc" column="asset_version"/>
+				 <index-column seq="4" order="asc" column="sec_asset_version"/>
+			</primary-key>
+			<index table="dcs_cat_subcats" name="dcs_catsubcatlogid">
+				 <index-column seq="1" order="asc" column="catalog_id"/>
+			</index>
+	 </table>
+   
+	 <table name="dcs_cat_subroots" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="category_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="sub_category_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      
+      
+   
+			<primary-key name="dcs_cat_subroots_p">
+         <index-column column="category_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      	 <index-column seq="3" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table>
+   
+	 <table name="dcs_cat_catinfo" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset (shared table)" nullable="n" name="sec_asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="category_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="catalog_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="category_info_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      
+      
+   
+			<primary-key name="dcs_cat_catinfo_p">
+         <index-column column="category_id" order="asc" seq="1"/>
+         <index-column column="catalog_id" order="asc" seq="2"/>
+      	 <index-column seq="3" order="asc" column="asset_version"/>
+				 <index-column seq="4" order="asc" column="sec_asset_version"/>
+			</primary-key>
+	 </table>
+   
+	 <table name="dcs_catinfo_anc" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="category_info_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="anc_cat_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      
+   
+			<primary-key name="dcs_catinfo_anc_p">
+         <index-column column="category_info_id" order="asc" seq="1"/>
+         <index-column column="anc_cat_id" order="asc" seq="2"/>
+      	 <index-column seq="3" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table>
+   
+	 <table name="dcs_prd_prdinfo" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset (shared table)" nullable="n" name="sec_asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="product_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="catalog_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="product_info_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      
+      
+   
+			<primary-key name="dcs_prd_prdinfo_p">
+         <index-column column="product_id" order="asc" seq="1"/>
+         <index-column column="catalog_id" order="asc" seq="2"/>
+      	 <index-column seq="3" order="asc" column="asset_version"/>
+				 <index-column seq="4" order="asc" column="sec_asset_version"/>
+			</primary-key>
+	 </table>
+   
+	 <table name="dcs_prdinfo_rdprd" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="product_info_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="related_prd_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      
+      
+      
+   
+			<primary-key name="dcs_prdinfo_rdpr_p">
+         <index-column column="product_info_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      	 <index-column seq="3" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table>
+   
+	 <table name="dcs_prdinfo_anc" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="product_info_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="anc_cat_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      
+   
+			<primary-key name="dcs_prdinfo_anc_p">
+         <index-column column="product_info_id" order="asc" seq="1"/>
+         <index-column column="anc_cat_id" order="asc" seq="2"/>
+      	 <index-column seq="3" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table>
+   
+	 <table name="dcs_sku_skuinfo" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset (shared table)" nullable="n" name="sec_asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="sku_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="catalog_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sku_info_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      
+      
+   
+			<primary-key name="dcs_sku_skuinfo_p">
+         <index-column column="sku_id" order="asc" seq="1"/>
+         <index-column column="catalog_id" order="asc" seq="2"/>
+      	 <index-column seq="3" order="asc" column="asset_version"/>
+				 <index-column seq="4" order="asc" column="sec_asset_version"/>
+			</primary-key>
+	 </table>
+   
+	 <table name="dcs_skuinfo_rplc" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="sku_info_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="replacement" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      
+      
+   
+			<primary-key name="dcs_skuinfo_rplc_p">
+         <index-column column="sku_info_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      	 <index-column seq="3" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table>
+   
+	 <table name="dcs_gen_fol_cat" description="base folder class">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="the id of the workspace that the asset exists on" nullable="n" name="workspace_id">
+				 <column-type length="40" type="varchar" db="generic"/>
+			</column>
+			<column description="the id of the branch that the asset exists on" nullable="n" name="branch_id">
+				 <column-type length="40" type="varchar" db="generic"/>
+			</column>
+			<column description="is this version the head of branch" nullable="n" name="is_head">
+				 <column-type type="one-digit" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="flag indicating that the version is deleted" nullable="n" name="version_deleted">
+				 <column-type length="1" type="numeric" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="flag indicating that version is editable" nullable="n" name="version_editable">
+				 <column-type length="1" type="numeric" db="generic"/>
+				 <column-type type="tinyint" db="mysql"/>
+			</column>
+			<column description="the predecessor version number" nullable="y" name="pred_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="date the asset was checked in if not a working version" nullable="y" name="checkin_date">
+				 <column-type type="datetime" db="generic"/>
+				 <column-type type="timestamp" db="oracle"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="folder_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="type" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="name" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="parent" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="description" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="item_acl" nullable="y" default="" i18n="n" description="">
+         <column-type db="generic" type="long-varchar"/>
+         <column-type db="oracle" type="varchar2" length="1024" scale=""/>
+         <column-type db="db2" type="varchar" length="1024" scale=""/>
+      </column>
+      
+   
+			<primary-key name="dcs_gen_fol_cat_p">
+         <index-column column="folder_id" order="asc" seq="1"/>
+      	 <index-column seq="2" order="asc" column="asset_version"/>
+			</primary-key>
+			<index table="dcs_gen_fol_cat" name="dcs_gen_fol_ca_wsx">
+				 <index-column seq="1" order="asc" column="workspace_id"/>
+			</index>
+			<index table="dcs_gen_fol_cat" name="dcs_gen_fol_ca_cix">
+				 <index-column seq="1" order="asc" column="checkin_date"/>
+			</index>
+	 </table>
+   
+	 <table name="dcs_child_fol_cat" description="child folders">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset (shared table)" nullable="n" name="sec_asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="folder_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="child_folder_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      
+      
+   
+			<primary-key name="dcs_child_fol_ca_p">
+         <index-column column="folder_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      	 <index-column seq="3" order="asc" column="asset_version"/>
+				 <index-column seq="4" order="asc" column="sec_asset_version"/>
+			</primary-key>
+	 </table>
+   
+	 <table name="dcs_catfol_chld" description="catalog folder class">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset (shared table)" nullable="n" name="sec_asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="catfol_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="catalog_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      
+      
+   
+			<primary-key name="dcs_catfol_chld_p">
+         <index-column column="catfol_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      	 <index-column seq="3" order="asc" column="asset_version"/>
+				 <index-column seq="4" order="asc" column="sec_asset_version"/>
+			</primary-key>
+	 </table>
+   
+   
+	 <table name="dcs_catfol_sites" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+     <column name="catfol_id" nullable="n" default="" i18n="n" description="">
+	   <column-type db="generic" type="varchar" length="40"/>
+	 </column>
+	 <column name="site_id" nullable="n" default="" i18n="n" description="">
+	   <column-type db="generic" type="varchar" length="40"/>
+	 </column>
+	 
+   
+			<primary-key name="dcs_catfl_sites_pk">
+	  <index-column column="catfol_id" order="asc" seq="1"/>
+	  <index-column column="site_id" order="asc" seq="2"/>
+	 	 <index-column seq="3" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table>
+   
+   
+   
+	 <table name="dcs_dir_anc_ctlgs" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="catalog_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="anc_catalog_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      
+      
+      
+   
+			<primary-key name="dcs_dirancctlgs_pk">
+         <index-column column="catalog_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      	 <index-column seq="3" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table>
+   
+	 <table name="dcs_ind_anc_ctlgs" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="catalog_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="anc_catalog_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      
+      
+      
+   
+			<primary-key name="dcs_indancctlgs_pk">
+         <index-column column="catalog_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      	 <index-column seq="3" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table>
+   
+	 <table name="dcs_ctlg_anc_cats" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="catalog_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="category_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      
+      
+      
+   
+			<primary-key name="dcs_ctlganccats_pk">
+         <index-column column="catalog_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      	 <index-column seq="3" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table>
+   
+	 <table name="dcs_cat_anc_cats" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="category_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="anc_category_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      
+      
+      
+   
+			<primary-key name="dcs_cat_anccats_pk">
+         <index-column column="category_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      	 <index-column seq="3" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table>
+   
+	 <table name="dcs_cat_prnt_cats" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="category_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="catalog_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="parent_ctgy_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      
+      
+      
+      
+   
+			<primary-key name="dcs_catprntcats_pk">
+         <index-column column="category_id" order="asc" seq="1"/>
+         <index-column column="catalog_id" order="asc" seq="2"/>
+      	 <index-column seq="3" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table>   
+   
+	 <table name="dcs_prd_prnt_cats" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="product_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="catalog_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="category_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      
+      
+      
+      
+   
+			<primary-key name="dcs_prdprntcats_pk">
+         <index-column column="product_id" order="asc" seq="1"/>
+         <index-column column="catalog_id" order="asc" seq="2"/>
+      	 <index-column seq="3" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table>
+   
+	 <table name="dcs_prd_anc_cats" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="product_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="category_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      
+      
+      
+   
+			<primary-key name="dcs_prdanc_cats_pk">
+         <index-column column="product_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      	 <index-column seq="3" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table>
+   
+	 <table name="dcs_cat_catalogs" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="category_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="catalog_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      
+      
+      
+   
+			<primary-key name="dcs_cat_catalgs_pk">
+         <index-column column="category_id" order="asc" seq="1"/>
+         <index-column column="catalog_id" order="asc" seq="2"/>
+      	 <index-column seq="3" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table>
+   
+	 <table name="dcs_prd_catalogs" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="product_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="catalog_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      
+      
+      
+   
+			<primary-key name="dcs_prd_catalgs_pk">
+         <index-column column="product_id" order="asc" seq="1"/>
+         <index-column column="catalog_id" order="asc" seq="2"/>
+      	 <index-column seq="3" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table>
+   
+	 <table name="dcs_sku_catalogs" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+      <column name="sku_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="catalog_id" nullable="n" default="" i18n="n" description="">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      
+      
+      
+   
+			<primary-key name="dcs_sku_catalgs_pk">
+         <index-column column="sku_id" order="asc" seq="1"/>
+         <index-column column="catalog_id" order="asc" seq="2"/>
+      	 <index-column seq="3" order="asc" column="asset_version"/>
+			</primary-key>
+	 </table>
+  
+	 <table name="dcs_catalog_sites" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+    <column name="catalog_id" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="site_id" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+    
+  
+			<primary-key name="dcs_catlg_sites_pk">
+      <index-column column="catalog_id" order="asc" seq="1"/>
+      <index-column column="site_id" order="asc" seq="2"/>
+    	 <index-column seq="3" order="asc" column="asset_version"/>
+			</primary-key>
+			<index name="catlg_site_id_idx" table="dcs_catalog_sites" description="">
+       <index-column column="site_id" order="asc" seq="1"/>
+    </index>
+	 </table>
+  
+	 <table name="dcs_category_sites" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+    <column name="category_id" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="site_id" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+    
+  
+			<primary-key name="dcs_cat_sites_pk">
+      <index-column column="category_id" order="asc" seq="1"/>
+      <index-column column="site_id" order="asc" seq="2"/>
+    	 <index-column seq="3" order="asc" column="asset_version"/>
+			</primary-key>
+			<index name="cat_site_id_idx" table="dcs_category_sites" description="">
+       <index-column column="site_id" order="asc" seq="1"/>
+    </index>
+	 </table>
+  
+	 <table name="dcs_product_sites" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+    <column name="product_id" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="site_id" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+    	
+    
+  
+			<primary-key name="dcs_prod_sites_pk">
+      <index-column column="product_id" order="asc" seq="1"/>
+      <index-column column="site_id" order="asc" seq="2"/>
+    	 <index-column seq="3" order="asc" column="asset_version"/>
+			</primary-key>
+			<index name="prd_site_id_idx" table="dcs_product_sites" description="">
+       <index-column column="site_id" order="asc" seq="1"/>
+    </index>
+	 </table>
+  
+	 <table name="dcs_sku_sites" description="">
+			<!-- Versioning Columns -->
+			<column description="the version of the asset" nullable="n" name="asset_version">
+				 <column-type length="19" type="numeric" db="generic"/>
+				 <column-type type="bigint" db="mysql"/>
+			</column>
+
+			<!-- Data Columns -->
+    <column name="sku_id" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    <column name="site_id" nullable="n" default="" i18n="n" description="">
+      <column-type db="generic" type="varchar" length="40"/>
+    </column>
+    
+    
+    
+  
+			<primary-key name="dcs_sku_sites_pk">
+      <index-column column="sku_id" order="asc" seq="1"/>
+      <index-column column="site_id" order="asc" seq="2"/>
+    	 <index-column seq="3" order="asc" column="asset_version"/>
+			</primary-key>
+			<index name="sku_site_id_idx" table="dcs_sku_sites" description="">
+       <index-column column="site_id" order="asc" seq="1"/>
+    </index>
+	 </table>
+</schema>
+<!-- @version $Id: //product/DCS/version/10.0.3/templates/DCS/sql/custom_catalog_ddl.xml#1 $$Change: 651360 $ -->

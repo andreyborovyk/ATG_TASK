@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE wizards SYSTEM "http://www.atg.com/dtds/wizard_1_0.dtd">
+<wizards>
+
+
+  <!-- Product Selector Wizard -->
+  <wizard id="ProductSelectorWizard" wizard-type="base">
+
+    <title>Product Selector</title>
+    <detail></detail>
+    
+    <process id="productselector">
+
+
+      <step id="ProductSelectorTemplateStep" type="template" class="atg.cim.productconfig.productselector.ProductSelectorTemplate"/>
+      
+      <step id="ProductCalculatorTemplateStep" type="template" class="atg.cim.productconfig.productselector.ProductCalculatorTemplate"/>
+
+      <step id="AddOnSelectorTemplateStep" type="template" class="atg.cim.productconfig.productselector.AddOnSelectorTemplate"/>
+
+      <step id="ProductModuleCalculatorTemplateStep" type="template" class="atg.cim.productconfig.productselector.CalculatorTemplate"/>
+      
+      <step id="ProductSelectionDisplayTemplateStep" type="template" class="atg.cim.productconfig.productselector.ProductSelectionDisplayTemplate"/>
+
+    </process>
+  </wizard>
+
+  
+  <!-- AppAssembly Configuration Wizard -->
+  <wizard id="DeploymentWizard" wizard-type="base">
+
+    <title>Deployment</title>
+    <detail></detail>
+    
+    <process id="appassembly">
+      
+      <step id="ServerInstanceSelectionTemplateStep" type="template" class="atg.cim.productconfig.DeployServerInstanceTemplate"/>
+
+    </process>
+    
+  </wizard>
+
+  <!-- Database Configuration Wizard -->
+  <wizard id="DatabaseConfigWizard" wizard-type="base">
+
+    <title>Database Configuration</title>
+    <detail></detail>
+    
+    <process id="databaseconfig">
+
+      <step id="NamedDatasourceSelectonStep" type="template" class="atg.cim.database.NamedDatasourceSelectionTemplate"/>
+
+    </process>
+  </wizard>
+
+  <!-- ServerInstance Configuration Wizard -->
+  <wizard id="ServerInstanceConfigWizard" wizard-type="base">
+
+    <title>Server Instance Configuration Creation</title>
+    <detail></detail>
+    
+    <process id="serverinstanceconfig">
+      <step id="ServerInstanceTypeSelectionTemplateStep" type="template" class="atg.cim.productconfig.serverinstance.ServerInstanceTypeSelectionTemplate"/>
+
+    </process>
+
+  </wizard>
+  
+  
+  <!-- SelectAppServerWizard -->
+  <wizard id="SelectAppServerWizard" wizard-type="base">
+
+    <title>Choose your Application Server</title>
+    <detail></detail>
+    
+    <process id="selectappserver">
+      
+      <step id="SelectAppServerTemplateStep" type="template" class="atg.cim.productconfig.appserver.AppServerSelectTemplate"/>
+
+      <step id="JBossAppServerTemplateStep" type="template" class="atg.cim.productconfig.appserver.jboss.JBossAppServerTemplate"/>
+
+      <step id="WeblogicOfflineAppServerTemplateStep" type="template" class="atg.cim.productconfig.appserver.weblogic.WeblogicOfflineAppServerTemplate"/>
+
+      <step id="WeblogicOnlinePropertiesTemplateStep" type="template" class="atg.cim.productconfig.appserver.weblogic.WeblogicOnlinePropertiesTemplate"/>
+      
+      <step id="WeblogicOnlineAppServerTemplateStep" type="template" class="atg.cim.productconfig.appserver.weblogic.WeblogicOnlineAppServerTemplate"/>
+      
+      <step id="WebsphereAppServerPropertyTemplateStep" type="template" class="atg.cim.productconfig.appserver.websphere.WebsphereAppServerPropertyTemplate"/>
+            
+      <step id="RawPropertiesTemplateStep" type="template" class="atg.cim.productconfig.appserver.RawPropertiesTemplate"/>
+      
+      <step id="TomcatAppServerTemplateStep" type="template" class="atg.cim.productconfig.appserver.tomcat.TomcatAppServerTemplate"/>
+      
+      <step id="StatusTemplateStep" type="template" class="atg.cim.productconfig.appserver.StatusTemplate"/>
+      
+    </process> 
+
+  </wizard>
+
+</wizards>
+<!-- @version $Id: //product/CIM/version/10.0.3/plugins/ProductConfig/wizards.xml#2 $$Change: 651448 $-->

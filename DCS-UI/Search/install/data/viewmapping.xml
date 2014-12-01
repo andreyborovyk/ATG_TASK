@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE gsa-template SYSTEM "dynamosystemresource:/atg/dtds/gsa/gsa_1.0.dtd">
+<gsa-template>
+
+<import-items>
+
+<!-- ======================================================================= -->
+<!-- View mappings for the DCS-UI.Search module                              -->
+<!-- ======================================================================= -->
+
+<!-- ======================================================================= -->
+<!-- Form handlers                                                           -->
+<!-- ======================================================================= -->
+
+<!-- CategoryCatalogAssetFormHandler -->
+
+<add-item item-descriptor="formHandler" id="aMgrFhRepCatAssets">
+  <set-property name="name"><![CDATA[AssetManager CategoryCatalogAssetFormHandler]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager default form handler for catalogs and categories]]></set-property>
+  <set-property name="path"><![CDATA[/atg/commerce/web/assetmanager/CategoryCatalogAssetFormHandler]]></set-property>
+  <set-property name="attributes"><![CDATA[atgFormValueDict=aMgrFRCC_av]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrFRCC_av">
+  <set-property name="value"><![CDATA[value]]></set-property>
+</add-item>
+
+<!-- ======================================================================= -->
+<!-- Customizations for catalog items                                       -->
+<!-- ======================================================================= -->
+
+<!-- Read-only and editable item mappings; contain one view mapping per tab -->
+
+<add-item item-descriptor="itemMapping" id="aMgrImViewLog">
+  <set-property name="name"><![CDATA[AssetManager]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager read-only mapping for catalog items]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmView]]></set-property>
+  <set-property name="itemPath"><![CDATA[/atg/commerce/catalog/ProductCatalog]]></set-property>
+  <set-property name="itemName"><![CDATA[catalog]]></set-property>
+  <set-property name="formHandler"><![CDATA[aMgrFhRepCatAssets]]></set-property>
+  <set-property name="viewMappings"><![CDATA[fctSrchIvmLogFacet]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemMapping" id="aMgrImEditLog">
+  <set-property name="name"><![CDATA[AssetManager]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager editable mapping for catalog items]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmEdit]]></set-property>
+  <set-property name="itemPath"><![CDATA[/atg/commerce/catalog/ProductCatalog]]></set-property>
+  <set-property name="itemName"><![CDATA[catalog]]></set-property>
+  <set-property name="formHandler"><![CDATA[aMgrFhRepCatAssets]]></set-property>
+  <set-property name="viewMappings"><![CDATA[fctSrchIvmLogFacet]]></set-property>
+</add-item>
+
+<!-- View mapping for catalog's facet tab -->
+
+<add-item item-descriptor="itemViewMapping" id="fctSrchIvmLogFacet">
+  <set-property name="name"><![CDATA[AssetManager CatalogFacetView]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager catalog facet view]]></set-property>
+  <set-property name="displayName"><![CDATA[fctSrchIvmLogFacet.displayName]]></set-property>
+  <set-property name="attributeValues"><![CDATA[resourceBundle=fctSrchAvLogFacetResourceBundle,specificProperties=fctSrchAvLogFacetSpecProps]]></set-property>
+  <set-property name="view"><![CDATA[fctSrchIvLogSearch]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="fctSrchAvLogFacetResourceBundle">
+  <set-property name="value"><![CDATA[atg.commerce.search.web.WebAppResources]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="fctSrchAvLogFacetSpecProps">
+  <set-property name="value"><![CDATA[refineConfig]]></set-property>
+</add-item>
+
+
+<!-- ======================================================================= -->
+<!-- Customizations for category items                                       -->
+<!-- ======================================================================= -->
+
+<!-- Read-only and editable item mappings; contain one view mapping per tab -->
+
+<add-item item-descriptor="itemMapping" id="aMgrImViewCat">
+  <set-property name="name"><![CDATA[AssetManager]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager read-only mapping for category items]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmView]]></set-property>
+  <set-property name="itemPath"><![CDATA[/atg/commerce/catalog/ProductCatalog]]></set-property>
+  <set-property name="itemName"><![CDATA[category]]></set-property>
+  <set-property name="formHandler"><![CDATA[aMgrFhRepCatAssets]]></set-property>
+  <set-property name="viewMappings"><![CDATA[fctSrchIvmCatFacet]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemMapping" id="aMgrImEditCat">
+  <set-property name="name"><![CDATA[AssetManager]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager editable mapping for category items]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmEdit]]></set-property>
+  <set-property name="itemPath"><![CDATA[/atg/commerce/catalog/ProductCatalog]]></set-property>
+  <set-property name="itemName"><![CDATA[category]]></set-property>
+  <set-property name="formHandler"><![CDATA[aMgrFhRepCatAssets]]></set-property>
+  <set-property name="viewMappings"><![CDATA[fctSrchIvmCatFacet]]></set-property>
+</add-item>
+
+<!-- View mapping for category's facet tab -->
+
+<add-item item-descriptor="itemViewMapping" id="fctSrchIvmCatFacet">
+  <set-property name="name"><![CDATA[AssetManager CategoryFacetView]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager category facet view]]></set-property>
+  <set-property name="displayName"><![CDATA[fctSrchIvmCatFacet.displayName]]></set-property>
+  <set-property name="attributeValues"><![CDATA[resourceBundle=fctSrchAvCatFacetResourceBundle,specificProperties=fctSrchAvCatFacetSpecProps]]></set-property>
+  <set-property name="view"><![CDATA[fctSrchIvCatSearch]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="fctSrchAvCatFacetResourceBundle">
+  <set-property name="value"><![CDATA[atg.commerce.search.web.WebAppResources]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="fctSrchAvCatFacetSpecProps">
+  <set-property name="value"><![CDATA[refineConfig]]></set-property>
+</add-item>
+
+
+<!-- ======================================================================= -->
+<!-- Customizations for the global facet node & commerceRefineConfig items   -->
+<!-- ======================================================================= -->
+
+<add-item item-descriptor="formHandler" id="aMgrFhRefConfig">
+  <set-property name="name"><![CDATA[AssetManager CommerceRefineConfigFormHandler]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager default form handler for global facet node]]></set-property>
+  <set-property name="path"><![CDATA[/atg/commerce/web/assetmanager/CommerceRefineConfigFormHandler]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemMapping" id="fctSrchImViewRefConfig">
+  <set-property name="name"><![CDATA[AssetManager]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager read-only mapping for global facet node]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmView]]></set-property>
+  <set-property name="itemPath"><![CDATA[/atg/search/repository/RefinementRepository]]></set-property>
+  <set-property name="itemName"><![CDATA[commerceRefineConfig]]></set-property>
+  <set-property name="formHandler"><![CDATA[aMgrFhRefConfig]]></set-property>
+  <set-property name="viewMappings"><![CDATA[fctSrchIvmRefConfigBr]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemMapping" id="fctSrchImEditRefConfig">
+  <set-property name="name"><![CDATA[AssetManager]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager editable mapping for global facet node]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmEdit]]></set-property>
+  <set-property name="itemPath"><![CDATA[/atg/search/repository/RefinementRepository]]></set-property>
+  <set-property name="itemName"><![CDATA[commerceRefineConfig]]></set-property>
+  <set-property name="formHandler"><![CDATA[aMgrFhRefConfig]]></set-property>
+  <set-property name="viewMappings"><![CDATA[fctSrchIvmRefConfig]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemViewMapping" id="fctSrchIvmRefConfigBr">
+  <set-property name="name"><![CDATA[AssetManager Global Facets Browse View]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager global facets browse view]]></set-property>
+  <set-property name="displayName"><![CDATA[fctSrchIvmCatFacet.displayName]]></set-property>
+  <set-property name="attributeValues"><![CDATA[resourceBundle=fctSrchAvCatFacetResourceBundle]]></set-property>
+  <set-property name="propertyMappings"><![CDATA[refineElements=fctSrchPvmRefElemsBr]]></set-property>
+  <set-property name="view"><![CDATA[fctSrchIvRefConfig]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemViewMapping" id="fctSrchIvmRefConfig">
+  <set-property name="name"><![CDATA[AssetManager Global Facets View]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager global facets view]]></set-property>
+  <set-property name="displayName"><![CDATA[fctSrchIvmCatFacet.displayName]]></set-property>
+  <set-property name="attributeValues"><![CDATA[resourceBundle=fctSrchAvCatFacetResourceBundle]]></set-property>
+  <set-property name="propertyMappings"><![CDATA[refineElements=fctSrchPvmRefElems]]></set-property>
+  <set-property name="view"><![CDATA[fctSrchIvRefConfig]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewMapping" id="fctSrchPvmRefElems">
+  <set-property name="description"><![CDATA[AssetManager global facet refineElements edit property view mapping]]></set-property>
+  <set-property name="propertyView"><![CDATA[aMgrPvEList]]></set-property>
+  <set-property name="attributeValues"><![CDATA[hideAddExisting=fctSrchAvRefConfigHideAddExisting]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewMapping" id="fctSrchPvmRefElemsBr">
+  <set-property name="description"><![CDATA[AssetManager global facet refineElements browse property view mapping]]></set-property>
+  <set-property name="propertyView"><![CDATA[aMgrPvVList]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="fctSrchAvRefConfigHideAddExisting">
+  <set-property name="value"><![CDATA[true]]></set-property>
+</add-item>
+
+
+<!-- ======================================================================= -->
+<!-- Customizations for facet items                                          -->
+<!-- ======================================================================= -->
+
+<!-- FacetAssetFormHandler: the default form handler for refineElement -->
+
+<add-item item-descriptor="formHandler" id="fctSrchFctFh">
+  <set-property name="name"><![CDATA[AssetManager FacetAssetFormHandler]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager default form handler for refineElement]]></set-property>
+  <set-property name="path"><![CDATA[/atg/search/web/assetmanager/FacetAssetFormHandler]]></set-property>
+  <set-property name="attributes"><![CDATA[atgFormValueDict=fctSrchAvValue]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="fctSrchAvValue">
+  <set-property name="value"><![CDATA[value]]></set-property>
+</add-item>
+
+<!-- Read-only and editable item mappings; contain one view mapping per tab -->
+
+<add-item item-descriptor="itemMapping" id="fctSrchImViewFct">
+  <set-property name="name"><![CDATA[AssetManager]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager read-only mapping for facet items]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmView]]></set-property>
+  <set-property name="itemPath"><![CDATA[/atg/search/repository/RefinementRepository]]></set-property>
+  <set-property name="itemName"><![CDATA[refineElement]]></set-property>
+  <set-property name="formHandler"><![CDATA[fctSrchFctFh]]></set-property>
+  <set-property name="viewMappings"><![CDATA[fctSrchIvmFctBasicsBr,fctSrchIvmFctChildFacetsBr]]></set-property>
+  <set-property name="attributes"><![CDATA[additionalButtonFragment=aMgrFacetAdditionalButtonFragment,additionalButtonFragmentContext=aMgrFacetAddButtonFragCxt,disablePreview=aMgrFacetDisablePreview]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemMapping" id="fctSrchImEditFct">
+  <set-property name="name"><![CDATA[AssetManager]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager editable mapping for facet items]]></set-property>
+  <set-property name="attributes"><![CDATA[additionalButtonFragment=aMgrFacetAdditionalButtonFragment,additionalButtonFragmentContext=aMgrFacetAddButtonFragCxt,disablePreview=aMgrFacetDisablePreview]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmEdit]]></set-property>
+  <set-property name="itemPath"><![CDATA[/atg/search/repository/RefinementRepository]]></set-property>
+  <set-property name="itemName"><![CDATA[refineElement]]></set-property>
+  <set-property name="formHandler"><![CDATA[fctSrchFctFh]]></set-property>
+  <set-property name="viewMappings"><![CDATA[fctSrchIvmFctBasics,fctSrchIvmFctChildFacets]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrFacetAdditionalButtonFragment">
+  <set-property name="value"><![CDATA[/facetEditor/testFacetButton.jsp]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrFacetAddButtonFragCxt">
+  <set-property name="value"><![CDATA[/FacetedSearch]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="aMgrFacetDisablePreview">
+  <set-property name="value"><![CDATA[true]]></set-property>
+</add-item>
+
+<!-- View mapping for facet's basics tab -->
+
+<add-item item-descriptor="itemViewMapping" id="fctSrchIvmFctBasics">
+  <set-property name="name"><![CDATA[AssetManager FacetBasicsView]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager facets basics view]]></set-property>
+  <set-property name="displayName"><![CDATA[fctSrchIvmFctBasics.displayName]]></set-property>
+  <set-property name="attributeValues"><![CDATA[resourceBundle=fctSrchAvFctBasicsResourceBundle,excludedProperties=fctSrchAvFctBasicsExcProps]]></set-property>
+  <set-property name="view"><![CDATA[fctSrchIvFacetBasics]]></set-property>
+  <set-property name="propertyMappings"><![CDATA[range=fctSrchPvmRangeEdit,sort=fctSrchPvmSortEdit,order=fctSrchPvmOrder,exclude=fctSrchPvmExclude]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemViewMapping" id="fctSrchIvmFctBasicsBr">
+  <set-property name="name"><![CDATA[AssetManager FacetBasicsView read-only]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager facets basics view read-only]]></set-property>
+  <set-property name="displayName"><![CDATA[fctSrchIvmFctBasics.displayName]]></set-property>
+  <set-property name="attributeValues"><![CDATA[resourceBundle=fctSrchAvFctBasicsResourceBundle,excludedProperties=fctSrchAvFctBasicsExcProps]]></set-property>
+  <set-property name="view"><![CDATA[fctSrchIvFacetBasics]]></set-property>
+  <set-property name="propertyMappings"><![CDATA[range=fctSrchPvmRangeEdit,sort=fctSrchPvmSortEdit,order=fctSrchPvmOrderBr,exclude=fctSrchPvmExcludeBr]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="fctSrchAvFctBasicsResourceBundle">
+  <set-property name="value"><![CDATA[atg.commerce.search.web.WebAppResources]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="fctSrchAvFctBasicsExcProps">
+  <set-property name="value"><![CDATA[childElements]]></set-property>
+</add-item>
+
+<!-- View mapping for facet's child facets tab -->
+
+<add-item item-descriptor="itemViewMapping" id="fctSrchIvmFctChildFacetsBr">
+  <set-property name="name"><![CDATA[AssetManager FacetChildFacetsBrowseView]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager facets child facets browse view]]></set-property>
+  <set-property name="displayName"><![CDATA[fctSrchIvmFctChildFacets.displayName]]></set-property>
+  <set-property name="attributeValues"><![CDATA[resourceBundle=fctSrchAvFctChildFacetsResBundle,specificProperties=fctSrchAvFctChildFacetsSpecProps]]></set-property>
+  <set-property name="propertyMappings"><![CDATA[childElements=fctSrchPvmCldFctsBr]]></set-property>
+  <set-property name="view"><![CDATA[fctSrchIvFacetChild]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemViewMapping" id="fctSrchIvmFctChildFacets">
+  <set-property name="name"><![CDATA[AssetManager FacetChildFacetsView]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager facets child facets view]]></set-property>
+  <set-property name="displayName"><![CDATA[fctSrchIvmFctChildFacets.displayName]]></set-property>
+  <set-property name="attributeValues"><![CDATA[resourceBundle=fctSrchAvFctChildFacetsResBundle,specificProperties=fctSrchAvFctChildFacetsSpecProps]]></set-property>
+  <set-property name="propertyMappings"><![CDATA[childElements=fctSrchPvmCldFcts]]></set-property>
+  <set-property name="view"><![CDATA[fctSrchIvFacetChild]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="fctSrchAvFctChildFacetsSpecProps">
+  <set-property name="value"><![CDATA[childElements]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewMapping" id="fctSrchPvmCldFctsBr">
+  <set-property name="description"><![CDATA[AssetManager child facets browse property view mapping]]></set-property>
+  <set-property name="propertyView"><![CDATA[aMgrPvVList]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewMapping" id="fctSrchPvmCldFcts">
+  <set-property name="description"><![CDATA[AssetManager child facets property view mapping]]></set-property>
+  <set-property name="propertyView"><![CDATA[aMgrPvEList]]></set-property>
+  <set-property name="attributeValues"><![CDATA[hideAddExisting=fctSrchAvChldFctsHideAddExisting]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="fctSrchAvChldFctsHideAddExisting">
+  <set-property name="value"><![CDATA[true]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="fctSrchAvFctChildFacetsResBundle">
+  <set-property name="value"><![CDATA[atg.commerce.search.web.WebAppResources]]></set-property>
+</add-item>
+
+
+
+<!-- ======================================================================= -->
+<!-- Facet Basics itemView                                                   -->
+<!-- ======================================================================= -->
+
+<add-item item-descriptor="itemView" id="fctSrchIvFacetBasics">
+  <set-property name="name"><![CDATA[AssetManager facet basics item view]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager edit view for the basics tab]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmView]]></set-property>
+  <set-property name="applicationName"><![CDATA[ATG Faceted Search Administration]]></set-property>
+  <set-property name="uri"><![CDATA[/facetEditor/facetBasicsEdit.jsp]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemView" id="fctSrchIvFacetChild">
+  <set-property name="name"><![CDATA[AssetManager facet child item view]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager edit view for the child facets tab]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmView]]></set-property>
+  <set-property name="applicationName"><![CDATA[ATG Faceted Search Administration]]></set-property>
+  <set-property name="uri"><![CDATA[/facetEditor/facetChildEdit.jsp]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemView" id="fctSrchIvLogSearch">
+  <set-property name="name"><![CDATA[AssetManager catalog search tab item view]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager edit view for the catalog search tab]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmView]]></set-property>
+  <set-property name="applicationName"><![CDATA[ATG Faceted Search Administration]]></set-property>
+  <set-property name="uri"><![CDATA[/facetEditor/catalogSearchEdit.jsp]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemView" id="fctSrchIvCatSearch">
+  <set-property name="name"><![CDATA[AssetManager category search tab item view]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager edit view for the category search tab]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmView]]></set-property>
+  <set-property name="applicationName"><![CDATA[ATG Faceted Search Administration]]></set-property>
+  <set-property name="uri"><![CDATA[/facetEditor/categorySearchEdit.jsp]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemView" id="fctSrchIvRefConfig">
+  <set-property name="name"><![CDATA[AssetManager global facet node item view]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager edit view for the global facet node]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmView]]></set-property>
+  <set-property name="applicationName"><![CDATA[ATG Faceted Search Administration]]></set-property>
+  <set-property name="uri"><![CDATA[/facetEditor/commerceRefineConfigEdit.jsp]]></set-property>
+</add-item>
+
+<!-- ======================================================================= -->
+<!-- Facet propertyViews                                                     -->
+<!-- ======================================================================= -->
+
+<add-item item-descriptor="propertyViewMapping" id="fctSrchPvmRangeEdit">
+  <set-property name="description"><![CDATA[AssetManager editable facet value ranges property view mapping]]></set-property>
+  <set-property name="propertyView"><![CDATA[fctSrchPvRangeEdit]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyView" id="fctSrchPvRangeEdit">
+  <set-property name="name"><![CDATA[AssetManager radio group editor for facet value ranges]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager radio group based editor for facet value ranges]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmEdit]]></set-property>
+  <set-property name="type"><![CDATA[enumerated]]></set-property>
+  <set-property name="applicationName"><![CDATA[ATG Faceted Search Administration]]></set-property>
+  <set-property name="uri"><![CDATA[/facetEditor/property/facetValueRangesEdit.jsp]]></set-property>
+  <set-property name="isComponentPropertyView"><![CDATA[false]]></set-property>
+  <set-property name="isDefault"><![CDATA[false]]></set-property>
+  <set-property name="attributes"><![CDATA[]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewMapping" id="fctSrchPvmSortEdit">
+  <set-property name="description"><![CDATA[AssetManager editable facet value sorting property view mapping]]></set-property>
+  <set-property name="propertyView"><![CDATA[fctSrchPvSortEdit]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyView" id="fctSrchPvSortEdit">
+  <set-property name="name"><![CDATA[AssetManager radio group editor for facet value sorting]]></set-property>
+  <set-property name="description"><![CDATA[AssetManager radio group based editor for facet value sorting]]></set-property>
+  <set-property name="mode"><![CDATA[aMgrMmEdit]]></set-property>
+  <set-property name="type"><![CDATA[enumerated]]></set-property>
+  <set-property name="applicationName"><![CDATA[ATG Faceted Search Administration]]></set-property>
+  <set-property name="uri"><![CDATA[/facetEditor/property/facetValueSortingEdit.jsp]]></set-property>
+  <set-property name="isComponentPropertyView"><![CDATA[false]]></set-property>
+  <set-property name="isDefault"><![CDATA[false]]></set-property>
+  <set-property name="attributes"><![CDATA[]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewMapping" id="fctSrchPvmOrder">
+  <set-property name="description"><![CDATA[AssetManager facet order edit property view mapping]]></set-property>
+  <set-property name="propertyView"><![CDATA[aMgrPvEList]]></set-property>
+  <set-property name="attributeValues"><![CDATA[informationText=fctSrchAvOrderInfo]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewMapping" id="fctSrchPvmOrderBr">
+  <set-property name="description"><![CDATA[AssetManager facet order read-only property view mapping]]></set-property>
+  <set-property name="propertyView"><![CDATA[aMgrPvVList]]></set-property>
+  <set-property name="attributeValues"><![CDATA[informationText=fctSrchAvOrderInfo]]></set-property>
+</add-item>
+
+
+<add-item item-descriptor="attributeValue" id="fctSrchAvOrderInfo">
+  <set-property name="value"><![CDATA[orderInformation]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewMapping" id="fctSrchPvmExclude">
+  <set-property name="description"><![CDATA[AssetManager facet exclude edit property view mapping]]></set-property>
+  <set-property name="propertyView"><![CDATA[aMgrPvEList]]></set-property>
+  <set-property name="attributeValues"><![CDATA[informationText=fctSrchAvExcludeInfo]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewMapping" id="fctSrchPvmExcludeBr">
+  <set-property name="description"><![CDATA[AssetManager facet exclude read-only property view mapping]]></set-property>
+  <set-property name="propertyView"><![CDATA[aMgrPvVList]]></set-property>
+  <set-property name="attributeValues"><![CDATA[informationText=fctSrchAvExcludeInfo]]></set-property>
+</add-item>
+
+<add-item item-descriptor="attributeValue" id="fctSrchAvExcludeInfo">
+  <set-property name="value"><![CDATA[excludeInformation]]></set-property>
+</add-item>
+
+<!-- ======================================================================= -->
+<!-- Bug PUBLISHING-167920                                                   -->
+<!-- ======================================================================= -->
+
+<add-item item-descriptor="itemMapping" id="dcs_search_10">
+  <set-property name="viewMappings"><![CDATA[dcs_search_20]]></set-property>
+  <set-property name="itemName"><![CDATA[category]]></set-property>
+  <set-property name="description"><![CDATA[CA UI itemMapping for categories]]></set-property>
+  <set-property name="name"><![CDATA[*]]></set-property>
+  <set-property name="mode"><![CDATA[1]]></set-property>
+  <set-property name="itemPath"><![CDATA[/atg/commerce/catalog/ProductCatalog]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemMapping" id="dcs_search_11">
+  <set-property name="viewMappings"><![CDATA[dcs_search_20]]></set-property>
+  <set-property name="itemName"><![CDATA[category]]></set-property>
+  <set-property name="description"><![CDATA[CA UI itemMapping for categories]]></set-property>
+  <set-property name="name"><![CDATA[*]]></set-property>
+  <set-property name="mode"><![CDATA[2]]></set-property>
+  <set-property name="itemPath"><![CDATA[/atg/commerce/catalog/ProductCatalog]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemMapping" id="dcs_search_12">
+  <set-property name="viewMappings"><![CDATA[dcs_search_20]]></set-property>
+  <set-property name="itemName"><![CDATA[category]]></set-property>
+  <set-property name="description"><![CDATA[CA UI itemMapping for categories]]></set-property>
+  <set-property name="name"><![CDATA[*]]></set-property>
+  <set-property name="mode"><![CDATA[3]]></set-property>
+  <set-property name="itemPath"><![CDATA[/atg/commerce/catalog/ProductCatalog]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemMapping" id="dcs_search_13">
+  <set-property name="viewMappings"><![CDATA[dcs_search_20]]></set-property>
+  <set-property name="itemName"><![CDATA[category]]></set-property>
+  <set-property name="description"><![CDATA[CA UI itemMapping for categories]]></set-property>
+  <set-property name="name"><![CDATA[*]]></set-property>
+  <set-property name="mode"><![CDATA[4]]></set-property>
+  <set-property name="itemPath"><![CDATA[/atg/commerce/catalog/ProductCatalog]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemMapping" id="dcs_search_14">
+  <set-property name="viewMappings"><![CDATA[dcs_search_20]]></set-property>
+  <set-property name="itemName"><![CDATA[category]]></set-property>
+  <set-property name="description"><![CDATA[CA UI itemMapping for categories]]></set-property>
+  <set-property name="name"><![CDATA[*]]></set-property>
+  <set-property name="mode"><![CDATA[5]]></set-property>
+  <set-property name="itemPath"><![CDATA[/atg/commerce/catalog/ProductCatalog]]></set-property>
+</add-item>
+
+<add-item item-descriptor="itemViewMapping" id="dcs_search_20">
+  <set-property name="displayName"><![CDATA[CA UI itemViewMapping for categories]]></set-property>
+  <set-property name="name"><![CDATA[CategoryEdit]]></set-property>
+  <set-property name="propertyMappings"><![CDATA[catalogRefineElementMap=dcs_search_30]]></set-property>
+</add-item>
+
+<add-item item-descriptor="propertyViewMapping" id="dcs_search_30">
+  <set-property name="propertyView"><![CDATA[ca_hidden]]></set-property>
+</add-item>
+
+</import-items>
+
+</gsa-template>
+<!-- @version $Id: //product/DCS-UI/version/10.0.3/search/src/install/data/viewmapping.xml#1 $$Change: 651360 $ -->

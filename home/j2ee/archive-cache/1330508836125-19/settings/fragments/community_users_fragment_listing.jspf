@@ -1,0 +1,365 @@
+<%@ taglib uri="/paf-taglib" prefix="paf" %>
+<%@ taglib uri="/core-taglib" prefix="core" %>
+<%@ taglib uri="/admin-taglib" prefix="admin" %>
+<%@ taglib uri="/dsp" prefix="dsp" %>
+<%@ taglib uri="/jakarta-i18n-1.0" prefix="i18n" %>
+
+<paf:setFrameworkLocale />
+
+<i18n:bundle baseName="atg.portal.admin.SettingsResources" localeAttribute="userLocale" changeResponseLocale="false" />
+
+<dsp:page>
+<dsp:form action="community_users.jsp" method="POST" name="remove" synchronized="/atg/portal/admin/CommunityPrincipalFormHandler">
+
+<%--
+ // Target renderings of messages include...
+ // ( no indivuals )
+ // ( no indivuals starting with the letter <b>X</b> )
+ //  1 individual    showing 1
+ //  3 individuals   showing 3
+ //  500 indivuals   showing 26 - 50    Previous 25   Next 25
+ //  500 indivuals   showing 1 - 25     Next 25
+ //  31 indivuals   showing 1 - 25     Next 6
+ //  500 indivuals   showing 475 - 500    Previous 25
+ //  516 indivuals   showing 475 - 500    Previous 25   Next 16
+ //  1 indivual starting with <b>nam</b>   showing 1
+ //  3 indivuals starting with <b>nam</b>  showing 3
+ //  500 indivuals  starting with <b>nam</b>   showing 26 - 50    Previous 25   Next 25
+--%>
+<i18n:message id="i18n_single_guest"  key="community_members_guest"/>
+<i18n:message id="i18n_plural_guest"  key="community_members_guests"/>
+<i18n:message id="i18n_single_member" key="community_members_member"/>
+<i18n:message id="i18n_plural_member" key="community_members_members"/>
+<i18n:message id="i18n_single_leader" key="community_members_leader"/>
+<i18n:message id="i18n_plural_leader" key="community_members_leaders"/>
+
+<i18n:message id="i18n_bold" key="html-bold"/>
+<i18n:message id="i18n_end_bold" key="html-end-bold"/>
+
+<%
+ String clearGif = response.encodeURL("images/clear.gif");
+
+ boolean hasSearch              = false;
+ boolean isOnFirstPage          = false;
+ boolean isOnLastPage           = false;
+ int numberOfUsers              = 0;
+ int numberOnNextPage           = 0;
+ String userTypeString          = "";
+ Integer position     = pagingFH.getCurrentPositionInMembers(); 
+ Integer usersPerPage = pagingFH.getShowAtATime(); 
+ 
+ int startRange = ((Integer) usersPerPage).intValue()  * ((Integer) position).intValue();
+ int endRange   = (((Integer) position).intValue() +1) * ((Integer) usersPerPage).intValue();
+ String [] sortByMany = {"lastName","firstName"};
+  Collection searchedUsers = users.getUsersForRoleAndAlphabet((String) userType,(String) alphabet,(String) dsp_community_id, 0, -1, sortByMany);
+    numberOfUsers =  searchedUsers.size();
+    if (numberOfUsers < startRange ) {
+        pagingFH.setCurrentPositionInMembers(new Integer (0));
+        position =  pagingFH.getCurrentPositionInMembers(); 
+        startRange = ((Integer) usersPerPage).intValue()  * ((Integer) position).intValue();
+    }
+    isOnFirstPage = ( startRange > 0 )          ? false :true; 
+    isOnLastPage  = ( numberOfUsers > endRange) ? false :true; 
+    if (! isOnLastPage ) {
+       // if not on last page then determine number of user to display on next page
+       numberOnNextPage = (( endRange   + ((Integer) usersPerPage).intValue() ) > numberOfUsers) ?
+                           ( numberOfUsers - endRange ) :  ((Integer) usersPerPage).intValue();                            
+    }
+ if(userType.equals("guest")) {
+   userTypeString =  ( numberOfUsers == 1) ?  i18n_single_guest  :  i18n_plural_guest ;
+ } else  if(userType.equals("member"))  {
+   userTypeString =  ( numberOfUsers == 1) ?  i18n_single_member :  i18n_plural_member;
+ } else {
+   userTypeString =  ( numberOfUsers == 1) ?  i18n_single_leader :  i18n_plural_leader;
+ }  
+ if ( !alphabet.equals("ALL") && !alphabet.equals(""))  {
+    hasSearch = true;
+ }
+
+%>
+<font class="smaller"><nobr>
+<% 
+  if ( hasSearch && ( numberOfUsers == 0 ) ) { 
+    // ( no individuals starting with {bold} {alphabet}{end_bold} )
+%>
+   <i18n:message key="community_users_no_ind_with">
+    <i18n:messageArg value="<%=alphabet%>"/>
+    <i18n:messageArg value="<%=i18n_bold%>"/>
+    <i18n:messageArg value="<%=i18n_end_bold%>"/>
+   </i18n:message>
+
+<%
+  }
+  if ( !hasSearch && ( numberOfUsers == 0 ) ) {
+  //       ( no individuals  )
+%>
+  <i18n:message key="community_users_no_ind"/>
+<%
+  }
+  if ( numberOfUsers > 0 ) {
+    if ( hasSearch ) {
+      if (numberOfUsers < endRange) {   
+//{numberOfUsers} {userTypeString} beginning with {alphabet}&nbsp;&nbsp;&nbsp;&nbsp;Showing {startRange+1} - {numberOfUsers}
+%>
+   <i18n:message key="community_users_number_of_x_with">
+    <i18n:messageArg value="<%=new Integer(numberOfUsers).toString()%>"/>
+    <i18n:messageArg value="<%=userTypeString%>"/>
+    <i18n:messageArg value="<%=alphabet%>"/>
+    <i18n:messageArg value="<%=i18n_bold%>"/>
+    <i18n:messageArg value="<%=i18n_end_bold%>"/>
+   </i18n:message>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+   <i18n:message key="community_users_showing_x_thru_y">
+    <i18n:messageArg value="<%=new Integer(startRange+1).toString()%>"/>
+    <i18n:messageArg value="<%=new Integer(numberOfUsers).toString()%>"/>
+   </i18n:message>
+<%        
+      } else { 
+//{numberOfUsers} {userTypeString} beginning with {alphabet}&nbsp;&nbsp;&nbsp;&nbsp;Showing {startRange+1} - {endRange}
+%>
+
+   <i18n:message key="community_users_number_of_x_with">
+    <i18n:messageArg value="<%=new Integer(numberOfUsers).toString()%>"/>
+    <i18n:messageArg value="<%=userTypeString%>"/>
+    <i18n:messageArg value="<%=alphabet%>"/>
+    <i18n:messageArg value="<%=i18n_bold%>"/>
+    <i18n:messageArg value="<%=i18n_end_bold%>"/>
+   </i18n:message>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+   <i18n:message key="community_users_showing_x_thru_y">
+    <i18n:messageArg value="<%=new Integer(startRange+1).toString()%>"/>
+    <i18n:messageArg value="<%=new Integer(endRange).toString()%>"/>
+   </i18n:message>
+
+<%
+      }
+    } else { // NO search
+      if (numberOfUsers < endRange) {
+//{numberOfUsers} {userTypeString}&nbsp;&nbsp;&nbsp;&nbsp;Showing {startRange+1} - {numberOfUsers}
+%>
+   <i18n:message key="community_users_number_of_x">
+    <i18n:messageArg value="<%=new Integer(numberOfUsers).toString()%>"/>
+    <i18n:messageArg value="<%=userTypeString%>"/>
+   </i18n:message>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+   <i18n:message key="community_users_showing_x_thru_y">
+    <i18n:messageArg value="<%=new Integer(startRange+1).toString()%>"/>
+    <i18n:messageArg value="<%=new Integer(numberOfUsers).toString()%>"/>
+   </i18n:message>
+<%
+      } else { 
+//{numberOfUsers} {userTypeString}&nbsp;&nbsp;&nbsp;&nbsp;Showing {startRange+1} - {endRange}
+%>
+   <i18n:message key="community_users_number_of_x">
+    <i18n:messageArg value="<%=new Integer(numberOfUsers).toString()%>"/>
+    <i18n:messageArg value="<%=userTypeString%>"/>
+   </i18n:message>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+   <i18n:message key="community_users_showing_x_thru_y">
+    <i18n:messageArg value="<%=new Integer(startRange+1).toString()%>"/>
+    <i18n:messageArg value="<%=new Integer(endRange).toString()%>"/>
+   </i18n:message>
+
+<%  
+      }  
+    }
+  }
+%>
+
+<core:CreateUrl id="basePageUrl" url="community_users.jsp">
+ <core:UrlParam param="mode" value="<%=mode%>"/>
+ <core:UrlParam param="paf_community_id" value="<%=dsp_community_id%>"/>
+ <paf:encodeUrlParam param="paf_page_url" value="<%=dsp_page_url%>"/>
+<%
+ if ( !isOnFirstPage && (startRange > 0 ) && (numberOfUsers > 0)) { 
+%>
+
+   <i18n:message id="prevLink" key="community_users_previous_x">
+    <i18n:messageArg value="<%=usersPerPage.toString()%>"/>
+   </i18n:message>
+
+&nbsp;&nbsp;&nbsp;<dsp:a href="<%=basePageUrl.getNewUrl()%>" bean="PagingFormHandler.prevMembers" value=""><font class="small"><%=prevLink%></font></dsp:a>
+
+<%
+ }
+%>
+
+<% if (( !isOnLastPage ) && (numberOfUsers > 0)) {
+%>
+   <i18n:message id="nextLink" key="community_users_next_x">
+    <i18n:messageArg value="<%=new Integer(numberOnNextPage).toString()%>" />
+   </i18n:message>
+
+&nbsp;&nbsp;&nbsp;<dsp:a href="<%=basePageUrl.getNewUrl()%>" bean="PagingFormHandler.nextMembers" value=""><font class="small" ><%=nextLink%></font></dsp:a>
+
+<% 
+ }
+%>
+</core:CreateUrl>
+</nobr>
+</font>
+
+
+<core:If value="<%=(numberOfUsers >  0 )%>">
+<%
+ boolean linkACL = ( userType.equals("member") ) ? true : false ; 
+ String colSpan = ( linkACL ) ? "6" : "5";
+%>
+<br>
+<table cellpadding=0 cellspacing=0 border="0" width="100%" >
+
+<tr>
+<td  NOWRAP width="48"><font size="-2" color="#D7DEE5"><nobr><i18n:message key="community_members_addidividuals_js_select_all"/>&nbsp;&nbsp;</nobr></font></td>
+
+<td colspan="<%=colSpan%>"></td>
+</tr>
+
+<tr>
+<td width="48"><font class="smaller"  style="text-decoration:none;" color="#000000"><nobr>
+<script language="Javascript">
+var toggle = 1;
+function all(toggleB) {
+
+ formRef = eval( "document.forms['remove']"); 
+
+ if ( formRef != null ) {
+  i = 0;
+  itemsFound = 0;
+  itemNames = "";
+  currUserId  = "";
+  prevUserId  = "";
+  while ( i < formRef.elements.length ) {
+
+    if( ( formRef.elements[i].name.indexOf("principalIds") > -1) && 
+        (  formRef.elements[i].name.indexOf("_D") == -1) )           {
+      if (toggle == 1) {
+           formRef.elements[i].checked = true;
+      } else {
+           formRef.elements[i].checked = false;
+      }
+    }
+   i++;
+  }
+  toggle = ( toggle == 1) ? 0 : 1 ;
+ }
+
+}
+document.write("<a href='Javascript:all(-1)' target='_self' style='text-decoration:none'><i18n:message key="community_members_addidividuals_js_select_all"/></a> ");
+</script>&nbsp;</nobr>&nbsp;</font></td>
+
+<td nowrap><font class="smaller" style="text-decoration:none;font-weight:700" color="#333333"><i18n:message key="community_members_name"/></font></td>
+<td nowrap><font class="smaller" style="text-decoration:none;"><i18n:message key="community_members_user_name"/>&nbsp;&nbsp;</font></td>
+<td nowrap><font class="smaller" style="text-decoration:none;"><i18n:message key="community_members_organization"/>&nbsp;&nbsp;</font></td>
+<td nowrap><font class="smaller" style="text-decoration:none;"><i18n:message key="community_members_email"/>&nbsp;&nbsp;</font></td>
+<core:If value="<%=linkACL%>">
+<td  align="center" NOWRAP><nobr><font class="smaller" style="text-decoration:none;font-weight:300" color="#333333" >&nbsp;<i18n:message key="community_members_acl_edit_title"/></font></nobr></td>
+</core:If>
+
+</tr>
+
+<tr>
+<td colspan="<%=colSpan%>" bgcolor="#666666"><img src="<%=clearGif%>"  width="12" height="1" border="0"></td>
+</tr>
+<%
+  String bgcolor       = "ffffff";
+  String userName      = "";
+  String firstName     = "";
+  String lastName      = "";
+  String loginName     = "";
+  String userEmail     = "";
+  String userOrg       = "";
+  int boxCount = 0;
+ %>
+
+
+<core:createUrl id="editAclUrl" url="community_users.jsp">
+ <core:UrlParam param="mode" value='<%=mode+"d"%>'/>
+ <core:UrlParam param="paf_community_id" value="<%=dsp_community_id%>"/>
+ <paf:encodeUrlParam param="paf_page_url" value="<%=dsp_page_url%>"/>
+
+
+  <core:ForEach id="roles"
+        values='<%= users.getUsersForRoleAndAlphabet((String) userType,(String) alphabet,(String) dsp_community_id, startRange, endRange, sortByMany) %>'
+        castClass="atg.userdirectory.User"
+        elementId="user">
+
+<tr bgcolor="#<%=bgcolor%>">
+
+ <%
+   bgcolor = ( bgcolor.equals("ffffff") ) ? "dddddd" : "ffffff";
+
+   firstName  = ( user.getFirstName()    == null ) ? "&nbsp;" : user.getFirstName() ;
+   lastName   = ( user.getLastName()     == null ) ? "&nbsp;" : user.getLastName() ;
+   userEmail  = ( user.getEmailAddress() == null ) ? "&nbsp;" : user.getEmailAddress() ;
+   loginName  = ( user.getLogin()        == null ) ? "&nbsp;" : user.getLogin() ;
+if ( user.getParentOrganization() != null ) {
+   userOrg    = ( user.getParentOrganization().getName() == null ) ? "&nbsp;" : user.getParentOrganization().getName()  ;
+} else {
+    userOrg = "";
+}
+  %>
+<td align="middle"><font class="smaller"><dsp:input type="checkbox" bean="CommunityPrincipalFormHandler.principalIds" value="<%=user.getPrimaryKey()%>"/>&nbsp;</font></td>
+<td nowrap><font class="adminbody"><%= firstName   %>&nbsp;<%= lastName %>&nbsp;</font></td>
+<td nowrap><font class="adminbody"><%= loginName   %>&nbsp;</font></td>
+<td nowrap width="40%"><font class="adminbody"><%= userOrg %>&nbsp;</font></td>
+<td nowrap width="30"><font class="adminbody"><%= userEmail   %>&nbsp;</font></td>
+
+
+<core:If value="<%=linkACL%>"> 
+ <td align="center"><font class="smaller">&nbsp;<a href='<%=editAclUrl.getNewUrl()+"&user="+user.getPrimaryKey()%>'><font class="smaller" style="text-decoration:none;font-weight:300" color="#0000cc" ><i18n:message key="community_members_acl_edit_link_text"/></font></a></font></td>
+</core:If>
+
+</tr>
+</core:ForEach>
+</core:createUrl>
+<tr>
+<td colspan="<%=colSpan%>" bgcolor="#666666"><img src="<%=clearGif%>"  width="1" height="1" border="0"></td>
+</tr>
+</table>
+
+  <core:CreateUrl id="gearUrlS" url="community_users.jsp" >
+ <core:UrlParam param="userFilter" value='<%=request.getParameter("userFilter")%>' />
+        <core:UrlParam param="mode" value="<%=mode%>"/>
+        <core:UrlParam param="paf_page_id"       value="<%=dsp_page_id  %>"/>
+        <paf:encodeUrlParam param="paf_page_url" value="<%=dsp_page_url  %>"/>
+        <core:UrlParam param="paf_community_id"  value="<%=dsp_community_id  %>"/>
+         <dsp:input type="hidden" bean="CommunityPrincipalFormHandler.successURL" value="<%= (String) gearUrlS.getNewUrl() %>"/>
+  </core:CreateUrl>
+  <core:CreateUrl id="gearUrlC" url="community_users.jsp" >
+ <core:UrlParam param="userFilter" value='<%=request.getParameter("userFilter")%>' />
+        <core:UrlParam param="mode" value="<%=mode%>"/>
+        <core:UrlParam param="paf_page_id"       value="<%=dsp_page_id  %>"/>
+        <paf:encodeUrlParam param="paf_page_url" value="<%=dsp_page_url  %>"/>
+        <core:UrlParam param="paf_community_id"  value="<%=dsp_community_id  %>"/>
+         <dsp:input type="hidden" bean="CommunityPrincipalFormHandler.cancelURL" value="<%= (String) gearUrlC.getNewUrl() %>"/>
+  </core:CreateUrl>
+  <core:CreateUrl id="gearUrlF" url="community_users.jsp" >
+ <core:UrlParam param="userFilter" value='<%=request.getParameter("userFilter")%>' />
+        <core:UrlParam param="mode" value="<%=mode%>"/>
+        <core:UrlParam param="paf_page_id"       value="<%=dsp_page_id  %>"/>
+        <paf:encodeUrlParam param="paf_page_url" value="<%=dsp_page_url  %>"/>
+        <core:UrlParam param="paf_community_id"  value="<%=dsp_community_id  %>"/>
+         <dsp:input type="hidden" bean="CommunityPrincipalFormHandler.failureURL" value="<%= (String) gearUrlF.getNewUrl() %>"/>
+   </core:CreateUrl>
+
+
+<font class="small"><br>
+
+<dsp:input type="hidden" bean="PagingFormHandler.CurrentPositionInMembers" value="0"/>
+
+<i18n:message id="done01" key="remove_selected" />
+<dsp:input type="SUBMIT"  bean="CommunityPrincipalFormHandler.unassignPrincipals" value="<%= done01 %>" />
+<i18n:message id="cancel01" key="reset" />&nbsp;
+<input type="RESET" value="<%= cancel01 %>"/> 
+</font>
+
+ <input type="hidden" name="userFilter" value='<%=request.getParameter("userFilter")%>' />
+
+
+<br>
+</core:If>
+</dsp:form>
+</dsp:page>
+<%-- @version $Id: //app/portal/version/10.0.3/paf/settings.war/fragments/community_users_fragment_listing.jspf#2 $$Change: 651448 $--%>
+
+

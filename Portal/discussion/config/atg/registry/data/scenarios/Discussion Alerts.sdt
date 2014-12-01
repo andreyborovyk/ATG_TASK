@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE scenario
+  SYSTEM
+  "dynamosystemresource:/atg/scenario/definition/sdl.dtd">
+
+<scenario author="admin" creation-time="999469321059" enabled="false" last-modified-by="admin" modification-time="1005954259394">
+  <segment migrate-users="true">
+    <segment-name>New Forum Alert</segment-name>
+    <!--================================-->
+    <!--== New Forum Created  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.portal.gear.discussion.NewForumMessage</event-name>
+    </event>
+    <!--================================-->
+    <!--== Send alert (Alert Recipients)  -->
+    <!--================================-->
+    <action id="2">
+      <action-name>sendAlert</action-name>
+      <action-param construct="sendAlert-to-event-community" name="recipientType">
+        <constant>alert_community</constant>
+      </action-param>
+      <action-param name="recipientID" placeholder-name="Alert Recipients">
+        <event-property construct="event-property">
+          <property-name>communityId</property-name>
+        </event-property>
+      </action-param>
+    </action>
+  </segment>
+</scenario>

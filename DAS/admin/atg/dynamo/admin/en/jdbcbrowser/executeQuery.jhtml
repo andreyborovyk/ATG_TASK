@@ -1,0 +1,45 @@
+<nucleus type=import>
+  /atg/dynamo/admin/jdbcbrowser/ExecuteQueryDroplet
+  /atg/dynamo/admin/jdbcbrowser/ResultSetDroplet
+</nucleus>
+
+<html>
+<title>Execute Query</title>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+<IMG SRC="images/jdbc-banner.gif" ALT="JDBC Browser" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+<a href="/">admin</a>/<a href="index.jhtml">JDBC Browser</a>/Execute Query
+<h1>Execute Query</h1>
+
+<droplet name="ExecuteQueryDroplet">
+  <oparam name="displayResultSet">
+    <h2>ResultSet</h2>
+    <droplet name="ResultSetDroplet">
+    </droplet>
+  </oparam>
+  <oparam name="displayUpdateCount">
+    <h2>UpdateCount <valueof param="updateCount"></valueof></h2>
+  </oparam>
+</droplet>
+
+<form action="executeQuery.jhtml" method=post>
+
+<h2>Enter Query</h2>
+
+<p>You may enter any SQL statement (SELECT, INSERT, UPDATE, etc.)
+
+<textarea property="ExecuteQueryDroplet.query" rows=10 cols=80></textarea>
+
+<p><input type=checkbox property="ExecuteQueryDroplet.longForm">
+Show resulting column headings in long form
+
+<p>
+<input type=submit property="ExecuteQueryDroplet.operation" value="execute and commit">
+<input type=submit property="ExecuteQueryDroplet.operation" value="execute and rollback">
+
+</form>
+
+</body>
+</html>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/jdbcbrowser/executeQuery.jhtml#2 $$Change: 651448 $ */</java>
+

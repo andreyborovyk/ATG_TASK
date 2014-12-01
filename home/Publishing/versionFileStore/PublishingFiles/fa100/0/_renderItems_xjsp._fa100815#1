@@ -1,0 +1,44 @@
+<%--
+  This page is used to display a profile property that represents a collection of items.
+  The profile property name and the name of the property to display for each item are
+  configurable.
+
+  @param profilePropertyName      The name of the profile property containing the collection.
+  @param itemDisplayPropertyName  The property name to display for each item in the collection.
+  --%>
+
+<%@ taglib prefix="c"     uri="http://java.sun.com/jstl/core"                    %>
+<%@ taglib prefix="dspel" uri="http://www.atg.com/taglibs/daf/dspjspELTaglib1_0" %>
+
+<dspel:page>
+  <dspel:importbean var="profile" bean="/atg/userprofiling/Profile"/>
+
+  <%-- Unpack DSP parameters --%>
+  <dspel:getvalueof var="paramProfilePropertyName" param="profilePropertyName"/>
+  <dspel:getvalueof var="paramItemDisplayPropertyName" param="itemDisplayPropertyName"/>
+
+  <%-- Provide default values --%>
+  <c:if test="${paramItemDisplayPropertyName eq null}">
+    <c:set var="paramItemDisplayPropertyName" value="itemDisplayName"/>
+  </c:if>
+
+  <html>
+    <head>
+      <title>Test page displaying a collection of items stored in the user profile</title>
+    </head>
+    <body>
+
+    <dspel:getvalueof var="collection" bean="Profile.${paramProfilePropertyName}"/>
+
+    <ul>
+    <c:forEach var="collectionItem" items="${collection}" varStatus="loopInfo">
+      <dspel:tomap var="item" value="${collectionItem}"/>
+      <li><c:out value="${item[paramItemDisplayPropertyName]}"/></li>
+    </c:forEach>
+    </ul>
+
+    </body>
+  </html>
+
+</dspel:page>
+<%-- @version $Id: //application/campaigns/version/10.0/communication/common/src/web-apps/Outreach/collections/renderItems.jsp#1 $$Change: 610294 $--%>

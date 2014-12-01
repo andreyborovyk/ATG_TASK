@@ -1,0 +1,89 @@
+<!--
+  <ATGCOPYRIGHT>
+  Copyright (C) 1999-2010 Art Technology Group, Inc.
+  All Rights Reserved.  No use, copying or distribution of this
+  work may be made except in accordance with a valid license
+  agreement from Art Technology Group.  This notice must be
+  included on all copies, modifications and derivatives of this
+  work.
+ 
+  Art Technology Group (ATG) MAKES NO REPRESENTATIONS OR WARRANTIES
+  ABOUT THE SUITABILITY OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT. ATG SHALL NOT BE
+  LIABLE FOR ANY DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING,
+  MODIFYING OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+ 
+  "Dynamo" is a trademark of Art Technology Group, Inc.
+  </ATGCOPYRIGHT>
+
+  This is a test page for DCS. 
+
+  It should not be used as a style guide for writing new pages.
+  -->
+<java type="import">atg.repository.*</java>
+<java type="import">atg.targeting.*</java>
+<java type="import">atg.naming.*</java>
+<java type="import">atg.servlet.jsp.*</java>
+<html>
+<title>Test of DCS</title>
+<h1>Test of DCS</h1>
+This page attempts to walk the catalog tree at component 
+"/atg/registry/RepositoryTargeters/ProductCatalog/RootCategories", counting 
+entries. It can be used as a test of performance accessing the catalog.
+<br>
+<br>
+<java type="class">
+static final int MAX = 10000;
+static final int PRINT_MAX = 10;
+</java>
+
+<java type="class">
+int countChildren(Object item, int sum, int max, ByteBufferedBodyContent out) 
+	throws IOException
+{
+	if (!(item instanceof RepositoryItem))
+		return sum;
+	if (sum < PRINT_MAX)
+		out.print("&nbsp;&nbsp;" + item + "<br>");
+	sum++;	// count "item"
+	RepositoryItem ri = (RepositoryItem) item;
+	List l = (List) ri.getPropertyValue("fixedChildCategories");
+	for (int j=0; sum < max && j < l.size(); j++)
+		sum = countChildren(l.get(j), sum, max, out);
+	return sum;
+}
+</java>
+
+<java>
+int sum = 0;
+int firstpass = -1;
+Targeter t = (Targeter) request.resolveName("/atg/registry/RepositoryTargeters/ProductCatalog/RootCategories");
+Object tsm = request.resolveName("/atg/targeting/TargetingSourceMap");
+if (tsm != null && tsm instanceof NameResolver) {
+	NameResolver nr = (NameResolver) tsm;
+	try {
+	  Object a[] = t.target(nr);
+	  out.print("First " + PRINT_MAX + " children:<br>");
+	  int lastsum;
+	  do {
+		lastsum = sum;
+		for (int i=0; i < a.length; i++) {
+			sum = countChildren(a[i], sum, MAX, out);
+			if (sum == MAX)
+				break;
+		}
+		if (firstpass == -1)
+			firstpass = sum;
+	  } while (sum < MAX && sum > lastsum);
+	}
+	catch (TargetingException te) {
+	  out.println("<br>Targeting operation raised the following exception:\n" + te);
+	}
+}
+out.println("<br>Counted " + sum + " catalog items from " + firstpass + 
+            " unique entries.");
+</java>
+</html>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/DCS/admin/atg/commerce/admin/en/testDCS.jhtml#2 $$Change: 651448 $*/</java>
+

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE gsa-template SYSTEM "dynamosystemresource:/atg/dtds/gsa/gsa_1.0.dtd">
+<gsa-template>
+  <import-items>
+    <!--
+      Possible options for the sync steps
+    -->
+    <add-item item-descriptor="syncStepOption" id="srchHarvestContent">
+      <set-property name="name"             value="Harvest Content"/>
+      <set-property name="optionType"       value="Harvest_HarvestContent"/>
+    </add-item>
+    <add-item item-descriptor="syncStepOption" id="srchUseLocalContentIfAvailable">
+      <set-property name="name"             value="Use local content if available, else harvest"/>
+      <set-property name="optionType"       value="Harvest_UseLocalContentIfAvailable"/>
+    </add-item>   
+    <add-item item-descriptor="syncStepOption" id="srchDoNotHarvest">
+      <set-property name="name"             value="Do not harvest content"/>
+      <set-property name="optionType"       value="Harvest_DoNotHarvest"/>
+    </add-item>   
+    <add-item item-descriptor="syncStepOption" id="srchUseCleanPartition">
+      <set-property name="name"             value="Start with clean index"/>
+      <set-property name="optionType"       value="Partition_UseCleanPartition"/>
+    </add-item>   
+    <add-item item-descriptor="syncStepOption" id="srchUseExistingPartition">
+      <set-property name="name"             value="Use existing index"/>
+      <set-property name="optionType"       value="Partition_UseExistingPartition"/>
+    </add-item>   
+    <add-item item-descriptor="syncStepOption" id="srchPreCustomizationLoadLatest">
+      <set-property name="name"             value="Load latest pre-index customizations"/>
+      <set-property name="optionType"       value="PreIndexCustomizations_LoadLatest"/>
+    </add-item>   
+    <add-item item-descriptor="syncStepOption" id="srchPreCustomizationUseExisting">
+      <set-property name="name"             value="Use existing pre-index customizations"/>
+      <set-property name="optionType"       value="PreIndexCustomizations_UseExisting"/>
+    </add-item>   
+    <add-item item-descriptor="syncStepOption" id="srchBuildIndex">
+      <set-property name="name"             value="Process all content from selected content sets"/>
+      <set-property name="optionType"       value="Content_BuildIndex"/>
+    </add-item>   
+    <add-item item-descriptor="syncStepOption" id="srchUpdateIndex">
+      <set-property name="name"             value="Process updated content from selected content sets"/>
+      <set-property name="optionType"       value="Content_UpdateIndex"/>
+    </add-item>   
+    <add-item item-descriptor="syncStepOption" id="srchDoNotIndex">
+      <set-property name="name"             value="Do not index content"/>
+      <set-property name="optionType"       value="Content_DoNotIndex"/>
+    </add-item>   
+    <add-item item-descriptor="syncStepOption" id="srchPostCustomizationLoadLatest">
+      <set-property name="name"             value="Load latest post-index customizations"/>
+      <set-property name="optionType"       value="PostIndexCustomization_LoadLatest"/>
+    </add-item>   
+    <add-item item-descriptor="syncStepOption" id="srchPostCustomizationUseExisting">
+      <set-property name="name"             value="Use existing post index customizations"/>
+      <set-property name="optionType"       value="PostIndexCustomization_UseExisting"/>
+    </add-item>   
+    <add-item item-descriptor="syncStepOption" id="srchDeployIndex">
+      <set-property name="name"             value="Deploy index to selected search environments"/>
+      <set-property name="optionType"       value="Deployment_DeployIndex"/>
+    </add-item>   
+    <add-item item-descriptor="syncStepOption" id="srchDoNotDeployIndex">
+      <set-property name="name"             value="Do not deploy index"/>
+      <set-property name="optionType"       value="Deployment_DoNotDeployIndex"/>
+    </add-item>   
+
+    <add-item item-descriptor="syncStepOption" id="srchDefaultIndexingOption">
+      <set-property name="name"             value="Build index"/>
+      <set-property name="optionType"       value="Indexing_DefaultOption"/>
+    </add-item>   
+
+    
+    <!--
+      Default types of synchronization steps
+    -->
+    <add-item item-descriptor="syncStepType" id="srchHarvest">
+      <set-property name="name"             value="Harvesting of Content"/>
+      <set-property name="availableOptions" value="srchHarvestContent,srchUseLocalContentIfAvailable,srchDoNotHarvest"/>
+      <set-property name="enum"             value="harvest_step"/>
+      <set-property name="superStepEnum"    value="content_super_step"/>
+    </add-item>
+    <add-item item-descriptor="syncStepType" id="srchPartition">
+      <set-property name="name"             value="Partition"/>
+      <set-property name="availableOptions" value="srchUseCleanPartition,srchUseExistingPartition"/>
+      <set-property name="enum"             value="partition_step"/>
+      <set-property name="superStepEnum"    value="content_super_step"/>
+    </add-item>
+    <add-item item-descriptor="syncStepType" id="srchPreIndexCustomizations">
+      <set-property name="name"             value="Pre-Index Customizations"/>
+      <set-property name="availableOptions" value="srchPreCustomizationLoadLatest,srchPreCustomizationUseExisting"/>
+      <set-property name="enum"             value="pre_index_customization_step"/>
+      <set-property name="superStepEnum"    value="content_super_step"/>
+    </add-item>
+    <add-item item-descriptor="syncStepType" id="srchContent">
+      <set-property name="name"             value="Content"/>
+      <set-property name="availableOptions" value="srchBuildIndex,srchUpdateIndex,srchDoNotIndex"/>
+      <set-property name="enum"             value="content_step"/>
+      <set-property name="superStepEnum"    value="content_super_step"/>
+    </add-item>
+    <add-item item-descriptor="syncStepType" id="srchPostIndexCustomizations">
+      <set-property name="name"             value="Post-Index Customizations"/>
+      <set-property name="availableOptions" value="srchPostCustomizationLoadLatest,srchPostCustomizationUseExisting"/>
+      <set-property name="enum"             value="post_index_customization_step"/>
+      <set-property name="superStepEnum"    value="content_super_step"/>
+    </add-item>
+    <add-item item-descriptor="syncStepType" id="srchIndexing">
+      <set-property name="name"             value="Indexing"/>
+      <set-property name="availableOptions" value="srchDefaultIndexingOption"/>
+      <set-property name="enum"             value="indexing_step"/>
+      <set-property name="superStepEnum"    value="indexing_super_step"/>
+    </add-item>
+    <add-item item-descriptor="syncStepType" id="srchDeployment">
+      <set-property name="name"             value="Deployment"/>
+      <set-property name="availableOptions" value="srchDeployIndex,srchDoNotDeployIndex"/>
+      <set-property name="enum"             value="deployment_step"/>
+      <set-property name="superStepEnum"    value="deployment_super_step"/>
+    </add-item>
+     
+    <!--
+      Default types of synchronization tasks
+    -->
+    <add-item item-descriptor="syncTaskType" id="srchComplete">
+      <set-property name="name"             value="Complete"/>
+      <set-property name="syncSteps"        value="srchPartition,srchPreIndexCustomizations,srchContent,srchPostIndexCustomizations,srchIndexing,srchDeployment"/>
+      <set-property name="enum"             value="complete"/>
+    </add-item>
+	<add-item item-descriptor="syncTaskType" id="srchFullIndexWithSelectedContent">
+      <set-property name="name"             value="Full index with selected content"/>
+      <set-property name="syncSteps"        value="srchPartition,srchPreIndexCustomizations,srchContent,srchPostIndexCustomizations,srchIndexing,srchDeployment"/>
+      <set-property name="enum"             value="full_selected_content"/>
+    </add-item>
+    <add-item item-descriptor="syncTaskType" id="srchIncremental">
+      <set-property name="name"             value="Incremental"/>
+      <set-property name="syncSteps"        value="srchPartition,srchPreIndexCustomizations,srchContent,srchPostIndexCustomizations,srchIndexing,srchDeployment"/>
+      <set-property name="enum"             value="incremental"/>
+    </add-item>
+    <add-item item-descriptor="syncTaskType" id="srchCustom">
+      <set-property name="name"             value="Custom"/>
+      <set-property name="syncSteps"        value="srchPartition,srchPreIndexCustomizations,srchContent,srchPostIndexCustomizations,srchIndexing,srchDeployment"/>
+      <set-property name="enum"             value="custom"/>
+    </add-item>
+    <add-item item-descriptor="syncTaskType" id="srchHarvestContentOnly">
+      <set-property name="name"             value="Harvest Content Only"/>
+      <set-property name="syncSteps"        value="srchHarvest"/>
+      <set-property name="enum"             value="harvest_only"/>
+    </add-item>
+    <add-item item-descriptor="syncTaskType" id="srchLoadPostCustomizationsOnly">
+      <set-property name="name"             value="Load Post Index Customizations Only"/>
+      <set-property name="syncSteps"        value="srchPartition,srchPreIndexCustomizations,srchContent,srchPostIndexCustomizations,srchIndexing,srchDeployment"/>
+      <set-property name="enum"             value="apply_post_index_customization_only"/>
+    </add-item>
+    <add-item item-descriptor="syncTaskType" id="srchDeployOnly">
+      <set-property name="name"             value="Deploy Only"/>
+      <set-property name="syncSteps"        value="srchDeployment"/>
+      <set-property name="enum"             value="deploy_only"/>
+    </add-item>
+    <add-item item-descriptor="syncTaskType" id="srchDeployHistorical">
+      <set-property name="name"             value="Deploy Historical"/>
+      <set-property name="syncSteps"        value="srchDeployment"/>
+      <set-property name="enum"             value="deploy_historical"/>
+    </add-item>
+    <add-item item-descriptor="syncTaskType" id="srchPushCustomizationRealTime">
+      <set-property name="name"             value="Push Customization Real Time"/>
+      <set-property name="syncSteps"        value="srchPartition,srchPreIndexCustomizations,srchContent,srchPostIndexCustomizations,srchIndexing,srchDeployment"/>
+      <set-property name="enum"             value="push_customization_real_time"/>
+    </add-item>
+
+    <add-item item-descriptor="syncTaskType" id="srchPreIndexCustomizationsOnly">
+      <set-property name="name"             value="Load Pre Index Customizations"/>
+      <set-property name="syncSteps"        value="srchPartition,srchPreIndexCustomizations,srchContent,srchIndexing"/>
+      <set-property name="enum"             value="apply_pre_index_customization_only"/>
+    </add-item>
+
+    <!-- TODO
+    <add-item item-descriptor="syncTaskType" id="srchAddRemovePartition">
+      <set-property name="name"             value="Add or Remove Partition"/>
+      <set-property name="syncSteps"        value="???"/>
+      <set-property name="enum"             value="add_remove_partition"/>
+    </add-item>
+    <add-item item-descriptor="syncTaskType" id="srchRevertIndex">
+      <set-property name="name"             value="Revert Index"/>
+      <set-property name="syncSteps"        value="???"/>
+      <set-property name="enum"             value="revert_index"/>
+    </add-item>
+    TODO -->
+        
+    <!--
+      Default OOTB local customization adapters
+      The 'name' corresponds to a resource bundle key in the WebAppResources.properties file
+      The handlingService is the path of the nucleus component that implements the atg.search.adapter.customization.CustomizationDataAdapter interface.
+      TODO Move it to CustomizationAdapterRegistry. Need to remove ContentService.localCustomizationAdapterId property first.
+    -->
+    <add-item item-descriptor="contentSourceAdapter" id="srchLocalCustomizationDataAdapter">
+      <set-property name="name"             value="local"/>
+      <set-property name="handlingService"  value="/atg/searchadmin/adapter/customization/LocalCustomizationDataAdapter"/>
+    </add-item>
+    
+  </import-items>
+</gsa-template>
+<!-- @version $Id: //application/SearchAdmin/version/10.0.3/common/src/data/initial/searchadmin-data.xml#2 $$Change: 651448 $-->

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE database-initializer SYSTEM "http://www.atg.com/dtds/dbinit_1_0.dtd">
+<database-initializer>
+
+  <schema id="allSchema">
+    
+    <sql>
+      <path>
+	<create>
+	  sql/install/${database}/alert_ddl.sql
+	</create>
+	<drop>
+	  sql/uninstall/${database}/drop_alert_ddl.sql
+	</drop>
+      </path>
+    </sql>
+    <sql>
+      <path>
+	<create>
+	  sql/install/${database}/membership_ddl.sql
+	</create>
+	<drop>
+	  sql/uninstall/${database}/drop_membership_ddl.sql
+	</drop>
+      </path>
+    </sql>
+
+    <sql>
+      <path>
+	<create>
+	  sql/install/${database}/paf_mappers_ddl.sql
+	</create>
+	<drop>
+	  sql/uninstall/${database}/drop_paf_mappers_ddl.sql
+	</drop>
+      </path>
+    </sql>
+
+    <sql>
+      <path>
+	<create>
+	  sql/install/${database}/portal_ddl.sql
+	</create>
+	<drop>
+	  sql/uninstall/${database}/drop_portal_ddl.sql
+	</drop>
+      </path>
+    </sql>
+  </schema>	
+  <schema id="profileSchema">						
+    <sql>
+      <path>
+	<create>
+	  sql/install/${database}/profile_ddl.sql
+	</create>
+	<drop>
+	  sql/uninstall/${database}/drop_profile_ddl.sql
+	</drop>
+      </path>
+    </sql>
+    
+  </schema>
+
+
+
+  <server-instance-type id="management">
+    
+    <datasource id="management">
+      <schema id="allSchema"/>
+    </datasource>	
+    
+  </server-instance-type>
+  
+  <server-instance-type id="production">
+    <datasource id="switchingCore">
+      <schema id="profileSchema"/>
+    </datasource>
+    <datasource id="nonswitchingCore">
+      <schema id="profileSchema"/>
+    </datasource>
+  </server-instance-type>
+  
+  <server-instance-type id="staging">
+    <datasource id="stagingnonswitchingCore">
+      <schema id="profileSchema"/>
+    </datasource>
+    <datasource id="stagingswitchingCore">
+      <schema id="profileSchema"/>
+    </datasource>
+  </server-instance-type>
+
+  
+  <server-instance-type id="datawarehouse_loader">
+    <datasource id="all">
+      <schema id="allSchema"/>
+    </datasource>
+  </server-instance-type>
+  
+  <server-instance-type id="svcagent">
+    <datasource id="svcagent">
+      <schema id="allSchema"/>
+    </datasource>
+  </server-instance-type>
+
+</database-initializer>
+<!-- @version $Id: //app/portal/version/10.0.3/paf/cim/dbinit.xml#2 $$Change: 651448 $-->

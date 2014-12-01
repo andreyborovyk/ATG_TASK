@@ -1,0 +1,161 @@
+<importbean bean="/atg/commerce/order/purchase/PaymentGroupDroplet">
+<importbean bean="/atg/commerce/order/purchase/PaymentGroupFormHandler">
+<importbean bean="/atg/dynamo/droplet/ErrorMessageForEach">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/Switch">
+<importbean bean="/atg/dynamo/droplet/BeanProperty">
+<importbean bean="/atg/userprofiling/Profile">
+
+<body>
+<a href="index.jhtml">Catalog Home</a> - 
+<a href="product_search.jhtml">Product Search</a> - 
+<a href="shoppingcart.jhtml">Shopping Cart</a> - 
+<a href="lists.jhtml">My Lists</a> - 
+<a href="comparison.jhtml">Product Comparison</a> -
+<a href="giftlist_search.jhtml">Gift List Search</a> - 
+<droplet bean="/atg/dynamo/droplet/Switch">
+  <param name="value" value="bean:/atg/userprofiling/Profile.transient">
+  <oparam name="false">
+    <a href="logout.jhtml">Logout</a>
+  </oparam>
+  <oparam name="true">
+    <a href="login.jhtml">Login</a> or <a href="register.jhtml">Register</a>
+  </oparam>
+</droplet>
+<BR>
+<i>location: <valueof bean="Profile.currentLocation"></valueof></i><p>
+
+<java>/* Check for errors */</java>
+<droplet name="Switch">
+  <param name="value" value="bean:PaymentGroupFormHandler.formError">
+  <oparam name="true">
+    <font color=cc0000><STRONG><UL>
+      <droplet name="ErrorMessageForEach">
+        <param name="exceptions" value="bean:PaymentGroupFormHandler.formExceptions">
+        <oparam name="output">
+        <LI> <valueof param="message"></valueof>
+        </oparam>
+      </droplet>
+    </UL></STRONG></font>
+  </oparam>
+</droplet>
+
+
+<droplet bean="PaymentGroupDroplet">
+  <param name="initOrderPayment" value="param:init">
+  <param name="clearPaymentInfos" value="param:init">
+  <oparam name="output">
+  <setvalue bean="PaymentGroupFormHandler.listId" value="param:order.id">
+  <!-- begin output -->
+     <table border=0 cellpadding=0 cellspacing=0 width=800>
+      <tr>
+      </tr>
+    
+      <tr>
+        <td width=55></td>
+        <td valign="top" width=745>
+        <table border=0 cellpadding=4 width=80%>
+          <tr><td></td></tr>
+          <tr>
+            <td colspan=2><span class="big">Billing</span></td>
+          </tr>
+          <tr><td></td></tr>
+          <tr>
+            <td colspan=2><b>Split payment by order amount</b><br>
+            Order total: <valueof param="order.priceInfo.total" currency></valueof><br>
+            <span class=help>Enter the amount you wish to move to another payment method and select the new method. The remaining amount will stay on the default payment method. <P>You must save changes before continuing.</span></td>
+          </tr>
+          <tr valign=top>
+            <td>
+            <table border=0 cellpadding=4 cellspacing=1>
+              <tr valign=top>
+                <td colspan=9 align=right>
+                </td>
+              </tr>
+    
+              <tr valign=bottom bgcolor="#666666">
+                <td colspan=2><span class=smallbw>Amount</span></td>
+                <td colspan=2><span class=smallbw>Amt to move &nbsp;</span></td>
+                <td colspan=2><span class=smallbw>Payment method</span></td>
+                <td colspan=3><span class=smallbw>Save changes</span></td>
+    
+              </tr>
+    
+                  <droplet bean="ForEach">
+                    <param name="array" value="bean:PaymentGroupFormHandler.currentList">
+                    <oparam name="output">
+                      <!-- begin order line item -->
+                      <form method="post" action="complex_billing.jhtml">
+                      <tr valign=top>
+                        <td><valueof param="element.amount" currency></valueof></td>
+                        <td>&nbsp;</td>
+                        <td>
+                        $<input type="text" size=6 value= 0.00
+                        bean="PaymentGroupFormHandler.currentList[param:index].splitAmount"></td>
+                        <td>&nbsp;</td>
+                        <td>
+                          <select bean="PaymentGroupFormHandler.currentList[param:index].splitPaymentMethod">
+                          <droplet bean="ForEach">
+                            <param name="array" value="param:paymentGroups">
+                            <oparam name="output">
+                              <droplet bean="Switch">
+                                <param name="value" value="param:key">
+                                <oparam name="param:...element.paymentMethod">
+                                  <option value="param:key" selected><valueof param="key"></valueof>
+                                </oparam>
+                                <oparam name="default">
+                                  <option value="param:key" unselected><valueof param="key"></valueof>
+                                </oparam>
+                              </droplet>
+                            </oparam>
+                          </droplet>
+                          </select>
+                        </td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>
+                         <input type="hidden" priority=9 bean="PaymentGroupFormHandler.ListId" value="param:order.id">
+                         <input type=hidden bean="PaymentGroupFormHandler.splitPaymentInfosSuccessURL" value="complex_billing.jhtml?init=false">
+                         <input type="submit" bean="PaymentGroupFormHandler.splitPaymentInfos" value=" Save ">
+                        </td>
+                      </tr>
+                      </form>
+                      <!-- end order line item -->
+                    </oparam>
+                  </droplet>
+
+      <td colspan=9>
+      <java>/* table with one row with one cell */</java>
+      <table border=0 cellpadding=0 cellspacing=0 width=100%>
+        <tr bgcolor="#666666">
+          <td></td>
+        </tr>
+      </table>
+      </td>
+    </tr>
+           </table>
+          </td>
+        </tr>
+        <tr>
+          <td><br>
+            <form method="post" action="complex_billing.jhtml">
+            <input type=hidden bean="PaymentGroupFormHandler.applyPaymentGroupsSuccessURL" value="order_confirmation.jhtml">
+            <input type="submit" bean="PaymentGroupFormHandler.applyPaymentGroups" value="Continue">
+            </form>
+          </td>
+       </tr>
+     </table>
+     </td>
+    </tr>
+    </table>
+    
+    </div>
+    
+  <!-- end output -->
+  </oparam>
+</droplet> <!-- end PaymentGroupDroplet -->
+
+</body>
+</html>
+<java>/* @version $Id: //product/B2BCommerce/version/10.0.3/release/B2BCommerce/html/sample_catalog/complex_billing.jhtml#2 $$Change: 651448 $*/</java>

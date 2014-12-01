@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+<!DOCTYPE schema
+  SYSTEM 'dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd'>
+<schema name="dcs_click_to_connect_ddl">
+
+  <table name="dcs_c2c_session_data">
+    <column name="id" nullable="n">
+          <column-type db="generic" type="varchar" length="60"/>
+        </column>
+    <column name="order_id" nullable="n">
+          <column-type db="generic" type="varchar" length="40"/>
+        </column>
+    <column name="price_list_id" nullable="y">
+          <column-type db="generic" type="varchar" length="40"/>
+        </column>
+    <column name="sale_price_list_id" nullable="y">
+          <column-type db="generic" type="varchar" length="40"/>
+        </column>
+    <column name="catalog_id" nullable="y">
+          <column-type db="generic" type="varchar" length="40"/>
+        </column>
+        <primary-key name="dcs_c2c_id_p">
+          <index-column column="id"/> 
+        </primary-key>
+    <foreign-key name="dcs_c2c_id_f" referenced-table="c2c_session_data">
+      <fkey-column referencing-column="id" referenced-column="c2c_session_id"/>
+        </foreign-key>
+    </table>
+
+    <table name="dcs_c2c_active_promo">
+      <column name="id" nullable="n">
+            <column-type db="generic" type="varchar" length="60"/>
+        </column>
+      <column name="promotion_id" nullable="n">
+            <column-type db="generic" type="varchar" length="40"/>
+        </column>
+      <primary-key name="dcs_c2c_promo_id_p">
+          <index-column column="id" seq="1"/> 
+          <index-column column="promotion_id" seq="2"/> 
+      </primary-key>
+      <foreign-key name="dcs_c2c_promo_id_f" referenced-table="c2c_session_data">
+            <fkey-column referencing-column="id" referenced-column="c2c_session_id"/>
+      </foreign-key>
+    </table>
+
+
+  
+</schema>
+<!-- @version $Id: //product/DCS/version/10.0.3/templates/DCS/ClickToConnect/sql/dcs_click_to_connect_ddl.xml#2 $$Change: 651448 $-->

@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<dynamo-message-system>
+
+  <!-- local JMS definitions -->
+  <local-jms>
+    <jndi-prefix>/local</jndi-prefix>
+    <topic-name>/PAF/GearEvent</topic-name>
+  </local-jms>
+
+  <patchbay>
+    <!-- PAF Messages -->
+    <message-sink>
+      <nucleus-name>/atg/scenario/ScenarioManager</nucleus-name>
+      <input-port>
+        <port-name>IndividualEvents</port-name>
+	<input-destination>
+	  <provider-name>local</provider-name>
+          <destination-name>localdms:/local/PAF/GearEvent</destination-name>
+          <destination-type>Topic</destination-type>
+        </input-destination>
+      </input-port>
+    </message-sink>
+
+  </patchbay>
+
+  <message-registry>
+    <message-family>
+      <message-family-name>
+        paf
+      </message-family-name>
+
+      <message-type>
+        <jms-type>
+          atg.portal.messaging.MemSubscribeMessage
+        </jms-type>
+        <message-class>
+          atg.portal.messaging.MemSubscribeMessage
+        </message-class>
+        <message-context>
+          session
+        </message-context>
+        <display-name-resource>
+          memSubscribeMessageDisplayName
+        </display-name-resource>
+        <description-resource>
+          memSubscribeMessageDescription
+        </description-resource>
+	      <resource-bundle>
+	        atg.portal.messaging.MessagingSystemResources
+	      </resource-bundle>
+      </message-type>
+
+      <message-type>
+        <jms-type>
+          atg.portal.messaging.MemUnsubscribeMessage
+        </jms-type>
+        <message-class>
+          atg.portal.messaging.MemUnsubscribeMessage
+        </message-class>
+        <message-context>
+          session
+        </message-context>
+        <display-name-resource>
+          memUnsubscribeMessageDisplayName
+        </display-name-resource>
+        <description-resource>
+          memUnsubscribeMessageDescription
+        </description-resource>
+	      <resource-bundle>
+	        atg.portal.messaging.MessagingSystemResources
+	      </resource-bundle>
+      </message-type>
+
+      <message-type>
+        <jms-type>
+          atg.portal.messaging.MembershipAcceptedMessage
+        </jms-type>
+        <message-class>
+          atg.portal.messaging.MembershipAcceptedMessage
+        </message-class>
+        <message-context>
+          session
+        </message-context>
+        <display-name-resource>
+          membershipAcceptedMessageDisplayName
+        </display-name-resource>
+        <description-resource>
+          membershipAcceptedMessageDescription
+        </description-resource>
+	      <resource-bundle>
+	        atg.portal.messaging.MessagingSystemResources
+	      </resource-bundle>
+      </message-type>
+
+      <message-type>
+        <jms-type>
+          atg.portal.messaging.MembershipDeclinedMessage
+        </jms-type>
+        <message-class>
+          atg.portal.messaging.MembershipDeclinedMessage
+        </message-class>
+        <message-context>
+          session
+        </message-context>
+        <display-name-resource>
+          membershipDeclinedMessageDisplayName
+        </display-name-resource>
+        <description-resource>
+          membershipDeclinedMessageDescription
+        </description-resource>
+	      <resource-bundle>
+	        atg.portal.messaging.MessagingSystemResources
+	      </resource-bundle>
+      </message-type>
+
+      <message-type>
+        <jms-type>
+          atg.portal.messaging.CommunityPageviewMessage
+        </jms-type>
+        <message-class>
+          atg.portal.messaging.CommunityPageviewMessage
+        </message-class>
+        <message-context>
+          session
+        </message-context>
+        <display-name-resource>
+          communityPageViewMessageDisplayName
+        </display-name-resource>
+        <description-resource>
+          communityPageViewMessageDescription
+        </description-resource>
+	      <resource-bundle>
+	        atg.portal.messaging.MessagingSystemResources
+	      </resource-bundle>
+      </message-type>
+      
+      <message-type>
+        <jms-type>
+	        atg.portal.messaging.CommunityGearAddedMessage
+        </jms-type>
+	      <message-class>
+	        atg.portal.messaging.CommunityGearAddedMessage
+	      </message-class>
+	      <message-context>
+	        session
+	      </message-context>
+	      <display-name-resource>
+	        CommunityGearAddedMessageDisplayName
+	      </display-name-resource>
+	      <description-resource>
+	        CommunityGearAddedMessageDescription
+	      </description-resource>
+	      <resource-bundle>
+	        atg.portal.messaging.GearMessagingSystemResources
+	      </resource-bundle>
+      </message-type>
+
+      <message-type>
+        <jms-type>
+	        atg.portal.messaging.CommunityGearRemovedMessage
+        </jms-type>
+	      <message-class>
+	        atg.portal.messaging.CommunityGearRemovedMessage
+	      </message-class>
+	      <message-context>
+	        session
+	      </message-context>
+	      <display-name-resource>
+	        CommunityGearRemovedMessageDisplayName
+	      </display-name-resource>
+	      <description-resource>
+	        CommunityGearRemovedMessageDescription
+	      </description-resource>
+	      <resource-bundle>
+	        atg.portal.messaging.GearMessagingSystemResources
+	      </resource-bundle>
+      </message-type>
+      
+      <message-type>
+        <jms-type>
+	        atg.portal.messaging.PageGearAddedMessage
+        </jms-type>
+	      <message-class>
+	        atg.portal.messaging.PageGearAddedMessage
+	      </message-class>
+	      <message-context>
+	        session
+	      </message-context>
+	      <display-name-resource>
+	        PageGearAddedMessageDisplayName
+	      </display-name-resource>
+	      <description-resource>
+	        PageGearAddedMessageDescription
+	      </description-resource>
+	      <resource-bundle>
+	        atg.portal.messaging.GearMessagingSystemResources
+	      </resource-bundle>
+      </message-type>
+
+      <message-type>
+        <jms-type>
+	        atg.portal.messaging.PageGearRemovedMessage
+        </jms-type>
+	      <message-class>
+	        atg.portal.messaging.PageGearRemovedMessage
+	      </message-class>
+	      <message-context>
+	        session
+	      </message-context>
+	      <display-name-resource>
+	        PageGearRemovedMessageDisplayName
+	      </display-name-resource>
+	      <description-resource>
+	        PageGearRemovedMessageDescription
+	      </description-resource>
+	      <resource-bundle>
+	        atg.portal.messaging.GearMessagingSystemResources
+	      </resource-bundle>
+      </message-type>
+
+    </message-family>
+  </message-registry>
+
+</dynamo-message-system>
+<!-- @version $Id: //app/portal/version/10.0.3/paf/config/framework/atg/dynamo/messaging/dynamoMessagingSystem.xml#2 $$Change: 651448 $ -->

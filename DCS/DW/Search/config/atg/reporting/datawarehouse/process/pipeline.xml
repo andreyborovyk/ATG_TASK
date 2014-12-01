@@ -1,0 +1,24 @@
+<pipelinemanager>
+
+  <pipelinechain name="question" transaction="TX_REQUIRED" headlink="getQueryId">
+    <pipelinelink name="getQueryId" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/QueryIdProcessor"/>
+      <transition returnvalue="1" link="lookupQuery "/>
+    </pipelinelink>
+    <pipelinelink name="lookupQuery" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/SearchQueryFactLookupProcessor"/>
+      <transition returnvalue="1" link="getQuestion"/>
+    </pipelinelink>
+    <pipelinelink name="getQuestion" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/QuestionProcessor"/>
+    </pipelinelink>
+  </pipelinechain>
+
+  <pipelinechain name="lineItemQuery" transaction="TX_REQUIRED"   headlink="logLineItemQuery">
+    <pipelinelink name="logLineItemQuery" transaction="TX_MANDATORY">
+      <processor jndi="/atg/reporting/datawarehouse/process/LineItemQueryLoggerProcessor"/>
+    </pipelinelink>
+  </pipelinechain>
+
+</pipelinemanager>
+<!-- @version $Id: //product/DCS/version/10.0.3/DW/Search/config/atg/reporting/datawarehouse/process/pipeline.xml#2 $$Change: 651448 $-->

@@ -1,0 +1,124 @@
+<%--
+  This page fragment resolves the following default propertyView edit/view field 
+  attributes:
+    textAboveField
+    labelBeforeField
+    labelAfterField
+    textBelowField
+    title
+    defaultValue
+
+  @param   mpv   A request scoped, MappedPropertyView item for this view
+  
+  @version $Id $$Change $
+  @updated $DateTime $$Author $
+  --%>
+
+<%@ include file="resourceBundleResolver.jspf" %>
+<fmt:setBundle var="resourceBundle" basename="${bundleName}"/>
+
+<%--
+  CASE 1: Static text defined in the repository
+--%>
+<c:set var="labelAfterField"
+       value="${mpv.attributes.labelAfterField}" />
+<c:set var="labelBeforeField"
+       value="${mpv.attributes.labelBeforeField}" />
+<c:set var="textAboveField"
+       value="${mpv.attributes.textAboveField}" />
+<c:set var="textBelowField"
+       value="${mpv.attributes.textBelowField}" />
+<c:set var="title"
+       value="${mpv.attributes.title}" />
+<c:set var="defaultValue"
+       value="${mpv.attributes.defaultValue}" />
+
+<%-- Check to see if the resource bundle exists --%>
+<c:if test="${!empty resourceBundle.resourceBundle}">
+  <%--
+    CASE 2: Default keys
+  --%>
+  <c:set var="labelAfterFieldKey" 
+         value="${mpv.view.itemMapping.itemName}.${mpv.propertyName}.${mpv.mode}.labelAfterField" />
+  <c:set var="labelBeforeFieldKey" 
+         value="${mpv.view.itemMapping.itemName}.${mpv.propertyName}.${mpv.mode}.labelBeforeField" />
+  <c:set var="textAboveFieldKey" 
+         value="${mpv.view.itemMapping.itemName}.${mpv.propertyName}.${mpv.mode}.textAboveField" />
+  <c:set var="textBelowFieldKey" 
+         value="${mpv.view.itemMapping.itemName}.${mpv.propertyName}.${mpv.mode}.textBelowField" />
+  <c:set var="titleKey" 
+         value="${mpv.view.itemMapping.itemName}.${mpv.propertyName}.${mpv.mode}.title" />
+  <c:set var="defaultValueKey" 
+         value="${mpv.view.itemMapping.itemName}.${mpv.propertyName}.${mpv.mode}.defaultValue" />
+
+  <%--
+    CASE 3: Res keys defined in the ViewMappingRepository
+  --%>
+  <c:if test="${!empty mpv.attributes.labelAfterFieldRes}">
+    <c:set var="labelAfterFieldKey" 
+           value="${mpv.attributes.labelAfterFieldRes}" />
+  </c:if>
+  <c:if test="${!empty mpv.attributes.labelBeforeFieldRes}">
+    <c:set var="labelBeforeFieldKey" 
+           value="${mpv.attributes.labelBeforeFieldRes}" />
+  </c:if>
+  <c:if test="${!empty mpv.attributes.textAboveFieldRes}">
+    <c:set var="textAboveFieldKey" 
+           value="${mpv.attributes.textAboveFieldRes}" />
+  </c:if>
+  <c:if test="${!empty mpv.attributes.textBelowFieldRes}">
+    <c:set var="textBelowFieldKey" 
+           value="${mpv.attributes.textBelowFieldRes}" />
+  </c:if>
+  <c:if test="${!empty mpv.attributes.titleRes}">
+    <c:set var="titleKey" 
+           value="${mpv.attributes.titleRes}" />
+  </c:if>
+  <c:if test="${!empty mpv.attributes.defaultValueRes}">
+    <c:set var="defaultValueKey" 
+           value="${mpv.attributes.defaultValueRes}" />
+  </c:if>
+  
+  <%-- Check to see if thses keys exist in the bundle. If not, set to null --%>
+  <fmt:message var="labelAfterField"  bundle="${resourceBundle}" key="${labelAfterFieldKey}"/>
+  <fmt:message var="labelBeforeField" bundle="${resourceBundle}" key="${labelBeforeFieldKey}"/>
+  <fmt:message var="textAboveField"   bundle="${resourceBundle}" key="${textAboveFieldKey}"/>
+  <fmt:message var="textBelowField"   bundle="${resourceBundle}" key="${textBelowFieldKey}"/>
+  <fmt:message var="title"            bundle="${resourceBundle}" key="${titleKey}"/>
+  <fmt:message var="defaultValue"     bundle="${resourceBundle}" key="${defaultValueKey}"/>
+  <%
+    try {
+      if (((String)pageContext.getAttribute("labelAfterField")).indexOf(
+          (String)pageContext.getAttribute("labelAfterFieldKey")) != -1) {
+        pageContext.setAttribute("labelAfterField", null);
+      }
+      if (((String)pageContext.getAttribute("labelBeforeField")).indexOf(
+          (String)pageContext.getAttribute("labelBeforeFieldKey")) != -1) {
+        pageContext.setAttribute("labelBeforeField", null);
+      }
+      if (((String)pageContext.getAttribute("textAboveField")).indexOf(
+          (String)pageContext.getAttribute("textAboveFieldKey")) != -1) {
+        pageContext.setAttribute("textAboveField", null);
+      }
+      if (((String)pageContext.getAttribute("textBelowField")).indexOf(
+          (String)pageContext.getAttribute("textBelowFieldKey")) != -1) {
+        pageContext.setAttribute("textBelowField", null);
+      }
+      if (((String)pageContext.getAttribute("title")).indexOf(
+          (String)pageContext.getAttribute("titleKey")) != -1) {
+        pageContext.setAttribute("title", null);
+      }
+      if (((String)pageContext.getAttribute("defaultValue")).indexOf(
+          (String)pageContext.getAttribute("defaultValueKey")) != -1) {
+        pageContext.setAttribute("defaultValue", null);
+      }
+    } catch (Exception e) {}
+  %>
+  <c:set var="labelAfterField"  value="${labelAfterField}" />
+  <c:set var="labelBeforeField" value="${labelBeforeField}" />
+  <c:set var="textAboveField"   value="${textAboveField}" />
+  <c:set var="textBelowField"   value="${textBelowField}" />
+  <c:set var="title"            value="${title}" />
+  <c:set var="defaultValue"     value="${defaultValue}" />
+</c:if>
+<%-- @version $Id: //product/BIZUI/version/10.0.3/jsp-src/views/property/includes/fieldAttributes.jspf#2 $$Change: 651448 $--%>

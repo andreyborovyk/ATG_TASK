@@ -1,0 +1,306 @@
+<gsa-template>
+
+  <item-descriptor name="contactInfo" query-cache-size="100"/>
+  <item-descriptor name="mailing" query-cache-size="100"/>
+  <item-descriptor name="role" query-cache-size="100"/>
+  <item-descriptor name="organizationalRole" query-cache-size="100"/>
+  <item-descriptor name="organization" query-cache-size="100"/>
+  <item-descriptor name="genericFolder" query-cache-size="100"/>
+  <item-descriptor name="roleFolder" query-cache-size="100"/>
+
+  <!-- ===================================================================== -->
+  <!-- Add a property to store user registration URL                         -->
+  <!-- ===================================================================== -->
+  <item-descriptor name="user" query-cache-size="100">
+
+    <table name="paf_reg_url" type="auxiliary" id-column-name="id">
+      <property category-resource="categoryActivity" name="registrationURL" data-type="string" column-name="regURL" display-name-resource="registrationURL">
+        <attribute name="resourceBundle" value="atg.portal.framework.PortalRepositoryTemplateResources"/>
+      </property>
+    </table>
+   
+  </item-descriptor>
+
+  <!-- ===================================================================== -->
+  <!-- gearUser                                                              -->
+  <!-- ===================================================================== -->
+  <item-descriptor name="gearUser" display-name-resource="itemDescriptorGearUser" query-cache-size="100" version-property="internalVersion">
+    <attribute name="resourceBundle" value="atg.portal.framework.PortalRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="paf_gear_user" type="primary" id-column-name="gear_user_id">
+      <property category-resource="categoryInfo" name="internalVersion" display-name-resource="internalVersion" data-type="int" column-name="internal_version" writable="false" queryable="false">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="user" display-name-resource="user" item-type="user" column-name="user_id" required="true">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="gear" display-name-resource="gear"  item-type="gear" column-name="gear_id" required="true" repository="/atg/portal/framework/PortalRepository">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+
+    <table name="paf_gu_params" type="multi" id-column-name="gear_user_id" multi-column-name="tag">
+      <property category-resource="categoryBasics" name="userParameterValues" display-name-resource="userParameterValues" data-type="map" component-data-type="string" column-name="uparam_value" queryable="false">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+    </table>
+    <table name="paf_gr_uparams" type="multi" id-column-name="gear_user_id" multi-column-name="name">
+      <property category-resource="categoryBasics" name="userParams" display-name-resource="userParams" data-type="map" component-item-type="userParameter" column-name="user_param_id" queryable="false">
+        <attribute name="propertySortPriority" value="150"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ===================================================================== -->
+  <!-- userParameter                                                         -->
+  <!-- ===================================================================== -->
+  <item-descriptor name="userParameter" display-name-resource="itemDescriptorUserParameter" query-cache-size="100" version-property="internalVersion">
+    <attribute name="resourceBundle" value="atg.portal.framework.PortalRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="paf_user_param" type="primary" id-column-name="user_param_id">
+      <property category-resource="categoryInfo" name="internalVersion" display-name-resource="internalVersion" data-type="int" column-name="internal_version" writable="false" queryable="false">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+    </table>      
+    <table name="paf_user_prmvals" type="multi" id-column-name="user_param_id" multi-column-name="sequence_num">
+      <property category-resource="categoryBasics" name="paramValues" display-name-resource="paramValues"  data-type="list" component-data-type="string" column-name="param_value" queryable="true">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+    </table>
+  </item-descriptor>
+  
+  <!-- ===================================================================== -->
+  <!-- personalizedRegion                                                    -->
+  <!-- ===================================================================== -->
+  <item-descriptor name="personalizedRegion" display-name-resource="personalizedRegion" version-property="internalVersion" id-space-name="personalizedRegion" query-cache-size="100">
+    <attribute name="resourceBundle" value="atg.portal.framework.PortalRepositoryTemplateResources"/>
+
+    <table name="paf_usr_rgn" id-column-name="region_id" type="primary">
+      <property name="regionDefinition" 
+		display-name-resource="personalizedRegionRegionDefinition"
+		column-name="definition_id" 
+		item-type="regionDefinition" 
+		repository="/atg/portal/framework/PortalRepository"
+		required="true"/>
+      <property name="internalVersion" 
+		display-name-resource="personalizedRegionInternalVersion"
+		column-name="internal_version" 
+		data-type="int" hidden="true"
+		expert="true"/>
+    </table>
+    <table name="paf_usr_rgn_gr" id-column-name="region_id" multi-column-name="sequence_num" type="multi">
+      <property name="gears"
+		display-name-resource="personalizedRegionGears"
+		column-name="gear_id" 
+		data-type="list"
+		component-item-type="gear" 
+		repository="/atg/portal/framework/PortalRepository"/>
+    </table>
+    <property category-resource="categoryBasics" name="name" display-name-resource="name" data-type="string" writable="false">
+      <derivation method="firstNonNull" >
+        <expression>regionDefinition.name</expression>
+      </derivation>
+    </property>
+
+  </item-descriptor>
+
+  <!-- ===================================================================== -->
+  <!-- personalizedPageFolder                                                -->
+  <!-- ===================================================================== -->
+  <item-descriptor name="personalizedPageFolder" display-name-resource="personalizedPageFolder" version-property="internalVersion" last-modified-property="lastModified" id-space-name="personalizedPageFolder" query-cache-size="100">
+
+    <attribute name="resourceBundle" value="atg.portal.framework.PortalRepositoryTemplateResources"/>
+
+    <table name="paf_usr_pgfld" id-column-name="folder_id" type="primary">
+      <property name="parent"
+		display-name-resource="personalizedPageFolderParent"
+		column-name="parent_id"
+		item-type="personalizedPageFolder"/>
+      <property name="name"
+		display-name-resource="personalizedPageFolderName"
+		column-name="name"
+		data-type="string"
+		required="true"/>
+      <property name="urlName"
+		display-name-resource="personalizedPageFolderUrlName"
+		column-name="url_name"
+		data-type="string"
+		required="true"/>
+      <property name="description"
+		display-name-resource="personalizedPageFolderDescription"
+		column-name="description"
+		data-type="string"/>
+      <property name="internalVersion" 
+		display-name-resource="personalizedPageFolderInternalVersion"
+		column-name="internal_version"
+		data-type="int" 
+		hidden="true"
+		expert="true"/>
+      <property name="creationDate"
+		display-name-resource="personalizedPageFolderCreationDate"
+		column-name="creation_date"
+		data-type="timestamp">
+	<attribute name="useNowForDefault" value="true"/>
+      </property>
+      <property name="lastModified"
+		display-name-resource="personalizedPageFolderLastModified"
+		column-name="last_modified"
+		data-type="timestamp">
+	<attribute name="useNowForDefault" value="true"/>
+      </property>
+    </table>
+    <table name="paf_usr_cpgfld" id-column-name="folder_id" multi-column-name="sequence_num" type="multi">
+      <property name="childFolders" 
+		display-name-resource="personalizedPageFolderChildFolders"
+		column-name="child_folder_id"
+		data-type="list" 
+		component-item-type="personalizedPageFolder"/>
+    </table>
+    <table name="paf_usr_ppgfld" id-column-name="folder_id" multi-column-name="sequence_num" type="multi">
+      <property name="childItems"
+		display-name-resource="personalizedPageFolderChildItems"
+		column-name="page_id"
+		data-type="list" 
+		component-item-type="personalizedPage"/>
+    </table>
+  </item-descriptor>
+
+  <!-- ===================================================================== -->
+  <!-- personalizedCommunity                                                 -->
+  <!-- ===================================================================== -->
+  <item-descriptor name="personalizedCommunity"  display-name-resource="personalizedCommunity" version-property="internalVersion" last-modified-property="lastModified" id-space-name="personalizedCommunity" item-cache-timeout="100">
+
+    <attribute name="resourceBundle" value="atg.portal.framework.PortalRepositoryTemplateResources"/>
+
+    <table name="paf_usr_cm" id-column-name="community_id" type="primary">
+      <property name="owner" 
+		display-name-resource="personalizedCommunityOwner"
+		column-name="user_id" 
+		item-type="user"
+		required="true"/>
+      <property name="source"
+		display-name-resource="personalizedCommunitySource"
+		column-name="source_cm_id"
+		item-type="community"
+		repository="/atg/portal/framework/PortalRepository"/>
+      <property name="pageFolder" 
+		display-name-resource="personalizedCommunityPageFolder"
+		column-name="page_folder_id" 
+		item-type="personalizedPageFolder"
+		required="true"/>
+      <property name="defaultPage"
+		display-name-resource="personalizedCommunityDefaultPage" 
+		column-name="default_page_id" 
+		item-type="personalizedPage"/>
+      <property name="internalVersion"
+		display-name-resource="personalizedCommunityInternalVersion"
+		column-name="internal_version"
+		data-type="int" 
+		hidden="true"
+		expert="true"/>
+      <property name="creationDate"
+		display-name-resource="personalizedCommunityCreationDate"
+		column-name="creation_date"
+		data-type="timestamp">
+	<attribute name="useNowForDefault" value="true"/>
+      </property>
+      <property name="lastModified"
+		display-name-resource="personalizedCommunityLastModified"
+		column-name="last_modified"
+		data-type="timestamp">
+	<attribute name="useNowForDefault" value="true"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <!-- ===================================================================== -->
+  <!-- personalizedPage                                                      -->
+  <!-- ===================================================================== -->
+  <item-descriptor name="personalizedPage"  display-name-resource="personalizedPage" version-property="internalVersion" last-modified-property="lastModified" id-space-name="personalizedPage" query-cache-size="100">
+
+    <attribute name="resourceBundle" value="atg.portal.framework.PortalRepositoryTemplateResources"/>
+
+    <table name="paf_usr_pg" id-column-name="page_id" type="primary">
+      <property name="owner" 
+		display-name-resource="personalizedPageOwner"
+		column-name="user_id"
+		item-type="user"
+		required="true"/>
+      <property name="source"
+		display-name-resource="personalizedPageSource"
+		column-name="source_page_id"
+		item-type="page"
+		repository="/atg/portal/framework/PortalRepository"/>
+      <property name="name"
+		display-name-resource="personalizedPageName"
+		column-name="name"
+		data-type="string"/>
+      <property name="urlName"
+		display-name-resource="personalizedPageUrlName"
+		column-name="url_name"
+		data-type="string"/>
+      <property name="description"
+		display-name-resource="personalizedPageDescription"
+		column-name="description"
+		data-type="string"/>
+      <property name="parentFolder"
+		display-name-resource="personalizedParentFolder"
+		column-name="folder_id"
+		item-type="personalizedPageFolder"/>
+      <property name="parentCommunity"
+		display-name-resource="personalizedPageParentCommunity"
+		column-name="community_id"
+		item-type="community"
+		repository="/atg/portal/framework/PortalRepository"/>
+      <property name="layoutTemplate"
+		display-name-resource="personalizedPageLayoutTemplate"
+		column-name="layout_id"
+		item-type="layoutTemplate"
+		repository="/atg/portal/framework/PortalRepository"/>
+      <property name="colorPalette"
+		display-name-resource="personalizedPageColorPalette"
+		column-name="palette_id"
+		item-type="colorPalette"
+		repository="/atg/portal/framework/PortalRepository"/>
+      <property name="deleted"
+		display-name-resource="personalizedPageDeleted"
+		column-name="deleted"
+		data-type="boolean"
+		default="false"
+		required="true"/>
+      <property name="internalVersion" 
+		display-name-resource="personalizedPageInternalVersion"
+		column-name="internal_version"
+		data-type="int" 
+		hidden="true"/>
+      <property name="creationDate"
+		display-name-resource="personalizedPageParentCreationDate"
+		column-name="creation_date"
+		data-type="timestamp">
+	<attribute name="useNowForDefault" value="true"/>
+      </property>
+      <property name="lastModified"
+		display-name-resource="personalizedPageLastModified"
+		column-name="last_modified"
+		data-type="timestamp">
+	<attribute name="useNowForDefault" value="true"/>
+      </property>
+    </table>
+    <table name="paf_usr_pg_rgn" id-column-name="page_id" multi-column-name="tag" type="multi">
+      <property name="regions"
+		display-name-resource="personalizedPageRegions"
+		column-name="region_id"
+		data-type="map"
+		component-item-type="personalizedRegion"
+                cascade="delete"/>
+    </table>
+  </item-descriptor>
+  
+</gsa-template>
+<!-- @version $Id: //app/portal/version/10.0.3/paf/config/framework/atg/userprofiling/userProfile.xml#2 $$Change: 651448 $ -->

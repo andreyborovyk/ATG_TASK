@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE process-manager-configuration
+        PUBLIC "-//Art Technology Group, Inc.//DTD Process Manager//EN"
+        'http://www.atg.com/dtds/processmanager/processmanager_1.0.dtd'>
+
+<process-manager-configuration>
+  
+  <event-registry>
+    <event>      
+      <jms-type>atg.portal.process.CommunityProposalMessage</jms-type>
+      <message-class>atg.portal.process.CommunityProposalMessageImpl</message-class>
+      <display-name>Community Proposal Created</display-name>
+      <description>Community Proposal Created</description>
+      <message-scope>individual</message-scope>
+      <message-context>request</message-context>
+    </event>    
+  </event-registry>
+  
+  <action-registry>
+    <action>
+      <action-name>startWorkflow</action-name>
+      <action-class>atg.process.action.StartWorkflow</action-class>
+      <action-configuration>/atg/portal/process/action/StartWorkflowConfiguration</action-configuration>
+      <resource-bundle>atg.ui.scenario.common.ScenarioResources</resource-bundle>
+      <display-name-resource>startWorkflow.displayName</display-name-resource>
+      <icon-resource>startWorkflow.icon</icon-resource>
+      <description-resource>startWorkflow.description</description-resource>
+      <action-execution-policy>individual</action-execution-policy>
+      <action-error-response>continue </action-error-response>
+      <action-parameter>
+	<action-parameter-name>processName</action-parameter-name>
+	<required>true</required>
+	<description-resource>startWorkflow.processName.description</description-resource>
+      </action-parameter>
+      <action-parameter>
+	<action-parameter-name>segmentName</action-parameter-name>
+	<expert>true</expert>
+	<description-resource>startWorkflow.segmentName.description</description-resource>
+      </action-parameter>
+      <action-parameter>
+	<action-parameter-name>starterId</action-parameter-name>
+	<description-resource>startWorkflow.starterId.description</description-resource>
+      </action-parameter>
+      <action-parameter>    
+	<action-parameter-name>workflowSubjectId</action-parameter-name>
+	<required>true</required>
+	<description-resource>startWorkflow.workflowSubjectId.description</description-resource>
+      </action-parameter>
+      <action-parameter>
+	<action-parameter-name>errorResponse</action-parameter-name>
+	<expert>true</expert>
+	<description-resource>startWorkflow.errorResponse.description</description-resource>
+      </action-parameter>
+    </action>
+
+    <action>
+      <action-name>spawnCommunity</action-name>
+      <action-class>atg.portal.process.action.SpawnCommunity</action-class>
+      <resource-bundle>atg.portal.process.action.Resources</resource-bundle>
+      <display-name>Create Community from Template</display-name>
+      <display-name-resource>spawnCommunity.displayName</display-name-resource>
+      <description>This action can be used to create a community from a community template.</description>
+      <description-resource>spawnCommunty.description</description-resource>
+      <icon-resource>spawnCommunity.icon</icon-resource>
+      <expert>false</expert>
+      <hidden>false</hidden>
+      <action-terminal>false</action-terminal>
+      <action-execution-policy>collective</action-execution-policy>
+      <action-error-response>continue</action-error-response>
+      <action-configuration>/atg/portal/process/action/SpawnCommunityConfiguration</action-configuration>
+      <action-parameter>
+	<action-parameter-name>communityTemplate</action-parameter-name>
+	<action-parameter-repository-name>/atg/portal/framework/PortalRepository</action-parameter-repository-name>
+	<action-parameter-repository-item-type>communityTemplate</action-parameter-repository-item-type>
+	<action-parameter-expression-construct>communityTemplate-item-expr</action-parameter-expression-construct>
+	<display-name>Community Template</display-name>
+	<display-name-resource>spawnCommunity.communityTemplate.displayName</display-name-resource>
+	<description>The community template used to create the new community.</description>
+	<description-resource>spawnCommunity.communityTemplate.description</description-resource>
+	<expert>false</expert>
+	<hidden>false</hidden>
+	<required>true</required>
+      </action-parameter>
+      <action-parameter>
+	<action-parameter-name>communityName</action-parameter-name>
+	<action-parameter-class>java.lang.String</action-parameter-class>
+	<display-name>Community Name</display-name>
+	<display-name-resource>spawnCommunity.communityName.displayName</display-name-resource>
+	<description>The name of the new community.</description>
+	<description-resource>spawnCommunity.communityName.description</description-resource>
+	<expert>false</expert>
+	<hidden>false</hidden>
+	<required>true</required>
+      </action-parameter>
+      <action-parameter>
+	<action-parameter-name>communityURL</action-parameter-name>
+	<action-parameter-class>java.lang.String</action-parameter-class>
+	<display-name>Community Web Friendly URL</display-name>
+	<display-name-resource>spawnCommunity.communityURL.displayName</display-name-resource>
+	<description>The web friendly name of the new community.</description>
+	<description-resource>spawnCommunity.communityURL.description</description-resource>
+	<expert>false</expert>
+	<hidden>false</hidden>
+	<required>true</required>
+      </action-parameter>
+      <action-parameter>
+	<action-parameter-name>communityFolder</action-parameter-name>
+	<action-parameter-repository-name>/atg/portal/framework/PortalRepository</action-parameter-repository-name>
+	<action-parameter-repository-item-type>communityFolder</action-parameter-repository-item-type>
+	<action-parameter-expression-construct>communityFolder-item-expr</action-parameter-expression-construct>
+	<display-name>Community Folder</display-name>
+	<display-name-resource>spawnCommunity.communityFolder.displayName</display-name-resource>
+	<description>The folder name of the new community.</description>
+	<description-resource>spawnCommunity.communityFolder.description</description-resource>
+	<expert>false</expert>
+	<hidden>false</hidden>
+	<required>true</required>
+      </action-parameter>
+      <action-parameter>
+	<action-parameter-name>communityCloneSharedGears</action-parameter-name>
+	<action-parameter-class>java.lang.Boolean</action-parameter-class>
+	<display-name>Clone Shared Gears</display-name>
+	<display-name-resource>spawnCommunity.communityCloneSharedGears.displayName</display-name-resource>
+	<description>Flag to indicate wheather shared gears should be cloned.</description>
+	<description-resource>spawnCommunity.communityCloneSharedGears.description</description-resource>
+	<expert>false</expert>
+	<hidden>false</hidden>
+	<required>false</required>
+      </action-parameter>
+    </action>
+
+  </action-registry>
+  
+</process-manager-configuration>
+<!-- @version $Id: //app/portal/version/10.0.3/ppa/config/atg/scenario/scenarioManager.xml#2 $$Change: 651448 $ -->

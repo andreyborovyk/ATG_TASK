@@ -1,0 +1,88 @@
+<!--
+	@version $Id: //app/portal/version/10.0.3/docexch/config/atg/registry/data/mappers/DocumentViewedSqlLogger.xml#2 $$Change: 651448 $
+-->
+
+<mapper>
+  <registry-descriptor>
+      <id>/DocumentViewedSqlLogger.xml</id>
+      <displayname>Document Viewed Mapper</displayname>
+      <description>Document Viewed SQL Mapper</description>
+  </registry-descriptor>
+
+  <input-filter context="jms">
+      <value>atg.portal.gear.docexch.DocumentViewedMessage</value>
+  </input-filter>
+
+  <data-listener>/atg/reporting/dataset/DocumentViewedLoggerQueue</data-listener>
+
+  <database>
+    <transaction-manager>/atg/dynamo/transaction/TransactionManager</transaction-manager>
+    <datasource>dynamo:/atg/dynamo/service/jdbc/JTDataSource</datasource>
+    <table>
+      <name>dex_viewed_mapper</name>
+      <display-name>Document Viewed Sql Mapper</display-name>
+      <mappings>
+        <dataset-mapping hidden="true">
+          <display-name>Dataset Id</display-name>
+          <column>id</column>
+          <type>java.lang.String</type>
+          <property>datasetId</property>
+        </dataset-mapping>
+
+        <timestamp-mapping hidden="true">
+          <display-name>Time Stamp</display-name>
+          <column>tstamp</column>
+          <type>java.sql.Timestamp</type>
+          <property>timestamp</property>
+        </timestamp-mapping>
+                                         
+        <property-mapping>
+          <display-name>Document Name</display-name>
+          <column>doc_name</column>
+          <type>java.lang.String</type>
+          <property>context.message.documentName</property>
+        </property-mapping>
+
+        <property-mapping>
+          <display-name>Author Name</display-name>
+          <column>author_name</column>
+          <type>java.lang.String</type>
+          <property>context.message.authorName</property>
+        </property-mapping>
+
+        <repository-item-mapping>
+          <display-name>Gear Id</display-name>
+          <column>gear_id</column>
+          <type>java.lang.String</type>
+          <property>context.message.gearId</property>
+          <component>/atg/portal/framework/PortalRepository</component>
+	</repository-item-mapping> 
+
+        <repository-item-mapping>
+          <display-name>Community Id</display-name>
+          <column>community_id</column>
+          <type>java.lang.String</type>
+          <property>context.message.communityId</property>
+          <component>/atg/portal/framework/PortalRepository</component>
+	</repository-item-mapping> 
+			
+        <repository-item-mapping>
+          <display-name>Profile Id</display-name>
+          <column>user_id</column>
+          <type>java.lang.String</type>
+          <property>context.message.profileId</property>
+          <component>/atg/userprofiling/ProfileAdapterRepository</component>
+	</repository-item-mapping> 
+			
+        <property-mapping>
+          <display-name>Message Type</display-name>
+          <column>msg_type</column>
+          <type>java.lang.String</type>
+          <property>context.message.messageType</property>
+        </property-mapping>
+
+     </mappings>
+   </table>
+ </database>
+</mapper>
+<!-- @version $Id: //app/portal/version/10.0.3/docexch/config/atg/registry/data/mappers/DocumentViewedSqlLogger.xml#2 $$Change: 651448 $ -->

@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE gsa-template SYSTEM "dynamosystemresource:/atg/dtds/gsa/gsa_1.0.dtd">
+<gsa-template>
+<import-items>
+
+<add-item item-descriptor="contentSourceAdapter" id="svcSolutionAuxAdapter">
+  <set-property name="name"><![CDATA[select_custsource_type.solution.auxiliary_data]]></set-property>
+  <set-property name="handlingService"><![CDATA[/atg/searchadmin/adapter/customization/RemoteSolutionAuxiliaryDataAdapter]]></set-property>
+</add-item>    
+
+<!-- 2 items of type projectCustomizationDataSelection -->
+
+<add-item item-descriptor="projectCustomizationDataSelection" id="svcLocalPCDS">
+  <set-property name="customizationDataType"><![CDATA[Topic Set]]></set-property>
+  <set-property name="project"><![CDATA[svcATGServiceProject]]></set-property>
+  <!-- associates the System Taxonomy (i.e. the 'Other' topic) and the Solution Lists (i.e. hot solutions and top solutions) topic sets with the ATGService project -->
+  <set-property name="members"><![CDATA[2,9000000]]></set-property>
+  <set-property name="contentSourceAdapter"><![CDATA[srchLocalCustomizationDataAdapter]]></set-property>
+  <set-property name="sharedId"><![CDATA[svcLocalPCDS]]></set-property>
+</add-item>
+
+<add-item item-descriptor="projectCustomizationDataSelection" id="svcEnglishPCDS">
+  <set-property name="customizationDataType"><![CDATA[Language Configuration]]></set-property>
+  <set-property name="project"><![CDATA[svcATGServiceProject]]></set-property>
+  <set-property name="extraConfig"><![CDATA[svcEnglishProjectCDSExtra]]></set-property>
+  <set-property name="members"><![CDATA[English]]></set-property>
+  <set-property name="contentSourceAdapter"><![CDATA[srchLocalCustomizationDataAdapter]]></set-property>
+  <set-property name="sharedId"><![CDATA[svcEnglishPCDS]]></set-property>
+</add-item>
+
+<add-item item-descriptor="projectCustomizationDataSelection" id="svcHotAndTopSolutionsAuxDataPCDS">
+  <set-property name="customizationDataType"><![CDATA[Auxiliary Data]]></set-property>
+  <set-property name="project"><![CDATA[svcATGServiceProject]]></set-property>
+  <set-property name="sharedId"><![CDATA[svcHotAndTopSolutionsAuxData]]></set-property>
+  <set-property name="members"><![CDATA[Hot and Top Solutions Meta-Data]]></set-property>
+  <set-property name="contentSourceAdapter"><![CDATA[svcSolutionAuxAdapter]]></set-property>
+</add-item>
+    
+<!-- 1 items of type searchProject -->
+
+<add-item item-descriptor="searchProject" id="svcATGServiceProject">
+  <set-property name="description"><![CDATA[Search project for ATG Knowledge and Self Service]]></set-property>
+  <set-property name="index"><![CDATA[svcSearchIndex]]></set-property>
+  <set-property name="customizationDataSelections"><![CDATA[svcLocalPCDS,svcEnglishPCDS,svcHotAndTopSolutionsAuxDataPCDS]]></set-property>
+  <set-property name="name"><![CDATA[ATGService]]></set-property>
+  <set-property name="searchEnvironments"><![CDATA[svcStaging_ATGService,svcIndexing_ATGService]]></set-property>
+</add-item>
+
+<!-- 12 items of type syncStepDefinition -->
+
+<add-item item-descriptor="syncStepDefinition" id="svcCompletePartition">
+  <set-property name="syncStepType"><![CDATA[srchPartition]]></set-property>
+  <set-property name="baseType"><![CDATA[syncStepDefinition]]></set-property>
+  <set-property name="stepOption"><![CDATA[srchUseCleanPartition]]></set-property>
+</add-item>
+
+<add-item item-descriptor="syncStepDefinition" id="svcCompletePreCustom">
+  <set-property name="syncStepType"><![CDATA[srchPreIndexCustomizations]]></set-property>
+  <set-property name="baseType"><![CDATA[syncStepDefinition]]></set-property>
+  <set-property name="stepOption"><![CDATA[srchPreCustomizationLoadLatest]]></set-property>
+</add-item>
+
+<add-item item-descriptor="syncStepDefinition" id="svcCompleteBuildIndex">
+  <set-property name="syncStepType"><![CDATA[srchContent]]></set-property>
+  <set-property name="baseType"><![CDATA[syncStepDefinition]]></set-property>
+  <set-property name="stepOption"><![CDATA[srchBuildIndex]]></set-property>
+</add-item>
+
+<add-item item-descriptor="syncStepDefinition" id="svcCompletePostCustom">
+  <set-property name="syncStepType"><![CDATA[srchPostIndexCustomizations]]></set-property>
+  <set-property name="baseType"><![CDATA[syncStepDefinition]]></set-property>
+  <set-property name="stepOption"><![CDATA[srchPostCustomizationLoadLatest]]></set-property>
+</add-item>
+
+<add-item item-descriptor="syncStepDefinition" id="svcCompleteIndexing">
+  <set-property name="syncStepType"><![CDATA[srchIndexing]]></set-property>
+  <set-property name="baseType"><![CDATA[syncStepDefinition]]></set-property>
+  <set-property name="stepOption"><![CDATA[srchDefaultIndexingOption]]></set-property>
+</add-item>
+
+<add-item item-descriptor="syncStepDefinition" id="svcCompleteDeployment">
+  <set-property name="syncStepType"><![CDATA[srchDeployment]]></set-property>
+  <set-property name="baseType"><![CDATA[syncStepDefinition]]></set-property>
+  <set-property name="stepOption"><![CDATA[srchDeployIndex]]></set-property>
+</add-item>
+
+<add-item item-descriptor="syncStepDefinition" id="svcIncrementalPartition">
+  <set-property name="syncStepType"><![CDATA[srchPartition]]></set-property>
+  <set-property name="baseType"><![CDATA[syncStepDefinition]]></set-property>
+  <set-property name="stepOption"><![CDATA[srchUseExistingPartition]]></set-property>
+</add-item>
+    
+<add-item item-descriptor="syncStepDefinition" id="svcIncrementalPreCustom">
+  <set-property name="syncStepType"><![CDATA[srchPreIndexCustomizations]]></set-property>
+  <set-property name="baseType"><![CDATA[syncStepDefinition]]></set-property>
+  <set-property name="stepOption"><![CDATA[srchPreCustomizationUseExisting]]></set-property>
+</add-item>
+
+<add-item item-descriptor="syncStepDefinition" id="svcIncrementalUpdateIndex">
+  <set-property name="syncStepType"><![CDATA[srchContent]]></set-property>
+  <set-property name="baseType"><![CDATA[syncStepDefinition]]></set-property>
+  <set-property name="stepOption"><![CDATA[srchUpdateIndex]]></set-property>
+</add-item>
+
+<add-item item-descriptor="syncStepDefinition" id="svcIncrementalPostCustom">
+  <set-property name="syncStepType"><![CDATA[srchPostIndexCustomizations]]></set-property>
+  <set-property name="baseType"><![CDATA[syncStepDefinition]]></set-property>
+  <set-property name="stepOption"><![CDATA[srchPostCustomizationLoadLatest]]></set-property>
+</add-item>
+
+<add-item item-descriptor="syncStepDefinition" id="svcIncrementalIndexing">
+  <set-property name="syncStepType"><![CDATA[srchIndexing]]></set-property>
+  <set-property name="baseType"><![CDATA[syncStepDefinition]]></set-property>
+  <set-property name="stepOption"><![CDATA[srchDefaultIndexingOption]]></set-property>
+</add-item>
+
+<add-item item-descriptor="syncStepDefinition" id="svcIncrementalDeployment">
+  <set-property name="syncStepType"><![CDATA[srchDeployment]]></set-property>
+  <set-property name="baseType"><![CDATA[syncStepDefinition]]></set-property>
+  <set-property name="stepOption"><![CDATA[srchDeployIndex]]></set-property>
+</add-item>
+
+<!-- 2 items of type baseSyncTask -->
+
+<add-item item-descriptor="baseSyncTask" id="defaultBaseCompleteTask">
+  <set-property name="searchEnvironmentSelections"><![CDATA[svcStaging_ATGService]]></set-property>
+  <set-property name="taskType"><![CDATA[srchComplete]]></set-property>
+  <set-property name="subname"><![CDATA[Service-Full]]></set-property>
+  <set-property name="baseType"><![CDATA[baseSyncTask]]></set-property>
+  <set-property name="searchProject"><![CDATA[svcATGServiceProject]]></set-property>
+  <set-property name="syncSteps"><![CDATA[svcCompletePartition,svcCompletePreCustom,svcCompleteBuildIndex,svcCompletePostCustom,svcCompleteIndexing,svcCompleteDeployment]]></set-property>
+</add-item>
+
+<add-item item-descriptor="baseSyncTask" id="defaultBaseIncrementalTask">
+  <set-property name="searchEnvironmentSelections"><![CDATA[svcStaging_ATGService]]></set-property>
+  <set-property name="taskType"><![CDATA[srchIncremental]]></set-property>
+  <set-property name="subname"><![CDATA[Service-Incremental]]></set-property>
+  <set-property name="baseType"><![CDATA[baseSyncTask]]></set-property>
+  <set-property name="searchProject"><![CDATA[svcATGServiceProject]]></set-property>
+  <set-property name="syncSteps"><![CDATA[svcIncrementalPartition,svcIncrementalPreCustom,svcIncrementalUpdateIndex,svcIncrementalPostCustom,svcIncrementalIndexing,svcIncrementalDeployment]]></set-property>
+</add-item>
+
+<!-- 2 items of type syncTaskDefinition -->
+
+<add-item item-descriptor="syncTaskDefinition" id="defaultCompleteTask">
+  <set-property name="schedule"><![CDATA[MANUAL]]></set-property>
+  <set-property name="enabled"><![CDATA[true]]></set-property>
+  <set-property name="baseSyncTask"><![CDATA[defaultBaseCompleteTask]]></set-property>
+</add-item>
+
+<add-item item-descriptor="syncTaskDefinition" id="defaultIncrementalTask">
+  <set-property name="schedule"><![CDATA[MANUAL]]></set-property>
+  <set-property name="enabled"><![CDATA[true]]></set-property>
+  <set-property name="baseSyncTask"><![CDATA[defaultBaseIncrementalTask]]></set-property>
+</add-item>
+
+<!-- 3 item of type contentSourceAdapter -->
+
+<add-item item-descriptor="contentSourceAdapter" id="svcKnowledgeCSA">
+  <set-property name="name"><![CDATA[ATGRepository - localhost:28860 - /atg/repository/search/indexing/IndexingOutputConfig]]></set-property>
+  <set-property name="extraConfig"><![CDATA[svcKnowledgeCSAExtra]]></set-property>
+</add-item>
+    
+<!-- 2 items of type contentSource -->
+
+<add-item item-descriptor="contentSource" id="svcKnowledgeCS">
+  <set-property name="type"><![CDATA[structured]]></set-property>
+  <set-property name="docSetSubPath"><![CDATA[]]></set-property>
+  <set-property name="forceContentType"><![CDATA[false]]></set-property>
+  <set-property name="parentLogicalPartition"><![CDATA[svcKnowledgeLP]]></set-property>
+  <set-property name="sharedId"><![CDATA[svcKnowledgeCS]]></set-property>
+  <set-property name="name"><![CDATA[Knowledge Solutions]]></set-property>
+  <set-property name="ExtraConfig"><![CDATA[svcKnowledgeCSExtra]]></set-property>
+  <set-property name="contentSourceAdapter"><![CDATA[svcKnowledgeCSA]]></set-property>
+</add-item>
+
+<!-- 5 items of type extraConfig -->
+
+<add-item item-descriptor="extraConfig" id="svcKnowledgeCSAExtra">
+  <set-property name="configuration"><![CDATA[#Fri Mar 23 15:20:25 PDT 2007
+IndexingOutputConfigPort=/atg/repository/search/indexing/IndexingOutputConfig
+Type=repository
+HostMachine=localhost
+$class=atg.searchadmin.adapter.content.impl.RepositoryAdapter
+Port=28860
+Local=false
+]]></set-property>
+</add-item>
+
+<add-item item-descriptor="extraConfig" id="svcKnowledgeCSExtra">
+  <set-property name="configuration"><![CDATA[]]></set-property>
+</add-item>
+
+<add-item item-descriptor="extraConfig" id="svcEnglishProjectCDSExtra">
+  <set-property name="configuration"><![CDATA[#Fri Mar 23 15:22:57 PDT 2007
+English=
+]]></set-property>
+</add-item>
+
+</import-items>
+</gsa-template>
+<!-- @version $Id: //application/SearchAdmin/version/10.0.3/common/src/data/initial/atgservice-searchadmin-data.xml#2 $$Change: 651448 $-->

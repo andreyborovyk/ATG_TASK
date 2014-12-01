@@ -1,0 +1,74 @@
+<i18n:bundle baseName="atg.portal.admin.PortalAdminResources" localeAttribute="userLocale" changeResponseLocale="false" />
+
+<dsp:page>
+
+
+    <table cellpadding="1" cellspacing="0" border="0" bgcolor="#666666" width="100%"><tr><td>
+	<table cellpadding="4" cellspacing="0" border="0" bgcolor="#999999" width="100%"><tr><td>
+	<font class="pageheader"><i18n:message key="admin-alerts-framework-title"/>
+	</td></tr></table>
+	</td></tr></table>
+	
+	<table cellpadding="4" cellspacing="0" border="0" bgcolor="#EAEEF0" width="100%"><tr><td>
+	<font class="smaller">
+    <i18n:message key="admin-alerts-framework-info"/>
+   </font>
+   </td></tr></table>
+   
+   <img src='<%=clearGif %>' height="1" width="1" ><br>
+   
+   
+      <!--bounding table for background color-->
+   <table cellspacing="0" cellpadding="4"  border="0" bgcolor="#c9d1d7" width="100%">
+<tr><td>
+
+
+<table cellpadding="0" cellspacing="0" border="0">
+<admin:getAlertSettings id="items"
+                        sourceType="framework">
+
+  <core:ifNotNull value="<%= items.getAlertSettings() %>">
+    <core:ForEach id="settings"
+                  values="<%= items.getAlertSettings() %>"
+                  castClass="atg.repository.RepositoryItem"
+                  elementId="setting">
+      <tr>
+        <td></td>
+        <td nowrap>
+          <font class="small">&nbsp;<%= setting.getPropertyValue("name") %></font>
+        </td>
+        <td nowrap><font class="smaller">&nbsp;&nbsp;
+          <!-- build URL to configure alert setting with link -->
+          <core:CreateUrl id="configAlertUrl" url="/portal/admin/alert.jsp">
+            <core:UrlParam param="paf_alert_id" value="<%= (String)setting.getRepositoryId()%>"/>
+            <core:UrlParam param="paf_page_url" value="/portal/admin/alert.jsp"/>
+            <core:UrlParam param="mode" value="9"/>
+
+              <dsp:a href="<%=configAlertUrl.getNewUrl()%>"><i18n:message key="admin-alerts-config"/></dsp:a>
+          </core:CreateUrl></font>
+        </td>
+        <td nowrap><font class="smaller">&nbsp;&nbsp;
+          <!-- build URL to delete alert setting with link -->
+          <core:CreateUrl id="deleteAlertUrl" url="/portal/admin/alert.jsp">
+            <core:UrlParam param="paf_alert_id" value="<%= (String)setting.getRepositoryId()%>"/>
+            <core:UrlParam param="paf_page_url" value="/portal/admin/alert.jsp"/>
+            <core:UrlParam param="mode" value="10"/>
+
+              <dsp:a href="<%=deleteAlertUrl.getNewUrl()%>"><i18n:message key="admin-alerts-delete"/></dsp:a>
+          </core:CreateUrl></font>
+        </td>
+      </tr>
+    </core:ForEach>
+  </core:ifNotNull>
+  <core:ifNull value="<%= items.getAlertSettings() %>">
+    <tr>
+      <td><font class="small">&nbsp;&nbsp;<i18n:message key="no-framework-alerts"/></font></td>
+    </tr>
+  </core:ifNull>
+</table>
+</admin:getAlertSettings>
+
+</td></tr></table>
+<!--end bounding table-->
+</dsp:page>
+<%-- @version $Id: //app/portal/version/10.0.3/paf/admin.war/alert_framework.jspf#2 $$Change: 651448 $--%>

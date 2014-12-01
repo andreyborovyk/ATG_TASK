@@ -1,0 +1,10 @@
+delete from dps_contact_info where id = (select home_addr_id from dps_user_address where dps_user_address.id = 'portal-admin');
+delete from dps_user_address where id = 'portal-admin';
+delete from dps_rolefold_chld where rolefold_id = 'root' and role_id = 'portal-admin';
+delete from dps_user_org where organization = 'root' and user_id = 'portal-admin';
+delete from dps_user_org_anc where user_id = 'portal-admin' and anc_org = 'root';
+delete from dps_user_roles where user_id = 'portal-admin' and atg_role = 'portal-admin';
+delete from dps_user where id = 'portal-admin';
+delete from dps_role where role_id = 'portal-admin';
+delete from dps_folder where folder_id = 'root' and name = 'All Communities';
+delete from dps_organization where org_id = 'root' and name = 'root';

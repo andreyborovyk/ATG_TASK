@@ -1,0 +1,527 @@
+<HTML>
+<HEAD>
+<TITLE>Order <valueof param="orderId"></valueof></TITLE>
+</HEAD>
+<importbean bean="/atg/commerce/order/AdminOrderLookup">
+<importbean bean="/atg/commerce/catalog/ProductLookup">
+<importbean bean="/atg/commerce/catalog/SKULookup">
+<importbean bean="/atg/commerce/inventory/InventoryLookup">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/Switch">
+<importbean bean="/atg/dynamo/droplet/IsNull">
+
+<body BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+<IMG SRC="../images/dcsadminbanner.gif" ALT="Dynamo Commerce Administration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a href="../index.jhtml">Commerce</a>/<a href="index.jhtml">Fulfillment</a>/PrintOrder<p>
+
+<blockquote>
+
+<H2>Order <valueof param="orderId"></valueof></H2>
+
+<table cellspacing=8>
+  <tr>
+    <td><a href="PrintOrder.jhtml"><i>Refresh this page</i>
+	  <param name="orderId" value="param:orderId">
+	</a></td>
+  </tr>
+</table>
+
+<img src="../../images/bluedot.gif" width=505 height=1><p>
+
+<droplet bean="AdminOrderLookup">
+  <param name="orderId" value="param:orderId">
+  <oparam name="error">
+    Error looking up order.<br> <valueof param="errorMsg"></valueof>
+  </oparam>
+  <oparam name="output">
+    <setvalue param="order" value="param:result">
+
+    State = <valueof param="order.stateAsString">no state</valueof><br> 
+    Detail = <valueof param="order.stateDetail">no detail</valueof><br>
+    Created on <valueof param="order.creationDate">no creation date</valueof><br>
+    Submitted on <valueof param="order.submittedDate">no submitted date</valueof><br>
+    Last modified on <valueof param="order.lastModifiedDate">no last modified date</valueof><br>
+    Completed on <valueof param="order.completedDate">no completed date</valueof><br>
+    Special Instructions: <valueof param="specialInstructions"></valueof><br>
+    
+    <hr>
+    <table cellspacing=2 cellpadding=0 border=0>
+      <tr>
+	<td><b>Quantity</b></td>
+	<td></td>
+	<td>&nbsp;&nbsp;</td>
+	<td><b>Product</b></td>
+	<td>&nbsp;&nbsp;</td>
+	<td><b>SKU</b></td>
+	<td>&nbsp;&nbsp;</td>
+	<td><b>Id</b></td>
+	<td>&nbsp;&nbsp;</td>
+	<td align=right><b>List Price</b></td>
+	<td>&nbsp;&nbsp;</td>
+	<td align=right><b>Sale Price</b></td>
+	<td>&nbsp;&nbsp;</td>
+	<td align=right><b>Total Price</b></td>
+      </tr>
+      
+      <tr><td colspan=14><hr size=0></td></tr>
+
+      <droplet bean="ForEach">
+	<param name="array" value="param:order.commerceItems">
+	<param name="elementName" value="item">
+	<oparam name="output">
+	  <tr valign=top>
+	    <td>
+		<valueof param="item.quantity">no quantity</valueof>
+	    </td>
+	    <td></td>
+	    <td>&nbsp;&nbsp;</td>
+	    <td>
+		<droplet bean="ProductLookup">
+		  <PARAM name="id" value="param:item.auxiliaryData.productId">
+		  <PARAM name="elementName" value="productRef">
+		  <oparam name="output">
+		    <valueof param="productRef.displayName"></valueof>
+	          </oparam>
+	        </droplet>
+		<br>Product # = <valueof param="item.auxiliaryData.productId"></valueof>
+	    </td>
+	    <td>&nbsp;&nbsp;</td>
+	    <td>
+		<droplet bean="SKULookup">
+		  <PARAM name="id" value="param:item.catalogRefId">
+		  <PARAM name="elementName" value="catalogRef">
+		  <oparam name="output">
+		    <valueof param="catalogRef.displayName"></valueof>
+	          </oparam>
+	        </droplet>
+		<br>Sku # = <valueof param="item.catalogRefId"></valueof>
+	    </td>
+	    <td>&nbsp;&nbsp;</td>
+	    <td>
+		<valueof param="item.id">no id</valueof>
+	    </td>
+	    <td>&nbsp;&nbsp;</td>
+	    <td align=right>
+		<valueof param="item.priceInfo.listPrice" currency>no price</valueof>
+	    </td>
+	    <td>&nbsp;&nbsp;</td>
+	    <td align=right>
+		<droplet bean="Switch">
+		  <param name="value" value="param:item.priceInfo.onSale">
+		  <oparam name="true">
+		    <valueof param="item.priceInfo.salePrice" currency></valueof>
+	          </oparam>
+	        </droplet>
+	    </td>
+	    <td>&nbsp;&nbsp;</td>
+	    <td align=right>
+		<valueof param="item.priceInfo.amount" currency>no price</valueof>
+	    </td>
+	  </tr>
+        </oparam>
+
+	<oparam name="empty"><tr colspan=10 valign=top><td>No Items</td></tr></oparam>
+      </droplet>
+
+      <tr><td colspan=14><hr size=0></td></tr>
+      <tr>
+	<td colspan=13 align=right>Subtotal</td>
+	<td align=right>
+	    <valueof param="order.priceInfo.rawSubtotal" currency>no price</valueof>
+	</td>
+      </tr>
+      
+      <tr>
+	<td colspan=13 align=right>Shipping</td>
+	<td align=right>
+	    <valueof param="order.priceInfo.shipping" currency>no price</valueof>
+	</td>
+      </tr> 
+
+      <tr>
+	<td colspan=13 align=right>Tax</td>
+	<td align=right>
+	    <valueof param="order.priceInfo.tax" currency>no price</valueof>
+	</td>
+      </tr>
+        
+      <tr>
+	<td colspan=13 align=right><b>Total</b></td>
+	<td align=right>
+	    <b><valueof param="order.priceInfo.total" currency>no price</valueof></b>
+	</td>
+      </tr>
+    </table>
+
+    <hr>
+    <droplet src="DisplayPromotions.jhtml">
+      <param name="order" value="param:order"/>
+    </droplet>
+    <hr>
+
+    <!-- Shipping information -->
+    <h2>Shipping Groups</h2>
+    <droplet bean="IsNull">
+      <param name="value" value="param:order.shippingGroups">
+      <oparam name="true">
+	<p>There are no shipping groups in this order.
+      </oparam>
+      <oparam name="false">
+	<table>
+	  <droplet bean="ForEach">
+	    <param name="array" value="param:order.shippingGroups">
+	    <param name="elementName" value="sg">
+	    <oparam name="empty">
+	      There were no shipping groups.<br>
+	    </oparam>
+	    <oparam name="output">
+	      <tr valign=top>
+		<td>
+		    <b>These items:</b><br>
+		    <table border=1>
+		      <droplet bean="ForEach">
+			<param name="array" value="param:sg.commerceItemRelationships">
+			<param name="elementName" value="itemRel">
+			<oparam name="empty">
+			  There were no items in this shipping group.
+			</oparam>
+			<oparam name="outputStart">
+			  <tr>
+			    <td><b>SKU</b></td>
+			    <td><b>Quantity</b></td>
+			    <td><b>State</b></td>
+			  </tr>			  
+			</oparam>
+			<oparam name="output">
+			  <tr>
+			    <td>
+				<valueof param="itemRel.commerceItem.catalogRefId">No id</valueof>
+			    </td>
+			    <td>
+				<droplet bean="Switch">
+				  <param name="value" value="param:itemRel.relationshipTypeAsString">
+				  <oparam name="SHIPPINGQUANTITY">
+				    <valueof param="itemRel.quantity">No quantity specified</valueof>
+			          </oparam> 
+				  <oparam name="SHIPPINGQUANTITYREMAINING">
+				    Remaining
+				  </oparam> 
+			        </droplet>
+			    </td>
+			    <td>
+				<valueof param="itemRel.stateAsString">no state</valueof>
+			    </td>
+		          </tr>
+			  <tr>
+			    <td colspan=3>
+				<valueof param="itemRel.stateDetail">no detail</valueof>			    
+			    </td>
+			  </tr>
+		        </oparam>
+		      </droplet>
+		    </table>
+		</td>
+		<td>    
+		    <p><b>Are in this shipping group:</b><br>
+		    <table border=1>
+		      <tr>
+			<td>
+			    <droplet bean="Switch">
+			      <param name="value" value="param:sg.shippingGroupClassType">
+			      <oparam name="hardgoodShippingGroup">
+				Shipping method = <valueof param="sg.shippingMethod">No shippingMethod</valueof><BR>
+				<i>Shipping address:</i><br>
+				<valueof param="sg.shippingAddress.firstName">No Name</valueof> 
+				<valueof param="sg.shippingAddress.lastName">No Name</valueof><BR>
+				<valueof param="sg.shippingAddress.address1">No Address1</valueof> 
+				<valueof param="sg.shippingAddress.address2">No Address2</valueof><BR>
+				<valueof param="sg.shippingAddress.city">No city</valueof>, 
+				<valueof param="sg.shippingAddress.state">No state</valueof> 
+				<valueof param="sg.shippingAddress.postalCode">No postal code</valueof><BR>
+				Tracking # = <valueof param="sg.trackingNumber">No tracking number</valueof><BR>
+			      </oparam>
+			      <oparam name="electronicShippingGroup">
+				Email address = <valueof param="sg.emailAddress">No email address</valueof><br>
+			      </oparam>
+			    </droplet>
+			</td>
+			<td>
+			    Id = <valueof param="sg.id">no id</valueof><br>
+			    Type = <valueof param="sg.shippingGroupClassType">no type</valueof><br>
+			    State = <valueof param="sg.stateAsString">no state</valueof><br>
+			    Detail = <valueof param="sg.stateDetail">no detail</valueof><br>
+			    Description = <valueof param="sg.description">no description</valueof><br>
+			    Submitted Date = <valueof param="sg.submittedDate">no submitted date</valueof><br>
+			    Ship On Date = <valueof param="sg.shipOnDate">no shipOnDate</valueof><br>
+			    Actual Ship Date = <valueof param="sg.actualShipDate">no actualShipDate</valueof><br>
+			    Special Instructions: <valueof param="sg.specialInstructions"></valueof><br>
+			</td>
+		      </tr>
+		    </table>
+		</td>
+	      </tr>
+	    </oparam>
+          </droplet>    
+        </table>
+      </oparam>
+    </droplet>
+    <hr>
+    <!-- Payment information -->
+    <h2>Payment Groups</h2>
+    <droplet bean="IsNull">
+      <param name="value" value="param:order.paymentGroups">
+      <oparam name="true">
+	<p>There are no payment groups in this order.
+      </oparam>
+      <oparam name="false">
+	<table>
+	  <droplet bean="ForEach">
+	    <param name="array" value="param:order.paymentGroups">
+	    <param name="elementName" value="pg">
+	    <oparam name="empty">
+	      There were no payment groups.<br>
+	    </oparam>
+	    <oparam name="output">
+	      <tr valign=top>
+		<td>
+		    <b>Pay for this:</b><br>
+		    <table border=1>
+		      <droplet bean="ForEach">
+			<param name="array" value="param:pg.commerceItemRelationships">
+			<param name="elementName" value="itemRel">
+			<oparan name="outputStart">
+			<tr>
+			  <td><b>Id</b></td>
+			  <td><b>Amount</b></td>
+			  <td><b>State</b></td>
+			</tr>
+			</oparam>
+			<oparam name="output">
+			  <tr>
+			    <td>
+				<valueof param="itemRel.commerceItem.catalogRefId">No id</valueof>
+			    </td>
+			    <td>
+				<droplet bean="Switch">
+				  <param name="value" value="param:itemRel.relationshipTypeAsString">
+				  <oparam name="PAYMENTAMOUNT">
+				    <valueof param="itemRel.amount" currency>No amount specified</valueof>
+			          </oparam> 
+				  <oparam name="PAYMENTAMOUNTREMAINING">
+				    Entire remaining amount for items.
+				  </oparam> 
+			        </droplet>
+			    </td>
+			    <td>
+				<valueof param="itemRel.stateAsString">no state</valueof>
+			    </td>
+		          </tr>
+			  <tr>
+			    <td colspan=3>
+				<valueof param="itemRel.stateDetail">no detail</valueof>			    
+			    </td>
+			  </tr>
+		        </oparam>
+		      </droplet>
+		      <droplet bean="ForEach">
+			<param name="array" value="param:pg.shippingGroupRelationships">
+			<param name="elementName" value="shipRel">
+			<oparan name="outputStart">
+			<tr>
+			  <td><b>Id</b></td>
+			  <td><b>Amount</b></td>
+			  <td><b>State</b></td>
+			</tr>
+			</oparam>
+			<oparam name="output">
+			  <tr>
+			    <td>
+				<valueof param="shipRel.shippingGroup.id">No id</valueof>
+			    </td>
+			    <td>
+				<droplet bean="Switch">
+				  <param name="value" value="param:shipRel.relationshipTypeAsString">
+				  <oparam name="SHIPPINGAMOUNT">
+				    <valueof param="shipRel.amount" currency>No amount specified</valueof>
+			          </oparam> 
+				  <oparam name="SHIPPINGAMOUNTREMAINING">
+				    Entire remaining amount of shipping cost.
+				  </oparam> 
+			        </droplet>
+			    </td>
+			    <td>
+				<valueof param="shipRel.stateAsString">no state</valueof>
+			    </td>
+		          </tr>
+			  <tr>
+			    <td colspan=3>
+				<valueof param="shipRel.stateDetail">no detail</valueof>			    
+			    </td>
+			  </tr>
+		        </oparam>
+		      </droplet>
+		      <droplet bean="Switch">
+			<param name="value" value="param:pg.orderRelationshipCount">
+			<oparam name="0">
+			</oparam>
+			<oparam name="1">
+			  <tr>
+			    <td><b>Type</b></td>
+			    <td><b>Amount</b></td>
+			  </tr>
+			  <tr>
+			  <droplet bean="Switch">
+			    <param name="value" value="param:pg.orderRelationship.relationshipTypeAsString">
+			    <oparam name="TAXAMOUNT">
+			      <td>
+				  Tax
+			      </td>
+			      <td>
+				  <valueof param="pg.orderRelationship.amount" currency>No amount specified</valueof>
+			      </td>
+			    </oparam> 
+			    <oparam name="TAXAMOUNTREMAINING">
+			      <td>
+				  Tax
+			      </td>
+			      <td>
+				  Entire remaining amount of tax.
+			      </td>
+			    </oparam> 
+			    <oparam name="ORDERAMOUNT">
+			      <td>
+				  Order
+			      </td>
+			      <td>
+				  <valueof param="pg.orderRelationship.amount" currency>No amount specified</valueof>
+			      </td>
+			    </oparam> 
+			    <oparam name="ORDERAMOUNTREMAINING">
+			      <td>
+				  Order
+			      </td>
+			      <td>
+				  Entire remaining amount of order.
+			      </td>
+			    </oparam>
+		          </droplet>
+		          </tr>
+		        </oparam>			
+		      </droplet>
+		    </table>
+		</td>
+		<td>
+		    <p><b>With this payment information: <valueof param="pg.paymentMethod"></valueof></b><br>
+		    <table border=1>
+		      <tr>
+			<td>
+			    <droplet bean="Switch">
+			      <param name="value" value="param:pg.paymentMethod">
+			      <oparam name="creditCard">
+				<i>Pay with <valueof param="pg.creditCardType"></valueof> :</i> #
+				<valueof param="pg.creditCardNumber">no number</valueof><BR>
+				Expiration date is <valueof param="pg.expirationMonth"></valueof>/
+				<valueof param="pg.expirationYear"></valueof><br>
+				<i>Billing addres:</i><br>
+				<valueof param="pg.billingAddress.firstName"></valueof> 
+				<valueof param="pg.billingAddress.lastName"></valueof><BR>
+				<valueof param="pg.billingAddress.address1"></valueof> 
+				<valueof param="pg.billingAddress.address2"></valueof><BR>
+				<valueof param="pg.billingAddress.city"></valueof>, 
+				<valueof param="pg.billingAddress.state"></valueof> 
+				<valueof param="pg.billingAddress.postalCode"></valueof><BR>
+			      </oparam>
+			      <oparam name="giftCertificate">
+				<i>Pay with gift certificate <valueof param="pg.giftCertificateNumber"></valueof> :</i><br>
+			      </oparam>
+			    </droplet>
+			</td>
+			<td>
+			    Id = <valueof param="pg.id">no id</valueof><br>
+			    Amount = <valueof param="pg.amount" currency></valueof><br>
+			    State = <valueof param="pg.stateAsString">no state</valueof><br>
+			    Detail = <valueof param="pg.stateDetail">no detail</valueof><br>
+			    PaymentMethod = <valueof param="pg.paymentMethod">no method</valueof><br>
+			    Authorization Status = <br>
+			    <droplet bean="ForEach">
+			      <param name="array" value="param:pg.authorizationStatus">
+			      <param name="elementName" value="authStatus">
+			      <oparam name="output">
+				<droplet bean="Switch">
+				  <param name="value" value="param:authStatus.transactionSuccess">
+				  <oparam name="true">
+				    &nbsp;&nbsp;&nbsp;&nbsp;
+				    Authorized: <valueof param="authStatus.amount" currency></valueof><br>
+				  </oparam>
+				  <oparam name="false">
+				    &nbsp;&nbsp;&nbsp;&nbsp;
+				    Failed: <valueof param="authStatus.errorMessage"></valueof><br>
+				  </oparam>
+			        </droplet>
+			      </oparam>
+			    </droplet>
+
+			    Debit Status = <br>
+			    <droplet bean="ForEach">
+			      <param name="array" value="param:pg.debitStatus">
+			      <param name="elementName" value="debitStatus">
+			      <oparam name="output">
+				<droplet bean="Switch">
+				  <param name="value" value="param:debitStatus.transactionSuccess">
+				  <oparam name="true">
+				    &nbsp;&nbsp;&nbsp;&nbsp;
+				    Debited: <valueof param="debitStatus.amount" currency></valueof><br>
+				  </oparam>
+				  <oparam name="false">
+				    &nbsp;&nbsp;&nbsp;&nbsp;
+				    Failed: <valueof param="debitStatus.errorMessage"></valueof><br>
+				  </oparam>
+				</droplet>
+			      </oparam>
+			    </droplet>
+
+			    Credit Status = <br>
+			    <droplet bean="ForEach">
+			      <param name="array" value="param:pg.creditStatus">
+			      <param name="elementName" value="creditStatus">
+			      <oparam name="output">
+				<droplet bean="Switch">
+				  <param name="value" value="param:creditStatus.transactionSuccess">
+				  <oparam name="true">
+				    &nbsp;&nbsp;&nbsp;&nbsp;
+				    Credited: <valueof param="creditStatus.amount" currency></valueof><br>
+				  </oparam>
+				  <oparam name="false">
+				    &nbsp;&nbsp;&nbsp;&nbsp;
+				    Failed: <valueof param="creditStatus.errorMessage"></valueof><br>
+				  </oparam>
+				</droplet>
+			      </oparam>
+			    </droplet>
+
+			    Submitted Date = <valueof param="pg.submittedDate">no submitted date</valueof><br>
+			    Special Instructions: <valueof param="pg.specialInstructions"></valueof><br>
+			</td>
+		      </tr>
+		    </table>
+		</td>
+	      </tr>
+	    </oparam>
+          </droplet>
+        </table>
+      </oparam>
+    </droplet>
+    
+
+    
+  </oparam>
+</droplet>
+
+</blockquote>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/DCS/admin/atg/commerce/admin/en/fulfillment/PrintOrder.jhtml#2 $$Change: 651448 $*/</java>
+

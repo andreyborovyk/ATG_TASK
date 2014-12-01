@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE gsa-template SYSTEM  "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+  <gsa-template>
+    <header>
+      <name>Sample SQL Content Repository</name>
+      <author>Felix</author>
+      <version>$Id: //product/DSS/version/10.0.3/release/DSSJ2EEDemo/config/atg/demo/QuincyFunds/repositories/Funds/funds.xml#2 $$Change: 651448 $</version>
+    </header>
+
+  <!-- FUND DESCRIPTOR -->
+
+  <item-descriptor name="fund" content="true"
+    display-name-resource="itemDescriptorFund"
+    use-id-for-path="true"
+    folder-id-property="parentFolder"
+    content-name-property="fundName"
+    content-path-property="relativePath"
+    last-modified-property="lastModified"
+    content-property="fundContent">
+
+    <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.FundsRepository"/>
+
+    <table name="dss_qf_fund" type="primary" id-column-name="id">
+      <property name="fundName" column-name="fundName" data-type="string" display-name-resource="fundNameDisplayName" required="true" queryable="true">
+        <attribute name="uiwritable" value="false"/></property>
+      <property name="aggressiveIndex" column-name="aggressiveIndex" data-type="int" display-name-resource="aggressiveIndexDisplayName" description-resource="aggressiveIndexShortDescription"  queryable="true">
+        <attribute name="uiwritable" value="false"/></property>
+      <property name="symbol" column-name="symbol" data-type="string" display-name-resource="symbolDisplayName" description-resource="symbolShortDescription" queryable="true">
+        <attribute name="uiwritable" value="false"/></property>
+      <property name="category" column-name="category" data-type="string" display-name-resource="categoryDisplayName" description-resource="categoryShortDescription"  queryable="true">
+        <attribute name="uiwritable" value="false"/></property>
+      <property name="price" column-name="price" data-type="float" display-name-resource="priceDisplayName" queryable="true">
+        <attribute name="uiwritable" value="false"/></property>
+      <property name="parentFolder" column-name="parentFolder" item-type="fund_folder" display-name-resource="parentFolder" description-resource="parentFolderShortDescription">
+        <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.Descriptors"/>
+        <attribute name="uiwritable" value="false"/>
+      </property>
+      <property name="objective" column-name="objective" data-type="string" display-name-resource="objectiveDisplayName" description-resource="objectiveShortDescription"  queryable="true">
+        <attribute name="uiwritable" value="false"/></property>
+      <property name="strategy" column-name="strategy" data-type="string" display-name-resource="strategyDisplayName" description-resource="strategyShortDescription"  queryable="false">
+        <attribute name="uiwritable" value="false"/></property>
+      <property name="inceptionDate" column-name="inceptionDate" data-type="timestamp" display-name-resource="inceptionDateDisplayName" description-resource="inceptionDateShortDescription" queryable="true">
+        <attribute name="uiwritable" value="false"/></property>
+      <property name="lastModified" data-type="timestamp" column-name="last_modified" display-name-resource="lastModified" description-resource="lastModifiedShortDescription" writable="true" queryable="true">
+        <attribute name="resourceBundle" value="atg.adapter.html.Descriptors"/>
+        <attribute name="uiwritable" value="false"/>
+      </property>
+      <property name="ytd" column-name="ytd" data-type="string" display-name-resource="ytdDisplayName" description-resource="ytdShortDescription"  queryable="true">
+        <attribute name="uiwritable" value="false"/></property>
+      <property name="oneyear" column-name="oneyear" data-type="string" display-name-resource="oneYearDisplayName" queryable="true">
+        <attribute name="uiwritable" value="false"/></property>
+      <property name="threeyear" column-name="threeyear" data-type="string" display-name-resource="threeYearDisplayName" queryable="true">
+        <attribute name="uiwritable" value="false"/></property>
+      <property name="fiveyear" column-name="fiveyear" data-type="string" display-name-resource="fiveYearDisplayName" queryable="true">
+        <attribute name="uiwritable" value="false"/></property>
+      <property name="tenyear" column-name="tenyear" data-type="string" display-name-resource="tenYearDisplayName" queryable="true">
+        <attribute name="uiwritable" value="false"/></property>
+      <property name="sinceInception" column-name="sinceInception" data-type="string" display-name-resource="sinceInceptionDisplayName" queryable="true">
+        <attribute name="uiwritable" value="false"/></property>
+      <property name="intro" column-name="intro" data-type="string" display-name-resource="introDisplayName" queryable="true">
+        <attribute name="uiwritable" value="false"/></property>
+      <property name="compFundName" column-name="compFundName" data-type="string" display-name-resource="compFundNameDisplayName" queryable="true">
+        <attribute name="uiwritable" value="false"/></property>
+      <property name="zeroToTen" column-name="zeroToTen" data-type="string" display-name-resource="zeroToTenDisplayName" queryable="true">
+        <attribute name="uiwritable" value="false"/></property>
+      <property name="tenToHundred" column-name="tenToHundred" data-type="string" display-name-resource="tenToHundredDisplayName" queryable="true">
+        <attribute name="uiwritable" value="false"/></property>
+      <property name="overHundred" column-name="overHundred" data-type="string" display-name-resource="overHundredDisplayName" queryable="true">
+        <attribute name="uiwritable" value="false"/></property>
+      <property name="relativePath" column-name="relativePath" data-type="string" display-name-resource="relativePath" description-resource="relativePathShortDescription" queryable="true">
+        <attribute name="resourceBundle" value="atg.adapter.html.Descriptors"/>
+        <attribute name="uiwritable" value="false"/>
+      </property>
+      <property name="language" column-name="language" data-type="string" display-name-resource="languageDisplayName" description-resource="languageShortDescription" required="true" queryable="true">
+        <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.Descriptors"/>
+        <attribute name="uiwritable" value="false"/></property>
+    </table>
+
+      <property name="document" property-type="atg.xml.PropertyToDOMPropertyDescriptor" display-name-resource="document" description-resource="documentShortDescription">
+        <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.Descriptors"/>
+        <attribute name="documentSourcePropertyName" value="fundContent"/>
+        <attribute name="contentTimeStampPropertyName" value="lastModified"/>
+      </property>
+
+    <table name="dss_qf_fund_cont" type="auxiliary" id-column-name="id">
+      <property name="fundContent" column-name="file_content" display-name-resource="content" description-resource="contentShortDescription" data-type="string" queryable="false">
+        <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.Descriptors"/>
+        <attribute name="uiwritable" value="false"/>
+      </property>
+    </table>
+
+    <table name="dss_qf_fund_trgs" type="multi" id-column-name="id" multi-column-name="seq_num">
+      <property name="targets" column-name="subject" data-type="array" component-data-type="string" display-name-resource="targetsDisplayName" description-resource="targetsShortDescription">
+        <attribute name="uiwritable" value="false"/>
+      </property>
+    </table>
+
+    <table name="dss_qf_fund_types" type="multi" id-column-name="id" multi-column-name="seq_num">
+      <property name="type" column-name="subject" data-type="array" component-data-type="string" display-name-resource="types" description-resource="typeShortDescription">
+        <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.Descriptors"/>
+        <attribute name="uiwritable" value="false"/>
+      </property>
+    </table>
+	      
+  </item-descriptor>
+
+  <!-- FOLDER DESCRIPTOR  -->
+
+  <item-descriptor name="fund_folder"
+    display-name-resource="itemDescriptorFundFolder"
+    folder="true"
+    use-id-for-path="true"
+    content-name-property="name"
+    folder-id-property="parentFolder">
+
+    <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.FundsRepository"/>
+
+    <table name="dss_qf_fund_fldr" type="primary" id-column-name="id">
+      <property name="parentFolder" column-name="parentFolder" item-type="fund_folder" display-name-resource="parentFolder" description-resource="parentFolderShortDescription">
+        <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.Descriptors"/>
+      </property>
+      <property name="name" column-name="name" data-type="string" display-name-resource="folderName" description-resource="folderNameShortDescription">
+        <attribute name="resourceBundle" value="atg.projects.dssj2eedemo.Descriptors"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  </gsa-template>
+<!-- @version $Id: //product/DSS/version/10.0.3/release/DSSJ2EEDemo/config/atg/demo/QuincyFunds/repositories/Funds/funds.xml#2 $$Change: 651448 $ -->

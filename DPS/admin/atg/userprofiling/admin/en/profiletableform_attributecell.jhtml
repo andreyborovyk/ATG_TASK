@@ -1,0 +1,33 @@
+<importbean bean="/atg/dynamo/droplet/Switch">
+
+<declareparam name="propertyDesc" value="atg.beans.DynamicBeanDescriptor" description="The DynamicBeanDescriptor of the cell we want to output">
+<declareparam name="passwordProperty" value="java.lang.String" description="The name of the passwordProperty">
+<declareparam name="loginProperty" value="java.lang.String" description="The name of the loginProperty">
+
+<java type=import>
+atg.core.util.StringUtils
+</java>
+<java>
+  String passwordProperty = request.getParameter("passwordProperty");
+  String loginProperty = request.getParameter("loginProperty");
+  String currentProperty = request.getParameter("propertyDesc.name");
+
+  if((StringUtils.toUpperCase(passwordProperty).equals(StringUtils.toUpperCase(currentProperty))) ||
+     (StringUtils.toUpperCase(loginProperty).equals(StringUtils.toUpperCase(currentProperty)))) {
+</java>
+    <strong><valueof param="element.displayName">null</valueof></strong>
+<java>
+  } else {
+</java>
+    <valueof param="element.displayName">null</valueof>
+<java>
+  }
+</java>
+<droplet bean="Switch">
+ <param name="value" value="param:propertyDesc.required">
+ <oparam name="true">
+  <superscript>*</superscript>
+ </oparam>	 
+</droplet>
+<java>/* @version $Id: //product/DPS/version/10.0.3/release/DPS/admin/atg/userprofiling/admin/en/profiletableform_attributecell.jhtml#2 $$Change: 651448 $ */</java>
+

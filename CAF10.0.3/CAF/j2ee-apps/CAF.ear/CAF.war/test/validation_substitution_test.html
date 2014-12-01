@@ -1,0 +1,28 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<script language="JavaScript" src="../scripts/atg-ui_validation.js"></script>
+
+<script language="JavaScript">
+var original = "The #1# cat in the #2# hat, next to the #3# rat, underneath the #4# mat";
+var tokens = new Array("#1#", "#2#", "#3#", "#4#");
+var strings = new Array("Blue", "Red", "Green", "Yellow");
+
+function doTest() {
+ var status = atgCommon_substituteTokenArray(original, strings, tokens);
+ (document.getElementById("result")).innerHTML = "Before: " + original + "<br>After: " + status;
+}
+</script>
+
+<title>Substitution Test</title>
+</head>
+
+<body>
+
+<span onclick="doTest()"><font face="Tahoma" style="cursor:pointer" size="2">Click here to test Substitution Token Array</font></span><br><br>
+<font face="Tahoma" size="2" id="result"></font>
+</body>
+
+</html>

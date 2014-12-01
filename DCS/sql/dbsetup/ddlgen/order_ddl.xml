@@ -1,0 +1,1852 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="order_ddl">
+<comment><![CDATA[ @version $Id: //product/DCS/version/10.0.3/templates/DCS/sql/order_ddl.xml#2 $$Change: 651448 $]]></comment>
+   <table name="dcspp_order">
+      <column name="order_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="type" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="version" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="order_class_type" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="profile_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="description" nullable="y">
+         <column-type db="generic" type="varchar" length="64"/>
+      </column>
+      <column name="state" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="state_detail" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="created_by_order" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="origin_of_order" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="creation_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <column name="submitted_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <column name="last_modified_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <column name="completed_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <column name="price_info" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="tax_price_info" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="explicitly_saved" nullable="y">
+         <column-type db="generic" type="tinyint"/>
+         <column-type db="oracle" type="number" length="1" scale="0"/>
+         <column-type db="db2" type="numeric" length="1" scale="0"/>
+         <column-type db="mssql" type="numeric" length="1" scale="0"/>
+      </column>
+      <column name="agent_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sales_channel" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="creation_site_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="site_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcspp_order_p">
+         <index-column column="order_id" order="asc" seq="1"/>
+      </primary-key>
+      <check name="dcspp_order_c">
+         <check-expr expression="explicitly_saved IN (0,1)" db="generic"/>
+      </check>
+      <index name="order_lastmod_idx" table="dcspp_order">
+         <index-column column="last_modified_date" order="asc" seq="1"/>
+      </index>
+      <index name="order_profile_idx" table="dcspp_order">
+         <index-column column="profile_id" order="asc" seq="1"/>
+      </index>
+      <index name="order_submit_idx" table="dcspp_order">
+         <index-column column="submitted_date" order="asc" seq="1"/>
+      </index>
+      <index name="ord_creat_site_idx" table="dcspp_order">
+         <index-column column="creation_site_id" order="asc" seq="1"/>
+      </index>
+      <index name="ord_site_idx" table="dcspp_order">
+         <index-column column="site_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dcspp_ship_group">
+      <column name="shipping_group_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="type" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="version" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="shipgrp_class_type" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="shipping_method" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="description" nullable="y">
+         <column-type db="generic" type="varchar" length="64"/>
+      </column>
+      <column name="ship_on_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <column name="actual_ship_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <column name="state" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="state_detail" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="submitted_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <column name="price_info" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="order_ref" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcspp_ship_group_p">
+         <index-column column="shipping_group_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dcspp_pay_group">
+      <column name="payment_group_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="type" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="version" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="paygrp_class_type" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="payment_method" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="amount" nullable="y">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="19" scale="7"/>
+         <column-type db="db2" type="numeric" length="19" scale="7"/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+      </column>
+      <column name="amount_authorized" nullable="y">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="19" scale="7"/>
+         <column-type db="db2" type="numeric" length="19" scale="7"/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+      </column>
+      <column name="amount_debited" nullable="y">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="19" scale="7"/>
+         <column-type db="db2" type="numeric" length="19" scale="7"/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+      </column>
+      <column name="amount_credited" nullable="y">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="19" scale="7"/>
+         <column-type db="db2" type="numeric" length="19" scale="7"/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+      </column>
+      <column name="currency_code" nullable="y">
+         <column-type db="generic" type="varchar" length="10"/>
+      </column>
+      <column name="state" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="state_detail" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="submitted_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <column name="order_ref" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcspp_pay_group_p">
+         <index-column column="payment_group_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dcspp_item">
+      <column name="commerce_item_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="type" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="version" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="item_class_type" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="catalog_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="catalog_ref_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="catalog_key" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="product_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="site_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="quantity" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="number" length="19" scale="0"/>
+         <column-type db="db2" type="numeric" length="19" scale="0"/>
+         <column-type db="mssql" type="numeric" length="19" scale="0"/>
+         <column-type db="sybase" type="numeric" length="19"/>
+      </column>
+      <column name="state" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="state_detail" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="price_info" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="order_ref" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcspp_item_p">
+         <index-column column="commerce_item_id" order="asc" seq="1"/>
+      </primary-key>
+      <index name="item_catref_idx" table="dcspp_item">
+         <index-column column="catalog_ref_id" order="asc" seq="1"/>
+      </index>
+      <index name="item_prodref_idx" table="dcspp_item">
+         <index-column column="product_id" order="asc" seq="1"/>
+      </index>
+      <index name="item_site_idx" table="dcspp_item">
+         <index-column column="site_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dcspp_relationship">
+      <column name="relationship_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="type" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="version" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="rel_class_type" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="relationship_type" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="order_ref" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcspp_relationsh_p">
+         <index-column column="relationship_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dcspp_rel_orders">
+      <column name="order_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="related_orders" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <primary-key name="dcspp_rel_orders_p">
+         <index-column column="order_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcspp_reordr_d_f" referenced-table="dcspp_order">
+         <fkey-column referencing-column="order_id" referenced-column="order_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcspp_order_inst">
+      <column name="order_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="tag" nullable="n">
+         <column-type db="generic" type="varchar" length="42"/>
+      </column>
+      <column name="special_inst" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dcspp_order_inst_p">
+         <index-column column="order_id" order="asc" seq="1"/>
+         <index-column column="tag" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcspp_orordr_d_f" referenced-table="dcspp_order">
+         <fkey-column referencing-column="order_id" referenced-column="order_id"/>
+      </foreign-key>
+      <index name="order_inst_oid_idx" table="dcspp_order_inst">
+         <index-column column="order_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dcspp_order_sg">
+      <column name="order_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="shipping_groups" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <primary-key name="dcspp_order_sg_p">
+         <index-column column="order_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcspp_sgordr_d_f" referenced-table="dcspp_order">
+         <fkey-column referencing-column="order_id" referenced-column="order_id"/>
+      </foreign-key>
+      <index name="order_sg_ordid_idx" table="dcspp_order_sg">
+         <index-column column="order_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dcspp_order_pg">
+      <column name="order_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="payment_groups" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <primary-key name="dcspp_order_pg_p">
+         <index-column column="order_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcspp_orpgordr_f" referenced-table="dcspp_order">
+         <fkey-column referencing-column="order_id" referenced-column="order_id"/>
+      </foreign-key>
+      <index name="order_pg_ordid_idx" table="dcspp_order_pg">
+         <index-column column="order_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dcspp_order_item">
+      <column name="order_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="commerce_items" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <primary-key name="dcspp_order_item_p">
+         <index-column column="order_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcspp_oritordr_d_f" referenced-table="dcspp_order">
+         <fkey-column referencing-column="order_id" referenced-column="order_id"/>
+      </foreign-key>
+      <index name="order_item_oid_idx" table="dcspp_order_item">
+         <index-column column="order_id" order="asc" seq="1"/>
+      </index>
+      <index name="order_item_cit_idx" table="dcspp_order_item">
+         <index-column column="commerce_items" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dcspp_order_rel">
+      <column name="order_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="relationships" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <primary-key name="dcspp_order_rel_p">
+         <index-column column="order_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcspp_orlordr_d_f" referenced-table="dcspp_order">
+         <fkey-column referencing-column="order_id" referenced-column="order_id"/>
+      </foreign-key>
+      <index name="order_rel_orid_idx" table="dcspp_order_rel">
+         <index-column column="order_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dcspp_ship_inst">
+      <column name="shipping_group_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="tag" nullable="n">
+         <column-type db="generic" type="varchar" length="42"/>
+      </column>
+      <column name="special_inst" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dcspp_ship_inst_p">
+         <index-column column="shipping_group_id" order="asc" seq="1"/>
+         <index-column column="tag" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcspp_shshippng__f" referenced-table="dcspp_ship_group">
+         <fkey-column referencing-column="shipping_group_id" referenced-column="shipping_group_id"/>
+      </foreign-key>
+      <index name="ship_inst_sgid_idx" table="dcspp_ship_inst">
+         <index-column column="shipping_group_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dcspp_hrd_ship_grp">
+      <column name="shipping_group_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="tracking_number" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcspp_hrd_ship_g_p">
+         <index-column column="shipping_group_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dcspp_hrshippng__f" referenced-table="dcspp_ship_group">
+         <fkey-column referencing-column="shipping_group_id" referenced-column="shipping_group_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcspp_ele_ship_grp">
+      <column name="shipping_group_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="email_address" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <primary-key name="dcspp_ele_ship_g_p">
+         <index-column column="shipping_group_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dcspp_elshippng__f" referenced-table="dcspp_ship_group">
+         <fkey-column referencing-column="shipping_group_id" referenced-column="shipping_group_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcspp_ship_addr">
+      <column name="shipping_group_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="prefix" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <column name="first_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <column name="middle_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <column name="last_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <column name="suffix" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <column name="job_title" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <column name="company_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <column name="address_1" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="50"/>
+         <column-type db="mssql" type="nvarchar" length="50" scale=""/>
+      </column>
+      <column name="address_2" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="50"/>
+         <column-type db="mssql" type="nvarchar" length="50" scale=""/>
+      </column>
+      <column name="address_3" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="50"/>
+         <column-type db="mssql" type="nvarchar" length="50" scale=""/>
+      </column>
+      <column name="city" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <column name="county" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <column name="state" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <column name="postal_code" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="10"/>
+         <column-type db="mssql" type="nvarchar" length="10" scale=""/>
+      </column>
+      <column name="country" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <column name="phone_number" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <column name="fax_number" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <column name="email" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+         <column-type db="mssql" type="nvarchar" length="255" scale=""/>
+      </column>
+      <primary-key name="dcspp_ship_addr_p">
+         <index-column column="shipping_group_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dcspp_shdshippng_f" referenced-table="dcspp_ship_group">
+         <fkey-column referencing-column="shipping_group_id" referenced-column="shipping_group_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcspp_hand_inst">
+      <column name="handling_inst_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="type" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="version" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="hndinst_class_type" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="handling_method" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="shipping_group_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="commerce_item_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="quantity" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <primary-key name="dcspp_hand_inst_p">
+         <index-column column="handling_inst_id" order="asc" seq="1"/>
+      </primary-key>
+      <index name="hi_item_idx" table="dcspp_hand_inst">
+         <index-column column="commerce_item_id" order="asc" seq="1"/>
+      </index>
+      <index name="hi_ship_group_idx" table="dcspp_hand_inst">
+         <index-column column="shipping_group_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dcspp_gift_inst">
+      <column name="handling_inst_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="giftlist_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="giftlist_item_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcspp_gift_inst_p">
+         <index-column column="handling_inst_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dcspp_gihandlng__f" referenced-table="dcspp_hand_inst">
+         <fkey-column referencing-column="handling_inst_id" referenced-column="handling_inst_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcspp_sg_hand_inst">
+      <column name="shipping_group_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="handling_instrs" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <primary-key name="dcspp_sg_hand_in_p">
+         <index-column column="shipping_group_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcspp_sgshippng__f" referenced-table="dcspp_ship_group">
+         <fkey-column referencing-column="shipping_group_id" referenced-column="shipping_group_id"/>
+      </foreign-key>
+      <index name="sg_hnd_ins_sgi_idx" table="dcspp_sg_hand_inst">
+         <index-column column="shipping_group_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dcspp_pay_inst">
+      <column name="payment_group_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="tag" nullable="n">
+         <column-type db="generic" type="varchar" length="42"/>
+      </column>
+      <column name="special_inst" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dcspp_pay_inst_p">
+         <index-column column="payment_group_id" order="asc" seq="1"/>
+         <index-column column="tag" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcspp_papaymnt_g_f" referenced-table="dcspp_pay_group">
+         <fkey-column referencing-column="payment_group_id" referenced-column="payment_group_id"/>
+      </foreign-key>
+      <index name="pay_inst_pgrid_idx" table="dcspp_pay_inst">
+         <index-column column="payment_group_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dcspp_config_item">
+      <column name="config_item_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="reconfig_data" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="notes" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <primary-key name="dcspp_config_ite_p">
+         <index-column column="config_item_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dcspp_coconfg_tm_f" referenced-table="dcspp_item">
+         <fkey-column referencing-column="config_item_id" referenced-column="commerce_item_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcspp_subsku_item">
+      <column name="subsku_item_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="ind_quantity" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <primary-key name="dcspp_subsku_ite_p">
+         <index-column column="subsku_item_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dcspp_susubsk_tm_f" referenced-table="dcspp_item">
+         <fkey-column referencing-column="subsku_item_id" referenced-column="commerce_item_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcspp_item_ci">
+      <column name="commerce_item_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="commerce_items" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <primary-key name="dcspp_item_ci_p">
+         <index-column column="commerce_item_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcspp_itcommrc_t_f" referenced-table="dcspp_item">
+         <fkey-column referencing-column="commerce_item_id" referenced-column="commerce_item_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcspp_gift_cert">
+      <column name="payment_group_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="profile_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="gift_cert_number" nullable="y">
+         <column-type db="generic" type="varchar" length="50"/>
+      </column>
+      <primary-key name="dcspp_gift_cert_p">
+         <index-column column="payment_group_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dcspp_gipaymnt_g_f" referenced-table="dcspp_pay_group">
+         <fkey-column referencing-column="payment_group_id" referenced-column="payment_group_id"/>
+      </foreign-key>
+      <index name="gc_number_idx" table="dcspp_gift_cert">
+         <index-column column="gift_cert_number" order="asc" seq="1"/>
+      </index>
+      <index name="gc_profile_idx" table="dcspp_gift_cert">
+         <index-column column="profile_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dcspp_store_cred">
+      <column name="payment_group_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="profile_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="store_cred_number" nullable="y">
+         <column-type db="generic" type="varchar" length="50"/>
+      </column>
+      <primary-key name="dcspp_store_cred_p">
+         <index-column column="payment_group_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dcspp_stpaymnt_g_f" referenced-table="dcspp_pay_group">
+         <fkey-column referencing-column="payment_group_id" referenced-column="payment_group_id"/>
+      </foreign-key>
+      <index name="sc_number_idx" table="dcspp_store_cred">
+         <index-column column="store_cred_number" order="asc" seq="1"/>
+      </index>
+      <index name="sc_profile_idx" table="dcspp_store_cred">
+         <index-column column="profile_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dcspp_credit_card">
+      <column name="payment_group_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="credit_card_number" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="credit_card_type" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="expiration_month" nullable="y">
+         <column-type db="generic" type="varchar" length="20"/>
+      </column>
+      <column name="exp_day_of_month" nullable="y">
+         <column-type db="generic" type="varchar" length="20"/>
+      </column>
+      <column name="expiration_year" nullable="y">
+         <column-type db="generic" type="varchar" length="20"/>
+      </column>
+      <primary-key name="dcspp_credit_car_p">
+         <index-column column="payment_group_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dcspp_crpaymnt_g_f" referenced-table="dcspp_pay_group">
+         <fkey-column referencing-column="payment_group_id" referenced-column="payment_group_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcspp_bill_addr">
+      <column name="payment_group_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="prefix" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <column name="first_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <column name="middle_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <column name="last_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <column name="suffix" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <column name="job_title" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <column name="company_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <column name="address_1" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="50"/>
+         <column-type db="mssql" type="nvarchar" length="50" scale=""/>
+      </column>
+      <column name="address_2" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="50"/>
+         <column-type db="mssql" type="nvarchar" length="50" scale=""/>
+      </column>
+      <column name="address_3" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="50"/>
+         <column-type db="mssql" type="nvarchar" length="50" scale=""/>
+      </column>
+      <column name="city" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <column name="county" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <column name="state" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <column name="postal_code" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="10"/>
+         <column-type db="mssql" type="nvarchar" length="10" scale=""/>
+      </column>
+      <column name="country" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <column name="phone_number" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <column name="fax_number" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="mssql" type="nvarchar" length="40" scale=""/>
+      </column>
+      <column name="email" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+         <column-type db="mssql" type="nvarchar" length="255" scale=""/>
+      </column>
+      <primary-key name="dcspp_bill_addr_p">
+         <index-column column="payment_group_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dcspp_bipaymnt_g_f" referenced-table="dcspp_pay_group">
+         <fkey-column referencing-column="payment_group_id" referenced-column="payment_group_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcspp_pay_status">
+      <column name="status_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="type" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="version" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="trans_id" nullable="y">
+         <column-type db="generic" type="varchar" length="50"/>
+      </column>
+      <column name="amount" nullable="y">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="19" scale="7"/>
+         <column-type db="db2" type="numeric" length="19" scale="7"/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+      </column>
+      <column name="trans_success" nullable="y">
+         <column-type db="generic" type="tinyint"/>
+         <column-type db="oracle" type="number" length="1" scale="0"/>
+         <column-type db="db2" type="numeric" length="1" scale="0"/>
+         <column-type db="mssql" type="numeric" length="1" scale="0"/>
+      </column>
+      <column name="error_message" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="trans_timestamp" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <primary-key name="dcspp_pay_status_p">
+         <index-column column="status_id" order="asc" seq="1"/>
+      </primary-key>
+      <check name="dcspp_pay_status_c">
+         <check-expr expression="trans_success IN (0,1)" db="generic"/>
+      </check>
+   </table>
+   <table name="dcspp_cc_status">
+      <column name="status_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="auth_expiration" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <column name="avs_code" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="avs_desc_result" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="integration_data" nullable="y">
+         <column-type db="generic" type="varchar" length="256"/>
+      </column>
+      <primary-key name="dcspp_cc_status_p">
+         <index-column column="status_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dcspp_ccstats_d_f" referenced-table="dcspp_pay_status">
+         <fkey-column referencing-column="status_id" referenced-column="status_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcspp_gc_status">
+      <column name="status_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="auth_expiration" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <primary-key name="dcspp_gc_status_p">
+         <index-column column="status_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dcspp_gcstats_d_f" referenced-table="dcspp_pay_status">
+         <fkey-column referencing-column="status_id" referenced-column="status_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcspp_sc_status">
+      <column name="status_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="auth_expiration" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <primary-key name="dcspp_sc_status_p">
+         <index-column column="status_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dcspp_scstats_d_f" referenced-table="dcspp_pay_status">
+         <fkey-column referencing-column="status_id" referenced-column="status_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcspp_auth_status">
+      <column name="payment_group_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="auth_status" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="oracle" type="varchar2" length="254" scale=""/>
+         <column-type db="db2" type="varchar" length="254" scale=""/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <primary-key name="dcspp_auth_statu_p">
+         <index-column column="payment_group_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcspp_atpaymnt_g_f" referenced-table="dcspp_pay_group">
+         <fkey-column referencing-column="payment_group_id" referenced-column="payment_group_id"/>
+      </foreign-key>
+      <index name="auth_stat_pgid_idx" table="dcspp_auth_status">
+         <index-column column="payment_group_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dcspp_debit_status">
+      <column name="payment_group_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="debit_status" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="oracle" type="varchar2" length="254" scale=""/>
+         <column-type db="db2" type="varchar" length="254" scale=""/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <primary-key name="dcspp_debit_stat_p">
+         <index-column column="payment_group_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcspp_depaymnt_g_f" referenced-table="dcspp_pay_group">
+         <fkey-column referencing-column="payment_group_id" referenced-column="payment_group_id"/>
+      </foreign-key>
+      <index name="debit_stat_pgi_idx" table="dcspp_debit_status">
+         <index-column column="payment_group_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dcspp_cred_status">
+      <column name="payment_group_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="credit_status" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+         <column-type db="oracle" type="varchar2" length="254" scale=""/>
+         <column-type db="db2" type="varchar" length="254" scale=""/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <primary-key name="dcspp_cred_statu_p">
+         <index-column column="payment_group_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcspp_crpaymntgr_f" referenced-table="dcspp_pay_group">
+         <fkey-column referencing-column="payment_group_id" referenced-column="payment_group_id"/>
+      </foreign-key>
+      <index name="cred_stat_pgid_idx" table="dcspp_cred_status">
+         <index-column column="payment_group_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dcspp_shipitem_rel">
+      <column name="relationship_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="shipping_group_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="commerce_item_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="quantity" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="number" length="19" scale="0"/>
+         <column-type db="db2" type="numeric" length="19" scale="0"/>
+         <column-type db="mssql" type="numeric" length="19" scale="0"/>
+      <column-type db="sybase" type="numeric" length="19"/>
+      </column>
+      <column name="returned_qty" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="number" length="19" scale="0"/>
+         <column-type db="db2" type="numeric" length="19" scale="0"/>
+         <column-type db="mssql" type="numeric" length="19" scale="0"/>
+      <column-type db="sybase" type="numeric" length="19"/>
+      </column>
+      <column name="amount" nullable="y">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="19" scale="7"/>
+         <column-type db="db2" type="numeric" length="19" scale="7"/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+      </column>
+      <column name="state" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="state_detail" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <primary-key name="dcspp_shipitem_r_p">
+         <index-column column="relationship_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dcspp_shreltnshp_f" referenced-table="dcspp_relationship">
+         <fkey-column referencing-column="relationship_id" referenced-column="relationship_id"/>
+      </foreign-key>
+      <index name="sirel_item_idx" table="dcspp_shipitem_rel">
+         <index-column column="commerce_item_id" order="asc" seq="1"/>
+      </index>
+      <index name="sirel_shipgrp_idx" table="dcspp_shipitem_rel">
+         <index-column column="shipping_group_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dcspp_rel_range">
+      <column name="relationship_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="low_bound" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="high_bound" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <primary-key name="dcspp_rel_range_p">
+         <index-column column="relationship_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dcspp_payitem_rel">
+      <column name="relationship_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="payment_group_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="commerce_item_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="quantity" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="number" length="19" scale="0"/>
+         <column-type db="db2" type="numeric" length="19" scale="0"/>
+         <column-type db="mssql" type="numeric" length="19" scale="0"/>
+      <column-type db="sybase" type="numeric" length="19"/>
+      </column>
+      <column name="amount" nullable="y">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="19" scale="7"/>
+         <column-type db="db2" type="numeric" length="19" scale="7"/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+      </column>
+      <primary-key name="dcspp_payitem_re_p">
+         <index-column column="relationship_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dcspp_pareltnshp_f" referenced-table="dcspp_relationship">
+         <fkey-column referencing-column="relationship_id" referenced-column="relationship_id"/>
+      </foreign-key>
+      <index name="pirel_item_idx" table="dcspp_payitem_rel">
+         <index-column column="commerce_item_id" order="asc" seq="1"/>
+      </index>
+      <index name="pirel_paygrp_idx" table="dcspp_payitem_rel">
+         <index-column column="payment_group_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dcspp_payship_rel">
+      <column name="relationship_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="payment_group_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="shipping_group_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="amount" nullable="y">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="19" scale="7"/>
+         <column-type db="db2" type="numeric" length="19" scale="7"/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+      </column>
+      <primary-key name="dcspp_payship_re_p">
+         <index-column column="relationship_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dcspp_pshrltnshp_f" referenced-table="dcspp_relationship">
+         <fkey-column referencing-column="relationship_id" referenced-column="relationship_id"/>
+      </foreign-key>
+      <index name="psrel_paygrp_idx" table="dcspp_payship_rel">
+         <index-column column="payment_group_id" order="asc" seq="1"/>
+      </index>
+      <index name="psrel_shipgrp_idx" table="dcspp_payship_rel">
+         <index-column column="shipping_group_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dcspp_payorder_rel">
+      <column name="relationship_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="payment_group_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="order_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="amount" nullable="y">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="19" scale="7"/>
+         <column-type db="db2" type="numeric" length="19" scale="7"/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+      </column>
+      <primary-key name="dcspp_payorder_r_p">
+         <index-column column="relationship_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dcspp_odreltnshp_f" referenced-table="dcspp_relationship">
+         <fkey-column referencing-column="relationship_id" referenced-column="relationship_id"/>
+      </foreign-key>
+      <index name="porel_order_idx" table="dcspp_payorder_rel">
+         <index-column column="order_id" order="asc" seq="1"/>
+      </index>
+      <index name="porel_paygrp_idx" table="dcspp_payorder_rel">
+         <index-column column="payment_group_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dcspp_amount_info">
+      <column name="amount_info_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="type" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="version" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="currency_code" nullable="y">
+         <column-type db="generic" type="varchar" length="10"/>
+      </column>
+      <column name="amount" nullable="y">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="19" scale="7"/>
+         <column-type db="db2" type="numeric" length="19" scale="7"/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+      </column>
+      <column name="discounted" nullable="y">
+         <column-type db="generic" type="tinyint"/>
+         <column-type db="oracle" type="number" length="1" scale="0"/>
+         <column-type db="db2" type="numeric" length="1" scale="0"/>
+         <column-type db="mssql" type="numeric" length="1" scale="0"/>
+      </column>
+      <column name="amount_is_final" nullable="y">
+         <column-type db="generic" type="tinyint"/>
+         <column-type db="oracle" type="number" length="1" scale="0"/>
+         <column-type db="db2" type="numeric" length="1" scale="0"/>
+         <column-type db="mssql" type="numeric" length="1" scale="0"/>
+      </column>
+      <column name="final_rc" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <primary-key name="dcspp_amount_inf_p">
+         <index-column column="amount_info_id" order="asc" seq="1"/>
+      </primary-key>
+      <check name="dcspp_amount_in1_c">
+         <check-expr expression="discounted IN (0,1)" db="generic"/>
+      </check>
+      <check name="dcspp_amount_in2_c">
+         <check-expr expression="amount_is_final IN (0,1)" db="generic"/>
+      </check>
+   </table>
+   <table name="dcspp_order_price">
+      <column name="amount_info_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="raw_subtotal" nullable="y">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="19" scale="7"/>
+         <column-type db="db2" type="numeric" length="19" scale="7"/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+      </column>
+      <column name="tax" nullable="y">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="19" scale="7"/>
+         <column-type db="db2" type="numeric" length="19" scale="7"/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+      </column>
+      <column name="shipping" nullable="y">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="19" scale="7"/>
+         <column-type db="db2" type="numeric" length="19" scale="7"/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+      </column>
+      <column name="manual_adj_total" nullable="y">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="19" scale="7"/>
+         <column-type db="db2" type="numeric" length="19" scale="7"/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+      </column>
+      <primary-key name="dcspp_order_pric_p">
+         <index-column column="amount_info_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dcspp_oramnt_nfd_f" referenced-table="dcspp_amount_info">
+         <fkey-column referencing-column="amount_info_id" referenced-column="amount_info_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcspp_item_price">
+      <column name="amount_info_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="list_price" nullable="y">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="19" scale="7"/>
+         <column-type db="db2" type="numeric" length="19" scale="7"/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+      </column>
+      <column name="raw_total_price" nullable="y">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="19" scale="7"/>
+         <column-type db="db2" type="numeric" length="19" scale="7"/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+      </column>
+      <column name="sale_price" nullable="y">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="19" scale="7"/>
+         <column-type db="db2" type="numeric" length="19" scale="7"/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+       </column>
+      <column name="on_sale" nullable="y">
+         <column-type db="generic" type="tinyint"/>
+         <column-type db="oracle" type="number" length="1" scale="0"/>
+         <column-type db="db2" type="numeric" length="1" scale="0"/>
+         <column-type db="mssql" type="numeric" length="1" scale="0"/>
+      </column>
+      <column name="order_discount" nullable="y">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="19" scale="7"/>
+         <column-type db="db2" type="numeric" length="19" scale="7"/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+      </column>
+      <column name="qty_discounted" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="number" length="19" scale="0"/>
+         <column-type db="db2" type="numeric" length="19" scale="0"/>
+         <column-type db="mssql" type="numeric" length="19" scale="0"/>
+      <column-type db="sybase" type="numeric" length="19"/>
+      </column>
+      <column name="qty_as_qualifier" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="number" length="19" scale="0"/>
+         <column-type db="db2" type="numeric" length="19" scale="0"/>
+         <column-type db="mssql" type="numeric" length="19" scale="0"/>
+      <column-type db="sybase" type="numeric" length="19"/>
+      </column>
+      <column name="price_list" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcspp_item_price_p">
+         <index-column column="amount_info_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dcspp_itamnt_nfd_f" referenced-table="dcspp_amount_info">
+         <fkey-column referencing-column="amount_info_id" referenced-column="amount_info_id"/>
+      </foreign-key>
+      <check name="dcspp_item_price_c">
+         <check-expr expression="on_sale IN (0,1)" db="generic"/>
+      </check>
+   </table>
+   <table name="dcspp_tax_price">
+      <column name="amount_info_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="city_tax" nullable="y">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="19" scale="7"/>
+         <column-type db="db2" type="numeric" length="19" scale="7"/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+      </column>
+      <column name="county_tax" nullable="y">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="19" scale="7"/>
+         <column-type db="db2" type="numeric" length="19" scale="7"/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+      </column>
+      <column name="state_tax" nullable="y">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="19" scale="7"/>
+         <column-type db="db2" type="numeric" length="19" scale="7"/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+      </column>
+      <column name="country_tax" nullable="y">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="19" scale="7"/>
+         <column-type db="db2" type="numeric" length="19" scale="7"/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+      </column>
+      <primary-key name="dcspp_tax_price_p">
+         <index-column column="amount_info_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dcspp_taamnt_nfd_f" referenced-table="dcspp_amount_info">
+         <fkey-column referencing-column="amount_info_id" referenced-column="amount_info_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcspp_ship_price">
+      <column name="amount_info_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="raw_shipping" nullable="y">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="19" scale="7"/>
+         <column-type db="db2" type="numeric" length="19" scale="7"/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+      </column>
+      <primary-key name="dcspp_ship_price_p">
+         <index-column column="amount_info_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dcspp_shamnt_nfd_f" referenced-table="dcspp_amount_info">
+         <fkey-column referencing-column="amount_info_id" referenced-column="amount_info_id"/>
+      </foreign-key>
+   </table>
+   <table name="dcspp_amtinfo_adj">
+      <column name="amount_info_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="adjustments" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <primary-key name="dcspp_amtinfo_ad_p">
+         <index-column column="amount_info_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcspp_amamnt_nfd_f" referenced-table="dcspp_amount_info">
+         <fkey-column referencing-column="amount_info_id" referenced-column="amount_info_id"/>
+      </foreign-key>
+      <index name="amtinf_adj_aid_idx" table="dcspp_amtinfo_adj">
+         <index-column column="amount_info_id" order="asc" seq="1"/>
+      </index>
+      <index name="amtinf_adj_adj_idx" table="dcspp_amtinfo_adj">
+         <index-column column="adjustments" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dcspp_price_adjust">
+      <column name="adjustment_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="adj_description" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="pricing_model" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="manual_adjustment" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="adjustment" nullable="y">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="19" scale="7"/>
+         <column-type db="db2" type="numeric" length="19" scale="7"/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+      </column>
+      <column name="qty_adjusted" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <primary-key name="dcspp_price_adju_p">
+         <index-column column="adjustment_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dcspp_shipitem_sub">
+      <column name="amount_info_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="shipping_group_id" nullable="n">
+         <column-type db="generic" type="varchar" length="42"/>
+      </column>
+      <column name="ship_item_subtotal" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcspp_shipitem_s_p">
+         <index-column column="amount_info_id" order="asc" seq="1"/>
+         <index-column column="shipping_group_id" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcspp_sbamnt_nfd_f" referenced-table="dcspp_amount_info">
+         <fkey-column referencing-column="amount_info_id" referenced-column="amount_info_id"/>
+      </foreign-key>
+      <index name="ship_item_sub_idx" table="dcspp_shipitem_sub">
+         <index-column column="amount_info_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dcspp_taxshipitem">
+      <column name="amount_info_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="shipping_group_id" nullable="n">
+         <column-type db="generic" type="varchar" length="42"/>
+      </column>
+      <column name="tax_ship_item_sub" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcspp_taxshipite_p">
+         <index-column column="amount_info_id" order="asc" seq="1"/>
+         <index-column column="shipping_group_id" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcspp_shamntxnfd_f" referenced-table="dcspp_amount_info">
+         <fkey-column referencing-column="amount_info_id" referenced-column="amount_info_id"/>
+      </foreign-key>
+      <index name="tax_ship_item_idx" table="dcspp_taxshipitem">
+         <index-column column="amount_info_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dcspp_ntaxshipitem">
+      <column name="amount_info_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="shipping_group_id" nullable="n">
+         <column-type db="generic" type="varchar" length="42"/>
+      </column>
+      <column name="non_tax_item_sub" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcspp_ntaxshipit_p">
+         <index-column column="amount_info_id" order="asc" seq="1"/>
+         <index-column column="shipping_group_id" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcspp_ntamnt_nfd_f" referenced-table="dcspp_amount_info">
+         <fkey-column referencing-column="amount_info_id" referenced-column="amount_info_id"/>
+      </foreign-key>
+      <index name="ntax_ship_item_idx" table="dcspp_ntaxshipitem">
+         <index-column column="amount_info_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dcspp_shipitem_tax">
+      <column name="amount_info_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="shipping_group_id" nullable="n">
+         <column-type db="generic" type="varchar" length="42"/>
+      </column>
+      <column name="ship_item_tax" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcspp_shipitem_t_p">
+         <index-column column="amount_info_id" order="asc" seq="1"/>
+         <index-column column="shipping_group_id" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcspp_txamnt_nfd_f" referenced-table="dcspp_amount_info">
+         <fkey-column referencing-column="amount_info_id" referenced-column="amount_info_id"/>
+      </foreign-key>
+      <index name="ship_item_tax_idx" table="dcspp_shipitem_tax">
+         <index-column column="amount_info_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dcspp_itmprice_det">
+      <column name="amount_info_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="cur_price_details" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <primary-key name="dcspp_itmprice_d_p">
+         <index-column column="amount_info_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcspp_sbamntnfd_f" referenced-table="dcspp_amount_info">
+         <fkey-column referencing-column="amount_info_id" referenced-column="amount_info_id"/>
+      </foreign-key>
+      <index name="itmprc_det_aii_idx" table="dcspp_itmprice_det">
+         <index-column column="amount_info_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dcspp_det_price">
+      <column name="amount_info_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="tax" nullable="y">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="19" scale="7"/>
+         <column-type db="db2" type="numeric" length="19" scale="7"/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+      </column>
+      <column name="order_discount" nullable="y">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="19" scale="7"/>
+         <column-type db="db2" type="numeric" length="19" scale="7"/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+      </column>
+      <column name="order_manual_adj" nullable="y">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="19" scale="7"/>
+         <column-type db="db2" type="numeric" length="19" scale="7"/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+      </column>
+      <column name="quantity" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="number" length="19" scale="0"/>
+         <column-type db="db2" type="numeric" length="19" scale="0"/>
+         <column-type db="mssql" type="numeric" length="19" scale="0"/>
+      <column-type db="sybase" type="numeric" length="19"/>
+      </column>
+      <column name="qty_as_qualifier" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="number" length="19" scale="0"/>
+         <column-type db="db2" type="numeric" length="19" scale="0"/>
+         <column-type db="mssql" type="numeric" length="19" scale="0"/>
+      <column-type db="sybase" type="numeric" length="19"/>
+      </column>
+      <primary-key name="dcspp_det_price_p">
+         <index-column column="amount_info_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dcspp_det_range">
+      <column name="amount_info_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="low_bound" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="high_bound" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <primary-key name="dcspp_det_range_p">
+         <index-column column="amount_info_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+
+   <table name="dcspp_order_adj">
+      <column name="order_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="adjustment_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+
+      <primary-key name="dcspp_order_adj_p">
+         <index-column column="order_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+
+      <foreign-key name="dcspp_oradj_d_f" referenced-table="dcspp_order">
+         <fkey-column referencing-column="order_id" referenced-column="order_id"/>
+      </foreign-key>
+
+      <index name="order_adj_orid_idx" table="dcspp_order_adj">
+         <index-column column="order_id" order="asc" seq="1"/>
+      </index>
+   </table>
+
+
+   <table name="dcspp_manual_adj">
+      <column name="manual_adjust_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="type" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="adjustment_type" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="reason" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="amount" nullable="y">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="19" scale="7"/>
+         <column-type db="db2" type="numeric" length="19" scale="7"/>
+         <column-type db="mssql" type="numeric" length="19" scale="7"/>
+         <column-type db="mysql" type="numeric" length="19" scale="7"/>
+         <column-type db="sybase" type="numeric" length="19" scale="7"/>
+      </column>
+      <column name="notes" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="version" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <primary-key name="dcspp_manual_adj_p">
+         <index-column column="manual_adjust_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dbcpp_sched_order">
+      <column name="scheduled_order_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="type" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="version" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="32"/>
+      </column>
+      <column name="profile_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="create_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <column name="start_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <column name="end_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <column name="template_order" nullable="y">
+         <column-type db="generic" type="varchar" length="32"/>
+      </column>
+      <column name="state" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="next_scheduled" nullable="y">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <column name="schedule" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="site_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dbcpp_sched_orde_p">
+         <index-column column="scheduled_order_id" order="asc" seq="1"/>
+      </primary-key>
+      <index name="sched_tmplt_idx" table="dbcpp_sched_order">
+         <index-column column="template_order" order="asc" seq="1"/>
+      </index>
+      <index name="sched_profile_idx" table="dbcpp_sched_order">
+         <index-column column="profile_id" order="asc" seq="1"/>
+      </index>
+      <index name="sched_site_idx" table="dbcpp_sched_order">
+         <index-column column="site_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   
+   <table name="dbcpp_sched_clone">
+      <column name="scheduled_order_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="cloned_order" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <primary-key name="dbcpp_sched_clon_p">
+         <index-column column="scheduled_order_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dbcpp_scschedld__f" referenced-table="dbcpp_sched_order">
+         <fkey-column referencing-column="scheduled_order_id" referenced-column="scheduled_order_id"/>
+      </foreign-key>
+   </table>
+   
+   
+      <table name="dcspp_scherr_aux">
+      <column name="scheduled_order_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="sched_error_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="dcspp_scherr_aux_p">
+         <index-column column="scheduled_order_id" order="asc" seq="1"/>
+      </primary-key>
+      <index name="sched_error_idx" table="dcspp_scherr_aux">
+         <index-column column="sched_error_id" order="asc" seq="1"/>
+      </index>
+   </table>
+
+   <table name="dcspp_sched_error">
+      <column name="sched_error_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="error_date" nullable="n">
+         <column-type db="generic" type="datetime"/>
+         <column-type db="oracle"  type="timestamp"/>
+      </column>
+      <primary-key name="dcspp_sched_err_p">
+         <index-column column="sched_error_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+
+   <table name="dcspp_schd_errmsg">
+      <column name="sched_error_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="error_txt" nullable="n">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="sequence_num" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <primary-key name="dcspp_schd_errs_p">
+         <index-column column="sched_error_id" order="asc" seq="1"/>
+         <index-column column="sequence_num" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dcspp_sch_errs_f" referenced-table="dcspp_sched_error">
+         <fkey-column referencing-column="sched_error_id" referenced-column="sched_error_id"/>
+      </foreign-key>
+   </table>
+   
+
+
+</schema>
+<!-- @version $Id: //product/DCS/version/10.0.3/templates/DCS/sql/order_ddl.xml#2 $$Change: 651448 $ -->

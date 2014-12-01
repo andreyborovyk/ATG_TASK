@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE gsa-template
+        PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN"
+        "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template>
+
+  <header>
+    <name>Default Document Repository</name>
+    <author>Cynthia Harris</author>
+    <version>$Id: //app/portal/version/10.0.3/docexch/config/atg/portal/gear/docexch/documentRepository.xml#2 $$Change: 651448 $</version>
+    <description>
+      This repository serves as the default repository for the document
+      exchange gear.  The gear may be configured to use any SQL repository,
+      but this one is all set up and ready to go.
+    </description>       
+  </header>
+
+
+  <item-descriptor name="document" display-name-resource="itemDescriptorDocument" display-property="title" query-cache-size="100" cache-mode="simple" version-property="version">
+		<attribute name="resourceBundle" value="atg.portal.gear.docexch.DocumentRepositoryTemplateResources"/>
+
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+
+    <table name="dex_document" type="primary" id-column-name="document_id">
+      <property category-resource="categoryInfo" name="version" display-name-resource="version" data-type="int" queryable="true" readable="true" column-name="version" hidden="false" expert="true" required="false" cache-mode="inherit" writable="false">
+	      <attribute name="propertySortPriority" value="30"/>
+      </property>
+      
+      <property category-resource="categoryBasics" name="title" display-name-resource="title" column-name="title" data-type="string">
+        <attribute name="maxLength" value="254"/>
+	      <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryBasics" name="description" display-name-resource="description" column-name="description" data-type="string">
+        <attribute name="maxLength" value="400"/>
+	      <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryBasics" name="author" display-name-resource="author" column-name="author" item-type="user" repository="/atg/userprofiling/ProfileAdapterRepository">
+	      <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property category-resource="categoryBasics" name="filename" display-name-resource="filename" column-name="filename" data-type="string">
+	      <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property category-resource="categoryBasics" name="size" display-name-resource="size" column-name="filedatasize" data-type="int">
+	      <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property category-resource="categoryBasics" name="mimeType" display-name-resource="mimeType" column-name="mimetype" data-type="string">
+	      <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property category-resource="categoryInfo" name="createDate" display-name-resource="createDate" column-name="creation_date" data-type="timestamp" writable="true">
+        <attribute name="useNowForDefault" value="true"/>
+	      <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property category-resource="categoryInfo" name="gearInstanceRef" display-name-resource="gearInstanceRef" column-name="gear_instance_ref" data-type="string">
+	      <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property category-resource="categoryInfo" name="annotationRef" display-name-resource="annotationRef" column-name="annotation_ref" data-type="string">
+	      <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property category-resource="categoryBasics" name="fileData" display-name-resource="fileData" column-name="file_data" data-type="binary">
+	      <attribute name="propertySortPriority" value="70"/>
+      </property>
+      <property category-resource="categoryBasics" name="status" display-name-resource="status" data-type="int" column-name="status">
+	      <attribute name="propertySortPriority" value="80"/>
+      </property>
+    </table> 
+  </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //app/portal/version/10.0.3/docexch/config/atg/portal/gear/docexch/documentRepository.xml#2 $$Change: 651448 $ -->

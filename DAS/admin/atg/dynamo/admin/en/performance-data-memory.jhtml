@@ -1,0 +1,75 @@
+<DECLAREPARAM NAME="operation" CLASS="java.lang.String" DESCRIPTION="Performance Operation">
+
+<java type=import>
+	java.text.DecimalFormat
+	atg.service.perfmonitor.*
+</java>
+<java>
+  String parameter = null;
+  PerformanceData pd = null;
+  String operation = request.getParameter("operation");
+	Hashtable operationTable =
+  		(Hashtable) PerformanceMonitor.getPerformanceMonitor().getPerformanceHash().get(operation);
+  request.setParameter("operationTable", operationTable);
+</java>
+
+<HTML>
+<HEAD>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+<TITLE>Performance Data - <VALUEOF PARAM="operation"></VALUEOF></TITLE>
+</HEAD>
+
+<body bgcolor="#FFFFFF" text="#00214A" vlink="#637DA6" link="#E87F02">
+<img src="performance-monitor-banner.gif" alt="Performance Monitor" align=top width="585" height="37" border="0">
+
+<p><a href="/">admin</a>/<a href="performance.jhtml">Performance Summary</a>/<a href="performance-monitor.jhtml">Performance Monitor</a>/Memory Performance Data - <VALUEOF PARAM="operation"></VALUEOF>
+
+<droplet bean="/atg/dynamo/droplet/ForEach">
+  <param name="array" value="param:operationTable">
+  <param name="sortProperties" value="-totalMemoryRequired,+_key">
+  <oparam name="empty">
+    <p>There is no parameterized data available for the operation <i><valueof param="operation">(no operation)</valueof></i>
+  </oparam>
+  <oparam name="outputStart">
+    <p><h2>Memory Performance Data - <VALUEOF PARAM="operation"></VALUEOF></h2>
+    <table border=2 cellpadding=2>
+      <tr>
+        <td>
+          <b>Parameter</b>
+        </td>
+        <td>
+          <b>Number of Executions</b>
+        </td>
+        <td>
+          <b>Average Memory Required (kilobytes)</b>
+        </td>
+        <td>
+          <b>Minimum Memory Required (kilobytes)</b>
+        </td>
+        <td>
+          <b>Maximum Memory Required (kilobytes)</b>
+        </td>
+        <td>
+          <b>Total Memory Required (kilobytes)</b>
+        </td>
+    </tr>
+  </oparam>
+  <oparam name="output">
+    <tr>
+      <td><valueof param="key">(unknown key)</valueof></td>
+      <td><valueof param="element.memTotalNumberOfExecutions">?</valueof></td>
+      <td><valueof param="element.averageMemoryRequired" number="###,###.##">?</valueof></td>
+      <td><valueof param="element.minimumMemoryRequired" number="###,###.##">?</valueof></td>
+      <td><valueof param="element.maximumMemoryRequired" number="###,###.##">?</valueof></td>
+      <td><valueof param="element.totalMemoryRequired" number="###,###.##">?</valueof></td>
+    </tr>
+  </oparam>
+  <oparam name="outputEnd">
+    </table>
+  </oparam>
+</droplet>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/performance-data-memory.jhtml#2 $$Change: 651448 $ */</java>
+

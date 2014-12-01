@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE gsa-template
+        PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN"
+        "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template>
+
+  <header>
+    <name>Pricing Model</name>
+    <author>Joshua Spiewak</author>
+    <version>$Id: //product/DCS/version/10.0.3/templates/DCS/config/atg/commerce/pricing/pricingModels.xml#1 $$Change: 651360 $</version>
+  </header>
+
+  <item-descriptor name="promotion" expert="true" sub-type-property="type" display-property="displayName" item-cache-size="1000" query-cache-size="1000" 
+            version-property="version" id-space-name="promotion" last-modified-property="lastModified" display-name-resource="itemDescriptorPromotion">
+    <attribute name="resourceBundle" value="atg.commerce.PricingModelsTemplateResources"/>    
+    <attribute name="categoryBasicsPriority" value="10"/>
+    <attribute name="categoryInfoPriority" value="20"/>
+    <attribute name="categorySchedulePriority" value="30"/>
+    <attribute name="categoryTargetAudiencePriority" value="40"/>
+    <attribute name="categoryUpsellPriority" value="50"/>
+    <attribute name="categoryTimeLimitsPriority" value="60"/>
+    <attribute name="categoryMultipleUsesPriority" value="70"/>
+    <attribute name="categoryPriorityPriority" value="80"/>
+    <attribute name="categoryConditionOfferPriority" value="90"/>
+    <attribute name="categoryAvailabilityPriority" value="100"/>
+    <attribute name="categorySitesPriority" value="110"/>
+    <attribute name="categoryCouponsPriority" value="120"/>
+    <attribute name="categoryMediaPriority" value="130"/>
+    <attribute name="categoryACCOnlyPriority" value="140"/>
+    <attribute name="iconSwf" value="promotionIconSwf"/>
+    <attribute name="largeIconSwf" value="promotionLargeIconSwf"/>
+    <attribute name="plural-display-name-resource" value="itemDescriptorPromotion.plural"/> 
+    <attribute name="updateLastModified" value="true"/>
+    
+    <table name="dcs_promotion" type="primary" id-column-name="promotion_id">
+      <property name="id" column-name="promotion_id" writable="false" expert="true" category-resource="categoryInfo" display-name-resource="promotionId">
+        <attribute name="resourceBundle" value="atg.commerce.PricingModelsTemplateResources"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="version" data-type="int" column-name="version" expert="true" category-resource="categoryInfo" display-name-resource="version">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="creationDate" data-type="timestamp" column-name="creation_date" expert="true" category-resource="categoryACCOnly" display-name-resource="creationDate">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="useNowForDefault" value="true"/>
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="lastModified" data-type="timestamp" column-name="last_modified" expert="true"
+               display-name-resource="lastModified" category-resource="categoryInfo"> 
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="startDate" data-type="timestamp" column-name="start_date" category-resource="categoryMedia" display-name-resource="distributeStarting">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="endDate" data-type="timestamp" column-name="end_date" category-resource="categoryMedia" display-name-resource="distributeThrough">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="displayName" data-type="string" column-name="display_name" required="true" category-resource="categoryBasics" display-name-resource="name">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="description" data-type="string" column-name="description" category-resource="categoryBasics" display-name-resource="description">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="type" data-type="enumerated" column-name="promotion_type" hidden="true" category-resource="categoryBasics" display-name-resource="discountType">
+        <option value="Item Discount" code="0"/>
+        <option value="Item Discount - Percent Off" code="1"/>
+        <option value="Item Discount - Amount Off" code="2"/>
+        <option value="Item Discount - Fixed Price" code="3"/>
+        <option value="Shipping Discount" code="5"/>
+        <option value="Shipping Discount - Percent Off" code="6"/>
+        <option value="Shipping Discount - Amount Off" code="7"/>
+        <option value="Shipping Discount - Fixed Price" code="8"/>
+        <option value="Order Discount" code="9"/>
+        <option value="Order Discount - Percent Off" code="10"/>
+        <option value="Order Discount - Amount Off" code="11"/>
+        <option value="Order Discount - Fixed Price" code="12"/>
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="100"/>
+      </property>
+      <property name="enabled" data-type="boolean" default="true" column-name="enabled" category-resource="categoryBasics" display-name-resource="enabled">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+      <property name="beginUsable" data-type="timestamp" column-name="begin_usable" category-resource="categoryAvailability" display-name-resource="usageStartDate">
+        <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="endUsable" data-type="timestamp" column-name="end_usable" category-resource="categoryACCOnly" display-name-resource="usageEndDate">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="priority" data-type="int" default="1" required="true" column-name="priority" category-resource="categoryBasics" display-name-resource="priority">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      
+      <property name="global" data-type="boolean" default="false" column-name="global" category-resource="categoryAvailability" display-name-resource="global">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="giveToAnonymousProfiles" data-type="boolean" default="true" column-name="anon_profile" category-resource="categoryACCOnly" 
+              display-name-resource="giveToAnonymousProfiles">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      
+      <property name="allowMultiple" data-type="boolean" default="false" column-name="allow_multiple" category-resource="categoryAvailability" display-name-resource="allowMultiple">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property name="uses" data-type="int" default="1" column-name="uses" category-resource="categoryAvailability" display-name-resource="uses">
+        <attribute name="propertySortPriority" value="70"/>
+      </property>
+
+      <property name="relativeExpiration" data-type="boolean" default="false" column-name="rel_expiration" 
+                display-name-resource="relativeExpiration" category-resource="categoryACCOnly" description-resource="relativeExpirationDescription">
+        <attribute name="displayDescriptorName" value="atg.ui.commerce.pricing.RelativeExpirationDisplayDescriptor"/>
+        <attribute name="dynamicGrayControllerString" value="true=beginUsable,endUsable:false=timeUntilExpire"/>
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+      <property name="timeUntilExpire" data-type="int" column-name="time_until_expire" category-resource="categoryACCOnly" display-name-resource="timeUntilExpire" 
+              description-resource="timeUntilExpireDescription">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+
+      <property name="template" data-type="string" column-name="template" hidden="true" category-resource="categoryBasics" display-name-resource="template">
+        <attribute name="propertySortPriority" value="90"/>
+      </property>
+
+      <property name="uiAccessLevel" data-type="enumerated" default="read-write" column-name="ui_access_lvl" hidden="true" category-resource="categoryBasics" display-name-resource="uiAccessLevel">
+      <attribute name="useCodeForValue" value="false"/>
+        <option value="read-only" code="0"/>
+        <option value="read-write" code="1"/>
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="100"/>
+      </property>
+		
+      <property name="parentFolder" item-type="promotionFolder" column-name="parent_folder" category-resource="categoryBasics" display-name-resource="parentFolder">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+      <property name="pmdlVersion" data-type="int" column-name="pmdl_version" category-resource="categoryBasics" display-name-resource="pmdlVersion" hidden="true" default="1">
+        <attribute name="propertySortPriority" value="100"/>
+      </property>
+		
+	  <property name="qualifierService" data-type="string" column-name="qualifier" expert="true" category-resource="categoryACCOnly" display-name-resource="qualifierService">
+        <attribute name="propertySortPriority" value="100"/>
+      </property>
+    </table>
+
+    <table name="dcs_promo_media" type="multi" id-column-name="promotion_id" multi-column-name="tag">
+      <property name="media" data-type="map" component-item-type="media" column-name="media_id" category-resource="categoryMedia" display-name-resource="media">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+  
+    <table name="dcs_promo_upsell" type="auxiliary" id-column-name="promotion_id">
+      <property name="upsell" data-type="boolean" default="true" column-name="upsell" category-resource="categoryUpsell" display-name-resource="upsell">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+    </table>
+
+    <table name="dcs_prm_cls_qlf" type="multi" id-column-name="promotion_id" shared-table-sequence="1">
+      <property name="closenessQualifiers" data-type="set" component-item-type="closenessQualifier" column-name="closeness_qualif" category-resource="categoryBasics" display-name-resource="closenessQualifiers" cascade="delete">
+        <attribute name="propertySortPriority" value="40"/>
+      </property>
+    </table>
+
+    <table name="dcs_prm_sites" type="multi" id-column-name="promotion_id">
+      <property name="sites" data-type="set" component-item-type="siteConfiguration" repository="/atg/multisite/SiteRepository" column-name="site_id" category-resource="categorySites" display-name-resource="sites">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+    </table>
+
+    <table name="dcs_prm_site_grps" type="multi" id-column-name="promotion_id">
+      <property name="siteGroups" data-type="set" component-item-type="siteGroup" repository="/atg/multisite/SiteRepository" column-name="site_group_id" category-resource="categorySites" display-name-resource="siteGroups">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+
+    <table name="dcs_prm_tpl_vals" type="multi" id-column-name="promotion_id" multi-column-name="placeholder">
+      <property name="templateValues" category-resource="categoryBasics" hidden="true" data-type="map" component-data-type="string" column-name="placeholderValue"
+              display-name-resource="templateValues">
+        <attribute name="propertySortPriority" value="90"/>
+      </property>
+    </table>
+
+    <property name="pmdlRule"/>
+
+  </item-descriptor>
+
+  <item-descriptor name="Item Discount" super-type="promotion" sub-type-value="Item Discount" item-cache-size="1000" query-cache-size="1000" 
+            version-property="version" id-space-name="promotion" display-name-resource="itemDescriptorItemDiscount">
+    <attribute name="resourceBundle" value="atg.commerce.PricingModelsTemplateResources"/>
+    <attribute name="PCCexpert" value="true"/>
+    <table name="dcs_discount_promo" type="auxiliary" id-column-name="promotion_id">
+      <property name="pmdlRule" data-type="big string" column-name="pmdl_rule" required="true"
+                editor-class="atg.ui.commerce.pricing.ItemDiscountEditor" category-resource="categoryBasics" display-name-resource="pmdlRule">
+        <attribute name="propertySortPriority" value="30"/>        
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="Item Discount - Percent Off" super-type="Item Discount" sub-type-value="Item Discount - Percent Off" item-cache-size="1000" 
+            query-cache-size="1000" version-property="version" id-space-name="promotion" display-name-resource="itemDescriptorItemDiscountPercentOff">
+    <attribute name="resourceBundle" value="atg.commerce.PricingModelsTemplateResources"/>
+    
+    <table name="dcs_discount_promo" type="auxiliary" id-column-name="promotion_id">
+      <property name="pricingCalculatorService" data-type="string" default="/atg/commerce/pricing/calculators/ItemDiscountCalculator" column-name="calculator" 
+                category-resource="categoryACCOnly" display-name-resource="pricingCalculatorService">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="100"/>
+      </property>
+      <property name="adjuster" data-type="double" column-name="adjuster" category-resource="categoryACCOnly" display-name-resource="adjusterPercent">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+    </table>
+     <property name="discountType" data-type="string" default="percentOff" expert="true" category-resource="categoryACCOnly" display-name-resource="discountType">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+  </item-descriptor>
+
+  <item-descriptor name="Item Discount - Amount Off" super-type="Item Discount" sub-type-value="Item Discount - Amount Off" item-cache-size="1000" 
+            query-cache-size="1000" version-property="version" id-space-name="promotion" display-name-resource="itemDescriptorItemDiscountAmountOff">
+    <attribute name="resourceBundle" value="atg.commerce.PricingModelsTemplateResources"/>
+
+    <table name="dcs_discount_promo" type="auxiliary" id-column-name="promotion_id">
+      <property name="pricingCalculatorService" data-type="string" default="/atg/commerce/pricing/calculators/ItemDiscountCalculator" column-name="calculator" 
+                expert="true" category-resource="categoryACCOnly" display-name-resource="pricingCalculatorService">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="100"/>
+      </property>
+      <property name="adjuster" data-type="double" column-name="adjuster" category-resource="categoryACCOnly" display-name-resource="adjusterAmount">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+     </table>
+     <property name="discountType" data-type="string" default="amountOff" expert="true" category-resource="categoryACCOnly" display-name-resource="discountType">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+  </item-descriptor>
+
+  <item-descriptor name="Item Discount - Fixed Price" super-type="Item Discount" sub-type-value="Item Discount - Fixed Price" item-cache-size="1000" 
+            query-cache-size="1000" version-property="version" id-space-name="promotion" display-name-resource="itemDescriptorItemDiscountFixedPrice">
+    <attribute name="resourceBundle" value="atg.commerce.PricingModelsTemplateResources"/>
+
+    <table name="dcs_discount_promo" type="auxiliary" id-column-name="promotion_id">
+      <property name="pricingCalculatorService" data-type="string" default="/atg/commerce/pricing/calculators/ItemDiscountCalculator" column-name="calculator" 
+                expert="true" category-resource="categoryACCOnly"  display-name-resource="pricingCalculatorService">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="100"/>
+      </property>
+      <property name="adjuster" data-type="double" column-name="adjuster" category-resource="categoryACCOnly" display-name-resource="adjusterPrice">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+     </table>
+     <property name="discountType" data-type="string" default="fixedPrice" expert="true" category-resource="categoryACCOnly" display-name-resource="discountType">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+  </item-descriptor>
+
+  <item-descriptor name="Shipping Discount" super-type="promotion" sub-type-value="Shipping Discount" item-cache-size="1000" query-cache-size="1000" 
+            version-property="version" id-space-name="promotion" display-name-resource="itemDescriptorShippingDiscount">
+    <attribute name="resourceBundle" value="atg.commerce.PricingModelsTemplateResources"/>
+    <attribute name="PCCexpert" value="true"/>
+    <table name="dcs_discount_promo" type="auxiliary" id-column-name="promotion_id">
+      <property name="pmdlRule" data-type="big string" column-name="pmdl_rule" required="true"
+                editor-class="atg.ui.commerce.pricing.ShippingDiscountEditor" category-resource="categoryBasics" display-name-resource="pmdlRule">
+        <attribute name="propertySortPriority" value="30"/>        
+      </property>
+      <property name="oneUsePerOrder" data-type="boolean" column-name="one_use" default="false"
+                category-resource="categoryAvailability" display-name-resource="oneUsePerOrder">
+        <attribute name="propertySortPriority" value="50"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="Shipping Discount - Percent Off" super-type="Shipping Discount" sub-type-value="Shipping Discount - Percent Off" item-cache-size="1000" 
+            query-cache-size="1000" version-property="version" id-space-name="promotion" display-name-resource="itemDescriptorShippingDiscountPercentOff">
+    <attribute name="resourceBundle" value="atg.commerce.PricingModelsTemplateResources"/>
+
+    <table name="dcs_discount_promo" type="auxiliary" id-column-name="promotion_id">
+      <property name="pricingCalculatorService" data-type="string" default="/atg/commerce/pricing/calculators/ShippingDiscountCalculator" column-name="calculator" 
+                expert="true" category-resource="categoryACCOnly" display-name-resource="pricingCalculatorService">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="100"/>
+      </property>
+      <property name="adjuster" data-type="double" column-name="adjuster" category-resource="categoryACCOnly" display-name-resource="adjusterPercent">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+     </table>
+     <property name="discountType" data-type="string" default="percentOff" expert="true" category-resource="categoryACCOnly" display-name-resource="discountType">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+  </item-descriptor>
+
+  <item-descriptor name="Shipping Discount - Amount Off" super-type="Shipping Discount" sub-type-value="Shipping Discount - Amount Off" item-cache-size="1000" 
+            query-cache-size="1000" version-property="version" id-space-name="promotion" display-name-resource="itemDescriptorShippingDiscountAmountOff">
+    <attribute name="resourceBundle" value="atg.commerce.PricingModelsTemplateResources"/>
+
+    <table name="dcs_discount_promo" type="auxiliary" id-column-name="promotion_id">
+      <property name="pricingCalculatorService" data-type="string" default="/atg/commerce/pricing/calculators/ShippingDiscountCalculator" column-name="calculator" 
+                expert="true" category-resource="categoryACCOnly" display-name-resource="pricingCalculatorService">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="100"/>
+      </property>
+      <property name="adjuster" data-type="double" column-name="adjuster" category-resource="categoryACCOnly" display-name-resource="adjusterAmount">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+     </table>
+     <property name="discountType" data-type="string" default="amountOff" expert="true" category-resource="categoryACCOnly" display-name-resource="discountType">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+  </item-descriptor>
+
+  <item-descriptor name="Shipping Discount - Fixed Price" super-type="Shipping Discount" sub-type-value="Shipping Discount - Fixed Price" item-cache-size="1000" 
+            query-cache-size="1000" version-property="version" id-space-name="promotion" display-name-resource="itemDescriptorShippingDiscountFixedPrice"> 
+    <attribute name="resourceBundle" value="atg.commerce.PricingModelsTemplateResources"/>
+
+    <table name="dcs_discount_promo" type="auxiliary" id-column-name="promotion_id">
+      <property name="pricingCalculatorService" data-type="string" default="/atg/commerce/pricing/calculators/ShippingDiscountCalculator" column-name="calculator" 
+                expert="true" category-resource="categoryACCOnly" display-name-resource="pricingCalculatorService">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="100"/>
+      </property>
+      <property name="adjuster" data-type="double" column-name="adjuster" category-resource="categoryACCOnly" display-name-resource="adjusterPrice">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+     </table>
+     <property name="discountType" data-type="string" default="fixedPrice" expert="true" category-resource="categoryACCOnly" display-name-resource="discountType">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="80"/>
+      </property>
+  </item-descriptor>
+
+  <item-descriptor name="Order Discount" super-type="promotion" sub-type-value="Order Discount" item-cache-size="1000" query-cache-size="1000" 
+            version-property="version" id-space-name="promotion" display-name-resource="itemDescriptorOrderDiscount">
+    <attribute name="resourceBundle" value="atg.commerce.PricingModelsTemplateResources"/>
+    <attribute name="PCCexpert" value="true"/>
+    <table name="dcs_discount_promo" type="auxiliary" id-column-name="promotion_id">
+      <property name="pmdlRule" data-type="big string" column-name="pmdl_rule" required="true"
+                editor-class="atg.ui.commerce.pricing.OrderDiscountEditor" category-resource="categoryBasics" display-name-resource="pmdlRule">
+        <attribute name="propertySortPriority" value="30"/>        
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="Order Discount - Percent Off" super-type="Order Discount" sub-type-value="Order Discount - Percent Off" item-cache-size="1000" query-cache-size="1000" 
+            version-property="version" id-space-name="promotion" display-name-resource="itemDescriptorOrderDiscountPercentOff">
+    <attribute name="resourceBundle" value="atg.commerce.PricingModelsTemplateResources"/>
+
+    <table name="dcs_discount_promo" type="auxiliary" id-column-name="promotion_id">
+      <property name="pricingCalculatorService" data-type="string" default="/atg/commerce/pricing/calculators/OrderDiscountCalculator" column-name="calculator" 
+                expert="true" category-resource="categoryACCOnly" display-name-resource="pricingCalculatorService">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="100"/>
+      </property>
+      <property name="adjuster" data-type="double" column-name="adjuster" category-resource="categoryACCOnly" display-name-resource="adjusterPercent">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+     </table>
+     <property name="discountType" data-type="string" default="percentOff" expert="true" category-resource="categoryACCOnly" display-name-resource="discountType">
+       <attribute name="uiwritable" value="false"/>
+       <attribute name="propertySortPriority" value="80"/>
+     </property>
+  </item-descriptor>
+
+  <item-descriptor name="Order Discount - Amount Off" super-type="Order Discount" sub-type-value="Order Discount - Amount Off" item-cache-size="1000" query-cache-size="1000" 
+            version-property="version" id-space-name="promotion" display-name-resource="itemDescriptorOrderDiscountAmountOff">
+    <attribute name="resourceBundle" value="atg.commerce.PricingModelsTemplateResources"/>
+
+    <table name="dcs_discount_promo" type="auxiliary" id-column-name="promotion_id">
+      <property name="pricingCalculatorService" data-type="string" default="/atg/commerce/pricing/calculators/OrderDiscountCalculator" column-name="calculator" 
+                expert="true" category-resource="categoryACCOnly" display-name-resource="pricingCalculatorService">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="100"/>
+      </property>
+      <property name="adjuster" data-type="double" column-name="adjuster" category-resource="categoryACCOnly" display-name-resource="adjusterAmount">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+     </table>
+     <property name="discountType" data-type="string" default="amountOff" expert="true" category-resource="categoryACCOnly" display-name-resource="discountType">
+       <attribute name="uiwritable" value="false"/>
+       <attribute name="propertySortPriority" value="80"/>
+     </property>
+  </item-descriptor>
+
+  <item-descriptor name="Order Discount - Fixed Price" super-type="Order Discount" sub-type-value="Order Discount - Fixed Price" item-cache-size="1000" query-cache-size="1000"
+            version-property="version" id-space-name="promotion" display-name-resource="itemDescriptorOrderDiscountFixedPrice">
+    <attribute name="resourceBundle" value="atg.commerce.PricingModelsTemplateResources"/>
+
+    <table name="dcs_discount_promo" type="auxiliary" id-column-name="promotion_id">
+      <property name="pricingCalculatorService" data-type="string" default="/atg/commerce/pricing/calculators/OrderDiscountCalculator" column-name="calculator" 
+                expert="true" category-resource="categoryACCOnly" display-name-resource="pricingCalculatorService">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="100"/>
+      </property>
+      <property name="adjuster" data-type="double" column-name="adjuster" category-resource="categoryACCOnly" display-name-resource="adjusterPrice">
+        <attribute name="propertySortPriority" value="60"/>
+      </property>
+     </table>
+     <property name="discountType" data-type="string" default="fixedPrice" expert="true" category-resource="categoryACCOnly" display-name-resource="discountType">
+       <attribute name="uiwritable" value="false"/>
+       <attribute name="propertySortPriority" value="80"/>
+     </property>
+  </item-descriptor>
+
+  <item-descriptor name="closenessQualifier" display-property="name" item-cache-size="1000" query-cache-size="1000" version-property="version" id-space-name="closenessQualifier" display-name-resource="itemDescriptorClosenessQualifier">
+    <attribute name="resourceBundle" value="atg.commerce.PricingModelsTemplateResources"/>
+    <attribute name="iconSwf" value="closenessQualifierIconSwf"/>
+    <attribute name="largeIconSwf" value="closenessQualifierLargeIconSwf"/>
+
+    <table name="dcs_close_qualif" type="primary" id-column-name="close_qualif_id">
+      <property name="id" column-name="close_qualif_id" writable="false" expert="true" category-resource="categoryBasics" display-name-resource="qualifierId">
+        <attribute name="resourceBundle" value="atg.commerce.PricingModelsTemplateResources"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="version" data-type="int" column-name="version" expert="true" category-resource="categoryUpsell" display-name-resource="version">
+        <attribute name="uiwritable" value="false"/>
+      </property>
+      <property name="name" data-type="string" column-name="name" required="true" category-resource="categoryBasics" display-name-resource="closenessQualifierName">
+  <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="priority" data-type="int" default="1" column-name="priority" category-resource="categoryBasics" display-name-resource="priority">
+  <attribute name="propertySortPriority" value="30"/>
+      </property>
+      <property name="pmdlRule" data-type="big string" column-name="qualifier" category-resource="categoryBasics" display-name-resource="qualifier" editor-class="atg.ui.commerce.pricing.ClosenessQualifierEditor" required="true">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+      <property name="upsellMedia" item-type="media" column-name="upsell_media" category-resource="categoryBasics" display-name-resource="upsellMedia">
+  <attribute name="propertySortPriority" value="40"/>
+      </property>
+      <property name="upsellAction" item-type="upsellAction" column-name="upsell_action" category-resource="categoryBasics" display-name-resource="upsellAction">
+  <attribute name="propertySortPriority" value="50"/>
+      </property>
+    </table>
+
+    <table name="dcs_prm_cls_vals" type="multi" id-column-name="close_qualif_id" multi-column-name="placeholder">
+      <property name="templateValues" category-resource="categoryUpsell" data-type="map" hidden="true" component-data-type="string" column-name="placeholderValue"
+              display-name-resource="templateValues">
+        <attribute name="propertySortPriority" value="-2"/>
+      </property>
+    </table>
+
+    <table name="dcs_prm_cls_qlf" type="auxiliary" id-column-name="closeness_qualif" shared-table-sequence="2">
+      <property name="promotion" item-type="promotion" expert="true" hidden="true" column-name="promotion_id" category-resource="categoryUpsell" display-name-resource="promotion"/>
+    </table>
+
+  </item-descriptor>
+
+  <item-descriptor name="upsellAction" display-property="name" item-cache-size="1000" query-cache-size="1000" version-property="version" id-space-name="upsellAction" display-name-resource="itemDescriptorUpsellAction">
+    <attribute name="resourceBundle" value="atg.commerce.PricingModelsTemplateResources"/>
+    <attribute name="iconSwf" value="closenessQualifierIconSwf"/>
+    <attribute name="largeIconSwf" value="closenessQualifierLargeIconSwf"/>
+
+    <table name="dcs_upsell_action" type="primary" id-column-name="action_id">
+      <property name="id" column-name="action_id" writable="false" expert="true" category-resource="categoryInfo" display-name-resource="actionId">
+        <attribute name="resourceBundle" value="atg.commerce.PricingModelsTemplateResources"/>
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="version" data-type="int" column-name="version" expert="true" category-resource="categoryUpsell" display-name-resource="version">
+        <attribute name="uiwritable" value="false"/>
+      </property>
+      <property name="name" data-type="string" column-name="name" required="true" category-resource="categoryUpsell" display-name-resource="upsellActionName">
+  <attribute name="propertySortPriority" value="-2"/>
+      </property>
+     <property name="upsellProductsGroup" data-type="string" column-name="upsell_prd_grp" category-resource="categoryUpsell" display-name-resource="upsellProductsGroup">
+  <attribute name="propertySortPriority" value="-2"/>
+     </property>
+    </table>
+
+    <table name="dcs_upsell_prods" type="multi" id-column-name="action_id" multi-column-name="sequence_num">
+      <property name="fixedUpsellProducts" data-type="list" component-item-type="product" column-name="product_id" category-resource="categoryUpsell" display-name-resource="fixedUpsellProducts"/>
+    </table>
+
+    <property name="dynamicUpsellProducts" property-type="atg.repository.GroupMembersPropertyDescriptor" data-type="list"
+       component-item-type="product" category-resource="categoryUpsell" display-name-resource="dynamicUpsellProducts">
+      <attribute name="groupNameProperty" value="upsellProductsGroup"/>
+    </property>
+
+    <property name="upsellProducts" property-type="atg.repository.NotEmptyChooserPropertyDescriptor" data-type="list" 
+       component-item-type="product" category-resource="categoryUpsell" display-name-resource="upsellProducts">
+      <attribute name="properties" value="fixedUpsellProducts,dynamicUpsellProducts"/>
+      <attribute name="merge" value="true"/>
+    </property>
+
+  </item-descriptor>
+
+  <item-descriptor name="promotionFolder" display-property="name" display-name-resource="itemDescriptorPromotionFolder">
+    <attribute name="resourceBundle" value="atg.commerce.PricingModelsTemplateResources"/>
+    <attribute name="iconSwf" value="promotionFolderIconSwf"/>
+    <attribute name="largeIconSwf" value="promotionFolderLargeIconSwf"/>
+    <attribute name="plural-display-name-resource" value="itemDescriptorPromotionFolder.plural"/> 
+
+    <table name="dcs_prm_folder" type="primary" id-column-name="folder_id">
+      <property name="id" display-name-resource="id" column-name="folder_id" data-type="string" writable="false" expert="true"/>
+      <property name="name" display-name-resource="promotionFolderDisplayName" column-name="name" data-type="string" required="true" category-resource="categoryBasics">
+        <attribute name="propertySortPriority" value="10"/>
+      </property>
+      <property name="parentFolder" display-name-resource="parentFolder" column-name="parent_folder" item-type="promotionFolder" category-resource="categoryBasics">
+        <attribute name="propertySortPriority" value="20"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //product/DCS/version/10.0.3/templates/DCS/config/atg/commerce/pricing/pricingModels.xml#1 $$Change: 651360 $ -->

@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE process SYSTEM "dynamosystemresource:/atg/dtds/pdl/pdl_1.0.dtd">
+<process author="admin" creation-time="1006364141423" enabled="true" last-modified-by="admin" modification-time="1044979266935">
+  <segment migrate-from="1011814821281,1011814878833" migrate-subjects="false">
+    <segment-name>Show incentives</segment-name>
+    <fork id="1">
+      <branch id="1.1">
+        <!--================================-->
+        <!--== Visits a page named MotorpriseJSP:/en/home.jsp  -->
+        <!--================================-->
+        <event id="1.1.1">
+          <event-name>atg.dps.PageVisit</event-name>
+          <filter construct="page-path-name-filter" operator="eq">
+            <event-property>
+              <property-name>scenarioPathInfo</property-name>
+            </event-property>
+            <constant>MotorpriseJSP:/en/home.jsp</constant>
+          </filter>
+        </event>
+        <!--================================-->
+        <!--== Remove items from slot Incentives  -->
+        <!--================================-->
+        <action id="1.1.2">
+          <action-name>emptySlot</action-name>
+          <action-param name="slot">
+            <nucleus-property>
+              <nucleus-path>/atg/registry/Slots/Incentives</nucleus-path>
+            </nucleus-property>
+          </action-param>
+        </action>
+        <fork id="1.1.3">
+          <branch id="1.1.3.1">
+            <!--================================-->
+            <!--== Member is true  -->
+            <!--================================-->
+            <condition construct="people-element" id="1.1.3.1.1">
+              <filter construct="profile-property-filter" operator="eq">
+                <subject-property>
+                  <property-name>member</property-name>
+                </subject-property>
+                <constant type="java.lang.Boolean">true</constant>
+              </filter>
+            </condition>
+            <fork id="1.1.3.1.2">
+              <branch id="1.1.3.1.2.1">
+                <!--================================-->
+                <!--== in organization National Discount Auto Parts  -->
+                <!--================================-->
+                <condition construct="people-element" id="1.1.3.1.2.1.1">
+                  <filter operator="profileInOrg">
+                    <constant>org3002</constant>
+                  </filter>
+                </condition>
+                <!--================================-->
+                <!--== Add items to slot Incentives named EnterpriseEdge...  -->
+                <!--================================-->
+                <action id="1.1.3.1.2.1.2">
+                  <action-name>fillSlot</action-name>
+                  <action-param name="slot">
+                    <nucleus-property>
+                      <nucleus-path>/atg/registry/Slots/Incentives</nucleus-path>
+                    </nucleus-property>
+                  </action-param>
+                  <action-param name="ids">
+                    <array type="java.lang.String[]">
+                      <constant>m100010</constant>
+                      <constant>m100014</constant>
+                    </array>
+                  </action-param>
+                </action>
+              </branch>
+              <otherwise-branch id="1.1.3.1.2.2">
+                <!-- Otherwise -->
+                <!--================================-->
+                <!--== Add items to slot Incentives named CustomerService  -->
+                <!--================================-->
+                <action id="1.1.3.1.2.2.2">
+                  <action-name>fillSlot</action-name>
+                  <action-param name="slot">
+                    <nucleus-property>
+                      <nucleus-path>/atg/registry/Slots/Incentives</nucleus-path>
+                    </nucleus-property>
+                  </action-param>
+                  <action-param name="ids">
+                    <array type="java.lang.String[]">
+                      <constant>m100006</constant>
+                    </array>
+                  </action-param>
+                </action>
+              </otherwise-branch>
+            </fork>
+          </branch>
+          <branch id="1.1.3.2">
+            <!--================================-->
+            <!--== Member is false  -->
+            <!--================================-->
+            <condition construct="people-element" id="1.1.3.2.1">
+              <filter construct="profile-property-filter" operator="eq">
+                <subject-property>
+                  <property-name>member</property-name>
+                </subject-property>
+                <constant type="java.lang.Boolean">false</constant>
+              </filter>
+            </condition>
+            <!--================================-->
+            <!--== Add items to slot Incentives named MotorpriseAdvantage  -->
+            <!--================================-->
+            <action id="1.1.3.2.2">
+              <action-name>fillSlot</action-name>
+              <action-param name="slot">
+                <nucleus-property>
+                  <nucleus-path>/atg/registry/Slots/Incentives</nucleus-path>
+                </nucleus-property>
+              </action-param>
+              <action-param name="ids">
+                <array type="java.lang.String[]">
+                  <constant>m100012</constant>
+                </array>
+              </action-param>
+            </action>
+          </branch>
+        </fork>
+      </branch>
+      <branch id="1.2">
+        <!--================================-->
+        <!--== Visits a page named MotorpriseJSP:/de/home.jsp  -->
+        <!--================================-->
+        <event id="1.2.1">
+          <event-name>atg.dps.PageVisit</event-name>
+          <filter construct="page-path-name-filter" operator="eq">
+            <event-property>
+              <property-name>scenarioPathInfo</property-name>
+            </event-property>
+            <constant>MotorpriseJSP:/de/home.jsp</constant>
+          </filter>
+        </event>
+        <!--================================-->
+        <!--== Remove items from slot Incentives  -->
+        <!--================================-->
+        <action id="1.2.2">
+          <action-name>emptySlot</action-name>
+          <action-param name="slot">
+            <nucleus-property>
+              <nucleus-path>/atg/registry/Slots/Incentives</nucleus-path>
+            </nucleus-property>
+          </action-param>
+        </action>
+        <fork id="1.2.3">
+          <branch id="1.2.3.1">
+            <!--================================-->
+            <!--== Member is true  -->
+            <!--================================-->
+            <condition construct="people-element" id="1.2.3.1.1">
+              <filter construct="profile-property-filter" operator="eq">
+                <subject-property>
+                  <property-name>member</property-name>
+                </subject-property>
+                <constant type="java.lang.Boolean">true</constant>
+              </filter>
+            </condition>
+            <fork id="1.2.3.1.2">
+              <branch id="1.2.3.1.2.1">
+                <!--================================-->
+                <!--== in organization National Discount Auto Parts  -->
+                <!--================================-->
+                <condition construct="people-element" id="1.2.3.1.2.1.1">
+                  <filter operator="profileInOrg">
+                    <constant>org3002</constant>
+                  </filter>
+                </condition>
+                <!--================================-->
+                <!--== Add items to slot Incentives named EnterpriseEdge_de...  -->
+                <!--================================-->
+                <action id="1.2.3.1.2.1.2">
+                  <action-name>fillSlot</action-name>
+                  <action-param name="slot">
+                    <nucleus-property>
+                      <nucleus-path>/atg/registry/Slots/Incentives</nucleus-path>
+                    </nucleus-property>
+                  </action-param>
+                  <action-param name="ids">
+                    <array type="java.lang.String[]">
+                      <constant>m100020</constant>
+                      <constant>m100021</constant>
+                    </array>
+                  </action-param>
+                </action>
+              </branch>
+              <otherwise-branch id="1.2.3.1.2.2">
+                <!-- Otherwise -->
+                <!--================================-->
+                <!--== Add items to slot Incentives named CustomerService_de  -->
+                <!--================================-->
+                <action id="1.2.3.1.2.2.2">
+                  <action-name>fillSlot</action-name>
+                  <action-param name="slot">
+                    <nucleus-property>
+                      <nucleus-path>/atg/registry/Slots/Incentives</nucleus-path>
+                    </nucleus-property>
+                  </action-param>
+                  <action-param name="ids">
+                    <array type="java.lang.String[]">
+                      <constant>m100003</constant>
+                    </array>
+                  </action-param>
+                </action>
+              </otherwise-branch>
+            </fork>
+          </branch>
+          <branch id="1.2.3.2">
+            <!--================================-->
+            <!--== Member is false  -->
+            <!--================================-->
+            <condition construct="people-element" id="1.2.3.2.1">
+              <filter construct="profile-property-filter" operator="eq">
+                <subject-property>
+                  <property-name>member</property-name>
+                </subject-property>
+                <constant type="java.lang.Boolean">false</constant>
+              </filter>
+            </condition>
+            <!--================================-->
+            <!--== Add items to slot Incentives named MotorpriseAdvantage_de  -->
+            <!--================================-->
+            <action id="1.2.3.2.2">
+              <action-name>fillSlot</action-name>
+              <action-param name="slot">
+                <nucleus-property>
+                  <nucleus-path>/atg/registry/Slots/Incentives</nucleus-path>
+                </nucleus-property>
+              </action-param>
+              <action-param name="ids">
+                <array type="java.lang.String[]">
+                  <constant>m100022</constant>
+                </array>
+              </action-param>
+            </action>
+          </branch>
+        </fork>
+      </branch>
+      <branch id="1.3">
+        <!--================================-->
+        <!--== Visits a page named MotorpriseJSP:/ja/home.jsp  -->
+        <!--================================-->
+        <event id="1.3.1">
+          <event-name>atg.dps.PageVisit</event-name>
+          <filter construct="page-path-name-filter" operator="eq">
+            <event-property>
+              <property-name>scenarioPathInfo</property-name>
+            </event-property>
+            <constant>MotorpriseJSP:/ja/home.jsp</constant>
+          </filter>
+        </event>
+        <!--================================-->
+        <!--== Remove items from slot Incentives  -->
+        <!--================================-->
+        <action id="1.3.2">
+          <action-name>emptySlot</action-name>
+          <action-param name="slot">
+            <nucleus-property>
+              <nucleus-path>/atg/registry/Slots/Incentives</nucleus-path>
+            </nucleus-property>
+          </action-param>
+        </action>
+        <fork id="1.3.3">
+          <branch id="1.3.3.1">
+            <!--================================-->
+            <!--== Member is true  -->
+            <!--================================-->
+            <condition construct="people-element" id="1.3.3.1.1">
+              <filter construct="profile-property-filter" operator="eq">
+                <subject-property>
+                  <property-name>member</property-name>
+                </subject-property>
+                <constant type="java.lang.Boolean">true</constant>
+              </filter>
+            </condition>
+            <fork id="1.3.3.1.2">
+              <branch id="1.3.3.1.2.1">
+                <!--================================-->
+                <!--== in organization National Discount Auto Parts  -->
+                <!--================================-->
+                <condition construct="people-element" id="1.3.3.1.2.1.1">
+                  <filter operator="profileInOrg">
+                    <constant>org3002</constant>
+                  </filter>
+                </condition>
+                <!--================================-->
+                <!--== Add items to slot Incentives named EnterpriseEdge_ja  -->
+                <!--================================-->
+                <action id="1.3.3.1.2.1.2">
+                  <action-name>fillSlot</action-name>
+                  <action-param name="slot">
+                    <nucleus-property>
+                      <nucleus-path>/atg/registry/Slots/Incentives</nucleus-path>
+                    </nucleus-property>
+                  </action-param>
+                  <action-param name="ids">
+                    <array type="java.lang.String[]">
+                      <constant>m400004</constant>
+                    </array>
+                  </action-param>
+                </action>
+              </branch>
+              <otherwise-branch id="1.3.3.1.2.2">
+                <!-- Otherwise -->
+                <!--================================-->
+                <!--== Add items to slot Incentives named CustomerService_ja  -->
+                <!--================================-->
+                <action id="1.3.3.1.2.2.2">
+                  <action-name>fillSlot</action-name>
+                  <action-param name="slot">
+                    <nucleus-property>
+                      <nucleus-path>/atg/registry/Slots/Incentives</nucleus-path>
+                    </nucleus-property>
+                  </action-param>
+                  <action-param name="ids">
+                    <array type="java.lang.String[]">
+                      <constant>m400003</constant>
+                    </array>
+                  </action-param>
+                </action>
+              </otherwise-branch>
+            </fork>
+          </branch>
+          <branch id="1.3.3.2">
+            <!--================================-->
+            <!--== Member is false  -->
+            <!--================================-->
+            <condition construct="people-element" id="1.3.3.2.1">
+              <filter construct="profile-property-filter" operator="eq">
+                <subject-property>
+                  <property-name>member</property-name>
+                </subject-property>
+                <constant type="java.lang.Boolean">false</constant>
+              </filter>
+            </condition>
+            <!--================================-->
+            <!--== Add items to slot Incentives named MotorpriseAdvantage_ja  -->
+            <!--================================-->
+            <action id="1.3.3.2.2">
+              <action-name>fillSlot</action-name>
+              <action-param name="slot">
+                <nucleus-property>
+                  <nucleus-path>/atg/registry/Slots/Incentives</nucleus-path>
+                </nucleus-property>
+              </action-param>
+              <action-param name="ids">
+                <array type="java.lang.String[]">
+                  <constant>m400006</constant>
+                </array>
+              </action-param>
+            </action>
+          </branch>
+        </fork>
+      </branch>
+    </fork>
+  </segment>
+  <segment migrate-from="1011729468459,1011730184108,1011731903758,1011731907403,1011733074231,1011733104855,1011813829445,1011814096478,1011814821281,1011814878833" migrate-subjects="false">
+    <segment-name>Show signup</segment-name>
+    <fork id="1">
+      <branch id="1.1">
+        <!--================================-->
+        <!--== Visits a page named MotorpriseJSP:/en/home.jsp  -->
+        <!--================================-->
+        <event id="1.1.1">
+          <event-name>atg.dps.PageVisit</event-name>
+          <filter construct="page-path-name-filter" operator="eq">
+            <event-property>
+              <property-name>scenarioPathInfo</property-name>
+            </event-property>
+            <constant>MotorpriseJSP:/en/home.jsp</constant>
+          </filter>
+        </event>
+        <!--================================-->
+        <!--== Remove items from slot SignUpMessage  -->
+        <!--================================-->
+        <action id="1.1.2">
+          <action-name>emptySlot</action-name>
+          <action-param name="slot">
+            <nucleus-property>
+              <nucleus-path>/atg/registry/Slots/SignUpMessage</nucleus-path>
+            </nucleus-property>
+          </action-param>
+        </action>
+        <!--================================-->
+        <!--== Member is false  -->
+        <!--================================-->
+        <condition construct="people-element" id="1.1.3">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>member</property-name>
+            </subject-property>
+            <constant type="java.lang.Boolean">false</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Add items to slot SignUpMessage named AnonymousIncentive  -->
+        <!--================================-->
+        <action id="1.1.4">
+          <action-name>fillSlot</action-name>
+          <action-param name="slot">
+            <nucleus-property>
+              <nucleus-path>/atg/registry/Slots/SignUpMessage</nucleus-path>
+            </nucleus-property>
+          </action-param>
+          <action-param name="ids">
+            <array type="java.lang.String[]">
+              <constant>m100004</constant>
+            </array>
+          </action-param>
+        </action>
+      </branch>
+      <branch id="1.2">
+        <!--================================-->
+        <!--== Visits a page named MotorpriseJSP:/de/home.jsp  -->
+        <!--================================-->
+        <event id="1.2.1">
+          <event-name>atg.dps.PageVisit</event-name>
+          <filter construct="page-path-name-filter" operator="eq">
+            <event-property>
+              <property-name>scenarioPathInfo</property-name>
+            </event-property>
+            <constant>MotorpriseJSP:/de/home.jsp</constant>
+          </filter>
+        </event>
+        <!--================================-->
+        <!--== Remove items from slot SignUpMessage  -->
+        <!--================================-->
+        <action id="1.2.2">
+          <action-name>emptySlot</action-name>
+          <action-param name="slot">
+            <nucleus-property>
+              <nucleus-path>/atg/registry/Slots/SignUpMessage</nucleus-path>
+            </nucleus-property>
+          </action-param>
+        </action>
+        <!--================================-->
+        <!--== Member is false  -->
+        <!--================================-->
+        <condition construct="people-element" id="1.2.3">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>member</property-name>
+            </subject-property>
+            <constant type="java.lang.Boolean">false</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Add items to slot SignUpMessage named AnonymousIncentive_de  -->
+        <!--================================-->
+        <action id="1.2.4">
+          <action-name>fillSlot</action-name>
+          <action-param name="slot">
+            <nucleus-property>
+              <nucleus-path>/atg/registry/Slots/SignUpMessage</nucleus-path>
+            </nucleus-property>
+          </action-param>
+          <action-param name="ids">
+            <array type="java.lang.String[]">
+              <constant>m100001</constant>
+            </array>
+          </action-param>
+        </action>
+      </branch>
+      <branch id="1.3">
+        <!--================================-->
+        <!--== Visits a page named MotorpriseJSP:/ja/home.jsp  -->
+        <!--================================-->
+        <event id="1.3.1">
+          <event-name>atg.dps.PageVisit</event-name>
+          <filter construct="page-path-name-filter" operator="eq">
+            <event-property>
+              <property-name>scenarioPathInfo</property-name>
+            </event-property>
+            <constant>MotorpriseJSP:/ja/home.jsp</constant>
+          </filter>
+        </event>
+        <!--================================-->
+        <!--== Remove items from slot SignUpMessage  -->
+        <!--================================-->
+        <action id="1.3.2">
+          <action-name>emptySlot</action-name>
+          <action-param name="slot">
+            <nucleus-property>
+              <nucleus-path>/atg/registry/Slots/SignUpMessage</nucleus-path>
+            </nucleus-property>
+          </action-param>
+        </action>
+        <!--================================-->
+        <!--== Member is false  -->
+        <!--================================-->
+        <condition construct="people-element" id="1.3.3">
+          <filter construct="profile-property-filter" operator="eq">
+            <subject-property>
+              <property-name>member</property-name>
+            </subject-property>
+            <constant type="java.lang.Boolean">false</constant>
+          </filter>
+        </condition>
+        <!--================================-->
+        <!--== Add items to slot SignUpMessage named AnonymousIncentive_ja  -->
+        <!--================================-->
+        <action id="1.3.4">
+          <action-name>fillSlot</action-name>
+          <action-param name="slot">
+            <nucleus-property>
+              <nucleus-path>/atg/registry/Slots/SignUpMessage</nucleus-path>
+            </nucleus-property>
+          </action-param>
+          <action-param name="ids">
+            <array type="java.lang.String[]">
+              <constant>m400001</constant>
+            </array>
+          </action-param>
+        </action>
+      </branch>
+    </fork>
+  </segment>
+</process>

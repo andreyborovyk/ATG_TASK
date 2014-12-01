@@ -1,0 +1,141 @@
+<?xml version="1.0" ?>
+<!DOCTYPE schema
+    SYSTEM 'http://road.atg.com/dtds/ddlgen/schema.dtd'>
+
+<schema name="create_service">
+
+  <table name="srch_dic_tr_pt">
+    <!-- generated id.-->
+    <column name="dic_tr_pt_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="dic_tr_pt_type" nullable="n">
+      <column-type db="generic" type="integer"/>
+    </column>
+
+    <primary-key name="srch_dic_tr_pt_1_p">
+      <index-column column="dic_tr_pt_id" order="asc" seq="1"/>
+    </primary-key>
+  </table>
+
+  <table name="srch_dic_dict">
+    <column name="dic_dict_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="dic_dict_name" nullable="n" i18n="y">
+      <column-type db="generic" length="200" type="varchar"/>
+    </column>
+    <column name="dic_dict_desc" nullable="y" i18n="y">
+      <column-type db="generic" length="1000" type="varchar"/>
+    </column>
+    <column name="dic_dict_language" nullable="n">
+      <column-type db="generic" length="200" type="varchar"/>
+    </column>
+    <column name="dic_dict_load_mode" nullable="n">
+      <column-type db="generic" length="200" type="varchar"/>
+    </column>
+    <column name="dict_adapter_name" nullable="y" i18n="y">
+      <column-type db="generic" length="200" type="varchar"/>
+    </column>
+    <column name="dic_dict_max_exp" nullable="y">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <column name="dic_dict_last_mod" nullable="n">
+      <column-type db="generic" type="date"/>
+    </column>
+    <primary-key name="srch_dic_dict1_p">
+      <index-column column="dic_dict_id" order="asc" seq="1"/>
+    </primary-key>
+    <unique name="srch_dic_dict1_u">
+      <index-column column="dic_dict_name" seq="1"/>
+    </unique>
+    <foreign-key referenced-table="srch_dic_tr_pt" name="srch_dic_tr_pt1_f">
+      <fkey-column referencing-column="dic_dict_id" referenced-column="dic_tr_pt_id"/>
+    </foreign-key>
+  </table>
+
+  <table name="srch_dic_trm">
+    <column name="dic_trm_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="dic_trm_pt_id" nullable="y">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="dic_trm_seq" nullable="y">
+      <column-type db="generic" type="integer"/>
+    </column>
+    <column name="dic_trm_name" nullable="n" i18n="y">
+      <column-type db="generic" length="200" type="varchar"/>
+    </column>
+    <column name="dic_trm_propagate" nullable="n">
+      <column-type db="generic" type="one-digit"/>
+    </column>
+    <column name="dic_trm_spch_part" nullable="n">
+      <column-type db="generic" length="200" type="varchar"/>
+    </column>
+    <column name="dic_trm_phr_type" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="dic_trm_weight" nullable="y">
+      <column-type db="generic" type="smallint"/>
+    </column>
+    <!-- Used for uniqueness checking -->
+    <column name="dic_trm_norm_name" nullable="y" i18n="y">
+      <column-type db="generic" length="200" type="varchar"/>
+    </column>
+
+    <primary-key name="srch_dic_trm1_p">
+      <index-column column="dic_trm_id" order="asc" seq="1"/>
+    </primary-key>
+    <foreign-key referenced-table="srch_dic_tr_pt" name="srch_dic_tr_pt2_f">
+      <fkey-column referencing-column="dic_trm_id" referenced-column="dic_tr_pt_id"/>
+    </foreign-key>
+    <foreign-key referenced-table="srch_dic_tr_pt" name="srch_dic_tr_pt3_f" index-name="srch_dic_tr_pt3_x">
+      <fkey-column referencing-column="dic_trm_pt_id" referenced-column="dic_tr_pt_id"/>
+    </foreign-key>
+    <index name="srch_dic_trm_x1" table="srch_dic_trm">
+      <index-column column="dic_trm_norm_name" seq="1"/>
+    </index>
+  </table>
+
+  <table name="srch_dic_syn">
+    <column name="dic_syn_id" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="dic_syn_pt_id" nullable="y">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="dic_syn_name" nullable="n" i18n="y">
+      <column-type db="generic" length="200" type="varchar"/>
+    </column>
+    <column name="dic_syn_relation" nullable="n">
+      <column-type db="generic" type="varchar" length="200"/>
+    </column>
+    <column name="dic_syn_spch_part" nullable="y">
+      <column-type db="generic" type="varchar" length="200"/>
+    </column>
+    <column name="dic_syn_phr_type" nullable="n">
+      <column-type db="generic" length="40" type="varchar"/>
+    </column>
+    <column name="dic_syn_language" nullable="y">
+      <column-type db="generic" type="varchar" length="200"/>
+    </column>
+    <column name="dic_syn_weight" nullable="y">
+      <column-type db="generic" type="smallint"/>
+    </column>
+
+    <!-- Used for uniqueness checking -->
+    <column name="dic_syn_norm_name" nullable="y" i18n="y">
+      <column-type db="generic" length="200" type="varchar"/>
+    </column>
+
+    <primary-key name="srch_dic_syn1_p">
+      <index-column column="dic_syn_id" order="asc" seq="1"/>
+    </primary-key>
+    <index name="srch_dic_syn_x1" table="srch_dic_syn">
+      <index-column column="dic_syn_norm_name" seq="1"/>
+    </index>
+  </table>
+
+</schema>
+<!-- @version $Id: //application/SearchAdmin/version/10.0.3/customizations/src/sql/searchadmin_dictionary_ddl.xml#2 $$Change: 651448 $-->

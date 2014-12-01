@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE database-initializer SYSTEM "http://www.atg.com/dtds/dbinit_1_0.dtd">
+<database-initializer>
+
+	<schema id="dwSchema">
+	
+		<sql>
+			<path>
+				<create>
+				  sql/db_components/${database}/dcs_srch_ddl.sql
+				</create>
+				<drop>
+					sql/uninstall/${database}/drop_dcs_srch_ddl.sql
+				</drop>
+			</path>
+		</sql>
+
+
+	</schema>
+
+	<server-instance-type id="datawarehouse">
+	
+		<datasource id="all">
+			<schema id="dwSchema"/>
+		</datasource>	
+		
+	</server-instance-type>
+
+</database-initializer>
+<!-- @version $Id: //product/DCS/version/10.0.3/DW/Search/cim/dbinit.xml#2 $$Change: 651448 $-->

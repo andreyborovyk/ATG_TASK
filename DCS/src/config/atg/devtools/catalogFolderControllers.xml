@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE controllers
+        PUBLIC "-//Art Technology Group, Inc.//DTD Repository Admin
+Controllers//EN"
+        "http://www.atg.com/dtds/ui/dps/admin_controllers_1.0.dtd">
+
+<controllers>
+
+  <repository-controller id="folderTreeController">
+    <property name="displayComponentKey" value="folderTree"/>
+  </repository-controller>
+
+  <bean-controller id="itemTableController" >
+    <property name="displayComponentKey" value="itemTable"/>
+    <property name="controllerSourceId" value="folderTreeController"/>
+    <property name="itemType" value="genericFolder"/>
+    <property name="sourcePropertyName" value="childItems"/>
+  </bean-controller>
+
+  <bean-controller id="nameFormController" >
+    <property name="displayComponentKey" value="nameForm"/>
+    <property name="controllerSourceId" value="folderTreeController"/>
+  </bean-controller>
+
+</controllers>
+<!-- @version $Id: //product/DCS/version/10.0.3/templates/DCS/config/atg/devtools/catalogFolderControllers.xml#2 $$Change: 651448 $ -->

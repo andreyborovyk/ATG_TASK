@@ -1,0 +1,54 @@
+<DECLAREPARAM NAME="giftlistId" CLASS="String" DESCRIPTION="The giftlist Id">
+<DECLAREPARAM NAME="giftId" CLASS="String" DESCRIPTION="The giftitem Id">
+
+<importbean bean="/atg/userprofiling/Profile">
+<importbean bean="/atg/dynamo/droplet/Switch">
+
+<HTML>
+<HEAD>
+<TITLE>My Lists</TITLE>
+<a href="comparison.jhtml">Product Comparison</a> -
+</HEAD>
+
+<BODY>
+<a href="index.jhtml">Catalog Home</a> - 
+<a href="product_search.jhtml">Product Search</a> - 
+<a href="shoppingcart.jhtml">Shopping Cart</a> - 
+My Lists - 
+<a href="giftlist_search.jhtml">Gift List Search</a> - 
+<droplet bean="Switch">
+  <param name="value" value="bean:Profile.transient">
+  <oparam name="false">
+    <a href="logout.jhtml">Logout</a>
+  </oparam>
+  <oparam name="true">
+    <a href="login.jhtml">Login</a> or <a href="register.jhtml">Register</a>
+  </oparam>
+</droplet>
+<BR>
+
+<blockquote>
+Lists allow you to save products you want for later, and share your giftlists with friends.<BR>
+All customers are given a default wish list.  This wish list is private and is never 
+published to other customers. 
+</blockquote>
+
+<!-- Display any errors processing form -->
+<droplet src="display_giftlist_errors.jhtml"></droplet>
+
+<P>
+
+<droplet src="manage_wishlist.jhtml"></droplet>
+
+<p>
+
+<droplet src="manage_giftlists.jhtml"></droplet>
+
+<p>
+
+<droplet src="create_newgiftlist.jhtml"></droplet>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/DCS/html/sample_catalog/lists.jhtml#2 $$Change: 651448 $*/</java>
+

@@ -1,0 +1,180 @@
+/* MODULE:  Data Table
+   DESCRIPTION:  Used to display tabular data.
+------------------------------------------------------------------------------*/
+
+ 
+/* Form Veritcal List [Core]
+** DESCRIPTION:  Core definition that creates the data Table.
+------------------------------------------------------------------------------*/
+
+.atg_dataTable{
+	width: 100%;
+	border: 1px solid #c2c2c2;
+	margin: 0;
+	border-collapse: collapse;
+}
+.atg_dataTable th{
+	padding: 7px 0 7px 3px;
+	text-align: left;
+	background: #e8e8e8;
+	color: #747474;
+}
+.atg_dataTable tbody th{
+	border-top: 1px solid #c2c2c2;
+	border-right: 1px solid #c2c2c2;
+}
+.atg_dataTable th a:link,
+.atg_dataTable th a:visited,
+.atg_dataTable th a:active{
+	color: #747474;
+	text-decoration: underline;
+}
+.atg_dataTable th a:hover{
+	color: #333;
+}
+.atg_dataTable tr { 
+  background-color:  #FFF; 
+}
+.atg_dataTable tr.atg_altRow{
+  background: #f6f7f9;
+}
+.atg_dataTable tr.atg_returnedRow{
+  color: #ff0000;
+}
+.atg_dataTable tr.atg_currentRow{
+  font-weight: bold;
+}
+.atg_dataTable td{
+	padding: 5px !important;
+	padding: 4px 3px 1px 5px;
+	border: 1px solid #c2c2c2;
+	vertical-align: top;
+  /* IE specific values used in IE 6 stylesheet (dataTable_IE6.css) */
+}
+.atg_dataTable td.atg_iconCell{
+	width: 20px;
+	border-right: none;
+	border-left: none;
+	padding: 5px 1px 5px 2px !important;
+}
+.atg_dataTable .atg_medWidth{
+	width: 25%;
+}
+.atg_dataTable .atg_numberValue{
+	text-align: right;
+}
+.atg_dataTable .atg_numberValueExtraPadding{
+  padding-top: 10px !important;
+  padding-right: 40px !important;
+  padding-bottom: 7px !important;
+}
+.atg_dataTable th.atg_numberValue{
+	text-align: right;
+	padding-right: 5px;
+}
+.atg_dataTable .atg_centerValue{
+	text-align: center;
+}
+.atg_dataTable .atg_rightValue{
+	text-align: right;
+}
+.atg_dataTable .atg_positiveTotal{
+  color: #000;
+  font-weight: bold;
+}
+.atg_dataTable tfoot td{
+	background: #f8f6be;
+}
+.atg_dataTable tfoot td input,
+.atg_dataTable tfoot td select{
+  font-size: .9em;
+}
+.atg_dataTable .atg_rowSelector{
+	width: 15px;
+  /* IE specific values used in IE 6 stylesheet (dataTable_IE6.css) */
+}
+.atg_dataTable .atg_selectAll{
+	width: 15px;
+	padding-left: 5px;
+}
+.atg_dataTable input{
+  margin: 0;
+}
+.atg_dataTable a.atg_descending:link,
+.atg_dataTable a.atg_descending:visited,
+.atg_dataTable a.atg_descending:hover,
+.atg_dataTable a.atg_descending:active{
+	color: #262626;
+	text-decoration: underline;
+	background: url(../../images/icons/sortArrowDown.gif) no-repeat right 5px;
+	padding-right: 13px;
+}
+.atg_dataTable a.atg_descending:hover{
+	color: #000;
+}
+.atg_dataTable a.atg_ascending:link,
+.atg_dataTable a.atg_ascending:visited,
+.atg_dataTable a.atg_ascending:hover,
+.atg_dataTable a.atg_ascending:active{
+	color: #262626;
+	text-decoration: underline;
+	background: url(../../images/icons/sortArrowUp.gif) no-repeat right 4px;
+	padding-right: 13px;
+}
+.atg_dataTable a.atg_ascending:hover{
+	color: #000;
+}
+
+
+
+.atg_dataTableActions{
+  width: auto;
+	padding: 5px 5px 5px 5px;
+	border-top: 1px solid #c2c2c2;
+	color: #747474;
+	overflow: hidden;
+}
+.atg_dataTableActions input,
+.atg_dataTableActions select{
+	font-size: .9em;
+}
+.atg_dataTableActions .atg_actionTo{
+  float: right;
+  text-align: right;
+}
+
+.atg_dataTableFooterActions{
+  width: auto;
+  text-align: right;
+	padding: 5px 0 5px 0;
+	border-bottom: 1px solid #c2c2c2;
+}
+.atg_dataTableFooterActions input,
+.atg_dataTableFooterActions select{
+  font-size: .9em;
+}
+.atg_dataTableFooterActions input{
+  margin-right: 5px;
+}
+
+
+.atg_tablePagination{
+	border-bottom: 1px solid #c2c2c2;
+	color: #747474;
+  /* IE specific values used in IE 6 stylesheet (dataTable_IE6.css) */
+}
+.atg_tablePagination.atg_topPagination{
+	border-bottom: none;
+	border-top: 1px solid #c2c2c2;
+	clear: left;
+}
+.atg_tablePagination a:link{
+	color: #369;
+	margin-left:  2px;
+}
+.atg_inactive{
+  filter: alpha(opacity=30);
+  -moz-opacity: 0.3;
+  opacity: 0.3;
+  -khtml-opacity: .3;
+}

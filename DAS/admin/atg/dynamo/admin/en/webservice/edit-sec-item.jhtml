@@ -1,0 +1,188 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+    <title>Edit Web Service Security Configuration</title>
+  </head>
+<nucleus type=import>
+        /atg/dynamo/admin/GetAssignedPrincipals
+        /atg/dynamo/admin/GetSecurityItem
+        /atg/dynamo/droplet/ForEach
+        /atg/dynamo/droplet/Switch
+        /atg/webservice/security/NucleusAccessControlFormHandler
+</nucleus>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+<IMG SRC="../images/admin-banner.gif" ALT="Dynamo Administration"
+     ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+
+<droplet name="GetSecurityItem">
+   <param name="funcName" value="param:funcName">
+   <oparam name="notFound">
+     <JAVA> request.addQueryParameter("funcName",
+	      request.getParameter("funcName")); 
+            request.addQueryParameter("choose",
+	      request.getParameter("choose")); 
+            request.addQueryParameter("notFound", "true"); 
+            response.sendRedirect(request.encodeURL("browsesecurity.jhtml"));
+     </JAVA>
+   </oparam>
+   <oparam name="output">
+   <setvalue bean="NucleusAccessControlFormHandler.securedObjectID" value="param:funcName">
+
+
+<droplet name="Switch">
+  <param name="value" value="param:choose">
+  <oparam name="default">
+
+<a href="/">admin</a> / <a href="index.jhtml">Web Service
+	Administration</a> / <a href="browsesecurity.jhtml"><param name="choose" value="param:choose">
+	      Security Configurations</a> / Edit Security Configuration</p><p>
+
+    <h1>Edit Web Service Security Configuration </h1>
+  </oparam>
+  <oparam name="true">
+   <a href="/">admin</a> / <a href="index.jhtml">Web Service
+	Administration</a> / Create Web Service</p><p>
+
+    <h2>Create Web Service</h2>
+    <h1>Edit Security Configuration</h1>
+  </oparam>
+</droplet>
+
+<blockquote>
+
+<B>Security Configuration for: </B><valueof param="funcName">???</valueof><P>&nbsp;<P>
+
+Please add users, roles, or organizations below.
+
+<BR>&nbsp;<BR>
+
+<droplet name="ForEach">
+  <param name="array" value="bean:NucleusAccessControlFormHandler.formExceptions">
+  <oparam name="output">
+    <font color="red"><valueof param="element.message">???</valueof></font><P>
+  </oparam>
+</droplet>
+
+
+<form action="edit-sec-item.jhtml" method="post">
+  <input type="hidden" name="choose" value="param:choose">
+  <input type="hidden" name="funcName" value="param:funcName">
+  <input type="hidden" bean="NucleusAccessControlFormHandler.securedObjectID" value="param:funcName">
+
+
+  Security Policy: <input type="text" size="40"
+	 bean="NucleusAccessControlFormHandler.policyName">
+<BR><BR>
+
+<droplet name="GetAssignedPrincipals">
+  <param name="securedObject" value="param:securedObject">
+  <oparam name="output">
+
+       <JAVA>request.addQueryParameter("funcName",
+		request.getParameter("funcName")); 
+             request.addQueryParameter("choose",
+		request.getParameter("choose")); 
+             request.setParameter("addURL", request.encodeURL("choose-individuals.jhtml"));
+        </JAVA>
+
+     <droplet src="list-personae.jhtml">
+       <param name="addURL" value="param:addURL">
+       <param name="title" value="Users">
+       <param name="principals" value="param:principalsInfo.users">
+       <param name="showRemove" value="true">
+       <param name="uniqueID" value="1">
+     </droplet>
+
+       <JAVA>request.addQueryParameter("funcName",
+		request.getParameter("funcName")); 
+             request.addQueryParameter("choose",
+		request.getParameter("choose")); 
+             request.setParameter("addURL", request.encodeURL("choose-roles.jhtml"));
+        </JAVA>
+
+     <droplet src="list-personae.jhtml">
+       <param name="addURL" value="param:addURL">
+       <param name="title" value="Roles/Groups">
+       <param name="showRemove" value="true">
+       <param name="uniqueID" value="2">
+       <param name="principals" value="param:principalsInfo.allRoles">
+     </droplet>
+
+       <JAVA>request.addQueryParameter("funcName",
+		request.getParameter("funcName")); 
+             request.addQueryParameter("choose",
+		request.getParameter("choose")); 
+             request.setParameter("addURL", request.encodeURL("choose-organizations.jhtml"));
+      </JAVA>
+
+     <droplet src="list-personae.jhtml">
+       <param name="title" value="Organizations">
+       <param name="addURL" value="param:addURL">
+       <param name="showRemove" value="true">
+       <param name="uniqueID" value="3">
+       <param name="principals" value="param:principalsInfo.organizations">
+     </droplet>
+   <P>
+  </oparam>
+</droplet>
+
+
+  <droplet name="Switch">
+    <param name="value" value="param:choose">
+    <oparam name="true">
+      <input value="Previous"
+             type="submit"
+	     bean="NucleusAccessControlFormHandler.redirect"
+             submitvalue="browsesecurity.jhtml?choose=`request.getParameter("choose")`">
+    </oparam>
+  </droplet>
+
+
+
+
+<droplet name="Switch">
+ <param name="value" value="param:choose">
+ <oparam name="default">
+   <JAVA>String strChoose = request.getParameter("choose");
+         if ("true".equals(strChoose)) {
+            request.addQueryParameter("choose", "true");
+         }
+         String strURL = request.encodeURL("browsesecurity.jhtml");
+   </JAVA>
+
+   <input type="submit"
+  	bean="NucleusAccessControlFormHandler.updateACLAndRedirect"
+  	value="&nbsp;OK&nbsp;" submitvalue="`strURL`">
+ </oparam>
+ <oparam name="true">
+ <JAVA>String strChoose = request.getParameter("choose");
+       if ("true".equals(strChoose)) {
+          request.addQueryParameter("choose", "true");
+       }
+
+       request.addQueryParameter("funcName",
+		request.getParameter("funcName")); 
+       request.addQueryParameter("fromEditSec", "true"); 
+       String strURL = request.encodeURL("choose-sec-item.jhtml");
+</JAVA>
+
+   <input type="submit"
+        name="NucleusAccessControlFormHandler.updateACLAndRedirect.2"
+	bean="NucleusAccessControlFormHandler.updateACLAndRedirect"
+	value="Next" submitvalue="`strURL`">
+ </oparam>
+</droplet>
+
+</form>
+
+</blockquote>
+
+   </oparam>
+</droplet><%-- end droplet GetSecurityItem --%>
+
+  </BODY>
+</html>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/webservice/edit-sec-item.jhtml#2 $$Change: 651448 $*/</java>

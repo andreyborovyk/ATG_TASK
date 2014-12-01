@@ -1,0 +1,327 @@
+<DECLAREPARAM NAME="giftlistId" CLASS="String" DESCRIPTION="The giftlist Id">
+<DECLAREPARAM NAME="giftId" CLASS="String" DESCRIPTION="The giftitem Id">
+
+<importbean bean="/atg/commerce/ShoppingCart">
+<importbean bean="/atg/commerce/gifts/GiftShippingGroups">
+<importbean bean="/atg/commerce/order/purchase/RepriceOrderDroplet">
+<importbean bean="/atg/commerce/order/purchase/CartModifierFormHandler">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+<importbean bean="/atg/dynamo/droplet/Switch">
+<importbean bean="/atg/userprofiling/Profile">
+<importbean bean="/atg/dynamo/droplet/IsEmpty">
+<setvalue bean="Profile.currentLocation" value="shopping_cart">
+
+<HTML>
+<HEAD>
+<TITLE>Shopping Cart</TITLE>
+</HEAD>
+
+<BODY>
+<a href="index.jhtml">Catalog Home</a> - 
+<a href="product_search.jhtml">Product Search</a> - 
+Shopping Cart - 
+<a href="lists.jhtml">My Lists</a> - 
+<a href="comparison.jhtml">Product Comparison</a> -
+<a href="giftlist_search.jhtml">Gift List Search</a> - 
+<droplet bean="Switch">
+  <param name="value" value="bean:Profile.transient">
+  <oparam name="false">
+    <a href="logout.jhtml">Logout</a>
+  </oparam>
+  <oparam name="true">
+    <a href="login.jhtml">Login</a> or <a href="register.jhtml">Register</a>
+  </oparam>
+</droplet>
+<BR>
+<i>location: <valueof bean="Profile.currentLocation"></valueof></i>
+
+<P>
+
+<!-- call GiftShippingGroups droplet with parameter order to check for shipping
+     groups which contain gifts in a given order and set parameter giftsg -->
+<droplet bean="GiftShippingGroups">
+<param name="order" value="bean:ShoppingCart.current">
+<oparam name="true">
+  <droplet name="/atg/dynamo/droplet/Switch">
+  <param name="value" value="param:allgifts">
+  <oparam name="true">
+  all gifts
+  </oparam>
+  <oparam name="false">
+  not all gifts
+  </oparam>
+  <oparam name="default">
+  default
+  </oparam>
+  </droplet>
+
+  You have some gifts in your order<br>
+  <droplet bean="ForEach">
+  <param name="array" value="param:giftsg">
+  <param name="elementName" value="sg">
+  <oparam name="output">
+    The following gifts are going to <valueof param="sg.shippingAddress.firstName">unknown</valueof><br>
+    <droplet bean="ForEach">
+		  <param name="array" value="param:sg.CommerceItemRelationships">
+			<param name="elementName" value="CiRelationship">
+			<oparam name="output">
+			<valueof param="CiRelationship.Quantity"></valueof>
+			<i><valueof param="CiRelationship.CommerceItem.auxiliaryData.productRef.displayName"></valueof></i><br>
+			</oparam>
+    </droplet> <br>
+  </oparam>
+  </droplet>
+</oparam>
+<oparam name="false">
+  You have no gifts in your order
+</oparam>
+</droplet>
+<p>
+
+<!-- check if parameter giftId has been passed into page.  if
+     it has, then call Buy item from giftlist to move item
+     from giftlist to shopping cart -->
+<droplet bean="IsEmpty">
+<param name="value" value="param:giftId">
+<oparam name="false">
+  <droplet name="/atg/commerce/gifts/BuyItemFromGiftlist">
+    <param name="giftlistId" value="param:giftlistId">
+    <param name="giftId" value="param:giftId">
+  </droplet>
+</oparam>
+</droplet>
+                            
+<h3>My Shopping Cart</h3>
+
+<!-- Make sure we reprice the order everytime we show this page in case any new promotions
+     were added to the user's selection-->
+<droplet bean="RepriceOrderDroplet">
+  <param name="pricingOp" value="ORDER_SUBTOTAL">
+</droplet>
+
+<p>
+
+<droplet name="/atg/dynamo/droplet/Switch">
+<param name="value" value="bean:CartModifierFormHandler.formError">
+<oparam name="true">
+  <font color=cc0000><STRONG><UL>
+    <droplet name="/atg/dynamo/droplet/ErrorMessageForEach">
+      <param name="exceptions" value="bean:CartModifierFormHandler.formExceptions">
+      <oparam name="output">
+	<LI> <valueof param="message"></valueof>
+      </oparam>
+    </droplet>
+    </UL></STRONG></font>
+</oparam>
+</droplet>
+
+<p>
+
+<form action="shoppingcart.jhtml" method="post">
+<input type="hidden" bean="CartModifierFormHandler.moveToPurchaseInfoByRelIdSuccessURL" value="purchase_info.jhtml">
+<input type="hidden" bean="CartModifierFormHandler.SessionExpirationURL" value="session_expired.jhtml">
+
+<table cellspacing=0 cellpadding=0 border=0 width=100%>
+<tr valign=top><td><table cellspacing=2 cellpadding=0 border=0>
+<tr>
+<td><b>Delete</b></td>
+<td><b>Quantity</b></td>
+<td></td>
+<td>&nbsp;&nbsp;</td>
+<td><b>Product</b></td>
+<td>&nbsp;&nbsp;</td>
+<td><b>SKU</b></td>
+<td>&nbsp;&nbsp;</td>
+<td align=right><b>List Price</b></td>
+<td>&nbsp;&nbsp;</td>
+<td align=right><b>Sale Price</b></td>
+<td>&nbsp;&nbsp;</td>
+<td align=right><b>Total Price</b></td>
+</tr>
+
+<tr><td colspan=15><hr size=0></td></tr>
+
+<droplet bean="ForEach">
+	<param name="array" value="bean:CartModifierFormHandler.Order.ShippingGroups">
+	<param name="elementName" value="ShippingGroup">
+	<param name="indexName" value="shippingGroupIndex">
+
+	<oparam name="output">   			
+	<droplet bean="ForEach">
+		<param name="array" value="param:ShippingGroup.CommerceItemRelationships">
+		<param name="elementName" value="CiRelationship">
+		<param name="indexName" value="index">
+		<oparam name="output">		
+			<tr valign=top>
+			<td>
+				<input type="checkbox" unchecked bean="CartModifierFormHandler.removalRelationshipIds" value="param:CiRelationship.Id">
+			</td>
+			<td>
+				<input size=4 name="param:CiRelationship.Id" value="param:CiRelationship.quantity">
+			</td>
+			<td></td>
+			<td></td>
+			<td>
+				<droplet src="product_fragment.jhtml">
+					<param name="childProduct" value="param:CiRelationship.commerceItem.auxiliaryData.productRef">
+				</droplet>
+			</td>
+			<td>&nbsp;&nbsp;</td>
+			<td>
+				<valueof param="CiRelationship.commerceItem.auxiliaryData.catalogRef.displayName"></valueof>
+			</td>
+			<td>&nbsp;&nbsp;</td>
+			<td align=right>
+				<valueof param="CiRelationship.commerceItem.priceInfo.listPrice" currency>no price</valueof>
+			</td>
+			<td>&nbsp;&nbsp;</td>
+			<td align=right>
+				<droplet bean="Switch">
+					<param name="value" value="param:CiRelationship.commerceItem.priceInfo.onSale">
+					<oparam name="true"><valueof param="CiRelationship.commerceItem.priceInfo.salePrice" currency></valueof></oparam>
+				</droplet>
+			</td>
+			<td>&nbsp;&nbsp;</td>
+			<td align=right>
+				<valueof param="CiRelationship.commerceItem.priceInfo.amount" currency>no price</valueof>
+			</td>
+			</tr>
+		</oparam>
+		<oparam name="empty">
+			<tr valign=top>
+			<td>No Items</td>
+			</tr>
+		</oparam>
+	</droplet>				
+	</oparam>
+</droplet>
+
+<tr><td colspan=15><hr size=0></td></tr>
+<tr>
+<td colspan=4 align=right>Subtotal</td>
+<td>
+<valueof bean="ShoppingCart.current.priceInfo.amount" currency>no price</valueof>
+</td>
+<td align=right></td>
+</tr>
+
+<tr>
+<td colspan=2 align=right></td>
+<td></td>
+<td align=right>Shipping</td>
+<td>
+<valueof bean="ShoppingCart.current.priceInfo.shipping" currency>no price</valueof>
+</td>
+<td align=right></td>
+</tr>
+
+<tr>
+<td colspan=4 align=right>Tax</td>
+<td>
+<valueof bean="ShoppingCart.current.priceInfo.tax" currency>no price</valueof>
+</td>
+<td align=right></td>
+</tr>
+        
+<tr>
+<td colspan=4 align=right>Total</td>
+<td>
+<valueof bean="ShoppingCart.current.priceInfo.total" currency>no price</valueof>
+</td>
+<td align=right><b></b></td>
+</tr>
+</table>
+
+<tr>
+<td>
+<input type=submit bean="CartModifierFormHandler.setOrderByRelationshipId" value="Recalculate"> &nbsp; &nbsp;
+<input type=submit bean="CartModifierFormHandler.moveToPurchaseInfoByRelId" value="Checkout">
+</td>
+</tr>
+
+</table>
+
+</form>
+
+<strong>Detailed Item Price Information</strong>
+
+<table>
+<tr>
+<td>Quantity</td>
+<td>Product</td>
+<td>SKU</td>
+<td>Subtotal</td>
+<td>Unit Adjustments</td>
+</tr>
+
+<tr>
+<droplet bean="ForEach">
+<param name="array" value="bean:ShoppingCart.current.commerceItems">
+<param name="elementName" value="item">
+<oparam name="output">
+<droplet bean="ForEach">
+<param name="array" value="param:item.priceInfo.currentPriceDetails">
+<param name="elementName" value="detail">
+<oparam name="output">
+<td><valueof param="detail.quantity"></valueof></td>
+<td><valueof param="item.auxiliaryData.productRef.displayName"></valueof></td>
+<td><valueof param="item.auxiliaryData.catalogRef.displayName"></valueof></td>
+<td><valueof param="detail.amount" currency>no price</valueof></td>
+<td>
+<droplet bean="ForEach">
+<param name="array" value="param:detail.adjustments">
+<param name="elementName" value="adjustment">
+<oparam name="output">
+<valueof param="adjustment.pricingModel.repositoryId"></valueof> adjusted by 
+<valueof param="adjustment.adjustment" currency>no price</valueof><BR>
+</oparam>
+</droplet>
+</td>
+</tr>
+</oparam>
+<oparam name="empty"><DD>no detail info available</oparam>
+</droplet>
+</oparam>
+</droplet>
+</table>
+
+<P>
+<hr size=0>
+<droplet name="Switch">
+<param name="value" value="bean:Profile.transient">
+<oparam name="true">
+<a href="login.jhtml">Login</a> or <a href="register.jhtml">Register</a>
+to save your cart for later
+</oparam>
+</droplet>
+
+<form action="shoppingcart.jhtml" method="post">
+<droplet bean="Switch">
+<param name="value" value="bean:ShoppingCart.savedEmpty">
+<oparam name="false">
+Shopping Cart
+<select bean="ShoppingCart.handlerOrderId">
+<droplet bean="ForEach">
+  <param name="array" value="bean:ShoppingCart.saved">
+  <param name="elementName" value="savedcart">
+  <oparam name="output">
+<option value="param:savedcart.id"><valueof param="savedcart.id"></valueof>
+  </oparam>
+</droplet>
+</select>:
+
+<input type=submit bean="ShoppingCart.switch" value="Switch"> to,
+<input type=submit bean="ShoppingCart.delete" value="Delete"> or
+<input type=submit bean="ShoppingCart.create" value="Create"> another shopping cart.<BR>
+<input type=submit bean="ShoppingCart.deleteAll" value="Delete All Shopping Carts">
+</oparam>
+<oparam name="true">
+<input type=submit bean="ShoppingCart.create" value="Create"> another shopping cart
+</oparam>
+</droplet>
+</form>
+
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DCS/version/10.0.3/release/B2CCommerce/html/sample_catalog/shoppingcart.jhtml#2 $$Change: 651448 $*/</java>
+

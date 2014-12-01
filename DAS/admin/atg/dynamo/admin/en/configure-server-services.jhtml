@@ -1,0 +1,1028 @@
+<nucleus type=import>
+  /atg/dynamo/admin/Configure
+  /atg/dynamo/admin/EnvironmentConfig
+  /atg/dynamo/admin/NTServiceConfigure
+  /atg/dynamo/admin/DbConnectionPool
+  /atg/dynamo/admin/NativeDbConnectionPool
+  /atg/dynamo/droplet/ForEach
+  /atg/dynamo/droplet/Switch
+</nucleus>
+<java type=import>
+atg.servlet.ServletUtil;
+</java>
+<java>
+  atg.service.dynamo.ServerConfig configure = (atg.service.dynamo.ServerConfig) request.resolveName("/atg/dynamo/admin/Configure");
+</java>
+
+<HTML>
+<HEAD>
+  <link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+  <TITLE>Configure Dynamo</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+
+
+
+<IMG SRC="images/config-banner.gif" ALT="Dynamo Configuration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+<a href="/">admin</a>/<a href="configure-server.jhtml">Configure</a>/Servers<p>
+
+<!-- If the server name is "default" then output that the server  -->
+<!-- is the "default onfiguration" and give the appropriate       -->
+<!-- description.  Otherwise just output the server name with the -->
+<!-- regular description.                                         -->
+<java>
+  String serverName = configure.getServerName(), description;
+  if ( serverName.startsWith( "default" ) )
+  {
+    description =
+     "Configure services for the default configuration of all your Dynamo servers";
+  }
+  else if ( serverName.equals( "original" ) )
+  {
+    description =
+      "Configure services for the original Dynamo server";
+  }
+  else
+  {
+    description = "Configure services for the Dynamo server named <code>" +
+                   atg.servlet.ServletUtil.escapeHtmlString(serverName) + 
+                   "</code>";
+  }
+</java>
+
+<h2>Server: <em><java> out.print(atg.servlet.ServletUtil.escapeHtmlString(serverName)); </java></em></h2>
+
+<java> out.print(description);</java>
+on the machine 
+<code><valueof property="Configure.thisHostname"></valueof></code>.
+When you configure services using the Configuration Manager, the
+appropriate properties files are modified to reflect your changes.
+
+<p>
+<STRONG>Note:</STRONG> You must restart Dynamo for the changes on this
+page to take effect.
+</p>
+
+<droplet bean="Switch">
+          <param name="value" value="bean:/atg/dynamo/Configuration.dynamoAppServer">
+          <oparam name="true">
+
+<!-- Dynamo as a Windows Service  -->
+
+<p>
+
+<!-- Only display this on Windows. -->
+<droplet name="Switch">
+  <param name="value" value="property:NTServiceConfigure.windows">
+  <oparam name="true">
+
+    <setvalue bean="NTServiceConfigure.serverName"
+       value=bean:Configure.serverName>
+
+    <H3>Configure Dynamo as a Windows Service</H3>
+    <blockquote>
+    <table border=0 cellpadding=7>
+      <tr valign=top>
+        <td width=185>
+          <a href="configure-s-s-ntservice.jhtml">Windows Service</a>
+        </td>
+        <td>
+          Install or remove Dynamo as a Windows Service.
+          <br><b>current:</b> 
+
+          <droplet name="Switch">
+            <param name="value" value="property:NTServiceConfigure.installed">
+              <oparam name="true">
+                installed
+              </oparam>
+              <oparam name="false">
+                not installed
+              </oparam>
+          </droplet>
+
+        </td>
+      </tr>
+    </table>
+    </blockquote>
+  </oparam>
+  <oparam name="false">
+  </oparam>
+</droplet>
+
+</oparam>
+</droplet>
+
+<!-- Internal Servers -->
+
+<H3>Configure Internal Servers</H3>
+
+<blockquote>
+
+<droplet bean="Switch">
+          <param name="value" value="bean:/atg/dynamo/Configuration.dynamoAppServer">
+          <oparam name="true">
+
+<java>
+  atg.service.dynamo.ServerConfig configure = (atg.service.dynamo.ServerConfig) request.resolveName("/atg/dynamo/admin/Configure");
+</java>
+
+<table border=0 cellpadding=7>
+
+  <!-- Admin Server -->
+  <tr valign=top>
+    <td width=185>
+      <a href="configure-s-s-admin.jhtml">Admin Server</a>
+    </td>
+    <td>
+      <java>
+        if ( !configure.isDefaultServer() && 
+             ( !configure.isUsingDefault("adminEnabled") ||
+               !configure.isUsingDefault("adminPort")) )
+        {
+          out.print("*");
+        }
+      </java>
+      The Dynamo administration server.
+      <br>
+      <B>current:</B>
+      <droplet name="Switch">
+        <param name="value" value="property:Configure.adminEnabled">
+        <oparam name="true">  enabled, </oparam>
+        <oparam name="false"> disabled, </oparam>
+      </droplet>
+      <B>port:</B> <valueof property=Configure.adminPort></valueof>
+   </td>
+  </tr>
+
+  <!-- Internal HTTP Server -->
+  <tr valign=top>
+    <td width=185>
+      <a href="configure-s-s-http.jhtml">Serverina</a>
+    </td>
+    <td>
+      <java>
+        if ( !configure.isDefaultServer() && 
+             ( !configure.isUsingDefault("httpEnabled") ||
+               !configure.isUsingDefault("httpPort") ||
+               !configure.isUsingDefault("documentRoot")) )
+        {
+          out.print("*");
+        }
+      </java>
+      Dynamo's internal HTTP server.
+      <br>
+      <B>current:</B>
+      <droplet name="Switch">
+        <param name="value" value="property:Configure.httpEnabled">
+        <oparam name="true">  enabled, </oparam>
+        <oparam name="false"> disabled, </oparam>
+      </droplet>
+      <B>Serverina port:</B> 
+      <valueof property=Configure.httpPort></valueof>
+    </td>
+  </tr>
+  
+  <!-- Internal HTTPS Server -->
+  <tr valign=top>
+    <td width=185>
+      <a href="configure-s-s-http.jhtml">Secure Serverina</a>
+    </td>
+    <td>
+      <java>
+        if ( !configure.isDefaultServer() && 
+             ( !configure.isUsingDefault("httpsEnabled") ||
+               !configure.isUsingDefault("httpsPort") ||
+               !configure.isUsingDefault("documentRoot")) )
+        {
+          out.print("*");
+        }
+      </java>
+      Dynamo's internal HTTPS server.
+      <br>
+      <B>current:</B>
+      <droplet name="Switch">
+        <param name="value" value="property:Configure.httpsEnabled">
+        <oparam name="true">  enabled, </oparam>
+        <oparam name="false"> disabled, </oparam>
+      </droplet>
+      <B>Secure Serverina port:</B> 
+      <valueof property=Configure.httpsPort></valueof>
+    </td>
+  </tr>
+
+  <!-- Site HTTP Server -->
+  <tr valign=top>
+    <td width=185>
+      <a href="configure-s-s-ss.jhtml">Site HTTP Server</a>
+    </td>
+    <td>
+      <java>
+        if ( !configure.isDefaultServer() &&
+             ( !configure.isUsingDefault("siteHttpServerName") ||
+               !configure.isUsingDefault("siteHttpServerPort")) )
+        {
+          out.print("*");
+        }
+      </java>
+      Set the HTTP server used to request pages for this site.
+      <br>
+      <B>server name:</B> 
+      <valueof property=Configure.siteHttpServerName></valueof>,
+      <B>server port:</B> 
+      <valueof property=Configure.siteHttpServerPort></valueof>
+    </td>
+  </tr>
+
+  <!-- RMI Server -->
+  <tr valign=top>
+    <td width=185>
+      <a href="configure-s-s-rmi.jhtml">RMI Server</a>
+    </td>
+    <td>
+      <java>
+        if ( !configure.isDefaultServer() &&
+             ( !configure.isUsingDefault("rmiEnabled") ||
+               !configure.isUsingDefault("rmiPort")) )
+        {
+          out.print("*");
+        }
+      </java>
+      Enables you to build Nucleus services that use RMI (Remote Method
+      Invocation).
+      <br>
+      <B>current:</B>
+      <droplet name="Switch">
+        <param name="value" value="property:Configure.rmiEnabled">
+        <oparam name="true">  enabled, </oparam>
+        <oparam name="false"> disabled, </oparam>
+      </droplet>
+      <B>RMI service port:</B> 
+      <valueof property=Configure.rmiPort></valueof>
+    </td>
+  </tr>
+
+  <!-- IIOP Server -->
+  <tr valign=top>
+    <td width=185>
+      <a href="configure-s-s-iiop.jhtml">IIOP Server</a>
+    </td>
+    <td>
+      <java>
+        if ( !configure.isDefaultServer() &&
+             ( !configure.isUsingDefault("iiopEnabled") ||
+               !configure.isUsingDefault("iiopPort")) )
+        {
+          out.print("*");
+        }
+      </java>
+      Enables you to build Nucleus services that use IIOP.
+      <br>
+      <B>current:</B>
+      <droplet name="Switch">
+        <param name="value" value="property:Configure.iiopEnabled">
+        <oparam name="true">  enabled, </oparam>
+        <oparam name="false"> disabled, </oparam>
+      </droplet>
+      <B>IIOP service port:</B> 
+      <valueof property=Configure.iiopPort></valueof>
+
+      <B>IIOP persistent SSL port:</B> 
+      <valueof property=Configure.iiopPersistentSSLPort></valueof>
+    </td>
+  </tr>
+
+</table>
+
+</blockquote>
+
+
+<!-- Dynamo Services -->
+
+<H3>Configure Dynamo Services</H3>
+
+<blockquote>
+
+<table border=0 cellpadding=7>
+
+  <!-- System Paths -->
+  <tr valign=top>
+    <td width=185>
+      <a href="configure-env.jhtml">System Paths</a>
+    </td>
+    <td>
+      <java>
+        if (!ServletUtil.isWebSphere())
+        {
+         out.print("Modify the Java CLASSPATH, the path used to find native libraries, and Dynamo's CONFIGPATH.");
+        }
+        else
+        {
+         out.print("Modify the path used to find native libraries, and Dynamo's CONFIGPATH.");
+        }
+      </java>
+      
+      <br>
+      
+      <java>
+      if (!ServletUtil.isWebSphere())
+      {
+      </java>
+      
+      <B>classpath:</B>
+      <valueof property=EnvironmentConfig.classPath></valueof>,
+      
+      <java>
+      }
+      </java>
+     
+     <B>native library path:</B>
+      <valueof property=EnvironmentConfig.nativeLibraryPath></valueof>,
+      <B>configpath:</B>
+      <valueof property=EnvironmentConfig.configPath></valueof>
+    </td>
+  </tr>
+
+  <!-- User Defined Environment Variables -->
+  <tr valign=top>
+    <td width=185>
+      <a href="configure-user-env.jhtml">Environment Variables</a>
+    </td>
+    <td>
+      Add or delete custom Environment Variables.
+    </td>
+  </tr>
+
+  <!-- Java Arguments -->
+  <tr valign=top>
+    <td width=185>
+      <a href="configure-java-args.jhtml">Java Arguments</a>
+    </td>
+    <td>
+      Modify the Java Arguments.
+    </td>
+  </tr>
+
+  <!-- Document Root -->
+  <tr valign=top>
+    <td width=185>
+      <a href="configure-docroot.jhtml">Document Root</a>
+    </td>
+    <td>
+      Modify the document root directory of the Dynamo server.
+      <br>
+      <B>document root:</B> 
+      <valueof property=Configure.documentRoot></valueof>
+    </td>
+  </tr>
+
+  <!-- Error URL -->
+  <tr valign=top>
+    <td width=185>
+      <a href="configure-s-s-er.jhtml">Error URL</a>
+    </td>
+    <td>
+      <java>
+        if ( !configure.isDefaultServer() &&
+             !configure.isUsingDefault("errorURL") )
+        {
+          out.print("*");
+        }
+      </java>
+      Set the URL for a custom error report page, if you choose not to
+      use Dynamo's default error report page.
+      <br>
+      <B>current:</B> <valueof property=Configure.errorURL></valueof>
+    </td>
+  </tr>
+
+  <!-- Servlet Dispatch Map -->
+  <tr valign=top>
+    <td width=185>
+      <a href="configure-s-s-sdm.jhtml">Servlet Dispatch Map</a>
+    </td>
+    <td>          
+      <java>
+        if ( !configure.isDefaultServer() &&
+             !configure.isUsingDefault("dispatcherServiceMap") )
+        {
+          out.print("*");
+        }
+      </java>
+      Map a servlet to a URI.
+    </td>
+  </tr>
+
+  <!-- Compile Command -->
+  <tr valign=top>
+    <td width=185>
+      <a href="configure-s-s-cc.jhtml">Compile Command</a>
+    </td>
+    <td>
+      <java>
+        if ( !configure.isDefaultServer() &&
+             !configure.isUsingDefault("compileCommand") )
+        {
+          out.print("*");
+        }
+      </java>
+      Set the Java compiler command. 
+      <br>
+      <B>current:</B>
+      <valueof property=Configure.compileCommand></valueof>
+    </td>
+  </tr>
+
+</table>
+</blockquote>
+
+
+<!-- JDBC Connection Pools -->
+
+<droplet src="configure-connection-pool-fragment.jhtml"><param name="title" value="Configure JDBC Connection Pools"></droplet>
+
+<!-- Email Server -->
+
+<H3>Configure Email Handler</H3>
+
+<blockquote>
+
+<table border=0 cellpadding=7>
+
+  <!-- Email server -->
+  <tr valign=top>
+    <td width=185>
+      <a href="configure-email-handler.jhtml">Email Handler</a>
+    </td>
+    <td>
+      The email handler configured here can be used to send email from Dynamo. 
+      <br>
+      <B>Email Handler Host Name:</B>
+      <valueof property="Configure.emailHandlerHost">unset</valueof>, 
+      <B>Email Handler Port:</B>
+      <valueof property="Configure.emailHandlerPort">unset</valueof>
+    </td>
+  </tr>
+
+</table>
+</blockquote>
+
+
+<!-- Dynamo Load Management -->
+
+<H3>Configure Dynamo Load Management</H3><p>
+
+<blockquote>
+<table border=0 cellpadding=7>
+
+  <!-- Load manager -->
+  <tr valign=top>
+    <td width=185>
+      <a href="configure-s-s-lm.jhtml">Load Manager</a>
+    </td>
+    <td>
+      <java>
+        if ( !configure.isDefaultServer() &&
+             ( !configure.isUsingDefault("loadManagerEnabled") ||
+               !configure.isUsingDefault("snmpServerPort") ||
+               !configure.isUsingDefault("dynamoServers")) )
+        {
+          out.print("*");
+        }
+      </java>
+      A Load Manager balances the load of incoming requests from the
+      HTTP server across one or more Dynamo servers.
+      <br>
+      <B>current:</B>
+      <droplet name="Switch">
+        <param name="value" value="property:Configure.loadManagerEnabled">
+        <oparam name="true">  enabled,  </oparam>
+        <oparam name="false"> disabled, </oparam>
+      </droplet>
+      <B>SNMP service port:</B>
+      <valueof property=Configure.snmpServerPort></valueof>
+    </td>
+  </tr>
+
+  <!-- Connection Module (DRP) -->
+  <tr valign=top>
+    <td width=185>
+      <a href="configure-s-s-drp.jhtml">Dynamo Request Protocol<br>(DRP)</a>
+    </td>
+    <td>
+      <java>
+        if ( !configure.isDefaultServer() &&
+             ( !configure.isUsingDefault("drpEnabled") ||
+               !configure.isUsingDefault("cmPacketServerPort") ||
+               !configure.isUsingDefault("snmpServerPort")) )
+        {
+          out.print("*");
+        }
+      </java>
+      <!-- Protocol for Connection Module requests. -->
+      DRP is used to communicate between Dynamo servers and HTTP
+      servers.
+      <br>
+      <B>current:</B>
+      <droplet name="Switch">
+        <param name="value" value="property:Configure.drpEnabled">
+        <oparam name="true">  enabled,  </oparam>
+        <oparam name="false"> disabled, </oparam>
+      </droplet>
+      <B>DRP service port:</B>
+      <valueof property=Configure.drpPort></valueof>
+      <B>SNMP service port:</B>
+      <valueof property=Configure.snmpServerPort></valueof>
+    </td>
+  </tr>
+</table>
+</blockquote>
+
+
+<!-- Session Backup -->
+<H3>Configure Session Backup</H3>
+
+<blockquote>
+
+<table border=0 cellpadding=7>
+
+  <!-- Define Session Backup Server -->
+  <tr valign=top>
+    <td width=185>
+      <a href="backup-server.jhtml">Define a Session Backup Server</a>
+    </td>
+    <td>
+      <java>
+        if ( !configure.isDefaultServer() &&
+             ( !configure.isUsingDefault("sessionBackupServerEnabled") ||
+               !configure.isUsingDefault("sessionBackupServerPort")) )
+        {
+          out.print("*");
+        }
+      </java>
+  
+      The Session Backup Server stores backup copies of session
+      information for one or more Dynamo servers.
+      <br>
+      <B>current:</B>
+      <droplet name="Switch">
+        <param name="value"
+	 value="property:Configure.sessionBackupServerEnabled">
+        <oparam name="true">  enabled,  </oparam>
+        <oparam name="false"> disabled, </oparam>
+      </droplet>
+      <B>Session Backup Server port:</B>
+      <valueof property=Configure.sessionBackupServerPort></valueof>
+    </td>
+  </tr>
+
+  <!-- Use Session Backup Server -->
+  <tr valign=top>
+    <td width=185>
+      <a href="use-backup-server.jhtml">Use a Session Backup Server</a> 
+    </td>
+    <td>
+      <java>
+        if ( !configure.isDefaultServer() && 
+             ( !configure.isUsingDefault("useSessionBackupServerHostName") ||
+               !configure.isUsingDefault("sessionBackupServerPropertyList") ||
+               !configure.isUsingDefault("useSessionBackupServerPort")) )
+        {
+          out.print("*");
+        }
+      </java>
+      Control whether or not this server uses a Session Backup Server to
+      backup its sessions.
+      <br>
+      <B>current:</B>
+      <droplet name="Switch">
+        <param name="value" value="property:Configure.backingUpSessions">
+        <oparam name="true">
+          enabled,
+          <B>Using Session Backup Server:</B>
+          <valueof property=Configure.useSessionBackupServerHostName></valueof>
+	  :
+          <valueof property=Configure.useSessionBackupServerPort></valueof>
+        </oparam>
+        <oparam name="false"> disabled </oparam>
+      </droplet>
+    </td>
+  </tr>
+</table>
+</blockquote>
+
+
+<!-- J2EE Archive Caching -->
+<H3>Configure J2EE Archive Caching</H3>
+
+<blockquote>
+
+<table border=0 cellpadding=7>
+
+  <tr valign=top>
+    <td width=185>
+      <a href="config-j2ee-archiving.jhtml">J2EE Archive Caching</a>
+    </td>
+    <td>
+      <java>
+        if ( !configure.isDefaultServer() && 
+             !configure.isUsingDefault("j2eeArchivingCachingEnabled") )
+        {
+          out.print("*");
+        }
+      </java>
+      Enable or disable J2EE Archive Caching.<br>
+      <i>Note that if you are running multiple Dynamo servers, J2EE Archive
+      Caching should be disabled for all but one server to avoid
+      multiple servers writing to the same archive files.</i>
+      <br>
+      <B>current:</B>
+      <droplet name="Switch">
+        <param name="value" value="property:Configure.j2eeArchiveCachingEnabled">
+        <oparam name="true">  enabled  </oparam>
+        <oparam name="false"> disabled </oparam>
+      </droplet>
+    </td>
+  </tr>
+</table>
+</blockquote>
+
+
+<!-- Liveconfig Layer -->
+<H3>Set Liveconfig Layer</H3>
+
+<blockquote>
+
+<table border=0 cellpadding=7>
+
+  <tr valign=top>
+    <td width=185>
+      <a href="config-live.jhtml">Liveconfig Layer</a>
+    </td>
+    <td>
+      Enable the Liveconfig layer to optimize your settings for a
+      production environment, or disable Liveconfig to optimize your
+      settings for a development environment.
+      <br>
+      <B>current configuration:</B>
+      <droplet name="Switch">
+        <param name="value" value="property:EnvironmentConfig.liveConfig">
+        <oparam name="true">  production  </oparam>
+        <oparam name="false"> development </oparam>
+      </droplet>
+    </td>
+  </tr>
+</table>
+
+</oparam>
+
+<oparam name="false">
+<java>
+  atg.service.dynamo.ServerConfig configure = (atg.service.dynamo.ServerConfig) request.resolveName("/atg/dynamo/admin/Configure");
+</java>
+
+<table border=0 cellpadding=7>
+
+  <!-- Site HTTP Server -->
+  <tr valign=top>
+    <td width=185>
+      <a href="configure-s-s-ss.jhtml">Site HTTP Server</a>
+    </td>
+    <td>
+      <java>
+        if ( !configure.isDefaultServer() &&
+             ( !configure.isUsingDefault("siteHttpServerName") ||
+               !configure.isUsingDefault("siteHttpServerPort")) )
+        {
+          out.print("*");
+        }
+      </java>
+      Set the HTTP server used to request pages for this site.
+      <br>
+      <B>server name:</B> 
+      <valueof property=Configure.siteHttpServerName></valueof>,
+      <B>server port:</B> 
+      <valueof property=Configure.siteHttpServerPort></valueof>
+    </td>
+  </tr>
+
+  <!-- RMI Server -->
+  <tr valign=top>
+    <td width=185>
+      <a href="configure-s-s-rmi.jhtml">RMI Server</a>
+    </td>
+    <td>
+      <java>
+        if ( !configure.isDefaultServer() &&
+             ( !configure.isUsingDefault("rmiEnabled") ||
+               !configure.isUsingDefault("rmiPort")) )
+        {
+          out.print("*");
+        }
+      </java>
+      Enables you to build Nucleus services that use RMI (Remote Method
+      Invocation).
+      <br>
+      <B>current:</B>
+      <droplet name="Switch">
+        <param name="value" value="property:Configure.rmiEnabled">
+        <oparam name="true">  enabled, </oparam>
+        <oparam name="false"> disabled, </oparam>
+      </droplet>
+      <B>RMI service port:</B> 
+      <valueof property=Configure.rmiPort></valueof>
+    </td>
+  </tr>
+
+</table>
+
+</blockquote>
+
+
+<!-- Dynamo Services -->
+
+<H3>Configure Dynamo Services</H3>
+
+<blockquote>
+These settings apply to requests sent to Dynamo's servlet pipeline (i.e. DSPs with a .jhtml suffix). They do not apply to servlets or template pages configured through a J2EE web application.
+</blockquote>
+
+<blockquote>
+
+<table border=0 cellpadding=7>
+
+  <!-- System Paths -->
+  <tr valign=top>
+    <td width=185>
+      <a href="configure-env.jhtml">System Paths</a>
+    </td>
+    <td>
+      <java>
+       if (!ServletUtil.isWebSphere())
+        {
+         out.print("Modify the Java CLASSPATH, the path used to find native libraries, and Dynamo's CONFIGPATH.");
+        }
+        else
+        {
+         out.print("Modify the path used to find native libraries, and Dynamo's CONFIGPATH.");
+        }
+      </java>
+      
+      <br>
+      
+      <java>
+      if (!ServletUtil.isWebSphere())
+      {
+      </java>
+      
+      <B>classpath:</B>
+      <valueof property=EnvironmentConfig.classPath></valueof>,
+      
+      <java>
+      }
+      </java>
+      <B>native library path:</B>
+      <valueof property=EnvironmentConfig.nativeLibraryPath></valueof>,
+      <B>configpath:</B>
+      <valueof property=EnvironmentConfig.configPath></valueof>
+    </td>
+  </tr>
+
+  <!-- Document Root -->
+  <tr valign=top>
+    <td width=185>
+      <a href="configure-docroot.jhtml">Document Root</a>
+    </td>
+    <td>
+      Modify the document root directory of the Dynamo server.
+      <br>
+      <B>document root:</B> 
+      <valueof property=Configure.documentRoot></valueof>
+    </td>
+  </tr>
+
+  <!-- Error URL -->
+  <tr valign=top>
+    <td width=185>
+      <a href="configure-s-s-er.jhtml">Error URL</a>
+    </td>
+    <td>
+      <java>
+        if ( !configure.isDefaultServer() &&
+             !configure.isUsingDefault("errorURL") )
+        {
+          out.print("*");
+        }
+      </java>
+      Set the URL for a custom error report page, if you choose not to
+      use Dynamo's default error report page.
+      <br>
+      <B>current:</B> <valueof property=Configure.errorURL></valueof>
+    </td>
+  </tr>
+
+  <!-- Servlet Dispatch Map -->
+  <tr valign=top>
+    <td width=185>
+      <a href="configure-s-s-sdm.jhtml">Servlet Dispatch Map</a>
+    </td>
+    <td>          
+      <java>
+        if ( !configure.isDefaultServer() &&
+             !configure.isUsingDefault("dispatcherServiceMap") )
+        {
+          out.print("*");
+        }
+      </java>
+      Map a servlet to a URI.
+    </td>
+  </tr>
+
+  <!-- Compile Command -->
+  <tr valign=top>
+    <td width=185>
+      <a href="configure-s-s-cc.jhtml">Compile Command</a>
+    </td>
+    <td>
+      <java>
+        if ( !configure.isDefaultServer() &&
+             !configure.isUsingDefault("compileCommand") )
+        {
+          out.print("*");
+        }
+      </java>
+      Set the Java compiler command. The default command works with the Jikes
+      compiler.
+      <br>
+      <B>current:</B>
+      <valueof property=Configure.compileCommand></valueof>
+    </td>
+  </tr>
+
+</table>
+</blockquote>
+
+
+<!-- JDBC Connection Pools -->
+<droplet src="configure-connection-pool-fragment.jhtml"><param name="title" value="Configure Dynamo JDBC Connection Pools"></droplet>
+
+<H3>Configure Native JDBC Connection Pools</H3>
+
+<blockquote>
+
+<table border=0 cellpadding=7>
+
+  <!-- Connection Pools -->
+  <tr valign=top>
+    <td width=185>
+      <!-- set the server name for the connection pool when you click -->
+      <!-- on the following link. -->
+      <a href="configure-db-pools.jhtml"
+      bean="NativeDbConnectionPool.serverName" value="bean:Configure.serverName">
+      <param name="dynamoPool" value="false">
+      Connection Pools</a>
+    </td>
+    <td>
+      Add, delete, or configure native database connection pools.<br>
+      A native database connection pool is a connection pool that's managed by your non-Dynamo J2EE application server.
+      <br>
+      <B>current:</B>
+
+      <!-- list each connection pool name -->
+      <droplet name="ForEach">
+        <param name="array"
+         value="property:NativeDbConnectionPool.connectionPoolNames">
+        <oparam name="output">
+
+          <!-- output the connection pool name followed by a comma -->
+          <!-- unless it is the last connection pool name. -->
+          <droplet name="Switch">
+            <param name="value" value="param:count">
+            <oparam name="param:size">
+              <valueof param="element"></valueof>
+            </oparam>
+            <oparam name="default">
+              <valueof param="element"></valueof>,
+            </oparam>
+          </droplet>
+
+        </oparam>
+      </droplet>
+    </td>
+  </tr>
+
+</table>
+</blockquote>
+
+<!-- Email Server -->
+
+<H3>Configure Email Handler</H3>
+
+<blockquote>
+
+<table border=0 cellpadding=7>
+
+  <!-- Email server -->
+  <tr valign=top>
+    <td width=185>
+      <a href="configure-email-handler.jhtml">Email Handler</a>
+    </td>
+    <td>
+      The email handler configured here can be used to send email from Dynamo. 
+      <br>
+      <B>Email Handler Host Name:</B>
+      <valueof property="Configure.emailHandlerHost">unset</valueof>, 
+      <B>Email Handler Port:</B>
+      <valueof property="Configure.emailHandlerPort">unset</valueof>
+    </td>
+  </tr>
+
+</table>
+</blockquote>
+
+
+
+
+<!-- Session Backup -->
+<H3>Configure Session Backup</H3>
+
+<blockquote>
+
+<table border=0 cellpadding=7>
+
+  <!-- Use Session Backup Server -->
+  <tr valign=top>
+    <td width=185>
+      <a href="use-backup-server.jhtml">Use a Session Backup Server</a> 
+    </td>
+    <td>
+      <java>
+        if ( !configure.isDefaultServer() && 
+             ( !configure.isUsingDefault("useSessionBackupServerHostName") ||
+               !configure.isUsingDefault("sessionBackupServerPropertyList") ||
+               !configure.isUsingDefault("useSessionBackupServerPort")) )
+        {
+          out.print("*");
+        }
+      </java>
+      Control whether or not this server uses a Session Backup Server to
+      backup its sessions.
+      <br>
+      <B>current:</B>
+      <droplet name="Switch">
+        <param name="value" value="property:Configure.backingUpSessions">
+        <oparam name="true">
+          enabled,
+          <B>Using Session Backup Server:</B>
+          <valueof property=Configure.useSessionBackupServerHostName></valueof>
+	  :
+          <valueof property=Configure.useSessionBackupServerPort></valueof>
+        </oparam>
+        <oparam name="false"> disabled </oparam>
+      </droplet>
+    </td>
+  </tr>
+</table>
+</blockquote>
+
+
+<!-- Liveconfig Layer -->
+<H3>Set Liveconfig Layer</H3>
+
+<blockquote>
+
+<table border=0 cellpadding=7>
+
+  <tr valign=top>
+    <td width=185>
+      <a href="config-live.jhtml">Liveconfig Layer</a>
+    </td>
+    <td>
+      Enable the Liveconfig layer to optimize your settings for a
+      production environment, or disable Liveconfig to optimize your
+      settings for a development environment.
+      <br>
+      <B>current configuration:</B>
+      <droplet name="Switch">
+        <param name="value" value="property:EnvironmentConfig.liveConfig">
+        <oparam name="true">  production  </oparam>
+        <oparam name="false"> development </oparam>
+      </droplet>
+    </td>
+  </tr>
+</table>
+
+</oparam>
+
+</blockquote>
+
+</blockquote>
+
+</droplet>
+
+* - Indicates that a server is not using the default settings.
+
+</BODY>
+</HTML>
+<java>/* Version: $Change: 651448 $$DateTime: 2011/06/07 13:55:45 $*/</java>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/configure-server-services.jhtml#2 $$Change: 651448 $*/</java>

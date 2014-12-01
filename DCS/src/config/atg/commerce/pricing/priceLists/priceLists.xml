@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE gsa-template PUBLIC "-//Art Technology Group, Inc.//DTD General SQL Adapter//EN"
+        "http://www.atg.com/dtds/gsa/gsa_1.0.dtd">
+
+<gsa-template>
+  <header>
+    <name>Commerce Price Lists</name>
+    <author>DCS Team</author>
+    <version>$Id: //product/DCS/version/10.0.3/templates/DCS/config/atg/commerce/pricing/priceLists/priceLists.xml#2 $$Change: 651448 $</version>      
+  </header>
+
+  <item-descriptor name="priceList" version-property="version" cache-mode="simple" id-space-name="priceList" 
+                   last-modified-property="lastModifiedDate" item-cache-size="50" query-cache-size="50" 
+                   display-property="displayName" display-name-resource="itemDescriptorPriceList">
+    <attribute name="resourceBundle" value="atg.commerce.PriceListsTemplateResources"/>
+    <attribute name="icon" value="priceListIcon"/>
+    <attribute name="iconSwf" value="priceListIconSwf"/>
+    <attribute name="largeIconSwf" value="priceListLargeIconSwf"/>
+    <attribute name="updateLastModified" value="true"/>
+
+    <table name="dcs_price_list" type="primary" id-column-name="price_list_id">
+      <property name="id" column-name="price_list_id" data-type="string" expert="true" writable="false"
+                category-resource="priceListInfo" display-name-resource="id">
+        <attribute name="propertySortPriority" value="1"/>
+      </property>
+      <property name="version" column-name="version" data-type="int" expert="true" 
+                category-resource="priceListInfo" display-name-resource="version">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="5"/>
+      </property>
+      <property name="displayName" column-name="display_name" data-type="string" required="true" 
+                category-resource="priceListBasics" display-name-resource="name">
+        <attribute name="propertySortPriority" value="0"/>
+      </property>
+      <property name="description" column-name="description" data-type="string" 
+                category-resource="priceListBasics" display-name-resource="description">
+        <attribute name="propertySortPriority" value="2"/>
+      </property>
+      <property name="creationDate" data-type="timestamp" column-name="creation_date"
+                category-resource="priceListInfo" display-name-resource="creationDate">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="useNowForDefault" value="true"/>
+        <attribute name="propertySortPriority" value="3"/>
+      </property>
+      <property name="lastModifiedDate" data-type="timestamp" column-name="last_mod_date"
+                category-resource="priceListInfo" display-name-resource="lastModifiedDate">
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="4"/>
+      </property>
+      <property name="startDate" data-type="timestamp" column-name="start_date" 
+                category-resource="priceListBasics" display-name-resource="startDate">
+        <attribute name="propertySortPriority" value="5"/>
+      </property>
+      <property name="endDate" data-type="timestamp" column-name="end_date" 
+                category-resource="priceListBasics" display-name-resource="endDate">
+        <attribute name="propertySortPriority" value="6"/>
+      </property>
+      <property name="locale" column-name="locale" data-type="enumerated" default="en_US"
+                required="true" category-resource="priceListBasics" display-name-resource="locale">
+        <attribute name="useCodeForValue" value="false"/>
+        <option value="en_US" code="0"/>
+        <option value="de_DE_EURO" code="1"/>
+        <option value="ja_JP" code="2"/>
+        <attribute name="propertySortPriority" value="3"/>
+      </property>
+      <!-- If the desired price isn't shown in this priceList, you may
+           check the backup priceList -->
+      <!-- Maybe this should be called "parent" -->
+      <property name="basePriceList" column-name="base_price_list" item-type="priceList" 
+                category-resource="priceListBasics" display-name-resource="basePriceList">
+        <attribute name="propertySortPriority" value="4"/>
+      </property>
+      <property name="itemAcl" column-name="item_acl" data-type="big string" expert="true" category-resource="priceListInfo" display-name-resource="itemAcl"/>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="price" version-property="version" cache-mode="simple" id-space-name="price" 
+                   item-cache-size="1000" query-cache-size="1000" display-name-resource="itemDescriptorPrice">
+    <attribute name="resourceBundle" value="atg.commerce.PriceListsTemplateResources"/>
+    <attribute name="iconSwf" value="priceIconSwf"/>
+    <attribute name="largeIconSwf" value="priceLargeIconSwf"/>
+
+    <table name="dcs_price" type="primary" id-column-name="price_id" shared-table-sequence="1">
+      <property name="version" column-name="version" data-type="int" expert="true" 
+                category-resource="priceListInfo" display-name-resource="version">
+      <!-- The price list that this price belong to -->
+        <attribute name="uiwritable" value="false"/>
+        <attribute name="propertySortPriority" value="5"/>
+      </property>
+      <property name="priceList" column-name="price_list" item-type="priceList"  required="true"
+                category-resource="priceListInfo" display-name-resource="priceList">
+      <!-- At least one of the following is required -->
+        <attribute name="propertySortPriority" value="1"/>
+      </property>
+      <property name="productId" column-name="product_id" data-type="string" 
+                category-resource="priceListBasics" display-name-resource="productId">
+        <attribute name="propertySortPriority" value="0"/>
+      </property>
+      <property name="skuId" column-name="sku_id" data-type="string" 
+                category-resource="priceListBasics" display-name-resource="skuId">
+        <attribute name="propertySortPriority" value="1"/>
+      </property>
+      <property name="parentSkuId" column-name="parent_sku_id" data-type="string" 
+                category-resource="priceListBasics" display-name-resource="parentSkuId">
+        <attribute name="propertySortPriority" value="2"/>
+      </property>
+      <property name="pricingScheme" data-type="enumerated" default="listPrice" column-name="pricing_scheme" 
+                required="true" category-resource="priceListBasics" display-name-resource="pricingScheme">
+        <attribute name="useCodeForValue" value="false"/>
+        <attribute name="propertySortPriority" value="3"/>
+        <option value="listPrice" code="0"/>
+        <option value="bulkPrice" code="1"/>
+        <option value="tieredPrice" code="2"/>
+      </property>
+      <property name="listPrice" column-name="list_price" data-type="double" 
+                category-resource="priceListRegular" display-name-resource="listPrice">
+        <attribute name="propertySortPriority" value="1"/>
+      </property>
+      <property name="complexPrice" column-name="complex_price" item-type="complexPrice" 
+                category-resource="priceListRegular" display-name-resource="complexPrice">
+        <attribute name="propertySortPriority" value="2"/>
+      </property>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="complexPrice" version-property="version" cache-mode="simple" id-space-name="complexPrice"
+                   item-cache-size="1000" query-cache-size="1000" display-name-resource="itemDescriptorComplexPrice">
+    <attribute name="resourceBundle" value="atg.commerce.PriceListsTemplateResources"/>
+    <attribute name="iconSwf" value="complexPriceIconSwf"/>
+    <attribute name="largeIconSwf" value="complexPriceLargeIconSwf"/>
+
+    <table name="dcs_price" type="auxiliary" id-column-name="complex_price" shared-table-sequence="2">
+      <property name="price" column-name="price_id" item-type="price" display-name-resource="price" writable="false"/>
+    </table>
+
+    <table name="dcs_complex_price" type="primary" id-column-name="complex_price_id">
+      <property name="version" column-name="version" data-type="int" expert="true" 
+                display-name-resource="version">
+        <attribute name="uiwritable" value="false"/>
+      </property>
+    </table>
+    <table name="dcs_price_levels" type="multi" id-column-name="complex_price_id" multi-column-name="sequence_num">
+      <property name="levels" column-name="price_levels" data-type="list" component-item-type="priceLevel" 
+                cascade="update,delete" display-name-resource="levels"/>
+    </table>
+  </item-descriptor>
+
+  <item-descriptor name="priceLevel" version-property="version" cache-mode="simple" id-space-name="priceLevel"
+                   item-cache-size="1000" query-cache-size="1000" display-name-resource="itemDescriptorPriceLevel">
+    <attribute name="resourceBundle" value="atg.commerce.PriceListsTemplateResources"/>
+    <attribute name="iconSwf" value="priceLevelIconSwf"/>
+    <attribute name="largeIconSwf" value="priceLevelLargeIconSwf"/>
+
+    <table name="dcs_price_level" type="primary" id-column-name="price_level_id">
+      <property name="version" column-name="version" data-type="int" expert="true" 
+                display-name-resource="version">
+        <attribute name="uiwritable" value="false"/>
+      </property>
+      <!-- Alternatively we could have a lower and upper bound for quantity -->
+      <!-- But we don't so we avoid gaps -->
+      <!-- The first price level should have quantity of 1 -->
+      <property name="quantity" column-name="quantity" data-type="long" 
+                display-name-resource="quantity" required="true"/>
+      <property name="price" column-name="price" data-type="double" 
+                display-name-resource="price" required="true"/>
+    </table>
+
+  </item-descriptor>
+
+  <!-- The folder structure that is used by priceLists -->
+  <item-descriptor name="genericFolder" sub-type-property="type" display-name-resource="itemDescriptorGenericFolder" sub-type-value="genericFolder" expert="true" display-property="name">
+    <attribute name="resourceBundle" value="atg.commerce.PriceListsTemplateResources"/>
+    <attribute name="icon" value="folderIcon"/>
+    <attribute name="iconSwf" value="folderIconSwf"/>
+    <attribute name="largeIconSwf" value="folderLargeIconSwf"/>
+
+    <table name="dcs_gen_fol_pl" type="primary" id-column-name="folder_id">
+      <property name="type" data-type="enumerated" expert="true" display-name-resource="type">
+        <attribute name="useCodeForValue" value="false"/>
+        <option value="genericFolder" code="3000"/>
+        <option value="priceListFolder" code="3001"/>
+      </property>
+      <property name="name" data-type="string" column-name="name" display-name-resource="name" required="true">
+        <attribute name="propertySortPriority" value="-8"/>
+      </property>
+      <property name="description" data-type="string" column-name="description" display-name-resource="description">
+        <attribute name="propertySortPriority" value="-7"/>
+      </property>
+      <property name="parent" item-type="genericFolder" column-name="parent" display-name-resource="parent">
+
+        <attribute name="propertySortPriority" value="-6"/>
+      </property>
+      <property name="itemAcl" column-name="item_acl" data-type="big string" expert="true" category-resource="priceListInfo" display-name-resource="itemAcl"/>
+    </table>
+     
+
+     <!-- read only back pointer -->
+    <table xml:id="dcs_child_fol_pl_1" name="dcs_child_fol_pl" type="multi" id-column-name="child_folder_id" shared-table-sequence="1" >
+      <property name="parentFolders" data-type="set" component-item-type="genericFolder" column-name="folder_id" queryable="true" display-name-resource="parentFolders" writable="false">
+      </property>
+    </table>
+
+    <table xml:id="dcs_child_fol_pl_2" name="dcs_child_fol_pl" type="multi" id-column-name="folder_id" multi-column-name="sequence_num" shared-table-sequence="2">
+      <property name="childFolders" data-type="list" component-item-type="genericFolder" column-name="child_folder_id" queryable="true" display-name-resource="childFolders">
+        <attribute name="references" value="true"/>
+        <attribute name="prohibitDuplicates" value="true"/>
+      </property>
+    </table>
+      
+    <property name="childItems" >
+      <attribute name="propertySortPriority" value="-4"/>
+    </property>
+  </item-descriptor>
+  
+  <item-descriptor name="priceListFolder" super-type="genericFolder" sub-type-value="priceListFolder" display-name-resource="itemDescriptorPriceListFolder" >
+    <attribute name="resourceBundle" value="atg.commerce.PriceListsTemplateResources"/>
+
+    <table name="dcs_plfol_chld" type="multi" id-column-name="plfol_id" multi-column-name="sequence_num">
+      <property name="childItems" data-type="list" component-item-type="priceList" column-name="price_list_id" display-name-resource="childItems"/>
+    </table>
+  </item-descriptor>
+
+</gsa-template>
+<!-- @version $Id: //product/DCS/version/10.0.3/templates/DCS/config/atg/commerce/pricing/priceLists/priceLists.xml#2 $$Change: 651448 $ -->

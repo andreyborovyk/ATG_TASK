@@ -1,0 +1,273 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="alert_ddl">
+<comment><![CDATA[ @version $Id: //app/portal/version/10.0.3/paf/sql/alert_ddl.xml#2 $$Change: 651448 $]]></comment>
+   <table name="alt_user">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="n" default="0">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="target_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="target_type" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="source_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="msg_type" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="message_bean" nullable="y">
+         <column-type db="generic" type="long-varbinary"/>
+         <column-type db="db2" type="blob" length="2097152" scale=""/>
+      </column>
+      <column name="creation_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="end_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="start_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="delete_flag" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+		  <column-type db="mysql" type="tinyint"/>
+		  <column-type db="sybase" type="tinyint"/>
+	   </column>
+      <primary-key name="alt_userpk">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+      <index name="alt_user_idx" table="alt_user">
+         <index-column column="target_id" order="asc" seq="1"/>
+         <index-column column="target_type" order="asc" seq="2"/>
+         <index-column column="source_id" order="asc" seq="3"/>
+      </index>
+   </table>
+   <table name="alt_group">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="target_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="target_type" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="source_id" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="msg_type" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="message_bean" nullable="y">
+         <column-type db="generic" type="long-varbinary"/>
+         <column-type db="db2" type="blob" length="2097152" scale=""/>
+      </column>
+      <column name="creation_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="end_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="start_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+		 <column-type db="oracle" type="timestamp"/>
+      </column>
+      <column name="delete_flag" nullable="n">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="mysql" type="tinyint"/>
+		  <column-type db="sybase" type="tinyint"/>
+	   </column>
+      <primary-key name="alt_grouppk">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+      <index name="alt_group_idx" table="alt_group">
+         <index-column column="target_id" order="asc" seq="1"/>
+         <index-column column="target_type" order="asc" seq="2"/>
+         <index-column column="source_id" order="asc" seq="3"/>
+      </index>
+   </table>
+   <table name="alt_user_alert_rel">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="alert_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="alt_useralertrel_p">
+         <index-column column="id" order="asc" seq="1"/>
+         <index-column column="alert_id" order="asc" seq="2"/>
+      </primary-key>
+   </table>
+   <table name="alt_user_pref">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="source_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="source_type" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="event_type" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="value" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="alt_user_prefpk">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="alt_userpref_rel">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="alert_user_pref_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="alt_user_relpk">
+         <index-column column="id" order="asc" seq="1"/>
+         <index-column column="alert_user_pref_id" order="asc" seq="2"/>
+      </primary-key>
+      <index name="alt_userpref_idx" table="alt_userpref_rel">
+         <index-column column="alert_user_pref_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="alt_gear">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="source_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="source_type" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="message_type" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="value" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="resource_bundle" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <primary-key name="alt_gearpk">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="alt_gear_rel">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="gear_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="alt_gear_relpk">
+         <index-column column="id" order="asc" seq="1"/>
+         <index-column column="gear_id" order="asc" seq="2"/>
+      </primary-key>
+      <index name="alt_gear_idx" table="alt_gear_rel">
+         <index-column column="gear_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="alt_gear_def">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="message_type" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="value" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="resource_bundle" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <primary-key name="alt_gear_defpk">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="alt_gear_def_rel">
+      <column name="id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="gear_def_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="alt_def_relpk">
+         <index-column column="id" order="asc" seq="1"/>
+         <index-column column="gear_def_id" order="asc" seq="2"/>
+      </primary-key>
+      <index name="alt_gear_def_idx" table="alt_gear_def_rel">
+         <index-column column="gear_def_id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="alt_channel">
+      <column name="channel_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="version" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="component_name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="display_name" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <primary-key name="alt_channel_pk">
+         <index-column column="channel_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="alt_chan_usr_rel">
+      <column name="alt_user_pref_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="channel_id" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <primary-key name="alt_chnusr_relpk">
+         <index-column column="channel_id" order="asc" seq="1"/>
+         <index-column column="alt_user_pref_id" order="asc" seq="2"/>
+      </primary-key>
+   </table>
+</schema>
+<!-- @version $Id: //app/portal/version/10.0.3/paf/sql/alert_ddl.xml#2 $$Change: 651448 $ -->

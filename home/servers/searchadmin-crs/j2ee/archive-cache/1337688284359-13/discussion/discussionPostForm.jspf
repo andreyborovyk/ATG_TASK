@@ -1,0 +1,355 @@
+<%-- 
+Page:   	discussionPostForm.jsp
+Gear:  	 	Discussion Gear
+gearmode: 	content (the default mode)
+displayMode: 	full
+
+Author:      	Jeff Banister
+Description: 	This page is included by discussionFull.jsp. This is the form page for 
+		submitting a new post to a forum. This can be either a new topic,
+		in which case a Subject field is included, or a response to an existing topic, 
+		in which case no subject field is set. 
+--%>
+<%@ taglib uri="/discussion-taglib" prefix="discuss" %>
+<%@ taglib uri="/core-taglib" prefix="core" %>
+<%@ taglib uri="/paf-taglib" prefix="paf" %>
+<%@ taglib uri="/dsp" prefix="dsp" %>
+<%@ taglib uri="/jakarta-i18n-1.0" prefix="i18n" %>
+
+<paf:InitializeGearEnvironment id="pafEnv">
+
+<paf:setFrameworkLocale/>
+
+<dsp:importbean bean="/atg/portal/gear/discussion/AddPostFormHandler"/>
+<%
+
+   String origURI=pafEnv.getOriginalRequestURI();
+   String gearID=pafEnv.getGear().getId();
+   String startRange = request.getParameter("startRange");
+   String rangeSize = request.getParameter("rangeSize");
+   String topicDisplayCount=pafEnv.getGearInstanceParameter("topicDisplayCountFull");
+   String forumID=request.getParameter("forumID"); 
+   String topicID=request.getParameter("topicID"); 
+   String threadCount=pafEnv.getGearInstanceParameter("threadDisplayCount");
+
+   atg.portal.framework.ColorPalette cp = pafEnv.getPage().getColorPalette();
+   String titleBGColor = cp.getGearTitleBackgroundColor();
+   String titleTextColor = cp.getGearTitleTextColor();
+   String gearBGColor = cp.getGearBackgroundColor();
+   String gearTextColor = cp.getGearTextColor();
+   
+   boolean bHasPermission=true;
+   String permissionLevel=pafEnv.getGearInstanceParameter("boardWriteAccess");
+
+
+   String bundleName=pafEnv.getGearInstanceParameter("resourceBundle");
+   // default to old (pre-5.6) name, in case new file not installed
+   if (bundleName==null || bundleName.equals("")) {
+     bundleName="atg.gears.discussion.discussion";
+   } 
+%>
+
+<dsp:importbean bean="/atg/userprofiling/Profile"/>
+
+<i18n:bundle baseName="<%= bundleName %>" changeResponseLocale="false" />
+<i18n:message id="replytoLabel" key="replyto-label"/>
+<i18n:message id="postedbyLabel" key="postedby-label"/>
+<i18n:message id="newpostLabel" key="newpost-label"/>
+<i18n:message id="subjectLabel" key="subject-label"/>
+<i18n:message id="saveButtonLabel" key="save-button-label"/>
+<i18n:message id="cancelButtonLabel" key="cancel-button-label"/>
+<i18n:message id="messageLabel" key="message-label"/>
+<i18n:message id="threadListLinkText" key="threadListLinkText"/>
+<i18n:message id="noAccessMessage" key="noAccessMessage"/>
+<i18n:message id="topicListLinkText" key="topicListLinkText"/>
+
+<%-- Check user's role vs permission level --%>
+<core:IfNotNull value="<%= permissionLevel%>">
+   <core:ExclusiveIf>
+
+      <core:If value='<%= permissionLevel.equals("guest") %>'>
+         <core:IfNot value="<%=pafEnv.isLeader() || pafEnv.isMember() || pafEnv.isGuest()%>">
+	    <% bHasPermission=false; %>
+         </core:IfNot>
+      </core:If>
+
+      <core:If value='<%= permissionLevel.equals("member") %>'>
+         <core:IfNot value="<%=pafEnv.isMember() || pafEnv.isLeader()%>">
+	    <% bHasPermission=false; %>
+         </core:IfNot>
+      </core:If>
+
+      <core:If value='<%= permissionLevel.equals("leader") %>'>
+         <core:IfNot value="<%=pafEnv.isLeader()%>">
+	    <% bHasPermission=false; %>
+         </core:IfNot>
+      </core:If>
+   </core:ExclusiveIf>
+</core:IfNotNull>
+
+<%-- if no access, render nothing --%>
+<core:ExclusiveIf>
+<core:If value="<%= bHasPermission%>">
+
+<dsp:droplet name="/atg/dynamo/droplet/Switch">
+  <dsp:param name="value" bean="AddPostFormHandler.formError"/>
+  <dsp:oparam name="true">
+    <font class="error"><UL>
+      <dsp:droplet name="/atg/dynamo/droplet/ErrorMessageForEach">
+        <dsp:param name="exceptions" bean="AddPostFormHandler.formExceptions"/>
+        <dsp:oparam name="output">
+          <LI> <dsp:getvalueof id="errorMsg" param="message">
+	  <font class="error"><b><i18n:message key="<%=(String) errorMsg%>" /></b></font>
+	  </dsp:getvalueof>
+        </dsp:oparam>
+      </dsp:droplet>
+    </UL></font>
+  </dsp:oparam>
+</dsp:droplet>
+
+<core:demarcateTransaction id="discussionPostFormXA">
+
+<table CELLSPACING="0" cellpadding="2" border="0">
+
+<%-- If this is a response, show text of parent post, if new topic, show forum name --%>
+<core:ExclusiveIf>
+     <core:If value='<%= "R".equals(request.getParameter("trFlag"))%>' >
+        <% String userName=null; %>
+        <discuss:getTopicThreads id="topicThreads"
+                forumID='<%= request.getParameter("forumID") %>'
+                topicID='<%= request.getParameter("parentID") %>'>
+
+	    <%-- Had to do this stuff to avoid null pointer exception on login name. For some reason,
+	         using core:ExclusiveIf to filter both null user and null login didn't work. --%>
+	    <% userName="anonymous";
+	       if (topicThreads.getTopic().getPropertyValue("user")!=null) {
+	         if ( ((atg.repository.RepositoryItem) topicThreads.getTopic().getPropertyValue("user")).getPropertyValue("login")!=null) {
+		   userName= (String) ((atg.repository.RepositoryItem) topicThreads.getTopic().getPropertyValue("user")).getPropertyValue("login");
+		 }
+	       }
+	    
+	    %>
+
+      <tr bgcolor="#<%=gearBGColor%>">
+        <td> <font class="small" color="#<%=gearTextColor%>"><b>&nbsp;<%=replytoLabel%>: </b></font></td>
+	    <td><font class="small" color="#<%=gearTextColor%>"><%= topicThreads.getTopic().getPropertyValue("subject")%></font></td>
+        <td>&nbsp;</td>
+	  </tr>
+
+      <tr bgcolor="#<%=gearBGColor%>">
+	    <td><font class="small" color="#<%=gearTextColor%>"><b>&nbsp;<%=postedbyLabel%>:</b></font></td>
+	    <td colspan="2"><font class="small" color="#<%=gearTextColor%>"><%= userName %></font></td>
+	  </tr>
+
+      <tr bgcolor="#<%=gearBGColor%>">
+        <td colspan="3"><font class="small" color="#<%=gearTextColor%>">
+    		<blockquote>
+    		<core:If value='<%= topicThreads.getTopic().getPropertyValue("content") !=null %>'>
+       		   <%= topicThreads.getTopic().getPropertyValue("content") %>
+   		    </core:If>
+    		</blockquote>
+	    </font></td>
+	  </tr>
+        </discuss:getTopicThreads>
+     </core:If>
+
+     <core:DefaultCase>
+        <discuss:getForumTopics id="forumTopics"
+                forumID='<%= request.getParameter("forumID") %>'>
+
+          <tr bgcolor="#<%=gearBGColor%>">
+            <td nowrap><font size="2" color="#<%=gearTextColor%>"><b>&nbsp;<%=newpostLabel%>:</b>
+	     </font></td>
+            <td><font class="small" color="#<%=gearTextColor%>">
+        	<%= forumTopics.getForum().getPropertyValue("name")%></font></td>
+            <td>&nbsp;</td>
+	      </tr>
+        </discuss:getForumTopics>
+     </core:DefaultCase>
+
+</core:ExclusiveIf>
+
+<dsp:form  method="post" action="<%= pafEnv.getOriginalRequestURI() %>">
+
+
+<!-- need hidden vars for full gear mode -->
+<input type="hidden" name="paf_dm" value="<%=pafEnv.getDisplayMode() %>" >
+<input type="hidden" name="paf_gear_id" value="<%= gearID %>" >
+<input type="hidden" name="action" value='<%=request.getParameter("action")%>' >
+
+<dsp:input type="hidden" bean="AddPostFormHandler.forumID" value='<%=request.getParameter("forumID")%>' />
+<dsp:input type="hidden" bean="AddPostFormHandler.parentID" value='<%=request.getParameter("parentID")%>' />
+<dsp:input type="hidden" bean="AddPostFormHandler.ultimateID" value='<%=request.getParameter("ultimateID")%>' />
+<dsp:input type="hidden" bean="AddPostFormHandler.trFlag" value='<%=request.getParameter("trFlag")%>' />
+	 
+<%-- Set successUrl based on whether this is a new topic or a response --%>
+<core:ExclusiveIf>
+   <core:If value='<%= "R".equals(request.getParameter("trFlag"))%>' >
+      <core:CreateUrl id="threadURL" url="<%= pafEnv.getOriginalRequestURI() %>">
+         <core:UrlParam param="paf_dm" value="full"/>
+         <core:UrlParam param="paf_gear_id" value="<%= gearID %>"/>
+         <core:UrlParam param="forumID" value='<%=request.getParameter("forumID")%>'/>
+         <core:UrlParam param="topicID" value='<%=request.getParameter("ultimateID")%>'/>
+         <core:UrlParam param="action" value="thread_list"/>
+         <core:UrlParam param="rangeSize" value='<%= pafEnv.getGearInstanceParameter("threadDisplayCount") %>'/>
+         <dsp:input type="hidden" bean="AddPostFormHandler.successUrl" value="<%= threadURL.getNewUrl() %>"/>
+      </core:CreateUrl>
+   </core:If>
+   <core:DefaultCase>
+      <core:CreateUrl id="threadURL" url="<%= pafEnv.getOriginalRequestURI() %>">
+        <core:UrlParam param="paf_dm" value="full"/>
+        <core:UrlParam param="paf_gear_id" value="<%= gearID %>"/>
+        <core:UrlParam param="forumID" value='<%=request.getParameter("forumID")%>'/>
+        <core:UrlParam param="action" value="topic_list"/>
+        <core:UrlParam param="rangeSize" value='<%= pafEnv.getGearInstanceParameter("topicDisplayCountFull") %>'/>
+        <dsp:input type="hidden" bean="AddPostFormHandler.successUrl" value="<%= threadURL.getNewUrl() %>"/>
+      </core:CreateUrl>
+   </core:DefaultCase>
+</core:ExclusiveIf>
+
+  <%-- Set error/failure URL to this page --%>
+  <core:CreateUrl id="failureURL" url="<%= pafEnv.getOriginalRequestURI() %>">
+    <core:UrlParam param="paf_dm" value="<%=pafEnv.getDisplayMode()%>"/>
+    <core:UrlParam param="paf_gear_id" value="<%= gearID %>"/>
+    <core:UrlParam param="forumID" value='<%=request.getParameter("forumID")%>'/>
+    <core:UrlParam param="parentID" value='<%=request.getParameter("ultimateID")%>'/>
+    <core:UrlParam param="ultimateID" value='<%=request.getParameter("ultimateID")%>'/>
+    <core:UrlParam param="action" value='<%=request.getParameter("action")%>'/>
+    <core:UrlParam param="trFlag" value='<%=request.getParameter("trFlag")%>'/>
+    <dsp:input type="hidden" bean="AddPostFormHandler.failureUrl" value="<%= failureURL.getNewUrl() %>"/>
+  </core:CreateUrl>
+
+<tr bgcolor="#<%=gearBGColor%>">
+ <core:ExclusiveIf>
+  <core:If value='<%= "T".equals(request.getParameter("trFlag"))%>' >
+  <td width="20" align="right"><font class="small" color="#<%=gearTextColor%>"><B>&nbsp;<%=subjectLabel%>:</B></font></td>
+
+ </core:If>
+ <core:DefaultCase>
+  <td>&nbsp;</td>
+ </core:DefaultCase>
+ </core:ExclusiveIf>
+
+<%--Set subject to param if there, if not, set to "re: <parent.subject>" if a response --%>
+<%-- response form no longer contains a subject, so just set hidden var --%>
+<core:ExclusiveIf>
+
+    <core:If value='<%= "R".equals(request.getParameter("trFlag"))%>' >
+       <discuss:getTopicThreads id="parentTopic"
+             forumID='<%= request.getParameter("forumID") %>'
+             topicID='<%= request.getParameter("parentID") %>'>
+    <td colspan="2">
+  	<dsp:input type="hidden" bean="AddPostFormHandler.subject" value='<%= "Re: " + parentTopic.getTopic().getPropertyValue("subject")%>'/>
+    </td>
+       </discuss:getTopicThreads>
+    </core:If>
+
+   <core:DefaultCase>
+     <core:ExclusiveIf>
+       <core:IfNull value='<%= request.getParameter("subject")%>' >
+         <td colspan="2"><dsp:input type="text" bean="AddPostFormHandler.subject" size="50" maxlength="255"/></td>
+       </core:IfNull>
+
+       <core:DefaultCase>
+         <td colspan="2"><dsp:input type="text" bean="AddPostFormHandler.subject" size="50" maxlength="255" value='<%=request.getParameter("subject")%>'/></td>
+       </core:DefaultCase>
+     </core:ExclusiveIf>
+   </core:DefaultCase>
+
+</core:ExclusiveIf>
+
+</tr>
+
+<tr bgcolor="#<%=gearBGColor%>">
+   <td colspan="3"><font class="small" color="#<%=gearTextColor%>"><B>&nbsp;<%=messageLabel%>:</B></font></td>
+</tr>
+
+<tr bgcolor="#<%=gearBGColor%>">
+<td colspan="3">&nbsp;
+  <core:ExclusiveIf>
+     <core:If value='<%= request.getParameter("message") == null %>' >
+	<dsp:textarea bean="AddPostFormHandler.message" cols="60" rows="12" wrap="PHYSICAL" ></dsp:textarea>
+     </core:If>
+
+     <core:DefaultCase>
+	<dsp:textarea bean="AddPostFormHandler.message" cols="60" rows="12" wrap="PHYSICAL" ><%=request.getParameter("message") %></dsp:textarea>
+     </core:DefaultCase>
+  </core:ExclusiveIf>
+   &nbsp;&nbsp;
+</td>
+</tr>
+
+   <tr bgcolor="#<%=gearBGColor%>">
+      <td colspan="2" align="right">
+	<dsp:input type="submit" value="<%= saveButtonLabel %>" bean="AddPostFormHandler.add"/>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+</dsp:form>
+
+  <core:ExclusiveIf>
+    <core:If value='<%= "R".equals(request.getParameter("trFlag"))%>' >
+ 	   <core:CreateUrl id="cancelURL" url="<%= pafEnv.getOriginalRequestURI() %>">
+	   <form action="<%= cancelURL.getNewUrl() %>" method="POST">
+   	   </core:CreateUrl>
+               <input type="hidden" name="paf_dm" value="full">
+               <input type="hidden" name="paf_gear_id" value="<%= gearID %>">
+     	       <input type="hidden" name="forumID" value='<%=request.getParameter("forumID")%>'>
+     	       <input type="hidden" name="topicID" value='<%=request.getParameter("ultimateID")%>'>
+	       <input type="hidden" name="rangeSize" value='<%= pafEnv.getGearInstanceParameter("threadDisplayCount") %>'/>
+     	       <input type="hidden" name="action" value="thread_list">
+    </core:If>
+    <core:DefaultCase>
+    	   <core:CreateUrl id="cancelURL" url="<%= pafEnv.getOriginalRequestURI() %>">
+	   <form action="<%= cancelURL.getNewUrl() %>" method="POST">
+   	   </core:CreateUrl>
+     	      <input type="hidden" name="paf_dm" value="full">
+              <input type="hidden" name="paf_gear_id" value="<%= gearID %>">
+     	      <input type="hidden" name="forumID" value='<%=request.getParameter("forumID")%>'>
+	      <input type="hidden" name="rangeSize" value='<%= pafEnv.getGearInstanceParameter("topicDisplayCountFull") %>'/>
+     	      <input type="hidden" name="action" value="topic_list">
+     </core:DefaultCase>
+  </core:ExclusiveIf>
+         <td><input type="submit" value="<%=cancelButtonLabel%>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </td>
+</form>
+   </tr>
+
+   <tr bgcolor="#<%=gearBGColor%>">
+      <td colspan="3"><img src="/gear/discussion/images/clear.gif" height="3" width="1" border="0"></td>
+   </tr>
+
+</table>
+
+</core:demarcateTransaction>
+
+</core:If> <%-- If user has no access rights --%>
+
+<core:DefaultCase>
+	    <center>
+	     <font class="small"><%= noAccessMessage %><br><br>
+	     <%-- Link back depends if this is a response or a new topic --%>
+	     <core:ExclusiveIf>
+                <core:If value='<%= "R".equals(request.getParameter("trFlag"))%>' >
+	   	   <core:CreateUrl id="threadURL" url="<%= pafEnv.getOriginalRequestURI() %>">
+     		       <core:UrlParam param="paf_dm" value="full"/>
+                       <core:UrlParam param="paf_gear_id" value="<%= gearID %>"/>
+     		       <core:UrlParam param="forumID" value='<%=request.getParameter("forumID")%>'/>
+     		       <core:UrlParam param="topicID" value='<%=request.getParameter("ultimateID")%>'/>
+     		       <core:UrlParam param="action" value="thread_list"/>
+     		       <a href="<%= threadURL.getNewUrl() %>"><font class="small"><%=threadListLinkText%></font></a>&nbsp;
+   	           </core:CreateUrl>
+     		</core:If>
+     		<core:DefaultCase>
+	     	   <core:CreateUrl id="threadURL" url="<%= pafEnv.getOriginalRequestURI() %>">
+     		      <core:UrlParam param="paf_dm" value="full"/>
+                      <core:UrlParam param="paf_gear_id" value="<%= gearID %>"/>
+     		      <core:UrlParam param="forumID" value='<%=request.getParameter("forumID")%>'/>
+     		      <core:UrlParam param="action" value="topic_list"/>
+     		      <a href="<%= threadURL.getNewUrl() %>"><font class="small"><%=topicListLinkText%></font></a>&nbsp;
+   	           </core:CreateUrl>
+     		</core:DefaultCase>
+     	     </core:ExclusiveIf>
+	    </center>
+</core:DefaultCase>
+</core:ExclusiveIf>
+
+</paf:InitializeGearEnvironment>
+<%-- @version $Id: //app/portal/version/10.0.3/discussion/discussion.war/discussionPostForm.jspf#2 $$Change: 651448 $--%>

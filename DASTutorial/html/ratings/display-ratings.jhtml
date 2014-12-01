@@ -1,0 +1,71 @@
+<importbean bean="/atg/demo/ratings/RatingsManager">
+<importbean bean="/atg/demo/ratings/RatingsFormHandler">
+<importbean bean="/atg/dynamo/droplet/ForEach">
+
+<HTML> <HEAD>
+<TITLE>Ratings</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF">
+<H3>Ratings by Page</H3>
+
+
+<table> <!-- begin outter table -->
+
+  <droplet name="ForEach">
+
+    <param name="array" value="bean:RatingsManager.stats">
+    <!-- Sort in ascending (alphabetical) order on the pageName property.-->
+    <param name="sortProperties" value="+pageName">
+    <oparam name="empty">
+      None.  (Try invoking /atg/demo/ratings/StatsUpdater.doRefresh via the component browser.)
+    </oparam>
+    <oparam name="output">
+      <tr><td> <!-- outer table -->
+        <table border=1> <!-- begin top inner table -->
+	  <tr>
+	    <td colspan=3 align=center><valueof param="element.pageName"></valueof></td>
+          </tr>
+	  <tr>
+	    <td><valueof bean="RatingsFormHandler.rating1Label">no label</valueof></td>
+	    <td><valueof bean="RatingsFormHandler.rating2Label">no label</valueof></td>
+	    <td><valueof bean="RatingsFormHandler.rating3Label">no label</valueof></td>
+          </tr>
+	  <tr>
+	    <td align=right><valueof param="element.rating1Percentage"></valueof>%</td>
+	    <td align=right><valueof param="element.rating2Percentage"></valueof>%</td>
+	    <td align=right><valueof param="element.rating3Percentage"></valueof>%</td>
+          </tr>
+          <tr>
+	    <td colspan=3>
+	    <table border=1> <!-- begin bottom inner table -->
+	      <tr>
+		<td>Comments</td>
+	      </tr>
+	      <tr>
+		<td>
+		    <droplet name="ForEach">
+		      <param name="array" value="param:element.comments">
+		      <!-- The sortProperties param from the outter -->
+		      <!-- loop is still in scope here so reset it. -->
+		      <param name="sortProperties" value="">
+		      <oparam name="output">
+			<valueof param=element></valueof><br>
+   		      </oparam>
+		    </droplet>
+		</td>
+	      </tr>
+	    </table> <!-- end bottom inner table -->
+  	    </td>
+          </tr>
+        </table> <!-- end top inner table -->
+      </td></tr> <!-- outter table -->
+    </oparam>
+
+  </droplet>
+
+</table> <!-- end outter table -->
+
+</BODY> </HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DASTutorial/html/ratings/display-ratings.jhtml#2 $$Change: 651448 $*/</java>
+

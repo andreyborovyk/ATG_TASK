@@ -1,0 +1,583 @@
+<!DOCTYPE schema  SYSTEM "dynamosystemresource:/atg/dtds/sql/ddl_1.0.dtd">
+<schema name="scenario_ddl">
+<comment><![CDATA[ @version $Id: //product/DSS/version/10.0.3/templates/DSS/sql/scenario_ddl.xml#2 $$Change: 651448 $]]></comment>
+   <table name="dss_coll_scenario" description="collective scenario instances">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <column name="scenario_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="modification_time" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="segment_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="creator_id" nullable="y">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <column name="state" nullable="y">
+         <column-type db="generic" type="varchar" length="16"/>
+      </column>
+      <primary-key name="dss_coll_scenari_p">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+<comment><![CDATA[
+user_id references the user table but because it is a backwards reference
+we cannot have a REFERENCES(dps_user) here.
+]]></comment>
+   <table name="dss_ind_scenario" description="individual scenario instances">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <column name="scenario_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="modification_time" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="segment_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="creator_id" nullable="y">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <column name="state" nullable="y">
+         <column-type db="generic" type="varchar" length="16"/>
+      </column>
+      <column name="user_id" nullable="n">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <primary-key name="dss_ind_scenario_p">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+      <index name="dss_indscenario1_x" table="dss_ind_scenario"> 
+         <index-column column="modification_time" order="asc" seq="1"/> 
+      </index> 
+   </table>
+   <table name="dss_scenario_strs">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <column name="tag" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <column name="context_str" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <primary-key name="dss_scenario_str_p">
+         <index-column column="id" order="asc" seq="1"/>
+         <index-column column="tag" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dss_scenrstrsid_f" referenced-table="dss_ind_scenario">
+         <fkey-column referencing-column="id" referenced-column="id"/>
+      </foreign-key>
+<!--
+    Each table needs an index to prevent table locks from being acquired  
+    The primary key indices do not prevent this since they are on multiple keys 
+    [Through index dss_scn_dt_idx]
+-->
+      <index name="dss_scn_st_idx" table="dss_scenario_strs">
+         <index-column column="id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dss_scenario_bools">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <column name="tag" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <column name="context_bool" nullable="y">
+         <column-type db="generic" type="numeric" length="1" scale="0"/>
+         <column-type db="sybase" type="tinyint" />
+		 <column-type db="mysql" type="tinyint"/>
+      </column>
+      <primary-key name="dss_scenario_boo_p">
+         <index-column column="id" order="asc" seq="1"/>
+         <index-column column="tag" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dss_scenrblsid_f" referenced-table="dss_ind_scenario">
+         <fkey-column referencing-column="id" referenced-column="id"/>
+      </foreign-key>
+      <index name="dss_scn_bo_idx" table="dss_scenario_bools">
+         <index-column column="id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dss_scenario_longs">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <column name="tag" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <column name="context_long" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <primary-key name="dss_scenario_lon_p">
+         <index-column column="id" order="asc" seq="1"/>
+         <index-column column="tag" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dss_scenrlngsid_f" referenced-table="dss_ind_scenario">
+         <fkey-column referencing-column="id" referenced-column="id"/>
+      </foreign-key>
+      <index name="dss_scn_lg_idx" table="dss_scenario_longs">
+         <index-column column="id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dss_scenario_dbls">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <column name="tag" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <column name="context_dbl" nullable="y">
+         <column-type db="generic" type="double-precision"/>
+         <column-type db="oracle" type="number" length="15" scale="4"/>
+         <column-type db="db2" type="numeric" length="15" scale="4"/>
+         <column-type db="mssql" type="numeric" length="15" scale="4"/>
+         <column-type db="mysql" type="numeric" length="15" scale="4"/>
+		  <column-type db="sybase" type="numeric" length="15" scale="4"/>
+	  </column>
+      <primary-key name="dss_scenario_dbl_p">
+         <index-column column="id" order="asc" seq="1"/>
+         <index-column column="tag" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dss_scenrdblsid_f" referenced-table="dss_ind_scenario">
+         <fkey-column referencing-column="id" referenced-column="id"/>
+      </foreign-key>
+      <index name="dss_scn_db_idx" table="dss_scenario_dbls">
+         <index-column column="id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dss_scenario_dates">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <column name="tag" nullable="n" i18n="y">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <column name="context_date" nullable="y">
+         <column-type db="generic" type="datetime"/>
+      </column>
+      <primary-key name="dss_scenario_dat_p">
+         <index-column column="id" order="asc" seq="1"/>
+         <index-column column="tag" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dss_scenrdtsid_f" referenced-table="dss_ind_scenario">
+         <fkey-column referencing-column="id" referenced-column="id"/>
+      </foreign-key>
+      <index name="dss_scn_dt_idx" table="dss_scenario_dates">
+         <index-column column="id" order="asc" seq="1"/>
+      </index>
+   </table>
+   <table name="dps_user_scenario">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="ind_scenario_id" nullable="n">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <primary-key name="dps_user_scenari_p">
+         <index-column column="ind_scenario_id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dps_usrscnrid_f" referenced-table="dps_user" index-name="dps_uscn_u_idx">
+         <fkey-column referencing-column="id" referenced-column="id"/>
+      </foreign-key>
+      <foreign-key name="dps_usrsind_scnr_f" referenced-table="dss_ind_scenario">
+         <fkey-column referencing-column="ind_scenario_id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="dss_scenario_info" description="scenario infos">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <column name="scenario_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="scenario_status" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="modification_time" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="creation_time" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="author" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="last_modified_by" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="sdl" nullable="y">
+         <column-type db="generic" type="long-varbinary"/>
+         <column-type db="db2" type="blob" length="1048576" scale=""/>
+      </column>
+      <column name="psm_version" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <primary-key name="dss_scenario_inf_p">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dss_scen_mig_info">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <column name="scenario_info_id" nullable="n">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <column name="scenario_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="modification_time" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+         <column-type db="mssql" type="bigint" length="" scale=""/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="psm_version" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="sdl" nullable="y">
+         <column-type db="generic" type="long-varbinary"/>
+         <column-type db="db2" type="blob" length="1048576" scale=""/>
+      </column>
+      <column name="migration_status" nullable="y">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <primary-key name="dss_scenmiginfo_pk">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dss_scenmiginfo_fk" referenced-table="dss_scenario_info" index-name="dss_scenmiginfo_id">
+         <fkey-column referencing-column="scenario_info_id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="dss_mig_info_seg">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <column name="idx" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="segment_name" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <primary-key name="dss_mig_infoseg_pk">
+         <index-column column="id" order="asc" seq="1"/>
+         <index-column column="idx" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dss_mig_infoseg_fk" referenced-table="dss_scen_mig_info">
+         <fkey-column referencing-column="id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="dss_template_info" description="template infos">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <column name="template_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="modification_time" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="creation_time" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="author" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="last_modified_by" nullable="y">
+         <column-type db="generic" type="varchar" length="254"/>
+      </column>
+      <column name="sdl" nullable="y">
+         <column-type db="generic" type="long-varbinary"/>
+         <column-type db="db2" type="blob" length="1048576" scale=""/>
+      </column>
+      <primary-key name="dss_template_inf_p">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dss_coll_trans" description="pending scenario transitions">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <column name="scenario_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="modification_time" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="server_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="message_bean" nullable="y">
+         <column-type db="generic" type="long-varbinary"/>
+         <column-type db="db2" type="blob" length="1048576" scale=""/>
+      </column>
+      <column name="event_type" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="segment_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="state" nullable="y">
+         <column-type db="generic" type="varchar" length="16"/>
+      </column>
+      <column name="coll_scenario_id" nullable="y">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <column name="step" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="current_count" nullable="y">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="last_query_id" nullable="y">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <primary-key name="dss_coll_trans_p">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+      <foreign-key name="dss_collcoll_scn_f" referenced-table="dss_coll_scenario" index-name="dss_ctrcid_idx">
+         <fkey-column referencing-column="coll_scenario_id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="dss_ind_trans">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <column name="scenario_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="modification_time" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="server_id" nullable="y">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="message_bean" nullable="y">
+         <column-type db="generic" type="long-varbinary"/>
+         <column-type db="db2" type="blob" length="1048576" scale=""/>
+      </column>
+      <column name="event_type" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="segment_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="state" nullable="y">
+         <column-type db="generic" type="varchar" length="16"/>
+      </column>
+      <column name="last_query_id" nullable="y">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <primary-key name="dss_ind_trans_p">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dss_deletion" description="pending scenario deletions">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <column name="scenario_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="modification_time" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <primary-key name="dss_deletion_p">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dss_server_id" description="server ids">
+      <column name="server_id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="server_type" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <primary-key name="dss_server_id_p">
+         <index-column column="server_id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dss_del_seg_name" description="segment names of pending scenario deletions">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <column name="idx" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="segment_name" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <primary-key name="dss_del_seg_name_p">
+         <index-column column="id" order="asc" seq="1"/>
+         <index-column column="idx" order="asc" seq="2"/>
+      </primary-key>
+   </table>
+<comment><![CDATA[
+migration_info_id references the migration info table, but we don't have a
+REFERENCES dss_scen_mig_info(id) here, because we want to be able
+to delete the migration info without deleting this row
+]]></comment>
+   <table name="dss_migration" description="pending scenario migrations">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <column name="scenario_name" nullable="y" i18n="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="old_mod_time" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+         <column-type db="mssql" type="bigint" length="" scale=""/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="new_mod_time" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+         <column-type db="mssql" type="bigint" length="" scale=""/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="migration_info_id" nullable="y">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <primary-key name="dss_migration_pk">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dss_mig_seg_name">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <column name="idx" nullable="n">
+         <column-type db="generic" type="integer"/>
+      </column>
+      <column name="segment_name" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <primary-key name="dss_mig_segname_pk">
+         <index-column column="id" order="asc" seq="1"/>
+         <index-column column="idx" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dss_mig_segname_fk" referenced-table="dss_migration">
+         <fkey-column referencing-column="id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="dss_xref" description="xrefs">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <column name="scenario_name" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="reference_type" nullable="y">
+         <column-type db="generic" type="varchar" length="30"/>
+         <column-type db="db2" type="varchar" length="25" scale=""/>
+      </column>
+      <column name="reference_target" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <primary-key name="dss_xref_p">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+<comment><![CDATA[
+user_id references the user table but because it is a backwards reference
+we cannot have a REFERENCES(dps_user) here.
+]]></comment>
+   <table name="dss_profile_slot" description="profile slot instances">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <column name="slot_name" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="item_offset" nullable="y">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <column name="user_id" nullable="n">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <primary-key name="dss_profile_slot_p">
+         <index-column column="id" order="asc" seq="1"/>
+      </primary-key>
+   </table>
+   <table name="dps_user_slot">
+      <column name="id" nullable="n">
+         <column-type db="generic" type="varchar" length="40"/>
+      </column>
+      <column name="profile_slot_id" nullable="n">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <primary-key name="dps_user_slot_p">
+         <index-column column="id" order="asc" seq="1"/>
+         <index-column column="profile_slot_id" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dps_usrsltid_f" referenced-table="dps_user">
+         <fkey-column referencing-column="id" referenced-column="id"/>
+      </foreign-key>
+      <foreign-key name="dps_usrsprofl_sl_f" referenced-table="dss_profile_slot" index-name="dps_usr_sltprfl_id">
+         <fkey-column referencing-column="profile_slot_id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="dss_slot_items">
+      <column name="slot_id" nullable="n">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <column name="item_id" nullable="y">
+         <column-type db="generic" type="varchar" length="255"/>
+      </column>
+      <column name="idx" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <primary-key name="dss_slot_items_p">
+         <index-column column="slot_id" order="asc" seq="1"/>
+         <index-column column="idx" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dss_slotslot_d_f" referenced-table="dss_profile_slot">
+         <fkey-column referencing-column="slot_id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+   <table name="dss_slot_priority">
+      <column name="slot_id" nullable="n">
+         <column-type db="generic" type="varchar" length="25"/>
+      </column>
+      <column name="idx" nullable="n">
+         <column-type db="generic" type="integer"/>
+         <column-type db="oracle" type="integer"/>
+      </column>
+      <column name="priority" nullable="n">
+         <column-type db="generic" type="numeric" length="19" scale="0"/>
+		 <column-type db="mysql" type="bigint"/>
+      </column>
+      <primary-key name="dss_slot_priorit_p">
+         <index-column column="slot_id" order="asc" seq="1"/>
+         <index-column column="idx" order="asc" seq="2"/>
+      </primary-key>
+      <foreign-key name="dss_slotpslot_d_f" referenced-table="dss_profile_slot">
+         <fkey-column referencing-column="slot_id" referenced-column="id"/>
+      </foreign-key>
+   </table>
+</schema>
+<!-- @version $Id: //product/DSS/version/10.0.3/templates/DSS/sql/scenario_ddl.xml#2 $$Change: 651448 $ -->

@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!DOCTYPE scenario
+  SYSTEM
+  "dynamosystemresource:/atg/scenario/definition/sdl.dtd">
+
+<scenario author="admin" creation-time="960937282000" enabled="true" last-modified-by="admin" modification-time="1028236537368">
+  <segment migrate-users="true">
+    <segment-name>Portfolio Based Promotion</segment-name>
+    <!--================================-->
+    <!--== Logs in  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.dps.Login</event-name>
+    </event>
+    <!--================================-->
+    <!--== Locale is en_US  -->
+    <!--================================-->
+    <condition construct="people-element" id="2">
+      <filter construct="profile-property-filter" operator="eq">
+        <subject-property>
+          <property-name>locale</property-name>
+        </subject-property>
+        <constant>en_US</constant>
+      </filter>
+    </condition>
+    <fork id="3">
+      <branch id="3.1">
+        <!--================================-->
+        <!--== Fund list includes /repositories/Funds/en_US/specialsituation.xml  -->
+        <!--================================-->
+        <condition construct="people-element" id="3.1.1">
+          <filter construct="profile-property-filter" operator="includes">
+            <subject-property>
+              <property-name>fundList</property-name>
+            </subject-property>
+            <constant>/repositories/Funds/en_US/specialsituation.xml</constant>
+          </filter>
+        </condition>
+      </branch>
+      <otherwise-branch id="3.2">
+        <!-- Otherwise -->
+        <!--================================-->
+        <!--== Add items to slot QFOfferSlot named Offers:offer:/repositories/Offers/en_US/specialsituations.html  -->
+        <!--================================-->
+        <action id="3.2.2">
+          <action-name>fillSlot</action-name>
+          <action-param name="slot">
+            <nucleus-property>
+              <nucleus-path>/atg/registry/Slots/QFOfferSlot</nucleus-path>
+            </nucleus-property>
+          </action-param>
+          <action-param name="ids">
+            <array type="java.lang.String[]">
+              <constant>/repositories/Offers/en_US/specialsituations.html</constant>
+            </array>
+          </action-param>
+        </action>
+      </otherwise-branch>
+    </fork>
+  </segment>
+  <segment migrate-users="true">
+    <segment-name>Portfolio Based Promotion FR</segment-name>
+    <!--================================-->
+    <!--== Logs in  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.dps.Login</event-name>
+    </event>
+    <!--================================-->
+    <!--== Locale is fr_FR  -->
+    <!--================================-->
+    <condition construct="people-element" id="2">
+      <filter construct="profile-property-filter" operator="eq">
+        <subject-property>
+          <property-name>locale</property-name>
+        </subject-property>
+        <constant>fr_FR</constant>
+      </filter>
+    </condition>
+    <fork id="3">
+      <branch id="3.1">
+        <!--================================-->
+        <!--== Fund list includes /repositories/Funds/fr_FR/specialsituation.xml  -->
+        <!--================================-->
+        <condition construct="people-element" id="3.1.1">
+          <filter construct="profile-property-filter" operator="includes">
+            <subject-property>
+              <property-name>fundList</property-name>
+            </subject-property>
+            <constant>/repositories/Funds/fr_FR/specialsituation.xml</constant>
+          </filter>
+        </condition>
+      </branch>
+      <otherwise-branch id="3.2">
+        <!-- Otherwise -->
+        <!--================================-->
+        <!--== Add items to slot QFOfferSlot named Offers:offer:/repositories/Offers/fr_FR/specialsituations.html  -->
+        <!--================================-->
+        <action id="3.2.2">
+          <action-name>fillSlot</action-name>
+          <action-param name="slot">
+            <nucleus-property>
+              <nucleus-path>/atg/registry/Slots/QFOfferSlot</nucleus-path>
+            </nucleus-property>
+          </action-param>
+          <action-param name="ids">
+            <array type="java.lang.String[]">
+              <constant>/repositories/Offers/fr_FR/specialsituations.html</constant>
+            </array>
+          </action-param>
+        </action>
+      </otherwise-branch>
+    </fork>
+  </segment>
+  <segment migrate-users="true">
+    <segment-name>Portfolio Based Promotion JA</segment-name>
+    <!--================================-->
+    <!--== Logs in  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.dps.Login</event-name>
+    </event>
+    <!--================================-->
+    <!--== Locale is ja_JP  -->
+    <!--================================-->
+    <condition construct="people-element" id="2">
+      <filter construct="profile-property-filter" operator="eq">
+        <subject-property>
+          <property-name>locale</property-name>
+        </subject-property>
+        <constant>ja_JP</constant>
+      </filter>
+    </condition>
+    <fork id="3">
+      <branch id="3.1">
+        <!--================================-->
+        <!--== Fund list includes /repositories/Funds/ja_JP/specialsituation.xml  -->
+        <!--================================-->
+        <condition construct="people-element" id="3.1.1">
+          <filter construct="profile-property-filter" operator="includes">
+            <subject-property>
+              <property-name>fundList</property-name>
+            </subject-property>
+            <constant>/repositories/Funds/ja_JP/specialsituation.xml</constant>
+          </filter>
+        </condition>
+      </branch>
+      <otherwise-branch id="3.2">
+        <!-- Otherwise -->
+        <!--================================-->
+        <!--== Add items to slot QFOfferSlot named Offers:offer:/repositories/Offers/ja_JP/specialsituations.html  -->
+        <!--================================-->
+        <action id="3.2.2">
+          <action-name>fillSlot</action-name>
+          <action-param name="slot">
+            <nucleus-property>
+              <nucleus-path>/atg/registry/Slots/QFOfferSlot</nucleus-path>
+            </nucleus-property>
+          </action-param>
+          <action-param name="ids">
+            <array type="java.lang.String[]">
+              <constant>/repositories/Offers/ja_JP/specialsituations.html</constant>
+            </array>
+          </action-param>
+        </action>
+      </otherwise-branch>
+    </fork>
+  </segment>
+  <segment migrate-users="true">
+    <segment-name>Portfolio Based Promotion DE</segment-name>
+    <!--================================-->
+    <!--== Logs in  -->
+    <!--================================-->
+    <event id="1">
+      <event-name>atg.dps.Login</event-name>
+    </event>
+    <!--================================-->
+    <!--== Locale is de_DE  -->
+    <!--================================-->
+    <condition construct="people-element" id="2">
+      <filter construct="profile-property-filter" operator="eq">
+        <subject-property>
+          <property-name>locale</property-name>
+        </subject-property>
+        <constant>de_DE</constant>
+      </filter>
+    </condition>
+    <fork id="3">
+      <branch id="3.1">
+        <!--================================-->
+        <!--== Fund list includes /repositories/Funds/de_DE/specialsituation.xml  -->
+        <!--================================-->
+        <condition construct="people-element" id="3.1.1">
+          <filter construct="profile-property-filter" operator="includes">
+            <subject-property>
+              <property-name>fundList</property-name>
+            </subject-property>
+            <constant>/repositories/Funds/de_DE/specialsituation.xml</constant>
+          </filter>
+        </condition>
+      </branch>
+      <otherwise-branch id="3.2">
+        <!-- Otherwise -->
+        <!--================================-->
+        <!--== Add items to slot QFOfferSlot named Offers:offer:/repositories/Offers/de_DE/specialsituations.html  -->
+        <!--================================-->
+        <action id="3.2.2">
+          <action-name>fillSlot</action-name>
+          <action-param name="slot">
+            <nucleus-property>
+              <nucleus-path>/atg/registry/Slots/QFOfferSlot</nucleus-path>
+            </nucleus-property>
+          </action-param>
+          <action-param name="ids">
+            <array type="java.lang.String[]">
+              <constant>/repositories/Offers/de_DE/specialsituations.html</constant>
+            </array>
+          </action-param>
+        </action>
+      </otherwise-branch>
+    </fork>
+  </segment>
+</scenario>

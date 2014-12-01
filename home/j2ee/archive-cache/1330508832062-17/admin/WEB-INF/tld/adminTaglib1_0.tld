@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE taglib
+	PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN"
+	"http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
+
+<taglib>
+  <tlib-version>1.0</tlib-version>
+  <jsp-version>1.1</jsp-version>
+  <short-name>admin</short-name>
+  <uri>http://www.atg.com/taglibs/portal/adminTaglib1_0</uri>
+  <display-name>ATG PAF Admin Taglib 1.0</display-name>
+  <description>The tag library containing tags required for user and IT admin</description>
+
+  <!-- InitializeAdminEnvironment -->
+  <tag>
+    <name>InitializeAdminEnvironment</name>
+    <tag-class>atg.portal.admin.taglib.InitializeAdminEnvironmentTag</tag-class>
+    <tei-class>atg.portal.admin.taglib.InitializeAdminEnvironmentTEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>Initialize an environment for admin pages</description>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+  </tag>
+  
+  <!-- InitializeUserAdminEnvironment -->
+  <tag>
+    <name>InitializeUserAdminEnvironment</name>
+    <tag-class>atg.portal.admin.taglib.InitializeUserAdminEnvironmentTag</tag-class>
+    <tei-class>atg.portal.admin.taglib.InitializeUserAdminEnvironmentTEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>Initialize an environment for user-admin pages</description>
+
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+  </tag>  
+
+  <!-- GetCommunityLevels -->
+  <tag>
+    <name>GetCommunityLevels</name>
+    <tag-class>atg.portal.admin.taglib.GetCommunityLevelsTag</tag-class>
+    <tei-class>atg.portal.admin.taglib.GetCommunityLevelsTEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+       Gets all the communities and the levels in hierarchy. 
+    </description>
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- GetFolderLevels -->
+  <tag>
+    <name>GetFolderLevels</name>
+    <tag-class>atg.portal.admin.taglib.GetFolderLevelsTag</tag-class>
+    <tei-class>atg.portal.admin.taglib.GetFolderLevelsTEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+       Gets all the folders and the levels in hierarchy.
+       The type of folder is determined by the folderType property.
+       If folderId is given the type of that folder takes precedence over
+       the value of folderType property.
+       Property folderId can be used to control the starting point of the folder tree.
+    </description>
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>folderType</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>folderId</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>    
+  </tag>
+
+  <!-- GetAllOrganizations -->
+  <tag>
+    <name>GetAllOrganizations</name>
+    <tag-class>atg.portal.admin.taglib.GetAllOrganizationsTag</tag-class>
+    <tei-class>atg.portal.admin.taglib.GetAllOrganizationsTEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Extracts all the organizations from the profile repository. 
+    </description>
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- GetUsers -->
+  <tag>
+    <name>GetUsers</name>
+    <tag-class>atg.portal.admin.taglib.GetUsersTag</tag-class>
+    <tei-class>atg.portal.admin.taglib.GetUsersTEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Extracts users from the profile repository that meet certain criteria. 
+    </description>
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- GetAlertSettings -->
+  <tag>
+    <name>getAlertSettings</name>
+    <tag-class>atg.portal.admin.taglib.GetAlertSettingsTag</tag-class>
+    <tei-class>atg.portal.admin.taglib.GetAlertSettingsTEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Extracts alert settings for alert messages of a specific source.
+    </description>
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>sourceType</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- GetProfileItemsAndLevels -->
+  <tag>
+    <name>GetProfileItemsAndLevels</name>
+    <tag-class>atg.portal.admin.taglib.GetProfileItemsAndLevelsTag</tag-class>
+    <tei-class>atg.portal.admin.taglib.GetProfileItemsAndLevelsTEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Extracts various properties of an organization. 
+    </description>
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+  </tag>
+
+
+  <!-- GetAllItems -->
+  <tag>
+    <name>GetAllItems</name>
+    <tag-class>atg.portal.admin.taglib.GetAllItemsTag</tag-class>
+    <tei-class>atg.portal.admin.taglib.GetAllItemsTEI</tei-class>
+    <body-content>JSP</body-content>
+    <description>
+      Extracts all the communities, pages, gears and layoutTemplates from the repository. 
+    </description>
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <!-- getMembershipRequests -->
+  <tag>
+    <name>getMembershipRequests</name>
+    <tag-class>atg.portal.admin.taglib.GetMembershipRequestsTag</tag-class>
+    <tei-class>atg.portal.admin.taglib.GetMembershipRequestsTEI</tei-class>
+    <body-content>JSP</body-content>
+    <description> Retrieves a list of all users that have requested membership in a given community. </description>
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>communityId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  
+  <!-- getCommunitiesHavingGear -->  
+ <tag>
+    <name>getCommunitiesHavingGear</name>
+    <tag-class>atg.portal.admin.taglib.GetCommunitiesHavingGearTag</tag-class>
+    <tei-class>atg.portal.admin.taglib.GetCommunitiesHavingGearTEI</tei-class>
+    <body-content>JSP</body-content>
+    <description> 
+      Retrieves a collection of all communties which have the gear whose id is supplied by attribute gearId.        
+      The collection can be obtained from property Communities which is a collection of atg.portal.framework.Community.
+      This is an expensive tag if there are a large number of communities in the system and should be 
+      used with caution.
+    </description>
+    <attribute>
+      <name>id</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>gearId</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>      
+</taglib>

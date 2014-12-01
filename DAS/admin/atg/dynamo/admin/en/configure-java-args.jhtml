@@ -1,0 +1,74 @@
+<nucleus type=import>
+	/atg/dynamo/admin/Configure
+	/atg/dynamo/admin/EnvironmentConfig
+	/atg/dynamo/droplet/ForEach
+</nucleus>
+
+<java>
+  atg.service.dynamo.EnvironmentConfig envConfigure = (atg.service.dynamo.EnvironmentConfig) request.resolveName("/atg/dynamo/admin/EnvironmentConfig");
+</java>
+
+<HTML>
+<HEAD>
+<link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+<TITLE>Java Arguments</TITLE>
+
+
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+<IMG SRC="images/config-banner.gif" ALT="Dynamo Configuration" ALIGN=TOP WIDTH="585" HEIGHT="37" BORDER="0"><p>
+
+<a href="/">admin</a>/<a href="configure-server.jhtml">Configure</a>/<a href="configure-server-services.jhtml">Servers</a>/Java_Args<p>
+
+<blockquote>
+
+<h3>Server: <i><valueof property=EnvironmentConfig.serverName></valueof></i></h3>
+
+
+<H2>Configure Java Arguments</H2>
+<FORM ACTION="configure-java-args.jhtml" METHOD=POST>
+
+<p>
+<b>Modify Java Arguments</b>
+<blockquote>
+  Extend Dynamo's JAVA_ARGS (append)
+  <table border=1 cellpadding=6 cellspacing=0>
+    <tr>
+      <td>Java_Args Value</td>
+      <td>&nbsp;</td>
+    </tr>
+    <droplet name="ForEach">
+      <param name="array" value="property:EnvironmentConfig.postJavaArgs">
+      <oparam name="output">
+        <tr>
+          <td><valueof param="element"></valueof></td>
+          <td><input type=submit property="EnvironmentConfig.deletePostJavaArgs" submitvalue="param:index" value="Delete" name="deletePostJavaArgs`request.getParameter("index")`">
+        </tr>
+      </oparam>
+      <oparam name="empty">
+        <tr>
+          <td colspan=2><i>No entries appended to the JAVA_ARGS</i></td>
+        </tr>
+      </oparam>
+    </droplet>
+    <tr>
+      <td>
+        New Java Argument value:<br>
+        <input type=text property="EnvironmentConfig.newPostJavaArgs">
+      </td>
+      <td>
+        new:<br>
+        <input type=submit value="Append to JAVA_ARGS" property="EnvironmentConfig.addPostJavaArgs">
+      </td>
+    </tr>
+  </table>
+  <p>
+</blockquote>
+</form>
+<p>
+<p>
+<a href="configure-server-services.jhtml">Back</a><br>
+</BODY>
+</HTML>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/configure-java-args.jhtml#2 $$Change: 651448 $ */</java>
+

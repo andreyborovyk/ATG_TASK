@@ -1,0 +1,224 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="/atg/dynamo/admin/admin.css">
+    <title>Create Repository Web Service: Select Web Service Method</title>
+  </head>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#00214A" VLINK="#637DA6" LINK="#E87F02">
+<IMG SRC="../images/admin-banner.gif" 
+     ALT="Dynamo Administration"
+     ALIGN=TOP 
+     WIDTH="585" 
+     HEIGHT="37" 
+     BORDER="0">
+
+<nucleus type=import>
+        /atg/dynamo/droplet/ForEach
+	/atg/dynamo/admin/ItemDescriptorDroplet
+	/atg/dynamo/droplet/IsNull
+</nucleus>
+<p>
+ <a href="/">admin</a> / 
+ <a href="index.jhtml">Web Service Administration</a> / 
+ <a href="selecttype.jhtml">Create Web Service</a> /
+ <a href="repositorycreate.jhtml">Repository Web Service</a> /
+ <a href="choosedescriptor.jhtml">
+   <param name="repositoryPath" value="param:repositoryPath">
+   Select Item Descriptor
+ </a> /
+ Select Repository Web Service method
+</p>
+
+<java type=import>
+   	atg.repository.*
+ 	java.util.*
+</java>
+<java>
+String repName = request.getParameter("repositoryPath");
+String descName = request.getParameter("itemDescName");
+if(repName == null || repName.length() == 0)
+  out.println("<font color=\"red\">No repository to act on</font>");
+if(descName == null || descName.length() == 0)
+  out.println("<font color=\"red\">No descriptor to act on</font>");
+Repository rep = (Repository)request.resolveName(repName);
+if(rep == null)
+  out.println("<font color=\"red\">No repository at path " + 
+              repName + "</font>");
+else {
+  RepositoryItemDescriptor desc = rep.getItemDescriptor(descName);
+  if(desc == null)
+    out.println("<font color=\"red\">No descriptor named " +
+          	descName + " at path " + 
+	        repName + "</font>");
+  else {
+    String[] propNames = desc.getPropertyNames();
+    Arrays.sort(propNames);
+    RepositoryPropertyDescriptor[] rpd = 
+      new RepositoryPropertyDescriptor[propNames.length];
+    for(int i = 0; i < rpd.length; i++)  
+      rpd[i] = (RepositoryPropertyDescriptor)
+        desc.getPropertyDescriptor(propNames[i]);
+    request.setParameter("descs", rpd);
+  }
+}
+</java>
+
+<p>
+<h2>
+Create Repository Web Service
+</h2>
+
+<h1>Select Method: <valueof param="itemDescName">No Descriptor</valueof></h1>
+<p>
+<h3>Item Web Services</h3>
+<table border=1>
+<tr>
+<th><b>Available Methods</b></th>
+<th><b>Web Service Signature</b></th>
+<th><b>Description</b></th>
+</tr>
+<droplet name="ItemDescriptorDroplet">
+  <param name="repositoryPath" value="param:repositoryPath">
+  <param name="itemDescName" value="param:itemDescName">
+  <param name="action" value="item">
+  <oparam name="output">
+
+    <tr><td>
+    <a href="itemappconfig.jhtml">
+     <param name="repositoryPath" value="param:repositoryPath">
+     <param name="itemDescName" value="param:itemDescName">
+     <param name="contextType" value="param:contextType">
+     <valueof param="methodName">???</valueof>
+    </a>
+     </td><td>
+     <valueof param="return">???</valueof> 
+     <valueof param="methodName">???</valueof>
+     <valueof param="args">???</valueof>
+     </td>
+     <td><valueof param="methodDescription">???</valueof></td>
+     </tr>
+  </oparam>
+</droplet>
+</table>
+<p>
+<h3>Or choose a property to create a web service for</h3>
+<ul>
+<droplet name="ForEach">
+  <param name="array" value="param:descs">
+  <oparam name="output">
+    <li>
+    <a href="#`request.getParameter("element.name")`">
+    <valueof param="element.name">No descriptor</valueof></li>
+    </a>
+  </oparam>
+</droplet>
+<p>
+<hr>
+<p>
+<droplet name="ForEach">
+  <param name="array" value="param:descs">
+  <oparam name="output">
+    <li>
+    <a name="`request.getParameter("element.name")`">
+    <b>
+    <font size="4"><valueof param="element.name">No descriptor</valueof></font>
+    </b>
+    </a>
+    <br><i>Property Type:</i> <code>
+    <valueof param="element.propertyType"></valueof></code>
+    <droplet name="IsNull">
+      <param name="value" value="param:element.componentPropertyType">
+      <oparam name="false">
+        <br>
+        <i>Component Type</i>: 
+	<code><valueof param="element.componentPropertyType"></valueof>
+	</code>
+      </oparam>
+    </droplet>
+    <valueof param="componentType"></valueof>
+    <p>
+    <droplet name="ItemDescriptorDroplet">
+      <param name="repositoryPath" value="param:repositoryPath">
+      <param name="itemDescName" value="param:itemDescName">
+      <param name="propertyName" value="param:element.name">
+      <param name="action" value="property">
+      <oparam name="outputStart">
+        <table border=1>
+        <tr>
+        <th><b>Available Methods</b></th>
+        <th><b>Web Service Signature</b></th>
+        <th><b>Description</b></th>
+        </tr>
+      </oparam>
+      <oparam name="output">
+        <p>
+     	<tr><td>
+        <a href="itemappconfig.jhtml">
+         <param name="repositoryPath" value="param:repositoryPath">
+         <param name="itemDescName" value="param:itemDescName">
+         <param name="propertyName" value="param:propertyName">
+         <param name="propertyType" value="param:methodType">
+	 <param name="contextType" value="param:contextType">
+         <param name="group" value="param:group">
+         <valueof param="methodName">???</valueof>
+        </a>
+         </td>
+         <td>
+         <valueof param="return">???</valueof> 
+         <valueof param="methodName">???</valueof>
+         <valueof param="args">???</valueof>
+         </td>
+	 <td><valueof param="methodDescription">???</valueof></td>
+	 </td></tr>
+      </oparam>
+      <oparam name="outputEnd">
+        </table>
+      </oparam>
+      <oparam name="badType">
+        <font color="blue">
+         <valueof param="errorMsg">???</valueof>
+        </font> 
+        <p>
+      </oparam>
+    </droplet>
+
+    <droplet name="ItemDescriptorDroplet">
+      <param name="repositoryPath" value="param:repositoryPath">
+      <param name="itemDescName" value="param:itemDescName">
+      <param name="propertyName" value="param:element.name">
+      <param name="action" value="property">
+      <oparam name="outputStart">
+       <p>
+       <b>Property Limitations:</b>
+       <ul>
+      </oparam>
+      <oparam name="output">
+        <droplet name="ForEach">
+          <param name="array" value="param:limitations">
+          <oparam name="output">
+            <li>
+	    <font color="blue">
+            <valueof param="element">???</valueof>
+            </font> 
+            </li>
+           </oparam>
+        </droplet>
+      </oparam>
+      <oparam name="outputEnd">
+        </ul>
+      </oparam>
+    </droplet>
+    </li>
+    <p>
+    <hr>
+    <p>
+  </oparam>
+  <oparam name="empty">
+    No properties to show
+  </oparam>
+</droplet>
+</ul>
+</BODY>
+</html>
+<java>/* @version $Id: //product/DAS/version/10.0.3/release/DAS/admin/atg/dynamo/admin/en/webservice/repositorymethod.jhtml#2 $$Change: 651448 $*/</java>

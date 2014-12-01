@@ -1,0 +1,87 @@
+<%@ taglib uri="/paf-taglib" prefix="paf" %>
+<%@ taglib uri="/core-taglib" prefix="core" %>
+<%@ taglib uri="/admin-taglib" prefix="admin" %>
+<%@ taglib uri="/dsp" prefix="dsp" %>
+<%@ taglib uri="/jakarta-i18n-1.0" prefix="i18n" %>
+
+<paf:setFrameworkLocale />
+
+<i18n:bundle baseName="atg.portal.admin.PortalAdminResources" localeAttribute="userLocale" changeResponseLocale="false" />
+
+<dsp:page>
+
+<dsp:getvalueof id="dsp_gear_def_id" idtype="java.lang.String" param="paf_gear_def_id">
+<dsp:getvalueof id="dsp_page_url" idtype="java.lang.String" param="paf_page_url">
+<% request.setAttribute(atg.portal.framework.RequestAttributes.GEAR_DEFINITION, dsp_gear_def_id); %>
+
+<paf:InitializeGearEnvironment id="gearEnv">
+
+
+<dsp:form action="gear.jsp" synchronized="/atg/userprofiling/Profile" method="POST">
+
+<core:demarcateTransaction id="demarcateXAb">
+
+
+<% try { %>
+<font class="small">
+<table cellpadding="1" cellspacing="0" border="0" bgcolor="#666666" width="100%"><tr><td>
+<table cellpadding="4" cellspacing="0" border="0" bgcolor="#BAD8EC" width="100%"><tr><td>
+<font class="pageheader_edit">
+<i18n:message key="admin-gear-delete-header"/></font>
+</td></tr></table>
+</td></tr></table>
+<img src='<%= response.encodeURL("images/clear.gif")%>' height="1" width="1" border=""><br>
+<table cellpadding="4" cellspacing="0" border="0" bgcolor="#BAD8EC" width="100%"><tr><td><font class="smaller">
+
+
+
+
+
+
+
+<tr>
+<td><font class="smaller">
+<i18n:message key="admin-html-bold" id="i18n_boldb"/>
+<i18n:message key="admin-html-end-bold" id="i18n_end_boldb"/>
+<i18n:message key="admin-gears-delete-confirm">
+<i18n:messageArg value="<%= gearEnv.getGearDefinition().getName(response.getLocale()) %>"/>
+<i18n:messageArg value="<%=i18n_boldb%>"/>
+<i18n:messageArg value="<%=i18n_end_boldb%>"/>
+</i18n:message>
+
+</font>
+<br><br>
+
+<dsp:input type="hidden" bean="RegisterGear.cancelURL" value="<%=dsp_page_url%>"/>
+<dsp:input type="hidden" bean="RegisterGear.failureURL" value="<%=dsp_page_url%>"/>
+<dsp:input type="hidden" bean="RegisterGear.successURL" value="<%=dsp_page_url%>"/>
+<dsp:input type="hidden" bean="RegisterGear.id" value="<%=dsp_gear_def_id%>"/>
+<dsp:input type="hidden" bean="RegisterGear.name" value="<%= gearEnv.getGearDefinition().getName(response.getLocale())%>"/>
+
+<i18n:message id="yes01" key="yes" />
+<dsp:input type="submit" bean="RegisterGear.delete" value="<%= yes01 %>" name="Yes"/>
+<i18n:message id="no01" key="no" />&nbsp;&nbsp;&nbsp;
+<dsp:input type="submit" bean="RegisterGear.cancel" value="<%= no01 %>" name="No"/>
+
+</div>
+
+</td></tr></table>
+  <% } catch (Exception e) { %>
+  <core:setTransactionRollbackOnly id="rollbackOnlyXAb">
+    <core:ifNot value="<%= rollbackOnlyXAb.isSuccess() %>">
+      The following exception was thrown:
+      <pre>
+       <%= rollbackOnlyXAb.getException() %>
+      </pre>
+    </core:ifNot>
+  </core:setTransactionRollbackOnly>
+  <% } %>
+</core:demarcateTransaction>
+
+</dsp:form>
+</paf:InitializeGearEnvironment>
+</dsp:getvalueof>
+</dsp:getvalueof>
+
+</dsp:page>
+<%-- @version $Id: //app/portal/version/10.0.3/paf/admin.war/gear_delete_confirm.jspf#2 $$Change: 651448 $--%>

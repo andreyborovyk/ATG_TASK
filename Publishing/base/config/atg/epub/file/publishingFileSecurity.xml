@@ -1,0 +1,84 @@
+<!DOCTYPE secured-repository-template
+  PUBLIC "-//Art Technology Group, Inc.//DTD Dynamo Security//EN"
+  "http://www.atg.com/dtds/security/secured_repository_template_1.0.dtd">
+
+<secured-repository-template>
+
+  <!-- fileFolder security attributes -->
+  <item-descriptor name="fileFolder">    
+    <acl-property name="acl"/>
+    
+    <descriptor-acl value="Profile$role$epubSuperAdmin:read,write,create,delete;Profile$role$epubAdmin:read,write,create,delete;Profile$role$epubManager:read,write,create,delete;Profile$role$epubUser:read,write,create,delete;Admin$role$administrators-group:read,write,create,delete;Admin$role$everyone-group:read"/>
+  </item-descriptor>
+
+  <!-- scenario security attributes -->
+  <item-descriptor name="scenario">
+    <acl-property name="acl"/>
+    
+    <descriptor-acl value="Profile$role$epubSuperAdmin:read,write,create,delete;Profile$role$epubAdmin:read,write,create,delete;Profile$role$epubManager:read,write,create,delete;Profile$role$epubUser:read,write,create,delete;Admin$role$administrators-group:read,write,create,delete;Admin$role$everyone-group:read"/>
+  </item-descriptor>
+
+  <!-- targeter security attributes -->
+  <item-descriptor name="targeter">
+    <acl-property name="acl"/>
+    
+    <descriptor-acl value="Profile$role$epubSuperAdmin:read,write,create,delete;Profile$role$epubAdmin:read,write,create,delete;Profile$role$epubManager:read,write,create,delete;Profile$role$epubUser:read,write,create,delete;Admin$role$administrators-group:read,write,create,delete;Admin$role$everyone-group:read"/>
+  </item-descriptor>
+
+  <!-- profileGroup security attributes -->
+  <item-descriptor name="profileGroup">
+    <acl-property name="acl"/>
+    
+    <descriptor-acl value="Profile$role$epubSuperAdmin:read,write,create,delete;Profile$role$epubAdmin:read,write,create,delete;Profile$role$epubManager:read,write,create,delete;Profile$role$epubUser:read,write,create,delete;Admin$role$administrators-group:read,write,create,delete;Admin$role$everyone-group:read"/>
+  </item-descriptor>
+
+  <!-- contentGroup security attributes -->
+  <item-descriptor name="contentGroup">
+    <acl-property name="acl"/>
+    
+    <descriptor-acl value="Profile$role$epubSuperAdmin:read,write,create,delete;Profile$role$epubAdmin:read,write,create,delete;Profile$role$epubManager:read,write,create,delete;Profile$role$epubUser:read,write,create,delete;Admin$role$administrators-group:read,write,create,delete;Admin$role$everyone-group:read"/>
+  </item-descriptor>
+
+  <!-- slot security attributes -->
+  <item-descriptor name="slot">
+    <acl-property name="acl"/>
+    
+    <descriptor-acl value="Profile$role$epubSuperAdmin:read,write,create,delete;Profile$role$epubAdmin:read,write,create,delete;Profile$role$epubManager:read,write,create,delete;Profile$role$epubUser:read,write,create,delete;Admin$role$administrators-group:read,write,create,delete;Admin$role$everyone-group:read"/>
+  </item-descriptor>
+
+  <!-- webApplicationTextFile security attributes -->
+  <item-descriptor name="webApplicationTextFile">
+    <acl-property name="acl"/>
+    
+    <descriptor-acl value="Profile$role$epubSuperAdmin:read,write,create,delete;Profile$role$epubAdmin:read,write,create,delete;Profile$role$epubManager:read,write,create,delete;Profile$role$epubUser:read,write,create,delete;Admin$role$administrators-group:read,write,create,delete;Admin$role$everyone-group:read"/>
+  </item-descriptor>
+
+  <!-- webApplicationBinaryFile security attributes -->
+  <item-descriptor name="webApplicationBinaryFile">
+    <acl-property name="acl"/>
+    
+    <descriptor-acl value="Profile$role$epubSuperAdmin:read,write,create,delete;Profile$role$epubAdmin:read,write,create,delete;Profile$role$epubManager:read,write,create,delete;Profile$role$epubUser:read,write,create,delete;Admin$role$administrators-group:read,write,create,delete;Admin$role$everyone-group:read"/>
+  </item-descriptor>
+
+  <!-- javaServerPage security attributes -->
+  <item-descriptor name="javaServerPage">
+    <acl-property name="acl"/>
+    
+    <descriptor-acl value="Profile$role$epubSuperAdmin:read,write,create,delete;Profile$role$epubAdmin:read,write,create,delete;Profile$role$epubManager:read,write,create,delete;Profile$role$epubUser:read,write,create,delete;Admin$role$administrators-group:read,write,create,delete;Admin$role$everyone-group:read"/>
+  </item-descriptor>
+
+  <!-- wwwTextFileAsset security attributes -->
+  <item-descriptor name="wwwTextFileAsset">
+    <acl-property name="acl"/>
+    
+    <descriptor-acl value="Profile$role$epubSuperAdmin:read,write,create,delete;Profile$role$epubAdmin:read,write,create,delete;Profile$role$epubManager:read,write,create,delete;Profile$role$epubUser:read,write,create,delete;Admin$role$administrators-group:read,write,create,delete;Admin$role$everyone-group:read"/>
+  </item-descriptor>
+
+  <!-- wwwBinaryFileAsset security attributes -->
+  <item-descriptor name="wwwBinaryFileAsset">
+    <acl-property name="acl"/>
+    
+    <descriptor-acl value="Profile$role$epubSuperAdmin:read,write,create,delete;Profile$role$epubAdmin:read,write,create,delete;Profile$role$epubManager:read,write,create,delete;Profile$role$epubUser:read,write,create,delete;Admin$role$administrators-group:read,write,create,delete;Admin$role$everyone-group:read"/>
+  </item-descriptor>
+</secured-repository-template>
+<!-- @version $Id: //product/Publishing/version/10.0.3/pws/config/atg/epub/file/publishingFileSecurity.xml#2 $$Change: 651448 $ -->

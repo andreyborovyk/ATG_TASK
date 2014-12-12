@@ -1,0 +1,19 @@
+<gsa-template>
+	
+	<item-descriptor name="shippingGroup">
+		<table name="dcspp_ship_group">
+			<property name="type">
+				<option value="shipSaleItemsShippingGroup" code="300" />
+			</property>
+		</table>
+	</item-descriptor>
+	
+	<item-descriptor name="shipSaleItemsShippingGroup"
+	super-type="hardgoodShippingGroup" sub-type-value="shipSaleItemsShippingGroup">
+	<table name="mys_store_sale_ship_group" type="auxiliary"
+		id-column-name="ship_group_id">
+		<property name="salePriceList" column-name="sale_price_id" item-type="priceList"
+			repository="/atg/commerce/pricing/priceLists/PriceLists" />
+	</table>
+	</item-descriptor>
+</gsa-template>
